@@ -10,7 +10,6 @@ import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart'
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/utils/custom_loading_indicatior.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -157,8 +156,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   title: 'Don\'t have an account? ',
                   subtitle: 'Sign Up',
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => SignUpScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const SignUpScreen()));
                   },
                 ),
                 SizedBox(
