@@ -2,70 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/controller/sponsored_controller.dart';
+import 'package:smartbazar/features/home/model/home_posts_model.dart';
+import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/model/sponsored_model.dart';
 import 'package:smartbazar/features/view/product_deatials_screen.dart';
 import 'package:smartbazar/features/widgets/banner_widget.dart';
 import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
-import 'package:smartbazar/features/widgets/item_description_widget.dart';
-import 'package:smartbazar/features/widgets/product_model.dart';
+import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/features/widgets/service_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends ConsumerWidget {
+  HomeScreen({super.key});
 
-  @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  List<Product> product = [
-    // Your list of products
-    Product(
-      name: 'Acer Aspire 5 A515-56-32DK Intel Core i3 11th Gen/15.6 FHD',
-    ),
-    Product(
-      name: 'Dell Aspire 5 A515-56-32DK Intel Core i3 11th Gen/15.6 FHD',
-    ),
-    Product(
-      name: 'Acer Aspire 5 A515-56-32DK Intel Core i3 11th Gen/15.6 FHD',
-    ),
-    Product(
-      name: 'Leneov Aspire 5 A515-56-32DK Intel Core i3 11th Gen/15.6 FHD',
-    ),
-  ];
-  List<Product> filteredProducts = [];
-
-//   @override
-  void initState() {
-    filteredProducts = product;
-    super.initState();
-  }
-
-  void filterProducts(String query) {
-    setState(() {
-      if (query.isNotEmpty) {
-        filteredProducts = product
-            .where((product) =>
-                product.name.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      } else {
-        filteredProducts = product;
-      }
-    });
-  }
 
   @override
-  Widget build(BuildContext context) {
-    final sponsoreData = ref.watch(sponsoredController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+
     return GenericSafeArea(
       color: Colors.white,
       child: Scaffold(
-        key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppBar(
@@ -86,9 +49,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: SizedBox(
                   height: 33.h,
                   child: TextFormField(
-                    onChanged: (query) {
-                      filterProducts(query);
-                    },
                     decoration: InputDecoration(
                         hintText: 'Search...',
                         prefixIconConstraints: BoxConstraints(minWidth: 40.w),
@@ -109,7 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(25.r),
                                 topRight: Radius.circular(25.r)),
-                            color: Color(0xff362677),
+                            color: const Color(0xff362677),
                           ),
                           child: Icon(
                             Icons.search,
@@ -207,52 +167,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     SizedBox(
                       height: 2.h,
                     ),
-                    ServiceContainer(),
+                    const ServiceContainer(),
                     SizedBox(
                       height: 20.h,
                     ),
-                    Text(
-                      'SPONSORED LISTINGS',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    SizedBox(
-                      height: 292.h,
-                      child: ListView.separated(
-                        primary: false,
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.only(left: 5.w),
-                        shrinkWrap: true,
-                        itemCount: filteredProducts.length,
-                        itemBuilder: (context, index) {
-                          final product = filteredProducts[index];
-                          return ItemDescriptionWidget(
-                            // product: product,
-                            // onTap: (product) {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (_) => ProductDetailsScreen(
-                            //                 product: product,
-                            //               )));
-                            // },
-                            product: product,
-                            onTap: (SponsoredModel) {}, sponsoredModel: null,
-                            // productName: product.name,
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            width: 12.h,
-                          );
-                        },
-                      ),
+                    ProductSlider(
+                      homePostsData: homePostsData,
+                      valueExtractor: (product) => product.sponsored_post,
+                      title: 'SPONSORED LISTINGS',
                     ),
                   ],
                 ),
@@ -261,63 +183,211 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 height: 20.h,
               ),
               const BannerWidget(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 20.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Tranding',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    // SizedBox(
-                    // height: 291.h,
-                    // child: ListView.separated(
-                    //   primary: false,
-                    //   physics: BouncingScrollPhysics(),
-                    //   scrollDirection: Axis.horizontal,
-                    //   padding: EdgeInsets.only(left: 5.w),
-                    //   shrinkWrap: true,
-                    //     itemCount: filteredProducts.length,
-                    //     itemBuilder: (context, index) => ItemDescriptionWidget(
-                    //       onTap: (SponsoredModel) {}, product: product,
-                    //       // product: filteredProducts[index],
-                    //       // onTap: (p) {
-                    //       //   Navigator.push(
-                    //       //       context,
-                    //       //       MaterialPageRoute(
-                    //       //           builder: (_) =>
-                    //       //               ProductDetailsScreen(product: p)));
-                    //       // },
-                    //     ),
-                    //     separatorBuilder: (BuildContext context, int index) {
-                    //       return SizedBox(
-                    //         width: 12.h,
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              BannerWidget(),
-              SizedBox(
-                height: 20.h,
-              ),
-              BrandBazarWidget(),
               SizedBox(
                 height: 12.h,
               ),
-              BannerWidget(),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.trending,
+                title: 'TRENDING',
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              const BannerWidget(),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.hot_products,
+                title: 'HOT DEALS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              const BannerWidget(),
+              SizedBox(
+                height: 12.h,
+              ),
+              const BrandBazarWidget(),
+              SizedBox(
+                height: 12.h,
+              ),
+              const BannerWidget(),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.new_products,
+                title: 'SHOP FOR NEW PRODUCTS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              const BannerWidget(),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.new_products,
+                title: 'SAVE WITH THRIFTS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.jobs,
+                title: 'FIND JOBS FOR YOU',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.events,
+                title: 'SEARCH LATEST EVENTS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.new_products,
+                title: 'DISCOVER FOODS & RESTURANTS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.b2b_products,
+                title: 'B@B PRODUCTS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              const BannerWidget(),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.new_products,
+                title: 'ALL PRODUCTS',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ProductSlider extends StatelessWidget {
+  const ProductSlider({
+    super.key,
+    required this.homePostsData,
+    required this.valueExtractor,
+    required this.title,
+  });
+
+  final String title;
+  final AsyncValue<HomePosts> homePostsData;
+  final List<Product> Function(HomePosts) valueExtractor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w700,
+              color: Colors.black),
+        ),
+        SizedBox(
+          height: 8.h,
+        ),
+        SizedBox(
+          height: productCardHeight,
+          child: switch (homePostsData) {
+            AsyncData(:final value) => ListView.separated(
+                primary: false,
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(left: 5.w),
+                shrinkWrap: true,
+                itemCount: valueExtractor(value).length,
+                itemBuilder: (context, index) {
+                  final product = valueExtractor(value)[index];
+                  return ProductCard(
+                    product: product,
+                    onTap: (product) {},
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: 12.w,
+                  );
+                },
+              ),
+            AsyncError() => ProductSliderSkeleton(),
+            _ => ProductSliderSkeleton(),
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class ProductSliderSkeleton extends StatelessWidget {
+  ProductSliderSkeleton({super.key});
+
+  final List<Product> fakeDate = List.generate(
+    7,
+    (index) => Product(
+      id: '',
+      title: '',
+      price: '0',
+      image: '',
+      visits: '0',
+      contact_name: '',
+      pickup: '',
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Skeletonizer(
+      enabled: true,
+      child: ListView.separated(
+        primary: false,
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.only(left: 5.w),
+        shrinkWrap: true,
+        itemCount: fakeDate.length,
+        itemBuilder: (context, index) {
+          final product = fakeDate[index];
+          return ProductCard(
+            product: product,
+            onTap: (product) {},
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: 12.w,
+          );
+        },
       ),
     );
   }

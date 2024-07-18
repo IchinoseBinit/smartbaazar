@@ -7,5 +7,6 @@ class ApiConstants {
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
   static String forgetPasswordUrl = '$baseUrl/auth/password/email';
-  static String homeSliderBannerUrl = '$baseUrl/homeSections/home2';
+  static String homeSliderBannerUrl = '$baseUrl/homeSections/';
+  static String homeSlider1BannerUrl = '$baseUrl/homeSections/home1';
 }

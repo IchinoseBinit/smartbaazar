@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,9 +7,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
-import 'package:smartbazar/features/widgets/item_description_widget.dart';
-import 'package:smartbazar/features/widgets/product_model.dart';
+import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -134,7 +131,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.product.name,
+                                widget.product.title,
                                 style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w700),
