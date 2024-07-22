@@ -32,6 +32,8 @@ class HomeScreen extends ConsumerWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppBar(
+          scrolledUnderElevation: 0,
+          elevation: 0,
           toolbarHeight: 85.h,
           leadingWidth: 30.h,
           titleSpacing: 5,
@@ -171,13 +173,13 @@ class HomeScreen extends ConsumerWidget {
                     SizedBox(
                       height: 20.h,
                     ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.sponsored_post,
-                      title: 'SPONSORED LISTINGS',
-                    ),
                   ],
                 ),
+              ),
+              ProductSlider(
+                homePostsData: homePostsData,
+                valueExtractor: (product) => product.sponsored_post,
+                title: 'SPONSORED LISTINGS',
               ),
               SizedBox(
                 height: 20.h,
@@ -254,18 +256,18 @@ class HomeScreen extends ConsumerWidget {
               SizedBox(
                 height: 12.h,
               ),
-              ProductSlider(
-                homePostsData: homePostsData,
-                valueExtractor: (product) => product.new_products,
-                title: 'DISCOVER FOODS & RESTURANTS',
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
+              // ProductSlider(
+              //   homePostsData: homePostsData,
+              //   valueExtractor: (product) => product.new_products,
+              //   title: 'DISCOVER FOODS & RESTURANTS',
+              // ),
+              // SizedBox(
+              //   height: 12.h,
+              // ),
               ProductSlider(
                 homePostsData: homePostsData,
                 valueExtractor: (product) => product.b2b_products,
-                title: 'B@B PRODUCTS',
+                title: 'B2B PRODUCTS',
               ),
               SizedBox(
                 height: 12.h,
@@ -276,7 +278,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               ProductSlider(
                 homePostsData: homePostsData,
-                valueExtractor: (product) => product.new_products,
+                valueExtractor: (product) => product.all_products,
                 title: 'ALL PRODUCTS',
               ),
               SizedBox(
@@ -304,48 +306,56 @@ class ProductSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w700,
-              color: Colors.black),
-        ),
-        SizedBox(
-          height: 8.h,
-        ),
-        SizedBox(
-          height: productCardHeight,
-          child: switch (homePostsData) {
-            AsyncData(:final value) => ListView.separated(
-                primary: false,
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 5.w),
-                shrinkWrap: true,
-                itemCount: valueExtractor(value).length,
-                itemBuilder: (context, index) {
-                  final product = valueExtractor(value)[index];
-                  return ProductCard(
-                    product: product,
-                    onTap: (product) {},
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    width: 12.w,
-                  );
-                },
-              ),
-            AsyncError() => ProductSliderSkeleton(),
-            _ => ProductSliderSkeleton(),
-          },
-        ),
-      ],
-    );
+    final value = homePostsData.valueOrNull;
+    if (value != null && valueExtractor(value).isNotEmpty) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black),
+            ),
+          ),
+          SizedBox(
+            height: 8.h,
+          ),
+          SizedBox(
+            height: productCardHeight,
+            child: switch (homePostsData) {
+              AsyncData(:final value) => ListView.separated(
+                  primary: false,
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  shrinkWrap: true,
+                  itemCount: valueExtractor(value).length,
+                  itemBuilder: (context, index) {
+                    final product = valueExtractor(value)[index];
+                    return ProductCard(
+                      product: product,
+                      onTap: (product) {},
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 12.w,
+                    );
+                  },
+                ),
+              AsyncError() => ProductSliderSkeleton(),
+              _ => ProductSliderSkeleton(),
+            },
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 }
 

@@ -9,4 +9,5 @@ class ApiConstants {
   static String forgetPasswordUrl = '$baseUrl/auth/password/email';
   static String homeSliderBannerUrl = '$baseUrl/homeSections/';
   static String homeSlider1BannerUrl = '$baseUrl/homeSections/home1';
+  static String homeSlider2BannerUrl = '$baseUrl/homeSections/home2';
 }

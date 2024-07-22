@@ -33,6 +33,17 @@ Future<HomePosts> homePosts(HomePostsRef ref) async {
         },
       ),
     ),
+    client.get(
+      ApiConstants.homeSlider2BannerUrl,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+          'Connection': 'Keep-Alive',
+          'X-AppApiToken': 'Yala@Techies_Nepal'
+        },
+      ),
+    ),
   ]).then((res) {
     return {
       'sponsored_post': res[1].data['sponsored_posts'],
@@ -42,6 +53,8 @@ Future<HomePosts> homePosts(HomePostsRef ref) async {
       'jobs': res[0].data['jobs'],
       'events': res[0].data['events'],
       'b2b_products': res[0].data['b2b_products'],
+      'all_products': res[2].data['all_products'],
+      'advertisements': res[2].data['advertisements'],
     };
   });
 
