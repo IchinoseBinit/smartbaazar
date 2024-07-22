@@ -8,4 +8,5 @@ class ApiConstants {
   static String signUpUrl = '$baseUrl/users';
   static String forgetPasswordUrl = '$baseUrl/auth/password/email';
   static String homeSliderBannerUrl = '$baseUrl/homeSections/home2';
+  static String adsLoadingUrl = '$baseUrl/homeSections/loadads';
 }

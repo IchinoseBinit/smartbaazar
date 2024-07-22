@@ -11,6 +11,7 @@ import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -24,6 +25,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false;
+  String? errMessage;
+  bool hidePassword = true;
+
   @override
   void initState() {
     super.initState();
@@ -46,10 +50,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           context,
           MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
-        // showCustomToast(state.response.toString());
+        showCustomToast(state.response.toString());
       } else if (state is ErrorState) {
-        print(state.exception.message);
-      } else if (State is LoadingState) {
+        setState(() {
+          errMessage = state.exception.message;
+        });
+      } else if (state is LoadingState) {
         // onLoading(context);
       }
     });
@@ -65,73 +71,117 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 80.h,
                 ),
                 Center(
-                    child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Image.asset(ImageConstant.appLogo),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      Text(
-                        'Login',
-                        style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff000000)),
-                      )
-                    ],
-                  ),
-                )),
-                SizedBox(
-                  height: 50.h,
-                ),
-                CustomTextFieldWidget(
-                  controller: emailController,
-                  icon: Icons.mail,
-                  hintText: 'Email',
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 22.h,
-                ),
-                CustomTextFieldWidget(
-                  controller: passwordController,
-                  icon: Icons.lock,
-                  hintText: 'Password',
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                InkWell(
-                  splashFactory: NoSplash.splashFactory,
-                  splashColor: Colors.white,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ForgetPasswordScreen()));
-                  },
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'Forget Password?',
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff000000)),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Image.asset(ImageConstant.appLogo),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        Center(
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xff000000)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        if (errMessage != null && errMessage!.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade100,
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.red.shade500,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(7),
+                              ),
+                            ),
+                            child: Text(
+                              errMessage!,
+                              style: TextStyle(
+                                color: Colors.red.shade900,
+                              ),
+                            ),
+                          ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        CustomTextFieldWidget(
+                          controller: emailController,
+                          icon: Icons.mail,
+                          hintText: 'Email',
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 22.h,
+                        ),
+                        CustomTextFieldWidget(
+                          controller: passwordController,
+                          icon: Icons.lock,
+                          hintText: 'Password',
+                          obscureText: hidePassword,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(hidePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        InkWell(
+                          splashFactory: NoSplash.splashFactory,
+                          splashColor: Colors.white,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgetPasswordScreen(),
+                              ),
+                            );
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              'Forget Password?',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff000000),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -142,10 +192,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   text: 'Log In',
                   onPresssed: () async {
                     if (_formKey.currentState!.validate()) {
-                      await loginProvider.login(context,
-                          ref: ref,
-                          email: emailController.text,
-                          password: passwordController.text);
+                      await loginProvider.login(
+                        context,
+                        ref: ref,
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
                     }
                   },
                 ),
@@ -157,9 +209,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   subtitle: 'Sign Up',
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const SignUpScreen()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const SignUpScreen(),
+                      ),
+                    );
                   },
                 ),
                 SizedBox(

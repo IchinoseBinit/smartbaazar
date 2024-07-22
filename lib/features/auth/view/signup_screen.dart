@@ -8,7 +8,6 @@ import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/utils/custom_loading_indicatior.dart';
 
@@ -58,21 +57,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     height: 50.h,
                   ),
                   Center(
-                      child: Column(
-                    children: [
-                      Image.asset(ImageConstant.appLogo),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      Text(
-                        'Sign Up',
-                        style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff000000)),
-                      )
-                    ],
-                  )),
+                    child: Column(
+                      children: [
+                        Image.asset(ImageConstant.appLogo),
+                        SizedBox(
+                          height: 40.h,
+                        ),
+                        Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xff000000)),
+                        )
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     height: 40.h,
                   ),
@@ -80,7 +80,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.person_2_outlined,
                     hintText: 'Name',
                     controller: nameController,
-                    validator: (String) {},
+                    validator: (value) {},
                   ),
                   SizedBox(
                     height: 22.h,
