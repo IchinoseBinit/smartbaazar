@@ -42,10 +42,11 @@ dependencies:
   carousel_slider: ^4.2.1
   scratcher: ^2.5.0
   dio: ^5.4.3+1
-  flutter_riverpod: ^2.3.7
+  flutter_riverpod: ^2.5.1
 
   fluttertoast: ^8.2.5
   flutter_secure_storage: ^9.2.2
+  riverpod_annotation: ^2.3.5
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  riverpod_generator: ^2.4.0
+  build_runner: ^2.4.11
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.10
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/api/ad_provider_api.dart';
 import 'package:smartbazar/features/home/controller/sponsored_controller.dart';
 import 'package:smartbazar/features/home/model/sponsored_model.dart';
 import 'package:smartbazar/features/view/product_deatials_screen.dart';
@@ -14,8 +13,6 @@ import 'package:smartbazar/features/widgets/item_description_widget.dart';
 import 'package:smartbazar/features/widgets/product_model.dart';
 import 'package:smartbazar/features/widgets/service_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-
-import '../../../utils/request_type.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -46,7 +43,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 //   @override
   void initState() {
     filteredProducts = product;
-
     super.initState();
   }
 
@@ -64,12 +60,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     final sponsoreData = ref.watch(sponsoredController);
-    final adsAsyncValue = ref.watch(adsProvider);
-
     return GenericSafeArea(
       color: Colors.white,
       child: Scaffold(
@@ -208,18 +200,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            child: adsAsyncValue.when(
-                              data: (data) {
-                                return Image.network(data.first.imageUrl);
-                              },
-                              error: (error, stackTrace) =>
-                                  Center(child: Text('Error: $error')),
-                              loading: () =>
-                                  Center(child: CircularProgressIndicator()),
-                            ),
-                          ),
-                          // Image.asset(ImageConstant.shoppingImage)
+                          Image.asset(ImageConstant.shoppingImage)
                         ],
                       ),
                     ),
