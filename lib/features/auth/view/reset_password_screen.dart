@@ -82,10 +82,8 @@ class ResetPasswordScreen extends StatelessWidget {
                 GeneralEelevatedButton(
                   text: 'Confirm',
                   onPresssed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
                 ),
                 SizedBox(

@@ -55,6 +55,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                       ),
                       const Spacer(),
                       const Icon(
+                        size: 15,
                         Icons.arrow_back_ios,
                         color: Color(0xffADADAD),
                       ),

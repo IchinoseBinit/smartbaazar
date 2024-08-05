@@ -4,8 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/advertisement/view/apply_advertisement_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
-import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AdvertisementScreen extends StatelessWidget {

@@ -8,7 +8,7 @@ import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/widgets/banner_widget.dart';
 import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
-import 'package:smartbazar/features/widgets/item_description_widget.dart';
+import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/features/widgets/service_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
