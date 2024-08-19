@@ -1,13 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/login_api.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
-import 'package:smartbazar/utils/custom_loading_indicatior.dart';
 
 final authRepositoryProvider = Provider<LoginApi>((ref) {
   return LoginApi();
@@ -33,6 +34,38 @@ class LoginController extends StateNotifier<GenericState> {
           context, MaterialPageRoute(builder: (_) => HomeScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
+    }
+  }
+
+  Future<void> continueSession(BuildContext context) async {
+    final pref = await SharedPreferences.getInstance();
+    final sessionString = pref.getString('session');
+    state = LoadingState();
+    try {
+      if (sessionString != null) {
+        final session = json.decode(sessionString);
+        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HomeScreen(),
+          ),
+        );
+      } else {
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => LoginScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => LoginScreen(),
+        ),
+      );
     }
   }
 }
