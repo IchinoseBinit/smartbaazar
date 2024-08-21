@@ -5,7 +5,8 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendorProfileScreen extends StatefulWidget {
-  const VendorProfileScreen({super.key});
+  final String vendorName;
+  const VendorProfileScreen({super.key, required this.vendorName});
 
   @override
   State<VendorProfileScreen> createState() => _VendorProfileScreenState();

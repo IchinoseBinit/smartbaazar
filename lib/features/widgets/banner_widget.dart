@@ -26,7 +26,7 @@ class BannerWidget extends ConsumerWidget {
               ? null
               : DecorationImage(
                   image: NetworkImage(
-                    value![new Random().nextInt(value.length)].image,
+                    value[new Random().nextInt(value.length)].image,
                   ),
                 ),
         ),

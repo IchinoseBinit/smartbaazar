@@ -4,11 +4,17 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
+import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
+import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/view/api/product_details_provider.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -27,6 +33,8 @@ class ProductDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
+
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
     final ApiService _apiService = ApiService();
@@ -39,254 +47,267 @@ class ProductDetailsScreen extends ConsumerWidget {
         data: (data) {
           // print("ramk ${data.title.split('/')[0]}");
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return favouriteListAsyncValue.when(
+            data: (favouritelist) {
+              final isFavorite = favouriteListAsyncValue.asData?.value
+                      .any((item) => item.id == productId) ??
+                  false;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(Icons.arrow_back_ios)),
-                        Container(
-                            padding: EdgeInsets.all(12.h),
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xffFFFFFF)),
-                            child: SvgPicture.asset(invoiceIcon))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    Column(
-                      children: [
-                        CarouselSlider(
-                          options: CarouselOptions(
-                              height: 220.0,
-                              viewportFraction: 1.5,
-                              initialPage: 0,
-                              scrollDirection: Axis.horizontal,
-                              // autoPlay: true,
-                              onPageChanged: (index, _) {
-                                // setState(() {
-                                //   currentIndex = index;
-                                // });
-                              }),
-                          items: itemsList
-                              .map(
-                                (item) => itemsList.isEmpty
-                                    ? const SizedBox()
-                                    : Container(
-                                        height: 200,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Image.asset(
-                                          item,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                              )
-                              .toList(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Icon(Icons.arrow_back_ios)),
+                            Container(
+                                padding: EdgeInsets.all(12.h),
+                                decoration:  BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: isFavorite
+                                        ? Colors.yellow
+                                        : Color(0xffFFFFFF)),
+                                child: SvgPicture.asset(invoiceIcon))
+                          ],
                         ),
                         SizedBox(
-                          height: 5.h,
+                          height: 15.h,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column(
                           children: [
-                            for (int i = 0; i < 3; i++)
-                              Container(
-                                height: 12.h,
-                                width: 12.w,
-                                margin: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: currentIndex == i
-                                        ? const Color(0xffADADAD)
-                                        : Colors.white,
-                                    shape: BoxShape.circle),
-                              ),
+                            CarouselSlider(
+                              options: CarouselOptions(
+                                  height: 220.0,
+                                  viewportFraction: 1.5,
+                                  initialPage: 0,
+                                  scrollDirection: Axis.horizontal,
+                                  // autoPlay: true,
+                                  onPageChanged: (index, _) {
+                                    // setState(() {
+                                    //   currentIndex = index;
+                                    // });
+                                  }),
+                              items: itemsList
+                                  .map(
+                                    (item) => itemsList.isEmpty
+                                        ? const SizedBox()
+                                        : SizedBox(
+                                            height: 200,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Image.asset(
+                                              item,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                  )
+                                  .toList(),
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                for (int i = 0; i < 3; i++)
+                                  Container(
+                                    height: 12.h,
+                                    width: 12.w,
+                                    margin: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        color: currentIndex == i
+                                            ? const Color(0xffADADAD)
+                                            : Colors.white,
+                                        shape: BoxShape.circle),
+                                  ),
+                              ],
+                            )
                           ],
-                        )
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30.r),
-                              topRight: Radius.circular(30.r)),
-                          color: Colors.white),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 30.h, left: 30.w, right: 17.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data.title,
-                                  style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30.r),
+                                  topRight: Radius.circular(30.r)),
+                              color: Colors.white),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 30.h, left: 30.w, right: 17.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: 12.w,
+                                    Text(
+                                      data.title,
+                                      style: TextStyle(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.all(4.h),
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xffD9D9D9),
-                                          borderRadius:
-                                              BorderRadius.circular(4.r)),
-                                      child: Text(
-                                        'Brand New',
-                                        style: TextStyle(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff000000)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text("NPR ${data.price}"),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () async {
-                                        print("id is ${data.id}");
-                                        // await  _apiService
-                                        //     .addToCart(data.);
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 12.w,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(4.h),
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xffD9D9D9),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.r)),
+                                          child: Text(
+                                            'Brand New',
+                                            style: TextStyle(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xff000000)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text("NPR ${data.price}"),
+                                        const Spacer(),
+                                        InkWell(
+                                          onTap: () async {
+                                            print("id is ${data.id}");
+                                            // await  _apiService
+                                            //     .addToCart(data.);
 
-                                        CustomDialougeBox().addToCart(context);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 13.w,
-                                            right: 15.w,
-                                            top: 4.h,
-                                            bottom: 7.h),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30.r),
-                                            color: const Color(0xff362677)),
-                                        child: Column(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              size: 15.h,
-                                              color: Colors.white,
+                                            CustomDialougeBox()
+                                                .addToCart(context);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 13.w,
+                                                right: 15.w,
+                                                top: 4.h,
+                                                bottom: 7.h),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30.r),
+                                                color: const Color(0xff362677)),
+                                            child: Column(
+                                              children: [
+                                                Icon(
+                                                  Icons.add,
+                                                  size: 15.h,
+                                                  color: Colors.white,
+                                                ),
+                                                Text(
+                                                  'Add to cart',
+                                                  style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.white),
+                                                )
+                                              ],
                                             ),
-                                            Text(
-                                              'Add to cart',
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            CustomDialougeBox()
+                                                .alertMessage(context);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 14.w,
+                                                right: 14.w,
+                                                top: 13.h,
+                                                bottom: 9.h),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30.r),
+                                                color: const Color(0xff362677)),
+                                            child: Text(
+                                              'Buy Now',
                                               style: TextStyle(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w700,
                                                   color: Colors.white),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        CustomDialougeBox()
-                                            .alertMessage(context);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 14.w,
-                                            right: 14.w,
-                                            top: 13.h,
-                                            bottom: 9.h),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30.r),
-                                            color: const Color(0xff362677)),
-                                        child: Text(
-                                          'Buy Now',
-                                          style: TextStyle(
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          data.discounted_price ?? '',
-                                          style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              left: 11.w,
-                                              top: 2.h,
-                                              bottom: 2.w,
-                                              right: 20),
-                                          color: const Color(0xff362677),
-                                          child: const Text(
-                                            '-40% Off',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            ),
                                           ),
                                         )
                                       ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Row(
-                                  children: [
+                                    ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(data.pickup!),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              data.discounted_price ?? '',
+                                              style: const TextStyle(
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            ),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 11.w,
+                                                  top: 2.h,
+                                                  bottom: 2.w,
+                                                  right: 20),
+                                              color: const Color(0xff362677),
+                                              child: const Text(
+                                                '-40% Off',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                    Wrap(
+                                      children: [
+                                        Text(
+                                          data.pickup!,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                         SizedBox(
                                           height: 10.h,
                                         ),
@@ -326,209 +347,304 @@ class ProductDetailsScreen extends ConsumerWidget {
                                             )
                                           ],
                                         ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(
+                                              width: 30.w,
+                                            ),
+                                            Column(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      final firstPicture = data
+                                                              .pictures!
+                                                              .isNotEmpty
+                                                          ? data.pictures!.first
+                                                          : null;
+                                                      final pictureUrl =
+                                                          firstPicture
+                                                                  ?.getUrl() ??
+                                                              '';
+                                                      Share.share(
+                                                        'Check out this product: ${data.title}\n\nPrice: NPR ${data.price}\n\n$pictureUrl',
+                                                        subject:
+                                                            'Check out this product on OurApp',
+                                                      );
+                                                    },
+                                                    icon: const Icon(
+                                                        Icons.share)),
+                                                Text(
+                                                  'Share',
+                                                  style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      color: const Color(
+                                                          0xff000000)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 30.w,
+                                            ),
+                                            Column(
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    try {
+                                                      // Call the API to add the product to favorites
+                                                      await ref.read(
+                                                          addToFavoritesProvider(
+                                                                  data.user_id,
+                                                                  productId)
+                                                              .future);
+                                                      // Show a Snackbar indicating success
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Product added to your favorites!'),
+                                                          duration: Duration(
+                                                              seconds: 2),
+                                                        ),
+                                                      );
+                                                    } catch (e) {
+                                                      // Handle any errors
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                              'Failed to add product to favorites.'),
+                                                          duration: Duration(
+                                                              seconds: 2),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  icon: const Icon(Icons
+                                                      .bookmark_border_outlined),
+                                                ),
+                                                Text(
+                                                  'Save',
+                                                  style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      color: const Color(
+                                                          0xff000000)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 30.w,
+                                            ),
+                                            Column(
+                                              children: [
+                                                IconButton(
+                                                  icon:
+                                                      const Icon(Icons.report),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ReportComplainScreen(
+                                                                  productId:
+                                                                      productId,
+                                                                  productName:
+                                                                      data.title,
+                                                                )));
+                                                  },
+                                                ),
+                                                Text(
+                                                  'Complain',
+                                                  style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      color: const Color(
+                                                          0xff000000)),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     ),
-                                    // Row(
-                                    //   children: [
-                                    //     SizedBox(
-                                    //       width: 30.w,
-                                    //     ),
-                                    //     Column(
-                                    //       children: [
-                                    //         const Icon(Icons.share),
-                                    //         Text(
-                                    //           'Share',
-                                    //           style: TextStyle(
-                                    //               fontSize: 10.sp,
-                                    //               color:
-                                    //                   const Color(0xff000000)),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //     SizedBox(
-                                    //       width: 30.w,
-                                    //     ),
-                                    //     Column(
-                                    //       children: [
-                                    //         const Icon(Icons.share),
-                                    //         Text(
-                                    //           'Share',
-                                    //           style: TextStyle(
-                                    //               fontSize: 10.sp,
-                                    //               color:
-                                    //                   const Color(0xff000000)),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //     SizedBox(
-                                    //       width: 30.w,
-                                    //     ),
-                                    //   ],
-                                    // )
-                                  ],
-                                ),
-                                SizedBox(height: 10.h),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.visibility,
-                                      color: Color(0xff888888),
+                                    SizedBox(height: 10.h),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.visibility,
+                                          color: Color(0xff888888),
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        Text(
+                                          '${data.visits}K Views',
+                                          style: TextStyle(
+                                              color: const Color(0xff888888),
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        const Icon(
+                                          Icons.location_on_outlined,
+                                          color: Color(0xff888888),
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+                                        Text(
+                                          data.pickup!.split(',')[2],
+                                          style: TextStyle(
+                                              color: const Color(0xff888888),
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Container()
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(contactSellerIcon),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Text(
+                                          'Contact Seller',
+                                          style: TextStyle(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff000000)),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(phoneIcon),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Text(
+                                          'Call',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff000000)),
+                                        ),
+                                        const Spacer(),
+                                        SvgPicture.asset(messagesIcon),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Text(
+                                          'Message',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff000000)),
+                                        ),
+                                        const Spacer(),
+                                        SvgPicture.asset(whatsAppIcon),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Text(
+                                          'Whatsapp',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff000000)),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
-                                      width: 5.w,
+                                      height: 10.h,
                                     ),
-                                    Text(
-                                      '${data.visits}K Views',
-                                      style: TextStyle(
-                                          color: const Color(0xff888888),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    const Icon(
-                                      Icons.location_on_outlined,
-                                      color: Color(0xff888888),
-                                    ),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Text(
-                                      data.pickup!.split(',')[2],
-                                      style: TextStyle(
-                                          color: const Color(0xff888888),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    Container()
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(contactSellerIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Contact Seller',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w700,
-                                          color: const Color(0xff000000)),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(phoneIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Call',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff000000)),
-                                    ),
-                                    const Spacer(),
-                                    SvgPicture.asset(messagesIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Message',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff000000)),
-                                    ),
-                                    const Spacer(),
-                                    SvgPicture.asset(whatsAppIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Whatsapp',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff000000)),
+                                    const SizedBox(
+                                      height: 5,
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          TabBarItems(
-                            weight: data.weight?? "N/A",
-                            stock: data.stock,
-                            description: data.description,
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          GeneralTextButton(
-                              marginH: 1,
-                              width: MediaQuery.of(context).size.width,
-                              prefixImage: ImageConstant.visitStore,
-                              bgColor: const Color(0xff362677),
-                              fgColor: Colors.white,
-                              isSmallText: true,
-                              title: 'Visit Store'),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          const ScratchWinContainer(),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          ProductAdditionalDetialsWidget(
-                              inbox: data.category?.name ?? 'N/A',
-                              brandname: data.title.split('/')[0]),
-                          ProductAvilableColorsWidget(
-                            color: data.colorOptions ??
-                                [ColorOption(id: 2, value: "Black")],
-                          ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          ProductTagListWidget(
-                            tags: data.tags,
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          const BuyNowProdcutMinuteWidget(),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          data.widgetSimilarPosts==null? SizedBox(): SimilarListingProduct(
-                            items: data.widgetSimilarPosts! ,
-                          )
-                         ,
-                        ],
-                      )),
-                ),
-              )
-            ],
+                              ),
+                              TabBarItems(
+                                weight: data.weight ?? "N/A",
+                                stock: data.stock,
+                                description: data.description,
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              GeneralTextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VendorProfileScreen(
+                                                  vendorName: data.user!.name,
+                                                )));
+                                  },
+                                  marginH: 1,
+                                  width: MediaQuery.of(context).size.width,
+                                  prefixImage: ImageConstant.visitStore,
+                                  bgColor: const Color(0xff362677),
+                                  fgColor: Colors.white,
+                                  isSmallText: true,
+                                  title: 'Visit Store'),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              const ScratchWinContainer(),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              ProductAdditionalDetialsWidget(
+                                  inbox: data.category?.name ?? 'N/A',
+                                  brandname: data.title.split('/')[0]),
+                              ProductAvilableColorsWidget(
+                                color: data.colorOptions ??
+                                    [const ColorOption(id: 2, value: "Black")],
+                              ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              ProductTagListWidget(
+                                tags: data.tags,
+                              ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              const BuyNowProdcutMinuteWidget(),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              data.widgetSimilarPosts == null
+                                  ? const SizedBox()
+                                  : SimilarListingProduct(
+                                      items: data.widgetSimilarPosts!,
+                                    ),
+                            ],
+                          )),
+                    ),
+                  )
+                ],
+              );
+            },
+            error: (error, stackTrace) => Center(child: Text('Error: $error')),
+            loading: () => const Center(child: CircularProgressIndicator()),
           );
         },
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     ));
   }
@@ -549,12 +665,12 @@ class TabBarItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(4.0),
       child: SizedBox(
         width: double.infinity, // Adjust width as needed
-        height: 300, // Adjust height as needed
+        height: 370, // Adjust height as needed
         child: DefaultTabController(
-          length: 2, // Number of tabs
+          length: 2,
           child: Column(
             children: [
               const TabBar(
@@ -578,53 +694,51 @@ class TabBarItems extends StatelessWidget {
                   constraints: const BoxConstraints.expand(),
                   child: TabBarView(
                     children: [
-                      Container(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                RichTextWidget(
-                                    subtitle: "${weight} kg",
-                                    subtitleStyle: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12.sp,
-                                        color: Colors.black),
-                                    title: 'Net Weight: ',
-                                    titleStyle: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.sp,
-                                        color: Colors.black),
-                                    onPressed: () {}),
-                                RichTextWidget(
-                                    subtitle: stock,
-                                    subtitleStyle: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12.sp,
-                                        color: Colors.black),
-                                    title: 'Available Quantity: ',
-                                    titleStyle: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14.sp,
-                                        color: Colors.black),
-                                    onPressed: () {})
-                              ],
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RichTextWidget(
+                                  subtitle: "$weight kg",
+                                  subtitleStyle: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12.sp,
+                                      color: Colors.black),
+                                  title: 'Net Weight: ',
+                                  titleStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.sp,
+                                      color: Colors.black),
+                                  onPressed: () {}),
+                              RichTextWidget(
+                                  subtitle: stock,
+                                  subtitleStyle: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12.sp,
+                                      color: Colors.black),
+                                  title: 'Available Quantity: ',
+                                  titleStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.sp,
+                                      color: Colors.black),
+                                  onPressed: () {})
+                            ],
+                          ),
+                          SizedBox(
+                            height: 12.h,
+                          ),
+                          Container(
+                            child: Text(
+                              maxLines: 10,
+                              description,
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black),
                             ),
-                            SizedBox(
-                              height: 12.h,
-                            ),
-                            Container(
-                              child: Text(
-                                maxLines: 10,
-                                description,
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -785,6 +899,8 @@ class ProductAdditionalDetialsWidget extends StatelessWidget {
                             0xff000000,
                           ),
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       )
                     ],
                   ),
@@ -801,7 +917,7 @@ class ProductAdditionalDetialsWidget extends StatelessWidget {
 class ProductAvilableColorsWidget extends StatelessWidget {
   List<ColorOption> color;
   ProductAvilableColorsWidget({
-    Key? key,
+    super.key,
     required this.color,
   });
 
@@ -860,7 +976,7 @@ class ProductAvilableColorsWidget extends StatelessWidget {
 class ProductTagListWidget extends StatelessWidget {
   final List<String> tags;
 
-  ProductTagListWidget({
+  const ProductTagListWidget({
     super.key,
     required this.tags,
   });
@@ -891,7 +1007,7 @@ class ProductTagListWidget extends StatelessWidget {
           SizedBox(height: 15.h),
 
           // Use ListView.builder to display tags
-          Container(
+          SizedBox(
             height: 40.h, // Adjust the height as needed
             child: ListView.builder(
               itemCount: tags.isEmpty
@@ -911,7 +1027,7 @@ class ProductTagListWidget extends StatelessWidget {
 
                 String data = tags[index].isEmpty ? "Item" : tags[index];
                 return Padding(
-                  padding: EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: Chip(
                     label: Text(data),
                     backgroundColor: Colors.grey.shade200,
@@ -1002,7 +1118,7 @@ class BuyNowProdcutMinuteWidget extends StatelessWidget {
 class SimilarListingProduct extends StatelessWidget {
   final List<SimilarItems> items;
 
-  SimilarListingProduct({
+  const SimilarListingProduct({
     Key? key,
     required this.items,
   }) : super(key: key);
@@ -1043,7 +1159,7 @@ class SimilarListingProduct extends StatelessWidget {
 
                 return Container(
                   width: 150.w, // Specify a width for each item
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -1173,8 +1289,10 @@ class CustomDialougeBox {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => AddToCartScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const AddToCartScreen()));
                 },
                 child: Text(
                   'View Cart',

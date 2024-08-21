@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 
-final productCardHeight = 200.h;
-final productCardWidth = 200.w;
+final productCardHeight = 225.h;
+final productCardWidth = 210.w;
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -148,7 +148,7 @@ class ProductCard extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff888888),
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(

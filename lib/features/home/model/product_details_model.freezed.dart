@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-ProductDetailsModel _$ProductDetailsModelFromJson(Map<String, dynamic> json) {
-  return _ProductDetailsModel.fromJson(json);
-}
-
 /// @nodoc
 mixin _$ProductDetailsModel {
   int get id => throw _privateConstructorUsedError;
@@ -34,15 +30,15 @@ mixin _$ProductDetailsModel {
   String get contact_name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
-  String? get weight =>
-      throw _privateConstructorUsedError; // Adjusted to String if weight can be null or is a string in JSON
+  VendorUser? get user => throw _privateConstructorUsedError;
+  String? get weight => throw _privateConstructorUsedError;
   List<ColorOption>? get colorOptions => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
   List<SimilarItems>? get widgetSimilarPosts =>
       throw _privateConstructorUsedError;
   Category? get category => throw _privateConstructorUsedError;
+  List<Picture>? get pictures => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ProductDetailsModelCopyWith<ProductDetailsModel> get copyWith =>
       throw _privateConstructorUsedError;
@@ -69,12 +65,15 @@ abstract class $ProductDetailsModelCopyWith<$Res> {
       String contact_name,
       String email,
       String phone,
+      VendorUser? user,
       String? weight,
       List<ColorOption>? colorOptions,
       List<String> tags,
       List<SimilarItems>? widgetSimilarPosts,
-      Category? category});
+      Category? category,
+      List<Picture>? pictures});
 
+  $VendorUserCopyWith<$Res>? get user;
   $CategoryCopyWith<$Res>? get category;
 }
 
@@ -105,11 +104,13 @@ class _$ProductDetailsModelCopyWithImpl<$Res, $Val extends ProductDetailsModel>
     Object? contact_name = null,
     Object? email = null,
     Object? phone = null,
+    Object? user = freezed,
     Object? weight = freezed,
     Object? colorOptions = freezed,
     Object? tags = null,
     Object? widgetSimilarPosts = freezed,
     Object? category = freezed,
+    Object? pictures = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -168,6 +169,10 @@ class _$ProductDetailsModelCopyWithImpl<$Res, $Val extends ProductDetailsModel>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as VendorUser?,
       weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
@@ -188,7 +193,23 @@ class _$ProductDetailsModelCopyWithImpl<$Res, $Val extends ProductDetailsModel>
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as Category?,
+      pictures: freezed == pictures
+          ? _value.pictures
+          : pictures // ignore: cast_nullable_to_non_nullable
+              as List<Picture>?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $VendorUserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $VendorUserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 
   @override
@@ -227,12 +248,16 @@ abstract class _$$ProductDetailsModelImplCopyWith<$Res>
       String contact_name,
       String email,
       String phone,
+      VendorUser? user,
       String? weight,
       List<ColorOption>? colorOptions,
       List<String> tags,
       List<SimilarItems>? widgetSimilarPosts,
-      Category? category});
+      Category? category,
+      List<Picture>? pictures});
 
+  @override
+  $VendorUserCopyWith<$Res>? get user;
   @override
   $CategoryCopyWith<$Res>? get category;
 }
@@ -262,11 +287,13 @@ class __$$ProductDetailsModelImplCopyWithImpl<$Res>
     Object? contact_name = null,
     Object? email = null,
     Object? phone = null,
+    Object? user = freezed,
     Object? weight = freezed,
     Object? colorOptions = freezed,
     Object? tags = null,
     Object? widgetSimilarPosts = freezed,
     Object? category = freezed,
+    Object? pictures = freezed,
   }) {
     return _then(_$ProductDetailsModelImpl(
       id: null == id
@@ -325,6 +352,10 @@ class __$$ProductDetailsModelImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as VendorUser?,
       weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
@@ -345,12 +376,16 @@ class __$$ProductDetailsModelImplCopyWithImpl<$Res>
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as Category?,
+      pictures: freezed == pictures
+          ? _value._pictures
+          : pictures // ignore: cast_nullable_to_non_nullable
+              as List<Picture>?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$ProductDetailsModelImpl implements _ProductDetailsModel {
   const _$ProductDetailsModelImpl(
       {required this.id,
@@ -367,17 +402,17 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
       required this.contact_name,
       required this.email,
       required this.phone,
+      required this.user,
       this.weight,
       final List<ColorOption>? colorOptions,
       required final List<String> tags,
       final List<SimilarItems>? widgetSimilarPosts,
-      this.category})
+      this.category,
+      final List<Picture>? pictures})
       : _colorOptions = colorOptions,
         _tags = tags,
-        _widgetSimilarPosts = widgetSimilarPosts;
-
-  factory _$ProductDetailsModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProductDetailsModelImplFromJson(json);
+        _widgetSimilarPosts = widgetSimilarPosts,
+        _pictures = pictures;
 
   @override
   final int id;
@@ -408,10 +443,10 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
   @override
   final String phone;
   @override
+  final VendorUser? user;
+  @override
   final String? weight;
-// Adjusted to String if weight can be null or is a string in JSON
   final List<ColorOption>? _colorOptions;
-// Adjusted to String if weight can be null or is a string in JSON
   @override
   List<ColorOption>? get colorOptions {
     final value = _colorOptions;
@@ -442,10 +477,19 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
 
   @override
   final Category? category;
+  final List<Picture>? _pictures;
+  @override
+  List<Picture>? get pictures {
+    final value = _pictures;
+    if (value == null) return null;
+    if (_pictures is EqualUnmodifiableListView) return _pictures;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ProductDetailsModel(id: $id, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, description: $description, price: $price, pickup: $pickup, discounted_price: $discounted_price, visits: $visits, stock: $stock, contact_name: $contact_name, email: $email, phone: $phone, weight: $weight, colorOptions: $colorOptions, tags: $tags, widgetSimilarPosts: $widgetSimilarPosts, category: $category)';
+    return 'ProductDetailsModel(id: $id, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, description: $description, price: $price, pickup: $pickup, discounted_price: $discounted_price, visits: $visits, stock: $stock, contact_name: $contact_name, email: $email, phone: $phone, user: $user, weight: $weight, colorOptions: $colorOptions, tags: $tags, widgetSimilarPosts: $widgetSimilarPosts, category: $category, pictures: $pictures)';
   }
 
   @override
@@ -472,6 +516,7 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
                 other.contact_name == contact_name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.weight, weight) || other.weight == weight) &&
             const DeepCollectionEquality()
                 .equals(other._colorOptions, _colorOptions) &&
@@ -479,10 +524,10 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
             const DeepCollectionEquality()
                 .equals(other._widgetSimilarPosts, _widgetSimilarPosts) &&
             (identical(other.category, category) ||
-                other.category == category));
+                other.category == category) &&
+            const DeepCollectionEquality().equals(other._pictures, _pictures));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -500,11 +545,13 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
         contact_name,
         email,
         phone,
+        user,
         weight,
         const DeepCollectionEquality().hash(_colorOptions),
         const DeepCollectionEquality().hash(_tags),
         const DeepCollectionEquality().hash(_widgetSimilarPosts),
-        category
+        category,
+        const DeepCollectionEquality().hash(_pictures)
       ]);
 
   @JsonKey(ignore: true)
@@ -513,13 +560,6 @@ class _$ProductDetailsModelImpl implements _ProductDetailsModel {
   _$$ProductDetailsModelImplCopyWith<_$ProductDetailsModelImpl> get copyWith =>
       __$$ProductDetailsModelImplCopyWithImpl<_$ProductDetailsModelImpl>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ProductDetailsModelImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _ProductDetailsModel implements ProductDetailsModel {
@@ -538,14 +578,13 @@ abstract class _ProductDetailsModel implements ProductDetailsModel {
       required final String contact_name,
       required final String email,
       required final String phone,
+      required final VendorUser? user,
       final String? weight,
       final List<ColorOption>? colorOptions,
       required final List<String> tags,
       final List<SimilarItems>? widgetSimilarPosts,
-      final Category? category}) = _$ProductDetailsModelImpl;
-
-  factory _ProductDetailsModel.fromJson(Map<String, dynamic> json) =
-      _$ProductDetailsModelImpl.fromJson;
+      final Category? category,
+      final List<Picture>? pictures}) = _$ProductDetailsModelImpl;
 
   @override
   int get id;
@@ -576,8 +615,10 @@ abstract class _ProductDetailsModel implements ProductDetailsModel {
   @override
   String get phone;
   @override
+  VendorUser? get user;
+  @override
   String? get weight;
-  @override // Adjusted to String if weight can be null or is a string in JSON
+  @override
   List<ColorOption>? get colorOptions;
   @override
   List<String> get tags;
@@ -585,6 +626,8 @@ abstract class _ProductDetailsModel implements ProductDetailsModel {
   List<SimilarItems>? get widgetSimilarPosts;
   @override
   Category? get category;
+  @override
+  List<Picture>? get pictures;
   @override
   @JsonKey(ignore: true)
   _$$ProductDetailsModelImplCopyWith<_$ProductDetailsModelImpl> get copyWith =>
@@ -759,6 +802,179 @@ abstract class _Category implements Category {
   @override
   @JsonKey(ignore: true)
   _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+VendorUser _$VendorUserFromJson(Map<String, dynamic> json) {
+  return _VendorUser.fromJson(json);
+}
+
+/// @nodoc
+mixin _$VendorUser {
+  int get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $VendorUserCopyWith<VendorUser> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VendorUserCopyWith<$Res> {
+  factory $VendorUserCopyWith(
+          VendorUser value, $Res Function(VendorUser) then) =
+      _$VendorUserCopyWithImpl<$Res, VendorUser>;
+  @useResult
+  $Res call({int id, String name, String username});
+}
+
+/// @nodoc
+class _$VendorUserCopyWithImpl<$Res, $Val extends VendorUser>
+    implements $VendorUserCopyWith<$Res> {
+  _$VendorUserCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? username = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$VendorUserImplCopyWith<$Res>
+    implements $VendorUserCopyWith<$Res> {
+  factory _$$VendorUserImplCopyWith(
+          _$VendorUserImpl value, $Res Function(_$VendorUserImpl) then) =
+      __$$VendorUserImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id, String name, String username});
+}
+
+/// @nodoc
+class __$$VendorUserImplCopyWithImpl<$Res>
+    extends _$VendorUserCopyWithImpl<$Res, _$VendorUserImpl>
+    implements _$$VendorUserImplCopyWith<$Res> {
+  __$$VendorUserImplCopyWithImpl(
+      _$VendorUserImpl _value, $Res Function(_$VendorUserImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? username = null,
+  }) {
+    return _then(_$VendorUserImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$VendorUserImpl implements _VendorUser {
+  const _$VendorUserImpl(
+      {required this.id, required this.name, required this.username});
+
+  factory _$VendorUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VendorUserImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String name;
+  @override
+  final String username;
+
+  @override
+  String toString() {
+    return 'VendorUser(id: $id, name: $name, username: $username)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VendorUserImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.username, username) ||
+                other.username == username));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, username);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VendorUserImplCopyWith<_$VendorUserImpl> get copyWith =>
+      __$$VendorUserImplCopyWithImpl<_$VendorUserImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VendorUserImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _VendorUser implements VendorUser {
+  const factory _VendorUser(
+      {required final int id,
+      required final String name,
+      required final String username}) = _$VendorUserImpl;
+
+  factory _VendorUser.fromJson(Map<String, dynamic> json) =
+      _$VendorUserImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get name;
+  @override
+  String get username;
+  @override
+  @JsonKey(ignore: true)
+  _$$VendorUserImplCopyWith<_$VendorUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1121,7 +1337,10 @@ Picture _$PictureFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Picture {
   int get id => throw _privateConstructorUsedError;
+  String get post_id => throw _privateConstructorUsedError;
   String get filename => throw _privateConstructorUsedError;
+  String get position => throw _privateConstructorUsedError;
+  String get active => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1133,7 +1352,12 @@ abstract class $PictureCopyWith<$Res> {
   factory $PictureCopyWith(Picture value, $Res Function(Picture) then) =
       _$PictureCopyWithImpl<$Res, Picture>;
   @useResult
-  $Res call({int id, String filename});
+  $Res call(
+      {int id,
+      String post_id,
+      String filename,
+      String position,
+      String active});
 }
 
 /// @nodoc
@@ -1150,16 +1374,31 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
   @override
   $Res call({
     Object? id = null,
+    Object? post_id = null,
     Object? filename = null,
+    Object? position = null,
+    Object? active = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      post_id: null == post_id
+          ? _value.post_id
+          : post_id // ignore: cast_nullable_to_non_nullable
+              as String,
       filename: null == filename
           ? _value.filename
           : filename // ignore: cast_nullable_to_non_nullable
+              as String,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as String,
+      active: null == active
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -1172,7 +1411,12 @@ abstract class _$$PictureImplCopyWith<$Res> implements $PictureCopyWith<$Res> {
       __$$PictureImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String filename});
+  $Res call(
+      {int id,
+      String post_id,
+      String filename,
+      String position,
+      String active});
 }
 
 /// @nodoc
@@ -1187,16 +1431,31 @@ class __$$PictureImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? post_id = null,
     Object? filename = null,
+    Object? position = null,
+    Object? active = null,
   }) {
     return _then(_$PictureImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      post_id: null == post_id
+          ? _value.post_id
+          : post_id // ignore: cast_nullable_to_non_nullable
+              as String,
       filename: null == filename
           ? _value.filename
           : filename // ignore: cast_nullable_to_non_nullable
+              as String,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as String,
+      active: null == active
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -1205,7 +1464,12 @@ class __$$PictureImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PictureImpl implements _Picture {
-  const _$PictureImpl({required this.id, required this.filename});
+  const _$PictureImpl(
+      {required this.id,
+      required this.post_id,
+      required this.filename,
+      required this.position,
+      required this.active});
 
   factory _$PictureImpl.fromJson(Map<String, dynamic> json) =>
       _$$PictureImplFromJson(json);
@@ -1213,11 +1477,17 @@ class _$PictureImpl implements _Picture {
   @override
   final int id;
   @override
+  final String post_id;
+  @override
   final String filename;
+  @override
+  final String position;
+  @override
+  final String active;
 
   @override
   String toString() {
-    return 'Picture(id: $id, filename: $filename)';
+    return 'Picture(id: $id, post_id: $post_id, filename: $filename, position: $position, active: $active)';
   }
 
   @override
@@ -1226,13 +1496,18 @@ class _$PictureImpl implements _Picture {
         (other.runtimeType == runtimeType &&
             other is _$PictureImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.post_id, post_id) || other.post_id == post_id) &&
             (identical(other.filename, filename) ||
-                other.filename == filename));
+                other.filename == filename) &&
+            (identical(other.position, position) ||
+                other.position == position) &&
+            (identical(other.active, active) || other.active == active));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, filename);
+  int get hashCode =>
+      Object.hash(runtimeType, id, post_id, filename, position, active);
 
   @JsonKey(ignore: true)
   @override
@@ -1250,14 +1525,24 @@ class _$PictureImpl implements _Picture {
 
 abstract class _Picture implements Picture {
   const factory _Picture(
-      {required final int id, required final String filename}) = _$PictureImpl;
+      {required final int id,
+      required final String post_id,
+      required final String filename,
+      required final String position,
+      required final String active}) = _$PictureImpl;
 
   factory _Picture.fromJson(Map<String, dynamic> json) = _$PictureImpl.fromJson;
 
   @override
   int get id;
   @override
+  String get post_id;
+  @override
   String get filename;
+  @override
+  String get position;
+  @override
+  String get active;
   @override
   @JsonKey(ignore: true)
   _$$PictureImplCopyWith<_$PictureImpl> get copyWith =>

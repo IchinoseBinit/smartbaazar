@@ -44,6 +44,7 @@ class SmartClinet {
     _client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
+          options.headers['Authorization'] = 'Bearer $token';
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
@@ -139,6 +140,14 @@ class SmartClinet {
               options: Options(
                 headers: headingWithToken,
               ),
+            )
+            .timeout(timeOutDuration);
+         case RequestType.deleteWithToken:  // Add this case
+        return _client
+            .delete(
+              url,
+              options: Options(headers: headingWithToken),
+              data: parameter, // Optional: use if you need to pass body data in delete request
             )
             .timeout(timeOutDuration);
     }

@@ -18,7 +18,7 @@ class ChatScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: Column(
             children: [
-              ChatUserDetailWidget(),
+              const ChatUserDetailWidget(),
               SizedBox(
                 height: 30.h,
               ),
@@ -30,9 +30,9 @@ class ChatScreen extends StatelessWidget {
                     width: 40.w,
                     padding:
                         EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Color(0xffD9D9D9)),
-                    child: Icon(
+                    child: const Icon(
                       Icons.person_outline,
                       // color: Colors.white,
                       // size: 25.h,
@@ -46,7 +46,7 @@ class ChatScreen extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14.r),
-                        color: Color(0xffD9D9D9)),
+                        color:  const Color(0xffD9D9D9)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -66,18 +66,18 @@ class ChatScreen extends StatelessWidget {
                 height: 150.h,
               ),
               Container(
-                color: Color(0xff781740),
+                color: const Color(0xff781740),
                 padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 17.h),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      fillColor: Color(0xffFFFFFF),
+                      fillColor: const Color(0xffFFFFFF),
                       helperText: 'Type Here',
                       suffixIcon: Container(
                         height: 32.h,
                         width: 32.w,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
-                            color: Color(0xff362677)),
+                            color: const Color(0xff362677)),
                       )),
                 ),
               ),
@@ -102,7 +102,7 @@ class ChatUserDetailWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 9.h),
       decoration: BoxDecoration(
-          color: Color(0xff362677),
+          color: const Color(0xff362677),
           borderRadius: BorderRadius.circular(
             14.r,
           )),
@@ -113,7 +113,7 @@ class ChatUserDetailWidget extends StatelessWidget {
             width: 60.w,
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
             decoration:
-                BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
             child: Icon(
               Icons.person_outline,
               // color: Colors.white,
@@ -138,21 +138,21 @@ class ChatUserDetailWidget extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.star,
                     color: Colors.white,
                   ),
                   SizedBox(
                     width: 3.w,
                   ),
-                  Icon(
+                  const Icon(
                     Icons.delete,
                     color: Colors.white,
                   ),
                   SizedBox(
                     width: 3.w,
                   ),
-                  Icon(
+                  const Icon(
                     Icons.mail_outline,
                     color: Colors.white,
                   )
@@ -160,7 +160,7 @@ class ChatUserDetailWidget extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Text(
             'Go back to\n Message',
             style: TextStyle(

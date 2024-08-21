@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
+import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -16,7 +18,27 @@ class AddNewDisputes extends StatefulWidget {
 }
 
 class _AddNewDisputesState extends State<AddNewDisputes> {
-  String dropdownvalue = 'Used';
+  TypeList? dropdownvalue;
+  List<TypeList> typeListItems = [];
+
+   @override
+  void initState() {
+    super.initState();
+    _fetchTypeList(); // Fetch the types when the widget is initialized
+  }
+
+  Future<void> _fetchTypeList() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      List<TypeList> fetchedTypes = await repository.fetchTypeList();
+      setState(() {
+        typeListItems = fetchedTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +55,7 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.mic),
+                    const Icon(Icons.mic),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -56,7 +78,7 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
@@ -78,13 +100,15 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
                     // const Spacer(),
 
                     CustomDropdownButton(
-                      items: ['Used', 'Item 2', 'Item 3'],
-                      dropdownvalue: dropdownvalue,
-                      onChanged: (String? newValue) {
+                      items: typeListItems,
+                      dropdownValue: dropdownvalue,
+                      onChanged: (TypeList? newValue) {
                         setState(() {
                           dropdownvalue = newValue!;
                         });
                       },
+                                              getItemLabel: (TypeList item) => item.typeName,
+
                     ),
                   ],
                 ),
@@ -104,13 +128,15 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
                     // const Spacer(),
 
                     CustomDropdownButton(
-                      items: ['Used', 'Item 2', 'Item 3'],
-                      dropdownvalue: dropdownvalue,
-                      onChanged: (String? newValue) {
+                      items: typeListItems,
+                      dropdownValue: dropdownvalue,
+                      onChanged: (TypeList? newValue) {
                         setState(() {
                           dropdownvalue = newValue!;
                         });
                       },
+                                              getItemLabel: (TypeList item) => item.typeName,
+
                     ),
                   ],
                 ),
@@ -195,7 +221,7 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
               SizedBox(
                 height: 20.h,
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
@@ -205,11 +231,11 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
               GeneralTextButton(
                 width: MediaQuery.of(context).size.width,
                 fgColor: Colors.white,
-                bgColor: Color(0xff362677),
+                bgColor: const Color(0xff362677),
                 title: 'Submit',
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => MyListingScreen()));
+                      MaterialPageRoute(builder: (_) => const MyListingScreen()));
                 },
               )
             ],
@@ -236,7 +262,7 @@ class ReturnOrderDetails extends StatelessWidget {
         // color: Colors.red,
         boxShadow: [
           BoxShadow(
-            color: Color(0xff00000040).withOpacity(0.1),
+            color: const Color(0xff00000040).withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 2,
             offset: const Offset(0, 2),

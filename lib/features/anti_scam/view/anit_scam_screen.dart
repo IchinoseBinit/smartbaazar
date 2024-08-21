@@ -36,14 +36,14 @@ class AntiScamScreen extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.w700),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Text(
                       'Go back',
                       style: TextStyle(
                           fontSize: 14.sp,
-                          color: Color(0xff888888),
+                          color: const Color(0xff888888),
                           fontWeight: FontWeight.w700),
                     ),
                   )
@@ -54,7 +54,7 @@ class AntiScamScreen extends StatelessWidget {
               ),
               Divider(
                 thickness: 2.w,
-                color: Color(0xffD9D9D9),
+                color: const Color(0xffD9D9D9),
               ),
             ],
           ),
@@ -70,7 +70,7 @@ class AntiScamScreen extends StatelessWidget {
                   'Protect yourself against Internet farud!',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -81,7 +81,7 @@ class AntiScamScreen extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400)),
                 SizedBox(
                   height: 15.h,
@@ -90,7 +90,7 @@ class AntiScamScreen extends StatelessWidget {
                   'Our advices',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -100,7 +100,7 @@ class AntiScamScreen extends StatelessWidget {
                   'In general, an listing is automatically deactivated from the website after 3 months. You will receive an email a week before D-Day and another on the day of deactivation. You have the ability to put them online in the following month by logging into your account on the site. After this delay, your listing will be automatically removed permanently from the website.',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -110,7 +110,7 @@ class AntiScamScreen extends StatelessWidget {
                   'Recognize attempted scam',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -120,7 +120,7 @@ class AntiScamScreen extends StatelessWidget {
                   'Absolutely not because your email address is not visible on the website.',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -130,12 +130,12 @@ class AntiScamScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   title: 'Next',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => BecomeSmartSellerScreen()));
+                            builder: (_) => const BecomeSmartSellerScreen()));
                   },
                 ),
                 SizedBox(

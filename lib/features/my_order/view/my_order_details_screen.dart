@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
+import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class MyOrderDetailsScreen extends StatefulWidget {
+class MyOrderDetailsScreen extends ConsumerStatefulWidget {
   const MyOrderDetailsScreen({super.key});
 
   @override
-  State<MyOrderDetailsScreen> createState() => _MyOrderDetailsScreenState();
+  ConsumerState<MyOrderDetailsScreen> createState() =>
+      _MyOrderDetailsScreenState();
 }
 
-class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
-  String dropdownvalue = 'Used';
+class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
+  TypeList? dropdownvalue;
+  List<TypeList> typeListItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTypeList(); // Fetch the types when the widget is initialized
+  }
+
+  Future<void> _fetchTypeList() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      List<TypeList> fetchedTypes = await repository.fetchTypeList();
+      setState(() {
+        typeListItems = fetchedTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +157,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                           height: 25.h,
                           width: 95.w,
                           fgColor: Colors.white,
-                          bgColor: Color(0xff362677),
+                          bgColor: const Color(0xff362677),
                           title: 'Track',
                           isSmallText: true,
                           onPressed: () {
@@ -214,7 +238,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                           height: 25.h,
                           width: 95.w,
                           fgColor: Colors.white,
-                          bgColor: Color(0xff362677),
+                          bgColor: const Color(0xff362677),
                           title: 'Return',
                           onPressed: () {
                             CustomDialougeBox().orderDetailDialouge(context,
@@ -222,7 +246,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                 callback: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => MyReturnScreen())),
+                                        builder: (_) =>
+                                            const MyReturnScreen())),
                                 widget: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -243,14 +268,16 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                         ),
                                         Expanded(
                                           child: CustomDropdownButton(
-                                            items: ['Used', 'Item 2', 'Item 3'],
-                                            dropdownvalue: dropdownvalue,
-                                            color: Color(0xffADADAD),
-                                            onChanged: (String? newValue) {
+                                            items: typeListItems,
+                                            dropdownValue: dropdownvalue,
+                                            color: const Color(0xffADADAD),
+                                            onChanged: (TypeList? newValue) {
                                               setState(() {
                                                 dropdownvalue = newValue!;
                                               });
                                             },
+                                            getItemLabel: (TypeList item) =>
+                                                item.typeName,
                                           ),
                                         ),
                                       ],
@@ -284,8 +311,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontSize: 16.sp,
-                                                        color:
-                                                            Color(0xffADADAD))),
+                                                        color: const Color(
+                                                            0xffADADAD))),
                                           ),
                                         ],
                                       ),
@@ -303,7 +330,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black),
                                         ),
-                                        Spacer(),
+                                        const Spacer(),
                                         Expanded(
                                           child: TextField(
                                             decoration:
@@ -313,8 +340,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontSize: 16.sp,
-                                                        color:
-                                                            Color(0xffADADAD))),
+                                                        color: const Color(
+                                                            0xffADADAD))),
                                           ),
                                         ),
                                       ],
@@ -347,7 +374,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(12.r),
-                                                color: Color(0xffEDECEC)),
+                                                color: const Color(0xffEDECEC)),
                                             child: Row(
                                               children: [
                                                 Text(
@@ -356,7 +383,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                                       fontSize: 10.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      color: Color(0xff36383C)),
+                                                      color: const Color(
+                                                          0xff36383C)),
                                                 ),
                                                 SizedBox(
                                                   width: 7.w,
@@ -367,7 +395,8 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                                       fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.w700,
-                                                      color: Color(0xffADADAD)),
+                                                      color: const Color(
+                                                          0xffADADAD)),
                                                 ),
                                                 SizedBox(
                                                   width: 11.w,
@@ -444,7 +473,7 @@ class CustomDialougeBox {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(Icons.close))
+                    child: const Icon(Icons.close))
               ],
             ),
             Text(
@@ -452,7 +481,7 @@ class CustomDialougeBox {
               style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xff362677)),
+                  color: const Color(0xff362677)),
             ),
             SizedBox(
               height: 10.h,
@@ -470,7 +499,7 @@ class CustomDialougeBox {
               height: 10.h,
             ),
             GeneralTextButton(
-              bgColor: Color(0xff362677),
+              bgColor: const Color(0xff362677),
               fgColor: Colors.white,
               width: MediaQuery.of(context).size.width,
               title: buttonTitle,

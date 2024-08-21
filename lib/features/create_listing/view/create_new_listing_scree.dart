@@ -1,26 +1,90 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
-import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
+import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
+import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class CreateNewListinScreen extends StatefulWidget {
+class CreateNewListinScreen extends ConsumerStatefulWidget {
   const CreateNewListinScreen({super.key});
 
   @override
-  State<CreateNewListinScreen> createState() => _CreateNewListinScreenState();
+  ConsumerState<CreateNewListinScreen> createState() =>
+      _CreateNewListinScreenState();
 }
 
-class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
-  String dropdownvalue = 'Used';
+class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
+  TypeList? selectedType;
+  Category? selectedCategory;
+  ProductType? selectedProductType;
   bool _isChecked = false;
+
+  List<TypeList> typeListItems = [];
+  List<Category> categoryListItems = [];
+  List<ProductType> productTypeListItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTypeList();
+    _fetchCategoryList();
+    _fetchProductTypeList();
+  }
+
+  Future<void> _fetchTypeList() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      List<TypeList> fetchedTypes = await repository.fetchTypeList();
+      setState(() {
+        typeListItems = fetchedTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
+  }
+
+  Future<void> _fetchCategoryList() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+
+      // Assume we have a repository method to fetch categories
+      List<Category> fetchedCategories = await repository.fetchCategoryList();
+      setState(() {
+        categoryListItems = fetchedCategories;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load categories: $e');
+    }
+  }
+
+  Future<void> _fetchProductTypeList() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      // Assume we have a repository method to fetch product types
+      List<ProductType> fetchedProductTypes =
+          await repository.fetchProductType();
+      setState(() {
+        productTypeListItems = fetchedProductTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load product types: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +186,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                 ),
                 CreateListingCardWidget(
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +194,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                           Text(
                             'Type',
                             style: TextStyle(
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black),
                           ),
@@ -144,14 +208,15 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                         ],
                       ),
                       const Spacer(),
-                      CustomDropdownButton(
-                        items: ['Used', 'Item 2', 'Item 3'],
-                        dropdownvalue: dropdownvalue,
-                        onChanged: (String? newValue) {
+                      CustomDropdownButton<TypeList>(
+                        items: typeListItems,
+                        dropdownValue: selectedType,
+                        onChanged: (TypeList? newValue) {
                           setState(() {
-                            dropdownvalue = newValue!;
+                            selectedType = newValue!;
                           });
                         },
+                        getItemLabel: (TypeList item) => item.typeName,
                       ),
                     ],
                   ),
@@ -160,39 +225,43 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                   height: 10.h,
                 ),
                 CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Category',
-                            style: TextStyle(
-                                fontSize: 16.sp,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Category',
+                              style: TextStyle(
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
                                 color: const Color(0xffD33636),
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      CustomDropdownButton(
-                        items: ['Used', 'Item 2', 'Item 3'],
-                        dropdownvalue: dropdownvalue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                      ),
-                    ],
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomDropdownButton<Category>(
+                          items: categoryListItems,
+                          dropdownValue: selectedCategory,
+                          onChanged: (Category? newValue) {
+                            setState(() {
+                              selectedCategory = newValue!;
+                            });
+                          },
+                          getItemLabel: (Category item) => item.name,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -207,7 +276,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                         Text(
                           'Title',
                           style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
                         ),
@@ -227,7 +296,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                             hintText: 'Listing Tile',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
                     ),
@@ -246,7 +315,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                         Text(
                           'Description',
                           style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
                         ),
@@ -267,7 +336,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                           hintText: 'Describe what makes your listing unique',
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               color: const Color(0xffADADAD))),
                     ),
                     SizedBox(
@@ -285,7 +354,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                       "What's  in the box?",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
+                          fontSize: 14.sp,
                           color: Colors.black),
                     ),
                     SizedBox(
@@ -297,7 +366,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                             hintText: "Mention what's included",
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
                     ),
@@ -306,8 +375,80 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Brand',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Brand name',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
                 SizedBox(
                   height: 10.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Product Type',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      CustomDropdownButton<ProductType>(
+                        items: productTypeListItems,
+                        dropdownValue: selectedProductType,
+                        onChanged: (ProductType? newValue) {
+                          setState(() {
+                            selectedProductType = newValue!;
+                          });
+                        },
+                        getItemLabel: (ProductType item) => item.name,
+                      ),
+                    ],
+                  ),
                 ),
                 const ReturnPolicyCardWidget(),
                 SizedBox(
@@ -355,7 +496,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                     //   'Length(cm)',
                     //   style: TextStyle(
                     //       fontWeight: FontWeight.w500,
-                    //       fontSize: 16.sp,
+                    //       fontSize: 14.sp,
                     //       color: Colors.black),
                     // ),
                     Row(
@@ -364,7 +505,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                         Text(
                           'Length(cm)',
                           style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
                         ),
@@ -384,7 +525,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                             hintText: 'Lenght in cm',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
                     ),
@@ -400,7 +541,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                     //   'Width (cm)',
                     //   style: TextStyle(
                     //       fontWeight: FontWeight.w500,
-                    //       fontSize: 16.sp,
+                    //       fontSize: 14.sp,
                     //       color: Colors.black),
                     // ),
                     Row(
@@ -409,7 +550,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                         Text(
                           'Width (cm)',
                           style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
                         ),
@@ -430,7 +571,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                             hintText: 'Width in cm',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
                     ),
@@ -446,7 +587,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                       'Height (cm)',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
+                          fontSize: 14.sp,
                           color: Colors.black),
                     ),
                     const Spacer(),
@@ -456,7 +597,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                             hintText: 'Height in cm',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
                     ),
@@ -472,7 +613,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                       'Weight (cm)',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
+                          fontSize: 14.sp,
                           color: Colors.black),
                     ),
                     const Spacer(),
@@ -482,7 +623,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                             hintText: 'Weight in KG',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
+                                fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
                     ),
@@ -491,29 +632,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.w,
                 ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Text(
-                      'City',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Select  a city',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
+                const CityField(),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -525,7 +644,7 @@ class _CreateNewListinScreenState extends State<CreateNewListinScreen> {
                       "Tags",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
+                          fontSize: 14.sp,
                           color: Colors.black),
                     ),
                     const Spacer(),
@@ -642,7 +761,7 @@ class SellerInformationWidget extends StatelessWidget {
               'Email',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   color: Colors.black),
             ),
             const Spacer(),
@@ -652,7 +771,7 @@ class SellerInformationWidget extends StatelessWidget {
                     hintText: 'XXX@gmail.com',
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: const Color(0xffADADAD))),
               ),
             ),
@@ -668,7 +787,7 @@ class SellerInformationWidget extends StatelessWidget {
               'Pickup Location',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   color: Colors.black),
             ),
             const Spacer(),
@@ -678,7 +797,7 @@ class SellerInformationWidget extends StatelessWidget {
                     hintText: 'Select location',
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: const Color(0xffADADAD))),
               ),
             ),
@@ -694,7 +813,7 @@ class SellerInformationWidget extends StatelessWidget {
               'Phone Number',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   color: Colors.black),
             ),
             const Spacer(),
@@ -704,7 +823,7 @@ class SellerInformationWidget extends StatelessWidget {
                     hintText: '98XXXXXX',
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: const Color(0xffADADAD))),
               ),
             ),
@@ -814,7 +933,7 @@ class SellerInformationWidget extends StatelessWidget {
               'Regular (Free)',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   color: Colors.black),
             ),
             const Spacer(),
@@ -824,7 +943,7 @@ class SellerInformationWidget extends StatelessWidget {
                     hintText: 'Rs. 0.00',
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: const Color(0xffADADAD))),
               ),
             ),
@@ -856,7 +975,7 @@ class SellerInformationWidget extends StatelessWidget {
               Text(
                 'Smart Boost',
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
@@ -864,7 +983,7 @@ class SellerInformationWidget extends StatelessWidget {
               Text(
                 'Rs. 50',
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
@@ -895,72 +1014,153 @@ class SellerInformationWidget extends StatelessWidget {
   }
 }
 
-class SelectPhotFromFilesContainer extends StatelessWidget {
+class SelectPhotFromFilesContainer extends StatefulWidget {
   const SelectPhotFromFilesContainer({
     super.key,
   });
 
   @override
+  State<SelectPhotFromFilesContainer> createState() =>
+      _SelectPhotFromFilesContainerState();
+}
+
+class _SelectPhotFromFilesContainerState
+    extends State<SelectPhotFromFilesContainer> {
+  List<File?> images = [];
+  final ImagePickerService _imagePickerService = ImagePickerService();
+
+  void selectImages() async {
+    if (images.length < 6) {
+      List<File?> selectedImages =
+          await _imagePickerService.pickMultipleImages(context);
+      if (selectedImages.isNotEmpty) {
+        setState(() {
+          images.addAll(selectedImages);
+        });
+      }
+    } else {
+      _imagePickerService.showSnackBar(
+        context: context,
+        content: 'You can upload up to 6 photos only.',
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 13.5.h),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.r),
-            border: Border.all(width: 1.w, color: const Color(0xffADADAD))),
-        child: DottedBorder(
-          borderType: BorderType.RRect,
-          radius: Radius.circular(10.r),
-          // padding: EdgeInsets.all(6),
-          dashPattern: [2, 3],
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
+      padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 13.5.h),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.r),
+          border: Border.all(width: 1.w, color: const Color(0xffADADAD))),
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(10.r),
+        dashPattern: const [2, 3],
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          child: GestureDetector(
+            onTap: selectImages,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 55.h),
-              height: 180.h,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Click to select files',
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        color: const Color(0xffADADAD),
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  Container(
-                    width: 100.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 13.w, vertical: 9.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(
-                            width: 1.w, color: const Color(0xffADADAD))),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.open_in_browser_outlined),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Text(
-                          'Browse..',
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        )
-                      ],
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+              child: images.isNotEmpty
+                  ? LayoutBuilder(
+                      builder: (context, constraints) {
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: constraints.maxHeight,
+                          ),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, // Display 2 images per row
+                              crossAxisSpacing: 8.w,
+                              mainAxisSpacing: 8.h,
+                              childAspectRatio: 1, // Square images
+                            ),
+                            itemCount: images.length,
+                            itemBuilder: (context, index) {
+                              return Stack(
+                                children: [
+                                  Image.file(
+                                    images[index]!,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 5,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          images.removeAt(index);
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.red,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Click to select files',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD),
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 12.h,
+                          ),
+                          Container(
+                            width: 120.w,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 13.w, vertical: 9.h),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                    width: 1.w,
+                                    color: const Color(0xffADADAD))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.open_in_browser_outlined),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text(
+                                  'Browse..',
+                                  style: TextStyle(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -987,72 +1187,82 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
             Text(
               'Return Policy',
               style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),
           ],
         ),
-        const Spacer(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '7 days Exchange& Return',
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              children: [
-                CustomCheckbox(
-                    value: _isvalid,
-                    onChanged: (value) {
-                      setState(() {
-                        _isDamge = value;
-                      });
-                    }),
-                SizedBox(
-                  width: 5.w,
-                ),
-                Text(
-                  'Valid for change of mind',
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            Row(
-              children: [
-                CustomCheckbox(
-                    value: _isvalid,
-                    onChanged: (value) {
-                      setState(() {
-                        _isDamge = value;
-                      });
-                    }),
-                SizedBox(
-                  width: 5.w,
-                ),
-                Text(
-                  'Valid for defective, missing',
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                )
-              ],
-            ),
-          ],
+        SizedBox(width: 20.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '7 days Exchange& Return',
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  CustomCheckbox(
+                      value: _isvalid,
+                      onChanged: (value) {
+                        setState(() {
+                          _isDamge = value;
+                        });
+                      }),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Valid for change of mind',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Row(
+                children: [
+                  CustomCheckbox(
+                      value: _isvalid,
+                      onChanged: (value) {
+                        setState(() {
+                          _isDamge = value;
+                        });
+                      }),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Valid for defective, missing',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         )
       ],
     ));
