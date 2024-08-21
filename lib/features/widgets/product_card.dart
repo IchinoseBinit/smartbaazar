@@ -133,7 +133,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     itemBuilder: (context, _) => const Icon(
                       Icons.star,
-                      color: Color(0xfff781740),
+                      color:  Color(0xfff781740),
                     ),
                     onRatingUpdate: (rating) {},
                   ),

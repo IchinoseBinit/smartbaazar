@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/forget_password_screen.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
@@ -48,7 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (state is LoadedState) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()),
+          MaterialPageRoute(builder: (_) => HomeScreen()),
         );
         showCustomToast(state.response.toString());
       } else if (state is ErrorState) {

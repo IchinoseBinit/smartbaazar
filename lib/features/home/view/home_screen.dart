@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
@@ -15,7 +15,6 @@ import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/features/widgets/service_container_widget.dart';
-import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -61,11 +60,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
     final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
-
     return GenericSafeArea(
       color: Colors.white,
       child: Scaffold(
-        key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppBar(
@@ -139,8 +136,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const AddToCartScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const AddToCartScreen()));
                 },
                 child: Container(
                   height: 30.h,
