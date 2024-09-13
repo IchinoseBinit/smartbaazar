@@ -13,7 +13,7 @@ class CityField extends StatefulWidget {
 
 class _CityFieldState extends State<CityField> {
   final TextEditingController _controller = TextEditingController();
-  List<CityList> _cities = [];
+  // List<CityList> _cities = [];
   List<CityList> _filteredCities = [];
   bool _isLoading = false;
 
@@ -68,7 +68,9 @@ class _CityFieldState extends State<CityField> {
     setState(() {
       _controller.text = city.name;
       _filteredCities = [];
-      FocusScope.of(context).unfocus(); // Unfocus the text field
+      Future.delayed(Duration.zero, () {
+        FocusScope.of(context).unfocus();
+      });
     });
   }
 

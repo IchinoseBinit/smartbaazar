@@ -37,6 +37,7 @@ class LoginDataResult with _$LoginDataResult {
 class LoginDataExtra with _$LoginDataExtra {
   const factory LoginDataExtra({
     required String authToken,
+    required String refreshToken,
   }) = _LoginDataExtra;
 
   factory LoginDataExtra.fromJson(Map<String, dynamic> json) =>

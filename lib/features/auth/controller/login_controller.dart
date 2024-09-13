@@ -6,8 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/login_api.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
 
 final authRepositoryProvider = Provider<LoginApi>((ref) {
@@ -31,7 +33,7 @@ class LoginController extends StateNotifier<GenericState> {
       final loginData = await LoginApi().login(email, password);
       state = LoadedState<LoginData>(response: loginData);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => HomeScreen()));
+          context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }
@@ -40,6 +42,8 @@ class LoginController extends StateNotifier<GenericState> {
   Future<void> continueSession(BuildContext context) async {
     final pref = await SharedPreferences.getInstance();
     final sessionString = pref.getString('session');
+     SmartClinet.token = pref.getString('accessToken') ?? '';
+    SmartClinet.refresh = pref.getString('refreshToken') ?? '';
     state = LoadingState();
     try {
       if (sessionString != null) {
@@ -48,14 +52,14 @@ class LoginController extends StateNotifier<GenericState> {
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => HomeScreen(),
+            builder: (_) => const BottomNavigationScreen(),
           ),
         );
       } else {
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => LoginScreen(),
+            builder: (_) => const LoginScreen(),
           ),
         );
       }
@@ -63,7 +67,7 @@ class LoginController extends StateNotifier<GenericState> {
       await Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => LoginScreen(),
+          builder: (_) => const LoginScreen(),
         ),
       );
     }

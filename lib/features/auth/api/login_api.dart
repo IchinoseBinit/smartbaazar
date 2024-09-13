@@ -25,8 +25,12 @@ class LoginApi {
         if (response.data != null) {
           final user = LoginData.fromJson(response.data);
           SmartClinet.token = user.extra.authToken;
+          SmartClinet.refresh = user.extra.refreshToken;
           final pref = await SharedPreferences.getInstance();
           await pref.setString("session", json.encode(user.toJson()));
+           await pref.setString("accessToken", SmartClinet.token);
+          await pref.setString("refreshToken", SmartClinet.refresh);
+
           if (kDebugMode) {
             print(response);
           }

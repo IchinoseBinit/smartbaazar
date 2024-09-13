@@ -5,7 +5,6 @@ import 'package:smartbazar/features/auth/api/signup_api.dart';
 import 'package:smartbazar/features/auth/model/signup_model.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
-import 'package:smartbazar/utils/custom_loading_indicatior.dart';
 
 final singUpProvider = Provider<SignUpAPi>((ref) {
   return SignUpAPi();

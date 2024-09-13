@@ -68,7 +68,9 @@ class FavouriteListingScreen extends ConsumerWidget {
                 height: 20,
               ),
               favouriteListAsyncValue.when(
-                data: (favouriteList) {
+                data: (favouriteListResponse) {
+                  final favouriteList =
+                      favouriteListResponse.data!.savedProducts?.data ?? [];
                   if (favouriteList.isEmpty) {
                     return const Center(child: Text('No favourites found.'));
                   }
@@ -110,7 +112,7 @@ class FavouriteListingScreen extends ConsumerWidget {
 class FavouriteListProductDetails extends ConsumerStatefulWidget {
   // final bool isSelected;
   // final ValueChanged<bool> onSelected;
-  final FavouriteProductList item;
+ final Product item;
 
   const FavouriteListProductDetails({
     // required this.isSelected,

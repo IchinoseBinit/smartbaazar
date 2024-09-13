@@ -12,14 +12,14 @@ import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/features/widgets/service_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class VendorHomeScreen extends StatefulWidget {
-  const VendorHomeScreen({super.key});
+class MySubscribeAndWinPage extends StatefulWidget {
+  const MySubscribeAndWinPage({super.key});
 
   @override
-  State<VendorHomeScreen> createState() => _VendorHomeScreenState();
+  State<MySubscribeAndWinPage> createState() => _MySubscribeAndWinPageState();
 }
 
-class _VendorHomeScreenState extends State<VendorHomeScreen> {
+class _MySubscribeAndWinPageState extends State<MySubscribeAndWinPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override

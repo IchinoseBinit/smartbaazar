@@ -51,10 +51,12 @@ Map<String, dynamic> _$$LoginDataResultImplToJson(
 _$LoginDataExtraImpl _$$LoginDataExtraImplFromJson(Map<String, dynamic> json) =>
     _$LoginDataExtraImpl(
       authToken: json['authToken'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
 
 Map<String, dynamic> _$$LoginDataExtraImplToJson(
         _$LoginDataExtraImpl instance) =>
     <String, dynamic>{
       'authToken': instance.authToken,
+      'refreshToken': instance.refreshToken,
     };

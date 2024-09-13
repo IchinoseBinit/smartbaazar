@@ -16,7 +16,7 @@ Future<VendorProfileModel> getVendorProfileData(
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: ApiConstants.getCart,
+      url: '${ApiConstants.getVendorProfileDataByUserName}/$vendorName',
     );
 
     if (response.statusCode == 200) {

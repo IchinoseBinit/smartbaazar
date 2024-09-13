@@ -117,6 +117,10 @@ class MyOrderScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            Center(
+                              child: Text(
+                                  'Order Placed Content Here'), // Add your content for the second tab
+                            ),
                           ],
                         ),
                       ),

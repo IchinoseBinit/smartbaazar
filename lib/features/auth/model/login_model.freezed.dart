@@ -523,6 +523,7 @@ LoginDataExtra _$LoginDataExtraFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$LoginDataExtra {
   String get authToken => throw _privateConstructorUsedError;
+  String get refreshToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -536,7 +537,7 @@ abstract class $LoginDataExtraCopyWith<$Res> {
           LoginDataExtra value, $Res Function(LoginDataExtra) then) =
       _$LoginDataExtraCopyWithImpl<$Res, LoginDataExtra>;
   @useResult
-  $Res call({String authToken});
+  $Res call({String authToken, String refreshToken});
 }
 
 /// @nodoc
@@ -553,11 +554,16 @@ class _$LoginDataExtraCopyWithImpl<$Res, $Val extends LoginDataExtra>
   @override
   $Res call({
     Object? authToken = null,
+    Object? refreshToken = null,
   }) {
     return _then(_value.copyWith(
       authToken: null == authToken
           ? _value.authToken
           : authToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -571,7 +577,7 @@ abstract class _$$LoginDataExtraImplCopyWith<$Res>
       __$$LoginDataExtraImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String authToken});
+  $Res call({String authToken, String refreshToken});
 }
 
 /// @nodoc
@@ -586,11 +592,16 @@ class __$$LoginDataExtraImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? authToken = null,
+    Object? refreshToken = null,
   }) {
     return _then(_$LoginDataExtraImpl(
       authToken: null == authToken
           ? _value.authToken
           : authToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -599,17 +610,20 @@ class __$$LoginDataExtraImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LoginDataExtraImpl implements _LoginDataExtra {
-  const _$LoginDataExtraImpl({required this.authToken});
+  const _$LoginDataExtraImpl(
+      {required this.authToken, required this.refreshToken});
 
   factory _$LoginDataExtraImpl.fromJson(Map<String, dynamic> json) =>
       _$$LoginDataExtraImplFromJson(json);
 
   @override
   final String authToken;
+  @override
+  final String refreshToken;
 
   @override
   String toString() {
-    return 'LoginDataExtra(authToken: $authToken)';
+    return 'LoginDataExtra(authToken: $authToken, refreshToken: $refreshToken)';
   }
 
   @override
@@ -618,12 +632,14 @@ class _$LoginDataExtraImpl implements _LoginDataExtra {
         (other.runtimeType == runtimeType &&
             other is _$LoginDataExtraImpl &&
             (identical(other.authToken, authToken) ||
-                other.authToken == authToken));
+                other.authToken == authToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, authToken);
+  int get hashCode => Object.hash(runtimeType, authToken, refreshToken);
 
   @JsonKey(ignore: true)
   @override
@@ -641,14 +657,17 @@ class _$LoginDataExtraImpl implements _LoginDataExtra {
 }
 
 abstract class _LoginDataExtra implements LoginDataExtra {
-  const factory _LoginDataExtra({required final String authToken}) =
-      _$LoginDataExtraImpl;
+  const factory _LoginDataExtra(
+      {required final String authToken,
+      required final String refreshToken}) = _$LoginDataExtraImpl;
 
   factory _LoginDataExtra.fromJson(Map<String, dynamic> json) =
       _$LoginDataExtraImpl.fromJson;
 
   @override
   String get authToken;
+  @override
+  String get refreshToken;
   @override
   @JsonKey(ignore: true)
   _$$LoginDataExtraImplCopyWith<_$LoginDataExtraImpl> get copyWith =>

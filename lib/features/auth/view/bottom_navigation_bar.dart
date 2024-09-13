@@ -8,27 +8,6 @@ import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.da
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-// class BottomNavigationScreen extends StatefulWidget {
-//   const BottomNavigationScreen({super.key});
-
-//   @override
-//   State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
-// }
-
-// class _BottomNavigationScreenState extends State<BottomNavigationBar> {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('BottomNavigationBar Demo'),
-//       ),
-//       body: _pages.elementAt(_selectedTab),
-//       bottomNavigationBar: BottomNavigationBar(items: items),
-//     );
-//   }
-// }
-
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
 
@@ -39,17 +18,18 @@ class BottomNavigationScreen extends StatefulWidget {
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _selectedTab = 0;
 
-  List _pages = [
-    HomeScreen(),
+  final List _pages = [
+    const HomeScreen(),
     // VendorHomeScreen(),  if vendor login show vendor home screen
     const MessageViewScreen(),
+    Container(),
+    // const Center(
+    //   child: Text("Middle Tab"),
+    // ),
     const MyOrderScreen(),
     //if  vendor login show disputes screen
     // DisputesScreen(),
     const VendroDetailsScreen(),
-    const Center(
-      child: Text("pppp"),
-    ),
   ];
 
   _changeTab(int index) {
@@ -85,7 +65,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   shape: BoxShape.circle,
                   color: const Color(0xff362677).withOpacity(0.9),
                 ),
-                child: SvgPicture.asset(qrIcon),
+                child: GestureDetector(
+                   onTap: () {
+                    setState(() {
+                      _selectedTab = 2;  // Set the selected tab to the middle placeholder
+                    });
+                  },
+                  child: SvgPicture.asset(qrIcon)),
               ),
             ),
           ),
@@ -114,7 +100,12 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ),
               backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
               currentIndex: _selectedTab,
-              onTap: (index) => _changeTab(index),
+              // onTap: (index) {
+              //   if (index != 2) {
+              //     _changeTab(index);
+              //   }
+              // },
+               onTap: (index) => _changeTab(index),
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
@@ -129,6 +120,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.mail),
                   label: 'Message',
+                ),
+                const BottomNavigationBarItem(
+                  icon: SizedBox.shrink(), // Empty placeholder for FAB
+                  label: '',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(listIcon),

@@ -2,25 +2,32 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/utils/request_type.dart';
 
 part 'product_details_provider.g.dart';
 
 @riverpod
 Future<ProductDetailsModel> productDetails(
     ProductDetailsRef ref, String id) async {
-  final client = Dio();
-
+  // final client = Dio();
+  final SmartClinet client = SmartClinet();
   try {
-    final response = await client.get(
-      "${ApiConstants.getProductDetails}/$id?detailed=1",
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': '*/*',
-          'Connection': 'Keep-Alive',
-          'X-AppApiToken': 'Yala@Techies_Nepal',
-        },
-      ),
+    // final response = await client.get(
+    //   "${ApiConstants.getProductDetails}/$id?detailed=1",
+    //   options: Options(
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'accept': '*/*',
+    //       'Connection': 'Keep-Alive',
+    //       'X-AppApiToken': 'Yala@Techies_Nepal',
+
+    //     },
+    //   ),
+    // );
+    final response = await client.request(
+      requestType: RequestType.getWithToken,
+      url: "${ApiConstants.getProductDetails}/$id?detailed=1",
     );
 
     print('Response data: ${response.data}');

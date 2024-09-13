@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
-import 'package:smartbazar/features/vendor/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -17,15 +17,14 @@ class VendorBottomNavigation extends StatefulWidget {
 
 class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
   List _pages = [
-    VendorHomeScreen(),
+    const MySubscribeAndWinPage(),
     // if vendor login show vendor home screen
-    MessageViewScreen(),
-    DisputesScreen(),
-    VendroDetailsScreen(),
-
-    Center(
+    const MessageViewScreen(),
+    const Center(
       child: Text("pppp"),
     ),
+    const DisputesScreen(),
+    const VendroDetailsScreen(),
   ];
   int _selectedTab = 0;
 
@@ -64,13 +63,13 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
           // ),
           child: SizedBox(
             child: Container(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,
                 border: Border.all(
                   width: 1.w,
-                  color: Color(0xffffF8F8F8),
+                  color: const Color(0xffffF8F8F8),
                 ),
               ),
               child: Container(
@@ -78,7 +77,7 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
                 padding: EdgeInsets.all(12.h),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xff362677).withOpacity(0.9),
+                  color: const Color(0xff362677).withOpacity(0.9),
                 ),
                 child: SvgPicture.asset(qrIcon),
               ),
@@ -97,17 +96,17 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
               height: 65.h,
               child: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
-                selectedItemColor: Color(0xff362677),
-                selectedIconTheme: IconThemeData(color: Color(0xff362677)),
+                selectedItemColor: const Color(0xff362677),
+                selectedIconTheme: const IconThemeData(color: Color(0xff362677)),
                 selectedLabelStyle: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff36383C)),
+                    color: const Color(0xff36383C)),
                 unselectedLabelStyle: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff36383C)),
-                backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+                    color: const Color(0xff36383C)),
+                backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                 currentIndex: _selectedTab,
                 onTap: (index) => _changeTab(index),
                 items: <BottomNavigationBarItem>[
@@ -115,11 +114,11 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
                     icon: SvgPicture.asset(
                       homeIcon,
                       colorFilter:
-                          ColorFilter.mode(Color(0xff36383C), BlendMode.srcIn),
+                          const ColorFilter.mode(const Color(0xff36383C), BlendMode.srcIn),
                     ),
                     label: 'Home',
                   ),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                     icon: Icon(Icons.mail),
                     label: 'Message',
                   ),

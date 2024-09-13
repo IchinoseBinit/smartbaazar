@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
-import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AntiScamScreen extends StatelessWidget {

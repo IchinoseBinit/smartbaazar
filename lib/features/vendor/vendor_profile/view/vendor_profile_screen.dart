@@ -191,7 +191,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                VendorProfileExtraLinkWidget(),
+                const VendorProfileExtraLinkWidget(),
                 SizedBox(
                   height: 40.h,
                 ),
@@ -236,28 +236,28 @@ class VendorProfileExtraLinkWidget extends StatelessWidget {
                     'Exchange AdBoost',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     'Become a Smart Seller',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     'FAQ',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     'Anti-Scam',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                 ],
@@ -272,21 +272,21 @@ class VendorProfileExtraLinkWidget extends StatelessWidget {
                     'Temrs & Conditions',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     'Prvacy',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
                     'Contact',
                     style: TextStyle(
                         fontSize: 12.sp,
-                        color: Color(0xff36383C),
+                        color: const Color(0xff36383C),
                         fontWeight: FontWeight.w400),
                   ),
                 ],

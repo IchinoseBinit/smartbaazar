@@ -1,4 +1,3 @@
-
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
@@ -12,9 +11,8 @@ class NewListingRepository {
       requestType: RequestType.getWithToken,
       url: ApiConstants.fetchType,
     );
-    
+
     if (response.statusCode == 200) {
-      // Use response.data instead of response.body
       List<dynamic> data = response.data['types'];
       return data.map((item) => TypeList.fromJson(item)).toList();
     } else {
@@ -22,7 +20,7 @@ class NewListingRepository {
     }
   }
 
-   Future<List<Category>> fetchCategoryList() async {
+  Future<List<Category>> fetchCategoryList({String? parentId}) async {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.fetchCategoryList,
@@ -35,6 +33,22 @@ class NewListingRepository {
       throw Exception('Failed to load categories');
     }
   }
+
+  Future<List<Category>> fetchSubCategoryList(int parentId) async {
+    // Fetch subcategories based on parentId
+    final response = await client.request(
+      requestType: RequestType.getWithToken,
+      url: '${ApiConstants.fetchCategoryList}?parentId=$parentId&nestedIncluded=1',
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = response.data['result']['data'];
+      return data.map((item) => Category.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load subcategories');
+    }
+  }
+
   Future<List<ProductType>> fetchProductType() async {
     final response = await client.request(
       requestType: RequestType.getWithToken,
@@ -48,6 +62,7 @@ class NewListingRepository {
       throw Exception('Failed to load Product Type');
     }
   }
+
   Future<List<CityList>> fetchCities(int page) async {
     final response = await client.request(
       requestType: RequestType.getWithToken,
@@ -62,5 +77,3 @@ class NewListingRepository {
     }
   }
 }
-
-

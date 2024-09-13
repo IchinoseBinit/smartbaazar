@@ -12,6 +12,7 @@ import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
+import 'package:smartbazar/features/create_listing/view/category_feild.dart';
 import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
@@ -27,19 +28,17 @@ class CreateNewListinScreen extends ConsumerStatefulWidget {
 
 class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TypeList? selectedType;
-  Category? selectedCategory;
   ProductType? selectedProductType;
   bool _isChecked = false;
 
   List<TypeList> typeListItems = [];
-  List<Category> categoryListItems = [];
   List<ProductType> productTypeListItems = [];
 
   @override
   void initState() {
     super.initState();
     _fetchTypeList();
-    _fetchCategoryList();
+
     _fetchProductTypeList();
   }
 
@@ -53,21 +52,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     } catch (e) {
       // Handle error, maybe show a message to the user
       print('Failed to load types: $e');
-    }
-  }
-
-  Future<void> _fetchCategoryList() async {
-    try {
-      NewListingRepository repository = NewListingRepository();
-
-      // Assume we have a repository method to fetch categories
-      List<Category> fetchedCategories = await repository.fetchCategoryList();
-      setState(() {
-        categoryListItems = fetchedCategories;
-      });
-    } catch (e) {
-      // Handle error, maybe show a message to the user
-      print('Failed to load categories: $e');
     }
   }
 
@@ -224,46 +208,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Category',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                        CustomDropdownButton<Category>(
-                          items: categoryListItems,
-                          dropdownValue: selectedCategory,
-                          onChanged: (Category? newValue) {
-                            setState(() {
-                              selectedCategory = newValue!;
-                            });
-                          },
-                          getItemLabel: (Category item) => item.name,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                const CategoryFeild(),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -1072,7 +1017,7 @@ class _SelectPhotFromFilesContainerState
                           ),
                           child: GridView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, // Display 2 images per row

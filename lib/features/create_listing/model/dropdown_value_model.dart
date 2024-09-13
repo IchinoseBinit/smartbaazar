@@ -1,10 +1,16 @@
 import 'dart:convert';
 
-class TypeList {
-  final int typeId;
-  final String typeName;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  TypeList({required this.typeId, required this.typeName});
+part 'dropdown_value_model.freezed.dart';
+part 'dropdown_value_model.g.dart';
+
+@freezed
+class TypeList with _$TypeList {
+  const factory TypeList({
+    required int typeId,
+    required String typeName,
+  }) = _TypeList;
 
   factory TypeList.fromJson(Map<String, dynamic> json) {
     final Map<String, dynamic> nameMap = jsonDecode(json['name']);
@@ -15,68 +21,38 @@ class TypeList {
   }
 }
 
-class Category {
-  final int id;
-  final String? parentId;
-  final String name;
-  final String slug;
-  final String? description;
-  final String? iconClass;
-  final String picture;
+@freezed
+class Category with _$Category {
+  const factory Category({
+    required int id,
+    String? parentId,
+    required String name,
+    required String slug,
+    String? description,
+    String? iconClass,
+    required String picture,
+  }) = _Category;
 
-  Category({
-    required this.id,
-    this.parentId,
-    required this.name,
-    required this.slug,
-    this.description,
-    this.iconClass,
-    required this.picture,
-  });
-
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
-      id: json['id'],
-      parentId: json['parent_id'],
-      name: json['name'],
-      slug: json['slug'],
-      description: json['description'],
-      iconClass: json['icon_class'],
-      picture: json['picture'],
-    );
-  }
+  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 }
 
-class ProductType {
-  final int id;
-  final String name;
+@freezed
+class ProductType with _$ProductType {
+  const factory ProductType({
+    required int id,
+    required String name,
+  }) = _ProductType;
 
-  ProductType({required this.id, required this.name});
-
-  factory ProductType.fromJson(Map<String, dynamic> json) {
-    return ProductType(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
+  factory ProductType.fromJson(Map<String, dynamic> json) => _$ProductTypeFromJson(json);
 }
 
-class CityList {
-  final int id;
-  final String countryCode;
-  final String name;
+@freezed
+class CityList with _$CityList {
+  const factory CityList({
+    required int id,
+    @JsonKey(name: 'country_code') String? countryCode,
+    required String name,
+  }) = _CityList;
 
-  CityList({
-    required this.id,
-    required this.countryCode,
-    required this.name,
-  });
-
-  factory CityList.fromJson(Map<String, dynamic> json) {
-    return CityList(
-      id: json['id'],
-      countryCode: json['country_code'],
-      name: json['name'],
-    );
-  }
+  factory CityList.fromJson(Map<String, dynamic> json) => _$CityListFromJson(json);
 }

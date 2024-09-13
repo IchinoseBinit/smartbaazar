@@ -6,7 +6,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 
 final productCardHeight = 225.h;
-final productCardWidth = 210.w;
+final productCardWidth = 215.w;
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -69,7 +69,10 @@ class ProductCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Text('Rs. ${product.price}'),
+                Text(
+                  'Rs. ${product.price}',
+                  style: TextStyle(fontSize: 14.sp),
+                ),
                 // SizedBox(
                 //   width: 10.w,
                 // ),
@@ -133,7 +136,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     itemBuilder: (context, _) => const Icon(
                       Icons.star,
-                      color:  Color(0xfff781740),
+                      color: Color(0xfff781740),
                     ),
                     onRatingUpdate: (rating) {},
                   ),
@@ -156,7 +159,6 @@ class ProductCard extends StatelessWidget {
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Icon(
                   Icons.visibility,
@@ -166,36 +168,36 @@ class ProductCard extends StatelessWidget {
                 SizedBox(
                   width: 3.w,
                 ),
-                Text(
-                  '${NumberFormat.compact().format(
-                    int.parse(product.visits),
-                  )} Views',
-                  style: TextStyle(
-                    fontSize: 9.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff888888),
+                Flexible(
+                  child: Text(
+                    '${NumberFormat.compact().format(
+                      int.parse(product.visits),
+                    )} Views',
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff888888),
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
-                  width: 24.w,
+                  width: 18.w,
                 ),
                 if (product.pickup != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        size: 20,
-                        color: Color(0xff888888),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Skeleton.replace(
-                        width: 80.w,
-                        height: 10.h,
-                        child: SizedBox(
-                          width: 80.w,
+                  Flexible(
+                    // Wrap this in a Flexible
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 20,
+                          color: Color(0xff888888),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Flexible(
                           child: Text(
                             product.pickup!,
                             maxLines: 1,
@@ -207,8 +209,8 @@ class ProductCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
               ],
             )

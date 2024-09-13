@@ -5,7 +5,49 @@ part 'favourite_product_list.g.dart';
 
 @freezed
 class FavouriteProductList with _$FavouriteProductList {
-  factory FavouriteProductList({
+  const factory FavouriteProductList({
+    required Data? data,
+    required String? msg,
+  }) = _FavouriteProductList;
+
+  factory FavouriteProductList.fromJson(Map<String, dynamic> json) =>
+      _$FavouriteProductListFromJson(json);
+}
+
+@freezed
+class Data with _$Data {
+  const factory Data({
+   @JsonKey(name: "saved_products") required SavedProducts? savedProducts,
+  }) = _Data;
+
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+}
+
+@freezed
+class SavedProducts with _$SavedProducts {
+  const factory SavedProducts({
+    @JsonKey(name: "current_page") required int? currentPage,
+    @JsonKey(name: "data") required List<Product>? data,
+    // @JsonKey(name: "first_page_url") required String? firstPageUrl,
+    // @JsonKey(name: "from") required int? from,
+    // @JsonKey(name: "last_page") required int? lastPage,
+    // @JsonKey(name: "last_page_url") required String? lastPageUrl,
+    // @JsonKey(name: "links") required List<Link>? links,
+    // @JsonKey(name: "next_page_url") required dynamic nextPageUrl,
+    // @JsonKey(name: "path") required String? path,
+    // @JsonKey(name: "per_page") required int? perPage,
+    // @JsonKey(name: "prev_page_url") required dynamic prevPageUrl,
+    // @JsonKey(name: "to") required int? to,
+    // @JsonKey(name: "total") required int? total,
+  }) = _SavedProducts;
+
+  factory SavedProducts.fromJson(Map<String, dynamic> json) =>
+      _$SavedProductsFromJson(json);
+}
+
+@freezed
+class Product with _$Product {
+  const factory Product({
     required String? id,
     @JsonKey(name: "country_code") required String? countryCode,
     @JsonKey(name: "user_id") required String? userId,
@@ -13,9 +55,9 @@ class FavouriteProductList with _$FavouriteProductList {
     @JsonKey(name: "post_type_id") required String? postTypeId,
     required String? title,
     required String? description,
-    required String? tags,
+    // required String? tags,
     required String? price,
-    required String? negotiable,
+    // required String? negotiable,
     // @JsonKey(name: "contact_name") required String? contactName,
     // required String? email,
     // required String? phone,
@@ -64,57 +106,37 @@ class FavouriteProductList with _$FavouriteProductList {
     // @JsonKey(name: "deleted_at") required String? deletedAt,
     // @JsonKey(name: "created_at") required String? createdAt,
     // @JsonKey(name: "updated_at") required String? updatedAt,
-     required String? image,
+    required String? image,
     // @JsonKey(name: "avg_rating") required String? avgRating,
     required List<SavedByLoggedUser>? savedByLoggedUser,
-  }) = _FavouriteProductList;
+  }) = _Product;
 
-  factory FavouriteProductList.fromJson(Map<String, dynamic> json) =>
-      _$FavouriteProductListFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 }
 
 @freezed
 class SavedByLoggedUser with _$SavedByLoggedUser {
-  factory SavedByLoggedUser({
+  const factory SavedByLoggedUser({
     required String? id,
     // @JsonKey(name: "user_id") required String? userId,
     // @JsonKey(name: "post_id") required String? postId,
     // @JsonKey(name: "created_at") required String? createdAt,
     // @JsonKey(name: "updated_at") required String? updatedAt,
   }) = _SavedByLoggedUser;
+
   factory SavedByLoggedUser.fromJson(Map<String, dynamic> json) =>
       _$SavedByLoggedUserFromJson(json);
 }
 
 @freezed
-class FavouriteProductListResponse with _$FavouriteProductListResponse {
-  factory FavouriteProductListResponse({
-    @JsonKey(name: "current_page") required int? currentPage,
-    @JsonKey(name: "data") required List<FavouriteProductList>? data,
-    @JsonKey(name: "first_page_url") required String firstPageUrl,
-    @JsonKey(name: "from") required int? from,
-    @JsonKey(name: "last_page") required int? lastPage,
-    @JsonKey(name: "last_page_url") required String? lastPageUrl,
-    @JsonKey(name: "links") required List<Link> links,
-    @JsonKey(name: "next_page_url") required dynamic nextPageUrl,
-    @JsonKey(name: "path") required String? path,
-    @JsonKey(name: "per_page") required int? perPage,
-    @JsonKey(name: "prev_page_url") required dynamic prevPageUrl,
-    @JsonKey(name: "to") required int? to,
-    @JsonKey(name: "total") required int? total,
-  }) = _FavouriteProductListResponse;
-
-  factory FavouriteProductListResponse.fromJson(Map<String, dynamic> json) =>
-      _$FavouriteProductListResponseFromJson(json);
-}
-
-@freezed
 class Link with _$Link {
   const factory Link({
-    String? url,
-    String? label,
-    bool? active,
+    required String? url,
+    required String? label,
+    required bool? active,
   }) = _Link;
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 }
+

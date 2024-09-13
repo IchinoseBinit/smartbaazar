@@ -11,14 +11,12 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
-import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/view/api/product_details_provider.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-
-import 'api/add_to_cart_provider.dart';
 
 class ProductDetailsScreen extends ConsumerWidget {
   final String productId;
@@ -37,7 +35,6 @@ class ProductDetailsScreen extends ConsumerWidget {
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
-    final ApiService _apiService = ApiService();
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
@@ -49,9 +46,8 @@ class ProductDetailsScreen extends ConsumerWidget {
 
           return favouriteListAsyncValue.when(
             data: (favouritelist) {
-              final isFavorite = favouriteListAsyncValue.asData?.value
-                      .any((item) => item.id == productId) ??
-                  false;
+              final isFavorite = favouritelist.data!.savedProducts!.data
+                  ?.any((item) => item.id == productId);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -71,11 +67,11 @@ class ProductDetailsScreen extends ConsumerWidget {
                                 child: const Icon(Icons.arrow_back_ios)),
                             Container(
                                 padding: EdgeInsets.all(12.h),
-                                decoration:  BoxDecoration(
+                                decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: isFavorite
+                                    color: isFavorite!
                                         ? Colors.yellow
-                                        : Color(0xffFFFFFF)),
+                                        : const Color(0xffFFFFFF)),
                                 child: SvgPicture.asset(invoiceIcon))
                           ],
                         ),
@@ -197,7 +193,10 @@ class ProductDetailsScreen extends ConsumerWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text("NPR ${data.price}"),
+                                        Text(
+                                          "NPR ${data.price}",
+                                          style: TextStyle(fontSize: 16.sp),
+                                        ),
                                         const Spacer(),
                                         InkWell(
                                           onTap: () async {
@@ -589,9 +588,13 @@ class ProductDetailsScreen extends ConsumerWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                VendorProfileScreen(
+                                                DummyVendorHomeScreen(
                                                   vendorName: data.user!.name,
-                                                )));
+                                                )
+                                            // VendorHomeScreen(
+                                            //   vendorName: data.user!.name,
+                                            // )
+                                            ));
                                   },
                                   marginH: 1,
                                   width: MediaQuery.of(context).size.width,
@@ -876,14 +879,16 @@ class ProductAdditionalDetialsWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        maxLines: 1,
-                        items[index]['title'],
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(
-                            0xff000000,
+                      Expanded(
+                        child: Text(
+                          maxLines: 1,
+                          items[index]['title'],
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(
+                              0xff000000,
+                            ),
                           ),
                         ),
                       ),
@@ -1082,11 +1087,14 @@ class BuyNowProdcutMinuteWidget extends StatelessWidget {
                     color: Color(0xff000000),
                   ),
                   SizedBox(width: 2.w),
-                  Text('Confirm your personal information & contact details.',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff000000)))
+                  Expanded(
+                    child: Text(
+                        'Confirm your personal information & contact details.',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff000000))),
+                  )
                 ],
               ),
             ),

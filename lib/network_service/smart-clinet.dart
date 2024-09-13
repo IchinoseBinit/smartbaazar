@@ -2,6 +2,11 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
+import 'package:smartbazar/features/auth/model/refresh_token_model.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class SmartClinet {
@@ -49,6 +54,14 @@ class SmartClinet {
         },
         onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
+            // return handler.next(error);
+            final success = await _refreshToken();
+            if (success) {
+              RequestOptions requestOptions = error.requestOptions;
+              requestOptions.headers['Authorization'] = 'Bearer $token';
+              final response = await _retry(requestOptions);
+              return handler.resolve(response);
+            }
             return handler.next(error);
           }
           try {
@@ -62,6 +75,26 @@ class SmartClinet {
         },
       ),
     );
+  }
+  Future<bool> _refreshToken() async {
+    try {
+      final container = ProviderContainer(); // Create a Riverpod container
+      final refreshTokenResponse =
+          await container.read(getRefreshTokenProvider.future);
+
+      SmartClinet.token = refreshTokenResponse.authToken;
+      SmartClinet.refresh = refreshTokenResponse.refreshToken;
+
+      // Update the SharedPreferences with the new tokens
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accessToken', refreshTokenResponse.authToken);
+      await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
+
+      return true;
+    } catch (e) {
+      print("Error refreshing token using API: $e");
+      return false;
+    }
   }
 
   Future<Response> request({
@@ -106,6 +139,7 @@ class SmartClinet {
         return _client
             .post(
               url.trim(),
+              queryParameters: queryParameters,
               data: jsonEncode(parameter),
               options: Options(
                 headers: heading,
@@ -142,12 +176,13 @@ class SmartClinet {
               ),
             )
             .timeout(timeOutDuration);
-         case RequestType.deleteWithToken:  // Add this case
+      case RequestType.deleteWithToken: // Add this case
         return _client
             .delete(
               url,
               options: Options(headers: headingWithToken),
-              data: parameter, // Optional: use if you need to pass body data in delete request
+              data:
+                  parameter, // Optional: use if you need to pass body data in delete request
             )
             .timeout(timeOutDuration);
     }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';

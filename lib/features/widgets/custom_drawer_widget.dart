@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_scree.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/follow_and_suggestion/view/follow_and_suggestion_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/scratch_home_screen.dart';
-import 'package:smartbazar/features/vendor/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/view/all_product_type_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -73,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) =>  const VendorHomeScreen()));
+                              builder: (_) => const MySubscribeAndWinPage()));
                   }
                   switch (ttile) {
                     case 'Event':

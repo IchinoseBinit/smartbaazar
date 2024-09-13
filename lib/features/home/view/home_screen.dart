@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/view/product_deatials_screen.dart';
 import 'package:smartbazar/features/widgets/banner_widget.dart';
 import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
@@ -55,6 +56,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.dispose();
   }
 
+  void _onSearchFocusChanged(bool hasFocus) {
+    setState(() {
+      _showSearchResults = hasFocus;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -63,98 +70,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return GenericSafeArea(
       color: Colors.white,
       child: Scaffold(
+        key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
-          elevation: 0,
-          toolbarHeight: 85.h,
-          leadingWidth: 30.h,
-          titleSpacing: 5,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: SvgPicture.asset(drawerIcon),
-            onPressed: () {
-              _key.currentState?.openDrawer();
-            },
-          ),
-          title: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    SizedBox(
-                      height: 33.h,
-                      child: TextFormField(
-                        onTap: () {
-                          setState(() {
-                            _showSearchResults =
-                                _searchController.text.isNotEmpty;
-                          });
-                        },
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                            hintText: 'Search...',
-                            prefixIconConstraints:
-                                BoxConstraints(minWidth: 40.w),
-                            hintStyle: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xffBFBFBF)),
-                            prefixIcon: Padding(
-                              padding: EdgeInsets.only(top: 5.h, left: 8.w),
-                              child: Icon(
-                                Icons.search,
-                                size: 20.sp,
-                              ),
-                            ),
-                            suffixIcon: Container(
-                              width: 70.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(25.r),
-                                    topRight: Radius.circular(25.r)),
-                                color: const Color(0xff362677),
-                              ),
-                              child: Icon(
-                                Icons.search,
-                                size: 30.sp,
-                                color: Colors.white,
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.zero,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.r))),
-                      ),
-                    ),
-                  ],
-                ),
+        appBar: AppbarWidget(
+          scaffoldKey: _key,
+          searchController: _searchController,
+          onCartTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const MessageViewScreen(),
               ),
-              SizedBox(
-                width: 10.w,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const AddToCartScreen()));
-                },
-                child: Container(
-                  height: 30.h,
-                  width: 30.h,
-                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 1.w,
-                      )),
-                  child: SvgPicture.asset(openCart),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
+          onSearchFocusChanged: _onSearchFocusChanged,
         ),
         drawer: const CustomDrawer(),
         body: GestureDetector(
@@ -217,17 +147,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 SizedBox(
                                   width: 20.w,
                                 ),
-                                Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Text(
-                                      'Buy & sell anything.\n you\'ll forget everything else.',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12.sp),
-                                    ),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      Text(
+                                        'Buy & sell anything.\n you\'ll forget everything else.',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.sp),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Image.asset(ImageConstant.shoppingImage)
                               ],

@@ -7,8 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'favourite_list_api.g.dart';
 
 @riverpod
-Future<List<FavouriteProductList>> getFavouriteList(
-    GetFavouriteListRef ref) async {
+Future<FavouriteProductList> getFavouriteList(GetFavouriteListRef ref) async {
   final SmartClinet client = SmartClinet();
 
   try {
@@ -16,19 +15,21 @@ Future<List<FavouriteProductList>> getFavouriteList(
       requestType: RequestType.getWithToken,
       url: ApiConstants.favouriteListUrl,
     );
+
     if (response.statusCode == 200) {
-      final data = response.data['data']['saved_products']['data'] as List;
-      final favouriteList =
-          data.map((item) => FavouriteProductList.fromJson(item)).toList();
-      return favouriteList;
+      final Map<String, dynamic> jsonResponse = response.data;
+        final favouriteProductList = FavouriteProductList.fromJson(jsonResponse);
+
+      return favouriteProductList;
     } else {
-      throw Exception('Failed to load wishlist');
+      throw Exception('Failed to load favourite list: ${response.statusCode}');
     }
   } catch (e) {
-    print('Error fetching favourite list product: $e');
-    throw Exception('Failed to load favourite list products: $e');
+    print('Error fetching favourite list: $e');
+    throw Exception('Failed to load favourite list: $e');
   }
 }
+
 
 @riverpod
 Future<void> deleteFavouriteProduct(
