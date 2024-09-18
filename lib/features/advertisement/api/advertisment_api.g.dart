@@ -1,26 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'my_order_api.dart';
+part of 'advertisment_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getOrderDetailsHash() => r'99771b3359941f36fe22d753fe0307c5a787519e';
+String _$getUsersAdvertisementHash() =>
+    r'06e539c7f3ce61a079671633200da939bf6772c1';
 
-/// See also [getOrderDetails].
-@ProviderFor(getOrderDetails)
-final getOrderDetailsProvider =
-    AutoDisposeFutureProvider<OrderResponse>.internal(
-  getOrderDetails,
-  name: r'getOrderDetailsProvider',
+/// See also [getUsersAdvertisement].
+@ProviderFor(getUsersAdvertisement)
+final getUsersAdvertisementProvider =
+    AutoDisposeFutureProvider<AdvertisementResponse>.internal(
+  getUsersAdvertisement,
+  name: r'getUsersAdvertisementProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$getOrderDetailsHash,
+      : _$getUsersAdvertisementHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GetOrderDetailsRef = AutoDisposeFutureProviderRef<OrderResponse>;
+typedef GetUsersAdvertisementRef
+    = AutoDisposeFutureProviderRef<AdvertisementResponse>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

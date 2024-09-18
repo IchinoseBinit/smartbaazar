@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
@@ -13,7 +12,6 @@ class MessageViewScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final messageThreadProvider = ref.watch(getMessageThreadProvider);
-
     return GenericSafeArea(
       child: Scaffold(
         body: Padding(
@@ -85,7 +83,7 @@ class MessageViewScreen extends ConsumerWidget {
                   data: (messageThread) {
                     final messages = messageThread.result.data;
                     return ListView.separated(
-                      itemCount: messages.length,
+                      itemCount: messages!.length,
                       itemBuilder: (context, index) {
                         final message = messages[index];
                         // Use the getLastMessage provider to fetch the last message for each thread
@@ -97,7 +95,7 @@ class MessageViewScreen extends ConsumerWidget {
                               data: (lastMessage) {
                                 return ListOfMessages(
                                   threadId: message.id.toString(),
-                                  subject: message.subject,
+                                  subject: message.subject!,
                                   body: lastMessage?.body ??
                                       'No messages yet', // Show last message body
                                 );
@@ -145,7 +143,7 @@ class ListOfMessages extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ChatScreen(threadId: threadId),
+            builder: (_) => ChatScreen(threadId: threadId,username: subject),
           ),
         );
       },
@@ -192,7 +190,7 @@ class ListOfMessages extends StatelessWidget {
                 ],
               ),
             ),
-
+            const Spacer(),
             // Status Indicator
             Container(
               height: 12.h,

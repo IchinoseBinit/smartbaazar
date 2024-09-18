@@ -19,9 +19,9 @@ class MessageThreadModel with _$MessageThreadModel {
 @freezed
 class Result with _$Result {
   const factory Result({
-    required List<ThreadData> data,
-    required Links links,
-    required Meta meta,
+    required List<ThreadData>? data,
+    required Links? links,
+    required Meta? meta,
   }) = _Result;
 
   factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
@@ -30,9 +30,9 @@ class Result with _$Result {
 @freezed
 class ThreadData with _$ThreadData {
   const factory ThreadData({
-    required int id,
-     @JsonKey(name: 'post_id')required String postId,
-    required String subject,
+    required int? id,
+     @JsonKey(name: 'post_id')required String? postId,
+    required String? subject,
   }) = _ThreadData;
 
   factory ThreadData.fromJson(Map<String, dynamic> json) =>
@@ -42,8 +42,8 @@ class ThreadData with _$ThreadData {
 @freezed
 class Links with _$Links {
   const factory Links({
-    required String first,
-    required String last,
+    required String? first,
+    required String? last,
     String? prev,
     String? next,
   }) = _Links;
@@ -54,14 +54,14 @@ class Links with _$Links {
 @freezed
 class Meta with _$Meta {
   const factory Meta({
-     @JsonKey(name: 'current_page')required int currentPage,
-    required int from,
-     @JsonKey(name: 'last_page')required int lastPage,
-    required List<PageLinks> links,
-    required String path,
-     @JsonKey(name: 'per_page')required String perPage,
-    required int to,
-    required int total,
+     @JsonKey(name: 'current_page')required int? currentPage,
+    required int? from,
+     @JsonKey(name: 'last_page')required int? lastPage,
+    required List<PageLinks>? links,
+    required String? path,
+     @JsonKey(name: 'per_page')required String? perPage,
+    required int? to,
+    required int? total,
   }) = _Meta;
 
   factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
@@ -71,8 +71,8 @@ class Meta with _$Meta {
 class PageLinks with _$PageLinks {
   const factory PageLinks({
     String? url,
-    required String label,
-    required bool active,
+    required String? label,
+    required bool? active,
   }) = _PageLinks;
 
   factory PageLinks.fromJson(Map<String, dynamic> json) =>

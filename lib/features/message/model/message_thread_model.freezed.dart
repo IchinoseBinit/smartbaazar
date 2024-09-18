@@ -218,9 +218,9 @@ Result _$ResultFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Result {
-  List<ThreadData> get data => throw _privateConstructorUsedError;
-  Links get links => throw _privateConstructorUsedError;
-  Meta get meta => throw _privateConstructorUsedError;
+  List<ThreadData>? get data => throw _privateConstructorUsedError;
+  Links? get links => throw _privateConstructorUsedError;
+  Meta? get meta => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -232,10 +232,10 @@ abstract class $ResultCopyWith<$Res> {
   factory $ResultCopyWith(Result value, $Res Function(Result) then) =
       _$ResultCopyWithImpl<$Res, Result>;
   @useResult
-  $Res call({List<ThreadData> data, Links links, Meta meta});
+  $Res call({List<ThreadData>? data, Links? links, Meta? meta});
 
-  $LinksCopyWith<$Res> get links;
-  $MetaCopyWith<$Res> get meta;
+  $LinksCopyWith<$Res>? get links;
+  $MetaCopyWith<$Res>? get meta;
 }
 
 /// @nodoc
@@ -251,38 +251,46 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
-    Object? links = null,
-    Object? meta = null,
+    Object? data = freezed,
+    Object? links = freezed,
+    Object? meta = freezed,
   }) {
     return _then(_value.copyWith(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<ThreadData>,
-      links: null == links
+              as List<ThreadData>?,
+      links: freezed == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
-              as Links,
-      meta: null == meta
+              as Links?,
+      meta: freezed == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as Meta,
+              as Meta?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $LinksCopyWith<$Res> get links {
-    return $LinksCopyWith<$Res>(_value.links, (value) {
+  $LinksCopyWith<$Res>? get links {
+    if (_value.links == null) {
+      return null;
+    }
+
+    return $LinksCopyWith<$Res>(_value.links!, (value) {
       return _then(_value.copyWith(links: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MetaCopyWith<$Res> get meta {
-    return $MetaCopyWith<$Res>(_value.meta, (value) {
+  $MetaCopyWith<$Res>? get meta {
+    if (_value.meta == null) {
+      return null;
+    }
+
+    return $MetaCopyWith<$Res>(_value.meta!, (value) {
       return _then(_value.copyWith(meta: value) as $Val);
     });
   }
@@ -295,12 +303,12 @@ abstract class _$$ResultImplCopyWith<$Res> implements $ResultCopyWith<$Res> {
       __$$ResultImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ThreadData> data, Links links, Meta meta});
+  $Res call({List<ThreadData>? data, Links? links, Meta? meta});
 
   @override
-  $LinksCopyWith<$Res> get links;
+  $LinksCopyWith<$Res>? get links;
   @override
-  $MetaCopyWith<$Res> get meta;
+  $MetaCopyWith<$Res>? get meta;
 }
 
 /// @nodoc
@@ -314,23 +322,23 @@ class __$$ResultImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
-    Object? links = null,
-    Object? meta = null,
+    Object? data = freezed,
+    Object? links = freezed,
+    Object? meta = freezed,
   }) {
     return _then(_$ResultImpl(
-      data: null == data
+      data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<ThreadData>,
-      links: null == links
+              as List<ThreadData>?,
+      links: freezed == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
-              as Links,
-      meta: null == meta
+              as Links?,
+      meta: freezed == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as Meta,
+              as Meta?,
     ));
   }
 }
@@ -339,7 +347,7 @@ class __$$ResultImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ResultImpl with DiagnosticableTreeMixin implements _Result {
   const _$ResultImpl(
-      {required final List<ThreadData> data,
+      {required final List<ThreadData>? data,
       required this.links,
       required this.meta})
       : _data = data;
@@ -347,18 +355,20 @@ class _$ResultImpl with DiagnosticableTreeMixin implements _Result {
   factory _$ResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$ResultImplFromJson(json);
 
-  final List<ThreadData> _data;
+  final List<ThreadData>? _data;
   @override
-  List<ThreadData> get data {
+  List<ThreadData>? get data {
+    final value = _data;
+    if (value == null) return null;
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_data);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
-  final Links links;
+  final Links? links;
   @override
-  final Meta meta;
+  final Meta? meta;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -406,18 +416,18 @@ class _$ResultImpl with DiagnosticableTreeMixin implements _Result {
 
 abstract class _Result implements Result {
   const factory _Result(
-      {required final List<ThreadData> data,
-      required final Links links,
-      required final Meta meta}) = _$ResultImpl;
+      {required final List<ThreadData>? data,
+      required final Links? links,
+      required final Meta? meta}) = _$ResultImpl;
 
   factory _Result.fromJson(Map<String, dynamic> json) = _$ResultImpl.fromJson;
 
   @override
-  List<ThreadData> get data;
+  List<ThreadData>? get data;
   @override
-  Links get links;
+  Links? get links;
   @override
-  Meta get meta;
+  Meta? get meta;
   @override
   @JsonKey(ignore: true)
   _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
@@ -430,10 +440,10 @@ ThreadData _$ThreadDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ThreadData {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'post_id')
-  String get postId => throw _privateConstructorUsedError;
-  String get subject => throw _privateConstructorUsedError;
+  String? get postId => throw _privateConstructorUsedError;
+  String? get subject => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -447,7 +457,8 @@ abstract class $ThreadDataCopyWith<$Res> {
           ThreadData value, $Res Function(ThreadData) then) =
       _$ThreadDataCopyWithImpl<$Res, ThreadData>;
   @useResult
-  $Res call({int id, @JsonKey(name: 'post_id') String postId, String subject});
+  $Res call(
+      {int? id, @JsonKey(name: 'post_id') String? postId, String? subject});
 }
 
 /// @nodoc
@@ -463,23 +474,23 @@ class _$ThreadDataCopyWithImpl<$Res, $Val extends ThreadData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? postId = null,
-    Object? subject = null,
+    Object? id = freezed,
+    Object? postId = freezed,
+    Object? subject = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      postId: null == postId
+              as int?,
+      postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
-              as String,
-      subject: null == subject
+              as String?,
+      subject: freezed == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -492,7 +503,8 @@ abstract class _$$ThreadDataImplCopyWith<$Res>
       __$$ThreadDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, @JsonKey(name: 'post_id') String postId, String subject});
+  $Res call(
+      {int? id, @JsonKey(name: 'post_id') String? postId, String? subject});
 }
 
 /// @nodoc
@@ -506,23 +518,23 @@ class __$$ThreadDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? postId = null,
-    Object? subject = null,
+    Object? id = freezed,
+    Object? postId = freezed,
+    Object? subject = freezed,
   }) {
     return _then(_$ThreadDataImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      postId: null == postId
+              as int?,
+      postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
-              as String,
-      subject: null == subject
+              as String?,
+      subject: freezed == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -539,12 +551,12 @@ class _$ThreadDataImpl with DiagnosticableTreeMixin implements _ThreadData {
       _$$ThreadDataImplFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
   @JsonKey(name: 'post_id')
-  final String postId;
+  final String? postId;
   @override
-  final String subject;
+  final String? subject;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -591,20 +603,20 @@ class _$ThreadDataImpl with DiagnosticableTreeMixin implements _ThreadData {
 
 abstract class _ThreadData implements ThreadData {
   const factory _ThreadData(
-      {required final int id,
-      @JsonKey(name: 'post_id') required final String postId,
-      required final String subject}) = _$ThreadDataImpl;
+      {required final int? id,
+      @JsonKey(name: 'post_id') required final String? postId,
+      required final String? subject}) = _$ThreadDataImpl;
 
   factory _ThreadData.fromJson(Map<String, dynamic> json) =
       _$ThreadDataImpl.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
   @JsonKey(name: 'post_id')
-  String get postId;
+  String? get postId;
   @override
-  String get subject;
+  String? get subject;
   @override
   @JsonKey(ignore: true)
   _$$ThreadDataImplCopyWith<_$ThreadDataImpl> get copyWith =>
@@ -617,8 +629,8 @@ Links _$LinksFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Links {
-  String get first => throw _privateConstructorUsedError;
-  String get last => throw _privateConstructorUsedError;
+  String? get first => throw _privateConstructorUsedError;
+  String? get last => throw _privateConstructorUsedError;
   String? get prev => throw _privateConstructorUsedError;
   String? get next => throw _privateConstructorUsedError;
 
@@ -632,7 +644,7 @@ abstract class $LinksCopyWith<$Res> {
   factory $LinksCopyWith(Links value, $Res Function(Links) then) =
       _$LinksCopyWithImpl<$Res, Links>;
   @useResult
-  $Res call({String first, String last, String? prev, String? next});
+  $Res call({String? first, String? last, String? prev, String? next});
 }
 
 /// @nodoc
@@ -648,20 +660,20 @@ class _$LinksCopyWithImpl<$Res, $Val extends Links>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? first = null,
-    Object? last = null,
+    Object? first = freezed,
+    Object? last = freezed,
     Object? prev = freezed,
     Object? next = freezed,
   }) {
     return _then(_value.copyWith(
-      first: null == first
+      first: freezed == first
           ? _value.first
           : first // ignore: cast_nullable_to_non_nullable
-              as String,
-      last: null == last
+              as String?,
+      last: freezed == last
           ? _value.last
           : last // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       prev: freezed == prev
           ? _value.prev
           : prev // ignore: cast_nullable_to_non_nullable
@@ -681,7 +693,7 @@ abstract class _$$LinksImplCopyWith<$Res> implements $LinksCopyWith<$Res> {
       __$$LinksImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String first, String last, String? prev, String? next});
+  $Res call({String? first, String? last, String? prev, String? next});
 }
 
 /// @nodoc
@@ -695,20 +707,20 @@ class __$$LinksImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? first = null,
-    Object? last = null,
+    Object? first = freezed,
+    Object? last = freezed,
     Object? prev = freezed,
     Object? next = freezed,
   }) {
     return _then(_$LinksImpl(
-      first: null == first
+      first: freezed == first
           ? _value.first
           : first // ignore: cast_nullable_to_non_nullable
-              as String,
-      last: null == last
+              as String?,
+      last: freezed == last
           ? _value.last
           : last // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       prev: freezed == prev
           ? _value.prev
           : prev // ignore: cast_nullable_to_non_nullable
@@ -731,9 +743,9 @@ class _$LinksImpl with DiagnosticableTreeMixin implements _Links {
       _$$LinksImplFromJson(json);
 
   @override
-  final String first;
+  final String? first;
   @override
-  final String last;
+  final String? last;
   @override
   final String? prev;
   @override
@@ -786,17 +798,17 @@ class _$LinksImpl with DiagnosticableTreeMixin implements _Links {
 
 abstract class _Links implements Links {
   const factory _Links(
-      {required final String first,
-      required final String last,
+      {required final String? first,
+      required final String? last,
       final String? prev,
       final String? next}) = _$LinksImpl;
 
   factory _Links.fromJson(Map<String, dynamic> json) = _$LinksImpl.fromJson;
 
   @override
-  String get first;
+  String? get first;
   @override
-  String get last;
+  String? get last;
   @override
   String? get prev;
   @override
@@ -814,16 +826,16 @@ Meta _$MetaFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Meta {
   @JsonKey(name: 'current_page')
-  int get currentPage => throw _privateConstructorUsedError;
-  int get from => throw _privateConstructorUsedError;
+  int? get currentPage => throw _privateConstructorUsedError;
+  int? get from => throw _privateConstructorUsedError;
   @JsonKey(name: 'last_page')
-  int get lastPage => throw _privateConstructorUsedError;
-  List<PageLinks> get links => throw _privateConstructorUsedError;
-  String get path => throw _privateConstructorUsedError;
+  int? get lastPage => throw _privateConstructorUsedError;
+  List<PageLinks>? get links => throw _privateConstructorUsedError;
+  String? get path => throw _privateConstructorUsedError;
   @JsonKey(name: 'per_page')
-  String get perPage => throw _privateConstructorUsedError;
-  int get to => throw _privateConstructorUsedError;
-  int get total => throw _privateConstructorUsedError;
+  String? get perPage => throw _privateConstructorUsedError;
+  int? get to => throw _privateConstructorUsedError;
+  int? get total => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -836,14 +848,14 @@ abstract class $MetaCopyWith<$Res> {
       _$MetaCopyWithImpl<$Res, Meta>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'current_page') int currentPage,
-      int from,
-      @JsonKey(name: 'last_page') int lastPage,
-      List<PageLinks> links,
-      String path,
-      @JsonKey(name: 'per_page') String perPage,
-      int to,
-      int total});
+      {@JsonKey(name: 'current_page') int? currentPage,
+      int? from,
+      @JsonKey(name: 'last_page') int? lastPage,
+      List<PageLinks>? links,
+      String? path,
+      @JsonKey(name: 'per_page') String? perPage,
+      int? to,
+      int? total});
 }
 
 /// @nodoc
@@ -859,48 +871,48 @@ class _$MetaCopyWithImpl<$Res, $Val extends Meta>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = null,
-    Object? from = null,
-    Object? lastPage = null,
-    Object? links = null,
-    Object? path = null,
-    Object? perPage = null,
-    Object? to = null,
-    Object? total = null,
+    Object? currentPage = freezed,
+    Object? from = freezed,
+    Object? lastPage = freezed,
+    Object? links = freezed,
+    Object? path = freezed,
+    Object? perPage = freezed,
+    Object? to = freezed,
+    Object? total = freezed,
   }) {
     return _then(_value.copyWith(
-      currentPage: null == currentPage
+      currentPage: freezed == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      from: null == from
+              as int?,
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as int,
-      lastPage: null == lastPage
+              as int?,
+      lastPage: freezed == lastPage
           ? _value.lastPage
           : lastPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      links: null == links
+              as int?,
+      links: freezed == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
-              as List<PageLinks>,
-      path: null == path
+              as List<PageLinks>?,
+      path: freezed == path
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      perPage: null == perPage
+              as String?,
+      perPage: freezed == perPage
           ? _value.perPage
           : perPage // ignore: cast_nullable_to_non_nullable
-              as String,
-      to: null == to
+              as String?,
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as int,
-      total: null == total
+              as int?,
+      total: freezed == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -913,14 +925,14 @@ abstract class _$$MetaImplCopyWith<$Res> implements $MetaCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'current_page') int currentPage,
-      int from,
-      @JsonKey(name: 'last_page') int lastPage,
-      List<PageLinks> links,
-      String path,
-      @JsonKey(name: 'per_page') String perPage,
-      int to,
-      int total});
+      {@JsonKey(name: 'current_page') int? currentPage,
+      int? from,
+      @JsonKey(name: 'last_page') int? lastPage,
+      List<PageLinks>? links,
+      String? path,
+      @JsonKey(name: 'per_page') String? perPage,
+      int? to,
+      int? total});
 }
 
 /// @nodoc
@@ -933,48 +945,48 @@ class __$$MetaImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = null,
-    Object? from = null,
-    Object? lastPage = null,
-    Object? links = null,
-    Object? path = null,
-    Object? perPage = null,
-    Object? to = null,
-    Object? total = null,
+    Object? currentPage = freezed,
+    Object? from = freezed,
+    Object? lastPage = freezed,
+    Object? links = freezed,
+    Object? path = freezed,
+    Object? perPage = freezed,
+    Object? to = freezed,
+    Object? total = freezed,
   }) {
     return _then(_$MetaImpl(
-      currentPage: null == currentPage
+      currentPage: freezed == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      from: null == from
+              as int?,
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as int,
-      lastPage: null == lastPage
+              as int?,
+      lastPage: freezed == lastPage
           ? _value.lastPage
           : lastPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      links: null == links
+              as int?,
+      links: freezed == links
           ? _value._links
           : links // ignore: cast_nullable_to_non_nullable
-              as List<PageLinks>,
-      path: null == path
+              as List<PageLinks>?,
+      path: freezed == path
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      perPage: null == perPage
+              as String?,
+      perPage: freezed == perPage
           ? _value.perPage
           : perPage // ignore: cast_nullable_to_non_nullable
-              as String,
-      to: null == to
+              as String?,
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as int,
-      total: null == total
+              as int?,
+      total: freezed == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -986,7 +998,7 @@ class _$MetaImpl with DiagnosticableTreeMixin implements _Meta {
       {@JsonKey(name: 'current_page') required this.currentPage,
       required this.from,
       @JsonKey(name: 'last_page') required this.lastPage,
-      required final List<PageLinks> links,
+      required final List<PageLinks>? links,
       required this.path,
       @JsonKey(name: 'per_page') required this.perPage,
       required this.to,
@@ -998,29 +1010,31 @@ class _$MetaImpl with DiagnosticableTreeMixin implements _Meta {
 
   @override
   @JsonKey(name: 'current_page')
-  final int currentPage;
+  final int? currentPage;
   @override
-  final int from;
+  final int? from;
   @override
   @JsonKey(name: 'last_page')
-  final int lastPage;
-  final List<PageLinks> _links;
+  final int? lastPage;
+  final List<PageLinks>? _links;
   @override
-  List<PageLinks> get links {
+  List<PageLinks>? get links {
+    final value = _links;
+    if (value == null) return null;
     if (_links is EqualUnmodifiableListView) return _links;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_links);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
-  final String path;
+  final String? path;
   @override
   @JsonKey(name: 'per_page')
-  final String perPage;
+  final String? perPage;
   @override
-  final int to;
+  final int? to;
   @override
-  final int total;
+  final int? total;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1080,36 +1094,36 @@ class _$MetaImpl with DiagnosticableTreeMixin implements _Meta {
 
 abstract class _Meta implements Meta {
   const factory _Meta(
-      {@JsonKey(name: 'current_page') required final int currentPage,
-      required final int from,
-      @JsonKey(name: 'last_page') required final int lastPage,
-      required final List<PageLinks> links,
-      required final String path,
-      @JsonKey(name: 'per_page') required final String perPage,
-      required final int to,
-      required final int total}) = _$MetaImpl;
+      {@JsonKey(name: 'current_page') required final int? currentPage,
+      required final int? from,
+      @JsonKey(name: 'last_page') required final int? lastPage,
+      required final List<PageLinks>? links,
+      required final String? path,
+      @JsonKey(name: 'per_page') required final String? perPage,
+      required final int? to,
+      required final int? total}) = _$MetaImpl;
 
   factory _Meta.fromJson(Map<String, dynamic> json) = _$MetaImpl.fromJson;
 
   @override
   @JsonKey(name: 'current_page')
-  int get currentPage;
+  int? get currentPage;
   @override
-  int get from;
+  int? get from;
   @override
   @JsonKey(name: 'last_page')
-  int get lastPage;
+  int? get lastPage;
   @override
-  List<PageLinks> get links;
+  List<PageLinks>? get links;
   @override
-  String get path;
+  String? get path;
   @override
   @JsonKey(name: 'per_page')
-  String get perPage;
+  String? get perPage;
   @override
-  int get to;
+  int? get to;
   @override
-  int get total;
+  int? get total;
   @override
   @JsonKey(ignore: true)
   _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
@@ -1123,8 +1137,8 @@ PageLinks _$PageLinksFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PageLinks {
   String? get url => throw _privateConstructorUsedError;
-  String get label => throw _privateConstructorUsedError;
-  bool get active => throw _privateConstructorUsedError;
+  String? get label => throw _privateConstructorUsedError;
+  bool? get active => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1137,7 +1151,7 @@ abstract class $PageLinksCopyWith<$Res> {
   factory $PageLinksCopyWith(PageLinks value, $Res Function(PageLinks) then) =
       _$PageLinksCopyWithImpl<$Res, PageLinks>;
   @useResult
-  $Res call({String? url, String label, bool active});
+  $Res call({String? url, String? label, bool? active});
 }
 
 /// @nodoc
@@ -1154,22 +1168,22 @@ class _$PageLinksCopyWithImpl<$Res, $Val extends PageLinks>
   @override
   $Res call({
     Object? url = freezed,
-    Object? label = null,
-    Object? active = null,
+    Object? label = freezed,
+    Object? active = freezed,
   }) {
     return _then(_value.copyWith(
       url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
-      label: null == label
+      label: freezed == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      active: null == active
+              as String?,
+      active: freezed == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ) as $Val);
   }
 }
@@ -1182,7 +1196,7 @@ abstract class _$$PageLinksImplCopyWith<$Res>
       __$$PageLinksImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? url, String label, bool active});
+  $Res call({String? url, String? label, bool? active});
 }
 
 /// @nodoc
@@ -1197,22 +1211,22 @@ class __$$PageLinksImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? url = freezed,
-    Object? label = null,
-    Object? active = null,
+    Object? label = freezed,
+    Object? active = freezed,
   }) {
     return _then(_$PageLinksImpl(
       url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
-      label: null == label
+      label: freezed == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      active: null == active
+              as String?,
+      active: freezed == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ));
   }
 }
@@ -1228,9 +1242,9 @@ class _$PageLinksImpl with DiagnosticableTreeMixin implements _PageLinks {
   @override
   final String? url;
   @override
-  final String label;
+  final String? label;
   @override
-  final bool active;
+  final bool? active;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1278,8 +1292,8 @@ class _$PageLinksImpl with DiagnosticableTreeMixin implements _PageLinks {
 abstract class _PageLinks implements PageLinks {
   const factory _PageLinks(
       {final String? url,
-      required final String label,
-      required final bool active}) = _$PageLinksImpl;
+      required final String? label,
+      required final bool? active}) = _$PageLinksImpl;
 
   factory _PageLinks.fromJson(Map<String, dynamic> json) =
       _$PageLinksImpl.fromJson;
@@ -1287,9 +1301,9 @@ abstract class _PageLinks implements PageLinks {
   @override
   String? get url;
   @override
-  String get label;
+  String? get label;
   @override
-  bool get active;
+  bool? get active;
   @override
   @JsonKey(ignore: true)
   _$$PageLinksImplCopyWith<_$PageLinksImpl> get copyWith =>

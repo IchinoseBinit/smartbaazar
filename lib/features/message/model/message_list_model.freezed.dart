@@ -429,7 +429,9 @@ MessageData _$MessageDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MessageData {
   int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'thread_id')
   String? get threadId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
   String? get filename => throw _privateConstructorUsedError;
@@ -448,8 +450,8 @@ abstract class $MessageDataCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String? threadId,
-      String? userId,
+      @JsonKey(name: 'thread_id') String? threadId,
+      @JsonKey(name: 'user_id') String? userId,
       String? body,
       String? filename});
 }
@@ -508,8 +510,8 @@ abstract class _$$MessageDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
-      String? threadId,
-      String? userId,
+      @JsonKey(name: 'thread_id') String? threadId,
+      @JsonKey(name: 'user_id') String? userId,
       String? body,
       String? filename});
 }
@@ -561,8 +563,8 @@ class __$$MessageDataImplCopyWithImpl<$Res>
 class _$MessageDataImpl implements _MessageData {
   const _$MessageDataImpl(
       {required this.id,
-      required this.threadId,
-      required this.userId,
+      @JsonKey(name: 'thread_id') required this.threadId,
+      @JsonKey(name: 'user_id') required this.userId,
       required this.body,
       this.filename});
 
@@ -572,8 +574,10 @@ class _$MessageDataImpl implements _MessageData {
   @override
   final int? id;
   @override
+  @JsonKey(name: 'thread_id')
   final String? threadId;
   @override
+  @JsonKey(name: 'user_id')
   final String? userId;
   @override
   final String? body;
@@ -621,8 +625,8 @@ class _$MessageDataImpl implements _MessageData {
 abstract class _MessageData implements MessageData {
   const factory _MessageData(
       {required final int? id,
-      required final String? threadId,
-      required final String? userId,
+      @JsonKey(name: 'thread_id') required final String? threadId,
+      @JsonKey(name: 'user_id') required final String? userId,
       required final String? body,
       final String? filename}) = _$MessageDataImpl;
 
@@ -632,8 +636,10 @@ abstract class _MessageData implements MessageData {
   @override
   int? get id;
   @override
+  @JsonKey(name: 'thread_id')
   String? get threadId;
   @override
+  @JsonKey(name: 'user_id')
   String? get userId;
   @override
   String? get body;
@@ -840,11 +846,14 @@ PaginationMeta _$PaginationMetaFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PaginationMeta {
+  @JsonKey(name: 'current_page')
   int? get currentPage => throw _privateConstructorUsedError;
   int? get from => throw _privateConstructorUsedError;
+  @JsonKey(name: 'last_page')
   int? get lastPage => throw _privateConstructorUsedError;
   List<PageLink>? get links => throw _privateConstructorUsedError;
   String? get path => throw _privateConstructorUsedError;
+  @JsonKey(name: 'per_page')
   String? get perPage => throw _privateConstructorUsedError;
   int? get to => throw _privateConstructorUsedError;
   int? get total => throw _privateConstructorUsedError;
@@ -862,12 +871,12 @@ abstract class $PaginationMetaCopyWith<$Res> {
       _$PaginationMetaCopyWithImpl<$Res, PaginationMeta>;
   @useResult
   $Res call(
-      {int? currentPage,
+      {@JsonKey(name: 'current_page') int? currentPage,
       int? from,
-      int? lastPage,
+      @JsonKey(name: 'last_page') int? lastPage,
       List<PageLink>? links,
       String? path,
-      String? perPage,
+      @JsonKey(name: 'per_page') String? perPage,
       int? to,
       int? total});
 }
@@ -940,12 +949,12 @@ abstract class _$$PaginationMetaImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int? currentPage,
+      {@JsonKey(name: 'current_page') int? currentPage,
       int? from,
-      int? lastPage,
+      @JsonKey(name: 'last_page') int? lastPage,
       List<PageLink>? links,
       String? path,
-      String? perPage,
+      @JsonKey(name: 'per_page') String? perPage,
       int? to,
       int? total});
 }
@@ -1011,12 +1020,12 @@ class __$$PaginationMetaImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PaginationMetaImpl implements _PaginationMeta {
   const _$PaginationMetaImpl(
-      {required this.currentPage,
+      {@JsonKey(name: 'current_page') required this.currentPage,
       required this.from,
-      required this.lastPage,
+      @JsonKey(name: 'last_page') required this.lastPage,
       required final List<PageLink>? links,
       required this.path,
-      required this.perPage,
+      @JsonKey(name: 'per_page') required this.perPage,
       required this.to,
       required this.total})
       : _links = links;
@@ -1025,10 +1034,12 @@ class _$PaginationMetaImpl implements _PaginationMeta {
       _$$PaginationMetaImplFromJson(json);
 
   @override
+  @JsonKey(name: 'current_page')
   final int? currentPage;
   @override
   final int? from;
   @override
+  @JsonKey(name: 'last_page')
   final int? lastPage;
   final List<PageLink>? _links;
   @override
@@ -1043,6 +1054,7 @@ class _$PaginationMetaImpl implements _PaginationMeta {
   @override
   final String? path;
   @override
+  @JsonKey(name: 'per_page')
   final String? perPage;
   @override
   final int? to;
@@ -1093,12 +1105,12 @@ class _$PaginationMetaImpl implements _PaginationMeta {
 
 abstract class _PaginationMeta implements PaginationMeta {
   const factory _PaginationMeta(
-      {required final int? currentPage,
+      {@JsonKey(name: 'current_page') required final int? currentPage,
       required final int? from,
-      required final int? lastPage,
+      @JsonKey(name: 'last_page') required final int? lastPage,
       required final List<PageLink>? links,
       required final String? path,
-      required final String? perPage,
+      @JsonKey(name: 'per_page') required final String? perPage,
       required final int? to,
       required final int? total}) = _$PaginationMetaImpl;
 
@@ -1106,16 +1118,19 @@ abstract class _PaginationMeta implements PaginationMeta {
       _$PaginationMetaImpl.fromJson;
 
   @override
+  @JsonKey(name: 'current_page')
   int? get currentPage;
   @override
   int? get from;
   @override
+  @JsonKey(name: 'last_page')
   int? get lastPage;
   @override
   List<PageLink>? get links;
   @override
   String? get path;
   @override
+  @JsonKey(name: 'per_page')
   String? get perPage;
   @override
   int? get to;

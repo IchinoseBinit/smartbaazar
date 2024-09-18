@@ -31,8 +31,8 @@ class MessageResult with _$MessageResult {
 class MessageData with _$MessageData {
   const factory MessageData({
     required int? id,
-    required String? threadId,
-    required String? userId,
+    @JsonKey(name: 'thread_id')required String? threadId,
+    @JsonKey(name: 'user_id')required String? userId,
     required String? body,
     String? filename,
   }) = _MessageData;
@@ -57,12 +57,12 @@ class PaginationLinks with _$PaginationLinks {
 @freezed
 class PaginationMeta with _$PaginationMeta {
   const factory PaginationMeta({
-    required int? currentPage,
+    @JsonKey(name: 'current_page')required int? currentPage,
     required int? from,
-    required int? lastPage,
+     @JsonKey(name: 'last_page') required int? lastPage,
     required List<PageLink>? links,
     required String? path,
-    required String? perPage,
+     @JsonKey(name: 'per_page')required String? perPage,
     required int? to,
     required int? total,
   }) = _PaginationMeta;

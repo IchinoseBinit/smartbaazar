@@ -7,12 +7,14 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+import 'package:smartbazar/features/my_order/model/my_order_model.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class MyOrderDetailsScreen extends ConsumerStatefulWidget {
-  const MyOrderDetailsScreen({super.key});
+  final dynamic order; // Assuming `order` is a Map or a model class
+  const MyOrderDetailsScreen({super.key, required this.order});
 
   @override
   ConsumerState<MyOrderDetailsScreen> createState() =>
@@ -44,6 +46,8 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final order = widget.order; // Access the order data
+
     return GenericSafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),
@@ -59,9 +63,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                 child: Row(
                   children: [
                     const Icon(Icons.shopping_cart),
-                    SizedBox(
-                      width: 8.w,
-                    ),
+                    SizedBox(width: 8.w),
                     Text(
                       'Order Details',
                       style: TextStyle(
@@ -85,37 +87,42 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                 thickness: 2.w,
                 color: const Color(0xffD9D9D9),
               ),
-              SizedBox(
-                height: 10.h,
+              SizedBox(height: 10.h),
+              PayementDetailsWidget(
+                title: 'Product',
+                description: order.postTitle ?? 'N/A',
               ),
-              const PayementDetailsWidget(
-                  title: 'Product', description: 'Acer Aspire 5 A515-56-32Dk'),
-              const PayementDetailsWidget(
-                  title: 'Vendor Name', description: 'Tech Store/ 985100000'),
-              const PayementDetailsWidget(title: 'Quantity', description: '1'),
-              const PayementDetailsWidget(title: 'Rate', description: '60'),
-              const PayementDetailsWidget(
+              PayementDetailsWidget(
+                title: 'Vendor Name',
+                description:
+                    '${order.vendorName} / ${order.vendorContact ?? ''}',
+              ),
+              PayementDetailsWidget(
+                title: 'Quantity',
+                description: order.qty?.toString() ?? 'N/A',
+              ),
+              PayementDetailsWidget(
+                title: 'Rate',
+                description: order.price?.toString() ?? 'N/A',
+              ),
+              PayementDetailsWidget(
                 title: 'Total',
-                description: 'Rs. 60,000',
-                textStyle: TextStyle(fontWeight: FontWeight.w700),
+                description: 'Rs. ${order.total?.toString() ?? 'N/A'}',
+                textStyle: const TextStyle(fontWeight: FontWeight.w700),
               ),
-              const PayementDetailsWidget(
-                  title: 'Shipping', description: 'Rs. 200'),
-              const PayementDetailsWidget(
+              PayementDetailsWidget(
+                title: 'Shipping',
+                description: 'Rs. ${order.shippingCharge?.toString() ?? 'N/A'}',
+              ),
+              PayementDetailsWidget(
                 title: 'Grand Total',
-                description: 'Rs. 60,200',
-                textStyle: TextStyle(fontWeight: FontWeight.w700),
+                description:
+                    'Rs. ${(double.tryParse(order.total?.toString() ?? '0')! + double.tryParse(order.shippingCharge?.toString() ?? '0')!).toStringAsFixed(2)}',
+                textStyle: const TextStyle(fontWeight: FontWeight.w700),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
+              SizedBox(height: 10.h),
+              Divider(thickness: 2.w, color: const Color(0xffD9D9D9)),
+              SizedBox(height: 10.h),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 16.w),
                 child: Column(
@@ -124,14 +131,14 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Payement Mode',
+                          'Payment Mode',
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff36383C)),
                         ),
                         Text(
-                          'COD',
+                          order.paymentMethod ?? 'N/A',
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
@@ -139,9 +146,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
+                    SizedBox(height: 5.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -165,63 +170,15 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                               context,
                               title: 'Status',
                               heading: 'Track Order',
-                              buttonTitle: 'UnderStood',
+                              buttonTitle: 'Understood',
                               callback: () {},
-                              widget: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Order ID',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        '12345',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Status',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        'Order Cancelled',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              widget: TrackOrderDetails(order: order),
                             );
                           },
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
+                    SizedBox(height: 5.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -241,185 +198,24 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                           bgColor: const Color(0xff362677),
                           title: 'Return',
                           onPressed: () {
-                            CustomDialougeBox().orderDetailDialouge(context,
-                                buttonTitle: 'Submit',
-                                callback: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            const MyReturnScreen())),
-                                widget: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CreateListingCardWidget(
-                                        child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Issue',
-                                          style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        // Spacer(),
-                                        SizedBox(
-                                          width: 80.w,
-                                        ),
-                                        Expanded(
-                                          child: CustomDropdownButton(
-                                            items: typeListItems,
-                                            dropdownValue: dropdownvalue,
-                                            color: const Color(0xffADADAD),
-                                            onChanged: (TypeList? newValue) {
-                                              setState(() {
-                                                dropdownvalue = newValue!;
-                                              });
-                                            },
-                                            getItemLabel: (TypeList item) =>
-                                                item.typeName,
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CreateListingCardWidget(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Message',
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          // Spacer(),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          TextField(
-                                            decoration:
-                                                InputDecoration.collapsed(
-                                                    hintText:
-                                                        'Describe your issue',
-                                                    hintStyle: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16.sp,
-                                                        color: const Color(
-                                                            0xffADADAD))),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CreateListingCardWidget(
-                                        child: Row(
-                                      children: [
-                                        Text(
-                                          'Street Address',
-                                          style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        const Spacer(),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration:
-                                                InputDecoration.collapsed(
-                                                    hintText: 'Select Loaction',
-                                                    hintStyle: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16.sp,
-                                                        color: const Color(
-                                                            0xffADADAD))),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CreateListingCardWidget(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Screenshot of the issue',
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          // Spacer(),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                top: 6.h,
-                                                left: 12.w,
-                                                bottom: 7.h),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.r),
-                                                color: const Color(0xffEDECEC)),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  'Choose File',
-                                                  style: TextStyle(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: const Color(
-                                                          0xff36383C)),
-                                                ),
-                                                SizedBox(
-                                                  width: 7.w,
-                                                ),
-                                                Text(
-                                                  "|",
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: const Color(
-                                                          0xffADADAD)),
-                                                ),
-                                                SizedBox(
-                                                  width: 11.w,
-                                                ),
-                                                Text(
-                                                  'No File Chosen',
-                                                  style: TextStyle(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      // color: Color(0xff36383C)
-                                                      color: Colors.red),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                title: 'Action',
-                                heading: 'Return Products');
+                            CustomDialougeBox().orderDetailDialouge(
+                              context,
+                              buttonTitle: 'Submit',
+                              callback: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const MyReturnScreen())),
+                              widget: ReturnProductDetails(
+                                typeListItems: typeListItems,
+                                onDropdownChanged: (TypeList value) {
+                                  setState(() {
+                                    dropdownvalue = value;
+                                  });
+                                },
+                              ),
+                              title: 'Action',
+                              heading: 'Return Products',
+                            );
                           },
                         )
                       ],
@@ -427,13 +223,8 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
+              SizedBox(height: 10.h),
+              Divider(thickness: 2.w, color: const Color(0xffD9D9D9)),
             ],
           ),
         ),
@@ -448,70 +239,312 @@ class CustomDialougeBox {
       required String title,
       required String buttonTitle,
       required VoidCallback callback,
-      required String heading}) async {
+      required String heading,
+      double dialogWidth = 0.7}) async {
     return showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        titlePadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
-        contentPadding: EdgeInsets.zero,
-        backgroundColor: Colors.white,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+      builder: (BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        return AlertDialog(
+          insetPadding: EdgeInsets.zero,
+          clipBehavior: Clip.hardEdge,
+          contentPadding: EdgeInsets.zero,
+          backgroundColor: Colors.white,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                  InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(Icons.close))
+                ],
+              ),
+              Text(
+                heading,
+                style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff362677)),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              widget,
+              SizedBox(
+                height: 10.h,
+              ),
+              Divider(
+                thickness: 2.w,
+                color: const Color(0xffD9D9D9),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              GeneralTextButton(
+                bgColor: const Color(0xff362677),
+                fgColor: Colors.white,
+                width: screenWidth * dialogWidth,
+                title: buttonTitle,
+                onPressed: () {
+                  callback();
+                },
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class TrackOrderDetails extends StatelessWidget {
+  final dynamic order;
+
+  const TrackOrderDetails({Key? key, required this.order}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.close))
-              ],
+            Text(
+              'Order ID',
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
             Text(
-              heading,
+              order.orderId ?? 'N/A', // Replace with actual order ID
               style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xff362677)),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            widget,
-            // ,
-            SizedBox(
-              height: 10.h,
-            ),
-            Divider(
-              thickness: 2.w,
-              color: const Color(0xffD9D9D9),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            GeneralTextButton(
-              bgColor: const Color(0xff362677),
-              fgColor: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              title: buttonTitle,
-              onPressed: () {
-                callback();
-              },
-            ),
-            SizedBox(
-              height: 10.h,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
           ],
         ),
+        SizedBox(height: 5.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Status',
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+            Text(
+              order.status ?? 'N/A', // Replace with actual order status
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class ReturnProductDetails extends StatefulWidget {
+  final List<TypeList> typeListItems;
+  final Function(TypeList) onDropdownChanged;
+
+  const ReturnProductDetails({
+    Key? key,
+    required this.typeListItems,
+    required this.onDropdownChanged,
+  }) : super(key: key);
+
+  @override
+  _ReturnProductDetailsState createState() => _ReturnProductDetailsState();
+}
+
+class _ReturnProductDetailsState extends State<ReturnProductDetails> {
+  TypeList? dropdownValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      // Add scrollable feature here
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CreateListingCardWidget(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Issue',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                SizedBox(width: 80.w),
+                Expanded(
+                  child: CustomDropdownButton(
+                    items: widget.typeListItems,
+                    dropdownValue: dropdownValue,
+                    color: const Color(0xffADADAD),
+                    onChanged: (TypeList? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                        widget.onDropdownChanged(newValue);
+                      });
+                    },
+                    getItemLabel: (TypeList item) => item.typeName,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 5.h),
+          CreateListingCardWidget(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Message',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                SizedBox(height: 10.h),
+                TextField(
+                  maxLines: null, // Allow the text field to expand as necessary
+                  decoration: InputDecoration.collapsed(
+                      hintText: 'Describe your issue',
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.sp,
+                          color: const Color(0xffADADAD))),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 5.h),
+          CreateListingCardWidget(
+            child: Row(
+              children: [
+                Text(
+                  'City Address',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                const Spacer(),
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration.collapsed(
+                        hintText: 'Select Location',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: const Color(0xffADADAD))),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 5.h),
+          CreateListingCardWidget(
+            child: Row(
+              children: [
+                Text(
+                  'Street Address',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                const Spacer(),
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration.collapsed(
+                        hintText: 'Select Location',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: const Color(0xffADADAD))),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 5.h),
+          CreateListingCardWidget(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Screenshot of the issue',
+                  style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+                SizedBox(height: 10.h),
+                Container(
+                  padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: const Color(0xffEDECEC)),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Choose File',
+                        style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff36383C)),
+                      ),
+                      SizedBox(width: 7.w),
+                      Text(
+                        "|",
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xffADADAD)),
+                      ),
+                      SizedBox(width: 11.w),
+                      Text(
+                        'No File Chosen',
+                        style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

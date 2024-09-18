@@ -23,11 +23,15 @@ Map<String, dynamic> _$$MessageThreadModelImplToJson(
     };
 
 _$ResultImpl _$$ResultImplFromJson(Map<String, dynamic> json) => _$ResultImpl(
-      data: (json['data'] as List<dynamic>)
-          .map((e) => ThreadData.fromJson(e as Map<String, dynamic>))
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => ThreadData.fromJson(e as Map<String, dynamic>))
           .toList(),
-      links: Links.fromJson(json['links'] as Map<String, dynamic>),
-      meta: Meta.fromJson(json['meta'] as Map<String, dynamic>),
+      links: json['links'] == null
+          ? null
+          : Links.fromJson(json['links'] as Map<String, dynamic>),
+      meta: json['meta'] == null
+          ? null
+          : Meta.fromJson(json['meta'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$ResultImplToJson(_$ResultImpl instance) =>
@@ -39,9 +43,9 @@ Map<String, dynamic> _$$ResultImplToJson(_$ResultImpl instance) =>
 
 _$ThreadDataImpl _$$ThreadDataImplFromJson(Map<String, dynamic> json) =>
     _$ThreadDataImpl(
-      id: (json['id'] as num).toInt(),
-      postId: json['post_id'] as String,
-      subject: json['subject'] as String,
+      id: (json['id'] as num?)?.toInt(),
+      postId: json['post_id'] as String?,
+      subject: json['subject'] as String?,
     );
 
 Map<String, dynamic> _$$ThreadDataImplToJson(_$ThreadDataImpl instance) =>
@@ -52,8 +56,8 @@ Map<String, dynamic> _$$ThreadDataImplToJson(_$ThreadDataImpl instance) =>
     };
 
 _$LinksImpl _$$LinksImplFromJson(Map<String, dynamic> json) => _$LinksImpl(
-      first: json['first'] as String,
-      last: json['last'] as String,
+      first: json['first'] as String?,
+      last: json['last'] as String?,
       prev: json['prev'] as String?,
       next: json['next'] as String?,
     );
@@ -67,16 +71,16 @@ Map<String, dynamic> _$$LinksImplToJson(_$LinksImpl instance) =>
     };
 
 _$MetaImpl _$$MetaImplFromJson(Map<String, dynamic> json) => _$MetaImpl(
-      currentPage: (json['current_page'] as num).toInt(),
-      from: (json['from'] as num).toInt(),
-      lastPage: (json['last_page'] as num).toInt(),
-      links: (json['links'] as List<dynamic>)
-          .map((e) => PageLinks.fromJson(e as Map<String, dynamic>))
+      currentPage: (json['current_page'] as num?)?.toInt(),
+      from: (json['from'] as num?)?.toInt(),
+      lastPage: (json['last_page'] as num?)?.toInt(),
+      links: (json['links'] as List<dynamic>?)
+          ?.map((e) => PageLinks.fromJson(e as Map<String, dynamic>))
           .toList(),
-      path: json['path'] as String,
-      perPage: json['per_page'] as String,
-      to: (json['to'] as num).toInt(),
-      total: (json['total'] as num).toInt(),
+      path: json['path'] as String?,
+      perPage: json['per_page'] as String?,
+      to: (json['to'] as num?)?.toInt(),
+      total: (json['total'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$MetaImplToJson(_$MetaImpl instance) =>
@@ -94,8 +98,8 @@ Map<String, dynamic> _$$MetaImplToJson(_$MetaImpl instance) =>
 _$PageLinksImpl _$$PageLinksImplFromJson(Map<String, dynamic> json) =>
     _$PageLinksImpl(
       url: json['url'] as String?,
-      label: json['label'] as String,
-      active: json['active'] as bool,
+      label: json['label'] as String?,
+      active: json['active'] as bool?,
     );
 
 Map<String, dynamic> _$$PageLinksImplToJson(_$PageLinksImpl instance) =>

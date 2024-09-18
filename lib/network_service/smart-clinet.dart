@@ -172,7 +172,12 @@ class SmartClinet {
               url,
               data: parameter,
               options: Options(
-                headers: headingWithToken,
+                headers: {
+                  'Authorization': 'Bearer $token',
+                  'Content-Type': 'multipart/form-data',
+                  'X-AppApiToken': 'Yala@Techies_Nepal',
+                  'Connection': 'Keep-Alive',
+                },
               ),
             )
             .timeout(timeOutDuration);
@@ -185,6 +190,12 @@ class SmartClinet {
                   parameter, // Optional: use if you need to pass body data in delete request
             )
             .timeout(timeOutDuration);
+      case RequestType.putWithToken:
+        return _client.put(
+          url,
+          options: Options(headers: headingWithToken),
+          data: parameter,
+        );
     }
   }
 }

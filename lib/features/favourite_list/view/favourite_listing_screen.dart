@@ -198,17 +198,17 @@ class _FavouriteListProductDetailsState
                   SizedBox(
                     width: 7.w,
                   ),
-                  // Container(
-                  //     padding: EdgeInsets.only(
-                  //         top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(10.r),
-                  //       color: const Color(0xffF6F1F1),
-                  //     ),
-                  //     child: Image.network(
-                  //       widget.item.image!,
-                  //       height: 70.h,
-                  //     )),
+                  Container(
+                      padding: EdgeInsets.only(
+                          top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: const Color(0xffF6F1F1),
+                      ),
+                      child: Image.network(
+                        widget.item.image!,
+                        height: 70.h,
+                      )),
                   SizedBox(
                     width: 20.w,
                   ),

@@ -4,7 +4,7 @@ class ApiConstants {
   static String baseUrl = "https://smartbazaar.jianjun-rnd.com.np/api";
 
   static String loginUrl = "$baseUrl/auth/login";
-    static String refreshTokenUrl = "$baseUrl/auth/refresh-token";
+  static String refreshTokenUrl = "$baseUrl/auth/refresh-token";
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -34,6 +34,7 @@ class ApiConstants {
 
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
+  static String getVendorProfileDataByID = '$baseUrl/users/vendor';
   //subscribe and win everyday
   static String getSubscribeAndWinUrl = '$baseUrl/users/scwn';
   static String getMySubscriptionUrl = '$baseUrl/subscription';
@@ -49,6 +50,10 @@ class ApiConstants {
   //message thread
   static String getMessageThreadUrl = '$baseUrl/threads';
   static String getMessageListUrl = '$baseUrl/threads';
-  //my order 
+  //my order and returns
   static String getMyOrderUrl = '$baseUrl/myorders';
+  static String getMyReturnsUrl = '$baseUrl/myreturns';
+//advertisement
+  static String getUsersAdvertisementUrl = '$baseUrl/users/advertisements';
+  static String storeAdvertisementUrl ='$baseUrl/users/store_advertisement';
 }

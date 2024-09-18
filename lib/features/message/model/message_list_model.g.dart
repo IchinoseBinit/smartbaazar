@@ -47,8 +47,8 @@ Map<String, dynamic> _$$MessageResultImplToJson(_$MessageResultImpl instance) =>
 _$MessageDataImpl _$$MessageDataImplFromJson(Map<String, dynamic> json) =>
     _$MessageDataImpl(
       id: (json['id'] as num?)?.toInt(),
-      threadId: json['threadId'] as String?,
-      userId: json['userId'] as String?,
+      threadId: json['thread_id'] as String?,
+      userId: json['user_id'] as String?,
       body: json['body'] as String?,
       filename: json['filename'] as String?,
     );
@@ -56,8 +56,8 @@ _$MessageDataImpl _$$MessageDataImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$MessageDataImplToJson(_$MessageDataImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'threadId': instance.threadId,
-      'userId': instance.userId,
+      'thread_id': instance.threadId,
+      'user_id': instance.userId,
       'body': instance.body,
       'filename': instance.filename,
     };
@@ -82,14 +82,14 @@ Map<String, dynamic> _$$PaginationLinksImplToJson(
 
 _$PaginationMetaImpl _$$PaginationMetaImplFromJson(Map<String, dynamic> json) =>
     _$PaginationMetaImpl(
-      currentPage: (json['currentPage'] as num?)?.toInt(),
+      currentPage: (json['current_page'] as num?)?.toInt(),
       from: (json['from'] as num?)?.toInt(),
-      lastPage: (json['lastPage'] as num?)?.toInt(),
+      lastPage: (json['last_page'] as num?)?.toInt(),
       links: (json['links'] as List<dynamic>?)
           ?.map((e) => PageLink.fromJson(e as Map<String, dynamic>))
           .toList(),
       path: json['path'] as String?,
-      perPage: json['perPage'] as String?,
+      perPage: json['per_page'] as String?,
       to: (json['to'] as num?)?.toInt(),
       total: (json['total'] as num?)?.toInt(),
     );
@@ -97,12 +97,12 @@ _$PaginationMetaImpl _$$PaginationMetaImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$PaginationMetaImplToJson(
         _$PaginationMetaImpl instance) =>
     <String, dynamic>{
-      'currentPage': instance.currentPage,
+      'current_page': instance.currentPage,
       'from': instance.from,
-      'lastPage': instance.lastPage,
+      'last_page': instance.lastPage,
       'links': instance.links,
       'path': instance.path,
-      'perPage': instance.perPage,
+      'per_page': instance.perPage,
       'to': instance.to,
       'total': instance.total,
     };
