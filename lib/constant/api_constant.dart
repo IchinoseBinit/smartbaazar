@@ -56,4 +56,7 @@ class ApiConstants {
 //advertisement
   static String getUsersAdvertisementUrl = '$baseUrl/users/advertisements';
   static String storeAdvertisementUrl ='$baseUrl/users/store_advertisement';
+
+  //online transaction
+   static String getOnlineTransactionResponseUrl = '$baseUrl/users/payment_record';
 }

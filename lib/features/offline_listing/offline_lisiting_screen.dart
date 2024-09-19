@@ -34,7 +34,7 @@ class OfflineListinScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.pending),
+                      const Icon(Icons.pending),
                       SizedBox(
                         width: 8.w,
                       ),
@@ -65,11 +65,11 @@ class OfflineListinScreen extends StatelessWidget {
                   height: 20.h,
                 ),
                 ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, int index) => Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: OfflineListingContainer(),
+                          child: const OfflineListingContainer(),
                         ),
                     separatorBuilder: (context, index) => SizedBox(
                           height: 14.h,
@@ -83,12 +83,12 @@ class OfflineListinScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   title: 'Product Import',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => ProductImportScreen()));
+                            builder: (_) => const ProductImportScreen()));
                   },
                 ),
               ],
@@ -116,7 +116,7 @@ class OfflineListingContainer extends StatelessWidget {
         // color: Colors.red,
         boxShadow: [
           BoxShadow(
-            color: Color(0xff00000040).withOpacity(0.1),
+            color: const Color(0xff00000040).withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 2,
             offset: const Offset(0, 2),
@@ -132,7 +132,7 @@ class OfflineListingContainer extends StatelessWidget {
               ),
               const Text('Options'),
               const Spacer(),
-              Icon(Icons.share),
+              const Icon(Icons.share),
               SizedBox(
                 width: 10.w,
               ),

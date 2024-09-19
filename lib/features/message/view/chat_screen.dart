@@ -300,8 +300,8 @@ class ChatMessageWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14.r),
                 color: isUserMessage
-                    ? Color(0xff6148FF)
-                    : Color(0xffD9D9D9),
+                    ? const Color(0xff6148FF)
+                    : const Color(0xffD9D9D9),
               ),
               child: Text(
                 message.body ?? '',

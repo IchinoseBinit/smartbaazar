@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -29,7 +30,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     const MyOrderScreen(),
     //if  vendor login show disputes screen
     // DisputesScreen(),
-    const VendroDetailsScreen(),
+    //
+    const VendorProfileScreen(),
   ];
 
   _changeTab(int index) {
@@ -66,12 +68,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   color: const Color(0xff362677).withOpacity(0.9),
                 ),
                 child: GestureDetector(
-                   onTap: () {
-                    setState(() {
-                      _selectedTab = 2;  // Set the selected tab to the middle placeholder
-                    });
-                  },
-                  child: SvgPicture.asset(qrIcon)),
+                    onTap: () {
+                      setState(() {
+                        _selectedTab =
+                            2; // Set the selected tab to the middle placeholder
+                      });
+                    },
+                    child: SvgPicture.asset(qrIcon)),
               ),
             ),
           ),
@@ -105,7 +108,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               //     _changeTab(index);
               //   }
               // },
-               onTap: (index) => _changeTab(index),
+              onTap: (index) => _changeTab(index),
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
