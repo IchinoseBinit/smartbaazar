@@ -72,14 +72,14 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                   thickness: 2,
                   color: Color(0xffD9D9D9),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, int index) =>
-                        AddToCartPRoductDetails(),
+                        const AddToCartPRoductDetails(),
                     separatorBuilder: (context, index) => SizedBox(
                           height: 16.h,
                         ),
@@ -101,14 +101,14 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff36383C)),
+                                color: const Color(0xff36383C)),
                           ),
                           Text(
                             'Rs. 60,000',
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff36383C)),
+                                color: const Color(0xff36383C)),
                           )
                         ],
                       ),
@@ -116,13 +116,13 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                         // width: MediaQuery.of(context).size.width / 1.9,
                         marginH: 0,
                         fgColor: Colors.white,
-                        bgColor: Color(0xff362677),
+                        bgColor: const Color(0xff362677),
                         title: 'Checkout',
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => OrderDetailsScreen()));
+                                  builder: (_) => const OrderDetailsScreen()));
                         },
                       )
                     ],
@@ -183,16 +183,16 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     width: 15,
                     height: 15,
                     decoration: BoxDecoration(
-                      color: _isClicked ? Color(0xff362677) : null,
+                      color: _isClicked ? const Color(0xff362677) : null,
                       shape: BoxShape.circle,
                       border: Border.all(
                           color: _isClicked
-                              ? Color(0xff362677)
-                              : Color(0xffD9D9D9),
+                              ? const Color(0xff362677)
+                              : const Color(0xffD9D9D9),
                           width: 1.0),
                     ),
                     child: _isClicked
-                        ? Icon(
+                        ? const Icon(
                             Icons.check,
                             size: 12.0,
                             color: Colors.white,
@@ -233,16 +233,16 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     width: 15,
                     height: 15,
                     decoration: BoxDecoration(
-                      color: _isChecked ? Color(0xff362677) : null,
+                      color: _isChecked ? const Color(0xff362677) : null,
                       shape: BoxShape.circle,
                       border: Border.all(
                           color: _isChecked
-                              ? Color(0xff362677)
-                              : Color(0xffD9D9D9),
+                              ? const Color(0xff362677)
+                              : const Color(0xffD9D9D9),
                           width: 1.0),
                     ),
                     child: _isChecked
-                        ? Icon(
+                        ? const Icon(
                             Icons.check,
                             size: 12.0,
                             color: Colors.white,

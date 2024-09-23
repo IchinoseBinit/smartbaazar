@@ -26,7 +26,7 @@ class AdvertisementScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.ad_units),
+                    const Icon(Icons.ad_units),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -58,11 +58,11 @@ class AdvertisementScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: 5,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
-                    return AdvertisementDetailsWidget();
+                    return const AdvertisementDetailsWidget();
                   },
                 ),
               ),
@@ -82,7 +82,7 @@ class AdvertisementScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => ApplyAdvertisementScreen()));
+                            builder: (_) => const ApplyAdvertisementScreen()));
                   })
             ],
           ),
@@ -109,7 +109,7 @@ class AdvertisementDetailsWidget extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Color(0xff00000040).withOpacity(0.1),
+              color: const Color(0xff00000040).withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 2,
               offset: const Offset(0, 2),
@@ -138,9 +138,9 @@ class AdvertisementDetailsWidget extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 12.h),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  color: Color(0xffF6F1F1),
+                  color: const Color(0xffF6F1F1),
                   borderRadius: BorderRadius.circular(8.r)),
-              child: Center(child: Text('Image')),
+              child: const Center(child: Text('Image')),
             ),
             SizedBox(
               height: 5.h,
