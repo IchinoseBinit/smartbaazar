@@ -33,7 +33,7 @@ class ProductImportScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.import_contacts),
+                      const Icon(Icons.import_contacts),
                       SizedBox(
                         width: 8.w,
                       ),
@@ -78,7 +78,7 @@ class ProductImportScreen extends StatelessWidget {
                       SizedBox(
                         height: 5.h,
                       ),
-                      ChooseFileWidget(
+                      const ChooseFileWidget(
                         textColor: Colors.red,
                       ),
                       SizedBox(
@@ -90,7 +90,7 @@ class ProductImportScreen extends StatelessWidget {
                           width: 100.w,
                           isSmallText: true,
                           fgColor: Colors.white,
-                          bgColor: Color(0xff362677),
+                          bgColor: const Color(0xff362677),
                           title: 'Add'),
                       SizedBox(
                         height: 10.h,
@@ -110,20 +110,20 @@ class ProductImportScreen extends StatelessWidget {
                           Icon(
                             Icons.file_copy,
                             size: 20.h,
-                            color: Color(0xff362677),
+                            color: const Color(0xff362677),
                           )
                         ],
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
-                      DownloadFileSampleWidget(
+                      const DownloadFileSampleWidget(
                         text: 'Donwload Sample',
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
-                      DownloadFileSampleWidget(
+                      const DownloadFileSampleWidget(
                         text: 'Donwload Documents',
                       ),
                     ],
@@ -137,12 +137,12 @@ class ProductImportScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   title: 'Online Transaction',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => OnlineTransactionRecordScreen()));
+                            builder: (_) => const OnlineTransactionRecordScreen()));
                   },
                 ),
               ],
@@ -163,7 +163,7 @@ class DownloadFileSampleWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 11.w),
       decoration: BoxDecoration(
-          color: Color(0xff2ECC71), borderRadius: BorderRadius.circular(10.r)),
+          color: const Color(0xff2ECC71), borderRadius: BorderRadius.circular(10.r)),
       child: Row(
         children: [
           Icon(

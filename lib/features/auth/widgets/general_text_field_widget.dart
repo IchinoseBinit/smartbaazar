@@ -11,6 +11,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final Function? onChanged;
   final String? Function(String?) validator;
   final TextEditingController? controller;
+  final bool obscureText;
 
   const CustomTextFieldWidget({
     super.key,
@@ -23,6 +24,7 @@ class CustomTextFieldWidget extends StatefulWidget {
     this.onChanged,
     this.controller,
     required this.validator,
+    this.obscureText = false,
   });
 
   @override
@@ -38,35 +40,39 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
       onChanged: (newValue) {
         widget.onChanged?.call(newValue);
       },
+      obscureText: widget.obscureText,
       validator: (value) => widget.validator(value),
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 10),
-          border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10.r)),
-          filled: widget.fill,
-          fillColor: widget.fillColor,
-          prefixIcon: Padding(
-            padding:
-                EdgeInsets.only(right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
-            child: Container(
-              height: 50,
-              width: 52,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: Color(
-                    0xffAEC5FF,
-                  )),
-              child: Icon(
-                widget.icon,
-                color: Color(0xff362677),
-              ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10),
+        border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10.r)),
+        filled: widget.fill,
+        fillColor: widget.fillColor,
+        prefixIcon: Padding(
+          padding:
+              EdgeInsets.only(right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+          child: Container(
+            height: 50,
+            width: 52,
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.r),
+                color: const Color(
+                  0xffAEC5FF,
+                )),
+            child: Icon(
+              widget.icon,
+              color: const Color(0xff362677),
             ),
           ),
-          suffixIcon: widget.suffixIcon,
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: Color(0xffADADAD))),
+        ),
+        suffixIcon: widget.suffixIcon,
+        hintText: widget.hintText,
+        hintStyle: const TextStyle(
+          color: Color(0xffADADAD),
+        ),
+      ),
     );
   }
 }

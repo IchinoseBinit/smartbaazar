@@ -45,40 +45,48 @@ class AccountDetailsWidget extends StatelessWidget {
               children: [
                 CustomTextFieldWidget(
                   fill: true,
-                  fillColor: Color(0xffF3F3F3),
+                  fillColor: const Color(0xffF3F3F3),
                   icon: Icons.person,
                   hintText: "Name",
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.2.h,
                 ),
                 CustomTextFieldWidget(
                   fill: true,
-                  fillColor: Color(0xffF3F3F3),
+                  fillColor: const Color(0xffF3F3F3),
                   icon: Icons.call,
                   hintText: "Phone Number",
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.2.h,
                 ),
                 CustomTextFieldWidget(
                   fill: true,
-                  fillColor: Color(0xffF3F3F3),
+                  fillColor: const Color(0xffF3F3F3),
                   icon: Icons.mail,
                   hintText: "Email",
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.2.h,
                 ),
                 CustomTextFieldWidget(
                   fill: true,
-                  fillColor: Color(0xffF3F3F3),
+                  fillColor: const Color(0xffF3F3F3),
                   icon: Icons.person_outline,
                   hintText: "User Name",
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.h,

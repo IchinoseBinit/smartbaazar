@@ -33,7 +33,7 @@ class DisputesScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.mic),
+                    const Icon(Icons.mic),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -74,51 +74,47 @@ class DisputesScreen extends StatelessWidget {
                         isScrollable: true,
                         dividerColor: Color(0xffD9D9D9),
                         tabs: [
-                          Tab(
-                            text: 'Disputes Recived',
-                          ),
-                          Tab(
-                            text: 'Disputes Placed',
-                          ),
+                          Tab(text: 'Disputes Received'),
+                          Tab(text: 'Disputes Placed'),
                         ],
                       ),
                       Expanded(
                         child: TabBarView(
-                          physics: ScrollPhysics(),
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 20.h),
                               child: Container(
-                                decoration: BoxDecoration(),
+                                decoration: const BoxDecoration(),
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
                                       ListView.separated(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, int index) =>
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.w),
-                                                child: DisputesDetails(),
-                                              ),
-                                          separatorBuilder: (context, index) =>
-                                              SizedBox(
-                                                height: 14.h,
-                                              ),
-                                          itemCount: 2),
-                                      SizedBox(
-                                        height: 20.h,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, int index) =>
+                                            Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w),
+                                          child: const DisputesDetails(),
+                                        ),
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(
+                                          height: 14.h,
+                                        ),
+                                        itemCount: 2,
                                       ),
+                                      SizedBox(height: 20.h),
                                       Divider(
-                                        thickness: 2.w,
-                                        color: const Color(0xffD9D9D9),
-                                      ),
+                                          thickness: 2.w,
+                                          color: const Color(0xffD9D9D9)),
                                     ],
                                   ),
                                 ),
                               ),
+                            ),
+                            // Add content for the second tab here
+                            const Center(
+                              child: Text('Content for Disputes Placed'),
                             ),
                           ],
                         ),
@@ -131,7 +127,7 @@ class DisputesScreen extends StatelessWidget {
                   text: 'Add New',
                   onPresssed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => AddNewDisputes()));
+                        MaterialPageRoute(builder: (_) => const AddNewDisputes()));
                   })
             ],
           ),
@@ -157,7 +153,7 @@ class DisputesDetails extends StatelessWidget {
         // color: Colors.red,
         boxShadow: [
           BoxShadow(
-            color: Color(0xff00000040).withOpacity(0.1),
+            color: const Color(0xff00000040).withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 2,
             offset: const Offset(0, 2),
@@ -236,7 +232,7 @@ class DisputesDetails extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: Colors.black),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Text(
                       'Proof:',
                       style: TextStyle(
@@ -247,7 +243,7 @@ class DisputesDetails extends StatelessWidget {
                     GeneralTextButton(
                         height: 35.h,
                         fgColor: Colors.white,
-                        bgColor: Color(0xffADADAD),
+                        bgColor: const Color(0xffADADAD),
                         title: 'Image')
                   ],
                 ),

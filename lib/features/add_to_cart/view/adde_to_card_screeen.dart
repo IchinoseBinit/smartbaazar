@@ -1,32 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
+import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class AddToCartScreen extends StatefulWidget {
+class AddToCartScreen extends ConsumerStatefulWidget {
   const AddToCartScreen({super.key});
 
   @override
-  State<AddToCartScreen> createState() => _AddToCartScreenState();
+  ConsumerState<AddToCartScreen> createState() => _AddToCartScreenState();
 }
 
-class _AddToCartScreenState extends State<AddToCartScreen> {
-  String dropdownvalue = 'Item 1';
+class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
+  double subtotal = 0.0;
+  List<bool> selectedItems = [];
 
-  // List of items in our dropdown menu
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  void updateSubtotal(CartItem item, bool isSelected) {
+    setState(() {
+      final double price = double.tryParse(item.price) ?? 0.0;
+      final int quantity = int.tryParse(item.qty) ?? 0;
+      if (isSelected) {
+        subtotal += price * quantity;
+      } else {
+        subtotal -= price * quantity;
+      }
+    });
+  }
+
+  void incrementQuantity(CartItem item) async {
+    // Increment the quantity in the backend via API
+    final response = await CartItemApi.incrementQuantity(item.postId!);
+
+    if (response.statusCode == 200) {
+      ref.invalidate(getCartItemProvider);
+      // setState(() {
+      //   final updatedItem = item.copyWith(
+      //     qty: (int.parse(item.qty) + 1).toString(),
+      //   );
+      //   subtotal += double.parse(item.price);
+      // });
+    } else {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to update cart.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final cartItemsAsyncValue = ref.watch(getCartItemProvider);
     return GenericSafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),
@@ -55,6 +83,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                       ),
                       const Spacer(),
                       const Icon(
+                        size: 15,
                         Icons.arrow_back_ios,
                         color: Color(0xffADADAD),
                       ),
@@ -75,15 +104,39 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, int index) =>
-                        const AddToCartPRoductDetails(),
-                    separatorBuilder: (context, index) => SizedBox(
-                          height: 16.h,
-                        ),
-                    itemCount: 5),
+                cartItemsAsyncValue.when(
+                  data: (data) {
+                    print('Data:>>>>>>>>>>>>>>>> $data');
+
+                    final cartItems = data['cart'] as List<CartItem>? ?? [];
+
+                    final vendors = data['vendors'] as List<Vendor>? ?? [];
+                    selectedItems = List<bool>.filled(cartItems.length, false);
+
+                    return ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => AddToCartPRoductDetails(
+                        cartItem: cartItems[index],
+                        vendors: vendors,
+                        isSelected: selectedItems[index],
+                        onIncrement: () => incrementQuantity(cartItems[index]),
+                        onSelected: (isSelected) {
+                          setState(() {
+                            selectedItems[index] = isSelected;
+                            updateSubtotal(cartItems[index], isSelected);
+                          });
+                        },
+                      ),
+                      separatorBuilder: (context, index) => SizedBox(
+                        height: 16.h,
+                      ),
+                      itemCount: cartItems.length,
+                    );
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (err, stack) => Text('Error: $err'),
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -104,7 +157,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                                 color: const Color(0xff36383C)),
                           ),
                           Text(
-                            'Rs. 60,000',
+                            'Rs $subtotal',
                             style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
@@ -138,7 +191,20 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
 }
 
 class AddToCartPRoductDetails extends StatefulWidget {
+  final CartItem cartItem;
+  final List<Vendor> vendors;
+  final bool isSelected;
+  final ValueChanged<bool> onSelected;
+  // final VoidCallback onDelete;
+  final VoidCallback onIncrement;
+
   const AddToCartPRoductDetails({
+    required this.cartItem,
+    required this.vendors,
+    required this.isSelected,
+    required this.onSelected,
+    // required this.onDelete,
+    required this.onIncrement,
     super.key,
   });
 
@@ -150,6 +216,23 @@ class AddToCartPRoductDetails extends StatefulWidget {
 class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
   bool _isChecked = false;
   bool _isClicked = false;
+
+  String getVendorName(String vendorId) {
+    final vendor = widget.vendors.firstWhere(
+      (v) => v.id == vendorId,
+      orElse: () {
+        return Vendor(id: '0', name: 'Unknown');
+      },
+    );
+    return vendor.name;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isChecked = widget.isSelected;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -178,6 +261,7 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     setState(() {
                       _isClicked = !_isClicked;
                     });
+                    widget.onSelected(_isClicked);
                   },
                   child: Container(
                     width: 15,
@@ -203,13 +287,15 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                 SizedBox(
                   width: 7.w,
                 ),
-                const Text('Tech Store'),
+                Text(getVendorName(widget.cartItem.vendorId ?? 'Unknown')),
                 const Icon(
                   Icons.arrow_forward_ios,
                   color: Color(0xffADADAD),
                 ),
                 const Spacer(),
-                SvgPicture.asset(deleteIcon)
+                InkWell(
+                    //  onTap: widget.onDelete,
+                    child: SvgPicture.asset(deleteIcon))
               ],
             ),
             SizedBox(
@@ -260,8 +346,8 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                       borderRadius: BorderRadius.circular(10.r),
                       color: const Color(0xffF6F1F1),
                     ),
-                    child: Image.asset(
-                      ImageConstant.laptopImage,
+                    child: Image.network(
+                      widget.cartItem.image,
                       height: 70.h,
                     )),
                 SizedBox(
@@ -271,11 +357,12 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     child: Column(
                   children: [
                     Text(
-                      'Acer Aspire 5 A515-56-32DK Intel Core i3, 11th Gen/15.6 FHD',
+                      widget.cartItem.name,
                       style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
                     ),
                     SizedBox(
                       height: 40.h,
@@ -283,33 +370,44 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     Row(
                       children: [
                         Text(
-                          'Rs 60,000',
+                          'Rs ${widget.cartItem.price}',
                           style: TextStyle(
                               color: const Color(0xff36383C),
-                              fontSize: 16.sp,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w700),
                         ),
                         const Spacer(),
-                        const Icon(
-                          Icons.remove,
-                          size: 15,
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Text(
-                          '1',
-                          style: TextStyle(
-                              color: const Color(0xff36383C),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        const Icon(
-                          Icons.add,
-                          size: 15,
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.remove,
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
+                            Center(
+                              child: Text(
+                                widget.cartItem.qty,
+                                style: TextStyle(
+                                    color: const Color(0xff36383C),
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.add,
+                                size: 15,
+                              ),
+                              onPressed: () {
+                                widget.onIncrement();
+                              },
+                            )
+                          ],
                         )
                       ],
                     )

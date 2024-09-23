@@ -29,7 +29,7 @@ class _ServiceContainerState extends State<ServiceContainer> {
       height: 66.h,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(top: 25.h, left: 20.w, right: 20.w),
-      color: Color(0xff73193E),
+      color: const Color(0xff73193E),
       child: ServicesListWidget(seriveLists: serviceLists),
     );
   }
@@ -51,7 +51,7 @@ class ServicesListWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(
             seriveLists[index]['imageIcon'],
-            colorFilter: ColorFilter.mode(
+            colorFilter: const ColorFilter.mode(
               Colors.white,
               BlendMode.srcIn,
             ),

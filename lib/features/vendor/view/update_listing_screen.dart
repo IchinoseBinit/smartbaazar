@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_scree.dart';
+import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
+import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -15,8 +17,31 @@ class UpdateListing extends StatefulWidget {
 }
 
 class _UpdateListingState extends State<UpdateListing> {
-  String dropdownvalue = "Used";
+  TypeList? dropdownvalue; // Updated to hold the selected TypeList object
   bool _isChecked = false;
+
+  List<TypeList> typeListItems =
+      []; // This will store the list of types fetched from API
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTypeList(); // Fetch the types when the widget is initialized
+  }
+
+  Future<void> _fetchTypeList() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      List<TypeList> fetchedTypes = await repository.fetchTypeList();
+      setState(() {
+        typeListItems = fetchedTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericSafeArea(
@@ -69,8 +94,8 @@ class _UpdateListingState extends State<UpdateListing> {
                           width: MediaQuery.of(context).size.width / 2.2,
                           prefixIcon: Icons.camera,
                           prefixColor: Colors.white,
-                          bgColor: Color(0xffADADAD),
-                          borderColor: Color(0xffADADAD),
+                          bgColor: const Color(0xffADADAD),
+                          borderColor: const Color(0xffADADAD),
                           fgColor: Colors.white,
                           title: 'Update Photos'),
                       SizedBox(
@@ -81,8 +106,8 @@ class _UpdateListingState extends State<UpdateListing> {
                           width: MediaQuery.of(context).size.width / 2.2,
                           prefixIcon: Icons.check_circle,
                           prefixColor: Colors.white,
-                          bgColor: Color(0xff2ECC71),
-                          borderColor: Color(0xff2ECC71),
+                          bgColor: const Color(0xff2ECC71),
+                          borderColor: const Color(0xff2ECC71),
                           fgColor: Colors.white,
                           title: 'Update Photos'),
                     ],
@@ -113,13 +138,14 @@ class _UpdateListingState extends State<UpdateListing> {
                       ),
                       const Spacer(),
                       CustomDropdownButton(
-                        items: ['Used', 'Item 2', 'Item 3'],
-                        dropdownvalue: dropdownvalue,
-                        onChanged: (String? newValue) {
+                        items: typeListItems,
+                        dropdownValue: dropdownvalue,
+                        onChanged: (TypeList? newValue) {
                           setState(() {
                             dropdownvalue = newValue!;
                           });
                         },
+                        getItemLabel: (TypeList item) => item.typeName,
                       ),
                     ],
                   ),
@@ -152,13 +178,14 @@ class _UpdateListingState extends State<UpdateListing> {
                       ),
                       const Spacer(),
                       CustomDropdownButton(
-                        items: ['Used', 'Item 2', 'Item 3'],
-                        dropdownvalue: dropdownvalue,
-                        onChanged: (String? newValue) {
+                        items: typeListItems,
+                        dropdownValue: dropdownvalue,
+                        onChanged: (TypeList? newValue) {
                           setState(() {
                             dropdownvalue = newValue!;
                           });
                         },
+                        getItemLabel: (TypeList item) => item.typeName,
                       ),
                     ],
                   ),

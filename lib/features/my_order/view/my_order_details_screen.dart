@@ -1,411 +1,214 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+import 'package:smartbazar/features/my_order/view/dropdown_menu_item.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class MyOrderDetailsScreen extends StatefulWidget {
-  const MyOrderDetailsScreen({super.key});
+class MyOrderDetailsScreen extends ConsumerStatefulWidget {
+  final dynamic order; // Assuming `order` is a Map or a model class
+  const MyOrderDetailsScreen({super.key, required this.order});
 
   @override
-  State<MyOrderDetailsScreen> createState() => _MyOrderDetailsScreenState();
+  ConsumerState<MyOrderDetailsScreen> createState() =>
+      _MyOrderDetailsScreenState();
 }
 
-class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
-  String dropdownvalue = 'Used';
+class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
+  IssueDropdownList? dropdownvalue;
 
   @override
   Widget build(BuildContext context) {
+    final order = widget.order; // Access the order data
+
     return GenericSafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.w,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.shopping_cart),
+                      SizedBox(width: 8.w),
+                      Text(
+                        'Order Details',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Text('Go back',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xff888888))),
+                      )
+                    ],
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.shopping_cart),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Text(
-                      'Order Details',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Text('Go back',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xff888888))),
-                    )
-                  ],
+                Divider(
+                  thickness: 2.w,
+                  color: const Color(0xffD9D9D9),
                 ),
-              ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              const PayementDetailsWidget(
-                  title: 'Product', description: 'Acer Aspire 5 A515-56-32Dk'),
-              const PayementDetailsWidget(
-                  title: 'Vendor Name', description: 'Tech Store/ 985100000'),
-              const PayementDetailsWidget(title: 'Quantity', description: '1'),
-              const PayementDetailsWidget(title: 'Rate', description: '60'),
-              const PayementDetailsWidget(
-                title: 'Total',
-                description: 'Rs. 60,000',
-                textStyle: TextStyle(fontWeight: FontWeight.w700),
-              ),
-              const PayementDetailsWidget(
-                  title: 'Shipping', description: 'Rs. 200'),
-              const PayementDetailsWidget(
-                title: 'Grand Total',
-                description: 'Rs. 60,200',
-                textStyle: TextStyle(fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 16.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Payement Mode',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff36383C)),
-                        ),
-                        Text(
-                          'COD',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff36383C)),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Status',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff36383C)),
-                        ),
-                        GeneralTextButton(
-                          marginH: 0,
-                          height: 25.h,
-                          width: 95.w,
-                          fgColor: Colors.white,
-                          bgColor: Color(0xff362677),
-                          title: 'Track',
-                          isSmallText: true,
-                          onPressed: () {
-                            CustomDialougeBox().orderDetailDialouge(
-                              context,
-                              title: 'Status',
-                              heading: 'Track Order',
-                              buttonTitle: 'UnderStood',
-                              callback: () {},
-                              widget: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Order ID',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        '12345',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Status',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        'Order Cancelled',
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Action',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff36383C)),
-                        ),
-                        GeneralTextButton(
-                          marginH: 0,
-                          isSmallText: true,
-                          height: 25.h,
-                          width: 95.w,
-                          fgColor: Colors.white,
-                          bgColor: Color(0xff362677),
-                          title: 'Return',
-                          onPressed: () {
-                            CustomDialougeBox().orderDetailDialouge(context,
+                SizedBox(height: 10.h),
+                PayementDetailsWidget(
+                  title: 'Product',
+                  description: order.postTitle ?? 'N/A',
+                ),
+                PayementDetailsWidget(
+                  title: 'Vendor Name',
+                  description:
+                      '${order.vendorName} / ${order.vendorContact ?? ''}',
+                ),
+                PayementDetailsWidget(
+                  title: 'Quantity',
+                  description: order.qty?.toString() ?? 'N/A',
+                ),
+                PayementDetailsWidget(
+                  title: 'Rate',
+                  description: order.price?.toString() ?? 'N/A',
+                ),
+                PayementDetailsWidget(
+                  title: 'Total',
+                  description: 'Rs. ${order.total?.toString() ?? 'N/A'}',
+                  textStyle: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+                PayementDetailsWidget(
+                  title: 'Shipping',
+                  description:
+                      'Rs. ${order.shippingCharge?.toString() ?? 'N/A'}',
+                ),
+                PayementDetailsWidget(
+                  title: 'Grand Total',
+                  description:
+                      'Rs. ${(double.tryParse(order.total?.toString() ?? '0')! + double.tryParse(order.shippingCharge?.toString() ?? '0')!).toStringAsFixed(2)}',
+                  textStyle: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: 10.h),
+                Divider(thickness: 2.w, color: const Color(0xffD9D9D9)),
+                SizedBox(height: 10.h),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 5.h, horizontal: 16.w),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Payment Mode',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff36383C)),
+                          ),
+                          Text(
+                            order.paymentMethod ?? 'N/A',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff36383C)),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 5.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Status',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff36383C)),
+                          ),
+                          GeneralTextButton(
+                            marginH: 0,
+                            height: 25.h,
+                            width: 95.w,
+                            fgColor: Colors.white,
+                            bgColor: const Color(0xff362677),
+                            title: 'Track',
+                            isSmallText: true,
+                            onPressed: () {
+                              CustomDialougeBox().orderDetailDialouge(
+                                context,
+                                title: 'Status',
+                                heading: 'Track Order',
+                                buttonTitle: 'Understood',
+                                callback: () {},
+                                widget: TrackOrderDetails(order: order),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 5.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Action',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff36383C)),
+                          ),
+                          GeneralTextButton(
+                            marginH: 0,
+                            isSmallText: true,
+                            height: 25.h,
+                            width: 95.w,
+                            fgColor: Colors.white,
+                            bgColor: const Color(0xff362677),
+                            title: 'Return',
+                            onPressed: () {
+                              CustomDialougeBox().orderDetailDialouge(
+                                context,
                                 buttonTitle: 'Submit',
                                 callback: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => MyReturnScreen())),
-                                widget: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CreateListingCardWidget(
-                                        child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Issue',
-                                          style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        // Spacer(),
-                                        SizedBox(
-                                          width: 80.w,
-                                        ),
-                                        Expanded(
-                                          child: CustomDropdownButton(
-                                            items: ['Used', 'Item 2', 'Item 3'],
-                                            dropdownvalue: dropdownvalue,
-                                            color: Color(0xffADADAD),
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                dropdownvalue = newValue!;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CreateListingCardWidget(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Message',
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          // Spacer(),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          TextField(
-                                            decoration:
-                                                InputDecoration.collapsed(
-                                                    hintText:
-                                                        'Describe your issue',
-                                                    hintStyle: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16.sp,
-                                                        color:
-                                                            Color(0xffADADAD))),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CreateListingCardWidget(
-                                        child: Row(
-                                      children: [
-                                        Text(
-                                          'Street Address',
-                                          style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        Spacer(),
-                                        Expanded(
-                                          child: TextField(
-                                            decoration:
-                                                InputDecoration.collapsed(
-                                                    hintText: 'Select Loaction',
-                                                    hintStyle: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16.sp,
-                                                        color:
-                                                            Color(0xffADADAD))),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CreateListingCardWidget(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Screenshot of the issue',
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black),
-                                          ),
-                                          // Spacer(),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(
-                                                top: 6.h,
-                                                left: 12.w,
-                                                bottom: 7.h),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.r),
-                                                color: Color(0xffEDECEC)),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  'Choose File',
-                                                  style: TextStyle(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Color(0xff36383C)),
-                                                ),
-                                                SizedBox(
-                                                  width: 7.w,
-                                                ),
-                                                Text(
-                                                  "|",
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: Color(0xffADADAD)),
-                                                ),
-                                                SizedBox(
-                                                  width: 11.w,
-                                                ),
-                                                Text(
-                                                  'No File Chosen',
-                                                  style: TextStyle(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      // color: Color(0xff36383C)
-                                                      color: Colors.red),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                        builder: (_) =>
+                                            const MyReturnScreen())),
+                                widget: ReturnProductDetails(
+                                  //  IssueDropdownListItems: IssueDropdownListItems,
+                                  onDropdownChanged: (IssueDropdownList value) {
+                                    setState(() {
+                                      dropdownvalue = value;
+                                    });
+                                  },
                                 ),
                                 title: 'Action',
-                                heading: 'Return Products');
-                          },
-                        )
-                      ],
-                    ),
-                  ],
+                                heading: 'Return Products',
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
-            ],
+                SizedBox(height: 10.h),
+                Divider(thickness: 2.w, color: const Color(0xffD9D9D9)),
+              ],
+            ),
           ),
         ),
       ),
@@ -419,67 +222,289 @@ class CustomDialougeBox {
       required String title,
       required String buttonTitle,
       required VoidCallback callback,
-      required String heading}) async {
+      required String heading,
+      double dialogWidth = 0.7}) async {
     return showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        titlePadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
-        contentPadding: EdgeInsets.zero,
-        backgroundColor: Colors.white,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
+      builder: (BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          insetPadding: EdgeInsets.zero,
+          clipBehavior: Clip.hardEdge,
+          backgroundColor: Colors.white,
+          content: SizedBox(
+            width: screenWidth ,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ),
+                  Text(
+                    heading,
+                    style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xff362677)),
+                  ),
+                  SizedBox(height: 10.h),
+                  widget,
+                  SizedBox(height: 20.h),
+                  GeneralTextButton(
+                    bgColor: const Color(0xff362677),
+                    fgColor: Colors.white,
+                    width: double.infinity,
+                    title: buttonTitle,
+                    onPressed: () {
+                      callback();
                     },
-                    child: Icon(Icons.close))
-              ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+
+
+
+class TrackOrderDetails extends StatelessWidget {
+  final dynamic order;
+
+  const TrackOrderDetails({Key? key, required this.order}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Order ID',
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
             Text(
-              heading,
+              order.orderId ?? 'N/A', // Replace with actual order ID
               style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff362677)),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
-            SizedBox(
-              height: 10.h,
+          ],
+        ),
+        SizedBox(height: 5.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Status',
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
-            widget,
-            // ,
-            SizedBox(
-              height: 10.h,
+            Text(
+              order.status ?? 'N/A', // Replace with actual order status
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
             ),
-            Divider(
-              thickness: 2.w,
-              color: const Color(0xffD9D9D9),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class ReturnProductDetails extends StatefulWidget {
+  final Function(IssueDropdownList) onDropdownChanged;
+
+  const ReturnProductDetails({
+    Key? key,
+    required this.onDropdownChanged,
+  }) : super(key: key);
+
+  @override
+  State<ReturnProductDetails> createState() => _ReturnProductDetailsState();
+}
+
+class _ReturnProductDetailsState extends State<ReturnProductDetails> {
+  IssueDropdownList? dropdownValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CreateListingCardWidget(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Issue',
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                  SizedBox(width: 80.w),
+                  Expanded(
+                    child: DropdownButtonFormField<IssueDropdownList>(
+                      items: getStaticDropdownMenuItems(),
+                      value: dropdownValue,
+                      onChanged: (IssueDropdownList? newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                          if (newValue != null) {
+                            widget.onDropdownChanged(newValue);
+                          }
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+                      ),
+                      dropdownColor: Colors.white,
+                      isExpanded: true,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 10.h,
+            SizedBox(height: 5.h),
+            CreateListingCardWidget(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Message',
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 10.h),
+                  TextField(
+                    maxLines: null,
+                    decoration: InputDecoration.collapsed(
+                        hintText: 'Describe your issue',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: const Color(0xffADADAD))),
+                  ),
+                ],
+              ),
             ),
-            GeneralTextButton(
-              bgColor: Color(0xff362677),
-              fgColor: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              title: buttonTitle,
-              onPressed: () {
-                callback();
-              },
+            SizedBox(height: 5.h),
+            const CityField(),
+            SizedBox(height: 5.h),
+            CreateListingCardWidget(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Street Address',
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 10.h),
+                  TextField(
+                    decoration: InputDecoration.collapsed(
+                        hintText: 'Enter Street Address',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: const Color(0xffADADAD))),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 10.h,
+            SizedBox(height: 5.h),
+            CreateListingCardWidget(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Screenshot of the issue',
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 10.h),
+                  Container(
+                    padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: const Color(0xffEDECEC)),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Choose File',
+                          style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff36383C)),
+                        ),
+                        SizedBox(width: 7.w),
+                        Text(
+                          "|",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xffADADAD)),
+                        ),
+                        SizedBox(width: 11.w),
+                        Text(
+                          'No File Chosen',
+                          style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

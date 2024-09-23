@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_scree.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/follow_and_suggestion/view/follow_and_suggestion_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/scratch_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/view/all_product_type_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -17,7 +15,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> drawerList = [
       {'imageIcon': openCart, 'title': 'Products'},
-      {'imageIcon': brandBazarIcon, 'title': 'B2B'},
+      {'imageIcon': brandBazarIcon, 'title': 'BrandBazar'},
       {'imageIcon': b2bIcon, 'title': 'B2B'},
       {'imageIcon': usedIcon, 'title': 'Used'},
       {'imageIcon': servicesIcon, 'title': 'Services'},
@@ -26,7 +24,7 @@ class CustomDrawer extends StatelessWidget {
       {'imageIcon': groceryIcon, 'title': 'Grocery'},
     ];
     return Drawer(
-      width: MediaQuery.of(context).size.width * 0.54,
+      width: MediaQuery.of(context).size.width * 0.57,
       backgroundColor: Colors.white,
       child: Padding(
         padding: EdgeInsets.only(top: 25.h, right: 16, left: 15, bottom: 20),
@@ -73,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => const VendorProfileScreen()));
+                              builder: (_) => const MySubscribeAndWinPage()));
                   }
                   switch (ttile) {
                     case 'Event':

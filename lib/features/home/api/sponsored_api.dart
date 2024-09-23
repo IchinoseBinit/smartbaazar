@@ -26,5 +26,6 @@ class SponsoredApi {
     } catch (e) {
       debugPrint(e.toString());
     }
+    return null;
   }
 }

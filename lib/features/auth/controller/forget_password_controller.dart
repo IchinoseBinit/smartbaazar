@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
@@ -28,7 +26,7 @@ class ForgetPasswordController extends StateNotifier<GenericState> {
           phone: phone, phone_country: phone_country, login: login);
       state = LoadedState<ForgetPasswordModel>(response: forgetPassword);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => OtpScreen()));
+          context, MaterialPageRoute(builder: (_) => const OtpScreen()));
     } catch (ex) {
       state = ErrorState(getCustomException(ex));
     }

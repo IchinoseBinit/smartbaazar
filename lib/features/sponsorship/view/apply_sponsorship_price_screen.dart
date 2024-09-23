@@ -26,7 +26,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.card_giftcard),
+                    const Icon(Icons.card_giftcard),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -77,7 +77,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: TabBarView(
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           children: [
                             SingleChildScrollView(
                               child: Padding(
@@ -100,7 +100,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -137,14 +137,14 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Color(0xffADADAD)),
+                                                  color: const Color(0xffADADAD)),
                                             )
                                           ],
                                         ),
                                         SizedBox(
                                           height: 5.h,
                                         ),
-                                        ChooseFileWidget(
+                                        const ChooseFileWidget(
                                           textColor: Colors.red,
                                         )
                                       ],
@@ -165,7 +165,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -204,9 +204,9 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Color(0xffADADAD)),
+                                                  color: const Color(0xffADADAD)),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -241,7 +241,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -276,7 +276,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -311,7 +311,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -346,7 +346,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -410,7 +410,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => AdvertisementScreen()));
+                            builder: (_) => const AdvertisementScreen()));
                   }),
             ],
           ),

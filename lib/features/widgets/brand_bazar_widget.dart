@@ -16,7 +16,7 @@ class BrandBazarWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.r),
-            border: Border.all(width: 2.w, color: Color(0xffADADAD))),
+            border: Border.all(width: 2.w, color: const Color(0xffADADAD))),
         child: Column(
           children: [
             Text(
@@ -51,7 +51,7 @@ class BrandBazarWidget extends StatelessWidget {
                   return Container(
                     height: 32.h,
                     width: 32.h,
-                    color: Color(0xffD9D9D9),
+                    color: const Color(0xffD9D9D9),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
@@ -68,7 +68,7 @@ class BrandBazarWidget extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(top: 27.h, left: 15.w, bottom: 11.h),
               decoration: BoxDecoration(
-                  color: Color(0xff0338C0),
+                  color: const Color(0xff0338C0),
                   borderRadius: BorderRadius.circular(4.r)),
               child: Text(
                 'AD Banner 382*56',

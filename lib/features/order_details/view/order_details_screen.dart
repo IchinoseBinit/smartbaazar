@@ -30,29 +30,29 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.shopping_cart,
                     color: Color(0xff000000),
                   ),
                   SizedBox(
                     width: 5.w,
                   ),
-                  Text('Checkout'),
-                  Spacer(),
-                  Text('Go back')
+                  const Text('Checkout'),
+                  const Spacer(),
+                  const Text('Go back')
                 ],
               ),
               SizedBox(
                 height: 5.h,
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
               SizedBox(
                 height: 5.h,
               ),
-              Text(
+              const Text(
                 'Order Details',
                 style: TextStyle(
                     color: Color(0xff362677),
@@ -66,8 +66,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 icon: Icons.person,
                 hintText: 'Name',
                 fill: true,
-                fillColor: Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                fillColor: const Color.fromARGB(255, 241, 234, 234),
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 8.h,
@@ -76,8 +78,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 icon: Icons.call,
                 hintText: 'Contact Number',
                 fill: true,
-                fillColor: Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                fillColor: const Color.fromARGB(255, 241, 234, 234),
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 8.h,
@@ -87,8 +91,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 hintText: 'Rs 60,000',
                 readOnly: true,
                 fill: true,
-                fillColor: Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                fillColor: const Color.fromARGB(255, 241, 234, 234),
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 20.h,
@@ -98,16 +104,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xff000000)),
+                    color: const Color(0xff000000)),
               ),
               SizedBox(
                 height: 10.h,
               ),
-              CustomRadioButton(
+              const CustomRadioButton(
                 title1: 'Pre-Payement',
                 title2: 'Cash on delivery',
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
@@ -116,12 +122,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xff000000)),
+                    color: const Color(0xff000000)),
               ),
               SizedBox(
                 height: 10.h,
               ),
-              CustomRadioButton(
+              const CustomRadioButton(
                 title1: 'Slef Pickup',
                 title2: 'Home Delivery',
               ),
@@ -129,8 +135,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 icon: Icons.location_on,
                 hintText: 'City',
                 fill: true,
-                fillColor: Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                fillColor: const Color.fromARGB(255, 241, 234, 234),
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 8.h,
@@ -139,13 +147,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 icon: Icons.location_disabled_outlined,
                 hintText: 'Street Address',
                 fill: true,
-                fillColor: Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                fillColor: const Color.fromARGB(255, 241, 234, 234),
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 12.h,
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
@@ -154,13 +164,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xff000000)),
+                    color: const Color(0xff000000)),
               ),
-              Text('Drop Down remain'),
+              const Text('Drop Down remain'),
               SizedBox(
                 height: 10.h,
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
@@ -172,10 +182,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xfff000000)),
+                        color: const Color(0xfff000000)),
                   ),
-                  Spacer(),
-                  Icon(Icons.remove),
+                  const Spacer(),
+                  const Icon(Icons.remove),
                   SizedBox(
                     width: 5.w,
                   ),
@@ -185,23 +195,23 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.r),
                       border: Border.all(
-                        color: Color(0xffD9D9D9),
+                        color: const Color(0xffD9D9D9),
                         width: 1,
                       ),
                     ),
-                    child: Text('1'),
+                    child: const Text('1'),
                   ),
                   SizedBox(
                     width: 5.w,
                   ),
-                  Icon(Icons.add)
+                  const Icon(Icons.add)
                 ],
               ),
-              Divider(
+              const Divider(
                 thickness: 2,
                 color: Color(0xffD9D9D9),
               ),
-              OrderSummaryWidget(),
+              const OrderSummaryWidget(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RichTextWidget(
@@ -210,13 +220,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     titleStyle: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff36383C)),
+                        color: const Color(0xff36383C)),
                     subtitle: ' Terms & Condtions',
                     subtitleStyle: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff36383C)),
+                        color: const Color(0xff36383C)),
                     onPressed: () {}),
               ),
               SizedBox(
@@ -225,7 +235,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   SvgPicture.asset(contactSellerIcon),
                   SizedBox(
                     width: 10.w,
@@ -238,18 +248,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff36383C)),
+                            color: const Color(0xff36383C)),
                       ),
                       Text(
                         '9840714218',
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff36383C)),
+                            color: const Color(0xff36383C)),
                       )
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -258,12 +268,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff36383C)),
+                            color: const Color(0xff36383C)),
                       ),
                       Image.asset(ImageConstant.upayaImage)
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
               SizedBox(
@@ -271,11 +281,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               ),
               GeneralTextButton(
                 width: MediaQuery.of(context).size.width,
-                bgColor: Color(0xff362677),
+                bgColor: const Color(0xff362677),
                 fgColor: Colors.white,
                 title: 'Place Order',
                 onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => ProceesToPayScreen())),
+                    MaterialPageRoute(builder: (_) => const ProceesToPayScreen())),
               ),
               SizedBox(
                 height: 20.h,
@@ -303,7 +313,7 @@ class OrderSummaryWidget extends StatelessWidget {
           style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
-              color: Color(0xfff000000)),
+              color: const Color(0xfff000000)),
         ),
         SizedBox(
           height: 5.h,
@@ -320,9 +330,9 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
-                  Text('Acer Aspire 5 A515-56-32Dk')
+                  const Text('Acer Aspire 5 A515-56-32Dk')
                 ],
               ),
               SizedBox(
@@ -336,9 +346,9 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
-                  Text('1')
+                  const Text('1')
                 ],
               ),
               SizedBox(
@@ -352,9 +362,9 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
-                  Text('Rs 60,000')
+                  const Text('Rs 60,000')
                 ],
               ),
               SizedBox(
@@ -368,9 +378,9 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
-                  Text('Rs 60,000')
+                  const Text('Rs 60,000')
                 ],
               ),
               SizedBox(
@@ -409,8 +419,8 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
         Radio<int>(
           value: 1,
           groupValue: selectedOption,
-          activeColor: Color(0xffFBFBFD),
-          fillColor: MaterialStateProperty.all(Color(0xff0362677)),
+          activeColor: const Color(0xffFBFBFD),
+          fillColor: WidgetStateProperty.all(const Color(0xff0362677)),
           splashRadius: 20,
           onChanged: (int? value) {
             setState(() {
@@ -423,17 +433,17 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
-            color: Color(0xff36383C),
+            color: const Color(0xff36383C),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 30,
         ),
         Radio<int>(
           value: 2,
           groupValue: selectedOption,
-          activeColor: Color(0xffFBFBFD),
-          fillColor: MaterialStateProperty.all(Color(0xff0362677)),
+          activeColor: const Color(0xffFBFBFD),
+          fillColor: WidgetStateProperty.all(const Color(0xff0362677)),
           splashRadius: 25,
           onChanged: (int? value) {
             setState(() {
@@ -446,7 +456,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
           style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
-              color: Color(0xff36383C)),
+              color: const Color(0xff36383C)),
         )
       ],
     );

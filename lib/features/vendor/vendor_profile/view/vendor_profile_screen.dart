@@ -2,10 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
+import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
+import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
+import 'package:smartbazar/features/faq/view/faq_screen.dart';
+import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
+import 'package:smartbazar/features/offline_listing/offline_lisiting_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
+import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
+import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
+import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendorProfileScreen extends StatefulWidget {
-  const VendorProfileScreen({super.key});
+  // final String vendorName;
+  const VendorProfileScreen({
+    super.key,
+    //required this.vendorName,
+  });
 
   @override
   State<VendorProfileScreen> createState() => _VendorProfileScreenState();
@@ -20,20 +45,134 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     {"icon": Icons.mail, "title": '11', "subtitle": 'followers'},
   ];
   final List<Map<String, dynamic>> buyerListing = [
-    {"icon": Icons.mail, "title": 'My', "subtitle": 'Listing'},
-    {"icon": Icons.pending, "title": 'Pending', "subtitle": 'Approval'},
-    {"icon": Icons.notifications, "title": 'Offline', "subtitle": 'listing'},
-    {"icon": Icons.volume_down, "title": 'Product', "subtitle": 'import'},
-    {"icon": Icons.mail, "title": 'My', "subtitle": 'Listing'},
-    {"icon": Icons.mail, "title": 'My', "subtitle": 'Listing'},
-    {"icon": Icons.volume_down, "title": 'Product', "subtitle": 'import'},
-    {"icon": Icons.pending, "title": 'Pending', "subtitle": 'Approval'},
-    {"icon": Icons.mail, "title": 'My', "subtitle": 'Listing'},
+    {
+      "icon": Icons.mail,
+      "title": 'Favourite',
+      "subtitle": 'Listing',
+      "screen": const FavouriteListingScreen(),
+    },
+    {
+      "icon": Icons.saved_search,
+      "title": 'Saved',
+      "subtitle": 'Searches',
+      "screen": const PendingApprovalScreen(),
+    },
+    {
+      "icon": Icons.notifications,
+      "title": 'Buyer',
+      "subtitle": 'Account',
+      "screen": const OfflineListinScreen(),
+    },
+    {
+      "icon": Icons.volume_down,
+      "title": 'Subscriptions',
+      "subtitle": '',
+      "screen": const MySubscriptionScreen(),
+    },
+    {
+      "icon": Icons.mail,
+      "title": 'My',
+      "subtitle": 'Orders',
+      "screen": const MyOrderScreen(),
+    },
+    {
+      "icon": Icons.mail,
+      "title": 'My',
+      "subtitle": 'Returns',
+      "screen": const MyReturnScreen(),
+    },
+    {
+      "icon": Icons.volume_down,
+      "title": 'My Suscribe',
+      "subtitle": 'And Win',
+      "screen": const MySubscribeAndWinPage(),
+    },
+    {
+      "icon": Icons.pending,
+      "title": 'Dispute',
+      "subtitle": '',
+      "screen": const DisputesScreen(),
+    },
   ];
+  final List<Map<String, dynamic>> sellerCenterListing = [
+    {
+      "icon": Icons.mail,
+      "title": 'My',
+      "subtitle": 'Listing',
+      "screen": const MyListingScreen(),
+    },
+    {
+      "icon": Icons.saved_search,
+      "title": 'Pending',
+      "subtitle": 'Approval',
+      "screen": const PendingApprovalScreen(),
+    },
+    {
+      "icon": Icons.notifications,
+      "title": 'Offline',
+      "subtitle": 'listing',
+      "screen": const OfflineListinScreen(),
+    },
+    {
+      "icon": Icons.volume_down,
+      "title": 'Product',
+      "subtitle": 'import',
+      "screen": const ProductImportScreen(),
+    },
+    {
+      "icon": Icons.mail,
+      "title": 'Seller',
+      "subtitle": 'Account',
+      "screen": const MyOrderScreen(),
+    },
+    {
+      "icon": Icons.mail,
+      "title": 'Payment',
+      "subtitle": 'Record',
+      "screen": const OnlineTransactionRecordScreen(),
+    },
+    {
+      "icon": Icons.volume_down,
+      "title": 'My',
+      "subtitle": 'Orders',
+      "screen": const MyOrderScreen(),
+    },
+    {
+      "icon": Icons.pending,
+      "title": 'My',
+      "subtitle": 'Returns',
+      "screen": const MyReturnScreen(),
+    },
+    {
+      "icon": Icons.card_giftcard_sharp,
+      "title": 'Prize',
+      "subtitle": 'Sponsorship',
+      "screen": const SponsorshipScreen(),
+    },
+    {
+      "icon": Icons.gif_box,
+      "title": 'Advertisement',
+      "subtitle": '',
+      "screen": const AdvertisementScreen(),
+    },
+    {
+      "icon": Icons.comment,
+      "title": 'Dispute',
+      "subtitle": '',
+      "screen": const DisputesScreen(),
+    },
+    {
+      "icon": Icons.branding_watermark,
+      "title": 'Brand',
+      "subtitle": 'Bazar',
+      "screen": const BottomNavigationScreen(),
+    },
+  ];
+
   final List<Map<String, dynamic>> accointProfileList = [
     {
       "icon": Icons.mail,
-      "title": 'Messagenr',
+      "title": 'Messenger',
     },
     {
       "icon": Icons.money,
@@ -154,7 +293,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 14.w),
                         child: BuyerCenterWidget(
-                          buyerData: buyerListing,
+                          buyerData: sellerCenterListing,
                         ),
                       )
                     ],
@@ -179,7 +318,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                         color: Color(0xffADADAD),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: MyAccountWidget(
                           accountData: accointProfileList,
                         ),
@@ -190,7 +329,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                VendorProfileExtraLinkWidget(),
+                const VendorProfileExtraLinkWidget(),
                 SizedBox(
                   height: 40.h,
                 ),
@@ -231,33 +370,63 @@ class VendorProfileExtraLinkWidget extends StatelessWidget {
                   SizedBox(
                     height: 11.h,
                   ),
-                  Text(
-                    'Exchange AdBoost',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ExchangeAdBostScreen()));
+                    },
+                    child: Text(
+                      'Exchange AdBoost',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                  Text(
-                    'Become a Smart Seller',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const BecomeSmartSellerScreen()));
+                    },
+                    child: Text(
+                      'Become a Smart Seller',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                  Text(
-                    'FAQ',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const FAQScreen()));
+                    },
+                    child: Text(
+                      'FAQ',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                  Text(
-                    'Anti-Scam',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const AntiScamScreen()));
+                    },
+                    child: Text(
+                      'Anti-Scam',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ],
               ),
@@ -267,26 +436,47 @@ class VendorProfileExtraLinkWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Temrs & Conditions',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      const TermsConditionScreen();
+                    },
+                    child: Text(
+                      'Terms & Conditions',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                  Text(
-                    'Prvacy',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const PrivacyPolicyScreen()));
+                    },
+                    child: Text(
+                      'Privacy',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                  Text(
-                    'Contact',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Color(0xff36383C),
-                        fontWeight: FontWeight.w400),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ContactUsScreen()));
+                    },
+                    child: Text(
+                      'Contact Us',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xff36383C),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ],
               )
@@ -306,50 +496,62 @@ class VendorProfileGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 0.2,
-          mainAxisSpacing: 5.0,
-        ),
-        itemCount: profileData.length,
-        itemBuilder: (context, index) {
-          return Row(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero, // Ensure no extra padding
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: 4.0, // Adjusted spacing between columns
+        mainAxisSpacing: 4.0, // Adjusted spacing between rows
+      ),
+      itemCount: profileData.length,
+      itemBuilder: (context, index) {
+        return Container(
+          padding: EdgeInsets.zero, // Removed horizontal padding
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
-                radius: 18.r,
+                radius: 14.r, // Adjusted radius
                 backgroundColor: const Color(0xff362677),
                 child: Icon(
                   profileData[index]['icon'],
                   color: Colors.white,
-                  size: 20.sp,
+                  size: 14.sp, // Adjusted icon size
                 ),
               ),
-              SizedBox(
-                width: 8.w,
+              const SizedBox(
+                width: 4.0, // Reduced space between CircleAvatar and Column
               ),
-              Column(
-                children: [
-                  Text(
-                    profileData[index]['title'],
-                    style: TextStyle(
-                        fontSize: 14.sp,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      profileData[index]['title'],
+                      style: TextStyle(
+                        fontSize: 12.sp, // Adjusted font size
                         fontWeight: FontWeight.w700,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    profileData[index]['subtitle'],
-                    style: TextStyle(
-                        fontSize: 12.sp,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Handle overflow
+                    ),
+                    Text(
+                      profileData[index]['subtitle'],
+                      style: TextStyle(
+                        fontSize: 10.sp, // Adjusted font size
                         fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                  )
-                ],
-              )
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Handle overflow
+                    ),
+                  ],
+                ),
+              ),
             ],
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -361,18 +563,26 @@ class BuyerCenterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 30,
-          mainAxisSpacing: 2.0,
-        ),
-        itemCount: buyerData.length,
-        itemBuilder: (context, index) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 2.0,
+      ),
+      itemCount: buyerData.length,
+      itemBuilder: (context, index) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => buyerData[index]['screen'] as Widget,
+                  ),
+                );
+              },
+              child: Column(
                 children: [
                   Icon(
                     buyerData[index]['icon'],
@@ -382,22 +592,24 @@ class BuyerCenterWidget extends StatelessWidget {
                   Text(
                     buyerData[index]['title'],
                     style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.black),
                   ),
                   Text(
                     buyerData[index]['subtitle'],
                     style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.black),
                   )
                 ],
-              )
-            ],
-          );
-        });
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -412,8 +624,8 @@ class MyAccountWidget extends StatelessWidget {
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 2.0,
+          crossAxisSpacing: 3,
+          mainAxisSpacing: 4.0,
         ),
         itemCount: accountData.length,
         itemBuilder: (context, index) {
@@ -430,7 +642,7 @@ class MyAccountWidget extends StatelessWidget {
                   Text(
                     accountData[index]['title'],
                     style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.black),
                   ),

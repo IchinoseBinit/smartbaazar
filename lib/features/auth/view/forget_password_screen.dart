@@ -5,11 +5,9 @@ import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/controller/forget_password_controller.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/features/auth/view/otp_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
 import 'package:smartbazar/utils/custom_loading_indicatior.dart';
@@ -35,7 +33,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
         onLoading(context);
       } else if (state is LoadedState) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => LoginScreen()));
+            context, MaterialPageRoute(builder: (_) => const LoginScreen()));
       } else if (state is ErrorState) {
         Exception(getCustomException(state.exception.message));
       }
@@ -73,7 +71,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                       style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xffADADAD)),
+                          color: const Color(0xffADADAD)),
                     )
                   ],
                 )),
@@ -84,7 +82,9 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   icon: Icons.mail,
                   hintText: 'user email',
                   controller: emailController,
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 22.h,
@@ -93,7 +93,9 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   icon: Icons.mail,
                   hintText: 'Phone number',
                   controller: emailController,
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 60.h,

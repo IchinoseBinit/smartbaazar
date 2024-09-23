@@ -8,18 +8,18 @@ import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/widgets/banner_widget.dart';
 import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
-import 'package:smartbazar/features/widgets/item_description_widget.dart';
+import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/features/widgets/service_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class VendorHomeScreen extends StatefulWidget {
-  const VendorHomeScreen({super.key});
+class MySubscribeAndWinPage extends StatefulWidget {
+  const MySubscribeAndWinPage({super.key});
 
   @override
-  State<VendorHomeScreen> createState() => _VendorHomeScreenState();
+  State<MySubscribeAndWinPage> createState() => _MySubscribeAndWinPageState();
 }
 
-class _VendorHomeScreenState extends State<VendorHomeScreen> {
+class _MySubscribeAndWinPageState extends State<MySubscribeAndWinPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
@@ -67,7 +67,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                             borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(25.r),
                                 topRight: Radius.circular(25.r)),
-                            color: Color(0xff362677),
+                            color: const Color(0xff362677),
                           ),
                           child: Icon(
                             Icons.search,
@@ -162,7 +162,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                                   vertical: 10.h, horizontal: 18.w),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  color: Color.fromARGB(255, 235, 234, 234)),
+                                  color: const Color.fromARGB(255, 235, 234, 234)),
                               // color: Colors.red),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +196,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                                   vertical: 10.h, horizontal: 18.w),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
-                                  color: Color.fromARGB(255, 235, 234, 234)),
+                                  color: const Color.fromARGB(255, 235, 234, 234)),
                               // color: Colors.red),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,7 +233,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
-                color: Color.fromARGB(255, 235, 234, 234),
+                color: const Color.fromARGB(255, 235, 234, 234),
                 child: Column(
                   children: [
                     SizedBox(
@@ -244,18 +244,18 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                       style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xff362677)),
+                          color: const Color(0xff362677)),
                     ),
                     SizedBox(
                       height: 18.h,
                     ),
                     ListView.separated(
                       primary: false,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       padding: EdgeInsets.only(left: 5.w),
                       shrinkWrap: true,
                       itemCount: 4,
-                      itemBuilder: (context, index) => VendorProductDetails(),
+                      itemBuilder: (context, index) => const VendorProductDetails(),
                       separatorBuilder: (BuildContext context, int index) {
                         return SizedBox(
                           height: 12.h,
@@ -271,7 +271,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 235, 234, 234),
+                color: const Color.fromARGB(255, 235, 234, 234),
                 child: Column(
                   children: [
                     Text(
@@ -279,7 +279,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                       style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xff362677)),
+                          color: const Color(0xff362677)),
                     ),
                     SizedBox(
                       height: 18.h,
@@ -414,7 +414,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                         style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff362677)),
+                            color: const Color(0xff362677)),
                       ),
                     ),
                     SizedBox(
@@ -426,7 +426,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff362677))),
+                                color: const Color(0xff362677))),
                       ],
                     ),
                     // SvgPicture.asset(addidasIcon)
@@ -434,7 +434,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                 ),
               ),
               Container(
-                color: Color.fromARGB(255, 235, 234, 234),
+                color: const Color.fromARGB(255, 235, 234, 234),
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -456,7 +456,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                     Container(
                       width: 173.w,
                       height: 3.h,
-                      color: Color(0xff362677),
+                      color: const Color(0xff362677),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -489,7 +489,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                 height: 20.h,
               ),
               Container(
-                color: Color.fromARGB(255, 235, 234, 234),
+                color: const Color.fromARGB(255, 235, 234, 234),
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -511,7 +511,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                     Container(
                       width: 173.w,
                       height: 3.h,
-                      color: Color(0xff362677),
+                      color: const Color(0xff362677),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -561,7 +561,7 @@ class VendorProductDetails extends StatelessWidget {
         // color: Colors.red,
         boxShadow: [
           BoxShadow(
-            color: Color(0xff00000040).withOpacity(0.1),
+            color: const Color(0xff00000040).withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 2,
             offset: const Offset(0, 2),

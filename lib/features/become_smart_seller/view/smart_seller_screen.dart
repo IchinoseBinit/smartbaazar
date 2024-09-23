@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
-import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class BecomeSmartSellerScreen extends StatelessWidget {
@@ -36,14 +35,14 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.w700),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Text(
                       'Go back',
                       style: TextStyle(
                           fontSize: 14.sp,
-                          color: Color(0xff888888),
+                          color: const Color(0xff888888),
                           fontWeight: FontWeight.w700),
                     ),
                   )
@@ -54,7 +53,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
               ),
               Divider(
                 thickness: 2.w,
-                color: Color(0xffD9D9D9),
+                color: const Color(0xffD9D9D9),
               ),
             ],
           ),
@@ -70,7 +69,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Sell online at 0% commission',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -80,7 +79,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'WHAT CAN I SELL?',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -90,7 +89,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Retails & Brands',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -100,7 +99,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Clothing | Mobile | Electronics | Furniture | Computer | Sports & Fitness | Automobile | Health & Beauty | Grocery...',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -110,7 +109,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'B2B Wholesale',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -120,7 +119,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Find Manufacturers | Importers | Exporters | Dealers | Distributors | Wholesellers | Retailers',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -130,7 +129,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Services',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -140,14 +139,14 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Education Consultancy | Real Estate | Hotels | Electrician | Carpenter | Schools & Colleges...',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 Text(
                   'Benfits',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -157,7 +156,7 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   'Education Consultancy | Real Estate | Hotels | Electrician | Carpenter | Schools & Colleges...',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -168,12 +167,12 @@ class BecomeSmartSellerScreen extends StatelessWidget {
                   marginH: 0,
                   title: 'Next',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => ExchangeAdBostScreen()));
+                            builder: (_) => const ExchangeAdBostScreen()));
                   },
                 ),
                 SizedBox(

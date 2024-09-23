@@ -104,7 +104,7 @@ class MyListinDetails extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => UpdateListing()));
+                      MaterialPageRoute(builder: (_) => const UpdateListing()));
                 },
                 child: const Icon(
                   Icons.edit,
@@ -162,42 +162,58 @@ class MyListinDetails extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(
-                        Icons.visibility,
-                        color: Color(0xff888888),
+                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                         children: [
+                           Icon(
+                            Icons.visibility,
+                             size: 16.sp,
+                            color: const Color(0xff888888),
+                                                 ),
+                                                 Text(
+                            '2k Views',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 9.sp,
+                              color: const Color(0xff888888),
+                            ),
+                                                 ),
+                         ],
+                       ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.lock_clock,
+                            size: 16.sp,
+                            color: const Color(0xff888888),
+                          ),
+                          Text(
+                            '2 weeks ago',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 9.sp,
+                              color: const Color(0xff888888),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '2k Views',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10.sp,
-                          color: const Color(0xff888888),
-                        ),
-                      ),
-                      const Icon(
-                        Icons.lock_clock,
-                        color: Color(0xff888888),
-                      ),
-                      Text(
-                        '2 weeks ago',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10.sp,
-                          color: const Color(0xff888888),
-                        ),
-                      ),
-                      const Icon(
-                        Icons.location_on,
-                        color: Color(0xff888888),
-                      ),
-                      Text(
-                        'kathamandu',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10.sp,
-                          color: const Color(0xff888888),
-                        ),
-                      ),
+                       Row(
+                         children: [
+                           Icon(
+                            Icons.location_on,
+                             size: 16.sp,
+                            color: const Color(0xff888888),
+                                                 ),
+                                                 Text(
+                            'kathamandu',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 9.sp,
+                              color: const Color(0xff888888),
+                            ),
+                                                 ),
+                         ],
+                       ),
                     ],
                   ),
                   SizedBox(

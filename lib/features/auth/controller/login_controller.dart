@@ -1,13 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/login_api.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
-import 'package:smartbazar/utils/custom_loading_indicatior.dart';
 
 final authRepositoryProvider = Provider<LoginApi>((ref) {
   return LoginApi();
@@ -30,9 +33,43 @@ class LoginController extends StateNotifier<GenericState> {
       final loginData = await LoginApi().login(email, password);
       state = LoadedState<LoginData>(response: loginData);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => HomeScreen()));
+          context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
+    }
+  }
+
+  Future<void> continueSession(BuildContext context) async {
+    final pref = await SharedPreferences.getInstance();
+    final sessionString = pref.getString('session');
+     SmartClinet.token = pref.getString('accessToken') ?? '';
+    SmartClinet.refresh = pref.getString('refreshToken') ?? '';
+    state = LoadingState();
+    try {
+      if (sessionString != null) {
+        final session = json.decode(sessionString);
+        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const BottomNavigationScreen(),
+          ),
+        );
+      } else {
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoginScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        ),
+      );
     }
   }
 }

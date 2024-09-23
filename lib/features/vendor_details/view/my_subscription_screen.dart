@@ -55,8 +55,8 @@ class MySubscriptionScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
-                    color: Color(0xffF3F3F3),
-                    border: Border.all(width: 1.w, color: Color(0xffADADAD))),
+                    color: const Color(0xffF3F3F3),
+                    border: Border.all(width: 1.w, color: const Color(0xffADADAD))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -64,11 +64,11 @@ class MySubscriptionScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('David Wanner'),
+                        const Text('David Wanner'),
                         GeneralTextButton(
                             marginH: 0,
                             height: 28.h,
-                            bgColor: Color(0xff362677),
+                            bgColor: const Color(0xff362677),
                             fgColor: Colors.white,
                             title: 'Profile')
                       ],
@@ -79,11 +79,11 @@ class MySubscriptionScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('David Wanner'),
+                        const Text('David Wanner'),
                         GeneralTextButton(
                             marginH: 0,
                             height: 28.h,
-                            bgColor: Color(0xff362677),
+                            bgColor: const Color(0xff362677),
                             fgColor: Colors.white,
                             title: 'Profile')
                       ],
@@ -94,11 +94,11 @@ class MySubscriptionScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('David Wanner'),
+                        const Text('David Wanner'),
                         GeneralTextButton(
                             marginH: 0,
                             height: 28.h,
-                            bgColor: Color(0xff362677),
+                            bgColor: const Color(0xff362677),
                             fgColor: Colors.white,
                             title: 'Profile')
                       ],
@@ -109,11 +109,11 @@ class MySubscriptionScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('David Wanner'),
+                        const Text('David Wanner'),
                         GeneralTextButton(
                             marginH: 0,
                             height: 28.h,
-                            bgColor: Color(0xff362677),
+                            bgColor: const Color(0xff362677),
                             fgColor: Colors.white,
                             title: 'Profile')
                       ],

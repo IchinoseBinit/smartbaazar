@@ -27,7 +27,7 @@ class SponsorshipScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.card_giftcard),
+                    const Icon(Icons.card_giftcard),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -64,7 +64,7 @@ class SponsorshipScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.r),
                         border:
-                            Border.all(width: 1.w, color: Color(0xffADADAD))),
+                            Border.all(width: 1.w, color: const Color(0xffADADAD))),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -92,7 +92,7 @@ class SponsorshipScreen extends StatelessWidget {
                               Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: 61.h,
-                                color: Color(0xffD9D9D9),
+                                color: const Color(0xffD9D9D9),
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -102,12 +102,12 @@ class SponsorshipScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xfffD33636)),
+                                    color: const Color(0xfffd33636)),
                               ),
                               SizedBox(
                                 height: 8.h,
                               ),
-                              ChooseFileWidget(),
+                              const ChooseFileWidget(),
                               SizedBox(
                                 height: 8.h,
                               ),
@@ -116,7 +116,7 @@ class SponsorshipScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff36383C)),
+                                    color: const Color(0xff36383C)),
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -140,10 +140,10 @@ class SponsorshipScreen extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   itemCount: 5,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
-                    return SponsorShipDetailsWidget();
+                    return const SponsorShipDetailsWidget();
                   },
                 ),
               ),
@@ -184,7 +184,7 @@ class SponsorShipDetailsWidget extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Color(0xff00000040).withOpacity(0.1),
+              color: const Color(0xff00000040).withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 2,
               offset: const Offset(0, 2),
@@ -216,7 +216,7 @@ class SponsorShipDetailsWidget extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            SponsorShipExpansionTileWidget(),
+            const SponsorShipExpansionTileWidget(),
           ],
         ),
       ),
@@ -232,9 +232,9 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color(0xffF6F1F1),
+      color: const Color(0xffF6F1F1),
       child: ExpansionTile(
-        backgroundColor: Color(0xffF6F1F1),
+        backgroundColor: const Color(0xffF6F1F1),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
         maintainState: true,
@@ -267,7 +267,7 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff36383C)),
+                          color: const Color(0xff36383C)),
                     ),
                   ],
                 ),
@@ -289,7 +289,7 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff36383C)),
+                          color: const Color(0xff36383C)),
                     ),
                   ],
                 ),
@@ -311,7 +311,7 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff36383C)),
+                          color: const Color(0xff36383C)),
                     ),
                   ],
                 ),
@@ -333,7 +333,7 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff36383C)),
+                          color: const Color(0xff36383C)),
                     ),
                   ],
                 ),
@@ -350,7 +350,7 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: Colors.black),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Text(
                       'Banner: ',
                       style: TextStyle(
@@ -364,8 +364,8 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                         height: 32.h,
                         width: 100.w,
                         fgColor: Colors.white,
-                        borderColor: Color(0xffADADAD),
-                        bgColor: Color(0xffADADAD),
+                        borderColor: const Color(0xffADADAD),
+                        bgColor: const Color(0xffADADAD),
                         onPressed: () {}),
                     SizedBox(
                       width: 10.w,
@@ -374,7 +374,7 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff36383C))),
+                            color: const Color(0xff36383C))),
                   ],
                 )
               ],
