@@ -39,7 +39,7 @@ class SignUpController extends StateNotifier<GenericState> {
           accept_marketing_offers: accept_marketing_offers);
       state = LoadedState<SignupModel>(response: singUpData);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => LoginScreen()));
+          context, MaterialPageRoute(builder: (_) => const LoginScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }

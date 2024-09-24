@@ -283,8 +283,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 bgColor: const Color(0xff362677),
                 fgColor: Colors.white,
                 title: 'Place Order',
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const ProceesToPayScreen())),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const ProceesToPayScreen())),
               ),
               SizedBox(
                 height: 20.h,

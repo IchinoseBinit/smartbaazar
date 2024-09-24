@@ -2,6 +2,7 @@ class ApiConstants {
   ApiConstants._();
 
   static String baseUrl = "https://smartbazaar.jianjun-rnd.com.np/api";
+  static String imgUrl = "https://smartbazaar.jianjun-rnd.com.np/storage/";
 
   static String loginUrl = "$baseUrl/auth/login";
   static String refreshTokenUrl = "$baseUrl/auth/refresh-token";

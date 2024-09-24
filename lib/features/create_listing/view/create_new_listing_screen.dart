@@ -1119,7 +1119,7 @@ class ReturnPolicyCardWidget extends StatefulWidget {
 }
 
 class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
-  bool _isvalid = false;
+  final bool _isvalid = false;
   bool _isDamge = false;
   @override
   Widget build(BuildContext context) {

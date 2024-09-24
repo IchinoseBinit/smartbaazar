@@ -234,10 +234,10 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           ),
                           SizedBox(height: 10.h),
                           //search bar for search in store
-                          SearchInStore(),
+                          const SearchInStore(),
 
                           // TabBar and TabBarView
-                          TabBarAndTabView()
+                          const TabBarAndTabView()
                         ],
                       ),
                     ),
@@ -428,7 +428,7 @@ class TabBarAndTabView extends StatelessWidget {
                                     SizedBox(
                                       height: 4.h,
                                     ),
-                                    Row(
+                                    const Row(
                                       children: [
                                         Text('Rs. {product.price}'),
                                         // SizedBox(
@@ -612,7 +612,7 @@ class TabBarAndTabView extends StatelessWidget {
                   ),
                 ),
                 // Second Tab Content
-                Center(
+                const Center(
                   child: Text('Order Placed Content Here'),
                 ),
                 // Center(
@@ -650,7 +650,7 @@ class HotDealsWidget extends ConsumerWidget {
           },
         );
       },
-      loading: () => CircularProgressIndicator(),
+      loading: () => const CircularProgressIndicator(),
       error: (err, stack) => Text('Error: $err'),
     );
   }

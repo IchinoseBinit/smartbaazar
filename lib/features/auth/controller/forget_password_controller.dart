@@ -26,7 +26,7 @@ class ForgetPasswordController extends StateNotifier<GenericState> {
           phone: phone, phone_country: phone_country, login: login);
       state = LoadedState<ForgetPasswordModel>(response: forgetPassword);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => OtpScreen()));
+          context, MaterialPageRoute(builder: (_) => const OtpScreen()));
     } catch (ex) {
       state = ErrorState(getCustomException(ex));
     }

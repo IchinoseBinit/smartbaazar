@@ -10,19 +10,19 @@ class SignupModel {
     success = json['success'];
     message = json['message'];
     result =
-        json['result'] != null ? new Result.fromJson(json['result']) : null;
-    extra = json['extra'] != null ? new Extra.fromJson(json['extra']) : null;
+        json['result'] != null ? Result.fromJson(json['result']) : null;
+    extra = json['extra'] != null ? Extra.fromJson(json['extra']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
-    if (this.extra != null) {
-      data['extra'] = this.extra!.toJson();
+    if (extra != null) {
+      data['extra'] = extra!.toJson();
     }
     return data;
   }
@@ -51,12 +51,12 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['username'] = this.username;
-    data['created_at_formatted'] = this.createdAtFormatted;
-    data['photo_url'] = this.photoUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['username'] = username;
+    data['created_at_formatted'] = createdAtFormatted;
+    data['photo_url'] = photoUrl;
     return data;
   }
 }
@@ -70,24 +70,24 @@ class Extra {
 
   Extra.fromJson(Map<String, dynamic> json) {
     sendEmailVerification = json['sendEmailVerification'] != null
-        ? new SendEmailVerification.fromJson(json['sendEmailVerification'])
+        ? SendEmailVerification.fromJson(json['sendEmailVerification'])
         : null;
     sendPhoneVerification = json['sendPhoneVerification'] != null
-        ? new SendPhoneVerification.fromJson(json['sendPhoneVerification'])
+        ? SendPhoneVerification.fromJson(json['sendPhoneVerification'])
         : null;
-    mail = json['mail'] != null ? new Mail.fromJson(json['mail']) : null;
+    mail = json['mail'] != null ? Mail.fromJson(json['mail']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.sendEmailVerification != null) {
-      data['sendEmailVerification'] = this.sendEmailVerification!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (sendEmailVerification != null) {
+      data['sendEmailVerification'] = sendEmailVerification!.toJson();
     }
-    if (this.sendPhoneVerification != null) {
-      data['sendPhoneVerification'] = this.sendPhoneVerification!.toJson();
+    if (sendPhoneVerification != null) {
+      data['sendPhoneVerification'] = sendPhoneVerification!.toJson();
     }
-    if (this.mail != null) {
-      data['mail'] = this.mail!.toJson();
+    if (mail != null) {
+      data['mail'] = mail!.toJson();
     }
     return data;
   }
@@ -108,10 +108,10 @@ class SendEmailVerification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['emailVerificationSent'] = this.emailVerificationSent;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['emailVerificationSent'] = emailVerificationSent;
+    data['message'] = message;
     return data;
   }
 }
@@ -131,10 +131,10 @@ class SendPhoneVerification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['phoneVerificationSent'] = this.phoneVerificationSent;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['phoneVerificationSent'] = phoneVerificationSent;
+    data['message'] = message;
     return data;
   }
 }
@@ -151,9 +151,9 @@ class Mail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
     return data;
   }
 }

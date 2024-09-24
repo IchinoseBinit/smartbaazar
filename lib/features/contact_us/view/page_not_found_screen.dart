@@ -50,7 +50,7 @@ class PageNotFoundScreen extends StatelessWidget {
                     fgColor: Colors.white,
                     bgColor: const Color(0xff362677),
                     onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => HomeScreen())))
+                        MaterialPageRoute(builder: (_) => const HomeScreen())))
               ],
             ),
           )),

@@ -23,6 +23,27 @@ import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
+import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
+import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
+import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
+import 'package:smartbazar/features/faq/view/faq_screen.dart';
+import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
+import 'package:smartbazar/features/offline_listing/offline_lisiting_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
+import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
+import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
+import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendorProfileScreen extends StatefulWidget {

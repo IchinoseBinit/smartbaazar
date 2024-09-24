@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
@@ -26,7 +27,7 @@ class _OtpScreenState extends State<OtpScreen> {
     int min = (otpTime / 60).floor();
     String minute = min.toString().length <= 1 ? "0$min" : "$min";
     String second = sec.toString().length <= 1 ? "0$sec" : "$sec";
-    return "$second";
+    return second;
   }
 
   void startTimer() {
@@ -89,7 +90,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xffADADAD)),
+                                color: const Color(0xffADADAD)),
                           );
                         })
                   ],
@@ -105,10 +106,10 @@ class _OtpScreenState extends State<OtpScreen> {
                           horizontal: 15.w, vertical: 11.h),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.r),
-                          color: Color(
+                          color: const Color(
                             0xffAEC5FF,
                           )),
-                      child: Icon(
+                      child: const Icon(
                         Icons.mail,
                         color: Color(0xff362677),
                       ),

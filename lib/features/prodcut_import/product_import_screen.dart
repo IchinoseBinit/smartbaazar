@@ -82,7 +82,7 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
                       SizedBox(
                         height: 5.h,
                       ),
-                      ChooseFileWidget(
+                       ChooseFileWidget(
                         textColor: Colors.red,
                         onImageSelected: (selectedImage) {
                           setState(() {
@@ -151,7 +151,8 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const OnlineTransactionRecordScreen()));
+                            builder: (_) =>
+                                const OnlineTransactionRecordScreen()));
                   },
                 ),
               ],
@@ -172,7 +173,8 @@ class DownloadFileSampleWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 11.w),
       decoration: BoxDecoration(
-          color: const Color(0xff2ECC71), borderRadius: BorderRadius.circular(10.r)),
+          color: const Color(0xff2ECC71),
+          borderRadius: BorderRadius.circular(10.r)),
       child: Row(
         children: [
           Icon(

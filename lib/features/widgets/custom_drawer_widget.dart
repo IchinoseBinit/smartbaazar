@@ -17,6 +17,7 @@ class CustomDrawer extends StatelessWidget {
     final List<Map<String, dynamic>> drawerList = [
       {'imageIcon': openCart, 'title': 'Products'},
       {'imageIcon': brandBazarIcon, 'title': 'BrandBazar'},
+      {'imageIcon': brandBazarIcon, 'title': 'BrandBazar'},
       {'imageIcon': b2bIcon, 'title': 'B2B'},
       {'imageIcon': usedIcon, 'title': 'Used'},
       {'imageIcon': servicesIcon, 'title': 'Services'},
@@ -67,9 +68,9 @@ class CustomDrawer extends StatelessWidget {
                     //       MaterialPageRoute(
                     //           builder: (_) => const AllProductType()));
                   }
-                  switch (ttile){
+                  switch (ttile) {
                     case 'BrandBazar':
-                    Navigator.push(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (_) => const BrandBazarScreen()));

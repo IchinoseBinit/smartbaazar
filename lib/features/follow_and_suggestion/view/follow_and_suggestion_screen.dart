@@ -44,12 +44,12 @@ class FollowAndSuggestionScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                VendorProductContianer(),
+                const VendorProductContianer(),
                 SizedBox(
                   height: 14.h,
                 ),
                 ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: 3,
                   itemBuilder: (context, index) => Column(
@@ -64,7 +64,7 @@ class FollowAndSuggestionScreen extends StatelessWidget {
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700),
                           ),
-                          Icon(Icons.more_horiz)
+                          const Icon(Icons.more_horiz)
                         ],
                       ),
                       SizedBox(
@@ -72,7 +72,7 @@ class FollowAndSuggestionScreen extends StatelessWidget {
                       ),
                       Container(
                         height: 160.h,
-                        color: Color(0xffD9D9D9),
+                        color: const Color(0xffD9D9D9),
                       )
                     ],
                   ),
@@ -111,7 +111,7 @@ class VendorProductContianer extends StatelessWidget {
               width: 110.w,
               padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 7.w),
               decoration: BoxDecoration(
-                  color: Color(0xff362677),
+                  color: const Color(0xff362677),
                   borderRadius: BorderRadius.circular(10.r)),
               child: Column(
                 children: [

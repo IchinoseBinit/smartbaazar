@@ -89,7 +89,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.call,
                     hintText: 'Phone Number',
                     controller: phoneController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -98,7 +100,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.mail,
                     hintText: 'Email',
                     controller: emailController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -107,7 +111,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.person_2_outlined,
                     hintText: 'User Name',
                     controller: usernameController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -115,7 +121,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   CustomTextFieldWidget(
                     icon: Icons.local_activity,
                     hintText: 'Age',
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -123,7 +131,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   CustomTextFieldWidget(
                     icon: Icons.person_2_rounded,
                     hintText: 'Sex',
-                    validator: (_) {},
+                    validator: (_) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -132,7 +142,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.lock,
                     hintText: 'Password',
                     controller: passwordController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -141,7 +153,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.lock,
                     hintText: 'Confirm Passowrd',
                     controller: confirmPasswordController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 20.h,

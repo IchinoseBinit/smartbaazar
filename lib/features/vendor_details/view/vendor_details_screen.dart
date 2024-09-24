@@ -118,29 +118,33 @@ class VendroDetailsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomTextFieldWidget(
-                              suffixIcon: Icon(
+                              suffixIcon: const Icon(
                                 Icons.visibility,
                                 color: Color(0xffADADAD),
                               ),
                               fill: true,
-                              fillColor: Color(0xffF3F3F3),
+                              fillColor: const Color(0xffF3F3F3),
                               icon: Icons.person,
                               hintText: "New Password",
-                              validator: (String) {},
+                              validator: (String) {
+                                return null;
+                              },
                             ),
                             SizedBox(
                               height: 10.2.h,
                             ),
                             CustomTextFieldWidget(
-                              suffixIcon: Icon(
+                              suffixIcon: const Icon(
                                 Icons.visibility,
                                 color: Color(0xffADADAD),
                               ),
                               fill: true,
-                              fillColor: Color(0xffF3F3F3),
+                              fillColor: const Color(0xffF3F3F3),
                               icon: Icons.person,
                               hintText: "Confirm Password",
-                              validator: (String) {},
+                              validator: (String) {
+                                return null;
+                              },
                             ),
                             SizedBox(
                               height: 10.h,

@@ -82,7 +82,9 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   icon: Icons.mail,
                   hintText: 'user email',
                   controller: emailController,
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 22.h,
@@ -91,7 +93,9 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   icon: Icons.mail,
                   hintText: 'Phone number',
                   controller: emailController,
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 60.h,

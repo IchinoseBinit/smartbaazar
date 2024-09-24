@@ -37,15 +37,15 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
         width: 24.w,
         height: 18.h,
         decoration: BoxDecoration(
-          color: _value ? Color(0xff362677) : Colors.white,
+          color: _value ? const Color(0xff362677) : Colors.white,
           borderRadius: BorderRadius.circular(4.0),
           border: Border.all(
-            color: _value ? Color(0xff362677) : Color(0xffADADAD),
+            color: _value ? const Color(0xff362677) : const Color(0xffADADAD),
             width: 2.0,
           ),
         ),
         child: _value
-            ? Icon(
+            ? const Icon(
                 Icons.check,
                 size: 20.0,
                 color: Colors.white,

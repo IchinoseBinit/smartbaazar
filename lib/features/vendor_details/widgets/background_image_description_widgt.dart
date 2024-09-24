@@ -15,7 +15,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 18.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(width: 1, color: Color(0xffADADAD))),
+          border: Border.all(width: 1, color: const Color(0xffADADAD))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,7 +35,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          Divider(
+          const Divider(
             color: Color(0xffADADAD),
           ),
           SizedBox(
@@ -45,7 +45,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
             child: Container(
               width: 320.w,
               height: 94.h,
-              color: Color(0xffD9D9D9),
+              color: const Color(0xffD9D9D9),
             ),
           ),
           SizedBox(
@@ -56,7 +56,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Recommended Size 728* 90',
                   style: TextStyle(color: Color(0xffFF282F)),
                 ),
@@ -67,7 +67,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                   padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.r),
-                      color: Color(0xffEDECEC)),
+                      color: const Color(0xffEDECEC)),
                   child: Row(
                     children: [
                       Text(
@@ -75,7 +75,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff36383C)),
+                            color: const Color(0xff36383C)),
                       ),
                       SizedBox(
                         width: 7.w,
@@ -85,7 +85,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xffADADAD)),
+                            color: const Color(0xffADADAD)),
                       ),
                       SizedBox(
                         width: 11.w,
@@ -95,7 +95,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 10.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff36383C)),
+                            color: const Color(0xff36383C)),
                       ),
                     ],
                   ),
@@ -108,7 +108,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff36383C)),
+                      color: const Color(0xff36383C)),
                 ),
                 SizedBox(
                   height: 15.h,
@@ -118,9 +118,9 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                     padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(width: 1, color: Color(0xffADADAD)),
+                      border: Border.all(width: 1, color: const Color(0xffADADAD)),
                     ),
-                    child: Text('this is a text')),
+                    child: const Text('this is a text')),
                 SizedBox(
                   height: 8.h,
                 ),
@@ -130,7 +130,7 @@ class BackgroundImageDescriptionWidget extends StatelessWidget {
                   width: 90.w,
                   title: 'Add',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   isSmallText: true,
                 )
               ],

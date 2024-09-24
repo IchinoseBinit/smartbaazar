@@ -1,5 +1,3 @@
-
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -18,7 +16,6 @@ import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/view/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/view/api/product_details_provider.dart';
 import 'package:smartbazar/features/view/d.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -26,7 +23,7 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 class ProductDetailsScreen extends ConsumerWidget {
-  List<String> itemsList = [];
+    List<String> itemsList = [];
 
   final String productId;
   ProductDetailsScreen({super.key, required this.productId});
@@ -118,8 +115,10 @@ class ProductDetailsScreen extends ConsumerWidget {
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
+
                                             child: Image.network(item),
-                                          ),
+                                            
+                                            ),
                                   )
                                   .toList(),
                             ),
@@ -215,7 +214,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                                             print("id is ${data.id}");
                                             // await  _apiService
                                             //     .addToCart(data.);
-                                            ApiService().addToCart(data.id.toString(),);
+
                                             CustomDialougeBox()
                                                 .addToCart(context);
                                           },
@@ -315,9 +314,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                                     Wrap(
                                       children: [
                                         Text(
-                                          data.pickup == null
-                                              ? ""
-                                              : data.pickup!,
+                                          data.pickup==null? "": data.pickup!,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -510,9 +507,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                                           width: 5.w,
                                         ),
                                         Text(
-                                          data.pickup == null
-                                              ? ""
-                                              : data.pickup!.split(',')[2],
+                                         data.pickup==null? "":data.pickup!.split(',')[2],
                                           style: TextStyle(
                                               color: const Color(0xff888888),
                                               fontSize: 12.sp,
@@ -592,7 +587,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                               ),
                               TabBarItems(
                                 weight: data.weight ?? "N/A",
-                                stock: data.stock == null ? "" : data.stock!,
+                                stock: data.stock==null? "": data.stock!,
                                 description: data.description!,
                               ),
                               SizedBox(
@@ -606,7 +601,9 @@ class ProductDetailsScreen extends ConsumerWidget {
                                             builder: (context) =>
                                                 DummyVendorHomeScreen(
                                                   vendorName: data.user!.name!,
-                                                )));
+                                                )
+                                          
+                                            ));
                                   },
                                   marginH: 1,
                                   width: MediaQuery.of(context).size.width,
@@ -623,18 +620,14 @@ class ProductDetailsScreen extends ConsumerWidget {
                                 height: 10.h,
                               ),
                               ProductAdditionalDetialsWidget(
-                                  inbox: data.category == null
-                                      ? ""
-                                      : data.category?.name ?? 'N/A',
+                                  inbox:data.category==null? "": 
+                                  
+                                  data.category?.name ?? 'N/A',
                                   brandname: data.title!.split('/')[0]),
                               ProductAvilableColorsWidget(
-                                color: data.colorOptions == null
-                                    ? []
-                                    : data.colorOptions ??
-                                        [
-                                          const ColorOption(
-                                              id: 2, value: "Black")
-                                        ],
+                                color: data.colorOptions==null? []: 
+                                data.colorOptions ??
+                                    [const ColorOption(id: 2, value: "Black")],
                               ),
                               SizedBox(
                                 height: 8.h,
@@ -818,6 +811,7 @@ class ScratchWinContainer extends StatelessWidget {
         child: Row(
           children: [
             Image.asset(
+
               ImageConstant.scartchWinImage,
             ),
             Expanded(
@@ -1188,12 +1182,6 @@ class SimilarListingProduct extends StatelessWidget {
                 return InkWell(
                   onTap: () {
                     print("id is ${data.id}");
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailsScreen(
-                              productId: data.id.toString()),
-                        ));
                   },
                   child: Container(
                     width: 150.w, // Specify a width for each item
@@ -1205,6 +1193,7 @@ class SimilarListingProduct extends StatelessWidget {
                           SizedBox(
                             height: 100.h, // Fixed height for the image
                             child: Image.network(
+
                               "${ApiConstants.imgUrl}${pics.first.filename}",
                               fit: BoxFit.cover,
                             ),

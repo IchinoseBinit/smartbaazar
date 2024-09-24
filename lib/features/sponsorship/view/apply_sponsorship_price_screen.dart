@@ -37,6 +37,7 @@ class _ApplySponsorshipPriceScreenState
                 child: Row(
                   children: [
                     const Icon(Icons.card_giftcard),
+                    const Icon(Icons.card_giftcard),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -155,7 +156,7 @@ class _ApplySponsorshipPriceScreenState
                                         SizedBox(
                                           height: 5.h,
                                         ),
-                                        ChooseFileWidget(
+                                         ChooseFileWidget(
                                           textColor: Colors.red,
                                           onImageSelected: (selectedImage) {
                                             setState(() {
@@ -223,6 +224,7 @@ class _ApplySponsorshipPriceScreenState
                                                   color:
                                                       const Color(0xffADADAD)),
                                             ),
+                                            const Spacer(),
                                             const Spacer(),
                                             Expanded(
                                               child: TextField(
