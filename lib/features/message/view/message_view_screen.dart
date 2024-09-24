@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
@@ -108,56 +109,66 @@ class MessageViewScreen extends ConsumerWidget {
                         },
                       ),
                       // Alerts Tab
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12.h),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xffD9D9D9),
-                              ),
-                              child: const Icon(Icons.person_3_outlined),
-                            ),
-                            SizedBox(width: 11.w),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Please sign up to see alerts.",
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                                Text(
-                                  "Please sign in fast to see our services",
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: const Color(0xff000000)
-                                        .withOpacity(0.45),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  maxLines: 2,
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            Container(
-                              height: 12.h,
-                              width: 12.w,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xff781740),
-                              ),
-                            ),
-                          ],
-                        ),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final alertProvider =
+                              ref.watch(getAlertMessageProvider);
+
+                          return alertProvider.when(
+                            data: (alertList) {
+                              // Now `alertList.data` contains the list of alerts
+                              final alerts = alertList.alerts;
+
+                              return ListView.separated(
+                                itemCount: alerts!.length,
+                                itemBuilder: (context, index) {
+                                  final alert = alerts[index];
+                                  return ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage: alert.image != null
+                                          ? NetworkImage(alert.image!)
+                                          : const AssetImage(
+                                                  'assets/images/default_avatar.png')
+                                              as ImageProvider,
+                                    ),
+                                    title: Text(
+                                      alert.title ?? 'No title',
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w700,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                    subtitle: Text(
+                                      alert.body ?? 'No body',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        overflow: TextOverflow.ellipsis,
+                                        color: const Color(0xff000000)
+                                            .withOpacity(0.45),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.arrow_forward_ios),
+                                      onPressed: () {
+                                        // Handle navigation or action
+                                      },
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(height: 20.h),
+                              );
+                            },
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
+                            error: (error, stack) =>
+                                Center(child: Text('Error: $error')),
+                          );
+                        },
                       ),
                     ],
                   ),

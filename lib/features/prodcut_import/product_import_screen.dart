@@ -1,19 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
-import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class ProductImportScreen extends StatelessWidget {
+class ProductImportScreen extends ConsumerStatefulWidget {
   const ProductImportScreen({super.key});
 
+  @override
+  ConsumerState<ProductImportScreen> createState() =>
+      _ProductImportScreenState();
+}
+
+class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
+  File? imageFile;
   @override
   Widget build(BuildContext context) {
     return GenericSafeArea(
@@ -33,7 +37,7 @@ class ProductImportScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.import_contacts),
+                      const Icon(Icons.import_contacts),
                       SizedBox(
                         width: 8.w,
                       ),
@@ -80,6 +84,11 @@ class ProductImportScreen extends StatelessWidget {
                       ),
                       ChooseFileWidget(
                         textColor: Colors.red,
+                        onImageSelected: (selectedImage) {
+                          setState(() {
+                            imageFile = selectedImage;
+                          });
+                        },
                       ),
                       SizedBox(
                         height: 10.h,
@@ -90,7 +99,7 @@ class ProductImportScreen extends StatelessWidget {
                           width: 100.w,
                           isSmallText: true,
                           fgColor: Colors.white,
-                          bgColor: Color(0xff362677),
+                          bgColor: const Color(0xff362677),
                           title: 'Add'),
                       SizedBox(
                         height: 10.h,
@@ -110,20 +119,20 @@ class ProductImportScreen extends StatelessWidget {
                           Icon(
                             Icons.file_copy,
                             size: 20.h,
-                            color: Color(0xff362677),
+                            color: const Color(0xff362677),
                           )
                         ],
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
-                      DownloadFileSampleWidget(
+                      const DownloadFileSampleWidget(
                         text: 'Donwload Sample',
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
-                      DownloadFileSampleWidget(
+                      const DownloadFileSampleWidget(
                         text: 'Donwload Documents',
                       ),
                     ],
@@ -137,12 +146,12 @@ class ProductImportScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   title: 'Online Transaction',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => OnlineTransactionRecordScreen()));
+                            builder: (_) => const OnlineTransactionRecordScreen()));
                   },
                 ),
               ],
@@ -163,7 +172,7 @@ class DownloadFileSampleWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 11.w),
       decoration: BoxDecoration(
-          color: Color(0xff2ECC71), borderRadius: BorderRadius.circular(10.r)),
+          color: const Color(0xff2ECC71), borderRadius: BorderRadius.circular(10.r)),
       child: Row(
         children: [
           Icon(

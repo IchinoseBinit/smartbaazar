@@ -1,16 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
-import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class ApplySponsorshipPriceScreen extends StatelessWidget {
+class ApplySponsorshipPriceScreen extends ConsumerStatefulWidget {
   const ApplySponsorshipPriceScreen({super.key});
 
+  @override
+  ConsumerState<ApplySponsorshipPriceScreen> createState() =>
+      _ApplySponsorshipPriceScreenState();
+}
+
+class _ApplySponsorshipPriceScreenState
+    extends ConsumerState<ApplySponsorshipPriceScreen> {
+  File? imageFile;
   @override
   Widget build(BuildContext context) {
     return GenericSafeArea(
@@ -26,7 +36,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.card_giftcard),
+                    const Icon(Icons.card_giftcard),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -77,7 +87,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: TabBarView(
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           children: [
                             SingleChildScrollView(
                               child: Padding(
@@ -100,7 +110,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -137,7 +147,8 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Color(0xffADADAD)),
+                                                  color:
+                                                      const Color(0xffADADAD)),
                                             )
                                           ],
                                         ),
@@ -146,7 +157,12 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                         ),
                                         ChooseFileWidget(
                                           textColor: Colors.red,
-                                        )
+                                          onImageSelected: (selectedImage) {
+                                            setState(() {
+                                              imageFile = selectedImage;
+                                            });
+                                          },
+                                        ),
                                       ],
                                     )),
                                     CreateListingCardWidget(
@@ -165,7 +181,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -204,9 +220,10 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Color(0xffADADAD)),
+                                                  color:
+                                                      const Color(0xffADADAD)),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -241,7 +258,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -276,7 +293,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -311,7 +328,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -346,7 +363,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Expanded(
                                               child: TextField(
                                                 decoration:
@@ -410,7 +427,7 @@ class ApplySponsorshipPriceScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => AdvertisementScreen()));
+                            builder: (_) => const AdvertisementScreen()));
                   }),
             ],
           ),

@@ -8,7 +8,6 @@ import 'package:smartbazar/features/auth/api/login_api.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
 
@@ -33,7 +32,7 @@ class LoginController extends StateNotifier<GenericState> {
       final loginData = await LoginApi().login(email, password);
       state = LoadedState<LoginData>(response: loginData);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+          context, MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }

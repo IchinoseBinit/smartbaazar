@@ -13,6 +13,7 @@ class ApiConstants {
   static String homeSlider1BannerUrl = '$baseUrl/homeSections/home1';
   static String homeSlider2BannerUrl = '$baseUrl/homeSections/home2';
   static String homeScreenSearchBar = '$baseUrl/homeSections/search_suggest/';
+  static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
 
   static String reportComplainUrl = '$baseUrl/posts';
   //cart item
@@ -20,6 +21,7 @@ class ApiConstants {
   static String getProductDetails = '$baseUrl/posts';
   static String addtoCartUrl = '$baseUrl/api/users/addToCart';
   static String incrementQuantity = '$baseUrl/users/addToCart';
+  // static String checkoutDetails 
 
   //favourite list
   static String favouriteListUrl = '$baseUrl/savedPosts';
@@ -50,6 +52,7 @@ class ApiConstants {
   //message thread
   static String getMessageThreadUrl = '$baseUrl/threads';
   static String getMessageListUrl = '$baseUrl/threads';
+  static String getAlertMessageUrl = '$baseUrl/alerts';
   //my order and returns
   static String getMyOrderUrl = '$baseUrl/myorders';
   static String getMyReturnsUrl = '$baseUrl/myreturns';
@@ -59,4 +62,19 @@ class ApiConstants {
 
   //online transaction
    static String getOnlineTransactionResponseUrl = '$baseUrl/users/payment_record';
+
+   //pending approval 
+   static String getPendingApprovalUrl = '$baseUrl/posts/pendingapproval';
+
+   //offline Listing
+   static String getOfflineListingUrl = '$baseUrl/posts/listoffline';
+//sponsorship
+   static String getSponsorshipUrl = '$baseUrl/users/sponsorship';
+   static String storeSponsorBanner ='$baseUrl/users/sponsorbanner';
+   //dispute 
+   static String getDisputeUrl = '$baseUrl/dispute';
+   static String submitDisputeUrl = '$baseUrl/storedispute';
+   //myListing
+   static String getMyListingUrl = '$baseUrl/posts/mylistings';
+   static String getMYSubscribeAndWinUrl ='$baseUrl/mysubscribeandwin';
 }

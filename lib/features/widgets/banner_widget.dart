@@ -1,14 +1,9 @@
 import 'dart:math';
 
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
-import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
@@ -32,7 +27,7 @@ class BannerWidget extends ConsumerWidget {
               ? null
               : DecorationImage(
                   image: NetworkImage(
-                    value![new Random().nextInt(value.length)].image,
+                    value[new Random().nextInt(value.length)].image,
                   ),
                 ),
         ),

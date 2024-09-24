@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
@@ -67,7 +66,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 hintText: 'Name',
                 fill: true,
                 fillColor: const Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 8.h,
@@ -77,7 +78,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 hintText: 'Contact Number',
                 fill: true,
                 fillColor: const Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 8.h,
@@ -88,7 +91,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 readOnly: true,
                 fill: true,
                 fillColor: const Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 20.h,
@@ -130,7 +135,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 hintText: 'City',
                 fill: true,
                 fillColor: const Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 8.h,
@@ -140,7 +147,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 hintText: 'Street Address',
                 fill: true,
                 fillColor: const Color.fromARGB(255, 241, 234, 234),
-                validator: (String) {},
+                validator: (String) {
+                  return null;
+                },
               ),
               SizedBox(
                 height: 12.h,

@@ -4,9 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
-import 'package:smartbazar/features/auth/model/refresh_token_model.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class SmartClinet {

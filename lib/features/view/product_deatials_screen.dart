@@ -1,3 +1,5 @@
+
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -14,28 +16,37 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/view/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/view/api/product_details_provider.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+
+String myurl = "https://smartbazaar.jianjun-rnd.com.np/storage/";
 
 class ProductDetailsScreen extends ConsumerWidget {
   final String productId;
   ProductDetailsScreen({super.key, required this.productId});
-
-  List<String> itemsList = [
-    ImageConstant.laptopImage,
-    ImageConstant.laptopImage,
-    ImageConstant.laptopImage
-  ];
-  int currentIndex = 0;
+  List<String> itemsList = [];
+  final currentIndexProvider = StateProvider<int>((ref) => 0);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(currentIndexProvider);
     final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
+    // final addtocartptovider=ref.watch(provider)
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
+    // print("ppic is ${productDetailsAsyncValue.value?.pictures![0]}");
 
+    if (productDetailsAsyncValue.value == null) {
+      return const CircularProgressIndicator();
+    } else {
+      productDetailsAsyncValue.value?.pictures?.forEach((element) {
+        itemsList.add("$myurl${element.filename}");
+      });
+    }
+
+    print("iz$itemsList");
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
         child: Scaffold(
@@ -82,52 +93,57 @@ class ProductDetailsScreen extends ConsumerWidget {
                           children: [
                             CarouselSlider(
                               options: CarouselOptions(
-                                  height: 220.0,
-                                  viewportFraction: 1.5,
-                                  initialPage: 0,
-                                  scrollDirection: Axis.horizontal,
-                                  // autoPlay: true,
-                                  onPageChanged: (index, _) {
-                                    // setState(() {
-                                    //   currentIndex = index;
-                                    // });
-                                  }),
-                              items: itemsList
-                                  .map(
-                                    (item) => itemsList.isEmpty
-                                        ? const SizedBox()
-                                        : SizedBox(
-                                            height: 200,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Image.asset(
-                                              item,
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                  )
-                                  .toList(),
-                            ),
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                for (int i = 0; i < 3; i++)
-                                  Container(
-                                    height: 12.h,
-                                    width: 12.w,
-                                    margin: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: currentIndex == i
-                                            ? const Color(0xffADADAD)
-                                            : Colors.white,
-                                        shape: BoxShape.circle),
+                                height: 220.0,
+                                viewportFraction: 1.0,
+                                initialPage: 0,
+                                scrollDirection: Axis.horizontal,
+                                onPageChanged: (index, _) {
+                                  ref
+                                      .read(currentIndexProvider.notifier)
+                                      .state = index;
+                                },
+                              ),
+                              items: itemsList.map((item) {
+                                return SizedBox(
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.network(
+                                    item,
+                                    fit: BoxFit.contain,
                                   ),
-                              ],
-                            )
+                                );
+                              }).toList(),
+                            ),
+                            SizedBox(height: 5.h),
+                            // Dynamic indicator generation
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 10.h,
+                                    width: 10.w,
+                                    margin: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: currentIndex == 0
+                                          ? const Color(
+                                              0xffADADAD) // Active dot color
+                                          : Colors.white, // Inactive dot color
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 10.h,
+                                    width: 10.w,
+                                    margin: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: currentIndex == 1
+                                          ? const Color(
+                                              0xffADADAD) // Active dot color
+                                          : Colors.white, // Inactive dot color
+                                    ),
+                                  )
+                                ]),
                           ],
                         ),
                         SizedBox(
@@ -201,6 +217,8 @@ class ProductDetailsScreen extends ConsumerWidget {
                                         InkWell(
                                           onTap: () async {
                                             print("id is ${data.id}");
+                                            await ApiService()
+                                                .addToCart(896.toString());
                                             // await  _apiService
                                             //     .addToCart(data.);
 
@@ -1165,37 +1183,48 @@ class SimilarListingProduct extends StatelessWidget {
               itemBuilder: (context, index) {
                 SimilarItems data = items[index];
 
-                return Container(
-                  width: 150.w, // Specify a width for each item
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (data.pictures.isNotEmpty)
-                        // SizedBox(
-                        //   height: 100.h, // Fixed height for the image
-                        //   child: Image.network(
-                        //     data.pictures.first.filename,
-                        //     fit: BoxFit.cover,
-                        //   ),
-                        // ),
+                return InkWell(
+                  onTap: () {
+                    print("id is ${data.id.toString()}");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailsScreen(
+                              productId: data.id.toString()),
+                        ));
+                  },
+                  child: Container(
+                    width: 150.w, // Specify a width for each item
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (data.pictures.isNotEmpty)
+                          SizedBox(
+                            height: 100.h, // Fixed height for the image
+                            child: Image.network(
+                              "$myurl/${data.pictures.first.filename}",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         SizedBox(height: 8.h),
-                      Text(
-                        data.title,
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis, // Prevent overflow
-                      ),
-                      Text(
-                        data.price,
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                        Text(
+                          data.title,
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis, // Prevent overflow
+                        ),
+                        Text(
+                          data.price,
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

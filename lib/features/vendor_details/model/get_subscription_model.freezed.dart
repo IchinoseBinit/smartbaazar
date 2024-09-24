@@ -20,7 +20,7 @@ GetSubscriptionModel _$GetSubscriptionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GetSubscriptionModel {
-  List<Subscription> get subscriptions => throw _privateConstructorUsedError;
+  List<Subscription>? get subscriptions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $GetSubscriptionModelCopyWith<$Res> {
           $Res Function(GetSubscriptionModel) then) =
       _$GetSubscriptionModelCopyWithImpl<$Res, GetSubscriptionModel>;
   @useResult
-  $Res call({List<Subscription> subscriptions});
+  $Res call({List<Subscription>? subscriptions});
 }
 
 /// @nodoc
@@ -51,13 +51,13 @@ class _$GetSubscriptionModelCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? subscriptions = null,
+    Object? subscriptions = freezed,
   }) {
     return _then(_value.copyWith(
-      subscriptions: null == subscriptions
+      subscriptions: freezed == subscriptions
           ? _value.subscriptions
           : subscriptions // ignore: cast_nullable_to_non_nullable
-              as List<Subscription>,
+              as List<Subscription>?,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$GetSubscriptionModelImplCopyWith<$Res>
       __$$GetSubscriptionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Subscription> subscriptions});
+  $Res call({List<Subscription>? subscriptions});
 }
 
 /// @nodoc
@@ -84,13 +84,13 @@ class __$$GetSubscriptionModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? subscriptions = null,
+    Object? subscriptions = freezed,
   }) {
     return _then(_$GetSubscriptionModelImpl(
-      subscriptions: null == subscriptions
+      subscriptions: freezed == subscriptions
           ? _value._subscriptions
           : subscriptions // ignore: cast_nullable_to_non_nullable
-              as List<Subscription>,
+              as List<Subscription>?,
     ));
   }
 }
@@ -99,18 +99,20 @@ class __$$GetSubscriptionModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GetSubscriptionModelImpl implements _GetSubscriptionModel {
   const _$GetSubscriptionModelImpl(
-      {required final List<Subscription> subscriptions})
+      {required final List<Subscription>? subscriptions})
       : _subscriptions = subscriptions;
 
   factory _$GetSubscriptionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetSubscriptionModelImplFromJson(json);
 
-  final List<Subscription> _subscriptions;
+  final List<Subscription>? _subscriptions;
   @override
-  List<Subscription> get subscriptions {
+  List<Subscription>? get subscriptions {
+    final value = _subscriptions;
+    if (value == null) return null;
     if (_subscriptions is EqualUnmodifiableListView) return _subscriptions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_subscriptions);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -150,14 +152,14 @@ class _$GetSubscriptionModelImpl implements _GetSubscriptionModel {
 
 abstract class _GetSubscriptionModel implements GetSubscriptionModel {
   const factory _GetSubscriptionModel(
-          {required final List<Subscription> subscriptions}) =
+          {required final List<Subscription>? subscriptions}) =
       _$GetSubscriptionModelImpl;
 
   factory _GetSubscriptionModel.fromJson(Map<String, dynamic> json) =
       _$GetSubscriptionModelImpl.fromJson;
 
   @override
-  List<Subscription> get subscriptions;
+  List<Subscription>? get subscriptions;
   @override
   @JsonKey(ignore: true)
   _$$GetSubscriptionModelImplCopyWith<_$GetSubscriptionModelImpl>
@@ -170,12 +172,12 @@ Subscription _$SubscriptionFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Subscription {
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get vendorId => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
+  String? get vendorId => throw _privateConstructorUsedError;
   @JsonKey(name: 'followed_date')
-  String get followedDate => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
+  String? get followedDate => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
   Vendor get vendor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -191,11 +193,11 @@ abstract class $SubscriptionCopyWith<$Res> {
       _$SubscriptionCopyWithImpl<$Res, Subscription>;
   @useResult
   $Res call(
-      {String id,
-      String userId,
-      String vendorId,
-      @JsonKey(name: 'followed_date') String followedDate,
-      String status,
+      {String? id,
+      String? userId,
+      String? vendorId,
+      @JsonKey(name: 'followed_date') String? followedDate,
+      String? status,
       Vendor vendor});
 
   $VendorCopyWith<$Res> get vendor;
@@ -214,34 +216,34 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? vendorId = null,
-    Object? followedDate = null,
-    Object? status = null,
+    Object? id = freezed,
+    Object? userId = freezed,
+    Object? vendorId = freezed,
+    Object? followedDate = freezed,
+    Object? status = freezed,
     Object? vendor = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
+              as String?,
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      vendorId: null == vendorId
+              as String?,
+      vendorId: freezed == vendorId
           ? _value.vendorId
           : vendorId // ignore: cast_nullable_to_non_nullable
-              as String,
-      followedDate: null == followedDate
+              as String?,
+      followedDate: freezed == followedDate
           ? _value.followedDate
           : followedDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
+              as String?,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       vendor: null == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -267,11 +269,11 @@ abstract class _$$SubscriptionImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String userId,
-      String vendorId,
-      @JsonKey(name: 'followed_date') String followedDate,
-      String status,
+      {String? id,
+      String? userId,
+      String? vendorId,
+      @JsonKey(name: 'followed_date') String? followedDate,
+      String? status,
       Vendor vendor});
 
   @override
@@ -289,34 +291,34 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? vendorId = null,
-    Object? followedDate = null,
-    Object? status = null,
+    Object? id = freezed,
+    Object? userId = freezed,
+    Object? vendorId = freezed,
+    Object? followedDate = freezed,
+    Object? status = freezed,
     Object? vendor = null,
   }) {
     return _then(_$SubscriptionImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
+              as String?,
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      vendorId: null == vendorId
+              as String?,
+      vendorId: freezed == vendorId
           ? _value.vendorId
           : vendorId // ignore: cast_nullable_to_non_nullable
-              as String,
-      followedDate: null == followedDate
+              as String?,
+      followedDate: freezed == followedDate
           ? _value.followedDate
           : followedDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
+              as String?,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       vendor: null == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -340,16 +342,16 @@ class _$SubscriptionImpl implements _Subscription {
       _$$SubscriptionImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
-  final String userId;
+  final String? userId;
   @override
-  final String vendorId;
+  final String? vendorId;
   @override
   @JsonKey(name: 'followed_date')
-  final String followedDate;
+  final String? followedDate;
   @override
-  final String status;
+  final String? status;
   @override
   final Vendor vendor;
 
@@ -394,27 +396,27 @@ class _$SubscriptionImpl implements _Subscription {
 
 abstract class _Subscription implements Subscription {
   const factory _Subscription(
-      {required final String id,
-      required final String userId,
-      required final String vendorId,
-      @JsonKey(name: 'followed_date') required final String followedDate,
-      required final String status,
+      {required final String? id,
+      required final String? userId,
+      required final String? vendorId,
+      @JsonKey(name: 'followed_date') required final String? followedDate,
+      required final String? status,
       required final Vendor vendor}) = _$SubscriptionImpl;
 
   factory _Subscription.fromJson(Map<String, dynamic> json) =
       _$SubscriptionImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
-  String get userId;
+  String? get userId;
   @override
-  String get vendorId;
+  String? get vendorId;
   @override
   @JsonKey(name: 'followed_date')
-  String get followedDate;
+  String? get followedDate;
   @override
-  String get status;
+  String? get status;
   @override
   Vendor get vendor;
   @override
@@ -429,9 +431,9 @@ Vendor _$VendorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Vendor {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -443,7 +445,7 @@ abstract class $VendorCopyWith<$Res> {
   factory $VendorCopyWith(Vendor value, $Res Function(Vendor) then) =
       _$VendorCopyWithImpl<$Res, Vendor>;
   @useResult
-  $Res call({String id, String name, String username});
+  $Res call({String? id, String? name, String? username});
 }
 
 /// @nodoc
@@ -459,23 +461,23 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? username = null,
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? username = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
+              as String?,
+      username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -487,7 +489,7 @@ abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
       __$$VendorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String username});
+  $Res call({String? id, String? name, String? username});
 }
 
 /// @nodoc
@@ -501,23 +503,23 @@ class __$$VendorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? username = null,
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? username = freezed,
   }) {
     return _then(_$VendorImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
+              as String?,
+      username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -532,11 +534,11 @@ class _$VendorImpl implements _Vendor {
       _$$VendorImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
-  final String name;
+  final String? name;
   @override
-  final String username;
+  final String? username;
 
   @override
   String toString() {
@@ -574,18 +576,18 @@ class _$VendorImpl implements _Vendor {
 
 abstract class _Vendor implements Vendor {
   const factory _Vendor(
-      {required final String id,
-      required final String name,
-      required final String username}) = _$VendorImpl;
+      {required final String? id,
+      required final String? name,
+      required final String? username}) = _$VendorImpl;
 
   factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
-  String get name;
+  String? get name;
   @override
-  String get username;
+  String? get username;
   @override
   @JsonKey(ignore: true)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>

@@ -39,14 +39,14 @@ class TermsConditionScreen extends ConsumerWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.w700),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Text(
                       'Go back',
                       style: TextStyle(
                           fontSize: 14.sp,
-                          color: Color(0xff888888),
+                          color: const Color(0xff888888),
                           fontWeight: FontWeight.w700),
                     ),
                   )
@@ -57,7 +57,7 @@ class TermsConditionScreen extends ConsumerWidget {
               ),
               Divider(
                 thickness: 2.w,
-                color: Color(0xffD9D9D9),
+                color: const Color(0xffD9D9D9),
               ),
             ],
           ),
@@ -77,16 +77,16 @@ class TermsConditionScreen extends ConsumerWidget {
                       style: {
                         "body": Style(
                           fontSize: FontSize(12.sp),
-                          color: Color(0xff36383C),
+                          color: const Color(0xff36383C),
                         ),
                         "h4": Style(
                           fontSize: FontSize(12.sp),
                           fontWeight: FontWeight.w700,
-                          color: Color(0xff36383C),
+                          color: const Color(0xff36383C),
                         ),
                         "p": Style(
                           fontSize: FontSize(12.sp),
-                          color: Color(0xff36383C),
+                          color: const Color(0xff36383C),
                           fontWeight: FontWeight.w400,
                         ),
                         "a": Style(
@@ -106,7 +106,7 @@ class TermsConditionScreen extends ConsumerWidget {
                       width: MediaQuery.of(context).size.width,
                       title: 'Next',
                       fgColor: Colors.white,
-                      bgColor: Color(0xff362677),
+                      bgColor: const Color(0xff362677),
                       onPressed: () {
                         Navigator.push(
                             context,
