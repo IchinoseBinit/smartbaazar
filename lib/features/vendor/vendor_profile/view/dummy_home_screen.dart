@@ -243,7 +243,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                           ),
                         ),
                         SizedBox(height: 10.h),
-                        SearchInStore(),
+                        const SearchInStore(),
                       ],
                     ),
                   ),
@@ -418,14 +418,14 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
 
   Widget _buildBrandTab() {
     // Replace this with the actual content for the "Brand" tab.
-    return Center(
+    return const Center(
       child: Text('Brand Tab Content'),
     );
   }
 
   Widget _buildUsedTab() {
     // Replace this with the actual content for the "Used" tab.
-    return Center(
+    return const Center(
       child: Text('Used Tab Content'),
     );
   }

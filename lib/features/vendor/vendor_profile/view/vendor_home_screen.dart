@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
@@ -630,7 +629,7 @@ class TabBarAndTabView extends StatelessWidget {
 class HotDealsWidget extends ConsumerWidget {
   final String vendorName;
 
-  const HotDealsWidget({required this.vendorName});
+  const HotDealsWidget({super.key, required this.vendorName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -659,7 +658,7 @@ class HotDealsWidget extends ConsumerWidget {
 class HotDealCard extends StatelessWidget {
   final HotProduct hotProduct;
 
-  const HotDealCard({required this.hotProduct});
+  const HotDealCard({super.key, required this.hotProduct});
 
   @override
   Widget build(BuildContext context) {

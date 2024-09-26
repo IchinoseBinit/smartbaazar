@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';

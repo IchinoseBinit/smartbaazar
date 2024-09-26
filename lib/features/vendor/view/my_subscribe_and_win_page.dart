@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -110,10 +113,9 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
                 children: [
                   _buildHeaderSection(data),
                   _buildUserDetailsSection(data),
-                 
-                   _buildGiftsSection(data),
+                  _buildGiftsSection(data),
                   _buildWinnersSection(data),
-                  _buildPrizeSponsorSection(),
+                  _buildPrizeSponsorSection(data),
                   _buildTermsAndConditionsSection(data),
                 ],
               ),
@@ -183,7 +185,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) {
                     // Show a placeholder or error widget if the image fails to load
-                    return Icon(Icons.person, size: 80);
+                    return const Icon(Icons.person, size: 80);
                   },
                 ),
               ),
@@ -206,7 +208,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
               children: [
                 _buildGiftInfoContainer(
                   title: 'Total gifts won worth',
-                  value: 'Rs. ${data.totalWoth ?? 0}',
+                  value: 'Rs. ${data.totalWorth ?? 0}',
                 ),
                 SizedBox(height: 8.h),
                 _buildGiftInfoContainer(
@@ -241,7 +243,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
                 children: [
                   // Image of gift
                   Image.network(
-                    gift['imageUrl'], // Update with correct path
+                    gift.giftDetails!.imageUrl!, // Update with correct path
                     width: 60.w,
                     height: 60.w,
                     fit: BoxFit.cover,
@@ -254,18 +256,18 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          gift['name'] ?? 'Gift Name',
+                          gift.giftDetails!.name ?? 'Gift Name',
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 5.h),
                         Text(
-                          'Rs. ${gift['price'] ?? ''}',
+                          'Rs. ${gift.giftDetails!.worth ?? ''}',
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         SizedBox(height: 5.h),
                         Text(
-                          'Date: ${gift['date'] ?? ''}',
+                          'Date: ${gift.giftDetails!.createdAt ?? ''}',
                           style: TextStyle(fontSize: 12.sp),
                         ),
                       ],
@@ -335,12 +337,16 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.only(left: 5.w),
             shrinkWrap: true,
-            itemCount: data.content3?.length ?? 0,
+            itemCount: data.gifts?.length ?? 0,
             itemBuilder: (context, index) {
-              final contentBlock = data.content3?[index];
-              return VendorProductDetails(
-                title: contentBlock?.title ?? '',
-                content: contentBlock?.content ?? '',
+              final gift = data.gifts?[index];
+              return GiftDetails(
+                giftName: gift?.giftDetails?.name ?? '',
+                giftImage: gift?.giftDetails?.imageUrl ?? '',
+                giftWorth: gift?.giftDetails?.worth ?? '',
+                vendorName: gift?.vendor?.name ?? '',
+                vendorPhoto: gift?.vendor?.photo ?? '',
+                status: gift?.status ?? '',
               );
             },
             separatorBuilder: (BuildContext context, int index) {
@@ -371,12 +377,15 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(data.winners?.length ?? 0, (index) {
-              final winner = data.winners?[index];
+              // Cast the dynamic list to a Winner model object
+              final Winner winner = data.winners?[index] as Winner;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Correctly accessing the name property within the Winner object
                   Text(
-                    '${winner?.name ?? 'Winner Name'}',
+                    '${winner.name!.name}', // Accessing the name inside Name class
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
@@ -384,7 +393,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
                     ),
                   ),
                   Text(
-                    'Gift Rs ${winner?.giftPrice ?? 0}',
+                    '${winner.giftWorth!.worth}', // Accessing the name inside Name class
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
@@ -400,7 +409,27 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
     );
   }
 
-  Widget _buildPrizeSponsorSection() {
+  Widget _buildPrizeSponsorSection(MySubscribeAndWinModel data) {
+    // Extract the mileage content from content3
+    final mileageBlock = data.content3?.firstWhere(
+      (contentBlock) => contentBlock.title?.contains('Mileage') ?? false,
+      orElse: () => Content3(title: '', content: ''),
+    );
+
+    // Parse the JSON string from 'title' and 'content' fields
+    final parsedTitle = jsonDecode(mileageBlock?.title ?? '{}');
+    final parsedContent = jsonDecode(mileageBlock?.content ?? '{}');
+
+    // List of sponsors
+    List<Map<String, String?>> sponsors = data.sponsorVendors?.map((vendor) {
+          return {
+            'name': vendor.name,
+            'photo': vendor.photo,
+            'username': vendor.username,
+          };
+        }).toList() ??
+        [];
+
     return Padding(
       padding: EdgeInsets.all(8.w),
       child: Column(
@@ -408,7 +437,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
         children: [
           Center(
             child: Text(
-              "Prize Sponser",
+              "Prize Sponsor",
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
@@ -417,16 +446,58 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
             ),
           ),
           SizedBox(height: 18.h),
-          Row(
-            children: [
-              Text('Samsung',
-                  style: TextStyle(
+          // Sponsors Row
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 20.w, // Space between logos
+            children: sponsors.map((sponsor) {
+              return Column(
+                children: [
+                  CircleAvatar(
+                    radius: 30.h,
+                    backgroundImage: NetworkImage(sponsor['photo']!),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    sponsor['name']!,
+                    style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xff362677))),
-            ],
+                      color: const Color(0xff362677),
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
           ),
-          // SvgPicture.asset(addidasIcon)
+          SizedBox(height: 20.h),
+          Text(
+            parsedTitle['en'] ?? 'Mileage', // Display the parsed title
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff362677),
+            ),
+          ),
+          SizedBox(height: 10.h),
+          if (parsedContent['en'] != null)
+            // Render HTML content
+            Html(
+              data: parsedContent['en'], // Render English content
+              style: {
+                "ul": Style(
+                  margin: Margins.symmetric(vertical: 8.h),
+                ),
+                "li": Style(
+                  fontSize: FontSize(12.sp),
+                ),
+              },
+            )
+          else
+            Text(
+              'No mileage information available',
+              style: TextStyle(fontSize: 12.sp, color: Colors.black),
+            ),
         ],
       ),
     );
@@ -461,40 +532,98 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Center(
-              child: Text(
-                data.content4?.first.content ??
-                    'No terms and conditions available.',
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Html(
+                data: _formatHtmlContent(data.content4?.first.content),
+                style: {
+                  "ul": Style(
+                    margin: Margins.all(0), // Use Margins instead of EdgeInsets
+                    padding: HtmlPaddings.all(
+                        0), // Use HtmlPaddings instead of EdgeInsets
+                  ),
+                  "li": Style(
+                    margin: Margins.only(bottom: 2), // Space between list items
+                  ),
+                },
               ),
             ),
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 3.h),
           Center(
             child: GeneralEelevatedButton(
               width: MediaQuery.of(context).size.width / 1.5,
               text: 'Become a Prize Sponsor',
               onPresssed: () {},
             ),
-          )
+          ),
         ],
       ),
     );
   }
+
+  String _formatHtmlContent(String? content) {
+    if (content == null || content.isEmpty) {
+      return 'No terms and conditions available.';
+    }
+
+    // Replace \r and \n with <br>
+    String formattedContent =
+        content.replaceAll(r'\r', '<br>').replaceAll(r'\n', '<br>');
+
+    // Remove escaped slashes from HTML tags
+    formattedContent = formattedContent.replaceAll(r'\/', '/');
+
+    // Remove the specific patterns at the start and end
+    formattedContent = formattedContent
+        .replaceFirst(r'{"en":"', '') // Remove beginning pattern
+        .replaceFirst(r'"}', ''); // Remove ending pattern
+
+    // Normalize spacing
+    formattedContent = formattedContent
+        .replaceAll(RegExp(r'<br>\s*<br>'), '<br>') // Remove extra <br> tags
+        .replaceAll(
+            RegExp(r'<br>\s*(?=<h\d>|<p>|<ul>|<li>|<div>|<strong>|<em>)'),
+            '<br>') // Remove <br> before headers and list items
+        .replaceAll(
+            RegExp(
+                r'(?<=<\/h\d>|<\/p>|<\/ul>|<\/li>|<\/div>|<\/strong>|<\/em>)\s*<br>'),
+            ''); // Remove <br> after headers and list items
+
+    // Adjust specific spaces before and after certain keywords if necessary
+    List<String> keywords = [
+      'Acceptance',
+      'Responsibility',
+      'Modification of these terms',
+      'Miscellaneous'
+    ];
+
+    for (String keyword in keywords) {
+      formattedContent = formattedContent.replaceAll(
+          RegExp(r'\s*($keyword)\s*'),
+          keyword // Remove space around the keyword
+          );
+    }
+
+    return formattedContent;
+  }
 }
 
-class VendorProductDetails extends StatelessWidget {
-  final String title;
-  final String content;
+class GiftDetails extends StatelessWidget {
+  final String giftName;
+  final String giftImage;
+  final String giftWorth;
+  final String vendorName;
+  final String vendorPhoto;
+  final String status;
 
-  const VendorProductDetails({
-    super.key,
-    required this.title,
-    required this.content,
-  });
+  const GiftDetails({
+    Key? key,
+    required this.giftName,
+    required this.giftImage,
+    required this.giftWorth,
+    required this.vendorName,
+    required this.vendorPhoto,
+    required this.status,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -503,8 +632,7 @@ class VendorProductDetails extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: Colors.white,
-        // color: Colors.red,
+        color: Color(0xFFF5F2F2),
         boxShadow: [
           BoxShadow(
             color: const Color(0xff00000040).withOpacity(0.1),
@@ -517,74 +645,62 @@ class VendorProductDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Tech Store'),
-          SizedBox(
-            height: 10.h,
+          Text(
+            vendorName,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
           ),
+          SizedBox(height: 10.h),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 7.w,
-              ),
               Container(
-                  padding: EdgeInsets.only(
-                      top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    color: const Color(0xffF6F1F1),
-                  ),
-                  child: Image.asset(
-                    ImageConstant.laptopImage,
-                    height: 45.h,
-                  )),
-              SizedBox(
-                width: 20.w,
+                padding: EdgeInsets.all(8.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: const Color(0xffF6F1F1),
+                ),
+                child: Image.network(
+                  giftImage,
+                  height: 45.h,
+                  fit: BoxFit.cover,
+                ),
               ),
+              SizedBox(width: 20.w),
               Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Acer Aspire 5 A515-56-32DK Intel Core i3, 11th Gen/15.6 FHD',
-                    style: TextStyle(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      giftName,
+                      style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    'Order ID: 12345',
-                    style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      'Worth: Rs $giftWorth',
+                      style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Rs 60,000',
-                        style: TextStyle(
-                            color: const Color(0xff36383C),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700),
+                        color: Colors.black,
                       ),
-                      const Spacer(),
-                      Text(
-                        'Win Date: 2023-01-02',
-                        style: TextStyle(
-                            // decoration: TextDecoration.underline,
-                            color: const Color(0xff36383C),
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      'Status: $status',
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red,
                       ),
-                    ],
-                  )
-                ],
-              ))
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ],

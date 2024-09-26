@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -27,6 +26,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(
     BuildContext context,
   ) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

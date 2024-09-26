@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/theme/otp_theme.dart';
 
@@ -134,7 +131,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   text: 'Send',
                   onPresssed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BottomNavigationScreen()));
+                        MaterialPageRoute(builder: (context) => const BottomNavigationScreen()));
                   },
                 ),
                 SizedBox(

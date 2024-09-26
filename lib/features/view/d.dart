@@ -15,9 +15,7 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/view/api/product_details_provider.dart';
-import 'package:smartbazar/features/view/d.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -37,7 +35,7 @@ class ProductDetailsScreen extends ConsumerWidget {
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
     final currentIndex = ref.watch(currentIndexProvider);
-    print("the inner data is ${productDetailsAsyncValue}");
+    print("the inner data is $productDetailsAsyncValue");
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
@@ -45,7 +43,7 @@ class ProductDetailsScreen extends ConsumerWidget {
       backgroundColor: const Color(0xffF6F1F1),
       body: productDetailsAsyncValue.when(
         data: (data) {
-          print("simi ${data}");
+          print("simi $data");
           // print("ramk ${data.title.split('/')[0]}");
 
           return favouriteListAsyncValue.when(
