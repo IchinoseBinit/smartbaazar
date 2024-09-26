@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
@@ -29,13 +28,13 @@ Future<ProductDetailsModel> productDetails(
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.getProductDetails}/$id?detailed=1",
     );
+      print("bibash ${response}");
 
     print('Response data: ${response.data}');
 
     if (response.statusCode == 200) {
       final result = response.data['result'];
       final extra = response.data['extra'];
-
       // Handling similar items
       List<SimilarItems>? similarItemsList;
       if (response.data.containsKey('widgetSimilarPosts') &&

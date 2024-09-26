@@ -9,6 +9,7 @@ import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
+import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/view/product_deatials_screen.dart';
 import 'package:smartbazar/features/widgets/banner_widget.dart';
 import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
@@ -312,8 +313,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               return ListTile(
                                 title: Text(product.title),
                                 onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SearchScreen(
+                                          query: product.title,
+                                        ),
+                                      ));
+
                                   setState(() {
                                     _showSearchResults = false;
+
                                     FocusScope.of(context).unfocus();
                                   });
                                   // Navigator.push(
@@ -336,7 +346,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       loading: () =>
                           const Center(child: CircularProgressIndicator()),
                       error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
+                          const Center(child: CircularProgressIndicator()),
                     ),
                   ),
                 )
@@ -398,10 +408,16 @@ class ProductSlider extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProductDetailsScreen(
-                               
-                                      productId: product.id,
-                                    )));
+                              builder: (context) =>
+                                  ProductDetailScreen(productId: product.id),
+                            ));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ProductDetailsScreen(
+                        //               productId: product.id,
+                        //             )
+                        //             ));
                       },
                     );
                   },

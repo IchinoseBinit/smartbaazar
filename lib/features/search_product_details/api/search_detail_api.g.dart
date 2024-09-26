@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_details_provider.dart';
+part of 'search_detail_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productDetailsHash() => r'a8caaea1bff8942ae73cf11b024e0773192298a2';
+String _$getSearchDetailsHash() => r'0440e0f6cf11c04e37f306c8f4e29566bf24e1f1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [productDetails].
-@ProviderFor(productDetails)
-const productDetailsProvider = ProductDetailsFamily();
+/// See also [getSearchDetails].
+@ProviderFor(getSearchDetails)
+const getSearchDetailsProvider = GetSearchDetailsFamily();
 
-/// See also [productDetails].
-class ProductDetailsFamily extends Family<AsyncValue<ProductDetailsModel>> {
-  /// See also [productDetails].
-  const ProductDetailsFamily();
+/// See also [getSearchDetails].
+class GetSearchDetailsFamily extends Family<AsyncValue<List<Post>>> {
+  /// See also [getSearchDetails].
+  const GetSearchDetailsFamily();
 
-  /// See also [productDetails].
-  ProductDetailsProvider call(
-    String id,
+  /// See also [getSearchDetails].
+  GetSearchDetailsProvider call(
+    String query,
   ) {
-    return ProductDetailsProvider(
-      id,
+    return GetSearchDetailsProvider(
+      query,
     );
   }
 
   @override
-  ProductDetailsProvider getProviderOverride(
-    covariant ProductDetailsProvider provider,
+  GetSearchDetailsProvider getProviderOverride(
+    covariant GetSearchDetailsProvider provider,
   ) {
     return call(
-      provider.id,
+      provider.query,
     );
   }
 
@@ -68,93 +68,92 @@ class ProductDetailsFamily extends Family<AsyncValue<ProductDetailsModel>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'productDetailsProvider';
+  String? get name => r'getSearchDetailsProvider';
 }
 
-/// See also [productDetails].
-class ProductDetailsProvider
-    extends AutoDisposeFutureProvider<ProductDetailsModel> {
-  /// See also [productDetails].
-  ProductDetailsProvider(
-    String id,
+/// See also [getSearchDetails].
+class GetSearchDetailsProvider extends AutoDisposeFutureProvider<List<Post>> {
+  /// See also [getSearchDetails].
+  GetSearchDetailsProvider(
+    String query,
   ) : this._internal(
-          (ref) => productDetails(
-            ref as ProductDetailsRef,
-            id,
+          (ref) => getSearchDetails(
+            ref as GetSearchDetailsRef,
+            query,
           ),
-          from: productDetailsProvider,
-          name: r'productDetailsProvider',
+          from: getSearchDetailsProvider,
+          name: r'getSearchDetailsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$productDetailsHash,
-          dependencies: ProductDetailsFamily._dependencies,
+                  : _$getSearchDetailsHash,
+          dependencies: GetSearchDetailsFamily._dependencies,
           allTransitiveDependencies:
-              ProductDetailsFamily._allTransitiveDependencies,
-          id: id,
+              GetSearchDetailsFamily._allTransitiveDependencies,
+          query: query,
         );
 
-  ProductDetailsProvider._internal(
+  GetSearchDetailsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.query,
   }) : super.internal();
 
-  final String id;
+  final String query;
 
   @override
   Override overrideWith(
-    FutureOr<ProductDetailsModel> Function(ProductDetailsRef provider) create,
+    FutureOr<List<Post>> Function(GetSearchDetailsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: ProductDetailsProvider._internal(
-        (ref) => create(ref as ProductDetailsRef),
+      override: GetSearchDetailsProvider._internal(
+        (ref) => create(ref as GetSearchDetailsRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        query: query,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<ProductDetailsModel> createElement() {
-    return _ProductDetailsProviderElement(this);
+  AutoDisposeFutureProviderElement<List<Post>> createElement() {
+    return _GetSearchDetailsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ProductDetailsProvider && other.id == id;
+    return other is GetSearchDetailsProvider && other.query == query;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin ProductDetailsRef on AutoDisposeFutureProviderRef<ProductDetailsModel> {
-  /// The parameter `id` of this provider.
-  String get id;
+mixin GetSearchDetailsRef on AutoDisposeFutureProviderRef<List<Post>> {
+  /// The parameter `query` of this provider.
+  String get query;
 }
 
-class _ProductDetailsProviderElement
-    extends AutoDisposeFutureProviderElement<ProductDetailsModel>
-    with ProductDetailsRef {
-  _ProductDetailsProviderElement(super.provider);
+class _GetSearchDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<List<Post>>
+    with GetSearchDetailsRef {
+  _GetSearchDetailsProviderElement(super.provider);
 
   @override
-  String get id => (origin as ProductDetailsProvider).id;
+  String get query => (origin as GetSearchDetailsProvider).query;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

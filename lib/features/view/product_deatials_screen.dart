@@ -15,19 +15,19 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/view/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/view/api/product_details_provider.dart';
-import 'package:smartbazar/features/view/d.dart';
+
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
-class ProductDetailsScreen extends ConsumerWidget {
+// ignore: must_be_immutable
+class ProductDetailScreen extends ConsumerWidget {
   List<String> itemsList = [];
 
   final String productId;
-  ProductDetailsScreen({super.key, required this.productId});
+  ProductDetailScreen({super.key, required this.productId});
 
   int currentIndex = 0;
 
@@ -1189,7 +1189,7 @@ class SimilarListingProduct extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProductDetailsScreen(
+                          builder: (context) => ProductDetailScreen(
                               productId: data.id.toString()),
                         ));
                   },
