@@ -38,7 +38,7 @@ class ProductDetailScreen extends ConsumerWidget {
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
     final currentIndex = ref.watch(currentIndexProvider);
-    print("the inner data is ${productDetailsAsyncValue}");
+    print("the inner data is $productDetailsAsyncValue");
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
@@ -46,7 +46,7 @@ class ProductDetailScreen extends ConsumerWidget {
       backgroundColor: const Color(0xffF6F1F1),
       body: productDetailsAsyncValue.when(
         data: (data) {
-          print("simi ${data}");
+          print("simi $data");
           // print("ramk ${data.title.split('/')[0]}");
 
           return favouriteListAsyncValue.when(

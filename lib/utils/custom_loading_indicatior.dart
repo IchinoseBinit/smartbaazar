@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 void onLoading(
   BuildContext context,
 ) {
-  final alert = const AlertDialog(
+  const alert = AlertDialog(
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       content: Column(

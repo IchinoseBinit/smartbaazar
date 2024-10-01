@@ -21,11 +21,12 @@ Future<List<Post>> getSearchDetails(GetSearchDetailsRef ref, String query) async
     // Make the API request
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
-      url: "${ApiConstants.baseUrl}/search",
+   url: "${ApiConstants.baseUrl}/homeSections/search",
+
       parameter: formData,
     );
 
-    print("API Response: ${response.data}");
+    print("bibash${response.data}");
 
     // Check the response status code and ensure data exists
     if (response.statusCode == 200 && response.data != null) {

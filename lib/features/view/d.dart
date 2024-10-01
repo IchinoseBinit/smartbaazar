@@ -7,7 +7,7 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 class SearchScreen extends ConsumerStatefulWidget {
   final String query; // Corrected spelling for `query`
 
-  SearchScreen({Key? key, required this.query}) : super(key: key);
+  const SearchScreen({Key? key, required this.query}) : super(key: key);
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();

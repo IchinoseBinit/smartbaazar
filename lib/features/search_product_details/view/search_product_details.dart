@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/search_product_details/api/search_detail_api.dart';
 import 'package:smartbazar/features/search_product_details/model/search_details.dart';
+import 'package:smartbazar/features/view/product_deatials_screen.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -39,7 +40,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     // Use ref.watch to get search results
     final searchResults = ref.watch(GetSearchDetailsProvider(_query));
-    print("bibash is ${searchResults.value!.first!.title!}");
 
     return GenericSafeArea(
       child: DefaultTabController(
@@ -86,9 +86,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 padding: EdgeInsets.zero,
                 tabs: [
                   Tab(text: "All Listing ${searchResults.value?.length ?? ''}"),
-                  Tab(text: "Brand New }"),
-                  Tab(text: "Used"),
-                  Tab(text: "Services"),
+                  const Tab(text: "Brand New }"),
+                  const Tab(text: "Used"),
+                  const Tab(text: "Services"),
                 ],
               ),
               Expanded(
@@ -117,6 +117,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             final post = data[index];
                             return InkWell(
                               onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailScreen(
+                                          productId: post.id),
+                                    ));
                                 // Navigate to detail screen or perform actions on tap
                               },
                               child: Container(
