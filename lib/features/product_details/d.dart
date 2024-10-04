@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/model/search_product_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {

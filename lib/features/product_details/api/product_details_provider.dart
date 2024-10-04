@@ -28,7 +28,6 @@ Future<ProductDetailsModel> productDetails(
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.getProductDetails}/$id?detailed=1",
     );
-      print("bibash $response");
 
     print('Response data: ${response.data}');
 

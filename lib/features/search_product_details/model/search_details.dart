@@ -17,24 +17,17 @@ class SearchDetails with _$SearchDetails {
 @freezed
 class Post with _$Post {
   factory Post({
-     required String id,
-    //  String? countryCode,
-    //  String? userId,
-    //  String? categoryId,
-    //  String? postTypeId,
-     String? title,
-     String? contact_name,
-     String? price,
-     String? visits,
-     String? discounted_price,
-     String? brand_new,
-     String? used,
-     String? services,
-
-
-
-     String? image,
-
+    required String id,
+    String? title,
+    String? contact_name,
+    String? price,
+    String? pickup,
+    String? visits,
+    String? discounted_price,
+    String? brand_new,
+    String? used,
+    String? services,
+    String? image,
   }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);

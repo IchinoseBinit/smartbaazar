@@ -183,13 +183,11 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Post {
-  String get id => throw _privateConstructorUsedError; //  String? countryCode,
-//  String? userId,
-//  String? categoryId,
-//  String? postTypeId,
+  String get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get contact_name => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
+  String? get pickup => throw _privateConstructorUsedError;
   String? get visits => throw _privateConstructorUsedError;
   String? get discounted_price => throw _privateConstructorUsedError;
   String? get brand_new => throw _privateConstructorUsedError;
@@ -212,6 +210,7 @@ abstract class $PostCopyWith<$Res> {
       String? title,
       String? contact_name,
       String? price,
+      String? pickup,
       String? visits,
       String? discounted_price,
       String? brand_new,
@@ -237,6 +236,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? title = freezed,
     Object? contact_name = freezed,
     Object? price = freezed,
+    Object? pickup = freezed,
     Object? visits = freezed,
     Object? discounted_price = freezed,
     Object? brand_new = freezed,
@@ -260,6 +260,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pickup: freezed == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
               as String?,
       visits: freezed == visits
           ? _value.visits
@@ -301,6 +305,7 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       String? title,
       String? contact_name,
       String? price,
+      String? pickup,
       String? visits,
       String? discounted_price,
       String? brand_new,
@@ -323,6 +328,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? contact_name = freezed,
     Object? price = freezed,
+    Object? pickup = freezed,
     Object? visits = freezed,
     Object? discounted_price = freezed,
     Object? brand_new = freezed,
@@ -346,6 +352,10 @@ class __$$PostImplCopyWithImpl<$Res>
       price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pickup: freezed == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
               as String?,
       visits: freezed == visits
           ? _value.visits
@@ -383,6 +393,7 @@ class _$PostImpl implements _Post {
       this.title,
       this.contact_name,
       this.price,
+      this.pickup,
       this.visits,
       this.discounted_price,
       this.brand_new,
@@ -395,16 +406,14 @@ class _$PostImpl implements _Post {
 
   @override
   final String id;
-//  String? countryCode,
-//  String? userId,
-//  String? categoryId,
-//  String? postTypeId,
   @override
   final String? title;
   @override
   final String? contact_name;
   @override
   final String? price;
+  @override
+  final String? pickup;
   @override
   final String? visits;
   @override
@@ -420,7 +429,7 @@ class _$PostImpl implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, contact_name: $contact_name, price: $price, visits: $visits, discounted_price: $discounted_price, brand_new: $brand_new, used: $used, services: $services, image: $image)';
+    return 'Post(id: $id, title: $title, contact_name: $contact_name, price: $price, pickup: $pickup, visits: $visits, discounted_price: $discounted_price, brand_new: $brand_new, used: $used, services: $services, image: $image)';
   }
 
   @override
@@ -433,6 +442,7 @@ class _$PostImpl implements _Post {
             (identical(other.contact_name, contact_name) ||
                 other.contact_name == contact_name) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.pickup, pickup) || other.pickup == pickup) &&
             (identical(other.visits, visits) || other.visits == visits) &&
             (identical(other.discounted_price, discounted_price) ||
                 other.discounted_price == discounted_price) &&
@@ -447,7 +457,7 @@ class _$PostImpl implements _Post {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, contact_name, price,
-      visits, discounted_price, brand_new, used, services, image);
+      pickup, visits, discounted_price, brand_new, used, services, image);
 
   @JsonKey(ignore: true)
   @override
@@ -469,6 +479,7 @@ abstract class _Post implements Post {
       final String? title,
       final String? contact_name,
       final String? price,
+      final String? pickup,
       final String? visits,
       final String? discounted_price,
       final String? brand_new,
@@ -480,15 +491,14 @@ abstract class _Post implements Post {
 
   @override
   String get id;
-  @override //  String? countryCode,
-//  String? userId,
-//  String? categoryId,
-//  String? postTypeId,
+  @override
   String? get title;
   @override
   String? get contact_name;
   @override
   String? get price;
+  @override
+  String? get pickup;
   @override
   String? get visits;
   @override

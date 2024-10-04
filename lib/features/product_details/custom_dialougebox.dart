@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartbazar/features/view/api/add_to_cart_provider.dart';
+import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 
 class CustomDialougebox {
   final ApiService _apiService = ApiService();

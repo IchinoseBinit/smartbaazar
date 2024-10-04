@@ -15,8 +15,8 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
-import 'package:smartbazar/features/view/api/add_to_cart_provider.dart';
-import 'package:smartbazar/features/view/api/product_details_provider.dart';
+import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
+import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -213,7 +213,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                             print("id is ${data.id}");
                                             // await  _apiService
                                             //     .addToCart(data.);
-                                            ApiService().addToCart(data.id.toString(),);
+                                            ApiService().addToCart(
+                                              data.id.toString(),
+                                            );
                                             CustomDialougeBox()
                                                 .addToCart(context);
                                           },
@@ -945,7 +947,6 @@ class ProductAvilableColorsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("bibash is ${color.length}");
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(

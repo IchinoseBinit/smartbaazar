@@ -7,8 +7,10 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
@@ -66,10 +68,11 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final vendorProfileModelDataAsyncValue =
-        ref.watch(getVendorProfileDataProvider(widget.vendorName));
+    final vendorProfileModelDataAsyncValue = ref.watch(
+        getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
     return vendorProfileModelDataAsyncValue.when(
       data: (vendorProfile) {
+        print("bibash ${vendorProfile}");
         return GenericSafeArea(
           color: Colors.white,
           child: Scaffold(
@@ -100,49 +103,44 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                   });
                 }
               },
-              child: Column(
-                children: [
-                  // Banner or other widgets above TabBar
-                  Container(
-                    height: 100.h, // Adjust height for the banner
-                    color: Colors.blue, // Example banner color
-                    child: Center(
-                      child: Text(
-                        'Banner Content',
-                        style: TextStyle(color: Colors.white, fontSize: 24.sp),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Image.asset(ImageConstant.cardImage),
-                        SizedBox(height: 2.h),
-                        Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          elevation: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  ImageConstant.adidasLogo,
-                                  width: 60.w,
-                                  height: 60.h,
-                                ),
-                                SizedBox(width: 16.w),
-                                Expanded(
-                                  child: Column(
+              child: SingleChildScrollView(
+                // Add SingleChildScrollView here
+                child: Column(
+                  children: [
+                    // Banner or other widgets above TabBar
+                    // Container(
+                    //     color: Colors.blue, // Example banner color
+                    //     child: Image.network(
+                    //         vendorProfile.advertisements[0].image!)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Image.asset(ImageConstant.cardImage),
+                          SizedBox(height: 2.h),
+                          Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            elevation: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.network(
+                                    vendorProfile.vendor!.photo!,
+                                    width: 60.w,
+                                    height: 60.h,
+                                  ),
+                                  SizedBox(width: 16.w),
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Adidas",
+                                        vendorProfile.vendor!.name!,
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
@@ -174,7 +172,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(
-                                        "+977 98xxxxxxxx",
+                                        vendorProfile.vendor!.phone!,
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           color: Colors.black,
@@ -204,70 +202,74 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                                       ),
                                     ],
                                   ),
-                                ),
-                                Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        // Handle Facebook share
-                                      },
-                                      child: Image.asset(
-                                        ImageConstant.facebookShareImage,
-                                        width: 50.w,
-                                        height: 40.h,
+                                  Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Handle Facebook share
+                                        },
+                                        child: Image.asset(
+                                          ImageConstant.facebookShareImage,
+                                          width: 50.w,
+                                          height: 40.h,
+                                        ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        // Handle Subscribe
-                                      },
-                                      child: Image.asset(
-                                        ImageConstant.subscribeImage,
-                                        width: 50.w,
-                                        height: 50.h,
+                                      GestureDetector(
+                                        onTap: () {
+                                          // Handle Subscribe
+                                        },
+                                        child: Image.asset(
+                                          ImageConstant.subscribeImage,
+                                          width: 50.w,
+                                          height: 50.h,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 4.h),
-                                    Text(
-                                      "Subscribe",
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        "Subscribe",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 10.h),
-                        const SearchInStore(),
-                      ],
+                          SizedBox(height: 10.h),
+                          const SearchInStore(),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  // TabBar placed inside the body
-                  TabBar(
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(text: 'Home'),
-                      Tab(text: 'Brand'),
-                      Tab(text: 'Used'),
-                    ],
-                  ),
-                  Expanded(
-                    child: TabBarView(
+                    // TabBar placed inside the body
+                    TabBar(
+                      isScrollable: true,
                       controller: _tabController,
-                      children: [
-                        _buildHomeTab(),
-                        _buildBrandTab(),
-                        _buildUsedTab(),
+                      tabs: const [
+                        Tab(text: 'Home'),
+                        Tab(text: 'Brand'),
+                        Tab(text: 'Used'),
                       ],
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 300,
+                      child: TabBarView(
+                        physics: const BouncingScrollPhysics(),
+                        controller: _tabController,
+                        children: [
+                          _buildHomeTab(vendorProfile.hotProducts.length,
+                              vendorProfile!.hotProducts!),
+                          _buildBrandTab(),
+                          _buildUsedTab(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -278,7 +280,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
     );
   }
 
-  Widget _buildHomeTab() {
+  Widget _buildHomeTab(int count, List<HotProduct> products) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +288,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Text(
-              "title",
+              "Hot Deals",
               style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
@@ -295,20 +297,19 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
           ),
           SizedBox(height: 8.h),
           SizedBox(
-            height: productCardHeight,
-            child: ListView.separated(
-              primary: false,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              shrinkWrap: true,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    // onTap(product);
-                  },
-                  child: SizedBox(
+              height: productCardHeight,
+              child: GridView.builder(
+                itemCount: count,
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15.0,
+                  crossAxisSpacing: 30.0,
+                  childAspectRatio: 0.9,
+                ),
+                itemBuilder: (context, index) {
+                  HotProduct data = products[index];
+                  return SizedBox(
                     height: productCardHeight,
                     width: productCardWidth,
                     child: Column(
@@ -324,7 +325,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(ImageConstant.laptopImage),
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
@@ -335,7 +336,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                           child: SizedBox(
                             height: 30.h,
                             child: Text(
-                              "product.title",
+                              data.title!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -398,19 +399,13 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                               color: Color(0xff888888),
                             ),
                             SizedBox(width: 3.w),
-                            SizedBox(width: 18.w),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(width: 12.w);
-              },
-            ),
-          ),
+                  );
+                },
+              )),
         ],
       ),
     );

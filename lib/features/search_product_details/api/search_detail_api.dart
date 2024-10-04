@@ -26,7 +26,6 @@ Future<List<Post>> getSearchDetails(GetSearchDetailsRef ref, String query) async
       parameter: formData,
     );
 
-    print("bibash${response.data}");
 
     // Check the response status code and ensure data exists
     if (response.statusCode == 200 && response.data != null) {

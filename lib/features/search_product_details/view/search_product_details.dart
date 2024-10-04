@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/search_product_details/api/search_detail_api.dart';
 import 'package:smartbazar/features/search_product_details/model/search_details.dart';
-import 'package:smartbazar/features/view/product_deatials_screen.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
+import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -40,6 +43,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     // Use ref.watch to get search results
     final searchResults = ref.watch(GetSearchDetailsProvider(_query));
+    print("bibash ${widget.query}");
 
     return GenericSafeArea(
       child: DefaultTabController(
@@ -73,7 +77,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         setState(() {
                           dropdownValue = newValue;
                         });
-                        print("Selected sort option: $newValue");
                       }
                     },
                     hint: const Text("Sort by"),
@@ -103,74 +106,105 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           return const Center(child: Text('No results found.'));
                         }
                         return GridView.builder(
+                          padding: EdgeInsets.only(left: 10),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount:
                                 2, // You can adjust this to control column count
-                            crossAxisSpacing: 13.0,
-                            mainAxisSpacing: 13.0,
+                            crossAxisSpacing: 19.0,
+                            mainAxisSpacing: 19.0,
                             childAspectRatio:
-                                0.65, // Adjust this for item aspect ratio
+                                0.90, // Adjust this for item aspect ratio
                           ),
                           itemCount: data.length,
                           itemBuilder: (context, index) {
                             final post = data[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProductDetailScreen(
-                                          productId: post.id),
-                                    ));
-                                // Navigate to detail screen or perform actions on tap
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
+                            return Container(
+                              margin: EdgeInsets.only(top: 2),
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                      color: Colors.grey, width: 0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Color.fromARGB(
-                                              255, 118, 112, 112)),
-                                      child: Image.network(
-                                        post.image ?? '',
-                                        fit: BoxFit.cover,
+                                    color: Colors.grey,
+                                    width: 0.2,
+                                  )),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Skeleton.replace(
+                                    width: productCardWidth,
+                                    child: Container(
+                                      width: productCardWidth,
+                                      height: 100.h,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(post.image!),
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
-                                    Text(
-                                      post.title ?? 'No title',
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 54, 51, 51),
-                                          fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(height: 9.h),
+                                  Skeleton.replace(
+                                    height: 15.h,
+                                    child: SizedBox(
+                                      height: 30.h,
+                                      child: Text(
+                                        post.title!,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      "RS ${post.price}",
-                                      style: const TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 54, 51, 51),
-                                          fontWeight: FontWeight.w700),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "RS ${post.price}",
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Skeleton.replace(
+                                    width: productCardWidth,
+                                    child: SizedBox(
+                                      width: productCardWidth,
+                                      child: Text(
+                                        post.contact_name!,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                     ),
-                                    post.discounted_price != null
-                                        ? Text(post.discounted_price!)
-                                        : Text("RS ${post.contact_name}"),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("👁️${post.visits}K views"),
-                                        const Text("Kathmandu"),
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.visibility,
+                                        size: 15,
+                                        color: Color(0xff888888),
+                                      ),
+                                      Text("${post.visits!}K Views"),
+                                      Spacer(),
+                                      Text(post.pickup ?? "kathmandu"),
+                                      SizedBox(
+                                        width: 1,
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
                             );
                           },

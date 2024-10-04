@@ -7,7 +7,7 @@ part of 'vendor_profile_api.dart';
 // **************************************************************************
 
 String _$getVendorProfileDataHash() =>
-    r'55d3a8f24af218256fc104032a45b75a43e7359a';
+    r'd1e932e61741fa06d4e48f94515a70543e2fe564';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,8 +35,7 @@ class _SystemHash {
 const getVendorProfileDataProvider = GetVendorProfileDataFamily();
 
 /// See also [getVendorProfileData].
-class GetVendorProfileDataFamily
-    extends Family<AsyncValue<VendorProfileModel>> {
+class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
   /// See also [getVendorProfileData].
   const GetVendorProfileDataFamily();
 
@@ -75,7 +74,7 @@ class GetVendorProfileDataFamily
 
 /// See also [getVendorProfileData].
 class GetVendorProfileDataProvider
-    extends AutoDisposeFutureProvider<VendorProfileModel> {
+    extends AutoDisposeFutureProvider<VendorData> {
   /// See also [getVendorProfileData].
   GetVendorProfileDataProvider(
     String vendorName,
@@ -110,8 +109,7 @@ class GetVendorProfileDataProvider
 
   @override
   Override overrideWith(
-    FutureOr<VendorProfileModel> Function(GetVendorProfileDataRef provider)
-        create,
+    FutureOr<VendorData> Function(GetVendorProfileDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -128,7 +126,7 @@ class GetVendorProfileDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<VendorProfileModel> createElement() {
+  AutoDisposeFutureProviderElement<VendorData> createElement() {
     return _GetVendorProfileDataProviderElement(this);
   }
 
@@ -147,14 +145,13 @@ class GetVendorProfileDataProvider
   }
 }
 
-mixin GetVendorProfileDataRef
-    on AutoDisposeFutureProviderRef<VendorProfileModel> {
+mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorData> {
   /// The parameter `vendorName` of this provider.
   String get vendorName;
 }
 
 class _GetVendorProfileDataProviderElement
-    extends AutoDisposeFutureProviderElement<VendorProfileModel>
+    extends AutoDisposeFutureProviderElement<VendorData>
     with GetVendorProfileDataRef {
   _GetVendorProfileDataProviderElement(super.provider);
 
