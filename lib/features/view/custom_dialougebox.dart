@@ -7,10 +7,10 @@ class CustomDialougebox {
     try {
       await _apiService.addToCart(productId);
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Items added to cart")));
+          .showSnackBar(SnackBar(content: Text("Items added to cart"),backgroundColor: Colors.white70,));
     } catch (e) {
        ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Failed adding to cart $e")));
+          .showSnackBar(SnackBar(content: Text("Failed adding to cart $e"),backgroundColor: Colors.white70,));
     
 
     }

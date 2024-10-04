@@ -566,7 +566,7 @@ class BuyerCenterWidget extends StatelessWidget {
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
-        crossAxisSpacing: 5,
+        crossAxisSpacing: 4,
         mainAxisSpacing: 2.0,
       ),
       itemCount: buyerData.length,

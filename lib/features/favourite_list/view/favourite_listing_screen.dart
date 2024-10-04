@@ -273,20 +273,20 @@ class _FavouriteListProductDetailsState
                           data: (_) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('Item deleted successfully')),
+                                  content: Text('Item deleted successfully'),backgroundColor: Colors.white70,),
                             );
                             ref.invalidate(getFavouriteListProvider);
                           },
                           loading: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Deleting item...')),
+                              const SnackBar(content: Text('Deleting item...'),backgroundColor: Colors.white70,),
                             );
                           },
                           error: (error, stack) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content:
-                                      Text('Failed to delete item: $error')),
+                                      Text('Failed to delete item: $error'),backgroundColor: Colors.white70,),
                             );
                           },
                         );

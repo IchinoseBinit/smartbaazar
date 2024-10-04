@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/message/model/reply_message_model.dart';
@@ -7,15 +10,20 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'reply_message_model_api.g.dart';
 
 @riverpod
-Future<ReplyMessageModel> sendReplyMessage(
-    SendReplyMessageRef ref, String threadId, String body) async {
+Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
+    String threadId, String body, File imageFile) async {
   final SmartClinet client = SmartClinet();
 
   try {
+    FormData formData = FormData.fromMap({
+      'image': await MultipartFile.fromFile(imageFile.path,
+          filename: imageFile.path.split('/').last),
+    });
     // Construct the API URL with threadId and body in the query string
     final response = await client.request(
-      requestType: RequestType.putWithToken,
+      requestType: RequestType.putWithTokenFormData,
       url: "${ApiConstants.getMessageListUrl}/$threadId?body=$body",
+      parameter: formData,
     );
 
     if (response.statusCode == 200) {

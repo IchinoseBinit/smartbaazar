@@ -8,13 +8,13 @@ part 'message_list_api.g.dart';
 
 @riverpod
 Future<MessageListModel> getMessageList(
-    GetMessageListRef ref, String threadId) async {
+    GetMessageListRef ref, String threadId, int page) async {
   final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: "${ApiConstants.getMessageListUrl}/$threadId/messages",
+      url: "${ApiConstants.getMessageListUrl}/$threadId/messages?page=$page",
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;

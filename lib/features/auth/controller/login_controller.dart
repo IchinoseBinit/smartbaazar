@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,8 +31,8 @@ class LoginController extends StateNotifier<GenericState> {
     try {
       final loginData = await LoginApi().login(email, password);
       state = LoadedState<LoginData>(response: loginData);
-      await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
+      await Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }
@@ -42,13 +41,17 @@ class LoginController extends StateNotifier<GenericState> {
   Future<void> continueSession(BuildContext context) async {
     final pref = await SharedPreferences.getInstance();
     final sessionString = pref.getString('session');
-     SmartClinet.token = pref.getString('accessToken') ?? '';
+    SmartClinet.token = pref.getString('accessToken') ?? '';
     SmartClinet.refresh = pref.getString('refreshToken') ?? '';
     state = LoadingState();
     try {
       if (sessionString != null) {
         final session = json.decode(sessionString);
+        String userId = session['result']?['id']?.toString() ?? '';
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+        SmartClinet.userId = userId;
+        await pref.setString('userId', userId);
+print("................................................$userId");
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(

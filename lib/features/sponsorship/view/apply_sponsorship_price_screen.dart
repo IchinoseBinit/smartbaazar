@@ -92,7 +92,8 @@ class _ApplySponsorshipPriceScreenState
         giftType.isEmpty) {
       // Show error if any required field is missing
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields and select an image')),
+        const SnackBar(
+            content: Text('Please fill all fields and select an image'),backgroundColor: Colors.white70,),
       );
       return;
     }
@@ -108,7 +109,7 @@ class _ApplySponsorshipPriceScreenState
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gift posted successfully!')),
+        const SnackBar(content: Text('Gift posted successfully!'),backgroundColor: Colors.white70,),
       );
       Navigator.pushReplacement(
         context,
@@ -116,7 +117,7 @@ class _ApplySponsorshipPriceScreenState
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to post gift')),
+        const SnackBar(content: Text('Failed to post gift'),backgroundColor: Colors.white70,),
       );
     }
   }
@@ -127,7 +128,7 @@ class _ApplySponsorshipPriceScreenState
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.h),
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 8.w),
           child: Column(
             children: [
               Padding(
@@ -702,8 +703,7 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
       final double fee = total * 0.02;
       final double totalWithFee = total + fee;
       final String couponTotalWorth = totalWithFee.toString();
-      final String couponImpression =
-          total.toString(); 
+      final String couponImpression = total.toString();
 
       // Submit the coupon via API
       final bool success = await ref.read(postCouponProvider(

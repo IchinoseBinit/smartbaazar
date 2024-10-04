@@ -9,9 +9,11 @@ part of 'message_thread_model.dart';
 _$MessageThreadModelImpl _$$MessageThreadModelImplFromJson(
         Map<String, dynamic> json) =>
     _$MessageThreadModelImpl(
-      success: json['success'] as bool,
+      success: json['success'] as bool?,
       message: json['message'] as String?,
-      result: Result.fromJson(json['result'] as Map<String, dynamic>),
+      result: json['result'] == null
+          ? null
+          : Result.fromJson(json['result'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$MessageThreadModelImplToJson(
@@ -75,7 +77,7 @@ _$MetaImpl _$$MetaImplFromJson(Map<String, dynamic> json) => _$MetaImpl(
       from: (json['from'] as num?)?.toInt(),
       lastPage: (json['last_page'] as num?)?.toInt(),
       links: (json['links'] as List<dynamic>?)
-          ?.map((e) => PageLinks.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MetaLink.fromJson(e as Map<String, dynamic>))
           .toList(),
       path: json['path'] as String?,
       perPage: json['per_page'] as String?,
@@ -95,14 +97,14 @@ Map<String, dynamic> _$$MetaImplToJson(_$MetaImpl instance) =>
       'total': instance.total,
     };
 
-_$PageLinksImpl _$$PageLinksImplFromJson(Map<String, dynamic> json) =>
-    _$PageLinksImpl(
+_$MetaLinkImpl _$$MetaLinkImplFromJson(Map<String, dynamic> json) =>
+    _$MetaLinkImpl(
       url: json['url'] as String?,
       label: json['label'] as String?,
       active: json['active'] as bool?,
     );
 
-Map<String, dynamic> _$$PageLinksImplToJson(_$PageLinksImpl instance) =>
+Map<String, dynamic> _$$MetaLinkImplToJson(_$MetaLinkImpl instance) =>
     <String, dynamic>{
       'url': instance.url,
       'label': instance.label,

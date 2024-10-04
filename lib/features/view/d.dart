@@ -412,7 +412,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                                                           .showSnackBar(
                                                         const SnackBar(
                                                           content: Text(
-                                                              'Product added to your favorites!'),
+                                                              'Product added to your favorites!'),backgroundColor: Colors.white70,
                                                           duration: Duration(
                                                               seconds: 2),
                                                         ),
@@ -424,7 +424,7 @@ class ProductDetailsScreen extends ConsumerWidget {
                                                           .showSnackBar(
                                                         const SnackBar(
                                                           content: Text(
-                                                              'Failed to add product to favorites.'),
+                                                              'Failed to add product to favorites.'),backgroundColor: Colors.white70,
                                                           duration: Duration(
                                                               seconds: 2),
                                                         ),

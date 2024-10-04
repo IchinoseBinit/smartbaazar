@@ -90,7 +90,7 @@ class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScr
   Future<void> submitAdvertisement() async {
     if (imageFile == null || linkController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide both an image and a link')),
+        const SnackBar(content: Text('Please provide both an image and a link'),backgroundColor: Colors.white70,),
       );
       return;
     }
@@ -101,7 +101,7 @@ class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScr
         linkController.text,
       ).future);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Advertisement posted successfully!')),
+        const SnackBar(content: Text('Advertisement posted successfully!'),backgroundColor: Colors.white70,),
       );
       Navigator.push(
         context,
@@ -109,7 +109,7 @@ class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScr
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to post advertisement: $e')),
+        SnackBar(content: Text('Failed to post advertisement: $e'),backgroundColor: Colors.white70,),
       );
     }
   }

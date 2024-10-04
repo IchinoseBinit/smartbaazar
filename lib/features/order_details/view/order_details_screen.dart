@@ -9,7 +9,13 @@ import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart'
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
-  const OrderDetailsScreen({super.key});
+  const OrderDetailsScreen({
+    super.key,
+    required this.selectedProductIds,
+    required this.selectedVendorIds,
+  });
+   final List<String> selectedProductIds;
+  final List<String?> selectedVendorIds;
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
@@ -18,6 +24,7 @@ class OrderDetailsScreen extends StatefulWidget {
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    
     return GenericSafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xffF6F1F1),
@@ -421,7 +428,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
           value: 1,
           groupValue: selectedOption,
           activeColor: const Color(0xffFBFBFD),
-          fillColor: MaterialStateProperty.all(const Color(0xff0362677)),
+          fillColor: WidgetStateProperty.all(const Color(0xff0362677)),
           splashRadius: 20,
           onChanged: (int? value) {
             setState(() {
@@ -437,14 +444,13 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             color: const Color(0xff36383C),
           ),
         ),
-        const SizedBox(
-          width: 30,
-        ),
+        const Spacer(),
+        
         Radio<int>(
           value: 2,
           groupValue: selectedOption,
           activeColor: const Color(0xffFBFBFD),
-          fillColor: MaterialStateProperty.all(const Color(0xff0362677)),
+          fillColor: WidgetStateProperty.all(const Color(0xff0362677)),
           splashRadius: 25,
           onChanged: (int? value) {
             setState(() {

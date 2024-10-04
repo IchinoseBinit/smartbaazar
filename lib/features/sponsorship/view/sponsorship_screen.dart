@@ -26,7 +26,7 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
   Future<void> submitbanner() async {
     if (imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide an image')),
+        const SnackBar(content: Text('Please provide an image'),backgroundColor: Colors.white70,),
       );
       return;
     }
@@ -34,11 +34,11 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
       await ref.read(postSponsorBannerProvider(imageFile!).future);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Banner posted successfully! for sponsership')),
+            content: Text('Banner posted successfully! for sponsership'),backgroundColor: Colors.white70,),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to post Banner: $e')),
+        SnackBar(content: Text('Failed to post Banner: $e'),backgroundColor: Colors.white70,),
       );
     }
   }

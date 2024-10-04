@@ -6,6 +6,7 @@ class ApiConstants {
 
   static String loginUrl = "$baseUrl/auth/login";
   static String refreshTokenUrl = "$baseUrl/auth/refresh-token";
+  static String logoUrl = '$baseUrl/app_logo_loader';
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -22,7 +23,8 @@ class ApiConstants {
   static String getProductDetails = '$baseUrl/posts';
   static String addtoCartUrl = '$baseUrl/api/users/addToCart';
   static String incrementQuantity = '$baseUrl/users/addToCart';
-  // static String checkoutDetails 
+  static String getCheckoutDetailsUrl = '$baseUrl/users/checkout';
+  // static String checkoutDetails
 
   //favourite list
   static String favouriteListUrl = '$baseUrl/savedPosts';
@@ -59,25 +61,28 @@ class ApiConstants {
   static String getMyReturnsUrl = '$baseUrl/myreturns';
 //advertisement
   static String getUsersAdvertisementUrl = '$baseUrl/users/advertisements';
-  static String storeAdvertisementUrl ='$baseUrl/users/store_advertisement';
+  static String storeAdvertisementUrl = '$baseUrl/users/store_advertisement';
 
   //online transaction
-   static String getOnlineTransactionResponseUrl = '$baseUrl/users/payment_record';
+  static String getOnlineTransactionResponseUrl =
+      '$baseUrl/users/payment_record';
 
-   //pending approval 
-   static String getPendingApprovalUrl = '$baseUrl/posts/pendingapproval';
+  //pending approval
+  static String getPendingApprovalUrl = '$baseUrl/posts/pendingapproval';
 
-   //offline Listing
-   static String getOfflineListingUrl = '$baseUrl/posts/listoffline';
+  //offline Listing
+  static String getOfflineListingUrl = '$baseUrl/posts/listoffline';
 //sponsorship
-   static String getSponsorshipUrl = '$baseUrl/users/sponsorship';
-   static String storeSponsorBanner ='$baseUrl/users/sponsorbanner';
-   static String postGiftStoreUrl = '$baseUrl/users/sponsorship_store';
-   static String postCouponStoreUrl ='$baseUrl/users/sponsorship_store';
-   //dispute 
-   static String getDisputeUrl = '$baseUrl/dispute';
-   static String submitDisputeUrl = '$baseUrl/storedispute';
-   //myListing
-   static String getMyListingUrl = '$baseUrl/posts/mylistings';
-   static String getMYSubscribeAndWinUrl ='$baseUrl/mysubscribeandwin';
+  static String getSponsorshipUrl = '$baseUrl/users/sponsorship';
+  static String storeSponsorBanner = '$baseUrl/users/sponsorbanner';
+  static String postGiftStoreUrl = '$baseUrl/users/sponsorship_store';
+  static String postCouponStoreUrl = '$baseUrl/users/sponsorship_store';
+  //dispute
+  static String getDisputeUrl = '$baseUrl/dispute';
+  static String submitDisputeUrl = '$baseUrl/storedispute';
+  //myListing
+  static String getMyListingUrl = '$baseUrl/posts/mylistings';
+  static String getMYSubscribeAndWinUrl = '$baseUrl/mysubscribeandwin';
+  //become a brand member
+  static String brandMemberStore = '$baseUrl/users/brandbazar_store';
 }

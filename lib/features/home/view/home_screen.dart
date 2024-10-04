@@ -399,7 +399,6 @@ class ProductSlider extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ProductDetailsScreen(
-                               
                                       productId: product.id,
                                     )));
                       },

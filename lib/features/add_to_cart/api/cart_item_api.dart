@@ -44,12 +44,9 @@ class CartItemApi {
     final SmartClinet client = SmartClinet();
 
     final response = await client.request(
-      requestType: RequestType.postWithToken,
-      url: ApiConstants.incrementQuantity,
-      parameter: {
-        'id': itemId
-      }
-    );
+        requestType: RequestType.postWithToken,
+        url: ApiConstants.incrementQuantity,
+        parameter: {'id': itemId});
 
     return response;
   }

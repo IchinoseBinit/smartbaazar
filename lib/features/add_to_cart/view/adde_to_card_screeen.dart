@@ -51,6 +51,68 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
       );
     }
   }
+  void proceedToCheckout(List<CartItem> cartItems, List<bool> selectedItems) {
+  List<String> selectedProductIds = [];
+  List<String?> selectedVendorIds = [];
+
+  // Collect selected product IDs and vendor IDs
+  for (int i = 0; i < cartItems.length; i++) {
+    if (selectedItems[i]) {
+      selectedProductIds.add(cartItems[i].id); // Collect product IDs
+      selectedVendorIds.add(cartItems[i].vendorId); // Collect vendor IDs
+    }
+  }
+
+  print('Selected product IDs: $selectedProductIds');
+  print('Selected vendor IDs: $selectedVendorIds');
+
+  // Check if there are selected products
+  if (selectedProductIds.isNotEmpty && selectedVendorIds.isNotEmpty) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => OrderDetailsScreen(
+          selectedProductIds: selectedProductIds, // Pass list of product IDs
+          selectedVendorIds: selectedVendorIds, // Pass list of vendor IDs
+        ),
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please select items to proceed')),
+    );
+  }
+}
+
+
+  // void proceedToCheckout(List<CartItem> cartItems, List<bool> selectedItems) {
+  //   List<Map<String, String?>> selectedProducts = [];
+
+  //   for (int i = 0; i < cartItems.length; i++) {
+  //     if (selectedItems[i]) {
+  //       selectedProducts.add({
+  //         'id': cartItems[i].id,
+  //         'vendorId': cartItems[i].vendorId,
+  //       });
+  //     }
+  //   }
+  //   print(
+  //       'Selected products:------------------------------------ $selectedProducts');
+  //   if (selectedProducts.isNotEmpty) {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (_) => OrderDetailsScreen(
+  //           selectedProducts: selectedProducts,
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Please select items to proceed')),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +168,13 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                 ),
                 cartItemsAsyncValue.when(
                   data: (data) {
-                    print('Data:>>>>>>>>>>>>>>>> $data');
-
                     final cartItems = data['cart'] as List<CartItem>? ?? [];
-
                     final vendors = data['vendors'] as List<Vendor>? ?? [];
-                    selectedItems = List<bool>.filled(cartItems.length, false);
 
+                    if (selectedItems.isEmpty) {
+                      selectedItems =
+                          List<bool>.filled(cartItems.length, false);
+                    }
                     return ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -125,6 +187,8 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                           setState(() {
                             selectedItems[index] = isSelected;
                             updateSubtotal(cartItems[index], isSelected);
+                            print(
+                                'Item----------------------------- ${cartItems[index].name} selected: $isSelected');
                           });
                         },
                       ),
@@ -172,10 +236,17 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                         bgColor: const Color(0xff362677),
                         title: 'Checkout',
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const OrderDetailsScreen()));
+                          cartItemsAsyncValue.whenData((data) {
+                            print(
+                                'Selected selectedItems:------------------------------------ $selectedItems');
+                            proceedToCheckout(
+                                data['cart'] as List<CartItem>? ?? [],
+                                selectedItems);
+                          });
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (_) => const OrderDetailsScreen()));
                         },
                       )
                     ],
@@ -214,8 +285,8 @@ class AddToCartPRoductDetails extends StatefulWidget {
 }
 
 class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
-  bool _isChecked = false;
-  bool _isClicked = false;
+  late bool _isChecked;
+  // bool _isClicked = false;
 
   String getVendorName(String vendorId) {
     final vendor = widget.vendors.firstWhere(
@@ -231,6 +302,17 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
   void initState() {
     super.initState();
     _isChecked = widget.isSelected;
+  }
+
+  @override
+  void didUpdateWidget(AddToCartPRoductDetails oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update local state if the widget's state changes
+    if (oldWidget.isSelected != widget.isSelected) {
+      setState(() {
+        _isChecked = widget.isSelected;
+      });
+    }
   }
 
   @override
@@ -256,32 +338,44 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
           children: [
             Row(
               children: [
-                InkWell(
+                GestureDetector(
+                  // onTap: () {
+                  //   setState(() {
+                  //     _isClicked = !_isClicked;
+                  //   });
+                  //   widget.onSelected(_isClicked);
+                  // },
                   onTap: () {
                     setState(() {
-                      _isClicked = !_isClicked;
+                      _isChecked = !_isChecked;
                     });
-                    widget.onSelected(_isClicked);
+                    widget.onSelected(_isChecked);
                   },
-                  child: Container(
-                    width: 15,
-                    height: 15,
-                    decoration: BoxDecoration(
-                      color: _isClicked ? const Color(0xff362677) : null,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: _isClicked
-                              ? const Color(0xff362677)
-                              : const Color(0xffD9D9D9),
-                          width: 1.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 15,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        color: _isChecked ? const Color(0xff362677) : null,
+                        // color: _isClicked ? const Color(0xff362677) : null,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: _isChecked
+                                // color: _isClicked
+                                ? const Color(0xff362677)
+                                : const Color(0xffD9D9D9),
+                            width: 1.0),
+                      ),
+                      // child: _isClicked
+                      child: _isChecked
+                          ? const Icon(
+                              Icons.check,
+                              size: 12.0,
+                              color: Colors.white,
+                            )
+                          : null,
                     ),
-                    child: _isClicked
-                        ? const Icon(
-                            Icons.check,
-                            size: 12.0,
-                            color: Colors.white,
-                          )
-                        : null,
                   ),
                 ),
                 SizedBox(
@@ -309,31 +403,44 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                 //   value: true,
                 //   onChanged: (value) {},
                 // ),
-                InkWell(
+                GestureDetector(
+                  // onTap: () {
+                  //   setState(() {
+                  //     _isChecked = !_isChecked;
+                  //   });
+                  // },
                   onTap: () {
                     setState(() {
                       _isChecked = !_isChecked;
                     });
+                    widget.onSelected(_isChecked);
                   },
-                  child: Container(
-                    width: 15,
-                    height: 15,
-                    decoration: BoxDecoration(
-                      color: _isChecked ? const Color(0xff362677) : null,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: _isChecked
-                              ? const Color(0xff362677)
-                              : const Color(0xffD9D9D9),
-                          width: 1.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 15,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        color: _isChecked ? const Color(0xff362677) : null,
+
+                        // color: _isChecked ? const Color(0xff362677) : null,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: _isChecked
+                                // color: _isChecked
+                                ? const Color(0xff362677)
+                                : const Color(0xffD9D9D9),
+                            width: 1.0),
+                      ),
+                      // child: _isChecked
+                      child: _isChecked
+                          ? const Icon(
+                              Icons.check,
+                              size: 12.0,
+                              color: Colors.white,
+                            )
+                          : null,
                     ),
-                    child: _isChecked
-                        ? const Icon(
-                            Icons.check,
-                            size: 12.0,
-                            color: Colors.white,
-                          )
-                        : null,
                   ),
                 ),
                 SizedBox(
