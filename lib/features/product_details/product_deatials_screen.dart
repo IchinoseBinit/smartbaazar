@@ -214,7 +214,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                             // await  _apiService
                                             //     .addToCart(data.);
                                             ApiService().addToCart(
-                                              data.id.toString(),
+                                              data.id!
+
+                                            
                                             );
                                             CustomDialougeBox()
                                                 .addToCart(context);

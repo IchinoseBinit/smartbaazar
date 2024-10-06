@@ -43,7 +43,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     // Use ref.watch to get search results
     final searchResults = ref.watch(GetSearchDetailsProvider(_query));
-    print("bibash ${widget.query}");
 
     return GenericSafeArea(
       child: DefaultTabController(

@@ -1,42 +1,50 @@
 import 'package:dio/dio.dart';
+import 'package:smartbazar/constant/api_constant.dart';
 
 class ApiService {
-  Future<void> addToCart(
-    String pid,
-  ) async {
-    final client = Dio();
+  Future<void> addToCart(int myid) async {
+    final client = Dio(BaseOptions(
+        followRedirects: false,
+        validateStatus: (status) {
+          return status != null && status >= 200 && status < 400;
+        }));
 
     try {
+      // Create FormData object with your parameters
+      final formData = FormData.fromMap({
+        'id': myid,  // Assuming the server expects the field 'id'
+      });
+
       final response = await client.post(
-        "https://smartbazaar.jianjun-rnd.com.np/api/users/addToCart",
-        data: {
-          'id': pid, // ID field
-        },
+        ApiConstants.addtoCartUrl,
+        data: formData,
         options: Options(
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded', // Form data
+            'accept': '*/*',
+            'Connection': 'Keep-Alive',
             'X-AppApiToken': 'Yala@Techies_Nepal',
           },
         ),
       );
 
-      if (response.statusCode == 200) {
-        print('Cart updated successfully!');
-        print('Response Data: ${response.data}');
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        final data = response.data;
+        print('Response Data: $data');  // Log the response data
       } else {
-        print('Failed to add to cart: ${response.statusCode}');
-        print('Response data: ${response.data}');
-      }
-    } on DioException catch (e) {
-      if (e.response != null) {
-        print(
-            'Error adding to cart: ${e.message}, Status Code: ${e.response?.statusCode}');
-        print('Response data: ${e.response?.data}');
-      } else {
-        print('Error adding to cart: ${e.message}');
+        print('Error adding to cart: ${response.statusCode}, ${response.data}');
+        throw Exception('Failed to add to cart');
       }
     } catch (e) {
-      print('Unexpected error: $e');
+      if (e is DioError) {
+        print('Error adding to cart: ${e.message}');
+        if (e.response != null) {
+          print('Response data: ${e.response?.data}');
+          print('Status code: ${e.response?.statusCode}');
+        }
+      } else {
+        print('Error adding to cart: $e');
+      }
     }
   }
 }

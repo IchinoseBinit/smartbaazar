@@ -5,28 +5,27 @@ part 'vendor_profile_name.g.dart';
 
 @freezed
 class VendorData with _$VendorData {
-  factory VendorData({
+  const factory VendorData({
     Vendor? vendor,
-    @Default([]) List<Advertisement> advertisements,
-    @Default([]) List<HotProduct> hotProducts,
-    String? scratchBanner,
-    Posts? posts,
+    List<Advertisement>? advertisements,
+    Posts? posts, // Update to use the new Posts class
   }) = _VendorData;
 
-  factory VendorData.fromJson(Map<String, dynamic> json) => _$VendorDataFromJson(json);
+  factory VendorData.fromJson(Map<String, dynamic> json) =>
+      _$VendorDataFromJson(json);
 }
 
 @freezed
 class Vendor with _$Vendor {
-  factory Vendor({
+  const factory Vendor({
     String? id,
-    String? countryCode,
-    String? languageCode,
     String? name,
     String? photo,
-    String? phone,
     String? username,
-    // additional fields can be uncommented when needed
+    String? phone,
+    String? contact_name,
+    String? visits,
+    String? city,
   }) = _Vendor;
 
   factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);
@@ -34,57 +33,40 @@ class Vendor with _$Vendor {
 
 @freezed
 class Advertisement with _$Advertisement {
-  factory Advertisement({
+  const factory Advertisement({
     String? id,
-    String? order,
-    String? status,
     String? image,
     String? link,
   }) = _Advertisement;
 
-  factory Advertisement.fromJson(Map<String, dynamic> json) => _$AdvertisementFromJson(json);
+  factory Advertisement.fromJson(Map<String, dynamic> json) =>
+      _$AdvertisementFromJson(json);
 }
 
+// Define the Posts class to handle the posts structure
 @freezed
-class HotProduct with _$HotProduct {
-  factory HotProduct({
-    String? id,
-    String? countryCode,
-    String? title,
-    String? description,
-    String? price,
-    String? image,
-    // additional fields can be added as necessary
-  }) = _HotProduct;
+class Posts with _$Posts {
+  const factory Posts({
+    List<Post>? data,
+  }) = _Posts;
 
-  factory HotProduct.fromJson(Map<String, dynamic> json) => _$HotProductFromJson(json);
+  factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
 }
 
 @freezed
 class Post with _$Post {
-  factory Post({
-    String? id,
-    String? countryCode,
-    String? userId,
-    String? categoryId,
-    String? postTypeId,
-    String? title,
-    String? description,
-    String? price,
-    String? image,
-    String? createdAt,
-    // add more fields as necessary based on your response structure
-  }) = _Post;
+  const factory Post(
+      {String? id,
+      String? title,
+      String? price,
+      String? image,
+      String? pickup,
+      String? username,
+      String? city,
+      int? avg_rating,
+      String? visits,
+      // Add other fields based on your requirements
+      }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-}
-
-@freezed
-class Posts with _$Posts {
-  factory Posts({
-    int? currentPage,
-    @Default([]) List<Post> data, // Changed type to List<Post>
-  }) = _Posts;
-
-  factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
 }

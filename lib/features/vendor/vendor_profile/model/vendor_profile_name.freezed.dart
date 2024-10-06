@@ -21,9 +21,7 @@ VendorData _$VendorDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$VendorData {
   Vendor? get vendor => throw _privateConstructorUsedError;
-  List<Advertisement> get advertisements => throw _privateConstructorUsedError;
-  List<HotProduct> get hotProducts => throw _privateConstructorUsedError;
-  String? get scratchBanner => throw _privateConstructorUsedError;
+  List<Advertisement>? get advertisements => throw _privateConstructorUsedError;
   Posts? get posts => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,11 +37,7 @@ abstract class $VendorDataCopyWith<$Res> {
       _$VendorDataCopyWithImpl<$Res, VendorData>;
   @useResult
   $Res call(
-      {Vendor? vendor,
-      List<Advertisement> advertisements,
-      List<HotProduct> hotProducts,
-      String? scratchBanner,
-      Posts? posts});
+      {Vendor? vendor, List<Advertisement>? advertisements, Posts? posts});
 
   $VendorCopyWith<$Res>? get vendor;
   $PostsCopyWith<$Res>? get posts;
@@ -63,9 +57,7 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
   @override
   $Res call({
     Object? vendor = freezed,
-    Object? advertisements = null,
-    Object? hotProducts = null,
-    Object? scratchBanner = freezed,
+    Object? advertisements = freezed,
     Object? posts = freezed,
   }) {
     return _then(_value.copyWith(
@@ -73,18 +65,10 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
               as Vendor?,
-      advertisements: null == advertisements
+      advertisements: freezed == advertisements
           ? _value.advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
-              as List<Advertisement>,
-      hotProducts: null == hotProducts
-          ? _value.hotProducts
-          : hotProducts // ignore: cast_nullable_to_non_nullable
-              as List<HotProduct>,
-      scratchBanner: freezed == scratchBanner
-          ? _value.scratchBanner
-          : scratchBanner // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<Advertisement>?,
       posts: freezed == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
@@ -126,11 +110,7 @@ abstract class _$$VendorDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Vendor? vendor,
-      List<Advertisement> advertisements,
-      List<HotProduct> hotProducts,
-      String? scratchBanner,
-      Posts? posts});
+      {Vendor? vendor, List<Advertisement>? advertisements, Posts? posts});
 
   @override
   $VendorCopyWith<$Res>? get vendor;
@@ -150,9 +130,7 @@ class __$$VendorDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? vendor = freezed,
-    Object? advertisements = null,
-    Object? hotProducts = null,
-    Object? scratchBanner = freezed,
+    Object? advertisements = freezed,
     Object? posts = freezed,
   }) {
     return _then(_$VendorDataImpl(
@@ -160,18 +138,10 @@ class __$$VendorDataImplCopyWithImpl<$Res>
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
               as Vendor?,
-      advertisements: null == advertisements
+      advertisements: freezed == advertisements
           ? _value._advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
-              as List<Advertisement>,
-      hotProducts: null == hotProducts
-          ? _value._hotProducts
-          : hotProducts // ignore: cast_nullable_to_non_nullable
-              as List<HotProduct>,
-      scratchBanner: freezed == scratchBanner
-          ? _value.scratchBanner
-          : scratchBanner // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as List<Advertisement>?,
       posts: freezed == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
@@ -183,46 +153,31 @@ class __$$VendorDataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VendorDataImpl implements _VendorData {
-  _$VendorDataImpl(
-      {this.vendor,
-      final List<Advertisement> advertisements = const [],
-      final List<HotProduct> hotProducts = const [],
-      this.scratchBanner,
-      this.posts})
-      : _advertisements = advertisements,
-        _hotProducts = hotProducts;
+  const _$VendorDataImpl(
+      {this.vendor, final List<Advertisement>? advertisements, this.posts})
+      : _advertisements = advertisements;
 
   factory _$VendorDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorDataImplFromJson(json);
 
   @override
   final Vendor? vendor;
-  final List<Advertisement> _advertisements;
+  final List<Advertisement>? _advertisements;
   @override
-  @JsonKey()
-  List<Advertisement> get advertisements {
+  List<Advertisement>? get advertisements {
+    final value = _advertisements;
+    if (value == null) return null;
     if (_advertisements is EqualUnmodifiableListView) return _advertisements;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_advertisements);
+    return EqualUnmodifiableListView(value);
   }
 
-  final List<HotProduct> _hotProducts;
-  @override
-  @JsonKey()
-  List<HotProduct> get hotProducts {
-    if (_hotProducts is EqualUnmodifiableListView) return _hotProducts;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_hotProducts);
-  }
-
-  @override
-  final String? scratchBanner;
   @override
   final Posts? posts;
 
   @override
   String toString() {
-    return 'VendorData(vendor: $vendor, advertisements: $advertisements, hotProducts: $hotProducts, scratchBanner: $scratchBanner, posts: $posts)';
+    return 'VendorData(vendor: $vendor, advertisements: $advertisements, posts: $posts)';
   }
 
   @override
@@ -233,22 +188,13 @@ class _$VendorDataImpl implements _VendorData {
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             const DeepCollectionEquality()
                 .equals(other._advertisements, _advertisements) &&
-            const DeepCollectionEquality()
-                .equals(other._hotProducts, _hotProducts) &&
-            (identical(other.scratchBanner, scratchBanner) ||
-                other.scratchBanner == scratchBanner) &&
             (identical(other.posts, posts) || other.posts == posts));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      vendor,
-      const DeepCollectionEquality().hash(_advertisements),
-      const DeepCollectionEquality().hash(_hotProducts),
-      scratchBanner,
-      posts);
+  int get hashCode => Object.hash(runtimeType, vendor,
+      const DeepCollectionEquality().hash(_advertisements), posts);
 
   @JsonKey(ignore: true)
   @override
@@ -265,11 +211,9 @@ class _$VendorDataImpl implements _VendorData {
 }
 
 abstract class _VendorData implements VendorData {
-  factory _VendorData(
+  const factory _VendorData(
       {final Vendor? vendor,
-      final List<Advertisement> advertisements,
-      final List<HotProduct> hotProducts,
-      final String? scratchBanner,
+      final List<Advertisement>? advertisements,
       final Posts? posts}) = _$VendorDataImpl;
 
   factory _VendorData.fromJson(Map<String, dynamic> json) =
@@ -278,11 +222,7 @@ abstract class _VendorData implements VendorData {
   @override
   Vendor? get vendor;
   @override
-  List<Advertisement> get advertisements;
-  @override
-  List<HotProduct> get hotProducts;
-  @override
-  String? get scratchBanner;
+  List<Advertisement>? get advertisements;
   @override
   Posts? get posts;
   @override
@@ -298,12 +238,13 @@ Vendor _$VendorFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Vendor {
   String? get id => throw _privateConstructorUsedError;
-  String? get countryCode => throw _privateConstructorUsedError;
-  String? get languageCode => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
-  String? get phone => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
+  String? get contact_name => throw _privateConstructorUsedError;
+  String? get visits => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -317,12 +258,13 @@ abstract class $VendorCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String? countryCode,
-      String? languageCode,
       String? name,
       String? photo,
+      String? username,
       String? phone,
-      String? username});
+      String? contact_name,
+      String? visits,
+      String? city});
 }
 
 /// @nodoc
@@ -339,25 +281,18 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
   @override
   $Res call({
     Object? id = freezed,
-    Object? countryCode = freezed,
-    Object? languageCode = freezed,
     Object? name = freezed,
     Object? photo = freezed,
-    Object? phone = freezed,
     Object? username = freezed,
+    Object? phone = freezed,
+    Object? contact_name = freezed,
+    Object? visits = freezed,
+    Object? city = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      countryCode: freezed == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      languageCode: freezed == languageCode
-          ? _value.languageCode
-          : languageCode // ignore: cast_nullable_to_non_nullable
               as String?,
       name: freezed == name
           ? _value.name
@@ -367,13 +302,25 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
       phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      username: freezed == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
+      contact_name: freezed == contact_name
+          ? _value.contact_name
+          : contact_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      visits: freezed == visits
+          ? _value.visits
+          : visits // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -388,12 +335,13 @@ abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String? countryCode,
-      String? languageCode,
       String? name,
       String? photo,
+      String? username,
       String? phone,
-      String? username});
+      String? contact_name,
+      String? visits,
+      String? city});
 }
 
 /// @nodoc
@@ -408,25 +356,18 @@ class __$$VendorImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? countryCode = freezed,
-    Object? languageCode = freezed,
     Object? name = freezed,
     Object? photo = freezed,
-    Object? phone = freezed,
     Object? username = freezed,
+    Object? phone = freezed,
+    Object? contact_name = freezed,
+    Object? visits = freezed,
+    Object? city = freezed,
   }) {
     return _then(_$VendorImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      countryCode: freezed == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      languageCode: freezed == languageCode
-          ? _value.languageCode
-          : languageCode // ignore: cast_nullable_to_non_nullable
               as String?,
       name: freezed == name
           ? _value.name
@@ -436,13 +377,25 @@ class __$$VendorImplCopyWithImpl<$Res>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
       phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      username: freezed == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
+      contact_name: freezed == contact_name
+          ? _value.contact_name
+          : contact_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      visits: freezed == visits
+          ? _value.visits
+          : visits // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -451,14 +404,15 @@ class __$$VendorImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VendorImpl implements _Vendor {
-  _$VendorImpl(
+  const _$VendorImpl(
       {this.id,
-      this.countryCode,
-      this.languageCode,
       this.name,
       this.photo,
+      this.username,
       this.phone,
-      this.username});
+      this.contact_name,
+      this.visits,
+      this.city});
 
   factory _$VendorImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorImplFromJson(json);
@@ -466,21 +420,23 @@ class _$VendorImpl implements _Vendor {
   @override
   final String? id;
   @override
-  final String? countryCode;
-  @override
-  final String? languageCode;
-  @override
   final String? name;
   @override
   final String? photo;
   @override
+  final String? username;
+  @override
   final String? phone;
   @override
-  final String? username;
+  final String? contact_name;
+  @override
+  final String? visits;
+  @override
+  final String? city;
 
   @override
   String toString() {
-    return 'Vendor(id: $id, countryCode: $countryCode, languageCode: $languageCode, name: $name, photo: $photo, phone: $phone, username: $username)';
+    return 'Vendor(id: $id, name: $name, photo: $photo, username: $username, phone: $phone, contact_name: $contact_name, visits: $visits, city: $city)';
   }
 
   @override
@@ -489,21 +445,21 @@ class _$VendorImpl implements _Vendor {
         (other.runtimeType == runtimeType &&
             other is _$VendorImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.countryCode, countryCode) ||
-                other.countryCode == countryCode) &&
-            (identical(other.languageCode, languageCode) ||
-                other.languageCode == languageCode) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.photo, photo) || other.photo == photo) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.username, username) ||
-                other.username == username));
+                other.username == username) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.contact_name, contact_name) ||
+                other.contact_name == contact_name) &&
+            (identical(other.visits, visits) || other.visits == visits) &&
+            (identical(other.city, city) || other.city == city));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, countryCode, languageCode, name, photo, phone, username);
+  int get hashCode => Object.hash(runtimeType, id, name, photo, username, phone,
+      contact_name, visits, city);
 
   @JsonKey(ignore: true)
   @override
@@ -520,31 +476,34 @@ class _$VendorImpl implements _Vendor {
 }
 
 abstract class _Vendor implements Vendor {
-  factory _Vendor(
+  const factory _Vendor(
       {final String? id,
-      final String? countryCode,
-      final String? languageCode,
       final String? name,
       final String? photo,
+      final String? username,
       final String? phone,
-      final String? username}) = _$VendorImpl;
+      final String? contact_name,
+      final String? visits,
+      final String? city}) = _$VendorImpl;
 
   factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
 
   @override
   String? get id;
   @override
-  String? get countryCode;
-  @override
-  String? get languageCode;
-  @override
   String? get name;
   @override
   String? get photo;
   @override
+  String? get username;
+  @override
   String? get phone;
   @override
-  String? get username;
+  String? get contact_name;
+  @override
+  String? get visits;
+  @override
+  String? get city;
   @override
   @JsonKey(ignore: true)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
@@ -558,8 +517,6 @@ Advertisement _$AdvertisementFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Advertisement {
   String? get id => throw _privateConstructorUsedError;
-  String? get order => throw _privateConstructorUsedError;
-  String? get status => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
 
@@ -575,8 +532,7 @@ abstract class $AdvertisementCopyWith<$Res> {
           Advertisement value, $Res Function(Advertisement) then) =
       _$AdvertisementCopyWithImpl<$Res, Advertisement>;
   @useResult
-  $Res call(
-      {String? id, String? order, String? status, String? image, String? link});
+  $Res call({String? id, String? image, String? link});
 }
 
 /// @nodoc
@@ -593,8 +549,6 @@ class _$AdvertisementCopyWithImpl<$Res, $Val extends Advertisement>
   @override
   $Res call({
     Object? id = freezed,
-    Object? order = freezed,
-    Object? status = freezed,
     Object? image = freezed,
     Object? link = freezed,
   }) {
@@ -602,14 +556,6 @@ class _$AdvertisementCopyWithImpl<$Res, $Val extends Advertisement>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      order: freezed == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as String?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
               as String?,
       image: freezed == image
           ? _value.image
@@ -631,8 +577,7 @@ abstract class _$$AdvertisementImplCopyWith<$Res>
       __$$AdvertisementImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? id, String? order, String? status, String? image, String? link});
+  $Res call({String? id, String? image, String? link});
 }
 
 /// @nodoc
@@ -647,8 +592,6 @@ class __$$AdvertisementImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? order = freezed,
-    Object? status = freezed,
     Object? image = freezed,
     Object? link = freezed,
   }) {
@@ -656,14 +599,6 @@ class __$$AdvertisementImplCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      order: freezed == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as String?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
               as String?,
       image: freezed == image
           ? _value.image
@@ -680,8 +615,7 @@ class __$$AdvertisementImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AdvertisementImpl implements _Advertisement {
-  _$AdvertisementImpl(
-      {this.id, this.order, this.status, this.image, this.link});
+  const _$AdvertisementImpl({this.id, this.image, this.link});
 
   factory _$AdvertisementImpl.fromJson(Map<String, dynamic> json) =>
       _$$AdvertisementImplFromJson(json);
@@ -689,17 +623,13 @@ class _$AdvertisementImpl implements _Advertisement {
   @override
   final String? id;
   @override
-  final String? order;
-  @override
-  final String? status;
-  @override
   final String? image;
   @override
   final String? link;
 
   @override
   String toString() {
-    return 'Advertisement(id: $id, order: $order, status: $status, image: $image, link: $link)';
+    return 'Advertisement(id: $id, image: $image, link: $link)';
   }
 
   @override
@@ -708,15 +638,13 @@ class _$AdvertisementImpl implements _Advertisement {
         (other.runtimeType == runtimeType &&
             other is _$AdvertisementImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.order, order) || other.order == order) &&
-            (identical(other.status, status) || other.status == status) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.link, link) || other.link == link));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, order, status, image, link);
+  int get hashCode => Object.hash(runtimeType, id, image, link);
 
   @JsonKey(ignore: true)
   @override
@@ -733,10 +661,8 @@ class _$AdvertisementImpl implements _Advertisement {
 }
 
 abstract class _Advertisement implements Advertisement {
-  factory _Advertisement(
+  const factory _Advertisement(
       {final String? id,
-      final String? order,
-      final String? status,
       final String? image,
       final String? link}) = _$AdvertisementImpl;
 
@@ -745,10 +671,6 @@ abstract class _Advertisement implements Advertisement {
 
   @override
   String? get id;
-  @override
-  String? get order;
-  @override
-  String? get status;
   @override
   String? get image;
   @override
@@ -759,578 +681,13 @@ abstract class _Advertisement implements Advertisement {
       throw _privateConstructorUsedError;
 }
 
-HotProduct _$HotProductFromJson(Map<String, dynamic> json) {
-  return _HotProduct.fromJson(json);
-}
-
-/// @nodoc
-mixin _$HotProduct {
-  String? get id => throw _privateConstructorUsedError;
-  String? get countryCode => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  String? get price => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $HotProductCopyWith<HotProduct> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $HotProductCopyWith<$Res> {
-  factory $HotProductCopyWith(
-          HotProduct value, $Res Function(HotProduct) then) =
-      _$HotProductCopyWithImpl<$Res, HotProduct>;
-  @useResult
-  $Res call(
-      {String? id,
-      String? countryCode,
-      String? title,
-      String? description,
-      String? price,
-      String? image});
-}
-
-/// @nodoc
-class _$HotProductCopyWithImpl<$Res, $Val extends HotProduct>
-    implements $HotProductCopyWith<$Res> {
-  _$HotProductCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? countryCode = freezed,
-    Object? title = freezed,
-    Object? description = freezed,
-    Object? price = freezed,
-    Object? image = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      countryCode: freezed == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      price: freezed == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$HotProductImplCopyWith<$Res>
-    implements $HotProductCopyWith<$Res> {
-  factory _$$HotProductImplCopyWith(
-          _$HotProductImpl value, $Res Function(_$HotProductImpl) then) =
-      __$$HotProductImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String? id,
-      String? countryCode,
-      String? title,
-      String? description,
-      String? price,
-      String? image});
-}
-
-/// @nodoc
-class __$$HotProductImplCopyWithImpl<$Res>
-    extends _$HotProductCopyWithImpl<$Res, _$HotProductImpl>
-    implements _$$HotProductImplCopyWith<$Res> {
-  __$$HotProductImplCopyWithImpl(
-      _$HotProductImpl _value, $Res Function(_$HotProductImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? countryCode = freezed,
-    Object? title = freezed,
-    Object? description = freezed,
-    Object? price = freezed,
-    Object? image = freezed,
-  }) {
-    return _then(_$HotProductImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      countryCode: freezed == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      price: freezed == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$HotProductImpl implements _HotProduct {
-  _$HotProductImpl(
-      {this.id,
-      this.countryCode,
-      this.title,
-      this.description,
-      this.price,
-      this.image});
-
-  factory _$HotProductImpl.fromJson(Map<String, dynamic> json) =>
-      _$$HotProductImplFromJson(json);
-
-  @override
-  final String? id;
-  @override
-  final String? countryCode;
-  @override
-  final String? title;
-  @override
-  final String? description;
-  @override
-  final String? price;
-  @override
-  final String? image;
-
-  @override
-  String toString() {
-    return 'HotProduct(id: $id, countryCode: $countryCode, title: $title, description: $description, price: $price, image: $image)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HotProductImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.countryCode, countryCode) ||
-                other.countryCode == countryCode) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.image, image) || other.image == image));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, id, countryCode, title, description, price, image);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$HotProductImplCopyWith<_$HotProductImpl> get copyWith =>
-      __$$HotProductImplCopyWithImpl<_$HotProductImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$HotProductImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _HotProduct implements HotProduct {
-  factory _HotProduct(
-      {final String? id,
-      final String? countryCode,
-      final String? title,
-      final String? description,
-      final String? price,
-      final String? image}) = _$HotProductImpl;
-
-  factory _HotProduct.fromJson(Map<String, dynamic> json) =
-      _$HotProductImpl.fromJson;
-
-  @override
-  String? get id;
-  @override
-  String? get countryCode;
-  @override
-  String? get title;
-  @override
-  String? get description;
-  @override
-  String? get price;
-  @override
-  String? get image;
-  @override
-  @JsonKey(ignore: true)
-  _$$HotProductImplCopyWith<_$HotProductImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Post _$PostFromJson(Map<String, dynamic> json) {
-  return _Post.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Post {
-  String? get id => throw _privateConstructorUsedError;
-  String? get countryCode => throw _privateConstructorUsedError;
-  String? get userId => throw _privateConstructorUsedError;
-  String? get categoryId => throw _privateConstructorUsedError;
-  String? get postTypeId => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  String? get price => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
-  String? get createdAt => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PostCopyWith<Post> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PostCopyWith<$Res> {
-  factory $PostCopyWith(Post value, $Res Function(Post) then) =
-      _$PostCopyWithImpl<$Res, Post>;
-  @useResult
-  $Res call(
-      {String? id,
-      String? countryCode,
-      String? userId,
-      String? categoryId,
-      String? postTypeId,
-      String? title,
-      String? description,
-      String? price,
-      String? image,
-      String? createdAt});
-}
-
-/// @nodoc
-class _$PostCopyWithImpl<$Res, $Val extends Post>
-    implements $PostCopyWith<$Res> {
-  _$PostCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? countryCode = freezed,
-    Object? userId = freezed,
-    Object? categoryId = freezed,
-    Object? postTypeId = freezed,
-    Object? title = freezed,
-    Object? description = freezed,
-    Object? price = freezed,
-    Object? image = freezed,
-    Object? createdAt = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      countryCode: freezed == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      categoryId: freezed == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postTypeId: freezed == postTypeId
-          ? _value.postTypeId
-          : postTypeId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      price: freezed == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
-  factory _$$PostImplCopyWith(
-          _$PostImpl value, $Res Function(_$PostImpl) then) =
-      __$$PostImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String? id,
-      String? countryCode,
-      String? userId,
-      String? categoryId,
-      String? postTypeId,
-      String? title,
-      String? description,
-      String? price,
-      String? image,
-      String? createdAt});
-}
-
-/// @nodoc
-class __$$PostImplCopyWithImpl<$Res>
-    extends _$PostCopyWithImpl<$Res, _$PostImpl>
-    implements _$$PostImplCopyWith<$Res> {
-  __$$PostImplCopyWithImpl(_$PostImpl _value, $Res Function(_$PostImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? countryCode = freezed,
-    Object? userId = freezed,
-    Object? categoryId = freezed,
-    Object? postTypeId = freezed,
-    Object? title = freezed,
-    Object? description = freezed,
-    Object? price = freezed,
-    Object? image = freezed,
-    Object? createdAt = freezed,
-  }) {
-    return _then(_$PostImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      countryCode: freezed == countryCode
-          ? _value.countryCode
-          : countryCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      categoryId: freezed == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postTypeId: freezed == postTypeId
-          ? _value.postTypeId
-          : postTypeId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      price: freezed == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PostImpl implements _Post {
-  _$PostImpl(
-      {this.id,
-      this.countryCode,
-      this.userId,
-      this.categoryId,
-      this.postTypeId,
-      this.title,
-      this.description,
-      this.price,
-      this.image,
-      this.createdAt});
-
-  factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PostImplFromJson(json);
-
-  @override
-  final String? id;
-  @override
-  final String? countryCode;
-  @override
-  final String? userId;
-  @override
-  final String? categoryId;
-  @override
-  final String? postTypeId;
-  @override
-  final String? title;
-  @override
-  final String? description;
-  @override
-  final String? price;
-  @override
-  final String? image;
-  @override
-  final String? createdAt;
-
-  @override
-  String toString() {
-    return 'Post(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, price: $price, image: $image, createdAt: $createdAt)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PostImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.countryCode, countryCode) ||
-                other.countryCode == countryCode) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.categoryId, categoryId) ||
-                other.categoryId == categoryId) &&
-            (identical(other.postTypeId, postTypeId) ||
-                other.postTypeId == postTypeId) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.image, image) || other.image == image) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, countryCode, userId,
-      categoryId, postTypeId, title, description, price, image, createdAt);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
-      __$$PostImplCopyWithImpl<_$PostImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PostImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Post implements Post {
-  factory _Post(
-      {final String? id,
-      final String? countryCode,
-      final String? userId,
-      final String? categoryId,
-      final String? postTypeId,
-      final String? title,
-      final String? description,
-      final String? price,
-      final String? image,
-      final String? createdAt}) = _$PostImpl;
-
-  factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
-
-  @override
-  String? get id;
-  @override
-  String? get countryCode;
-  @override
-  String? get userId;
-  @override
-  String? get categoryId;
-  @override
-  String? get postTypeId;
-  @override
-  String? get title;
-  @override
-  String? get description;
-  @override
-  String? get price;
-  @override
-  String? get image;
-  @override
-  String? get createdAt;
-  @override
-  @JsonKey(ignore: true)
-  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
 Posts _$PostsFromJson(Map<String, dynamic> json) {
   return _Posts.fromJson(json);
 }
 
 /// @nodoc
 mixin _$Posts {
-  int? get currentPage => throw _privateConstructorUsedError;
-  List<Post> get data => throw _privateConstructorUsedError;
+  List<Post>? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1342,7 +699,7 @@ abstract class $PostsCopyWith<$Res> {
   factory $PostsCopyWith(Posts value, $Res Function(Posts) then) =
       _$PostsCopyWithImpl<$Res, Posts>;
   @useResult
-  $Res call({int? currentPage, List<Post> data});
+  $Res call({List<Post>? data});
 }
 
 /// @nodoc
@@ -1358,18 +715,13 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = freezed,
-    Object? data = null,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<Post>?,
     ) as $Val);
   }
 }
@@ -1381,7 +733,7 @@ abstract class _$$PostsImplCopyWith<$Res> implements $PostsCopyWith<$Res> {
       __$$PostsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? currentPage, List<Post> data});
+  $Res call({List<Post>? data});
 }
 
 /// @nodoc
@@ -1395,18 +747,13 @@ class __$$PostsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = freezed,
-    Object? data = null,
+    Object? data = freezed,
   }) {
     return _then(_$PostsImpl(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: null == data
+      data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<Post>?,
     ));
   }
 }
@@ -1414,26 +761,24 @@ class __$$PostsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PostsImpl implements _Posts {
-  _$PostsImpl({this.currentPage, final List<Post> data = const []})
-      : _data = data;
+  const _$PostsImpl({final List<Post>? data}) : _data = data;
 
   factory _$PostsImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostsImplFromJson(json);
 
+  final List<Post>? _data;
   @override
-  final int? currentPage;
-  final List<Post> _data;
-  @override
-  @JsonKey()
-  List<Post> get data {
+  List<Post>? get data {
+    final value = _data;
+    if (value == null) return null;
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_data);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'Posts(currentPage: $currentPage, data: $data)';
+    return 'Posts(data: $data)';
   }
 
   @override
@@ -1441,15 +786,13 @@ class _$PostsImpl implements _Posts {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PostsImpl &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, currentPage, const DeepCollectionEquality().hash(_data));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -1466,16 +809,312 @@ class _$PostsImpl implements _Posts {
 }
 
 abstract class _Posts implements Posts {
-  factory _Posts({final int? currentPage, final List<Post> data}) = _$PostsImpl;
+  const factory _Posts({final List<Post>? data}) = _$PostsImpl;
 
   factory _Posts.fromJson(Map<String, dynamic> json) = _$PostsImpl.fromJson;
 
   @override
-  int? get currentPage;
-  @override
-  List<Post> get data;
+  List<Post>? get data;
   @override
   @JsonKey(ignore: true)
   _$$PostsImplCopyWith<_$PostsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Post _$PostFromJson(Map<String, dynamic> json) {
+  return _Post.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Post {
+  String? get id => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get price => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
+  String? get pickup => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
+  int? get avg_rating => throw _privateConstructorUsedError;
+  String? get visits => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PostCopyWith<Post> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PostCopyWith<$Res> {
+  factory $PostCopyWith(Post value, $Res Function(Post) then) =
+      _$PostCopyWithImpl<$Res, Post>;
+  @useResult
+  $Res call(
+      {String? id,
+      String? title,
+      String? price,
+      String? image,
+      String? pickup,
+      String? username,
+      String? city,
+      int? avg_rating,
+      String? visits});
+}
+
+/// @nodoc
+class _$PostCopyWithImpl<$Res, $Val extends Post>
+    implements $PostCopyWith<$Res> {
+  _$PostCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? price = freezed,
+    Object? image = freezed,
+    Object? pickup = freezed,
+    Object? username = freezed,
+    Object? city = freezed,
+    Object? avg_rating = freezed,
+    Object? visits = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pickup: freezed == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      avg_rating: freezed == avg_rating
+          ? _value.avg_rating
+          : avg_rating // ignore: cast_nullable_to_non_nullable
+              as int?,
+      visits: freezed == visits
+          ? _value.visits
+          : visits // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
+  factory _$$PostImplCopyWith(
+          _$PostImpl value, $Res Function(_$PostImpl) then) =
+      __$$PostImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? id,
+      String? title,
+      String? price,
+      String? image,
+      String? pickup,
+      String? username,
+      String? city,
+      int? avg_rating,
+      String? visits});
+}
+
+/// @nodoc
+class __$$PostImplCopyWithImpl<$Res>
+    extends _$PostCopyWithImpl<$Res, _$PostImpl>
+    implements _$$PostImplCopyWith<$Res> {
+  __$$PostImplCopyWithImpl(_$PostImpl _value, $Res Function(_$PostImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? price = freezed,
+    Object? image = freezed,
+    Object? pickup = freezed,
+    Object? username = freezed,
+    Object? city = freezed,
+    Object? avg_rating = freezed,
+    Object? visits = freezed,
+  }) {
+    return _then(_$PostImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pickup: freezed == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      avg_rating: freezed == avg_rating
+          ? _value.avg_rating
+          : avg_rating // ignore: cast_nullable_to_non_nullable
+              as int?,
+      visits: freezed == visits
+          ? _value.visits
+          : visits // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PostImpl implements _Post {
+  const _$PostImpl(
+      {this.id,
+      this.title,
+      this.price,
+      this.image,
+      this.pickup,
+      this.username,
+      this.city,
+      this.avg_rating,
+      this.visits});
+
+  factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PostImplFromJson(json);
+
+  @override
+  final String? id;
+  @override
+  final String? title;
+  @override
+  final String? price;
+  @override
+  final String? image;
+  @override
+  final String? pickup;
+  @override
+  final String? username;
+  @override
+  final String? city;
+  @override
+  final int? avg_rating;
+  @override
+  final String? visits;
+
+  @override
+  String toString() {
+    return 'Post(id: $id, title: $title, price: $price, image: $image, pickup: $pickup, username: $username, city: $city, avg_rating: $avg_rating, visits: $visits)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PostImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.pickup, pickup) || other.pickup == pickup) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.avg_rating, avg_rating) ||
+                other.avg_rating == avg_rating) &&
+            (identical(other.visits, visits) || other.visits == visits));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, title, price, image, pickup,
+      username, city, avg_rating, visits);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
+      __$$PostImplCopyWithImpl<_$PostImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PostImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Post implements Post {
+  const factory _Post(
+      {final String? id,
+      final String? title,
+      final String? price,
+      final String? image,
+      final String? pickup,
+      final String? username,
+      final String? city,
+      final int? avg_rating,
+      final String? visits}) = _$PostImpl;
+
+  factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get title;
+  @override
+  String? get price;
+  @override
+  String? get image;
+  @override
+  String? get pickup;
+  @override
+  String? get username;
+  @override
+  String? get city;
+  @override
+  int? get avg_rating;
+  @override
+  String? get visits;
+  @override
+  @JsonKey(ignore: true)
+  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -7,7 +7,7 @@ part of 'vendor_profile_api.dart';
 // **************************************************************************
 
 String _$getVendorProfileDataHash() =>
-    r'd1e932e61741fa06d4e48f94515a70543e2fe564';
+    r'd863dfdc7129cc12b6b188c79a05fc01cf8832e6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,10 +41,12 @@ class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
 
   /// See also [getVendorProfileData].
   GetVendorProfileDataProvider call(
-    String vendorName,
-  ) {
+    String vendorName, {
+    int postType = 1,
+  }) {
     return GetVendorProfileDataProvider(
       vendorName,
+      postType: postType,
     );
   }
 
@@ -54,6 +56,7 @@ class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
   ) {
     return call(
       provider.vendorName,
+      postType: provider.postType,
     );
   }
 
@@ -77,11 +80,13 @@ class GetVendorProfileDataProvider
     extends AutoDisposeFutureProvider<VendorData> {
   /// See also [getVendorProfileData].
   GetVendorProfileDataProvider(
-    String vendorName,
-  ) : this._internal(
+    String vendorName, {
+    int postType = 1,
+  }) : this._internal(
           (ref) => getVendorProfileData(
             ref as GetVendorProfileDataRef,
             vendorName,
+            postType: postType,
           ),
           from: getVendorProfileDataProvider,
           name: r'getVendorProfileDataProvider',
@@ -93,6 +98,7 @@ class GetVendorProfileDataProvider
           allTransitiveDependencies:
               GetVendorProfileDataFamily._allTransitiveDependencies,
           vendorName: vendorName,
+          postType: postType,
         );
 
   GetVendorProfileDataProvider._internal(
@@ -103,9 +109,11 @@ class GetVendorProfileDataProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.vendorName,
+    required this.postType,
   }) : super.internal();
 
   final String vendorName;
+  final int postType;
 
   @override
   Override overrideWith(
@@ -121,6 +129,7 @@ class GetVendorProfileDataProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         vendorName: vendorName,
+        postType: postType,
       ),
     );
   }
@@ -133,13 +142,15 @@ class GetVendorProfileDataProvider
   @override
   bool operator ==(Object other) {
     return other is GetVendorProfileDataProvider &&
-        other.vendorName == vendorName;
+        other.vendorName == vendorName &&
+        other.postType == postType;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, vendorName.hashCode);
+    hash = _SystemHash.combine(hash, postType.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -148,6 +159,9 @@ class GetVendorProfileDataProvider
 mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorData> {
   /// The parameter `vendorName` of this provider.
   String get vendorName;
+
+  /// The parameter `postType` of this provider.
+  int get postType;
 }
 
 class _GetVendorProfileDataProviderElement
@@ -157,6 +171,8 @@ class _GetVendorProfileDataProviderElement
 
   @override
   String get vendorName => (origin as GetVendorProfileDataProvider).vendorName;
+  @override
+  int get postType => (origin as GetVendorProfileDataProvider).postType;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
