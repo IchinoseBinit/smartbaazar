@@ -23,6 +23,7 @@ class ApiConstants {
   static String getProductDetails = '$baseUrl/posts';
   static String addtoCartUrl = '$baseUrl/api/users/addToCart';
   static String incrementQuantity = '$baseUrl/users/addToCart';
+  static String decrementQuantity = '$baseUrl/users/cart_minus';
   static String getCheckoutDetailsUrl = '$baseUrl/users/checkout';
   // static String checkoutDetails
 
