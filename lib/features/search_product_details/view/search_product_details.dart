@@ -118,92 +118,95 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           itemCount: data.length,
                           itemBuilder: (context, index) {
                             final post = data[index];
-                            return Container(
-                              margin: EdgeInsets.only(top: 2),
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 0.2,
-                                  )),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Skeleton.replace(
-                                    width: productCardWidth,
-                                    child: Container(
+                            return InkWell(
+                              onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => ProductDetailScreen(productId: post.id),)),
+                              child: Container(
+                                margin: EdgeInsets.only(top: 2),
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 0.2,
+                                    )),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Skeleton.replace(
                                       width: productCardWidth,
-                                      height: 100.h,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(post.image!),
-                                          fit: BoxFit.fill,
+                                      child: Container(
+                                        width: productCardWidth,
+                                        height: 100.h,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(post.image!),
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: 9.h),
-                                  Skeleton.replace(
-                                    height: 15.h,
-                                    child: SizedBox(
-                                      height: 30.h,
-                                      child: Text(
-                                        post.title!,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
+                                    SizedBox(height: 9.h),
+                                    Skeleton.replace(
+                                      height: 15.h,
+                                      child: SizedBox(
+                                        height: 30.h,
+                                        child: Text(
+                                          post.title!,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "RS ${post.price}",
-                                        style: TextStyle(fontSize: 14.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 2.h),
-                                  Skeleton.replace(
-                                    width: productCardWidth,
-                                    child: SizedBox(
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "RS ${post.price}",
+                                          style: TextStyle(fontSize: 14.sp),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 2.h),
+                                    Skeleton.replace(
                                       width: productCardWidth,
-                                      child: Text(
-                                        post.contact_name!,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black,
+                                      child: SizedBox(
+                                        width: productCardWidth,
+                                        child: Text(
+                                          post.contact_name!,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: 12.h),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.visibility,
-                                        size: 15,
-                                        color: Color(0xff888888),
-                                      ),
-                                      Text("${post.visits!}K Views"),
-                                      Spacer(),
-                                      Text(post.pickup ?? "kathmandu"),
-                                      SizedBox(
-                                        width: 1,
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                    SizedBox(height: 12.h),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.visibility,
+                                          size: 15,
+                                          color: Color(0xff888888),
+                                        ),
+                                        Text("${post.visits!}K Views"),
+                                        Spacer(),
+                                        Text(post.pickup ?? "kathmandu"),
+                                        SizedBox(
+                                          width: 1,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
