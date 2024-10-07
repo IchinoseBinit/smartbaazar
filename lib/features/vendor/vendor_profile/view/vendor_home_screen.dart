@@ -7,8 +7,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_model.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
@@ -626,37 +626,37 @@ class TabBarAndTabView extends StatelessWidget {
   }
 }
 
-class HotDealsWidget extends ConsumerWidget {
-  final String vendorName;
+// class HotDealsWidget extends ConsumerWidget {
+//   final String vendorName;
 
-  const HotDealsWidget({super.key, required this.vendorName});
+//   const HotDealsWidget({super.key, required this.vendorName});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Correctly call the provider family with the vendorName
-    final vendorProfileAsyncValue =
-        ref.watch(getVendorProfileDataProvider(vendorName));
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     // Correctly call the provider family with the vendorName
+//     final vendorProfileAsyncValue =
+//         ref.watch(getVendorProfileDataProvider(vendorName));
 
-    return vendorProfileAsyncValue.when(
-      data: (vendorProfile) {
-        final hotDeals = vendorProfile.hotProducts;
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: hotDeals?.length,
-          itemBuilder: (context, index) {
-            final hotDeal = hotDeals?[index];
-            return HotDealCard(hotProduct: hotDeal!);
-          },
-        );
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (err, stack) => Text('Error: $err'),
-    );
-  }
-}
+//     return vendorProfileAsyncValue.when(
+//       data: (vendorProfile) {
+//         final hotDeals = vendorProfile?.hotProducts;
+//         return ListView.builder(
+//           scrollDirection: Axis.horizontal,
+//           itemCount: hotDeals?.length,
+//           itemBuilder: (context, index) {
+//             final hotDeal = hotDeals?[index];
+//             return HotDealCard(hotProduct: hotDeal!!);
+//           },
+//         );
+//       },
+//       loading: () => const CircularProgressIndicator(),
+//       error: (err, stack) => Text('Error: $err'),
+//     );
+//   }
+// }
 
 class HotDealCard extends StatelessWidget {
-  final HotProduct hotProduct;
+  final Product hotProduct;
 
   const HotDealCard({super.key, required this.hotProduct});
 

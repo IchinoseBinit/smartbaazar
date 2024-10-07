@@ -9,11 +9,9 @@ class ImagePickerService {
     List<File?> images = [];
     try {
       // Picking multiple images
-      final List<XFile>? pickedFiles = await _picker.pickMultiImage();
-      if (pickedFiles != null) {
-        images = pickedFiles.map((pickedFile) => File(pickedFile.path)).toList();
-      }
-    } catch (e) {
+      final List<XFile> pickedFiles = await _picker.pickMultiImage();
+      images = pickedFiles.map((pickedFile) => File(pickedFile.path)).toList();
+        } catch (e) {
       print(e);
       showSnackBar(context: context, content: e.toString());
     }

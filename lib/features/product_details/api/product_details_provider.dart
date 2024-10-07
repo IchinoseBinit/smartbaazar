@@ -34,7 +34,6 @@ Future<ProductDetailsModel> productDetails(
     if (response.statusCode == 200) {
       final result = response.data['result'];
       final extra = response.data['extra'];
-
       // Handling similar items
       List<SimilarItems>? similarItemsList;
       if (response.data.containsKey('widgetSimilarPosts') &&
