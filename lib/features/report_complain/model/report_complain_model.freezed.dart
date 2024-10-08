@@ -27,8 +27,12 @@ mixin _$ReportComplainModel {
   @JsonKey(name: 'captcha_key')
   String? get captchaKey => throw _privateConstructorUsedError;
 
+  /// Serializes this ReportComplainModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ReportComplainModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ReportComplainModelCopyWith<ReportComplainModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +60,8 @@ class _$ReportComplainModelCopyWithImpl<$Res, $Val extends ReportComplainModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ReportComplainModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -108,6 +114,8 @@ class __$$ReportComplainModelImplCopyWithImpl<$Res>
       $Res Function(_$ReportComplainModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ReportComplainModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -178,12 +186,14 @@ class _$ReportComplainModelImpl implements _ReportComplainModel {
                 other.captchaKey == captchaKey));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, reportTypeId, email, message, captchaKey);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ReportComplainModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReportComplainModelImplCopyWith<_$ReportComplainModelImpl> get copyWith =>
@@ -219,8 +229,11 @@ abstract class _ReportComplainModel implements ReportComplainModel {
   @override
   @JsonKey(name: 'captcha_key')
   String? get captchaKey;
+
+  /// Create a copy of ReportComplainModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReportComplainModelImplCopyWith<_$ReportComplainModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

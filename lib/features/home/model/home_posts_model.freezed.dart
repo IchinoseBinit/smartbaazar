@@ -31,8 +31,12 @@ mixin _$HomePosts {
   List<Product> get b2b_products => throw _privateConstructorUsedError;
   List<Product> get all_products => throw _privateConstructorUsedError;
 
+  /// Serializes this HomePosts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $HomePostsCopyWith<HomePosts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,6 +68,8 @@ class _$HomePostsCopyWithImpl<$Res, $Val extends HomePosts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -146,6 +152,8 @@ class __$$HomePostsImplCopyWithImpl<$Res>
       _$HomePostsImpl _value, $Res Function(_$HomePostsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -325,7 +333,7 @@ class _$HomePostsImpl implements _HomePosts {
                 .equals(other._all_products, _all_products));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -339,7 +347,9 @@ class _$HomePostsImpl implements _HomePosts {
       const DeepCollectionEquality().hash(_b2b_products),
       const DeepCollectionEquality().hash(_all_products));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HomePostsImplCopyWith<_$HomePostsImpl> get copyWith =>
@@ -386,8 +396,11 @@ abstract class _HomePosts implements HomePosts {
   List<Product> get b2b_products;
   @override
   List<Product> get all_products;
+
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HomePostsImplCopyWith<_$HomePostsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

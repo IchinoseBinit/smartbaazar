@@ -24,8 +24,12 @@ mixin _$AdvertisementResponse {
   Data get data => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this AdvertisementResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AdvertisementResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AdvertisementResponseCopyWith<AdvertisementResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$AdvertisementResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AdvertisementResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -70,6 +76,8 @@ class _$AdvertisementResponseCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of AdvertisementResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DataCopyWith<$Res> get data {
@@ -103,6 +111,8 @@ class __$$AdvertisementResponseImplCopyWithImpl<$Res>
       $Res Function(_$AdvertisementResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AdvertisementResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -149,11 +159,13 @@ class _$AdvertisementResponseImpl implements _AdvertisementResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AdvertisementResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AdvertisementResponseImplCopyWith<_$AdvertisementResponseImpl>
@@ -180,8 +192,11 @@ abstract class _AdvertisementResponse implements AdvertisementResponse {
   Data get data;
   @override
   String get msg;
+
+  /// Create a copy of AdvertisementResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AdvertisementResponseImplCopyWith<_$AdvertisementResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -194,8 +209,12 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 mixin _$Data {
   List<Ad> get ads => throw _privateConstructorUsedError;
 
+  /// Serializes this Data to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -217,6 +236,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -248,6 +269,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -291,12 +314,14 @@ class _$DataImpl implements _Data {
             const DeepCollectionEquality().equals(other._ads, _ads));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_ads));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -317,8 +342,11 @@ abstract class _Data implements Data {
 
   @override
   List<Ad> get ads;
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -337,8 +365,12 @@ mixin _$Ad {
   @JsonKey(name: 'created_at')
   String get createdAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Ad to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Ad
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AdCopyWith<Ad> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -364,6 +396,8 @@ class _$AdCopyWithImpl<$Res, $Val extends Ad> implements $AdCopyWith<$Res> {
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Ad
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -418,6 +452,8 @@ class __$$AdImplCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res, _$AdImpl>
   __$$AdImplCopyWithImpl(_$AdImpl _value, $Res Function(_$AdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Ad
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -496,12 +532,14 @@ class _$AdImpl implements _Ad {
                 other.createdAt == createdAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, userId, image, link, createdAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Ad
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AdImplCopyWith<_$AdImpl> get copyWith =>
@@ -537,8 +575,11 @@ abstract class _Ad implements Ad {
   @override
   @JsonKey(name: 'created_at')
   String get createdAt;
+
+  /// Create a copy of Ad
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AdImplCopyWith<_$AdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

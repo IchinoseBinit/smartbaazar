@@ -25,8 +25,12 @@ mixin _$DisputeModel {
   @JsonKey(name: 'disputes_filed')
   List<Dispute>? get disputesFiled => throw _privateConstructorUsedError;
 
+  /// Serializes this DisputeModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DisputeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DisputeModelCopyWith<DisputeModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$DisputeModelCopyWithImpl<$Res, $Val extends DisputeModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DisputeModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$DisputeModelImplCopyWithImpl<$Res>
       _$DisputeModelImpl _value, $Res Function(_$DisputeModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DisputeModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -163,14 +171,16 @@ class _$DisputeModelImpl implements _DisputeModel {
                 .equals(other._disputesFiled, _disputesFiled));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_disputesReceived),
       const DeepCollectionEquality().hash(_disputesFiled));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DisputeModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DisputeModelImplCopyWith<_$DisputeModelImpl> get copyWith =>
@@ -200,8 +210,11 @@ abstract class _DisputeModel implements DisputeModel {
   @override
   @JsonKey(name: 'disputes_filed')
   List<Dispute>? get disputesFiled;
+
+  /// Create a copy of DisputeModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DisputeModelImplCopyWith<_$DisputeModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -251,8 +264,12 @@ mixin _$Dispute {
   @JsonKey(name: 'image_url')
   String? get imageUrl => throw _privateConstructorUsedError;
 
+  /// Serializes this Dispute to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Dispute
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DisputeCopyWith<Dispute> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -293,6 +310,8 @@ class _$DisputeCopyWithImpl<$Res, $Val extends Dispute>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Dispute
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -434,6 +453,8 @@ class __$$DisputeImplCopyWithImpl<$Res>
       _$DisputeImpl _value, $Res Function(_$DisputeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Dispute
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -663,7 +684,7 @@ class _$DisputeImpl implements _Dispute {
                 other.imageUrl == imageUrl));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -688,7 +709,9 @@ class _$DisputeImpl implements _Dispute {
         imageUrl
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Dispute
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DisputeImplCopyWith<_$DisputeImpl> get copyWith =>
@@ -783,8 +806,11 @@ abstract class _Dispute implements Dispute {
   @override
   @JsonKey(name: 'image_url')
   String? get imageUrl;
+
+  /// Create a copy of Dispute
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DisputeImplCopyWith<_$DisputeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -23,7 +23,10 @@ class SmartClinet {
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     var options = Options(
       method: requestOptions.method,
-      headers: requestOptions.headers,
+      headers: {
+        ...requestOptions.headers,
+        'Authorization': 'Bearer $token' // Ensure the new token is used
+      },
     );
     return _client.request<dynamic>(
       requestOptions.path,
@@ -45,36 +48,37 @@ class SmartClinet {
         ),
       );
     }
-    _client.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (RequestOptions options, handler) {
-          options.headers['Authorization'] = 'Bearer $token';
-          return handler.next(options);
-        },
-        onError: (DioException error, handler) async {
-          if (error.response?.statusCode == 401) {
-            // return handler.next(error);
-            final success = await _refreshToken();
-            if (success) {
-              RequestOptions requestOptions = error.requestOptions;
-              requestOptions.headers['Authorization'] = 'Bearer $token';
-              final response = await _retry(requestOptions);
-              return handler.resolve(response);
-            }
-            return handler.next(error);
-          }
+ _client.interceptors.add(
+  InterceptorsWrapper(
+    onRequest: (RequestOptions options, handler) {
+      options.headers['Authorization'] = 'Bearer $token';
+      return handler.next(options);
+    },
+    onError: (DioException error, handler) async {
+      if (error.response?.statusCode == 401) {
+        final success = await _refreshToken();
+        if (success) {
+          RequestOptions requestOptions = error.requestOptions;
+          requestOptions.headers['Authorization'] = 'Bearer $token';
           try {
-            return handler.next(error);
-          } catch (e) {
-            return;
+            final response = await _retry(requestOptions);
+            return handler.resolve(response); // Return successful retry response
+          } on DioException catch (retryError) {
+            return handler.next(retryError); // Handle retry failure properly
           }
-        },
-        onResponse: (options, handler) {
-          return handler.next(options);
-        },
-      ),
-    );
+        }
+        return handler.next(error); // If token refresh fails, return original error
+      }
+      return handler.next(error); // Forward any other error
+    },
+    onResponse: (options, handler) {
+      return handler.next(options);
+    },
+  ),
+);
+
   }
+
   Future<bool> _refreshToken() async {
     try {
       final container = ProviderContainer(); // Create a Riverpod container
@@ -180,13 +184,12 @@ class SmartClinet {
               ),
             )
             .timeout(timeOutDuration);
-      case RequestType.deleteWithToken: // Add this case
+      case RequestType.deleteWithToken:
         return _client
             .delete(
               url,
               options: Options(headers: headingWithToken),
-              data:
-                  parameter, // Optional: use if you need to pass body data in delete request
+              data: parameter, // Optional body data in delete request
             )
             .timeout(timeOutDuration);
       case RequestType.putWithToken:

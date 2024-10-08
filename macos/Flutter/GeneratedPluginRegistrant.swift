@@ -11,7 +11,7 @@ import path_provider_foundation
 import share_plus
 import shared_preferences_foundation
 import smart_auth
-import sqflite
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))

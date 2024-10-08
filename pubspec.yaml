@@ -44,7 +44,6 @@ dependencies:
   dio: ^5.4.3+1
   flutter_riverpod: ^2.5.1
 
-
   fluttertoast: ^8.2.5
   flutter_secure_storage: ^9.2.2
   riverpod_annotation: ^2.3.5
@@ -54,7 +53,7 @@ dependencies:
   skeletonizer: ^1.4.1+1
   shared_preferences: ^2.3.2
   image_picker: ^1.1.2
-  multiple_images_picker: ^1.0.1
+  # multiple_images_picker: ^1.0.1
   share_plus: ^10.0.2
   flutter_html: ^3.0.0-beta.2
   rxdart: ^0.27.7

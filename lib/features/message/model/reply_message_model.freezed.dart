@@ -25,8 +25,12 @@ mixin _$ReplyMessageModel {
       throw _privateConstructorUsedError; // nullable in case message is not returned
   ReplyResult get result => throw _privateConstructorUsedError;
 
+  /// Serializes this ReplyMessageModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ReplyMessageModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ReplyMessageModelCopyWith<ReplyMessageModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$ReplyMessageModelCopyWithImpl<$Res, $Val extends ReplyMessageModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ReplyMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,6 +81,8 @@ class _$ReplyMessageModelCopyWithImpl<$Res, $Val extends ReplyMessageModel>
     ) as $Val);
   }
 
+  /// Create a copy of ReplyMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ReplyResultCopyWith<$Res> get result {
@@ -106,6 +114,8 @@ class __$$ReplyMessageModelImplCopyWithImpl<$Res>
       $Res Function(_$ReplyMessageModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ReplyMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -174,11 +184,13 @@ class _$ReplyMessageModelImpl
             (identical(other.result, result) || other.result == result));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, success, message, result);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ReplyMessageModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReplyMessageModelImplCopyWith<_$ReplyMessageModelImpl> get copyWith =>
@@ -205,11 +217,14 @@ abstract class _ReplyMessageModel implements ReplyMessageModel {
   @override
   bool get success;
   @override
-  String? get message;
-  @override // nullable in case message is not returned
-  ReplyResult get result;
+  String? get message; // nullable in case message is not returned
   @override
-  @JsonKey(ignore: true)
+  ReplyResult get result;
+
+  /// Create a copy of ReplyMessageModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReplyMessageModelImplCopyWith<_$ReplyMessageModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -225,8 +240,12 @@ mixin _$ReplyResult {
   String get postId => throw _privateConstructorUsedError;
   String get subject => throw _privateConstructorUsedError;
 
+  /// Serializes this ReplyResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ReplyResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ReplyResultCopyWith<ReplyResult> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -250,6 +269,8 @@ class _$ReplyResultCopyWithImpl<$Res, $Val extends ReplyResult>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ReplyResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -293,6 +314,8 @@ class __$$ReplyResultImplCopyWithImpl<$Res>
       _$ReplyResultImpl _value, $Res Function(_$ReplyResultImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ReplyResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -361,11 +384,13 @@ class _$ReplyResultImpl with DiagnosticableTreeMixin implements _ReplyResult {
             (identical(other.subject, subject) || other.subject == subject));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, postId, subject);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ReplyResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReplyResultImplCopyWith<_$ReplyResultImpl> get copyWith =>
@@ -395,8 +420,11 @@ abstract class _ReplyResult implements ReplyResult {
   String get postId;
   @override
   String get subject;
+
+  /// Create a copy of ReplyResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReplyResultImplCopyWith<_$ReplyResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

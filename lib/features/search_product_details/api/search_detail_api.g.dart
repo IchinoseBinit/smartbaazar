@@ -6,7 +6,7 @@ part of 'search_detail_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchDetailsHash() => r'11411536cd6c28ca94a4611ee7f2bcbef8b7d79c';
+String _$getSearchDetailsHash() => r'a7c47ee29ad0c16b5da9ac7afbc5c8e02f19f78d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,16 +34,18 @@ class _SystemHash {
 const getSearchDetailsProvider = GetSearchDetailsFamily();
 
 /// See also [getSearchDetails].
-class GetSearchDetailsFamily extends Family<AsyncValue<List<Post>>> {
+class GetSearchDetailsFamily extends Family<AsyncValue<SearchDetails>> {
   /// See also [getSearchDetails].
   const GetSearchDetailsFamily();
 
   /// See also [getSearchDetails].
   GetSearchDetailsProvider call(
-    String query,
-  ) {
+    String query, {
+    String category = 'brand_new',
+  }) {
     return GetSearchDetailsProvider(
       query,
+      category: category,
     );
   }
 
@@ -53,6 +55,7 @@ class GetSearchDetailsFamily extends Family<AsyncValue<List<Post>>> {
   ) {
     return call(
       provider.query,
+      category: provider.category,
     );
   }
 
@@ -72,14 +75,17 @@ class GetSearchDetailsFamily extends Family<AsyncValue<List<Post>>> {
 }
 
 /// See also [getSearchDetails].
-class GetSearchDetailsProvider extends AutoDisposeFutureProvider<List<Post>> {
+class GetSearchDetailsProvider
+    extends AutoDisposeFutureProvider<SearchDetails> {
   /// See also [getSearchDetails].
   GetSearchDetailsProvider(
-    String query,
-  ) : this._internal(
+    String query, {
+    String category = 'brand_new',
+  }) : this._internal(
           (ref) => getSearchDetails(
             ref as GetSearchDetailsRef,
             query,
+            category: category,
           ),
           from: getSearchDetailsProvider,
           name: r'getSearchDetailsProvider',
@@ -91,6 +97,7 @@ class GetSearchDetailsProvider extends AutoDisposeFutureProvider<List<Post>> {
           allTransitiveDependencies:
               GetSearchDetailsFamily._allTransitiveDependencies,
           query: query,
+          category: category,
         );
 
   GetSearchDetailsProvider._internal(
@@ -101,13 +108,15 @@ class GetSearchDetailsProvider extends AutoDisposeFutureProvider<List<Post>> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.query,
+    required this.category,
   }) : super.internal();
 
   final String query;
+  final String category;
 
   @override
   Override overrideWith(
-    FutureOr<List<Post>> Function(GetSearchDetailsRef provider) create,
+    FutureOr<SearchDetails> Function(GetSearchDetailsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -119,41 +128,50 @@ class GetSearchDetailsProvider extends AutoDisposeFutureProvider<List<Post>> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         query: query,
+        category: category,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Post>> createElement() {
+  AutoDisposeFutureProviderElement<SearchDetails> createElement() {
     return _GetSearchDetailsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetSearchDetailsProvider && other.query == query;
+    return other is GetSearchDetailsProvider &&
+        other.query == query &&
+        other.category == category;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, category.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin GetSearchDetailsRef on AutoDisposeFutureProviderRef<List<Post>> {
+mixin GetSearchDetailsRef on AutoDisposeFutureProviderRef<SearchDetails> {
   /// The parameter `query` of this provider.
   String get query;
+
+  /// The parameter `category` of this provider.
+  String get category;
 }
 
 class _GetSearchDetailsProviderElement
-    extends AutoDisposeFutureProviderElement<List<Post>>
+    extends AutoDisposeFutureProviderElement<SearchDetails>
     with GetSearchDetailsRef {
   _GetSearchDetailsProviderElement(super.provider);
 
   @override
   String get query => (origin as GetSearchDetailsProvider).query;
+  @override
+  String get category => (origin as GetSearchDetailsProvider).category;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

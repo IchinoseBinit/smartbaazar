@@ -37,7 +37,6 @@ class ProductDetailScreen extends ConsumerWidget {
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
-    final currentIndex = ref.watch(currentIndexProvider);
     print("the inner data is $productDetailsAsyncValue");
 
     // final AsyncValue<PostResponse> getdetails=ref
