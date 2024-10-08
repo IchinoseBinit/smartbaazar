@@ -16,13 +16,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    final loginProvider = ref.watch(loginController.notifier);
-    loginProvider.continueSession(context);
-    super.didChangeDependencies();
+    Future.delayed(
+      Duration(seconds: 3),
+      () {
+        final loginProvider = ref.watch(loginController.notifier);
+        loginProvider.continueSession(context);
+      },
+    );
   }
 
   @override
@@ -32,8 +32,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     final splashApiResponse = ref.watch(getSplashApiProvider);
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
@@ -44,21 +44,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         ),
         child: Center(
           child: Container(
-            color: Colors.transparent,
-         child:   splashApiResponse.when(
-            data: (splashModel) {
-              return FadeInImage.assetNetwork(
-                placeholder: "assets/images/appLogo.png",
-                image: splashModel.logo,
-                height: 550, // Set height as needed
-                width: 350,
-                color: Colors.white,
-              );
-            },
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stack) => Text('Error: $error'),
-          )
-          ),
+              color: Colors.transparent,
+              child: splashApiResponse.when(
+                data: (splashModel) {
+                  print("bibash ${splashModel.logo}");
+                  return FadeInImage.assetNetwork(
+                    placeholder: "assets/images/appLogo.png",
+                    image: splashModel.logo,
+                    color: Colors.white,
+                  );
+                },
+                loading: () => const CircularProgressIndicator(),
+                error: (error, stack) => Text('Error: $error'),
+              )),
         ),
       ),
     );

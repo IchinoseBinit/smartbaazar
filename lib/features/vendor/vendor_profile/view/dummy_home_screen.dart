@@ -89,7 +89,6 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
     return vendorProfileModelDataAsyncValue.when(
       data: (vendorProfile) {
-        print("bibash ${vendorProfile.advertisements}");
         return GenericSafeArea(
           color: Colors.white,
           child: Scaffold(
