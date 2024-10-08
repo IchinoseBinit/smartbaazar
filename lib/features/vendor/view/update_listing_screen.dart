@@ -97,19 +97,22 @@ class _UpdateListingState extends State<UpdateListing> {
                           bgColor: const Color(0xffADADAD),
                           borderColor: const Color(0xffADADAD),
                           fgColor: Colors.white,
-                          title: 'Update Photos'),
+                          title: 'Update Photos',
+                          isSmallText: true,),
                       SizedBox(
                         width: 10.w,
                       ),
                       GeneralTextButton(
-                          marginH: 0,
-                          width: MediaQuery.of(context).size.width / 2.2,
-                          prefixIcon: Icons.check_circle,
-                          prefixColor: Colors.white,
-                          bgColor: const Color(0xff2ECC71),
-                          borderColor: const Color(0xff2ECC71),
-                          fgColor: Colors.white,
-                          title: 'Update Photos'),
+                        marginH: 0,
+                        width: MediaQuery.of(context).size.width / 2.2,
+                        prefixIcon: Icons.check_circle,
+                        prefixColor: Colors.white,
+                        bgColor: const Color(0xff2ECC71),
+                        borderColor: const Color(0xff2ECC71),
+                        fgColor: Colors.white,
+                        title: 'Update Photos',
+                        isSmallText: true,
+                      ),
                     ],
                   ),
                 ),
@@ -137,15 +140,17 @@ class _UpdateListingState extends State<UpdateListing> {
                         ],
                       ),
                       const Spacer(),
-                      CustomDropdownButton(
-                        items: typeListItems,
-                        dropdownValue: dropdownvalue,
-                        onChanged: (TypeList? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                        getItemLabel: (TypeList item) => item.typeName,
+                      Expanded(
+                        child: CustomDropdownButton(
+                          items: typeListItems,
+                          dropdownValue: dropdownvalue,
+                          onChanged: (TypeList? newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                            });
+                          },
+                          getItemLabel: (TypeList item) => item.typeName,
+                        ),
                       ),
                     ],
                   ),
@@ -177,15 +182,17 @@ class _UpdateListingState extends State<UpdateListing> {
                         ],
                       ),
                       const Spacer(),
-                      CustomDropdownButton(
-                        items: typeListItems,
-                        dropdownValue: dropdownvalue,
-                        onChanged: (TypeList? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                          });
-                        },
-                        getItemLabel: (TypeList item) => item.typeName,
+                      Expanded(
+                        child: CustomDropdownButton(
+                          items: typeListItems,
+                          dropdownValue: dropdownvalue,
+                          onChanged: (TypeList? newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                            });
+                          },
+                          getItemLabel: (TypeList item) => item.typeName,
+                        ),
                       ),
                     ],
                   ),

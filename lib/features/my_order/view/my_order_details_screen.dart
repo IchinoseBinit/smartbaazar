@@ -234,7 +234,7 @@ class CustomDialougeBox {
           insetPadding: EdgeInsets.zero,
           clipBehavior: Clip.hardEdge,
           backgroundColor: Colors.white,
-          content: SizedBox(
+          content: Container(
             width: screenWidth ,
             child: SingleChildScrollView(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),

@@ -117,26 +117,53 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
       child: DropdownButtonFormField<T>(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 16.0.w),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 1.0),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+          border: InputBorder.none, // No underline/border
+        ),
+        value: widget.dropdownValue != null && widget.items.isNotEmpty
+            ? widget.dropdownValue
+            : null,
+        hint: Text(
+          'Please select an option',
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: widget.color ?? Colors.black,
           ),
         ),
-        value: widget.dropdownValue,
         icon: Padding(
           padding: EdgeInsets.only(left: 8.0.w),
           child: SvgPicture.asset(dropDownIcon),
         ),
-        isExpanded: true,
-        items: widget.items.map<DropdownMenuItem<T>>((T item) {
-          return DropdownMenuItem<T>(
-            value: item,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.8, // Adjust width as needed
-              ),
+        isExpanded: true, // Ensures the dropdown takes full width
+        items: widget.items.isNotEmpty
+            ? widget.items.map<DropdownMenuItem<T>>((T item) {
+                return DropdownMenuItem<T>(
+                  value: item,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                    child: Text(
+                      widget.getItemLabel(item),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: widget.color ?? Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                );
+              }).toList()
+            : [],
+
+        // Customize the selected item display (on the screen after selection)
+        selectedItemBuilder: (BuildContext context) {
+          return widget.items.map<Widget>((T item) {
+            return Align(
+              alignment: Alignment
+                  .centerRight, // Right-align only the displayed selected item
               child: Text(
                 widget.getItemLabel(item),
                 style: TextStyle(
@@ -145,12 +172,13 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
                   color: widget.color ?? Colors.black,
                 ),
                 overflow: TextOverflow.ellipsis,
-                maxLines: 2, // Limit to 2 lines if needed
+                maxLines: 2,
               ),
-            ),
-          );
-        }).toList(),
-        onChanged: widget.onChanged,
+            );
+          }).toList();
+        },
+
+        onChanged: widget.items.isNotEmpty ? widget.onChanged : null,
       ),
     );
   }

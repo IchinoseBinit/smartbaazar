@@ -61,7 +61,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.notifications,
       "title": 'Buyer',
       "subtitle": 'Account',
-      "screen": const OfflineListinScreen(),
+      "screen": const OfflineListingScreen(),
     },
     {
       "icon": Icons.volume_down,
@@ -111,7 +111,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.notifications,
       "title": 'Offline',
       "subtitle": 'listing',
-      "screen": const OfflineListinScreen(),
+      "screen": const OfflineListingScreen(),
     },
     {
       "icon": Icons.volume_down,
@@ -566,7 +566,7 @@ class BuyerCenterWidget extends StatelessWidget {
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
-        crossAxisSpacing: 5,
+        crossAxisSpacing: 4,
         mainAxisSpacing: 2.0,
       ),
       itemCount: buyerData.length,

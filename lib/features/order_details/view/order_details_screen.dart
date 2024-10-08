@@ -9,7 +9,13 @@ import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart'
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
-  const OrderDetailsScreen({super.key});
+  const OrderDetailsScreen({
+    super.key,
+    required this.selectedProductIds,
+    required this.selectedVendorIds,
+  });
+   final List<String> selectedProductIds;
+  final List<String?> selectedVendorIds;
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
@@ -18,6 +24,7 @@ class OrderDetailsScreen extends StatefulWidget {
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    
     return GenericSafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xffF6F1F1),
@@ -283,8 +290,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 bgColor: const Color(0xff362677),
                 fgColor: Colors.white,
                 title: 'Place Order',
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const ProceesToPayScreen())),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const ProceesToPayScreen())),
               ),
               SizedBox(
                 height: 20.h,
@@ -329,7 +338,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xfff36383c)),
+                        color: const Color(0xfff36383C)),
                   ),
                   const Text('Acer Aspire 5 A515-56-32Dk')
                 ],
@@ -345,7 +354,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xfff36383c)),
+                        color: const Color(0xfff36383C)),
                   ),
                   const Text('1')
                 ],
@@ -361,7 +370,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xfff36383c)),
+                        color: const Color(0xfff36383C)),
                   ),
                   const Text('Rs 60,000')
                 ],
@@ -377,7 +386,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xfff36383c)),
+                        color: const Color(0xfff36383C)),
                   ),
                   const Text('Rs 60,000')
                 ],
@@ -435,9 +444,8 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             color: const Color(0xff36383C),
           ),
         ),
-        const SizedBox(
-          width: 30,
-        ),
+        const Spacer(),
+        
         Radio<int>(
           value: 2,
           groupValue: selectedOption,

@@ -6,7 +6,7 @@ part of 'reply_message_model_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendReplyMessageHash() => r'e898dea3179f4a1407efd9e76b335c2c4ce8020e';
+String _$sendReplyMessageHash() => r'85c79229bf669769737e16625dc6cf82c5c4a7bc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,10 +42,12 @@ class SendReplyMessageFamily extends Family<AsyncValue<ReplyMessageModel>> {
   SendReplyMessageProvider call(
     String threadId,
     String body,
+    File imageFile,
   ) {
     return SendReplyMessageProvider(
       threadId,
       body,
+      imageFile,
     );
   }
 
@@ -56,6 +58,7 @@ class SendReplyMessageFamily extends Family<AsyncValue<ReplyMessageModel>> {
     return call(
       provider.threadId,
       provider.body,
+      provider.imageFile,
     );
   }
 
@@ -81,11 +84,13 @@ class SendReplyMessageProvider
   SendReplyMessageProvider(
     String threadId,
     String body,
+    File imageFile,
   ) : this._internal(
           (ref) => sendReplyMessage(
             ref as SendReplyMessageRef,
             threadId,
             body,
+            imageFile,
           ),
           from: sendReplyMessageProvider,
           name: r'sendReplyMessageProvider',
@@ -98,6 +103,7 @@ class SendReplyMessageProvider
               SendReplyMessageFamily._allTransitiveDependencies,
           threadId: threadId,
           body: body,
+          imageFile: imageFile,
         );
 
   SendReplyMessageProvider._internal(
@@ -109,10 +115,12 @@ class SendReplyMessageProvider
     required super.from,
     required this.threadId,
     required this.body,
+    required this.imageFile,
   }) : super.internal();
 
   final String threadId;
   final String body;
+  final File imageFile;
 
   @override
   Override overrideWith(
@@ -129,6 +137,7 @@ class SendReplyMessageProvider
         debugGetCreateSourceHash: null,
         threadId: threadId,
         body: body,
+        imageFile: imageFile,
       ),
     );
   }
@@ -142,7 +151,8 @@ class SendReplyMessageProvider
   bool operator ==(Object other) {
     return other is SendReplyMessageProvider &&
         other.threadId == threadId &&
-        other.body == body;
+        other.body == body &&
+        other.imageFile == imageFile;
   }
 
   @override
@@ -150,6 +160,7 @@ class SendReplyMessageProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, threadId.hashCode);
     hash = _SystemHash.combine(hash, body.hashCode);
+    hash = _SystemHash.combine(hash, imageFile.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -161,6 +172,9 @@ mixin SendReplyMessageRef on AutoDisposeFutureProviderRef<ReplyMessageModel> {
 
   /// The parameter `body` of this provider.
   String get body;
+
+  /// The parameter `imageFile` of this provider.
+  File get imageFile;
 }
 
 class _SendReplyMessageProviderElement
@@ -172,6 +186,8 @@ class _SendReplyMessageProviderElement
   String get threadId => (origin as SendReplyMessageProvider).threadId;
   @override
   String get body => (origin as SendReplyMessageProvider).body;
+  @override
+  File get imageFile => (origin as SendReplyMessageProvider).imageFile;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

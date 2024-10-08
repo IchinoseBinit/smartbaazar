@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/follow_and_suggestion/view/follow_and_suggestion_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -15,6 +16,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> drawerList = [
       {'imageIcon': openCart, 'title': 'Products'},
+      {'imageIcon': brandBazarIcon, 'title': 'BrandBazar'},
       {'imageIcon': brandBazarIcon, 'title': 'BrandBazar'},
       {'imageIcon': b2bIcon, 'title': 'B2B'},
       {'imageIcon': usedIcon, 'title': 'Used'},
@@ -65,6 +67,13 @@ class CustomDrawer extends StatelessWidget {
                     //       context,
                     //       MaterialPageRoute(
                     //           builder: (_) => const AllProductType()));
+                  }
+                  switch (ttile) {
+                    case 'BrandBazar':
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const BrandBazarScreen()));
                   }
                   switch (ttile) {
                     case 'B2B':

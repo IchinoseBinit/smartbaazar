@@ -1,95 +1,278 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Define the list of dropdown items
 List<DropdownMenuItem<IssueDropdownList>> getStaticDropdownMenuItems() {
   return [
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.productNotAsDescribed,
-      child: Text(
-        "1. Product Not as Described:\nReceived item doesn't match the description or photos.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Product Not as Described",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Received item doesn't match the description or photos.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.nonDelivery,
-      child: Text(
-        "2. Non-Delivery:\nItem not delivered on time or at all.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Non-Delivery",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Item not delivered on time or at all.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.defectiveOrDamagedProduct,
-      child: Text(
-        "3. Defective or Damaged Product:\nProduct arrives damaged or with defects.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Defective or Damaged Product",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Product arrives damaged or with defects.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.wrongItemShipped,
-      child: Text(
-        "4. Wrong Item Shipped:\nIncorrect item, color, size, or variant sent.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Wrong Item Shipped",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Incorrect item, color, size, or variant sent.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.lateDelivery,
-      child: Text(
-        "5. Late Delivery:\nProduct arrives after promised date.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Late Delivery",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Product arrives after promised date.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.refundIssues,
-      child: Text(
-        "6. Refund Issues:\nDisputes about refunds or delayed refunds.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Refund Issues",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Disputes about refunds or delayed refunds.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.cancellationProblems,
-      child: Text(
-        "7. Cancellation Problems:\nSeller doesn't allow order cancellation.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Cancellation Problems",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Seller doesn't allow order cancellation.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.hiddenFees,
-      child: Text(
-        "8. Hidden Fees:\nDisagreements over undisclosed charges.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Hidden Fees",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Disagreements over undisclosed charges.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.poorCustomerService,
-      child: Text(
-        "9. Poor Customer Service:\nUnresponsive or unhelpful support.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Poor Customer Service",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Unresponsive or unhelpful support.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.identityTheftOrFraud,
-      child: Text(
-        "10. Identity Theft or Fraud:\nPersonal information compromised.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Identity Theft or Fraud",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Personal information compromised.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.qualityDiscrepancy,
-      child: Text(
-        "11. Quality Discrepancy:\nReceived product doesn't meet expected quality.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Quality Discrepancy",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Received product doesn't meet expected quality.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.paymentDisputes,
-      child: Text(
-        "12. Payment Disputes:\nProblems with payment methods or charges.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Payment Disputes",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Problems with payment methods or charges.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.returnAndExchangeProblems,
-      child: Text(
-        "13. Return and Exchange Problems:\nSeller's return/exchange policy not followed.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Return and Exchange Problems",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Seller's return/exchange policy not followed.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
-    const DropdownMenuItem<IssueDropdownList>(
+    DropdownMenuItem<IssueDropdownList>(
       value: IssueDropdownList.communicationIssues,
-      child: Text(
-        "14. Communication Issues:\nPoor communication leads to disputes.",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Communication Issues",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            "Poor communication leads to disputes.",
+            style: TextStyle(fontSize: 10.sp),
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Divider(),
+        ],
       ),
     ),
   ];
 }
+
 enum IssueDropdownList {
   productNotAsDescribed,
   nonDelivery,
@@ -105,4 +288,37 @@ enum IssueDropdownList {
   paymentDisputes,
   returnAndExchangeProblems,
   communicationIssues,
+}
+// Method to map enum values to human-readable strings
+String getIssueLabel(IssueDropdownList issue) {
+  switch (issue) {
+    case IssueDropdownList.productNotAsDescribed:
+      return 'Product Not as Described';
+    case IssueDropdownList.nonDelivery:
+      return 'Non-Delivery';
+    case IssueDropdownList.defectiveOrDamagedProduct:
+      return 'Defective or Damaged Product';
+    case IssueDropdownList.wrongItemShipped:
+      return 'Wrong Item Shipped';
+    case IssueDropdownList.lateDelivery:
+      return 'Late Delivery';
+    case IssueDropdownList.refundIssues:
+      return 'Refund Issues';
+    case IssueDropdownList.cancellationProblems:
+      return 'Cancellation Problems';
+    case IssueDropdownList.hiddenFees:
+      return 'Hidden Fees';
+    case IssueDropdownList.poorCustomerService:
+      return 'Poor Customer Service';
+    case IssueDropdownList.identityTheftOrFraud:
+      return 'Identity Theft or Fraud';
+    case IssueDropdownList.qualityDiscrepancy:
+      return 'Quality Discrepancy';
+    case IssueDropdownList.paymentDisputes:
+      return 'Payment Disputes';
+    case IssueDropdownList.returnAndExchangeProblems:
+      return 'Return and Exchange Problems';
+    case IssueDropdownList.communicationIssues:
+      return 'Communication Issues';
+  }
 }

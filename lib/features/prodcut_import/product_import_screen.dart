@@ -1,13 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class ProductImportScreen extends StatelessWidget {
+class ProductImportScreen extends ConsumerStatefulWidget {
   const ProductImportScreen({super.key});
 
+  @override
+  ConsumerState<ProductImportScreen> createState() =>
+      _ProductImportScreenState();
+}
+
+class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
+  File? imageFile;
   @override
   Widget build(BuildContext context) {
     return GenericSafeArea(
@@ -72,8 +82,13 @@ class ProductImportScreen extends StatelessWidget {
                       SizedBox(
                         height: 5.h,
                       ),
-                      const ChooseFileWidget(
+                       ChooseFileWidget(
                         textColor: Colors.red,
+                        onImageSelected: (selectedImage) {
+                          setState(() {
+                            imageFile = selectedImage;
+                          });
+                        },
                       ),
                       SizedBox(
                         height: 10.h,
@@ -136,7 +151,8 @@ class ProductImportScreen extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const OnlineTransactionRecordScreen()));
+                            builder: (_) =>
+                                const OnlineTransactionRecordScreen()));
                   },
                 ),
               ],
@@ -157,7 +173,8 @@ class DownloadFileSampleWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 11.w),
       decoration: BoxDecoration(
-          color: const Color(0xff2ECC71), borderRadius: BorderRadius.circular(10.r)),
+          color: const Color(0xff2ECC71),
+          borderRadius: BorderRadius.circular(10.r)),
       child: Row(
         children: [
           Icon(

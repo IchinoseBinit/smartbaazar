@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 
 part 'message_thread_model.freezed.dart';
 part 'message_thread_model.g.dart';
@@ -7,9 +6,9 @@ part 'message_thread_model.g.dart';
 @freezed
 class MessageThreadModel with _$MessageThreadModel {
   const factory MessageThreadModel({
-    required bool success,
-    String? message,
-    required Result result,
+    @JsonKey(name: 'success') bool? success,
+    @JsonKey(name: 'message') String? message,
+    @JsonKey(name: 'result') Result? result,
   }) = _MessageThreadModel;
 
   factory MessageThreadModel.fromJson(Map<String, dynamic> json) =>
@@ -19,9 +18,9 @@ class MessageThreadModel with _$MessageThreadModel {
 @freezed
 class Result with _$Result {
   const factory Result({
-    required List<ThreadData>? data,
-    required Links? links,
-    required Meta? meta,
+    @JsonKey(name: 'data') List<ThreadData>? data,
+    @JsonKey(name: 'links') Links? links,
+    @JsonKey(name: 'meta') Meta? meta,
   }) = _Result;
 
   factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
@@ -30,9 +29,9 @@ class Result with _$Result {
 @freezed
 class ThreadData with _$ThreadData {
   const factory ThreadData({
-    required int? id,
-     @JsonKey(name: 'post_id')required String? postId,
-    required String? subject,
+    @JsonKey(name: 'id') int? id,
+    @JsonKey(name: 'post_id') String? postId,
+    @JsonKey(name: 'subject') String? subject,
   }) = _ThreadData;
 
   factory ThreadData.fromJson(Map<String, dynamic> json) =>
@@ -42,10 +41,10 @@ class ThreadData with _$ThreadData {
 @freezed
 class Links with _$Links {
   const factory Links({
-    required String? first,
-    required String? last,
-    String? prev,
-    String? next,
+    @JsonKey(name: 'first') String? first,
+    @JsonKey(name: 'last') String? last,
+    @JsonKey(name: 'prev') String? prev,
+    @JsonKey(name: 'next') String? next,
   }) = _Links;
 
   factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
@@ -54,27 +53,26 @@ class Links with _$Links {
 @freezed
 class Meta with _$Meta {
   const factory Meta({
-     @JsonKey(name: 'current_page')required int? currentPage,
-    required int? from,
-     @JsonKey(name: 'last_page')required int? lastPage,
-    required List<PageLinks>? links,
-    required String? path,
-     @JsonKey(name: 'per_page')required String? perPage,
-    required int? to,
-    required int? total,
+    @JsonKey(name: 'current_page') int? currentPage,
+    @JsonKey(name: 'from') int? from,
+    @JsonKey(name: 'last_page') int? lastPage,
+    @JsonKey(name: 'links') List<MetaLink>? links,
+    @JsonKey(name: 'path') String? path,
+    @JsonKey(name: 'per_page') String? perPage,
+    @JsonKey(name: 'to') int? to,
+    @JsonKey(name: 'total') int? total,
   }) = _Meta;
 
   factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
 }
 
 @freezed
-class PageLinks with _$PageLinks {
-  const factory PageLinks({
-    String? url,
-    required String? label,
-    required bool? active,
-  }) = _PageLinks;
+class MetaLink with _$MetaLink {
+  const factory MetaLink({
+    @JsonKey(name: 'url') String? url,
+    @JsonKey(name: 'label') String? label,
+    @JsonKey(name: 'active') bool? active,
+  }) = _MetaLink;
 
-  factory PageLinks.fromJson(Map<String, dynamic> json) =>
-      _$PageLinksFromJson(json);
+  factory MetaLink.fromJson(Map<String, dynamic> json) => _$MetaLinkFromJson(json);
 }

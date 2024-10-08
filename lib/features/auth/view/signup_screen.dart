@@ -80,9 +80,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.person_2_outlined,
                     hintText: 'Name',
                     controller: nameController,
-                    validator: (value) {
-                      return null;
-                    },
+                    validator: (value) {},
                   ),
                   SizedBox(
                     height: 22.h,

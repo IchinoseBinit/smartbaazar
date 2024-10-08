@@ -10,6 +10,7 @@ import 'package:smartbazar/utils/request_type.dart';
 class SmartClinet {
   static String token = '';
   static String refresh = '';
+  static String userId = '';
   static final SmartClinet _instance = SmartClinet._internal();
 
   factory SmartClinet() {
@@ -194,6 +195,21 @@ class SmartClinet {
           options: Options(headers: headingWithToken),
           data: parameter,
         );
+      case RequestType.putWithTokenFormData:
+        return _client
+            .post(
+              url,
+              data: parameter,
+              options: Options(
+                headers: {
+                  'Authorization': 'Bearer $token',
+                  'Content-Type': 'multipart/form-data',
+                  'X-AppApiToken': 'Yala@Techies_Nepal',
+                  'Connection': 'Keep-Alive',
+                },
+              ),
+            )
+            .timeout(timeOutDuration);
     }
   }
 }

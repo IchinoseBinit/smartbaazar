@@ -1,44 +1,73 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
-import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+import 'package:smartbazar/features/my_order/view/dropdown_menu_item.dart';
+import 'package:smartbazar/features/vendor/view/api/add_dispute_api.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class AddNewDisputes extends StatefulWidget {
+class AddNewDisputes extends ConsumerStatefulWidget {
   const AddNewDisputes({super.key});
 
   @override
-  State<AddNewDisputes> createState() => _AddNewDisputesState();
+  ConsumerState<AddNewDisputes> createState() => _AddNewDisputesState();
 }
 
-class _AddNewDisputesState extends State<AddNewDisputes> {
-  TypeList? dropdownvalue;
-  List<TypeList> typeListItems = [];
+class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
+  List<File>? _selectedImages = [];
+  final ImagePicker _picker = ImagePicker();
+  final TextEditingController _vendorNameController = TextEditingController();
+  final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  IssueDropdownList? _selectedIssue;
 
-   @override
-  void initState() {
-    super.initState();
-    _fetchTypeList(); // Fetch the types when the widget is initialized
-  }
-
-  Future<void> _fetchTypeList() async {
-    try {
-      NewListingRepository repository = NewListingRepository();
-      List<TypeList> fetchedTypes = await repository.fetchTypeList();
+  Future<void> pickImages() async {
+    final pickedFiles = await _picker.pickMultiImage();
+    if (pickedFiles != null && pickedFiles.isNotEmpty) {
       setState(() {
-        typeListItems = fetchedTypes;
+        _selectedImages = pickedFiles.map((file) => File(file.path)).toList();
       });
-    } catch (e) {
-      // Handle error, maybe show a message to the user
-      print('Failed to load types: $e');
     }
   }
+
+  @override
+  void dispose() {
+    _vendorNameController.dispose();
+    _subjectController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> submitDispute() async {
+  if (_selectedImages == null || _selectedImages!.isEmpty) {
+    showCustomSnackBar(context, "Please select at least one image.");
+    return;
+  }
+
+  // Get the PostDisputeRef from the provider
+  final result = await ref.read(postDisputeProvider(
+          _vendorNameController.text,
+          getIssueLabel(_selectedIssue!),
+          _messageController.text,
+          _selectedImages!.first)
+      .future);
+
+  if (result) {
+    showCustomSnackBar(context, "Dispute submitted successfully!");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const MyListingScreen()),
+    );
+  } else {
+    showCustomSnackBar(context, "Failed to submit dispute. Please try again.");
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -47,203 +76,282 @@ class _AddNewDisputesState extends State<AddNewDisputes> {
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 16.h),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.mic),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Text(
-                      'Disputes',
-                      style: TextStyle(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.mic),
+                      SizedBox(width: 8.w),
+                      Text(
+                        'Disputes',
+                        style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Text('Go back',
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Text(
+                          'Go back',
                           style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xff888888))),
-                    )
-                  ],
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff888888),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(
-                thickness: 2,
-                color: Color(0xffD9D9D9),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              CreateListingCardWidget(
-                child: Row(
-                  // mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Vendor Name',
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    // const Spacer(),
-
-                    CustomDropdownButton(
-                      items: typeListItems,
-                      dropdownValue: dropdownvalue,
-                      onChanged: (TypeList? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
-                                              getItemLabel: (TypeList item) => item.typeName,
-
-                    ),
-                  ],
-                ),
-              ),
-              CreateListingCardWidget(
-                child: Row(
-                  // mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Subject/Issue',
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    // const Spacer(),
-
-                    CustomDropdownButton(
-                      items: typeListItems,
-                      dropdownValue: dropdownvalue,
-                      onChanged: (TypeList? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
-                                              getItemLabel: (TypeList item) => item.typeName,
-
-                    ),
-                  ],
-                ),
-              ),
-              CreateListingCardWidget(
+                const Divider(thickness: 2, color: Color(0xffD9D9D9)),
+                SizedBox(height: 20.h),
+                CreateListingCardWidget(
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Message',
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  TextField(
-                    decoration: InputDecoration.collapsed(
-                        hintText: 'Describe your issue',
-                        hintStyle: TextStyle(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Vendor Name',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      TextFormField(
+                        controller: _vendorNameController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter Vendor Name',
+                          hintStyle: TextStyle(
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16.sp,
-                            color: const Color(0xffADADAD))),
+                            color: const Color(0xffADADAD),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              )),
-              CreateListingCardWidget(
+                ),
+                CreateListingCardWidget(
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Select of the issue',
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xffEDECEC)),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Choose File',
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Subject/Issue',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      DropdownButtonFormField<IssueDropdownList>(
+                        isExpanded: true,
+                        value: _selectedIssue,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        items: getStaticDropdownMenuItems(),
+                        onChanged: (IssueDropdownList? newValue) {
+                          setState(() {
+                            _selectedIssue = newValue;
+                          });
+                        },
+                        hint: Text(
+                          'Select an issue',
                           style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xff36383C)),
+                            fontSize: 14.sp,
+                            color: const Color(0xffADADAD),
+                          ),
                         ),
-                        SizedBox(
-                          width: 7.w,
-                        ),
-                        Text(
-                          "|",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xffADADAD)),
-                        ),
-                        SizedBox(
-                          width: 11.w,
-                        ),
-                        Text(
-                          'No File Chosen',
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.red),
-                        ),
-                      ],
-                    ),
+                        menuMaxHeight: 400.h,
+                        selectedItemBuilder: (BuildContext context) {
+                          return getStaticDropdownMenuItems().map((item) {
+                            return SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                _selectedIssue != null
+                                    ? getIssueLabel(_selectedIssue!)
+                                    : '',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
+                            );
+                          }).toList();
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              )),
-              SizedBox(
-                height: 20.h,
-              ),
-              const Divider(
-                thickness: 2,
-                color: Color(0xffD9D9D9),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              GeneralTextButton(
-                width: MediaQuery.of(context).size.width,
-                fgColor: Colors.white,
-                bgColor: const Color(0xff362677),
-                title: 'Submit',
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const MyListingScreen()));
-                },
-              )
-            ],
+                ),
+                CreateListingCardWidget(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Message',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      TextField(
+                        controller: _messageController,
+                        maxLines: 5,
+                        decoration: InputDecoration.collapsed(
+                          hintText: 'Describe your issue',
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: const Color(0xffADADAD),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CreateListingCardWidget(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Select Images of the issue',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      GestureDetector(
+                        onTap: pickImages,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 6.h, horizontal: 12.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.r),
+                            color: const Color(0xffEDECEC),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Choose Files',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: const Color(0xff36383C),
+                                ),
+                              ),
+                              SizedBox(width: 7.w),
+                              Text(
+                                "|",
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xffADADAD),
+                                ),
+                              ),
+                              SizedBox(width: 11.w),
+                              Text(
+                                _selectedImages != null &&
+                                        _selectedImages!.isNotEmpty
+                                    ? '${_selectedImages!.length} Files Chosen'
+                                    : 'No Files Chosen',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: _selectedImages != null &&
+                                          _selectedImages!.isNotEmpty
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Display selected images
+                      if (_selectedImages != null &&
+                          _selectedImages!.isNotEmpty)
+                        Container(
+                          height: 100.h,
+                          margin: EdgeInsets.only(top: 10.h),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _selectedImages!.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(right: 8.w),
+                                child: Image.file(
+                                  _selectedImages![index],
+                                  width: 80.w,
+                                  height: 80.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                const Divider(thickness: 2, color: Color(0xffD9D9D9)),
+                SizedBox(height: 20.h),
+                GeneralTextButton(
+                  width: MediaQuery.of(context).size.width,
+                  fgColor: Colors.white,
+                  bgColor: const Color(0xff362677),
+                  title: 'Submit',
+                  onPressed: submitDispute,
+                  // onPressed: () {
+                  //   // Add submission logic here
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (_) => const MyListingScreen()),
+                  //   );
+                  // },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+  void showCustomSnackBar(BuildContext context, String message) {
+  final snackBar = SnackBar(
+    content: Text(
+      message,
+      style: const TextStyle(color: Colors.black), // Text color
+    ),
+    backgroundColor: Colors.white, // SnackBar background color
+    behavior: SnackBarBehavior.floating,
+    action: SnackBarAction(
+      label: 'Close',
+      textColor: const Color(0xff362677), // Button color
+      onPressed: () {
+        // Close the SnackBar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      },
+    ),
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
 }
 
 class ReturnOrderDetails extends StatelessWidget {

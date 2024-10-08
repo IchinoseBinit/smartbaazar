@@ -584,7 +584,6 @@ class TabBarAndTabView extends StatelessWidget {
                                 ),
                               ),
                             );
-                            return null;
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return SizedBox(

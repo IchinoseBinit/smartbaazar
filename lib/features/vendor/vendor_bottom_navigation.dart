@@ -16,7 +16,7 @@ class VendorBottomNavigation extends StatefulWidget {
 }
 
 class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
-  final List _pages = [
+  List _pages = [
     const MySubscribeAndWinPage(),
     // if vendor login show vendor home screen
     const MessageViewScreen(),
@@ -69,7 +69,7 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
                 color: Colors.white,
                 border: Border.all(
                   width: 1.w,
-                  color: const Color(0xfffff8f8f8),
+                  color: const Color(0xffffF8F8F8),
                 ),
               ),
               child: Container(
@@ -114,7 +114,7 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
                     icon: SvgPicture.asset(
                       homeIcon,
                       colorFilter:
-                          const ColorFilter.mode(Color(0xff36383C), BlendMode.srcIn),
+                          const ColorFilter.mode(const Color(0xff36383C), BlendMode.srcIn),
                     ),
                     label: 'Home',
                   ),

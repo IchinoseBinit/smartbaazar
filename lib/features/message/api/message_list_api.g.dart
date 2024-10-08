@@ -6,7 +6,7 @@ part of 'message_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getMessageListHash() => r'f2ced0e2fa86c64507f12ed48f448ebca8472535';
+String _$getMessageListHash() => r'1c0d0ae2c518285548ac5dabb9c817da1ffe14e0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,9 +41,11 @@ class GetMessageListFamily extends Family<AsyncValue<MessageListModel>> {
   /// See also [getMessageList].
   GetMessageListProvider call(
     String threadId,
+    int page,
   ) {
     return GetMessageListProvider(
       threadId,
+      page,
     );
   }
 
@@ -53,6 +55,7 @@ class GetMessageListFamily extends Family<AsyncValue<MessageListModel>> {
   ) {
     return call(
       provider.threadId,
+      provider.page,
     );
   }
 
@@ -77,10 +80,12 @@ class GetMessageListProvider
   /// See also [getMessageList].
   GetMessageListProvider(
     String threadId,
+    int page,
   ) : this._internal(
           (ref) => getMessageList(
             ref as GetMessageListRef,
             threadId,
+            page,
           ),
           from: getMessageListProvider,
           name: r'getMessageListProvider',
@@ -92,6 +97,7 @@ class GetMessageListProvider
           allTransitiveDependencies:
               GetMessageListFamily._allTransitiveDependencies,
           threadId: threadId,
+          page: page,
         );
 
   GetMessageListProvider._internal(
@@ -102,9 +108,11 @@ class GetMessageListProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.threadId,
+    required this.page,
   }) : super.internal();
 
   final String threadId;
+  final int page;
 
   @override
   Override overrideWith(
@@ -120,6 +128,7 @@ class GetMessageListProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         threadId: threadId,
+        page: page,
       ),
     );
   }
@@ -131,13 +140,16 @@ class GetMessageListProvider
 
   @override
   bool operator ==(Object other) {
-    return other is GetMessageListProvider && other.threadId == threadId;
+    return other is GetMessageListProvider &&
+        other.threadId == threadId &&
+        other.page == page;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, threadId.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -146,6 +158,9 @@ class GetMessageListProvider
 mixin GetMessageListRef on AutoDisposeFutureProviderRef<MessageListModel> {
   /// The parameter `threadId` of this provider.
   String get threadId;
+
+  /// The parameter `page` of this provider.
+  int get page;
 }
 
 class _GetMessageListProviderElement
@@ -155,6 +170,8 @@ class _GetMessageListProviderElement
 
   @override
   String get threadId => (origin as GetMessageListProvider).threadId;
+  @override
+  int get page => (origin as GetMessageListProvider).page;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

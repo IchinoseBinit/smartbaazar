@@ -5,7 +5,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -57,7 +56,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 color: Colors.white,
                 border: Border.all(
                   width: 1.w,
-                  color: const Color(0xfffff8f8f8),
+                  color: const Color(0xffffF8F8F8),
                 ),
               ),
               child: Container(

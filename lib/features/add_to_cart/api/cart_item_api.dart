@@ -44,16 +44,28 @@ class CartItemApi {
     final SmartClinet client = SmartClinet();
 
     final response = await client.request(
-      requestType: RequestType.postWithToken,
-      url: ApiConstants.incrementQuantity,
-      parameter: {
-        'id': itemId
-      }
-    );
+        requestType: RequestType.postWithToken,
+        url: ApiConstants.incrementQuantity,
+        parameter: {'id': itemId});
+
+    return response;
+  }
+   static Future<Response> decrementQuantity(String itemId) async {
+    final SmartClinet client = SmartClinet();
+    FormData formData = FormData.fromMap({
+      'id': itemId,
+    });
+
+    final response = await client.request(
+        requestType: RequestType.postWithTokenFormData,
+        url: ApiConstants.decrementQuantity,
+       parameter: formData);
 
     return response;
   }
 }
+
+
 
 // @riverpod
 // Future<void> deleteCartItem(DeleteCartItemRef ref,String cartItemId) async {
