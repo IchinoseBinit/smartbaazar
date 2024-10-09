@@ -58,18 +58,18 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
-                color: Color(
+                color: const Color(
                   0xffAEC5FF,
                 )),
             child: Icon(
               widget.icon,
-              color: Color(0xff362677),
+              color: const Color(0xff362677),
             ),
           ),
         ),
         suffixIcon: widget.suffixIcon,
         hintText: widget.hintText,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: Color(0xffADADAD),
         ),
       ),

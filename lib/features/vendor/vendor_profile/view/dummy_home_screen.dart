@@ -273,10 +273,10 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                         Tab(text: 'Used'),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 1000,
                       child: TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         controller: _tabController,
                         children: [
                           _buildHomeTab(vendorProfile.posts!.data!.length,
@@ -305,7 +305,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Text(
@@ -341,7 +341,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                       ));
                 },
                 child: Container(
-                  margin: EdgeInsets.only(left: 5),
+                  margin: const EdgeInsets.only(left: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -430,7 +430,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                           ),
                           Text(data.visits!),
                           SizedBox(width: 3.w),
-                          Spacer(),
+                          const Spacer(),
                           Text(data.city!),
                           SizedBox(width: 7.w),
                         ],

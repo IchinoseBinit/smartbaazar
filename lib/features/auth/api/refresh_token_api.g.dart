@@ -6,7 +6,7 @@ part of 'refresh_token_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getRefreshTokenHash() => r'946595c10a36718bf72ed5c8e6aed771ecf4a3f4';
+String _$getRefreshTokenHash() => r'6e302d58d55470add1c0e1728008de31f2d4c822';
 
 /// See also [getRefreshToken].
 @ProviderFor(getRefreshToken)

@@ -135,7 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 SizedBox(height: 20.h),
                 isLoading // Show loading indicator
-                    ? CircularProgressIndicator() // Use a loading widget
+                    ? const CircularProgressIndicator() // Use a loading widget
                     : GeneralEelevatedButton(
                         text: 'Log In',
                         onPresssed: () async {
@@ -202,7 +202,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       );
     }
-    return SizedBox.shrink(); // Return an empty widget if no error message
+    return const SizedBox.shrink(); // Return an empty widget if no error message
   }
 
   Widget _buildForgetPasswordLink() {

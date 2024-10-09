@@ -45,55 +45,51 @@ class LoginController extends StateNotifier<GenericState> {
     }
   }
 
-  Future<void> continueSession(BuildContext context) async {
-    final pref = await SharedPreferences.getInstance();
-    final sessionString = pref.getString('session');
-    SmartClinet.token = pref.getString('accessToken') ?? '';
-    SmartClinet.refresh = pref.getString('refreshToken') ?? '';
-    state = LoadingState();
+Future<void> continueSession(BuildContext context) async {
+  final pref = await SharedPreferences.getInstance();
+  final sessionString = pref.getString('session');
+  SmartClinet.token = pref.getString('accessToken') ?? '';
+  SmartClinet.refresh = pref.getString('refreshToken') ?? '';
+  state = LoadingState();
 
-    try {
-      if (sessionString != null) {
-        final session = json.decode(sessionString);
-        String userId = session['result']?['id']?.toString() ?? '';
-        if (userId.isNotEmpty) {
-          state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-          SmartClinet.userId = userId;
-          await pref.setString('userId', userId);
-
-          // Navigate to the bottom navigation screen, replacing the current screen
-          await Navigator.pushReplacement(
+  try {
+    if (sessionString != null) {
+      final session = json.decode(sessionString);
+      String userId = session['result']?['id']?.toString() ?? '';
+      if (userId.isNotEmpty) {
+        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+        SmartClinet.userId = userId;
+        await pref.setString('userId', userId);
+            await Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (_) => const BottomNavigationScreen(),
             ),
           );
-        } else {
-          // If session is invalid, navigate to the login screen
-          await Navigator.pushReplacement(
+      } else {
+                await Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (_) => const LoginScreen(),
             ),
           );
-        }
-      } else {
-        // If no session, navigate to the login screen
-        await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const LoginScreen(),
-          ),
-        );
       }
-    } catch (e) {
-      // On error, navigate to the login screen instead of the bottom navigation screen
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        ),
-      );
+    } else {
+              await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+            ),
+          );
     }
+  } catch (e) {
+           await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+            ),
+          );
   }
+}
+
 }

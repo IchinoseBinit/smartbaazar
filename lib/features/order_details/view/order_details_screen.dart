@@ -338,7 +338,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
                   const Text('Acer Aspire 5 A515-56-32Dk')
                 ],
@@ -354,7 +354,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
                   const Text('1')
                 ],
@@ -370,7 +370,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
                   const Text('Rs 60,000')
                 ],
@@ -386,7 +386,7 @@ class OrderSummaryWidget extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xfff36383C)),
+                        color: const Color(0xfff36383c)),
                   ),
                   const Text('Rs 60,000')
                 ],

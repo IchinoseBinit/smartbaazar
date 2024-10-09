@@ -58,7 +58,9 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   fillColor: const Color(0xffF3F3F3),
                   icon: Icons.person,
                   hintText: "Bnnk Name",
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.2.h,
@@ -68,7 +70,9 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   fillColor: const Color(0xffF3F3F3),
                   icon: Icons.call,
                   hintText: "Bank Branch",
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.2.h,
@@ -78,7 +82,9 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   fillColor: const Color(0xffF3F3F3),
                   icon: Icons.mail,
                   hintText: "Account Holder Name",
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.2.h,
@@ -88,7 +94,9 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   fillColor: const Color(0xffF3F3F3),
                   icon: Icons.person_outline,
                   hintText: "User Name",
-                  validator: (_) {},
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10.h,

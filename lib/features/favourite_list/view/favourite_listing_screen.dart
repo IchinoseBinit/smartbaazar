@@ -129,7 +129,7 @@ class FavouriteListProductDetails extends ConsumerStatefulWidget {
 class _FavouriteListProductDetailsState
     extends ConsumerState<FavouriteListProductDetails> {
   bool _isChecked = false;
-  bool _isClicked = false;
+  final bool _isClicked = false;
 
   // @override
   // void initState() {

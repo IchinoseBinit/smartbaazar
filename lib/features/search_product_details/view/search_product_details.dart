@@ -13,7 +13,7 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 class SearchScreen extends ConsumerStatefulWidget {
   final String query;
 
-  SearchScreen({Key? key, required this.query}) : super(key: key);
+  const SearchScreen({Key? key, required this.query}) : super(key: key);
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
@@ -89,11 +89,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   });
                 },
                 padding: EdgeInsets.zero,
-                tabs: [
+                tabs: const [
                   Tab(text: "All Listing"),
-                  const Tab(text: "Brand New"),
-                  const Tab(text: "Used"),
-                  const Tab(text: "Services"),
+                  Tab(text: "Brand New"),
+                  Tab(text: "Used"),
+                  Tab(text: "Services"),
                 ],
               ),
               Expanded(
@@ -135,7 +135,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
 Widget buildGridView(SearchDetails data) {
   return GridView.builder(
-    padding: EdgeInsets.only(left: 10),
+    padding: const EdgeInsets.only(left: 10),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
       crossAxisSpacing: 19.0,
@@ -153,8 +153,8 @@ Widget buildGridView(SearchDetails data) {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.only(top: 2),
-          padding: EdgeInsets.all(2),
+          margin: const EdgeInsets.only(top: 2),
+          padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
@@ -231,7 +231,7 @@ Widget buildGridView(SearchDetails data) {
                     color: Color(0xff888888),
                   ),
                   Text("${post.visits!}K Views"),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     (post.pickup != null && post.pickup!.isNotEmpty)
                         ? post.pickup!
@@ -241,11 +241,11 @@ Widget buildGridView(SearchDetails data) {
                             .toList() // Convert to a list
                             .reversed // Reverse the list to get the second last item easily
                             .elementAt(1) // Get the second item
-                        : "Kathmandu, Nepal", // Fallback if pickup is null or empty
+                        : "Kathmandu", // Fallback if pickup is null or empty
                     overflow: TextOverflow.ellipsis, // Prevent overflow
                    
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 2.5,
                   )
                 ],

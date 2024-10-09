@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
 import 'package:smartbazar/features/splash_screen/splash_api.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +15,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
       () {
         final loginProvider = ref.watch(loginController.notifier);
         loginProvider.continueSession(context);
