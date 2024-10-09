@@ -36,7 +36,7 @@ class ApiService {
         throw Exception('Failed to add to cart');
       }
     } catch (e) {
-      if (e is DioError) {
+      if (e is DioException) {
         print('Error adding to cart: ${e.message}');
         if (e.response != null) {
           print('Response data: ${e.response?.data}');

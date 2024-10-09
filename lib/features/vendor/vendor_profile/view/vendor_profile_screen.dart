@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
@@ -23,6 +24,7 @@ import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendorProfileScreen extends StatefulWidget {
@@ -37,6 +39,20 @@ class VendorProfileScreen extends StatefulWidget {
 }
 
 class _VendorProfileScreenState extends State<VendorProfileScreen> {
+  String? vendorName;
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName(); // Load user name from SharedPreferences
+  }
+
+  Future<void> _loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      vendorName = prefs.getString('userName');
+    });
+  }
+
   final List<Map<String, dynamic>> profileList = [
     {"icon": Icons.mail, "title": '1', "subtitle": 'mail'},
     {"icon": Icons.visibility, "title": '55', "subtitle": 'visits'},
@@ -200,25 +216,33 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           title: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                height: 40.h,
-                width: 40.h,
-                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                decoration: BoxDecoration(
-                    color: const Color(0xffF5BF05),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      width: 1.w,
-                    )),
-                child: Image.asset(
-                  ImageConstant.personImage,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const VendroDetailsScreen()));
+                },
+                child: Container(
+                  height: 40.h,
+                  width: 40.h,
+                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffF5BF05),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 1.w,
+                      )),
+                  child: Image.asset(
+                    ImageConstant.personImage,
+                  ),
                 ),
               ),
               SizedBox(
                 width: 10.h,
               ),
               Text(
-                'Vendor Name',
+                '$vendorName',
                 style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,

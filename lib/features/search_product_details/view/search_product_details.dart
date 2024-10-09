@@ -198,7 +198,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       Text("${post.visits!}K Views"),
                                       Spacer(),
                                       Text(post.pickup ?? "kathmandu"),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 1,
                                       )
                                     ],

@@ -11,6 +11,7 @@ class SmartClinet {
   static String token = '';
   static String refresh = '';
   static String userId = '';
+  static String userName = '';
   static final SmartClinet _instance = SmartClinet._internal();
 
   factory SmartClinet() {
@@ -197,7 +198,7 @@ class SmartClinet {
         );
       case RequestType.putWithTokenFormData:
         return _client
-            .post(
+            .put(
               url,
               data: parameter,
               options: Options(

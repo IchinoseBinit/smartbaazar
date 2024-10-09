@@ -41,6 +41,11 @@ class ApiConstants {
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
   static String getVendorProfileDataByID = '$baseUrl/users/vendor';
+  static String postVendorProfileBgAndDescUrl = '$baseUrl/users/desc_store';
+  static String getUserDataUrl = '$baseUrl/users/get_user_data';
+  static String postUserBankDetailsUrl = '$baseUrl/users/bankdetails';
+  static String updateUserDetailsUrl = '$baseUrl/users';
+
   //subscribe and win everyday
   static String getSubscribeAndWinUrl = '$baseUrl/users/scwn';
   static String getMySubscriptionUrl = '$baseUrl/subscription';

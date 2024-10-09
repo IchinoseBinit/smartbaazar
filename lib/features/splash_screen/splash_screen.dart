@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
 import 'package:smartbazar/features/splash_screen/splash_api.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -32,8 +30,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     final splashApiResponse = ref.watch(getSplashApiProvider);
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [

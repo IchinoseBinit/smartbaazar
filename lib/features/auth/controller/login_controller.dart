@@ -47,11 +47,14 @@ class LoginController extends StateNotifier<GenericState> {
     try {
       if (sessionString != null) {
         final session = json.decode(sessionString);
+        String userName = session['result']?['name']?.toString() ?? '';
         String userId = session['result']?['id']?.toString() ?? '';
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
         SmartClinet.userId = userId;
+        SmartClinet.userName = userName;
         await pref.setString('userId', userId);
-print("................................................$userId");
+        await pref.setString('userName', userName);
+        print("................................................$userId , $userName");
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(

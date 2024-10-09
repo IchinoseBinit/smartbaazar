@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
@@ -11,8 +14,28 @@ import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.d
 import 'package:smartbazar/features/vendor_details/widgets/photo_avatar_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class VendroDetailsScreen extends StatelessWidget {
+class VendroDetailsScreen extends ConsumerStatefulWidget {
   const VendroDetailsScreen({super.key});
+
+  @override
+  ConsumerState<VendroDetailsScreen> createState() =>
+      _VendroDetailsScreenState();
+}
+
+class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
+  String? vendorName;
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName(); // Load user name from SharedPreferences
+  }
+
+  Future<void> _loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      vendorName = prefs.getString('userName');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +59,7 @@ class VendroDetailsScreen extends StatelessWidget {
                       width: 15.w,
                     ),
                     Text(
-                      'Vendor Name',
+                      '$vendorName',
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
@@ -44,15 +67,23 @@ class VendroDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.all(9),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(width: 2, color: Colors.black)),
-                      child: SvgPicture.asset(
-                        openCart,
-                        colorFilter: const ColorFilter.mode(
-                            Color(0xff362677), BlendMode.srcIn),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const AddToCartScreen()));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(width: 2, color: Colors.black)),
+                        child: SvgPicture.asset(
+                          openCart,
+                          colorFilter: const ColorFilter.mode(
+                              Color(0xff362677), BlendMode.srcIn),
+                        ),
                       ),
                     ),
                   ],
