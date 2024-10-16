@@ -9,7 +9,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_model.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';

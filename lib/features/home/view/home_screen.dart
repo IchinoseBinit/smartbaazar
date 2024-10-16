@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
@@ -64,6 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
     final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
@@ -343,8 +345,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         );
                       },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
                       error: (error, stack) =>
                           const Center(child: CircularProgressIndicator()),
                     ),

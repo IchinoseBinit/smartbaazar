@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
+import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/search_product_details/api/search_detail_api.dart';
 import 'package:smartbazar/features/search_product_details/model/search_details.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -29,8 +32,8 @@ List<String> items = [
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
+
   late String _query;
-  int _selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -42,6 +45,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedTabIndex = 0;
+
     return GenericSafeArea(
       child: DefaultTabController(
         length: 4,
@@ -113,24 +118,55 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget buildTabContent(String category) {
-    // Use ref.watch to get search results based on category
-    final searchResults = ref.watch(GetSearchDetailsProvider(
-      _query,
-      category: category,
-    ));
+Widget buildTabContent(String category) {
+  final adsList = ref.watch(getAdsProvider);
 
-    return searchResults.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
-      data: (SearchDetails data) {
-        if (data.posts.isEmpty) {
-          return const Center(child: Text('No results found.'));
-        }
-        return buildGridView(data);
-      },
-    );
-  }
+  // Use ref.watch to get search results based on category
+  final searchResults = ref.watch(GetSearchDetailsProvider(
+    _query,
+    category: category,
+  ));
+
+  return searchResults.when(
+    loading: () {
+      // Check if ads are loading and display loading indicator
+      if (adsList.isLoading) {
+        return const Center(child: CircularProgressIndicator());
+      } 
+      // Check for errors when loading ads
+      else if (adsList.hasError) {
+        print("Error loading ads: ${adsList.error}");
+        return Center(child: Text('Error loading ads: ${adsList.error}'));
+      } 
+      // Show ad if available and non-null
+      else if (adsList.value != null && adsList.value!.isNotEmpty) {
+        final ad = adsList.value!.first; // Get the first ad
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Safely display the ad image
+            Image.network(
+              ad.image ?? '', // Default to empty string if null
+              errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+            ),
+            // Display ad ID safely
+          ],
+        );
+      }
+      return const Center(child: Text('No ads available.'));
+    },
+    // Handle errors in the search results
+    error: (err, stack) => Center(child: Text('Error: $err')),
+    data: (SearchDetails data) {
+      if (data.posts.isEmpty) {
+        return const Center(child: Text('No results found.'));
+      }
+      // Display search results in a grid
+      return buildGridView(data);
+    },
+  );
+}
+
 }
 
 Widget buildGridView(SearchDetails data) {
@@ -243,7 +279,6 @@ Widget buildGridView(SearchDetails data) {
                             .elementAt(1) // Get the second item
                         : "Kathmandu", // Fallback if pickup is null or empty
                     overflow: TextOverflow.ellipsis, // Prevent overflow
-                   
                   ),
                   const SizedBox(
                     width: 2.5,
