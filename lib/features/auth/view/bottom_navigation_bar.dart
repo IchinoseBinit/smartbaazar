@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
@@ -17,6 +18,7 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _selectedTab = 0;
+  int? _userid;
 
   final List _pages = [
     const HomeScreen(),
@@ -38,6 +40,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       _selectedTab = index;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -7,6 +7,7 @@ class ApiConstants {
   static String loginUrl = "$baseUrl/auth/login";
   static String refreshTokenUrl = "$baseUrl/auth/refresh-token";
   static String logoUrl = '$baseUrl/app_logo_loader';
+  static String logoutUrl = '$baseUrl/auth/logout/';
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -16,8 +17,7 @@ class ApiConstants {
   static String homeSlider2BannerUrl = '$baseUrl/homeSections/home2';
   static String homeScreenSearchBar = '$baseUrl/homeSections/search_suggest/';
   static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
-    static String getAdsUrl = '$baseUrl/homeSections/loadads';
-
+  static String getAdsUrl = '$baseUrl/homeSections/loadads';
 
   static String reportComplainUrl = '$baseUrl/posts';
   //cart item

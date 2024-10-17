@@ -22,6 +22,11 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+    TextEditingController namecontroller=TextEditingController();
+        TextEditingController contactnamecontroller=TextEditingController();
+    TextEditingController rupeecontroller=TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     
@@ -69,6 +74,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 height: 15.h,
               ),
               CustomTextFieldWidget(
+                controller: namecontroller,
                 icon: Icons.person,
                 hintText: 'Name',
                 fill: true,
@@ -81,6 +87,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 height: 8.h,
               ),
               CustomTextFieldWidget(
+                controller: contactnamecontroller,
                 icon: Icons.call,
                 hintText: 'Contact Number',
                 fill: true,
@@ -93,6 +100,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 height: 8.h,
               ),
               CustomTextFieldWidget(
+                controller: rupeecontroller,
                 icon: Icons.money,
                 hintText: 'Rs 60,000',
                 readOnly: true,
@@ -290,10 +298,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 bgColor: const Color(0xff362677),
                 fgColor: Colors.white,
                 title: 'Place Order',
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const ProceesToPayScreen())),
+                onPressed: () {
+                  // => Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (_) => const ProceesToPayScreen())),
+                }
               ),
               SizedBox(
                 height: 20.h,
