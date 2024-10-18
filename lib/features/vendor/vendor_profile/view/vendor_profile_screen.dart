@@ -624,7 +624,7 @@ class MyAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _logout(BuildContext context) async {
+    Future<void> logout(BuildContext context) async {
       final prefs = await SharedPreferences.getInstance();
       final String? userId = prefs.getString("userId");
 
@@ -636,7 +636,7 @@ class MyAccountWidget extends StatelessWidget {
       } else {
         // Handle case where userId is not found in SharedPreferences
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Logged out succesfully !')),
+          const SnackBar(content: Text('Logged out succesfully !')),
         );
       }
     }
@@ -656,7 +656,7 @@ class MyAccountWidget extends StatelessWidget {
               InkWell(
                 onTap: () async {
                   if (accountData[index]['title'] == 'Log Out') {
-                    _logout(context);
+                    logout(context);
                     SharedPreferences preferences =
                         await SharedPreferences.getInstance();
                     await preferences.clear();
@@ -664,7 +664,7 @@ class MyAccountWidget extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => const LoginScreen(),
                         ));
                   }
                 },

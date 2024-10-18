@@ -5,7 +5,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
@@ -75,6 +74,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
+          onsubmit: (p0) {
+            
+          },
           scaffoldKey: _key,
           searchController: _searchController,
           onCartTap: () {
@@ -318,7 +320,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SearchScreen(
-                                          query: product.title,
+                                          query:_searchController.text,
                                         ),
                                       ));
 

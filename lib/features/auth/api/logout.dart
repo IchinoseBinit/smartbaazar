@@ -38,7 +38,7 @@ class LogoutApi {
         print('SharedPreferences cleared and tokens reset.');
 
         // Navigate to the login screen after successful logout
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),)
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen(),)
         );
       } else {
         print('Failed to logout: ${response.statusMessage}');

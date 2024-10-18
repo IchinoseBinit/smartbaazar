@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,21 +8,20 @@ import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
-import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
-import 'package:smartbazar/features/message/view/alert_screen.dart';
-import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
 import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -51,7 +49,8 @@ class ProductDetailScreen extends ConsumerWidget {
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
         child: Scaffold(
-      backgroundColor: const Color(0xffF6F1F1),
+      // backgroundColor: const Color(0xffF6F1F1),
+
       body: productDetailsAsyncValue.when(
         data: (data) {
           for (int i = 0; i < data.pictures!.length; i++) {
@@ -60,594 +59,576 @@ class ProductDetailScreen extends ConsumerWidget {
           }
           // print("ramk ${data.title.split('/')[0]}");
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Icon(Icons.arrow_back_ios)),
-                          favouriteListAsyncValue.when(
-                              loading: () => const CircularProgressIndicator(),
-                              error: (error, stackTrace) =>
-                                  const CircularProgressIndicator(),
-                              data: (favouritelist) {
-                                final isFavorite = favouritelist
-                                    .data!.savedProducts!.data
-                                    ?.any((item) => item.id == productId);
-                                return Container(
-                                    padding: EdgeInsets.all(12.h),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: isFavorite!
-                                            ? Colors.yellow
-                                            : const Color(0xffFFFFFF)),
-                                    child: SvgPicture.asset(invoiceIcon));
-                              }),
-                        ]),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    Column(
-                      children: [
-                        CarouselSlider(
-                          options: CarouselOptions(
-                              height: 220.0,
-                              viewportFraction: 1.5,
-                              initialPage: 0,
-                              scrollDirection: Axis.horizontal,
-                              // autoPlay: true,
-                              onPageChanged: (index, _) {
-                                ref.read(currentIndexProvider.state).state =
-                                    index;
-
-                                // setState(() {
-                                //   currentIndex = index;
-                                // });
-                              }),
-                          items: itemsList
-                              .map(
-                                (item) => itemsList.isEmpty
-                                    ? const SizedBox()
-                                    : SizedBox(
-                                        height: 200,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Image.network(item),
-                                      ),
-                              )
-                              .toList(),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        //           Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: List.generate(itemsList.length, (index) {
-                        //     return Container(
-                        //       height: 10,
-                        //       width: 10,
-                        //       margin: const EdgeInsets.symmetric(horizontal: 3),
-                        //       decoration: BoxDecoration(
-                        //         color: currentIndex == index ? Colors.grey : Colors.white,
-                        //         shape: BoxShape.circle,
-                        //       ),
-                        //     );
-                        //   }),
-                        // ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                  ],
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Icon(Icons.arrow_back_ios)),
+                            favouriteListAsyncValue.when(
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                                error: (error, stackTrace) =>
+                                    const CircularProgressIndicator(),
+                                data: (favouritelist) {
+                                  final isFavorite = favouritelist
+                                      .data!.savedProducts!.data
+                                      ?.any((item) => item.id == productId);
+                                  return Container(
+                                      padding: EdgeInsets.all(12.h),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isFavorite!
+                                              ? Colors.yellow
+                                              : const Color(0xffFFFFFF)),
+                                      child: SvgPicture.asset(invoiceIcon));
+                                }),
+                          ]),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Column(
+                        children: [CarsoselWidget(items: itemsList)],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30.r),
-                              topRight: Radius.circular(30.r)),
-                          color: Colors.white),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 30.h, left: 30.w, right: 17.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data.title!,
+                Container(
+                    height: 1780.h,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.r),
+                            topRight: Radius.circular(30.r)),
+                        color: Colors.white),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.h, left: 30.w, right: 17.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                  text: data.title!,
                                   style: TextStyle(
-                                      fontSize: 20.sp,
+                                      color: Colors.black,
+                                      fontSize: 19.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 12.w,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(4.h),
+                                WidgetSpan(
+                                    child: Container(
+                                  margin: EdgeInsets.only(left: 10.h),
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xffD9D9D9),
+                                      borderRadius: BorderRadius.circular(4.r)),
+                                  child: Text(
+                                    'Brand New',
+                                    style: TextStyle(
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xff000000)),
+                                  ),
+                                ))
+                              ])),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "NPR ${data.price}",
+                                    style: TextStyle(fontSize: 16.sp),
+                                  ),
+                                  const Spacer(),
+                                  InkWell(
+                                    onTap: () async {
+                                      print("id is ${data.id}");
+                                      // await  _apiService
+                                      //     .addToCart(data.);
+                                      ApiService()
+                                          .addToCart(data.id!.toString());
+                                      CustomDialougeBox().addToCart(context);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                          left: 13.w,
+                                          right: 15.w,
+                                          top: 4.h,
+                                          bottom: 7.h),
                                       decoration: BoxDecoration(
-                                          color: const Color(0xffD9D9D9),
                                           borderRadius:
-                                              BorderRadius.circular(4.r)),
+                                              BorderRadius.circular(30.r),
+                                          color: const Color(0xff362677)),
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            size: 15.h,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            'Add to cart',
+                                            style: TextStyle(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      CustomDialougeBox().alertMessage(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const OrderDetailsScreen(
+                                                      selectedProductIds: [],
+                                                      selectedVendorIds: [])));
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.all(12),
+                                      // padding: EdgeInsets.only(
+                                      //     left: 19.w,
+                                      //     right: 19.w,
+                                      //     top: 20.h,
+                                      //     bottom: 10.h),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
+                                          color: const Color(0xff362677)),
                                       child: Text(
-                                        'Brand New',
+                                        'Buy Now',
                                         style: TextStyle(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff000000)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "NPR ${data.price}",
-                                      style: TextStyle(fontSize: 16.sp),
-                                    ),
-                                    const Spacer(),
-                                    InkWell(
-                                      onTap: () async {
-                                        print("id is ${data.id}");
-                                        // await  _apiService
-                                        //     .addToCart(data.);
-                                        ApiService()
-                                            .addToCart(data.id!.toString());
-                                        CustomDialougeBox().addToCart(context);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 13.w,
-                                            right: 15.w,
-                                            top: 4.h,
-                                            bottom: 7.h),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30.r),
-                                            color: const Color(0xff362677)),
-                                        child: Column(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              size: 15.h,
-                                              color: Colors.white,
-                                            ),
-                                            Text(
-                                              'Add to cart',
-                                              style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.white),
-                                            )
-                                          ],
-                                        ),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        CustomDialougeBox()
-                                            .alertMessage(context);
-                                            Navigator.push(context,MaterialPageRoute(builder: (context) => OrderDetailsScreen(selectedProductIds: [], selectedVendorIds:[])));
-                                    
-                                      },
-                                      child: Container(
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        data.discounted_price ?? '',
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Container(
                                         padding: EdgeInsets.only(
-                                            left: 14.w,
-                                            right: 14.w,
-                                            top: 13.h,
-                                            bottom: 9.h),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30.r),
-                                            color: const Color(0xff362677)),
+                                            left: 11.w,
+                                            top: 2.h,
+                                            bottom: 2.w,
+                                            right: 20),
+                                        color: const Color(0xff362677),
                                         child: Text(
-                                          'Buy Now',
-                                          style: TextStyle(
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.w700,
+                                          data.discounted_price ?? '-40% off',
+                                          style: const TextStyle(
                                               color: Colors.white),
                                         ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Text(
+                                data.pickup == null ? "" : data.pickup!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                width: 10.h,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RatingBar.builder(
+                                    initialRating: 4,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemSize: 25,
+                                    itemPadding: const EdgeInsets.symmetric(
+                                        horizontal: 1.0),
+                                    itemBuilder: (context, _) => const Icon(
+                                        Icons.star,
+                                        color: Color(0xfff781740)),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 2.w,
+                                  ),
+                                  Text(
+                                    "(4)",
+                                    style: TextStyle(
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff888888)),
+                                  )
+                                ],
+                              ),
+                              Wrap(
+                                children: [
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SizedBox(
+                                        width: 30.w,
                                       ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          data.discounted_price ?? '',
-                                          style: const TextStyle(
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              left: 11.w,
-                                              top: 2.h,
-                                              bottom: 2.w,
-                                              right: 20),
-                                          color: const Color(0xff362677),
-                                          child: Text(
-                                            data.discounted_price ?? '-40% off',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      data.pickup == null ? "" : data.pickup!,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        RatingBar.builder(
-                                          initialRating: 4,
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 5,
-                                          itemSize: 12,
-                                          itemPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 1.0),
-                                          itemBuilder: (context, _) =>
-                                              const Icon(Icons.star,
-                                                  color: Color(0xfff781740)),
-                                          onRatingUpdate: (rating) {
-                                            print(rating);
-                                          },
-                                        ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Text(
-                                          "(4)",
-                                          style: TextStyle(
-                                              fontSize: 9.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: const Color(0xff888888)),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SizedBox(
-                                          width: 30.w,
-                                        ),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  final firstPicture =
-                                                      data.pictures!.isNotEmpty
-                                                          ? data.pictures!.first
-                                                          : null;
-                                                  final pictureUrl =
-                                                      firstPicture?.getUrl() ??
-                                                          '';
-                                                  Share.share(
-                                                    'Check out this product: ${data.title}\n\nPrice: NPR ${data.price}\n\n$pictureUrl',
-                                                    subject:
-                                                        'Check out this product on OurApp',
-                                                  );
-                                                },
-                                                icon: const Icon(Icons.share)),
-                                            Text(
-                                              'Share',
-                                              style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  color:
-                                                      const Color(0xff000000)),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 30.w,
-                                        ),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                try {
-                                                  // Call the API to add the product to favorites
-                                                  await ref.read(
-                                                      addToFavoritesProvider(
-                                                              data.user_id!,
-                                                              productId)
-                                                          .future);
-                                                  // Show a Snackbar indicating success
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                          'Product added to your favorites!'),
-                                                      duration:
-                                                          Duration(seconds: 2),
-                                                    ),
-                                                  );
-                                                } catch (e) {
-                                                  // Handle any errors
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text(
-                                                          'Failed to add product to favorites.'),
-                                                      duration:
-                                                          Duration(seconds: 2),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                              icon: const Icon(Icons
-                                                  .bookmark_border_outlined),
-                                            ),
-                                            Text(
-                                              'Save',
-                                              style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  color:
-                                                      const Color(0xff000000)),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 30.w,
-                                        ),
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              icon: const Icon(Icons.report),
+                                      Column(
+                                        children: [
+                                          IconButton(
                                               onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ReportComplainScreen(
-                                                              productId:
-                                                                  productId,
-                                                              productName:
-                                                                  data.title!,
-                                                            )));
+                                                final firstPicture =
+                                                    data.pictures!.isNotEmpty
+                                                        ? data.pictures!.first
+                                                        : null;
+                                                final pictureUrl =
+                                                    firstPicture?.getUrl() ??
+                                                        '';
+                                                Share.share(
+                                                  'Check out this product: ${data.title}\n\nPrice: NPR ${data.price}\n\n$pictureUrl',
+                                                  subject:
+                                                      'Check out this product on OurApp',
+                                                );
                                               },
-                                            ),
-                                            Text(
-                                              'Complain',
-                                              style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  color:
-                                                      const Color(0xff000000)),
-                                            ),
-                                          ],
+                                              icon: const Icon(Icons.share)),
+                                          Text(
+                                            'Share',
+                                            style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: const Color(0xff000000)),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 30.w,
+                                      ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () async {
+                                              try {
+                                                // Call the API to add the product to favorites
+                                                await ref.read(
+                                                    addToFavoritesProvider(
+                                                            data.user_id!,
+                                                            productId)
+                                                        .future);
+                                                // Show a Snackbar indicating success
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        'Product added to your favorites!'),
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              } catch (e) {
+                                                // Handle any errors
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        'Failed to add product to favorites.'),
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            icon: const Icon(
+                                                Icons.bookmark_border_outlined),
+                                          ),
+                                          Text(
+                                            'Save',
+                                            style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: const Color(0xff000000)),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 30.w,
+                                      ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.report),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ReportComplainScreen(
+                                                            productId:
+                                                                productId,
+                                                            productName:
+                                                                data.title!,
+                                                          )));
+                                            },
+                                          ),
+                                          Text(
+                                            'Complain',
+                                            style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: const Color(0xff000000)),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 10.h),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.visibility,
+                                    color: Color(0xff888888),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    '${data.visits}K Views',
+                                    style: TextStyle(
+                                        color: const Color(0xff888888),
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  const Icon(
+                                    Icons.location_on_outlined,
+                                    color: Color(0xff888888),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    data.pickup == null
+                                        ? ""
+                                        : data.pickup!.split(',')[2],
+                                    style: TextStyle(
+                                        color: const Color(0xff888888),
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Container()
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(contactSellerIcon),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Text(
+                                    'Contact Seller',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xff000000)),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(phoneIcon),
+                                  SizedBox(
+                                    width: 15.w,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      final Uri url =
+                                          Uri(scheme: 'tel', path: data.phone);
+                                      if (await canLaunchUrl(url)) {
+                                        await launchUrl(url);
+                                      } else {
+                                        print("cannot launch this url");
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          width: 15.w,
+                                        ),
+                                        Text(
+                                          'Call',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff000000)),
                                         ),
                                       ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 10.h),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.visibility,
-                                      color: Color(0xff888888),
                                     ),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Text(
-                                      '${data.visits}K Views',
-                                      style: TextStyle(
-                                          color: const Color(0xff888888),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    const Icon(
-                                      Icons.location_on_outlined,
-                                      color: Color(0xff888888),
-                                    ),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Text(
-                                      data.pickup == null
-                                          ? ""
-                                          : data.pickup!.split(',')[2],
-                                      style: TextStyle(
-                                          color: const Color(0xff888888),
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    Container()
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(contactSellerIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Contact Seller',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w700,
-                                          color: const Color(0xff000000)),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(phoneIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Call',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff000000)),
-                                    ),
-                                    const Spacer(),
-                                    SvgPicture.asset(messagesIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
+                                  ),
+                                  const Spacer(),
+                                  SvgPicture.asset(messagesIcon),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      final Uri smsUri = Uri(
+                                        scheme: 'sms',
+                                        path: data.phone,
+                                      );
+
+                                      if (await canLaunchUrl(smsUri)) {
+                                        await launchUrl(smsUri);
+                                      } else {
+                                        throw 'Could not launch SMS';
+                                      }
+                                    },
+                                    child: Text(
                                       'Message',
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w400,
                                           color: const Color(0xff000000)),
                                     ),
-                                    const Spacer(),
-                                    SvgPicture.asset(whatsAppIcon),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Text(
-                                      'Whatsapp',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff000000)),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  const Spacer(),
+                                  SvgPicture.asset(whatsAppIcon),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Text(
+                                    'Whatsapp',
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff000000)),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
                           ),
-                          TabBarItems(
-                            weight: data.weight ?? "N/A",
-                            stock: data.stock == null ? "" : data.stock!,
-                            description: data.description!,
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          GeneralTextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DummyVendorHomeScreen(
-                                              vendorName: data.user!.name!,
-                                            )));
-                              },
-                              marginH: 1,
-                              width: MediaQuery.of(context).size.width,
-                              prefixImage: ImageConstant.visitStore,
-                              bgColor: const Color(0xff362677),
-                              fgColor: Colors.white,
-                              isSmallText: true,
-                              title: 'Visit Store'),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          const ScratchWinContainer(),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          ProductAdditionalDetialsWidget(
-                              inbox: data.category == null
-                                  ? ""
-                                  : data.category?.name ?? 'N/A',
-                              brandname: data.title!.split('/')[0]),
-                          ProductAvilableColorsWidget(
-                            color: data.colorOptions == null
-                                ? []
-                                : data.colorOptions ??
-                                    [const ColorOption(id: 2, value: "Black")],
-                          ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          ProductTagListWidget(
-                            tags: data.tags!,
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          const BuyNowProdcutMinuteWidget(),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          data.widgetSimilarPosts == null
-                              ? const SizedBox()
-                              : SimilarListingProduct(
-                                  items: data.widgetSimilarPosts!,
-                                ),
-                        ],
-                      )),
-                ),
-              )
-            ],
+                        ),
+                        TabBarItems(
+                          weight: data.weight ?? "N/A",
+                          stock: data.stock == null ? "" : data.stock!,
+                          description: data.description!,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        GeneralTextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DummyVendorHomeScreen(
+                                            vendorName: data.user!.name!,
+                                          )));
+                            },
+                            marginH: 1,
+                            width: MediaQuery.of(context).size.width,
+                            prefixImage: ImageConstant.visitStore,
+                            bgColor: const Color(0xff362677),
+                            fgColor: Colors.white,
+                            isSmallText: true,
+                            title: 'Visit Store'),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        const ScratchWinContainer(),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        ProductAdditionalDetialsWidget(
+                            inbox: data.category == null
+                                ? ""
+                                : data.category?.name ?? 'N/A',
+                            brandname: data.title!.split('/')[0]),
+                        ProductAvilableColorsWidget(
+                          color: data.colorOptions == null
+                              ? []
+                              : data.colorOptions ??
+                                  [const ColorOption(id: 2, value: "Black")],
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        ProductTagListWidget(
+                          tags: data.tags!,
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        const BuyNowProdcutMinuteWidget(),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        data.widgetSimilarPosts == null
+                            ? const SizedBox()
+                            : SimilarListingProduct(
+                                items: data.widgetSimilarPosts!,
+                              ),
+                      ],
+                    ))
+              ],
+            ),
           );
         },
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
@@ -655,7 +636,7 @@ class ProductDetailScreen extends ConsumerWidget {
           return SimpleDialog(
             children: [
               adsList.isLoading
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Image.network(adsList.value!.first.image!)
             ],
           );

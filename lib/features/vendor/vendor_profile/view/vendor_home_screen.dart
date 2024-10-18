@@ -72,6 +72,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
+          onsubmit: (p0) {
+            
+          },
           scaffoldKey: _key,
           searchController: _searchController,
           onCartTap: () {

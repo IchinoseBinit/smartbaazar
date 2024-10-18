@@ -33,14 +33,14 @@ class ProductCard extends StatelessWidget {
           children: [
             Skeleton.replace(
               width: productCardWidth,
-              height: 100.h,
+              height: 110.h,
               child: Container(
                 width: productCardWidth,
                 height: 100.h,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(product.image),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
