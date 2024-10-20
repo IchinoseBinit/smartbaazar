@@ -1,3 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,32 +10,52 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
+import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class VendorHomeScreen extends ConsumerStatefulWidget {
+class DummyVendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
-
-  const VendorHomeScreen({super.key, required this.vendorName});
+  const DummyVendorHomeScreen({super.key, required this.vendorName});
 
   @override
-  ConsumerState<VendorHomeScreen> createState() => _VendorHomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DummyVendorHomeScreenState();
 }
 
-class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
+class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
     with SingleTickerProviderStateMixin {
-   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
   bool _showSearchResults = false;
   late TabController _tabController;
+  int _postType = 0; // Default to 'Home' tab with postType 0
 
   @override
   void initState() {
     super.initState();
+
+    _tabController = TabController(length: 3, vsync: this);
+
+    // Listen for tab changes
+    _tabController.addListener(() {
+      setState(() {
+        _postType = _tabController
+            .index; // Update the postType based on the selected tab
+        ref.refresh(getVendorProfileDataProvider(
+          widget.vendorName.replaceAll(" ", ''),
+          postType: _postType,
+        ));
+      });
+    });
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -45,16 +68,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         _showSearchResults = query.isNotEmpty;
       });
     });
-        _tabController = TabController(length: 3, vsync: this);
-
-  }
-
- @override
-  void dispose() {
-    _debouncer.close();
-    _searchController.dispose();
-    _tabController.dispose();
-    super.dispose();
   }
 
   void _onSearchFocusChanged(bool hasFocus) {
@@ -64,16 +77,39 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   }
 
   @override
+  void dispose() {
+    _debouncer.close();
+    _searchController.dispose();
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GenericSafeArea(
-      color: Colors.white,
+    final adsList = ref.watch(getAdsProvider);
+
+    final searchResults = ref.watch(searchProvider(_searchController.text));
+
+    final vendorProfileModelDataAsyncValue = ref.watch(
+        getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
+    // print(
+    //     "bibash is ${vendorProfileModelDataAsyncValue.value!.advertisements![0].image}");
+    return SafeArea(
       child: Scaffold(
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
-          onsubmit: (p0) {
-            
+          onsubmit: (value) {
+            if (_showSearchResults) {
+              setState(() {
+                _showSearchResults = false;
+                FocusScope.of(context).unfocus();
+              });
+            }
+            // setState(() {
+            //      ref.watch(GetSearchDetailsProvider(value));
+            // });
           },
           scaffoldKey: _key,
           searchController: _searchController,
@@ -91,708 +127,461 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            if (_showSearchResults) {
-              setState(() {
-                _showSearchResults = false;
-                FocusScope.of(context).unfocus();
-              });
-            }
+            // if (_showSearchResults) {
+            //   setState(() {
+            //     _showSearchResults = false;
+            //     FocusScope.of(context).unfocus();
+            //   });
+            // }
           },
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(ImageConstant.cardImage),
-                          SizedBox(height: 2.h),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            // Add SingleChildScrollView here
+            child: Column(
+              children: [
+                if (_showSearchResults)
+                  Positioned(
+                    top: 0.h, // Position just below the search bar
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.white,
+                      child: searchResults.when(
+                        data: (results) {
+                          if (results.isEmpty) {
+                            return const SizedBox(
+                              child: Text('No result found'),
+                            ); // No results
+                          }
+                          return Card(
+                            elevation: 8,
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: results.length,
+                              itemBuilder: (context, index) {
+                                final product = results[index];
+                                return ListTile(
+                                  title: Text(product.title),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SearchScreen(
+                                            query: _searchController.text,
+                                          ),
+                                        ));
+
+                                    setState(() {
+                                      _showSearchResults = false;
+
+                                      FocusScope.of(context).unfocus();
+                                    });
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         ProductDetailsScreen(
+                                    //       productId: product.id,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                  },
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const Divider(),
                             ),
-                            elevation: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    ImageConstant.adidasLogo,
-                                    width: 60.w,
-                                    height: 60.h,
+                          );
+                        },
+                        loading: () {
+                          return SimpleDialog(
+                            children: [
+                              adsList.isLoading
+                                  ? const SizedBox()
+                                  : Image.network(adsList.value!.first.image!)
+                            ],
+                          );
+                        },
+                        error: (error, stack) =>
+                            const Center(child: CircularProgressIndicator()),
+                      ),
+                    ),
+                  ),
+                vendorProfileModelDataAsyncValue.when(
+                  data: (vendorProfile) {
+                    return Column(
+                      children: [
+                        CarouselSlider(
+                            items: vendorProfile.advertisements!.map(
+                              (e) {
+                                return Image.network(e.image!);
+                              },
+                            ).toList(),
+                            options: CarouselOptions(
+                              aspectRatio: 5,
+                              reverse: true,
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 2.h),
+                              InkWell(
+                                onTap: () {
+                                  launchUrl(Uri.parse(
+                                      'tel:${vendorProfile.vendor?.phone}'));
+                                },
+                                child: Card(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  SizedBox(width: 16.w),
-                                  Expanded(
-                                    child: Column(
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "Adidas",
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              vendorProfile.vendor!.photo!,
+                                          height: 100.h,
+                                          width: 100.w,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                         ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          "10000 Subscribers",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          "Brand Bazar/Flagship Store",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Colors.grey[600],
-                                          ),
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Text(
-                                          "Contact Seller:",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          "+977 98xxxxxxxx",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Row(
+                                        SizedBox(width: 16.w),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            SvgPicture.asset(
-                                              whatsAppIcon,
-                                              width: 24.w,
-                                              height: 24.h,
+                                            Text(
+                                              vendorProfile.vendor!.name!,
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                            SizedBox(width: 8.w),
-                                            SvgPicture.asset(
-                                              viberIcon,
-                                              width: 24.w,
-                                              height: 24.h,
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              "10000 Subscribers",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                color: Colors.grey[700],
+                                              ),
                                             ),
-                                            SizedBox(width: 8.w),
-                                            SvgPicture.asset(
-                                              phoneIcon,
-                                              width: 24.w,
-                                              height: 24.h,
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              vendorProfile.vendor!.name!,
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                color: Colors.grey[600],
+                                              ),
+                                            ),
+                                            SizedBox(height: 8.h),
+                                            Text(
+                                              "Contact Seller:",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              vendorProfile.vendor!.phone!,
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8.h),
+                                            Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  whatsAppIcon,
+                                                  width: 14.w,
+                                                  height: 14.h,
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                SvgPicture.asset(
+                                                  viberIcon,
+                                                  width: 14.w,
+                                                  height: 14.h,
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                SvgPicture.asset(
+                                                  phoneIcon,
+                                                  width: 14.w,
+                                                  height: 14.h,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                // Handle Facebook share
+                                              },
+                                              child: Image.asset(
+                                                ImageConstant
+                                                    .facebookShareImage,
+                                                width: 50.w,
+                                                height: 40.h,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                // Handle Subscribe
+                                              },
+                                              child: Image.asset(
+                                                ImageConstant.subscribeImage,
+                                                width: 50.w,
+                                                height: 50.h,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4.h),
+                                            Text(
+                                              "Subscribe",
+                                              style: TextStyle(
+                                                fontSize: 12.sp,
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          // Handle Facebook share
-                                        },
-                                        child: Image.asset(
-                                          ImageConstant.facebookShareImage,
-                                          width: 50.w,
-                                          height: 40.h,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          // Handle Subscribe
-                                        },
-                                        child: Image.asset(
-                                          ImageConstant.subscribeImage,
-                                          width: 50.w,
-                                          height: 50.h,
-                                        ),
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        "Subscribe",
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          //search bar for search in store
-                          const SearchInStore(),
-
-                          // TabBar and TabBarView
-                          const TabBarAndTabView()
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SearchInStore extends StatelessWidget {
-  const SearchInStore({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 33.h,
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: 'Search in store...',
-          prefixIconConstraints: BoxConstraints(minWidth: 40.w),
-          hintStyle: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xffBFBFBF),
-          ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(top: 5.h, left: 8.w),
-            child: Icon(
-              Icons.search,
-              size: 20.sp,
-            ),
-          ),
-          suffixIcon: Container(
-            width: 70.w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(25.r),
-                topRight: Radius.circular(25.r),
-              ),
-              color: const Color(0xff362677),
-            ),
-            child: Icon(
-              Icons.search,
-              size: 30.sp,
-              color: Colors.white,
-            ),
-          ),
-          contentPadding: EdgeInsets.zero,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TabBarAndTabView extends StatelessWidget {
-  const TabBarAndTabView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const TabBar(
-            tabAlignment: TabAlignment.start,
-            isScrollable: true,
-            dividerColor: Color(0xffD9D9D9),
-            tabs: [
-              Tab(text: 'Homepage'),
-              Tab(text: 'Brand New'),
-              Tab(text: 'Used'),
-            ],
-          ),
-          Flexible(
-            fit: FlexFit.loose,
-            //height: 400.h,
-            child: TabBarView(
-              children: [
-                // First Tab Content
-                // HotDealsWidget(),
-                // ListView.builder(
-                //   scrollDirection: Axis.horizontal,
-                //   itemCount: 3,
-                //   itemBuilder: (context, index) {
-                //     final hotDeal = hotDeals[index];
-                //     return HotDealCard(hotProduct: hotDeal);
-                //   },
-                // ),
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Text(
-                          "Hot deals",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      SizedBox(
-                        height: 210,
-                        child: ListView.separated(
-                          primary: false,
-                          //  physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          shrinkWrap: true,
-                          itemCount: 3,
-                          //itemCount: valueExtractor(value).length,
-                          itemBuilder: (context, index) {
-                            //final product = valueExtractor(value)[index];
-                            // return ProductCard(
-                            //   product: product,
-                            //   onTap: (product) {
-                            //     // Navigator.push(
-                            //     //     context,
-                            //     //     MaterialPageRoute(
-                            //     //         builder: (context) =>
-                            //     //             ProductDetailsScreen(
-                            //     //               productId: product.id,
-                            //     //             )));
-                            //   },
-                            // );
-                            InkWell(
-                              onTap: () {
-                                //  onTap(product);
-                              },
-                              child: SizedBox(
-                                height: productCardHeight,
-                                width: productCardWidth,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Skeleton.replace(
-                                      width: productCardWidth,
-                                      height: 100.h,
-                                      child: Container(
-                                        width: productCardWidth,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                ImageConstant.laptopImage),
-                                            // image: NetworkImage(product.image),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 9.h,
-                                    ),
-                                    Skeleton.replace(
-                                      height: 15.h,
-                                      child: SizedBox(
-                                        height: 30.h,
-                                        child: Text(
-                                          "product.title",
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    const Row(
-                                      children: [
-                                        Text('Rs. {product.price}'),
-                                        // SizedBox(
-                                        //   width: 10.w,
-                                        // ),
-                                        // Container(
-                                        //   padding: EdgeInsets.only(
-                                        //       left: 10.w, right: 15.w, top: 5.h, bottom: 5.h),
-                                        //   decoration: BoxDecoration(
-                                        //     color: const Color(0xff362677),
-                                        //     borderRadius: BorderRadius.only(
-                                        //       topLeft: const Radius.circular(0),
-                                        //       topRight: Radius.circular(10.r),
-                                        //       bottomLeft: Radius.circular(10.r),
-                                        //     ),
-                                        //   ),
-                                        //   child: Text(
-                                        //     '0.4',
-                                        //     style: TextStyle(
-                                        //         fontSize: 9.sp,
-                                        //         fontWeight: FontWeight.w400,
-                                        //         color: Colors.white),
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    Skeleton.replace(
-                                      height: 10.h,
-                                      width: productCardWidth,
-                                      child: SizedBox(
-                                        width: productCardWidth,
-                                        child: Text(
-                                          "product.contact_name",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 6.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        // Skeleton.unite(
-                                        //   child: RatingBar.builder(
-                                        //     initialRating: product.avg_rating,
-                                        //     minRating: 0,
-                                        //     direction: Axis.horizontal,
-                                        //     allowHalfRating: true,
-                                        //     itemCount: 5,
-                                        //     itemSize: 15,
-                                        //     itemPadding:
-                                        //         const EdgeInsets.symmetric(
-                                        //       horizontal: 1.0,
-                                        //     ),
-                                        //     itemBuilder: (context, _) =>
-                                        //         const Icon(
-                                        //       Icons.star,
-                                        //       color: Color(0xfff781740),
-                                        //     ),
-                                        //     onRatingUpdate: (rating) {},
-                                        //   ),
-                                        // ),
-                                        SizedBox(
-                                          width: 4.w,
-                                        ),
-                                        Text(
-                                          "({product.avg_rating})",
-                                          style: TextStyle(
-                                            fontSize: 9.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xff888888),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 6.h,
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Icon(
-                                          Icons.visibility,
-                                          size: 20,
-                                          color: Color(0xff888888),
-                                        ),
-                                        SizedBox(
-                                          width: 3.w,
-                                        ),
-                                        Text(
-                                          "text",
-                                          // '${NumberFormat.compact().format(
-                                          //   int.parse(product.visits),
-                                          // )} Views',
-                                          style: TextStyle(
-                                            fontSize: 9.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xff888888),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 24.w,
-                                        ),
-                                        // if (product.pickup != null)
-                                        //   Row(
-                                        //     mainAxisAlignment:
-                                        //         MainAxisAlignment.spaceBetween,
-                                        //     children: [
-                                        //       const Icon(
-                                        //         Icons.location_on,
-                                        //         size: 20,
-                                        //         color: Color(0xff888888),
-                                        //       ),
-                                        //       SizedBox(
-                                        //         width: 2.w,
-                                        //       ),
-                                        //       Skeleton.replace(
-                                        //         width: 80.w,
-                                        //         height: 10.h,
-                                        //         child: SizedBox(
-                                        //           width: 80.w,
-                                        //           child: Text(
-                                        //            " product.pickup!",
-                                        //             maxLines: 1,
-                                        //             overflow:
-                                        //                 TextOverflow.ellipsis,
-                                        //             style: TextStyle(
-                                        //               fontSize: 10.sp,
-                                        //               fontWeight: FontWeight.w400,
-                                        //               color:
-                                        //                   const Color(0xff888888),
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                      ],
-                                    )
-                                  ],
                                 ),
                               ),
-                            );
-                            return null;
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                              width: 12.w,
-                            );
-                          },
+                              SizedBox(height: 10.h),
+                              const SearchInStore(),
+                            ],
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                  child: ListView.separated(
-                    itemCount: 2,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      child:
-                          const Center(child: Text("OrderPlacedContainer()")),
-                    ),
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 14.h),
-                  ),
-                ),
-                // Second Tab Content
-                const Center(
-                  child: Text('Order Placed Content Here'),
-                ),
-                // Center(
-                //   child: Text('Order Placed Content Here'),
-                // ),
+                        // Container(
+                        //     color: Colors.blue, // Example banner color
+                        //     child: Image.network(
+                        //         vendorProfile.advertisements![0].image!)),
+                        // TabBar placed inside the body
+                        TabBar(
+                          isScrollable: false,
+                          controller: _tabController,
+                          tabs: const [
+                            Tab(text: 'Home'),
+                            Tab(
+                              text: 'Brand',
+                            ),
+                            Tab(text: 'Used'),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1000,
+                          child: TabBarView(
+                            dragStartBehavior: DragStartBehavior.down,
+                            physics: const NeverScrollableScrollPhysics(),
+                            controller: _tabController,
+                            children: [
+                              _buildHomeTab(vendorProfile.posts!.data!.length,
+                                  vendorProfile.posts!.data!, "Brand new"),
+                              // _buildHomeTab(vendorProfile.posts!.data!.length,
+                              //     vendorProfile.posts!.data!, "Hot Deals"),
+                              _buildHomeTab(vendorProfile.posts!.data!.length,
+                                  vendorProfile.posts!.data!, "Brand new"),
+                              _buildHomeTab(vendorProfile.posts!.data!.length,
+                                  vendorProfile.posts!.data!, "Used"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  error: (error, stack) => Center(child: Text('Error: $error')),
+                  loading: () {
+                    return SimpleDialog(
+                      children: [
+                        adsList.isLoading
+                            ? const SizedBox()
+                            : Image.network(adsList.value!.first.image!)
+                      ],
+                    );
+                  },
+                )
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
-}
 
-// class HotDealsWidget extends ConsumerWidget {
-//   final String vendorName;
+  Widget _buildHomeTab(int count, List<Post> data, String text) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        SizedBox(height: 16.h),
 
-//   const HotDealsWidget({super.key, required this.vendorName});
+        // Wrap GridView.builder with Expanded to avoid layout issues
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.only(left: 10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 19.0,
+              mainAxisSpacing: 19.0,
+              childAspectRatio: 0.90,
+            ),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final post = data[index];
+              return InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProductDetailScreen(productId: post.id!),
+                  ),
+                ),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 2),
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 0.2,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Image display with Skeleton placeholder
+                      Skeleton.replace(
+                        width: productCardWidth,
+                        child: Container(
+                          width: productCardWidth,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(post.image!),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 9.h),
 
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     // Correctly call the provider family with the vendorName
-//     final vendorProfileAsyncValue =
-//         ref.watch(getVendorProfileDataProvider(vendorName));
+                      // Title text with skeleton placeholder
+                      Skeleton.replace(
+                        height: 15.h,
+                        child: SizedBox(
+                          height: 30.h,
+                          child: Text(
+                            post.title!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
 
-//     return vendorProfileAsyncValue.when(
-//       data: (vendorProfile) {
-//         final hotDeals = vendorProfile?.hotProducts;
-//         return ListView.builder(
-//           scrollDirection: Axis.horizontal,
-//           itemCount: hotDeals?.length,
-//           itemBuilder: (context, index) {
-//             final hotDeal = hotDeals?[index];
-//             return HotDealCard(hotProduct: hotDeal!!);
-//           },
-//         );
-//       },
-//       loading: () => const CircularProgressIndicator(),
-//       error: (err, stack) => Text('Error: $err'),
-//     );
-//   }
-// }
+                      // Price and username section
+                      Row(
+                        children: [
+                          Text(
+                            "RS ${post.price}",
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 2.h),
 
-class HotDealCard extends StatelessWidget {
-  final Product hotProduct;
+                      // Username with skeleton placeholder
+                      Skeleton.replace(
+                        width: productCardWidth,
+                        child: SizedBox(
+                          width: productCardWidth,
+                          child: Text(
+                            post.username!,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
 
-  const HotDealCard({super.key, required this.hotProduct});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Image.network(hotProduct.image!, width: 100.w, height: 100.h),
-          SizedBox(height: 8.h),
-          Text(hotProduct.title!, style: TextStyle(fontSize: 14.sp)),
-          Text('\$${hotProduct.price}',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-        ],
-      ),
+                      // Views and pickup location section
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.visibility,
+                            size: 15,
+                            color: Color(0xff888888),
+                          ),
+                          Text("${post.visits!}K Views"),
+                          const Spacer(),
+                          Text(
+                            (post.pickup != null && post.pickup!.isNotEmpty)
+                                ? post.pickup!
+                                    .split(',')
+                                    .map((s) => s
+                                        .trim()) // Split by comma and trim spaces
+                                    .toList() // Convert to a list
+                                    .reversed // Reverse the list
+                                    .elementAt(1) // Get the second last item
+                                : "Kathmandu", // Fallback if pickup is null or empty
+                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                          ),
+                          const SizedBox(
+                            width: 2.5,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
-
-// class VendorProductSlider extends StatelessWidget {
-//   const VendorProductSlider({
-//     super.key,
-//     required this.vendorProfileModel,
-//     required this.valueExtractor,
-//     required this.title,
-//   });
-
-//   final String title;
-//   final AsyncValue<VendorProfileModel> vendorProfileModel;
-//   final List<Product> Function(VendorProfileModel) valueExtractor;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final value = vendorProfileModel.valueOrNull;
-//     if (value != null && valueExtractor(value).isNotEmpty) {
-//       return Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//           Padding(
-//             padding: EdgeInsets.symmetric(horizontal: 16.w),
-//             child: Text(
-//               title,
-//               style: TextStyle(
-//                   fontSize: 14.sp,
-//                   fontWeight: FontWeight.w700,
-//                   color: Colors.black),
-//             ),
-//           ),
-//           SizedBox(
-//             height: 8.h,
-//           ),
-//           SizedBox(
-//             height: productCardHeight,
-//             child: switch (vendorProfileModel) {
-//               AsyncData(:final value) => ListView.separated(
-//                   primary: false,
-//                   physics: const BouncingScrollPhysics(),
-//                   scrollDirection: Axis.horizontal,
-//                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-//                   shrinkWrap: true,
-//                   itemCount: valueExtractor(value).length,
-//                   itemBuilder: (context, index) {
-//                     final product = valueExtractor(value)[index];
-//                     return VendorProductCard(
-//                       product: product,
-//                       onTap: (product) {
-//                         // Navigator.push(
-//                         //     context,
-//                         //     MaterialPageRoute(
-//                         //         builder: (context) => ProductDetailsScreen(
-//                         //               productId: product.id,
-//                         //             )));
-//                       },
-//                     );
-//                   },
-//                   separatorBuilder: (BuildContext context, int index) {
-//                     return SizedBox(
-//                       width: 12.w,
-//                     );
-//                   },
-//                 ),
-//               AsyncError() => VendorProductSliderSkeleton(),
-//               _ => VendorProductSliderSkeleton(),
-//             },
-//           ),
-//         ],
-//       );
-//     } else {
-//       return Container();
-//     }
-//   }
-// }
-
-// class VendorProductSliderSkeleton extends StatelessWidget {
-//   VendorProductSliderSkeleton({super.key});
-
-//   final List<Product> fakeDate = List.generate(
-//     7,
-//     (index) => Product(
-//       id: '',
-//       title: '',
-//       price: '0',
-//       image: '',
-//       visits: '0',
-//       contact_name: '',
-//       pickup: '',
-//     ),
-//   );
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Skeletonizer(
-//       enabled: true,
-//       child: ListView.separated(
-//         primary: false,
-//         physics: const BouncingScrollPhysics(),
-//         scrollDirection: Axis.horizontal,
-//         padding: EdgeInsets.only(left: 5.w),
-//         shrinkWrap: true,
-//         itemCount: fakeDate.length,
-//         itemBuilder: (context, index) {
-//           final product = fakeDate[index];
-//           return VendorProductCard(
-//             product: product,
-//             onTap: (product) {},
-//           );
-//         },
-//         separatorBuilder: (BuildContext context, int index) {
-//           return SizedBox(
-//             width: 12.w,
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }

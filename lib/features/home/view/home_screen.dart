@@ -93,12 +93,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            if (_showSearchResults) {
-              setState(() {
-                _showSearchResults = false;
-                FocusScope.of(context).unfocus();
-              });
-            }
+           
           },
           child: Stack(
             children: [

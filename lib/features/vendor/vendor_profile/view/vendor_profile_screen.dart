@@ -19,7 +19,6 @@ import 'package:smartbazar/features/online_transaction_record/online_transacatio
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
-import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';

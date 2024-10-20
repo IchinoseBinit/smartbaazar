@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -72,7 +73,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           drawer: const CustomDrawer(),
           key: _key,
           appBar: AppbarWidget(
-            onsubmit: (value) {
+          onsubmit: (value) {
                if (_showSearchResults) {
               setState(() {
                 _showSearchResults = false;
@@ -86,7 +87,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             },
             scaffoldKey: _key,
             searchController: _searchController,
-            onCartTap: () {},
+            onCartTap: () {
+                  Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const AddToCartScreen(),
+              ),
+            );
+            },
             onSearchFocusChanged: (p0) {
             },
           ),
@@ -95,7 +103,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                 
-              if (_showSearchResults)
+           if (_showSearchResults)
                 Positioned(
                   top: 0.h, // Position just below the search bar
                   left: 0,

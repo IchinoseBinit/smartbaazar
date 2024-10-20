@@ -16,7 +16,7 @@ import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/dummy_home_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 
@@ -135,7 +135,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                 WidgetSpan(
                                     child: Container(
                                   margin: EdgeInsets.only(left: 10.h),
-                                  padding: EdgeInsets.all(2),
+                                  padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                       color: const Color(0xffD9D9D9),
                                       borderRadius: BorderRadius.circular(4.r)),
@@ -212,7 +212,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     },
                                     child: Container(
                                       alignment: Alignment.center,
-                                      padding: EdgeInsets.all(12),
+                                      padding: const EdgeInsets.all(12),
                                       // padding: EdgeInsets.only(
                                       //     left: 19.w,
                                       //     right: 19.w,
@@ -486,24 +486,14 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               Row(
                                 children: [
-                                  SvgPicture.asset(phoneIcon),
-                                  SizedBox(
-                                    width: 15.w,
-                                  ),
                                   InkWell(
-                                    onTap: () async {
-                                      final Uri url =
-                                          Uri(scheme: 'tel', path: data.phone);
-                                      if (await canLaunchUrl(url)) {
-                                        await launchUrl(url);
-                                      } else {
-                                        print("cannot launch this url");
-                                      }
-                                    },
+                                    onTap: () => launchUrl(
+                                        Uri.parse('tel:${data.phone}')),
                                     child: Column(
                                       children: [
-                                        SizedBox(
-                                          width: 15.w,
+                                        SvgPicture.asset(phoneIcon),
+                                        const SizedBox(
+                                          height: 5,
                                         ),
                                         Text(
                                           'Call',
@@ -516,42 +506,47 @@ class ProductDetailScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   const Spacer(),
-                                  SvgPicture.asset(messagesIcon),
                                   SizedBox(
                                     width: 10.w,
                                   ),
                                   InkWell(
-                                    onTap: () async {
-                                      final Uri smsUri = Uri(
-                                        scheme: 'sms',
-                                        path: data.phone,
-                                      );
-
-                                      if (await canLaunchUrl(smsUri)) {
-                                        await launchUrl(smsUri);
-                                      } else {
-                                        throw 'Could not launch SMS';
-                                      }
-                                    },
-                                    child: Text(
-                                      'Message',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff000000)),
+                                    onTap: () => launchUrl(
+                                        Uri.parse('sms:${data.phone}')),
+                                    child: Column(
+                                      children: [
+                                        SvgPicture.asset(messagesIcon),
+                                        SizedBox(
+                                          height: 5.h,
+                                        ),
+                                        Text(
+                                          'Message',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff000000)),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   const Spacer(),
-                                  SvgPicture.asset(whatsAppIcon),
                                   SizedBox(
                                     width: 10.w,
                                   ),
-                                  Text(
-                                    'Whatsapp',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: const Color(0xff000000)),
+                                  InkWell(
+                                    onTap: () => launchUrl(Uri.parse(
+                                        'https://wa.me/${data.phone}')),
+                                    child: Column(
+                                      children: [
+                                        SvgPicture.asset(whatsAppIcon),
+                                        Text(
+                                          'Whatsapp',
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff000000)),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -574,13 +569,10 @@ class ProductDetailScreen extends ConsumerWidget {
                         ),
                         GeneralTextButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DummyVendorHomeScreen(
-                                            vendorName: data.user!.name!,
-                                          )));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DummyVendorHomeScreen(
+                                    vendorName: data.user!.name!),
+                              ));
                             },
                             marginH: 1,
                             width: MediaQuery.of(context).size.width,

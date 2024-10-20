@@ -31,7 +31,7 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
               },
             ),
             items: widget.items.map((item) {
-              return Container(
+              return SizedBox(
                 width: double.infinity,
                 child: Image.network(
                   item,
