@@ -11,7 +11,7 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -93,6 +93,9 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
             resizeToAvoidBottomInset: false,
             backgroundColor: const Color(0xffF6F1F1),
             appBar: AppbarWidget(
+              onsubmit: (p0) {
+                
+              },
               scaffoldKey: _key,
               searchController: _searchController,
               onCartTap: () {

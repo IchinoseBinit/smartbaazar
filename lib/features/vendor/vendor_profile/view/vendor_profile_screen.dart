@@ -6,6 +6,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
@@ -20,6 +21,7 @@ import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.da
 import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
+import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -644,6 +646,23 @@ class MyAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> logout(BuildContext context) async {
+      final prefs = await SharedPreferences.getInstance();
+      final String? userId = prefs.getString("userId");
+
+      if (userId != null) {
+        LogoutApi logoutApi = LogoutApi(); // Create an instance of LogoutApi
+        await logoutApi.logout(userId, context); // Call the logout method
+
+        // After logout, navigate to the login screen or home
+      } else {
+        // Handle case where userId is not found in SharedPreferences
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Logged out succesfully !')),
+        );
+      }
+    }
+
     return GridView.builder(
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -656,21 +675,37 @@ class MyAccountWidget extends StatelessWidget {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                children: [
-                  Icon(
-                    accountData[index]['icon'],
-                    color: Colors.black,
-                    size: 20.sp,
-                  ),
-                  Text(
-                    accountData[index]['title'],
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                  ),
-                ],
+              InkWell(
+                onTap: () async {
+                  if (accountData[index]['title'] == 'Log Out') {
+                    logout(context);
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    await preferences.clear();
+
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ));
+                  }
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      accountData[index]['icon'],
+                      color: Colors.black,
+                      size: 20.sp,
+                    ),
+                    Text(
+                      accountData[index]['title'],
+                      style: TextStyle(
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
               )
             ],
           );

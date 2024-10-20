@@ -6,7 +6,7 @@ part of 'search_detail_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchDetailsHash() => r'a7c47ee29ad0c16b5da9ac7afbc5c8e02f19f78d';
+String _$getSearchDetailsHash() => r'7e1fa445670fcf8d174c797ccc7ba3ada699afa8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,10 +42,12 @@ class GetSearchDetailsFamily extends Family<AsyncValue<SearchDetails>> {
   GetSearchDetailsProvider call(
     String query, {
     String category = 'brand_new',
+    String orderby = 'relevance',
   }) {
     return GetSearchDetailsProvider(
       query,
       category: category,
+      orderby: orderby,
     );
   }
 
@@ -56,6 +58,7 @@ class GetSearchDetailsFamily extends Family<AsyncValue<SearchDetails>> {
     return call(
       provider.query,
       category: provider.category,
+      orderby: provider.orderby,
     );
   }
 
@@ -81,11 +84,13 @@ class GetSearchDetailsProvider
   GetSearchDetailsProvider(
     String query, {
     String category = 'brand_new',
+    String orderby = 'relevance',
   }) : this._internal(
           (ref) => getSearchDetails(
             ref as GetSearchDetailsRef,
             query,
             category: category,
+            orderby: orderby,
           ),
           from: getSearchDetailsProvider,
           name: r'getSearchDetailsProvider',
@@ -98,6 +103,7 @@ class GetSearchDetailsProvider
               GetSearchDetailsFamily._allTransitiveDependencies,
           query: query,
           category: category,
+          orderby: orderby,
         );
 
   GetSearchDetailsProvider._internal(
@@ -109,10 +115,12 @@ class GetSearchDetailsProvider
     required super.from,
     required this.query,
     required this.category,
+    required this.orderby,
   }) : super.internal();
 
   final String query;
   final String category;
+  final String orderby;
 
   @override
   Override overrideWith(
@@ -129,6 +137,7 @@ class GetSearchDetailsProvider
         debugGetCreateSourceHash: null,
         query: query,
         category: category,
+        orderby: orderby,
       ),
     );
   }
@@ -142,7 +151,8 @@ class GetSearchDetailsProvider
   bool operator ==(Object other) {
     return other is GetSearchDetailsProvider &&
         other.query == query &&
-        other.category == category;
+        other.category == category &&
+        other.orderby == orderby;
   }
 
   @override
@@ -150,6 +160,7 @@ class GetSearchDetailsProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
     hash = _SystemHash.combine(hash, category.hashCode);
+    hash = _SystemHash.combine(hash, orderby.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -161,6 +172,9 @@ mixin GetSearchDetailsRef on AutoDisposeFutureProviderRef<SearchDetails> {
 
   /// The parameter `category` of this provider.
   String get category;
+
+  /// The parameter `orderby` of this provider.
+  String get orderby;
 }
 
 class _GetSearchDetailsProviderElement
@@ -172,6 +186,8 @@ class _GetSearchDetailsProviderElement
   String get query => (origin as GetSearchDetailsProvider).query;
   @override
   String get category => (origin as GetSearchDetailsProvider).category;
+  @override
+  String get orderby => (origin as GetSearchDetailsProvider).orderby;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

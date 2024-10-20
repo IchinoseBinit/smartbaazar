@@ -74,6 +74,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
+          onsubmit: (p0) {
+            
+          },
           scaffoldKey: _key,
           searchController: _searchController,
           onCartTap: () {
@@ -90,12 +93,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            if (_showSearchResults) {
-              setState(() {
-                _showSearchResults = false;
-                FocusScope.of(context).unfocus();
-              });
-            }
+           
           },
           child: Stack(
             children: [
@@ -317,7 +315,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SearchScreen(
-                                          query: product.title,
+                                          query:_searchController.text,
                                         ),
                                       ));
 
@@ -343,8 +341,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         );
                       },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
                       error: (error, stack) =>
                           const Center(child: CircularProgressIndicator()),
                     ),

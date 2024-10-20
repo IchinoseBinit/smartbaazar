@@ -9,8 +9,14 @@ part 'search_detail_api.g.dart';
 
 @riverpod
 Future<SearchDetails> getSearchDetails(
-    GetSearchDetailsRef ref, String query, {String category = 'brand_new'}) async {
-  final SmartClinet client = SmartClinet(); // Ensure correct class name
+  GetSearchDetailsRef ref,
+  String query, {
+  String category = 'brand_new',
+  String? orderby,
+}) async {
+  print("Query: $query, Order By: $orderby"); // More informative logging
+
+  final SmartClinet client = SmartClinet();
 
   // Return a default SearchDetails if the query is empty
   if (query.isEmpty) {
@@ -20,8 +26,8 @@ Future<SearchDetails> getSearchDetails(
   try {
     // Prepare form data
     FormData formData = FormData.fromMap({
-      'q': query,
-      'category': category, // Use the provided category or the default
+      'query': query,
+      'orderby': orderby ?? 'relevance',
     });
 
     // Make the API request
@@ -36,26 +42,30 @@ Future<SearchDetails> getSearchDetails(
       List<Post> postsList = [];
 
       // Extract and parse the relevant data based on the category
-      if (category == 'brand_new') {
-        final brandNewData = response.data['data']?['brand_new'];
-        if (brandNewData != null) {
-          postsList.addAll(
-            brandNewData.map<Post>((json) => Post.fromJson(json)).toList(),
-          );
-        }
-      } else if (category == 'used') {
-        final usedData = response.data['data']?['used'];
-        if (usedData != null) {
-          postsList.addAll(
-            usedData.map<Post>((json) => Post.fromJson(json)).toList(),
-          );
-        }
-      } else if (category == 'services') {
-        final servicesData = response.data['data']?['services'];
-        if (servicesData != null) {
-          postsList.addAll(
-            servicesData.map<Post>((json) => Post.fromJson(json)).toList(),
-          );
+      final data = response.data['data'];
+      print("nana $data");
+      if (data != null) {
+        if (category == 'brand_new') {
+          final brandNewData = data['brand_new'];
+          if (brandNewData != null) {
+            postsList.addAll(
+              brandNewData.map<Post>((json) => Post.fromJson(json)).toList(),
+            );
+          }
+        } else if (category == 'used') {
+          final usedData = data['used'];
+          if (usedData != null) {
+            postsList.addAll(
+              usedData.map<Post>((json) => Post.fromJson(json)).toList(),
+            );
+          }
+        } else if (category == 'services') {
+          final servicesData = data['services'];
+          if (servicesData != null) {
+            postsList.addAll(
+              servicesData.map<Post>((json) => Post.fromJson(json)).toList(),
+            );
+          }
         }
       }
 

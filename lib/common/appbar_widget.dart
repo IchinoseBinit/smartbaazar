@@ -7,6 +7,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
   final TextEditingController searchController;
   final VoidCallback onCartTap;
   final Function(bool) onSearchFocusChanged;
+  final Function(String)? onsubmit;
 
   const AppbarWidget({
     Key? key,
@@ -14,6 +15,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
     required this.searchController,
     required this.onCartTap,
     required this.onSearchFocusChanged,
+    required this.onsubmit,
   }) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
             child: SizedBox(
               height: 33.h,
               child: TextFormField(
+                onFieldSubmitted:onsubmit,
                 controller: searchController,
                 decoration: InputDecoration(
                   hintText: 'Search...',

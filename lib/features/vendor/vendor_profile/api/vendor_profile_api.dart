@@ -10,16 +10,17 @@ part 'vendor_profile_api.g.dart';
 Future<VendorData> getVendorProfileData(
     GetVendorProfileDataRef ref, String vendorName,
     {int postType = 1}) async {
+  print("mama $vendorName");
   final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
+      url:
+          '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
     );
 
     // Debug log for post array (to verify post content)
-    print("Response Data: ${response.data['data']['advertisements']}");
 
     final jsonData = response.data;
 
@@ -42,7 +43,8 @@ Future<VendorData> getVendorProfileData(
       // Return the vendor data
       return vendorData;
     } else {
-      throw Exception('Failed to load vendor data, status code: ${response.statusCode}');
+      throw Exception(
+          'Failed to load vendor data, status code: ${response.statusCode}');
     }
   } catch (e) {
     print('Error fetching vendor data: $e');

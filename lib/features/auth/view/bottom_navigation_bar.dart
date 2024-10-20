@@ -17,6 +17,7 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _selectedTab = 0;
+  int? _userid;
 
   final List _pages = [
     const HomeScreen(),
@@ -38,6 +39,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       _selectedTab = index;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

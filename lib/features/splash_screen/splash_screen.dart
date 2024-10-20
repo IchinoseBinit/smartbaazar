@@ -45,7 +45,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               color: Colors.transparent,
               child: splashApiResponse.when(
                 data: (splashModel) {
-                  print("bibash ${splashModel.logo}");
                   return FadeInImage.assetNetwork(
                     placeholder: "assets/images/appLogo.png",
                     image: splashModel.logo,
