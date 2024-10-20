@@ -14,13 +14,15 @@ import 'package:smartbazar/utils/custom_exception.dart';
 final authRepositoryProvider = Provider<LoginApi>((ref) {
   return LoginApi();
 });
+
 final loginController =
     StateNotifierProvider<LoginController, GenericState>((ref) {
-  return LoginController(LoginApi());
+  return LoginController(ref.read(authRepositoryProvider));
 });
 
 class LoginController extends StateNotifier<GenericState> {
   final LoginApi _loginApi;
+
   LoginController(this._loginApi) : super(InitialState());
 
   Future<void> login(BuildContext context,
@@ -29,10 +31,15 @@ class LoginController extends StateNotifier<GenericState> {
       required String password}) async {
     state = LoadingState();
     try {
-      final loginData = await LoginApi().login(email, password);
+      // Use _loginApi instead of creating a new instance
+      final loginData = await _loginApi.login(email, password);
       state = LoadedState<LoginData>(response: loginData);
-      await Navigator.push(context,
-          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
+
+      // Navigate to the bottom navigation screen, replacing the login screen
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => const BottomNavigationScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }

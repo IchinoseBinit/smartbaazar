@@ -87,7 +87,7 @@ class FAQScreen extends ConsumerWidget {
                       style: {
                         "p": Style(
                           fontSize: FontSize(12.sp),
-                          color: Color(0xff36383C),
+                          color: const Color(0xff36383C),
                           fontWeight: FontWeight.w400,
                         ),
                         "b": Style(

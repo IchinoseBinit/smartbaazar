@@ -98,6 +98,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomTextFieldWidget(
+                    textInputType: TextInputAction.next,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.person,
@@ -108,6 +109,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.2.h),
                   CustomTextFieldWidget(
+                     textInputType: TextInputAction.next,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.location_city,
@@ -118,6 +120,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.2.h),
                   CustomTextFieldWidget(
+                     textInputType: TextInputAction.next,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.person_outline,
@@ -128,6 +131,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.2.h),
                   CustomTextFieldWidget(
+                     textInputType: TextInputAction.done,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.account_balance,

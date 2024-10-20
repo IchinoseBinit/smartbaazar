@@ -56,7 +56,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 color: Colors.white,
                 border: Border.all(
                   width: 1.w,
-                  color: const Color(0xffffF8F8F8),
+                  color: const Color(0xfffff8f8f8),
                 ),
               ),
               child: Container(

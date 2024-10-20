@@ -18,23 +18,16 @@ Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
       throw Exception("No refresh token found");
     }
 
-    //final fullUri = Uri.parse(ApiConstants.refreshTokenUrl);
-    print(refreshToken);
     final response = await client.request(
       requestType: RequestType.post,
-      // url: ApiConstants.refreshTokenUrl,
       url:
           '${ApiConstants.refreshTokenUrl}?refresh_token=$refreshToken&device_name=Dell laptop',
-      // queryParameters: {
-      //   'refresh_token': refreshToken,
-      //   'device_name': 'Dell laptop',
-      // }
     );
 
     if (response.statusCode! >= 200 && response.statusCode! < 300) {
-      // Update tokens in SharedPreferences and in-memory client
       final tokenData = RefreshTokenResponse.fromJson(response.data);
 
+      // Update tokens in SmartClinet and SharedPreferences
       SmartClinet.token = tokenData.authToken;
       SmartClinet.refresh = tokenData.refreshToken;
 

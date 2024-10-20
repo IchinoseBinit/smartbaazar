@@ -34,10 +34,10 @@ class ProductDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
+    print("bibash ${favouriteListAsyncValue.value}");
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
-    final currentIndex = ref.watch(currentIndexProvider);
     print("the inner data is $productDetailsAsyncValue");
 
     // final AsyncValue<PostResponse> getdetails=ref
@@ -213,11 +213,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                             print("id is ${data.id}");
                                             // await  _apiService
                                             //     .addToCart(data.);
-                                            ApiService().addToCart(
-                                              data.id!
-
-                                            
-                                            );
+                                            ApiService().addToCart(data.id!);
                                             CustomDialougeBox()
                                                 .addToCart(context);
                                           },

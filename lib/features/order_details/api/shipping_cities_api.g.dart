@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'refresh_token_api.dart';
+part of 'shipping_cities_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getRefreshTokenHash() => r'6e302d58d55470add1c0e1728008de31f2d4c822';
+String _$getShippingCitiesHash() => r'8d39ab2a2b8685230825000ae57bfd13257879d0';
 
-/// See also [getRefreshToken].
-@ProviderFor(getRefreshToken)
-final getRefreshTokenProvider =
-    AutoDisposeFutureProvider<RefreshTokenResponse>.internal(
-  getRefreshToken,
-  name: r'getRefreshTokenProvider',
+/// See also [getShippingCities].
+@ProviderFor(getShippingCities)
+final getShippingCitiesProvider =
+    AutoDisposeFutureProvider<List<ShippingCitiesModel>>.internal(
+  getShippingCities,
+  name: r'getShippingCitiesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$getRefreshTokenHash,
+      : _$getShippingCitiesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GetRefreshTokenRef = AutoDisposeFutureProviderRef<RefreshTokenResponse>;
+typedef GetShippingCitiesRef
+    = AutoDisposeFutureProviderRef<List<ShippingCitiesModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -86,7 +86,6 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
     return vendorProfileModelDataAsyncValue.when(
       data: (vendorProfile) {
-        print("bibash ${vendorProfile.advertisements}");
         return GenericSafeArea(
           color: Colors.white,
           child: Scaffold(
@@ -271,7 +270,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                         Tab(text: 'Used'),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 1000,
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
@@ -323,9 +322,9 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                 const NeverScrollableScrollPhysics(), // Prevent scrolling inside the GridView
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 15.0,
-              crossAxisSpacing: 30.0,
+              crossAxisSpacing: 25.0,
               childAspectRatio: 0.9,
+            
             ),
             itemBuilder: (context, index) {
               Post data = products[index];

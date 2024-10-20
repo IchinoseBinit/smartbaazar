@@ -25,8 +25,11 @@ class ApiConstants {
   static String incrementQuantity = '$baseUrl/users/addToCart';
   static String decrementQuantity = '$baseUrl/users/cart_minus';
   static String getCheckoutDetailsUrl = '$baseUrl/users/checkout';
-  // static String checkoutDetails
+  //  checkoutDetails
 
+  static String getShippingCitiesUrl = '$baseUrl/users/get_shipping_cities';
+  static String getStreetAddressUrl = '$baseUrl/users/autocomplete-location';
+  static String finishCheckoutFormUrl = '$baseUrl/users/checkout_finish';
   //favourite list
   static String favouriteListUrl = '$baseUrl/savedPosts';
   static String saveFavouriteListingUrl = '$baseUrl/savedPosts';

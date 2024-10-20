@@ -561,7 +561,7 @@ packages:
     source: hosted
     version: "0.15.4"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
@@ -768,14 +768,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  multiple_images_picker:
-    dependency: "direct main"
-    description:
-      name: multiple_images_picker
-      sha256: "95f68febbe7ca6b50dbd7edce7345fc70ca0a33f2e82d766b0f79c02b04ff7e4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   octo_image:
     dependency: transitive
     description:
@@ -817,7 +809,7 @@ packages:
     source: hosted
     version: "1.0.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: fec0d61223fba3154d87759e3cc27fe2c8dc498f6386c6d6fc80d1afdd1bf378

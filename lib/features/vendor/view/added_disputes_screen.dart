@@ -29,7 +29,7 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
 
   Future<void> pickImages() async {
     final pickedFiles = await _picker.pickMultiImage();
-    if (pickedFiles != null && pickedFiles.isNotEmpty) {
+    if (pickedFiles.isNotEmpty) {
       setState(() {
         _selectedImages = pickedFiles.map((file) => File(file.path)).toList();
       });

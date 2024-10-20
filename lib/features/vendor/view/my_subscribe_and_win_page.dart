@@ -632,7 +632,7 @@ class GiftDetails extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: Color(0xFFF5F2F2),
+        color: const Color(0xFFF5F2F2),
         boxShadow: [
           BoxShadow(
             color: const Color(0xff00000040).withOpacity(0.1),

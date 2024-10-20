@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'search_detail_api.dart';
+part of 'street_address_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchDetailsHash() => r'a7c47ee29ad0c16b5da9ac7afbc5c8e02f19f78d';
+String _$getStreetAddressHash() => r'ca22c886412635e2f4e94186a9265a8ecc0fef38';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,33 +29,31 @@ class _SystemHash {
   }
 }
 
-/// See also [getSearchDetails].
-@ProviderFor(getSearchDetails)
-const getSearchDetailsProvider = GetSearchDetailsFamily();
+/// See also [getStreetAddress].
+@ProviderFor(getStreetAddress)
+const getStreetAddressProvider = GetStreetAddressFamily();
 
-/// See also [getSearchDetails].
-class GetSearchDetailsFamily extends Family<AsyncValue<SearchDetails>> {
-  /// See also [getSearchDetails].
-  const GetSearchDetailsFamily();
+/// See also [getStreetAddress].
+class GetStreetAddressFamily
+    extends Family<AsyncValue<List<StreetAddressModel>>> {
+  /// See also [getStreetAddress].
+  const GetStreetAddressFamily();
 
-  /// See also [getSearchDetails].
-  GetSearchDetailsProvider call(
-    String query, {
-    String category = 'brand_new',
-  }) {
-    return GetSearchDetailsProvider(
+  /// See also [getStreetAddress].
+  GetStreetAddressProvider call(
+    String query,
+  ) {
+    return GetStreetAddressProvider(
       query,
-      category: category,
     );
   }
 
   @override
-  GetSearchDetailsProvider getProviderOverride(
-    covariant GetSearchDetailsProvider provider,
+  GetStreetAddressProvider getProviderOverride(
+    covariant GetStreetAddressProvider provider,
   ) {
     return call(
       provider.query,
-      category: provider.category,
     );
   }
 
@@ -71,36 +69,33 @@ class GetSearchDetailsFamily extends Family<AsyncValue<SearchDetails>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getSearchDetailsProvider';
+  String? get name => r'getStreetAddressProvider';
 }
 
-/// See also [getSearchDetails].
-class GetSearchDetailsProvider
-    extends AutoDisposeFutureProvider<SearchDetails> {
-  /// See also [getSearchDetails].
-  GetSearchDetailsProvider(
-    String query, {
-    String category = 'brand_new',
-  }) : this._internal(
-          (ref) => getSearchDetails(
-            ref as GetSearchDetailsRef,
+/// See also [getStreetAddress].
+class GetStreetAddressProvider
+    extends AutoDisposeFutureProvider<List<StreetAddressModel>> {
+  /// See also [getStreetAddress].
+  GetStreetAddressProvider(
+    String query,
+  ) : this._internal(
+          (ref) => getStreetAddress(
+            ref as GetStreetAddressRef,
             query,
-            category: category,
           ),
-          from: getSearchDetailsProvider,
-          name: r'getSearchDetailsProvider',
+          from: getStreetAddressProvider,
+          name: r'getStreetAddressProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getSearchDetailsHash,
-          dependencies: GetSearchDetailsFamily._dependencies,
+                  : _$getStreetAddressHash,
+          dependencies: GetStreetAddressFamily._dependencies,
           allTransitiveDependencies:
-              GetSearchDetailsFamily._allTransitiveDependencies,
+              GetStreetAddressFamily._allTransitiveDependencies,
           query: query,
-          category: category,
         );
 
-  GetSearchDetailsProvider._internal(
+  GetStreetAddressProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -108,70 +103,61 @@ class GetSearchDetailsProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.query,
-    required this.category,
   }) : super.internal();
 
   final String query;
-  final String category;
 
   @override
   Override overrideWith(
-    FutureOr<SearchDetails> Function(GetSearchDetailsRef provider) create,
+    FutureOr<List<StreetAddressModel>> Function(GetStreetAddressRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetSearchDetailsProvider._internal(
-        (ref) => create(ref as GetSearchDetailsRef),
+      override: GetStreetAddressProvider._internal(
+        (ref) => create(ref as GetStreetAddressRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         query: query,
-        category: category,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<SearchDetails> createElement() {
-    return _GetSearchDetailsProviderElement(this);
+  AutoDisposeFutureProviderElement<List<StreetAddressModel>> createElement() {
+    return _GetStreetAddressProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetSearchDetailsProvider &&
-        other.query == query &&
-        other.category == category;
+    return other is GetStreetAddressProvider && other.query == query;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
-    hash = _SystemHash.combine(hash, category.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin GetSearchDetailsRef on AutoDisposeFutureProviderRef<SearchDetails> {
+mixin GetStreetAddressRef
+    on AutoDisposeFutureProviderRef<List<StreetAddressModel>> {
   /// The parameter `query` of this provider.
   String get query;
-
-  /// The parameter `category` of this provider.
-  String get category;
 }
 
-class _GetSearchDetailsProviderElement
-    extends AutoDisposeFutureProviderElement<SearchDetails>
-    with GetSearchDetailsRef {
-  _GetSearchDetailsProviderElement(super.provider);
+class _GetStreetAddressProviderElement
+    extends AutoDisposeFutureProviderElement<List<StreetAddressModel>>
+    with GetStreetAddressRef {
+  _GetStreetAddressProviderElement(super.provider);
 
   @override
-  String get query => (origin as GetSearchDetailsProvider).query;
-  @override
-  String get category => (origin as GetSearchDetailsProvider).category;
+  String get query => (origin as GetStreetAddressProvider).query;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

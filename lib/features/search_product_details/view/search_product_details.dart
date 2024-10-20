@@ -30,6 +30,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   late String _query;
+  int _selectedTabIndex = 0;
 
   @override
   void initState() {
@@ -41,12 +42,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use ref.watch to get search results
-    final searchResults = ref.watch(GetSearchDetailsProvider(_query));
-
     return GenericSafeArea(
       child: DefaultTabController(
-        length: 4, // Updated the length to match the number of tabs
+        length: 4,
         child: Scaffold(
           drawer: const CustomDrawer(),
           key: _key,
@@ -85,134 +83,26 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ],
               ),
               TabBar(
+                onTap: (index) {
+                  setState(() {
+                    _selectedTabIndex = index; // Update selected index
+                  });
+                },
                 padding: EdgeInsets.zero,
-                tabs: [
-                  Tab(text: "All Listing ${searchResults.value?.length ?? ''}"),
-                  const Tab(text: "Brand New }"),
-                  const Tab(text: "Used"),
-                  const Tab(text: "Services"),
+                tabs: const [
+                  Tab(text: "All Listing"),
+                  Tab(text: "Brand New"),
+                  Tab(text: "Used"),
+                  Tab(text: "Services"),
                 ],
               ),
               Expanded(
                 child: TabBarView(
                   children: [
-                    searchResults.when(
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
-                      error: (err, stack) => Center(child: Text('Error: $err')),
-                      data: (List<Post> data) {
-                        if (data.isEmpty) {
-                          return const Center(child: Text('No results found.'));
-                        }
-                        return GridView.builder(
-                          padding: EdgeInsets.only(left: 10),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:
-                                2, // You can adjust this to control column count
-                            crossAxisSpacing: 19.0,
-                            mainAxisSpacing: 19.0,
-                            childAspectRatio:
-                                0.90, // Adjust this for item aspect ratio
-                          ),
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            final post = data[index];
-                            return Container(
-                              margin: EdgeInsets.only(top: 2),
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 0.2,
-                                  )),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Skeleton.replace(
-                                    width: productCardWidth,
-                                    child: Container(
-                                      width: productCardWidth,
-                                      height: 100.h,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(post.image!),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 9.h),
-                                  Skeleton.replace(
-                                    height: 15.h,
-                                    child: SizedBox(
-                                      height: 30.h,
-                                      child: Text(
-                                        post.title!,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "RS ${post.price}",
-                                        style: TextStyle(fontSize: 14.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 2.h),
-                                  Skeleton.replace(
-                                    width: productCardWidth,
-                                    child: SizedBox(
-                                      width: productCardWidth,
-                                      child: Text(
-                                        post.contact_name!,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 12.h),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.visibility,
-                                        size: 15,
-                                        color: Color(0xff888888),
-                                      ),
-                                      Text("${post.visits!}K Views"),
-                                      Spacer(),
-                                      Text(post.pickup ?? "kathmandu"),
-                                      const SizedBox(
-                                        width: 1,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    const Center(child: Text("Brand New Content")),
-                    const Center(child: Text("Used Content")),
-                    const Center(child: Text("Services Content")),
+                    buildTabContent('brand_new'), // Use specific category
+                    buildTabContent('brand_new'),
+                    buildTabContent('used'),
+                    buildTabContent('services'),
                   ],
                 ),
               ),
@@ -222,4 +112,148 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ),
     );
   }
+
+  Widget buildTabContent(String category) {
+    // Use ref.watch to get search results based on category
+    final searchResults = ref.watch(GetSearchDetailsProvider(
+      _query,
+      category: category,
+    ));
+
+    return searchResults.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text('Error: $err')),
+      data: (SearchDetails data) {
+        if (data.posts.isEmpty) {
+          return const Center(child: Text('No results found.'));
+        }
+        return buildGridView(data);
+      },
+    );
+  }
+}
+
+Widget buildGridView(SearchDetails data) {
+  return GridView.builder(
+    padding: const EdgeInsets.only(left: 10),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: 19.0,
+      mainAxisSpacing: 19.0,
+      childAspectRatio: 0.90,
+    ),
+    itemCount: data.posts.length,
+    itemBuilder: (context, index) {
+      final post = data.posts[index];
+      return InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailScreen(productId: post.id),
+          ),
+        ),
+        child: Container(
+          margin: const EdgeInsets.only(top: 2),
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Colors.grey,
+              width: 0.2,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Skeleton.replace(
+                width: productCardWidth,
+                child: Container(
+                  width: productCardWidth,
+                  height: 100.h,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(post.image!),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 9.h),
+              Skeleton.replace(
+                height: 15.h,
+                child: SizedBox(
+                  height: 30.h,
+                  child: Text(
+                    post.title!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 4.h),
+              Row(
+                children: [
+                  Text(
+                    "RS ${post.price}",
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2.h),
+              Skeleton.replace(
+                width: productCardWidth,
+                child: SizedBox(
+                  width: productCardWidth,
+                  child: Text(
+                    post.contact_name!,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.visibility,
+                    size: 15,
+                    color: Color(0xff888888),
+                  ),
+                  Text("${post.visits!}K Views"),
+                  const Spacer(),
+                  Text(
+                    (post.pickup != null && post.pickup!.isNotEmpty)
+                        ? post.pickup!
+                            .split(',')
+                            .map((s) =>
+                                s.trim()) // Split by comma and trim spaces
+                            .toList() // Convert to a list
+                            .reversed // Reverse the list to get the second last item easily
+                            .elementAt(1) // Get the second item
+                        : "Kathmandu", // Fallback if pickup is null or empty
+                    overflow: TextOverflow.ellipsis, // Prevent overflow
+                   
+                  ),
+                  const SizedBox(
+                    width: 2.5,
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
