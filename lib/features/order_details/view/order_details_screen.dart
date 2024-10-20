@@ -388,10 +388,10 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                               ?.map((e) => e.name!)
                               .toList() ??
                           [];
-                      // final image = checkoutDetails.data!.items
-                      //         ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
-                      //         .toList() ??
-                      //     [];
+                      final image = checkoutDetails.data!.items
+                              ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
+                              .toList() ??
+                          [];
 
                       print('Username: $userName');
                       print(
@@ -410,7 +410,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       print('Selected Coupon: $selectedCoupon');
                       print(
                           'Selected Product IDs: ${widget.selectedProductIds}');
-                      //print('image $image');
+                      print('image $image');
                       final success = ref.read(postCheckoutFormProvider(
                         userName,
                         address,
@@ -426,7 +426,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                         quantities,
                         prices, // Add prices here
                         total,
-                       // image,
+                        image,
                       ));
                       if (success == true) {
                         // Handle successful order placement (e.g., navigate to a success page)

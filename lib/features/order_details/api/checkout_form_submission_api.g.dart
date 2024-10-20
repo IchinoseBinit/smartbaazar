@@ -6,7 +6,7 @@ part of 'checkout_form_submission_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCheckoutFormHash() => r'9dd5ef7b5ca32d26e544f3ee9d70f27dc8d40c07';
+String _$postCheckoutFormHash() => r'c7359e0deb9807cf85c584c55f7a47ef04dcc97b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -55,6 +55,7 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
     List<String> qty,
     List<String> price,
     String total,
+    List<String?> imagePath,
   ) {
     return PostCheckoutFormProvider(
       userName,
@@ -72,6 +73,7 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       qty,
       price,
       total,
+      imagePath,
     );
   }
 
@@ -95,6 +97,7 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       provider.qty,
       provider.price,
       provider.total,
+      provider.imagePath,
     );
   }
 
@@ -132,6 +135,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     List<String> qty,
     List<String> price,
     String total,
+    List<String?> imagePath,
   ) : this._internal(
           (ref) => postCheckoutForm(
             ref as PostCheckoutFormRef,
@@ -150,6 +154,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
             qty,
             price,
             total,
+            imagePath,
           ),
           from: postCheckoutFormProvider,
           name: r'postCheckoutFormProvider',
@@ -175,6 +180,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
           qty: qty,
           price: price,
           total: total,
+          imagePath: imagePath,
         );
 
   PostCheckoutFormProvider._internal(
@@ -199,6 +205,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     required this.qty,
     required this.price,
     required this.total,
+    required this.imagePath,
   }) : super.internal();
 
   final String userName;
@@ -216,6 +223,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   final List<String> qty;
   final List<String> price;
   final String total;
+  final List<String?> imagePath;
 
   @override
   Override overrideWith(
@@ -245,6 +253,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         qty: qty,
         price: price,
         total: total,
+        imagePath: imagePath,
       ),
     );
   }
@@ -271,7 +280,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         other.postName == postName &&
         other.qty == qty &&
         other.price == price &&
-        other.total == total;
+        other.total == total &&
+        other.imagePath == imagePath;
   }
 
   @override
@@ -292,6 +302,7 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, qty.hashCode);
     hash = _SystemHash.combine(hash, price.hashCode);
     hash = _SystemHash.combine(hash, total.hashCode);
+    hash = _SystemHash.combine(hash, imagePath.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -342,6 +353,9 @@ mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
 
   /// The parameter `total` of this provider.
   String get total;
+
+  /// The parameter `imagePath` of this provider.
+  List<String?> get imagePath;
 }
 
 class _PostCheckoutFormProviderElement
@@ -378,6 +392,8 @@ class _PostCheckoutFormProviderElement
   List<String> get price => (origin as PostCheckoutFormProvider).price;
   @override
   String get total => (origin as PostCheckoutFormProvider).total;
+  @override
+  List<String?> get imagePath => (origin as PostCheckoutFormProvider).imagePath;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
