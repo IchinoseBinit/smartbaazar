@@ -79,7 +79,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                 },
                                 child: const Icon(Icons.arrow_back_ios)),
                             favouriteListAsyncValue.when(
-
                                 loading: () =>
                                     const CircularProgressIndicator(),
                                 error: (error, stackTrace) =>
@@ -350,35 +349,46 @@ class ProductDetailScreen extends ConsumerWidget {
                                       ),
                                       Column(
                                         children: [
-                                        IconButton(
-  onPressed: () async {
-    try {
-      // Call the API to add the product to favorites
-      await ref.read(addToFavoritesProvider(data.user_id!, productId).future);
-      
-      // Refresh the favorite list provider to get updated data
-      ref.refresh(getFavouriteListProvider);
+                                          IconButton(
+                                            onPressed: () async {
+                                              try {
+                                                // Call the API to add the product to favorites
+                                                await ref.read(
+                                                    addToFavoritesProvider(
+                                                            data.user_id!,
+                                                            productId)
+                                                        .future);
 
-      // Show a Snackbar indicating success
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Product added to your favorites!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    } catch (e) {
-      // Handle any errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to add product to favorites.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
-  },
-  icon: const Icon(Icons.bookmark_border_outlined),
-),
+                                                // Refresh the favorite list provider to get updated data
+                                                ref.refresh(
+                                                    getFavouriteListProvider);
 
+                                                // Show a Snackbar indicating success
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        'Product added to your favorites!'),
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              } catch (e) {
+                                                // Handle any errors
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        'Failed to add product to favorites.'),
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            icon: const Icon(
+                                                Icons.bookmark_border_outlined),
+                                          ),
                                           Text(
                                             'Save',
                                             style: TextStyle(
@@ -565,8 +575,11 @@ class ProductDetailScreen extends ConsumerWidget {
                         GeneralTextButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DummyVendorHomeScreen(
-                                    vendorName: data.user!.name!),
+                                builder: (context) => VendorHomeScreen(
+                                    vendorName: data.user!.name!,
+                                    vid: int.tryParse(data.user_id!)!,
+
+                                    ),
                               ));
                             },
                             marginH: 1,

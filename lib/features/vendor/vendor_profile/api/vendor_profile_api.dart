@@ -8,9 +8,11 @@ part 'vendor_profile_api.g.dart';
 
 @riverpod
 Future<VendorData> getVendorProfileData(
-    GetVendorProfileDataRef ref, String vendorName,
-    {int postType = 1}) async {
-  print("mama $vendorName");
+  GetVendorProfileDataRef ref,
+  String vendorName, {
+  int postType = 1,
+  String category = "brandnew",
+}) async {
   final SmartClinet client = SmartClinet();
 
   try {
@@ -20,28 +22,34 @@ Future<VendorData> getVendorProfileData(
           '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
     );
 
-    // Debug log for post array (to verify post content)
+    if (response.statusCode == 200 && response.data != null) {
+      final data = response.data['data'];
 
-    final jsonData = response.data;
-
-    // Check if the response is successful
-    if (response.statusCode == 200) {
-      // Extract vendor data and deserialize it to the VendorData model
-      final vendorJson = jsonData['data'];
-
-      // Ensure vendorJson is not null before attempting to parse
-      if (vendorJson == null) {
-        throw Exception('Vendor data is missing in the response');
+      // Handling 'brandnew' and 'used' posts
+      List<VendorPost> postList = [];
+      if (category == 'brandnew' && data["brandnew"] != null) {
+        postList = List<VendorPost>.from(
+          data["brandnew"].map((json) => VendorPost.fromJson(json)),
+        );
+      } else if (category == 'used' && data["used"] != null) {
+        postList = List<VendorPost>.from(
+          data["used"].map((json) => VendorPost.fromJson(json)),
+        );
       }
 
-      // Parse the vendor data using VendorData.fromJson
-      VendorData vendorData = VendorData.fromJson(vendorJson);
+      // Handling Advertisements
+      final ads = data['advertisements'];
+      List<Advertisement> advertisementList = ads != null
+          ? List<Advertisement>.from(
+              ads.map((json) => Advertisement.fromJson(json)))
+          : [];
 
-      // Optionally, log the parsed posts to verify the data structure
-      print("Vendor Posts: ${vendorData.posts?.data?.length}");
-
-      // Return the vendor data
-      return vendorData;
+      // Return the mapped VendorData with vendor, posts, and advertisements
+      return VendorData(
+        vendor: Vendor.fromJson(data['vendor']),
+        advertisements: advertisementList,
+        vendorposts: postList,
+      );
     } else {
       throw Exception(
           'Failed to load vendor data, status code: ${response.statusCode}');

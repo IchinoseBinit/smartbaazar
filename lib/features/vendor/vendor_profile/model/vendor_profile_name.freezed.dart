@@ -22,7 +22,7 @@ VendorData _$VendorDataFromJson(Map<String, dynamic> json) {
 mixin _$VendorData {
   Vendor? get vendor => throw _privateConstructorUsedError;
   List<Advertisement>? get advertisements => throw _privateConstructorUsedError;
-  Posts? get posts => throw _privateConstructorUsedError;
+  List<VendorPost>? get vendorposts => throw _privateConstructorUsedError;
 
   /// Serializes this VendorData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,10 +41,11 @@ abstract class $VendorDataCopyWith<$Res> {
       _$VendorDataCopyWithImpl<$Res, VendorData>;
   @useResult
   $Res call(
-      {Vendor? vendor, List<Advertisement>? advertisements, Posts? posts});
+      {Vendor? vendor,
+      List<Advertisement>? advertisements,
+      List<VendorPost>? vendorposts});
 
   $VendorCopyWith<$Res>? get vendor;
-  $PostsCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -64,7 +65,7 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
   $Res call({
     Object? vendor = freezed,
     Object? advertisements = freezed,
-    Object? posts = freezed,
+    Object? vendorposts = freezed,
   }) {
     return _then(_value.copyWith(
       vendor: freezed == vendor
@@ -75,10 +76,10 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
           ? _value.advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
               as List<Advertisement>?,
-      posts: freezed == posts
-          ? _value.posts
-          : posts // ignore: cast_nullable_to_non_nullable
-              as Posts?,
+      vendorposts: freezed == vendorposts
+          ? _value.vendorposts
+          : vendorposts // ignore: cast_nullable_to_non_nullable
+              as List<VendorPost>?,
     ) as $Val);
   }
 
@@ -95,20 +96,6 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
       return _then(_value.copyWith(vendor: value) as $Val);
     });
   }
-
-  /// Create a copy of VendorData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PostsCopyWith<$Res>? get posts {
-    if (_value.posts == null) {
-      return null;
-    }
-
-    return $PostsCopyWith<$Res>(_value.posts!, (value) {
-      return _then(_value.copyWith(posts: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -120,12 +107,12 @@ abstract class _$$VendorDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Vendor? vendor, List<Advertisement>? advertisements, Posts? posts});
+      {Vendor? vendor,
+      List<Advertisement>? advertisements,
+      List<VendorPost>? vendorposts});
 
   @override
   $VendorCopyWith<$Res>? get vendor;
-  @override
-  $PostsCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -143,7 +130,7 @@ class __$$VendorDataImplCopyWithImpl<$Res>
   $Res call({
     Object? vendor = freezed,
     Object? advertisements = freezed,
-    Object? posts = freezed,
+    Object? vendorposts = freezed,
   }) {
     return _then(_$VendorDataImpl(
       vendor: freezed == vendor
@@ -154,10 +141,10 @@ class __$$VendorDataImplCopyWithImpl<$Res>
           ? _value._advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
               as List<Advertisement>?,
-      posts: freezed == posts
-          ? _value.posts
-          : posts // ignore: cast_nullable_to_non_nullable
-              as Posts?,
+      vendorposts: freezed == vendorposts
+          ? _value._vendorposts
+          : vendorposts // ignore: cast_nullable_to_non_nullable
+              as List<VendorPost>?,
     ));
   }
 }
@@ -166,8 +153,11 @@ class __$$VendorDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorDataImpl implements _VendorData {
   const _$VendorDataImpl(
-      {this.vendor, final List<Advertisement>? advertisements, this.posts})
-      : _advertisements = advertisements;
+      {this.vendor,
+      final List<Advertisement>? advertisements,
+      final List<VendorPost>? vendorposts})
+      : _advertisements = advertisements,
+        _vendorposts = vendorposts;
 
   factory _$VendorDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorDataImplFromJson(json);
@@ -184,12 +174,19 @@ class _$VendorDataImpl implements _VendorData {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<VendorPost>? _vendorposts;
   @override
-  final Posts? posts;
+  List<VendorPost>? get vendorposts {
+    final value = _vendorposts;
+    if (value == null) return null;
+    if (_vendorposts is EqualUnmodifiableListView) return _vendorposts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'VendorData(vendor: $vendor, advertisements: $advertisements, posts: $posts)';
+    return 'VendorData(vendor: $vendor, advertisements: $advertisements, vendorposts: $vendorposts)';
   }
 
   @override
@@ -200,13 +197,17 @@ class _$VendorDataImpl implements _VendorData {
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             const DeepCollectionEquality()
                 .equals(other._advertisements, _advertisements) &&
-            (identical(other.posts, posts) || other.posts == posts));
+            const DeepCollectionEquality()
+                .equals(other._vendorposts, _vendorposts));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, vendor,
-      const DeepCollectionEquality().hash(_advertisements), posts);
+  int get hashCode => Object.hash(
+      runtimeType,
+      vendor,
+      const DeepCollectionEquality().hash(_advertisements),
+      const DeepCollectionEquality().hash(_vendorposts));
 
   /// Create a copy of VendorData
   /// with the given fields replaced by the non-null parameter values.
@@ -228,7 +229,7 @@ abstract class _VendorData implements VendorData {
   const factory _VendorData(
       {final Vendor? vendor,
       final List<Advertisement>? advertisements,
-      final Posts? posts}) = _$VendorDataImpl;
+      final List<VendorPost>? vendorposts}) = _$VendorDataImpl;
 
   factory _VendorData.fromJson(Map<String, dynamic> json) =
       _$VendorDataImpl.fromJson;
@@ -238,7 +239,7 @@ abstract class _VendorData implements VendorData {
   @override
   List<Advertisement>? get advertisements;
   @override
-  Posts? get posts;
+  List<VendorPost>? get vendorposts;
 
   /// Create a copy of VendorData
   /// with the given fields replaced by the non-null parameter values.
@@ -724,165 +725,12 @@ abstract class _Advertisement implements Advertisement {
       throw _privateConstructorUsedError;
 }
 
-Posts _$PostsFromJson(Map<String, dynamic> json) {
-  return _Posts.fromJson(json);
+VendorPost _$VendorPostFromJson(Map<String, dynamic> json) {
+  return _VendorPost.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Posts {
-  List<Post>? get data => throw _privateConstructorUsedError;
-
-  /// Serializes this Posts to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Posts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $PostsCopyWith<Posts> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PostsCopyWith<$Res> {
-  factory $PostsCopyWith(Posts value, $Res Function(Posts) then) =
-      _$PostsCopyWithImpl<$Res, Posts>;
-  @useResult
-  $Res call({List<Post>? data});
-}
-
-/// @nodoc
-class _$PostsCopyWithImpl<$Res, $Val extends Posts>
-    implements $PostsCopyWith<$Res> {
-  _$PostsCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Posts
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_value.copyWith(
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<Post>?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PostsImplCopyWith<$Res> implements $PostsCopyWith<$Res> {
-  factory _$$PostsImplCopyWith(
-          _$PostsImpl value, $Res Function(_$PostsImpl) then) =
-      __$$PostsImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<Post>? data});
-}
-
-/// @nodoc
-class __$$PostsImplCopyWithImpl<$Res>
-    extends _$PostsCopyWithImpl<$Res, _$PostsImpl>
-    implements _$$PostsImplCopyWith<$Res> {
-  __$$PostsImplCopyWithImpl(
-      _$PostsImpl _value, $Res Function(_$PostsImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Posts
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = freezed,
-  }) {
-    return _then(_$PostsImpl(
-      data: freezed == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<Post>?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PostsImpl implements _Posts {
-  const _$PostsImpl({final List<Post>? data}) : _data = data;
-
-  factory _$PostsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PostsImplFromJson(json);
-
-  final List<Post>? _data;
-  @override
-  List<Post>? get data {
-    final value = _data;
-    if (value == null) return null;
-    if (_data is EqualUnmodifiableListView) return _data;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  String toString() {
-    return 'Posts(data: $data)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PostsImpl &&
-            const DeepCollectionEquality().equals(other._data, _data));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
-
-  /// Create a copy of Posts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PostsImplCopyWith<_$PostsImpl> get copyWith =>
-      __$$PostsImplCopyWithImpl<_$PostsImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PostsImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Posts implements Posts {
-  const factory _Posts({final List<Post>? data}) = _$PostsImpl;
-
-  factory _Posts.fromJson(Map<String, dynamic> json) = _$PostsImpl.fromJson;
-
-  @override
-  List<Post>? get data;
-
-  /// Create a copy of Posts
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PostsImplCopyWith<_$PostsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Post _$PostFromJson(Map<String, dynamic> json) {
-  return _Post.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Post {
+mixin _$VendorPost {
   String? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
@@ -893,19 +741,21 @@ mixin _$Post {
   int? get avg_rating => throw _privateConstructorUsedError;
   String? get visits => throw _privateConstructorUsedError;
 
-  /// Serializes this Post to a JSON map.
+  /// Serializes this VendorPost to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Post
+  /// Create a copy of VendorPost
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PostCopyWith<Post> get copyWith => throw _privateConstructorUsedError;
+  $VendorPostCopyWith<VendorPost> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PostCopyWith<$Res> {
-  factory $PostCopyWith(Post value, $Res Function(Post) then) =
-      _$PostCopyWithImpl<$Res, Post>;
+abstract class $VendorPostCopyWith<$Res> {
+  factory $VendorPostCopyWith(
+          VendorPost value, $Res Function(VendorPost) then) =
+      _$VendorPostCopyWithImpl<$Res, VendorPost>;
   @useResult
   $Res call(
       {String? id,
@@ -920,16 +770,16 @@ abstract class $PostCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PostCopyWithImpl<$Res, $Val extends Post>
-    implements $PostCopyWith<$Res> {
-  _$PostCopyWithImpl(this._value, this._then);
+class _$VendorPostCopyWithImpl<$Res, $Val extends VendorPost>
+    implements $VendorPostCopyWith<$Res> {
+  _$VendorPostCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Post
+  /// Create a copy of VendorPost
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -986,10 +836,11 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
 }
 
 /// @nodoc
-abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
-  factory _$$PostImplCopyWith(
-          _$PostImpl value, $Res Function(_$PostImpl) then) =
-      __$$PostImplCopyWithImpl<$Res>;
+abstract class _$$VendorPostImplCopyWith<$Res>
+    implements $VendorPostCopyWith<$Res> {
+  factory _$$VendorPostImplCopyWith(
+          _$VendorPostImpl value, $Res Function(_$VendorPostImpl) then) =
+      __$$VendorPostImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1005,13 +856,14 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$PostImplCopyWithImpl<$Res>
-    extends _$PostCopyWithImpl<$Res, _$PostImpl>
-    implements _$$PostImplCopyWith<$Res> {
-  __$$PostImplCopyWithImpl(_$PostImpl _value, $Res Function(_$PostImpl) _then)
+class __$$VendorPostImplCopyWithImpl<$Res>
+    extends _$VendorPostCopyWithImpl<$Res, _$VendorPostImpl>
+    implements _$$VendorPostImplCopyWith<$Res> {
+  __$$VendorPostImplCopyWithImpl(
+      _$VendorPostImpl _value, $Res Function(_$VendorPostImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Post
+  /// Create a copy of VendorPost
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -1026,7 +878,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? avg_rating = freezed,
     Object? visits = freezed,
   }) {
-    return _then(_$PostImpl(
+    return _then(_$VendorPostImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1069,8 +921,8 @@ class __$$PostImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PostImpl implements _Post {
-  const _$PostImpl(
+class _$VendorPostImpl implements _VendorPost {
+  const _$VendorPostImpl(
       {this.id,
       this.title,
       this.price,
@@ -1081,8 +933,8 @@ class _$PostImpl implements _Post {
       this.avg_rating,
       this.visits});
 
-  factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PostImplFromJson(json);
+  factory _$VendorPostImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VendorPostImplFromJson(json);
 
   @override
   final String? id;
@@ -1105,14 +957,14 @@ class _$PostImpl implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, price: $price, image: $image, pickup: $pickup, username: $username, city: $city, avg_rating: $avg_rating, visits: $visits)';
+    return 'VendorPost(id: $id, title: $title, price: $price, image: $image, pickup: $pickup, username: $username, city: $city, avg_rating: $avg_rating, visits: $visits)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PostImpl &&
+            other is _$VendorPostImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.price, price) || other.price == price) &&
@@ -1131,24 +983,24 @@ class _$PostImpl implements _Post {
   int get hashCode => Object.hash(runtimeType, id, title, price, image, pickup,
       username, city, avg_rating, visits);
 
-  /// Create a copy of Post
+  /// Create a copy of VendorPost
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
-      __$$PostImplCopyWithImpl<_$PostImpl>(this, _$identity);
+  _$$VendorPostImplCopyWith<_$VendorPostImpl> get copyWith =>
+      __$$VendorPostImplCopyWithImpl<_$VendorPostImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PostImplToJson(
+    return _$$VendorPostImplToJson(
       this,
     );
   }
 }
 
-abstract class _Post implements Post {
-  const factory _Post(
+abstract class _VendorPost implements VendorPost {
+  const factory _VendorPost(
       {final String? id,
       final String? title,
       final String? price,
@@ -1157,9 +1009,10 @@ abstract class _Post implements Post {
       final String? username,
       final String? city,
       final int? avg_rating,
-      final String? visits}) = _$PostImpl;
+      final String? visits}) = _$VendorPostImpl;
 
-  factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
+  factory _VendorPost.fromJson(Map<String, dynamic> json) =
+      _$VendorPostImpl.fromJson;
 
   @override
   String? get id;
@@ -1180,10 +1033,10 @@ abstract class _Post implements Post {
   @override
   String? get visits;
 
-  /// Create a copy of Post
+  /// Create a copy of VendorPost
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
+  _$$VendorPostImplCopyWith<_$VendorPostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

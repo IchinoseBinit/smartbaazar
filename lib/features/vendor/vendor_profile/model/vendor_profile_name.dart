@@ -8,7 +8,7 @@ class VendorData with _$VendorData {
   const factory VendorData({
     Vendor? vendor,
     List<Advertisement>? advertisements,
-    Posts? posts, // Update to use the new Posts class
+    List<VendorPost>? vendorposts, // Update to use the new Posts class
   }) = _VendorData;
 
   factory VendorData.fromJson(Map<String, dynamic> json) =>
@@ -44,18 +44,11 @@ class Advertisement with _$Advertisement {
 }
 
 // Define the Posts class to handle the posts structure
-@freezed
-class Posts with _$Posts {
-  const factory Posts({
-    List<Post>? data,
-  }) = _Posts;
 
-  factory Posts.fromJson(Map<String, dynamic> json) => _$PostsFromJson(json);
-}
 
 @freezed
-class Post with _$Post {
-  const factory Post(
+class VendorPost with _$VendorPost {
+  const factory VendorPost(
       {String? id,
       String? title,
       String? price,
@@ -66,7 +59,7 @@ class Post with _$Post {
       int? avg_rating,
       String? visits,
       // Add other fields based on your requirements
-      }) = _Post;
+      }) = _VendorPost;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  factory VendorPost.fromJson(Map<String, dynamic> json) => _$VendorPostFromJson(json);
 }

@@ -57,14 +57,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //       color: Colors.white,
 //       child: Scaffold(
-        
+
 //         key: _key,
 //         resizeToAvoidBottomInset: false,
 //         backgroundColor: const Color(0xffF6F1F1),
 //         appBar: AppbarWidget(
 
 //           onsubmit: (p0) {
-            
+
 //           },
 //           scaffoldKey: _key,
 //           searchController: _searchController,
@@ -245,13 +245,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // }
 
 class SearchInStore extends StatelessWidget {
-  const SearchInStore({super.key});
+  SearchInStore({super.key, required this.onsubmit,required this.searchController});
+  Function(String)? onsubmit;
+  TextEditingController searchController;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 33.h,
       child: TextFormField(
+        controller: searchController,
+        onFieldSubmitted: onsubmit,
         decoration: InputDecoration(
           hintText: 'Search in store...',
           prefixIconConstraints: BoxConstraints(minWidth: 40.w),

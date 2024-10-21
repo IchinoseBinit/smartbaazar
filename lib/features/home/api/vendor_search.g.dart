@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'search_product.dart';
+part of 'vendor_search.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchHash() => r'0339bb0eac864f4b596afcf5ad7dd81499566bfb';
+String _$vendorSearchHash() => r'b22c6918ad65f15a8e2aa5ac7599270bd10fb31c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,33 @@ class _SystemHash {
   }
 }
 
-/// See also [search].
-@ProviderFor(search)
-const searchProvider = SearchFamily();
+/// See also [vendorSearch].
+@ProviderFor(vendorSearch)
+const vendorSearchProvider = VendorSearchFamily();
 
-/// See also [search].
-class SearchFamily extends Family<AsyncValue<List<SearchProductModel>>> {
-  /// See also [search].
-  const SearchFamily();
+/// See also [vendorSearch].
+class VendorSearchFamily extends Family<AsyncValue<List<SearchProductModel>>> {
+  /// See also [vendorSearch].
+  const VendorSearchFamily();
 
-  /// See also [search].
-  SearchProvider call(
+  /// See also [vendorSearch].
+  VendorSearchProvider call(
     String query,
+    int vendorid,
   ) {
-    return SearchProvider(
+    return VendorSearchProvider(
       query,
+      vendorid,
     );
   }
 
   @override
-  SearchProvider getProviderOverride(
-    covariant SearchProvider provider,
+  VendorSearchProvider getProviderOverride(
+    covariant VendorSearchProvider provider,
   ) {
     return call(
       provider.query,
+      provider.vendorid,
     );
   }
 
@@ -68,32 +71,36 @@ class SearchFamily extends Family<AsyncValue<List<SearchProductModel>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchProvider';
+  String? get name => r'vendorSearchProvider';
 }
 
-/// See also [search].
-class SearchProvider
+/// See also [vendorSearch].
+class VendorSearchProvider
     extends AutoDisposeFutureProvider<List<SearchProductModel>> {
-  /// See also [search].
-  SearchProvider(
+  /// See also [vendorSearch].
+  VendorSearchProvider(
     String query,
+    int vendorid,
   ) : this._internal(
-          (ref) => search(
-            ref as SearchRef,
+          (ref) => vendorSearch(
+            ref as VendorSearchRef,
             query,
+            vendorid,
           ),
-          from: searchProvider,
-          name: r'searchProvider',
+          from: vendorSearchProvider,
+          name: r'vendorSearchProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchHash,
-          dependencies: SearchFamily._dependencies,
-          allTransitiveDependencies: SearchFamily._allTransitiveDependencies,
+                  : _$vendorSearchHash,
+          dependencies: VendorSearchFamily._dependencies,
+          allTransitiveDependencies:
+              VendorSearchFamily._allTransitiveDependencies,
           query: query,
+          vendorid: vendorid,
         );
 
-  SearchProvider._internal(
+  VendorSearchProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -101,59 +108,72 @@ class SearchProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.query,
+    required this.vendorid,
   }) : super.internal();
 
   final String query;
+  final int vendorid;
 
   @override
   Override overrideWith(
-    FutureOr<List<SearchProductModel>> Function(SearchRef provider) create,
+    FutureOr<List<SearchProductModel>> Function(VendorSearchRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SearchProvider._internal(
-        (ref) => create(ref as SearchRef),
+      override: VendorSearchProvider._internal(
+        (ref) => create(ref as VendorSearchRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         query: query,
+        vendorid: vendorid,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<List<SearchProductModel>> createElement() {
-    return _SearchProviderElement(this);
+    return _VendorSearchProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchProvider && other.query == query;
+    return other is VendorSearchProvider &&
+        other.query == query &&
+        other.vendorid == vendorid;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, vendorid.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin SearchRef on AutoDisposeFutureProviderRef<List<SearchProductModel>> {
+mixin VendorSearchRef
+    on AutoDisposeFutureProviderRef<List<SearchProductModel>> {
   /// The parameter `query` of this provider.
   String get query;
+
+  /// The parameter `vendorid` of this provider.
+  int get vendorid;
 }
 
-class _SearchProviderElement
+class _VendorSearchProviderElement
     extends AutoDisposeFutureProviderElement<List<SearchProductModel>>
-    with SearchRef {
-  _SearchProviderElement(super.provider);
+    with VendorSearchRef {
+  _VendorSearchProviderElement(super.provider);
 
   @override
-  String get query => (origin as SearchProvider).query;
+  String get query => (origin as VendorSearchProvider).query;
+  @override
+  int get vendorid => (origin as VendorSearchProvider).vendorid;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

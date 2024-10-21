@@ -12,6 +12,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/vendor_search.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
@@ -21,21 +22,25 @@ import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DummyVendorHomeScreen extends ConsumerStatefulWidget {
+class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
-  const DummyVendorHomeScreen({super.key, required this.vendorName});
+  final int vid;
+   const VendorHomeScreen({super.key, required this.vendorName,required this.vid});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DummyVendorHomeScreenState();
+      _VendorHomeScreenState();
 }
 
-class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
+class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _vendorsearchController = TextEditingController();
+
   final _debouncer = BehaviorSubject<String>();
   bool _showSearchResults = false;
+  bool _vendorsearchResullts = false;
   late TabController _tabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
 
@@ -56,6 +61,18 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
         ));
       });
     });
+   _vendorsearchController.addListener(() {
+  _debouncer.add(_vendorsearchController.text);
+});
+
+_debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+  debugPrint("Vendor Search query: $query");
+  ref.refresh(VendorSearchProvider(query, widget.vid));
+  setState(() {
+    _vendorsearchResullts = query.isNotEmpty; // Update this flag
+  });
+});
+
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -80,6 +97,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
   void dispose() {
     _debouncer.close();
     _searchController.dispose();
+    _vendorsearchController.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -89,6 +107,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
     final adsList = ref.watch(getAdsProvider);
 
     final searchResults = ref.watch(searchProvider(_searchController.text));
+    final vendorsearchResults = ref.watch(VendorSearchProvider(_vendorsearchController.text, widget.vid));
 
     final vendorProfileModelDataAsyncValue = ref.watch(
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
@@ -369,7 +388,63 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                                 ),
                               ),
                               SizedBox(height: 10.h),
-                              const SearchInStore(),
+                              SearchInStore(
+                                searchController: _vendorsearchController,
+                                onsubmit: (value) {
+                                    if (_showSearchResults) {
+              setState(() {
+                _showSearchResults = false;
+                FocusScope.of(context).unfocus();
+              });
+            }
+
+                                },
+                              ),
+                               if (_vendorsearchResullts)
+  Container(
+    color: Colors.white,
+    child: vendorsearchResults.when(
+      data: (results) {
+        if (results.isEmpty) {
+          return const SizedBox(
+            child: Text('No result found'),
+          );
+        }
+        return Card(
+          elevation: 8,
+          child: ListView.separated(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            primary: false,
+            itemCount: results.length,
+            itemBuilder: (context, index) {
+              final product = results[index];
+              return ListTile(
+                title: Text(product.title),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchScreen(
+                          query: _vendorsearchController.text,
+                        ),
+                      ));
+                  setState(() {
+                    _vendorsearchResullts = false;
+                    FocusScope.of(context).unfocus();
+                  });
+                },
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
+          ),
+        );
+      },
+      loading: () => const CircularProgressIndicator(),
+      error: (error, stack) => Center(child: Text('Error: $error')),
+    ),
+  ),
+
                             ],
                           ),
                         ),
@@ -396,14 +471,9 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                             physics: const NeverScrollableScrollPhysics(),
                             controller: _tabController,
                             children: [
-                              _buildHomeTab(vendorProfile.posts!.data!.length,
-                                  vendorProfile.posts!.data!, "Brand new"),
-                              // _buildHomeTab(vendorProfile.posts!.data!.length,
-                              //     vendorProfile.posts!.data!, "Hot Deals"),
-                              _buildHomeTab(vendorProfile.posts!.data!.length,
-                                  vendorProfile.posts!.data!, "Brand new"),
-                              _buildHomeTab(vendorProfile.posts!.data!.length,
-                                  vendorProfile.posts!.data!, "Used"),
+                              buildTabContent("brandnew", "Hot Products"),
+                              buildTabContent("brandnew", "Brand New"),
+                              buildTabContent("used", "Used Products")
                             ],
                           ),
                         ),
@@ -429,7 +499,57 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
     );
   }
 
-  Widget _buildHomeTab(int count, List<Post> data, String text) {
+  Widget buildTabContent(String category, String name) {
+    final adsList = ref.watch(getAdsProvider);
+
+    // Use ref.watch to get search results based on category
+    final searchResults = ref.watch(getVendorProfileDataProvider(
+      widget.vendorName.replaceAll(" ", ''),
+      category: category,
+    ));
+
+    return searchResults.when(
+      loading: () {
+        // Check if ads are loading and display loading indicator
+        if (adsList.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        // Check for errors when loading ads
+        else if (adsList.hasError) {
+          print("Error loading ads: ${adsList.error}");
+          return Center(child: Text('Error loading ads: ${adsList.error}'));
+        }
+        // Show ad if available and non-null
+        else if (adsList.value != null && adsList.value!.isNotEmpty) {
+          final ad = adsList.value!.first; // Get the first ad
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Safely display the ad image
+              Image.network(
+                ad.image ?? '', // Default to empty string if null
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.error),
+              ),
+              // Display ad ID safely
+            ],
+          );
+        }
+        return const Center(child: Text('No ads available.'));
+      },
+      // Handle errors in the search results
+      error: (err, stack) => Center(child: Text('Error: $err')),
+      data: (VendorData data) {
+        if (data.vendorposts!.isEmpty) {
+          return const Center(child: Text('No results found.'));
+        }
+        // Display search results in a grid
+        return _buildHomeTab(data.vendorposts!, name);
+      },
+    );
+  }
+
+  Widget _buildHomeTab(List<VendorPost> data, String text) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -450,11 +570,13 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
         // Wrap GridView.builder with Expanded to avoid layout issues
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.only(left: 10),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(left: 10, right: 5, top: 1),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 19.0,
-              mainAxisSpacing: 19.0,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 5.0,
               childAspectRatio: 0.90,
             ),
             itemCount: data.length,
@@ -470,7 +592,7 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                 ),
                 child: Container(
                   margin: const EdgeInsets.only(top: 2),
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
@@ -482,10 +604,14 @@ class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: 2.h,
+                      ),
                       // Image display with Skeleton placeholder
                       Skeleton.replace(
                         width: productCardWidth,
                         child: Container(
+                          margin: EdgeInsets.only(right: 2, top: 4),
                           width: productCardWidth,
                           height: 100.h,
                           decoration: BoxDecoration(

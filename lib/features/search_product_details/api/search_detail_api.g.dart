@@ -6,7 +6,7 @@ part of 'search_detail_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchDetailsHash() => r'7e1fa445670fcf8d174c797ccc7ba3ada699afa8';
+String _$getSearchDetailsHash() => r'33e5d027340df4ec0c3c0e1b7f8432e8f86d007f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,7 +42,7 @@ class GetSearchDetailsFamily extends Family<AsyncValue<SearchDetails>> {
   GetSearchDetailsProvider call(
     String query, {
     String category = 'brand_new',
-    String orderby = 'relevance',
+    String? orderby,
   }) {
     return GetSearchDetailsProvider(
       query,
@@ -84,7 +84,7 @@ class GetSearchDetailsProvider
   GetSearchDetailsProvider(
     String query, {
     String category = 'brand_new',
-    String orderby = 'relevance',
+    String? orderby,
   }) : this._internal(
           (ref) => getSearchDetails(
             ref as GetSearchDetailsRef,
@@ -120,7 +120,7 @@ class GetSearchDetailsProvider
 
   final String query;
   final String category;
-  final String orderby;
+  final String? orderby;
 
   @override
   Override overrideWith(
@@ -174,7 +174,7 @@ mixin GetSearchDetailsRef on AutoDisposeFutureProviderRef<SearchDetails> {
   String get category;
 
   /// The parameter `orderby` of this provider.
-  String get orderby;
+  String? get orderby;
 }
 
 class _GetSearchDetailsProviderElement
@@ -187,7 +187,7 @@ class _GetSearchDetailsProviderElement
   @override
   String get category => (origin as GetSearchDetailsProvider).category;
   @override
-  String get orderby => (origin as GetSearchDetailsProvider).orderby;
+  String? get orderby => (origin as GetSearchDetailsProvider).orderby;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -14,16 +14,16 @@ _$VendorDataImpl _$$VendorDataImplFromJson(Map<String, dynamic> json) =>
       advertisements: (json['advertisements'] as List<dynamic>?)
           ?.map((e) => Advertisement.fromJson(e as Map<String, dynamic>))
           .toList(),
-      posts: json['posts'] == null
-          ? null
-          : Posts.fromJson(json['posts'] as Map<String, dynamic>),
+      vendorposts: (json['vendorposts'] as List<dynamic>?)
+          ?.map((e) => VendorPost.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$VendorDataImplToJson(_$VendorDataImpl instance) =>
     <String, dynamic>{
       'vendor': instance.vendor,
       'advertisements': instance.advertisements,
-      'posts': instance.posts,
+      'vendorposts': instance.vendorposts,
     };
 
 _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
@@ -63,18 +63,8 @@ Map<String, dynamic> _$$AdvertisementImplToJson(_$AdvertisementImpl instance) =>
       'link': instance.link,
     };
 
-_$PostsImpl _$$PostsImplFromJson(Map<String, dynamic> json) => _$PostsImpl(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Post.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$PostsImplToJson(_$PostsImpl instance) =>
-    <String, dynamic>{
-      'data': instance.data,
-    };
-
-_$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
+_$VendorPostImpl _$$VendorPostImplFromJson(Map<String, dynamic> json) =>
+    _$VendorPostImpl(
       id: json['id'] as String?,
       title: json['title'] as String?,
       price: json['price'] as String?,
@@ -86,7 +76,7 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       visits: json['visits'] as String?,
     );
 
-Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
+Map<String, dynamic> _$$VendorPostImplToJson(_$VendorPostImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

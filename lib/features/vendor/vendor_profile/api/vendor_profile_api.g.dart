@@ -7,7 +7,7 @@ part of 'vendor_profile_api.dart';
 // **************************************************************************
 
 String _$getVendorProfileDataHash() =>
-    r'1480c8f412e60127cd895bd9e88b7701a47cc20a';
+    r'e035107517f6aeb027a5a8034d6d39d144022547';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,10 +43,12 @@ class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
   GetVendorProfileDataProvider call(
     String vendorName, {
     int postType = 1,
+    String category = "brandnew",
   }) {
     return GetVendorProfileDataProvider(
       vendorName,
       postType: postType,
+      category: category,
     );
   }
 
@@ -57,6 +59,7 @@ class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
     return call(
       provider.vendorName,
       postType: provider.postType,
+      category: provider.category,
     );
   }
 
@@ -82,11 +85,13 @@ class GetVendorProfileDataProvider
   GetVendorProfileDataProvider(
     String vendorName, {
     int postType = 1,
+    String category = "brandnew",
   }) : this._internal(
           (ref) => getVendorProfileData(
             ref as GetVendorProfileDataRef,
             vendorName,
             postType: postType,
+            category: category,
           ),
           from: getVendorProfileDataProvider,
           name: r'getVendorProfileDataProvider',
@@ -99,6 +104,7 @@ class GetVendorProfileDataProvider
               GetVendorProfileDataFamily._allTransitiveDependencies,
           vendorName: vendorName,
           postType: postType,
+          category: category,
         );
 
   GetVendorProfileDataProvider._internal(
@@ -110,10 +116,12 @@ class GetVendorProfileDataProvider
     required super.from,
     required this.vendorName,
     required this.postType,
+    required this.category,
   }) : super.internal();
 
   final String vendorName;
   final int postType;
+  final String category;
 
   @override
   Override overrideWith(
@@ -130,6 +138,7 @@ class GetVendorProfileDataProvider
         debugGetCreateSourceHash: null,
         vendorName: vendorName,
         postType: postType,
+        category: category,
       ),
     );
   }
@@ -143,7 +152,8 @@ class GetVendorProfileDataProvider
   bool operator ==(Object other) {
     return other is GetVendorProfileDataProvider &&
         other.vendorName == vendorName &&
-        other.postType == postType;
+        other.postType == postType &&
+        other.category == category;
   }
 
   @override
@@ -151,6 +161,7 @@ class GetVendorProfileDataProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, vendorName.hashCode);
     hash = _SystemHash.combine(hash, postType.hashCode);
+    hash = _SystemHash.combine(hash, category.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -162,6 +173,9 @@ mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorData> {
 
   /// The parameter `postType` of this provider.
   int get postType;
+
+  /// The parameter `category` of this provider.
+  String get category;
 }
 
 class _GetVendorProfileDataProviderElement
@@ -173,6 +187,8 @@ class _GetVendorProfileDataProviderElement
   String get vendorName => (origin as GetVendorProfileDataProvider).vendorName;
   @override
   int get postType => (origin as GetVendorProfileDataProvider).postType;
+  @override
+  String get category => (origin as GetVendorProfileDataProvider).category;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

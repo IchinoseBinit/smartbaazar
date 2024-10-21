@@ -16,6 +16,7 @@ class ApiConstants {
   static String homeSlider1BannerUrl = '$baseUrl/homeSections/home1';
   static String homeSlider2BannerUrl = '$baseUrl/homeSections/home2';
   static String homeScreenSearchBar = '$baseUrl/homeSections/search_suggest/';
+  static String vendorSearchSuggest = '$baseUrl/homeSections/vendor_product_suggest';
   static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
   static String getAdsUrl = '$baseUrl/homeSections/loadads';
 

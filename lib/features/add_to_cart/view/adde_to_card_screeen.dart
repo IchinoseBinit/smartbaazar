@@ -6,6 +6,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -200,17 +201,30 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                         ),
                       ),
                       const Spacer(),
-                      const Icon(
-                        size: 15,
-                        Icons.arrow_back_ios,
-                        color: Color(0xffADADAD),
-                      ),
-                      Text(
-                        'Continue Shopping',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff888888),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(
+                              size: 15,
+                              Icons.arrow_back_ios,
+                              color: Color(0xffADADAD),
+                            ),
+                            Text(
+                              'Continue Shopping',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xff888888),
+                              ),
+                            )
+                          ],
                         ),
                       )
                     ],
