@@ -6,7 +6,7 @@ part of 'vendor_search.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$vendorSearchHash() => r'b22c6918ad65f15a8e2aa5ac7599270bd10fb31c';
+String _$vendorSearchHash() => r'98084b9f5cfc077a42b749bde5a871ec7a35a5d8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,11 +41,11 @@ class VendorSearchFamily extends Family<AsyncValue<List<SearchProductModel>>> {
   /// See also [vendorSearch].
   VendorSearchProvider call(
     String query,
-    int vendorid,
+    int vendorId,
   ) {
     return VendorSearchProvider(
       query,
-      vendorid,
+      vendorId,
     );
   }
 
@@ -55,7 +55,7 @@ class VendorSearchFamily extends Family<AsyncValue<List<SearchProductModel>>> {
   ) {
     return call(
       provider.query,
-      provider.vendorid,
+      provider.vendorId,
     );
   }
 
@@ -80,12 +80,12 @@ class VendorSearchProvider
   /// See also [vendorSearch].
   VendorSearchProvider(
     String query,
-    int vendorid,
+    int vendorId,
   ) : this._internal(
           (ref) => vendorSearch(
             ref as VendorSearchRef,
             query,
-            vendorid,
+            vendorId,
           ),
           from: vendorSearchProvider,
           name: r'vendorSearchProvider',
@@ -97,7 +97,7 @@ class VendorSearchProvider
           allTransitiveDependencies:
               VendorSearchFamily._allTransitiveDependencies,
           query: query,
-          vendorid: vendorid,
+          vendorId: vendorId,
         );
 
   VendorSearchProvider._internal(
@@ -108,11 +108,11 @@ class VendorSearchProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.query,
-    required this.vendorid,
+    required this.vendorId,
   }) : super.internal();
 
   final String query;
-  final int vendorid;
+  final int vendorId;
 
   @override
   Override overrideWith(
@@ -129,7 +129,7 @@ class VendorSearchProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         query: query,
-        vendorid: vendorid,
+        vendorId: vendorId,
       ),
     );
   }
@@ -143,14 +143,14 @@ class VendorSearchProvider
   bool operator ==(Object other) {
     return other is VendorSearchProvider &&
         other.query == query &&
-        other.vendorid == vendorid;
+        other.vendorId == vendorId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
-    hash = _SystemHash.combine(hash, vendorid.hashCode);
+    hash = _SystemHash.combine(hash, vendorId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -161,8 +161,8 @@ mixin VendorSearchRef
   /// The parameter `query` of this provider.
   String get query;
 
-  /// The parameter `vendorid` of this provider.
-  int get vendorid;
+  /// The parameter `vendorId` of this provider.
+  int get vendorId;
 }
 
 class _VendorSearchProviderElement
@@ -173,7 +173,7 @@ class _VendorSearchProviderElement
   @override
   String get query => (origin as VendorSearchProvider).query;
   @override
-  int get vendorid => (origin as VendorSearchProvider).vendorid;
+  int get vendorId => (origin as VendorSearchProvider).vendorId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

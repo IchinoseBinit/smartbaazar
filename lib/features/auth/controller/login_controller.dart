@@ -36,60 +36,59 @@ class LoginController extends StateNotifier<GenericState> {
       state = LoadedState<LoginData>(response: loginData);
 
       // Navigate to the bottom navigation screen, replacing the login screen
-      await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => const BottomNavigationScreen()));
+      await Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }
   }
 
-Future<void> continueSession(BuildContext context) async {
-  final pref = await SharedPreferences.getInstance();
-  final sessionString = pref.getString('session');
-  SmartClinet.token = pref.getString('accessToken') ?? '';
-  SmartClinet.refresh = pref.getString('refreshToken') ?? '';
-  state = LoadingState();
+  Future<void> continueSession(BuildContext context) async {
+    final pref = await SharedPreferences.getInstance();
+    final sessionString = pref.getString('session');
+    SmartClinet.token = pref.getString('accessToken') ?? '';
+    SmartClinet.refresh = pref.getString('refreshToken') ?? '';
+    state = LoadingState();
 
-  try {
-    if (sessionString != null) {
-      final session = json.decode(sessionString);
-      String userId = session['result']?['id']?.toString() ?? '';
-      if (userId.isNotEmpty) {
-        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-        SmartClinet.userId = userId;
-        await pref.setString('userId', userId);
-            await Navigator.pushReplacement(
+    try {
+      if (sessionString != null) {
+        final session = json.decode(sessionString);
+        String userId = session['result']?['id']?.toString() ?? '';
+        String useremail = session['result']?['email']?.toString() ?? '';
+        print("useremail$useremail");
+        if (userId.isNotEmpty) {
+          state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+          SmartClinet.userId = userId;
+          await pref.setString('userId', userId);
+          await Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (_) => const BottomNavigationScreen(),
             ),
           );
+        } else {
+          await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+            ),
+          );
+        }
       } else {
-                await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const LoginScreen(),
-            ),
-          );
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoginScreen(),
+          ),
+        );
       }
-    } else {
-              await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const LoginScreen(),
-            ),
-          );
+    } catch (e) {
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        ),
+      );
     }
-  } catch (e) {
-           await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const LoginScreen(),
-            ),
-          );
   }
-}
-
 }

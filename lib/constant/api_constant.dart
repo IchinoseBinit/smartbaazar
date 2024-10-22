@@ -8,6 +8,7 @@ class ApiConstants {
   static String refreshTokenUrl = "$baseUrl/auth/refresh-token";
   static String logoUrl = '$baseUrl/app_logo_loader';
   static String logoutUrl = '$baseUrl/auth/logout/';
+  static String getcontactSellerUrl = '$baseUrl/threads';
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -16,7 +17,8 @@ class ApiConstants {
   static String homeSlider1BannerUrl = '$baseUrl/homeSections/home1';
   static String homeSlider2BannerUrl = '$baseUrl/homeSections/home2';
   static String homeScreenSearchBar = '$baseUrl/homeSections/search_suggest/';
-  static String vendorSearchSuggest = '$baseUrl/homeSections/vendor_product_suggest';
+  static String vendorSearchSuggest =
+      '$baseUrl/homeSections/vendor_product_suggest';
   static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
   static String getAdsUrl = '$baseUrl/homeSections/loadads';
 
@@ -44,6 +46,7 @@ class ApiConstants {
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
   static String getVendorProfileDataByID = '$baseUrl/users/vendor';
+  static String followunfollowvendorurl = '$baseUrl/users/follow';
   //subscribe and win everyday
   static String getSubscribeAndWinUrl = '$baseUrl/users/scwn';
   static String getMySubscriptionUrl = '$baseUrl/subscription';

@@ -43,9 +43,9 @@ Future<VendorData> getVendorProfileData(
           ? List<Advertisement>.from(
               ads.map((json) => Advertisement.fromJson(json)))
           : [];
-
       // Return the mapped VendorData with vendor, posts, and advertisements
       return VendorData(
+        scratch_banner: response.data['data']['scratch_banner'],
         vendor: Vendor.fromJson(data['vendor']),
         advertisements: advertisementList,
         vendorposts: postList,

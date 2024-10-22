@@ -14,6 +14,7 @@ import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/vendor_search.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -25,7 +26,8 @@ import 'package:url_launcher/url_launcher.dart';
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
   final int vid;
-   const VendorHomeScreen({super.key, required this.vendorName,required this.vid});
+  const VendorHomeScreen(
+      {super.key, required this.vendorName, required this.vid});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -61,18 +63,17 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         ));
       });
     });
-   _vendorsearchController.addListener(() {
-  _debouncer.add(_vendorsearchController.text);
-});
+    _vendorsearchController.addListener(() {
+      _debouncer.add(_vendorsearchController.text);
+    });
 
-_debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
-  debugPrint("Vendor Search query: $query");
-  ref.refresh(VendorSearchProvider(query, widget.vid));
-  setState(() {
-    _vendorsearchResullts = query.isNotEmpty; // Update this flag
-  });
-});
-
+    _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+      debugPrint("Vendor Search query: $query");
+      ref.refresh(VendorSearchProvider(query, widget.vid));
+      setState(() {
+        _vendorsearchResullts = query.isNotEmpty; // Update this flag
+      });
+    });
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -107,7 +108,8 @@ _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
     final adsList = ref.watch(getAdsProvider);
 
     final searchResults = ref.watch(searchProvider(_searchController.text));
-    final vendorsearchResults = ref.watch(VendorSearchProvider(_vendorsearchController.text, widget.vid));
+    final vendorsearchResults = ref
+        .watch(VendorSearchProvider(_vendorsearchController.text, widget.vid));
 
     final vendorProfileModelDataAsyncValue = ref.watch(
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
@@ -230,6 +232,7 @@ _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
                   ),
                 vendorProfileModelDataAsyncValue.when(
                   data: (vendorProfile) {
+                    String scratch = vendorProfile.scratch_banner!;
                     return Column(
                       children: [
                         CarouselSlider(
@@ -391,60 +394,78 @@ _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
                               SearchInStore(
                                 searchController: _vendorsearchController,
                                 onsubmit: (value) {
-                                    if (_showSearchResults) {
-              setState(() {
-                _showSearchResults = false;
-                FocusScope.of(context).unfocus();
-              });
-            }
-
+                                  if (_showSearchResults) {
+                                    setState(() {
+                                      _showSearchResults = false;
+                                      FocusScope.of(context).unfocus();
+                                    });
+                                  }
                                 },
                               ),
-                               if (_vendorsearchResullts)
-  Container(
-    color: Colors.white,
-    child: vendorsearchResults.when(
-      data: (results) {
-        if (results.isEmpty) {
-          return const SizedBox(
-            child: Text('No result found'),
-          );
-        }
-        return Card(
-          elevation: 8,
-          child: ListView.separated(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            primary: false,
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              final product = results[index];
-              return ListTile(
-                title: Text(product.title),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchScreen(
-                          query: _vendorsearchController.text,
-                        ),
-                      ));
-                  setState(() {
-                    _vendorsearchResullts = false;
-                    FocusScope.of(context).unfocus();
-                  });
-                },
-              );
-            },
-            separatorBuilder: (context, index) => const Divider(),
-          ),
-        );
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (error, stack) => Center(child: Text('Error: $error')),
-    ),
-  ),
-
+                              if (_vendorsearchResullts)
+                                Container(
+                                  color: Colors.white,
+                                  child: vendorsearchResults.when(
+                                    data: (results) {
+                                      if (results.isEmpty) {
+                                        return const SizedBox(
+                                          child: Text('No result found'),
+                                        );
+                                      }
+                                      return Card(
+                                        elevation: 8,
+                                        child: ListView.separated(
+                                          padding: EdgeInsets.zero,
+                                          shrinkWrap: true,
+                                          primary: false,
+                                          itemCount: results.length,
+                                          itemBuilder: (context, index) {
+                                            final product = results[index];
+                                            return ListTile(
+                                              title: Text(product.title),
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SearchScreen(
+                                                        query:
+                                                            _vendorsearchController
+                                                                .text,
+                                                      ),
+                                                    ));
+                                                setState(() {
+                                                  _vendorsearchResullts = false;
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                });
+                                              },
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              const Divider(),
+                                        ),
+                                      );
+                                    },
+                                    loading: () =>
+                                        const CircularProgressIndicator(),
+                                    error: (error, stack) =>
+                                        Center(child: Text('Error: $error')),
+                                  ),
+                                ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SubscribeAndWinEveryDay(),
+                                        ));
+                                  },
+                                  child: Image.network(scratch))
                             ],
                           ),
                         ),

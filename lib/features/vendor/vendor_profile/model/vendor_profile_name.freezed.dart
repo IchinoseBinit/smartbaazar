@@ -22,6 +22,7 @@ VendorData _$VendorDataFromJson(Map<String, dynamic> json) {
 mixin _$VendorData {
   Vendor? get vendor => throw _privateConstructorUsedError;
   List<Advertisement>? get advertisements => throw _privateConstructorUsedError;
+  String? get scratch_banner => throw _privateConstructorUsedError;
   List<VendorPost>? get vendorposts => throw _privateConstructorUsedError;
 
   /// Serializes this VendorData to a JSON map.
@@ -43,6 +44,7 @@ abstract class $VendorDataCopyWith<$Res> {
   $Res call(
       {Vendor? vendor,
       List<Advertisement>? advertisements,
+      String? scratch_banner,
       List<VendorPost>? vendorposts});
 
   $VendorCopyWith<$Res>? get vendor;
@@ -65,6 +67,7 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
   $Res call({
     Object? vendor = freezed,
     Object? advertisements = freezed,
+    Object? scratch_banner = freezed,
     Object? vendorposts = freezed,
   }) {
     return _then(_value.copyWith(
@@ -76,6 +79,10 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
           ? _value.advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
               as List<Advertisement>?,
+      scratch_banner: freezed == scratch_banner
+          ? _value.scratch_banner
+          : scratch_banner // ignore: cast_nullable_to_non_nullable
+              as String?,
       vendorposts: freezed == vendorposts
           ? _value.vendorposts
           : vendorposts // ignore: cast_nullable_to_non_nullable
@@ -109,6 +116,7 @@ abstract class _$$VendorDataImplCopyWith<$Res>
   $Res call(
       {Vendor? vendor,
       List<Advertisement>? advertisements,
+      String? scratch_banner,
       List<VendorPost>? vendorposts});
 
   @override
@@ -130,6 +138,7 @@ class __$$VendorDataImplCopyWithImpl<$Res>
   $Res call({
     Object? vendor = freezed,
     Object? advertisements = freezed,
+    Object? scratch_banner = freezed,
     Object? vendorposts = freezed,
   }) {
     return _then(_$VendorDataImpl(
@@ -141,6 +150,10 @@ class __$$VendorDataImplCopyWithImpl<$Res>
           ? _value._advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
               as List<Advertisement>?,
+      scratch_banner: freezed == scratch_banner
+          ? _value.scratch_banner
+          : scratch_banner // ignore: cast_nullable_to_non_nullable
+              as String?,
       vendorposts: freezed == vendorposts
           ? _value._vendorposts
           : vendorposts // ignore: cast_nullable_to_non_nullable
@@ -155,6 +168,7 @@ class _$VendorDataImpl implements _VendorData {
   const _$VendorDataImpl(
       {this.vendor,
       final List<Advertisement>? advertisements,
+      this.scratch_banner,
       final List<VendorPost>? vendorposts})
       : _advertisements = advertisements,
         _vendorposts = vendorposts;
@@ -174,6 +188,8 @@ class _$VendorDataImpl implements _VendorData {
     return EqualUnmodifiableListView(value);
   }
 
+  @override
+  final String? scratch_banner;
   final List<VendorPost>? _vendorposts;
   @override
   List<VendorPost>? get vendorposts {
@@ -186,7 +202,7 @@ class _$VendorDataImpl implements _VendorData {
 
   @override
   String toString() {
-    return 'VendorData(vendor: $vendor, advertisements: $advertisements, vendorposts: $vendorposts)';
+    return 'VendorData(vendor: $vendor, advertisements: $advertisements, scratch_banner: $scratch_banner, vendorposts: $vendorposts)';
   }
 
   @override
@@ -197,6 +213,8 @@ class _$VendorDataImpl implements _VendorData {
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             const DeepCollectionEquality()
                 .equals(other._advertisements, _advertisements) &&
+            (identical(other.scratch_banner, scratch_banner) ||
+                other.scratch_banner == scratch_banner) &&
             const DeepCollectionEquality()
                 .equals(other._vendorposts, _vendorposts));
   }
@@ -207,6 +225,7 @@ class _$VendorDataImpl implements _VendorData {
       runtimeType,
       vendor,
       const DeepCollectionEquality().hash(_advertisements),
+      scratch_banner,
       const DeepCollectionEquality().hash(_vendorposts));
 
   /// Create a copy of VendorData
@@ -229,6 +248,7 @@ abstract class _VendorData implements VendorData {
   const factory _VendorData(
       {final Vendor? vendor,
       final List<Advertisement>? advertisements,
+      final String? scratch_banner,
       final List<VendorPost>? vendorposts}) = _$VendorDataImpl;
 
   factory _VendorData.fromJson(Map<String, dynamic> json) =
@@ -238,6 +258,8 @@ abstract class _VendorData implements VendorData {
   Vendor? get vendor;
   @override
   List<Advertisement>? get advertisements;
+  @override
+  String? get scratch_banner;
   @override
   List<VendorPost>? get vendorposts;
 

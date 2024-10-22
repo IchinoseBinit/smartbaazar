@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
@@ -64,7 +67,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final adsList = ref.watch(getAdsProvider);
+
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+    final brandbajarAsyncValue = ref.watch(getBrandBazaarResponseProvider);
+
     final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
     return GenericSafeArea(
@@ -74,9 +81,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
-          onsubmit: (p0) {
-            
-          },
+          onsubmit: (p0) {},
           scaffoldKey: _key,
           searchController: _searchController,
           onCartTap: () {
@@ -92,9 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         drawer: const CustomDrawer(),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
-           
-          },
+          onTap: () {},
           child: Stack(
             children: [
               SingleChildScrollView(
@@ -102,9 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -135,33 +136,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             height: 2.h,
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 10.h),
-                            color: const Color(0xff19328D),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
-                                      Text(
-                                        'Buy & sell anything.\n you\'ll forget everything else.',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.sp),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Image.asset(ImageConstant.shoppingImage)
-                              ],
+                            height: 110.h,
+                            width: double.infinity,
+                            child: brandbajarAsyncValue.when(
+                              data: (brandBazar) {
+                                print(
+                                    "we got ${brandBazar.data.trandBanners![0]}");
+                                // Render your data
+                                return CarouselSlider(
+                                    items: brandBazar.data.trandBanners!
+                                        .map((banner) {
+                                      return Image.network(
+                                          height: 110.h,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          banner.image!);
+                                    }).toList(),
+                                    options: CarouselOptions(
+                                      aspectRatio: 0.1,
+                                      reverse: true,
+                                      viewportFraction: 1,
+                                      autoPlay: true,
+                                      enlargeCenterPage: true,
+                                    ));
+                              },
+                              loading: () =>
+                                  Center(child: CircularProgressIndicator()),
+                              error: (error, stack) =>
+                                  Center(child: Text('Error: $error')),
                             ),
                           ),
                           SizedBox(
@@ -174,6 +176,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ],
                       ),
                     ),
+
                     ProductSlider(
                       homePostsData: homePostsData,
                       valueExtractor: (product) => product.sponsored_post,
@@ -315,7 +318,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SearchScreen(
-                                          query:_searchController.text,
+                                          query: _searchController.text,
                                         ),
                                       ));
 
@@ -342,7 +345,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         );
                       },
                       loading: () {
-                        return const Center(child: CircularProgressIndicator());
+                        return SimpleDialog(
+                          children: [
+                            adsList.isLoading
+                                ? const SizedBox()
+                                : Image.network(adsList.value!.first.image!)
+                          ],
+                        );
                       },
                       error: (error, stack) =>
                           const Center(child: CircularProgressIndicator()),

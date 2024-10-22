@@ -8,6 +8,7 @@ class VendorData with _$VendorData {
   const factory VendorData({
     Vendor? vendor,
     List<Advertisement>? advertisements,
+    String? scratch_banner,
     List<VendorPost>? vendorposts, // Update to use the new Posts class
   }) = _VendorData;
 

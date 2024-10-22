@@ -37,7 +37,6 @@ Future<List<SearchProductModel>> vendorSearch(
   try {
     // Send the initial request
     Response response = await sendRequest(ApiConstants.vendorSearchSuggest);
-    print("mama ${response.data} ");
 
     // Handle redirection if necessary
     if (response.statusCode == 301) {

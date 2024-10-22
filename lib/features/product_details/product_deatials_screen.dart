@@ -4,16 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
+import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/contact_seller_provider.dart';
+import 'package:smartbazar/features/product_details/api/subscribe_vendor_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -29,7 +34,10 @@ final currentIndexProvider = StateProvider<int>((ref) => 0);
 class ProductDetailScreen extends ConsumerWidget {
   List<String> itemsList = [];
   // List<Ad>? preloadAds;
+  final _formKey = GlobalKey<FormState>();
 
+  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController msgcontroller = TextEditingController();
   final String productId;
   ProductDetailScreen({super.key, required this.productId});
 
@@ -515,8 +523,217 @@ class ProductDetailScreen extends ConsumerWidget {
                                     width: 10.w,
                                   ),
                                   InkWell(
-                                    onTap: () => launchUrl(
-                                        Uri.parse('sms:${data.phone}')),
+                                    onTap: () async {
+                                      SharedPreferences srf =
+                                          await SharedPreferences.getInstance();
+                                      // String? name = username.getString("name");
+                                      // print("binod ${username.getKeys()}");
+                                      String? name = srf.getString('name');
+                                      String? id=srf.getString('userId');
+                                      showDialog(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return Form(
+                                            
+                                            key: _formKey,
+                                            child: SimpleDialog(
+                                              titlePadding: EdgeInsets.zero,
+                                              contentPadding:
+                                                  const EdgeInsets.all(10),
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    const Text(
+                                                      'Message',
+                                                      style: TextStyle(
+                                                          fontSize: 13),
+                                                    ),
+                                                    IconButton(
+                                                      icon: const Icon(
+                                                          Icons.close,
+                                                          size: 15),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx)
+                                                            .pop(); // Close the dialog
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Text(
+                                                  'Contact Author',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Color.fromARGB(
+                                                        255, 1, 139, 251),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Container(
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.brown),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  padding: const EdgeInsets.all(
+                                                      8.0), // Add padding for better appearance
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text(
+                                                        "Phone Number",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width:
+                                                              10), // Add some spacing between text and field
+                                                      Container(
+                                                        height: 50,
+                                                        width: 100.w,
+                                                        alignment:
+                                                            Alignment.topCenter,
+                                                        child: TextFormField(
+                                                          controller:
+                                                              phonecontroller,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            hintText:
+                                                                "+977 1245783645",
+                                                            hintStyle:
+                                                                TextStyle(
+                                                                    fontSize:
+                                                                        14),
+                                                            border: InputBorder
+                                                                .none, // Remove the inner border for simplicity
+                                                          ),
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .phone,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 200.h,
+                                                  width: 50.w,
+                                                  margin: const EdgeInsets.only(
+                                                      top: 5, bottom: 5),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.brown),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  padding: const EdgeInsets.all(
+                                                      8.0), // Add padding for better appearance
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Text(
+                                                        "Phone Number",
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            msgcontroller,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText:
+                                                              "This ia a message to the seller",
+                                                          border: InputBorder
+                                                              .none, // Remove the inner border for simplicity
+                                                        ),
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                GeneralEelevatedButton(
+                                                  text: 'Send Message',
+                                                  onPresssed: () async {
+                                                    if (phonecontroller
+                                                            .text.isEmpty ||
+                                                        msgcontroller
+                                                            .text.isEmpty) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                            content: Text(
+                                                                "Fields cannot be empty!")),
+                                                      );
+                                                    } else {
+                                                      // Call the contactSeller provider and wait for the response
+                                                      final success =
+                                                          await ref.read(
+                                                        contactSellerProvider(
+                                                          name!,
+                                                         phonecontroller.text,
+                                                          msgcontroller.text,
+                                                          int.tryParse(id!)!,
+                                                        ).future,
+                                                      );
+
+                                                      // Handle the response based on success or failure
+                                                      if (success) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              content: Text(
+                                                                  "Message sent successfully!")),
+                                                        );
+                                                        Navigator.pop(context);
+                                                      } else {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              content: Text(
+                                                                  "Failed to send the message!")),
+                                                        );
+                                                      }
+                                                    }
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
                                     child: Column(
                                       children: [
                                         SvgPicture.asset(messagesIcon),
@@ -558,11 +775,71 @@ class ProductDetailScreen extends ConsumerWidget {
                               SizedBox(
                                 height: 10.h,
                               ),
-                              const SizedBox(
-                                height: 5,
+                              SizedBox(
+                                height: 10.h,
                               ),
                             ],
                           ),
+                        ),
+                        GeneralTextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => VendorHomeScreen(
+                                  vendorName: data.user!.name!,
+                                  vid: int.tryParse(data.user_id!)!,
+                                ),
+                              ));
+                            },
+                            marginH: 9,
+                            width: double.infinity,
+                            prefixImage: ImageConstant.visitStore,
+                            bgColor: const Color(0xff362677),
+                            fgColor: Colors.white,
+                            isSmallText: true,
+                            title: 'Visit Store'),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        ScratchWinContainer(
+                          ontap: () async {
+                            // Using ref.read() instead of ref.watch() since it's a one-time action
+                            final subscribe = await ref.read(
+                                subscribevendorProvider(
+                                        vendorid: data.user_id.toString())
+                                    .future);
+
+                            // Use ScaffoldMessenger to show SnackBar messages
+                            if (subscribe == "1") {
+                              // Assuming "1" means subscribed
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Thank you for subscribing"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+
+                              // Navigate after showing the SnackBar
+                              await Future.delayed(const Duration(
+                                  seconds:
+                                      2)); // Ensure SnackBar is visible for 2 seconds
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
+                                    vendorName: data.user!.username!,
+                                    vid: int.tryParse(data.user_id!)!,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("You unsubscribed from vendor"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         TabBarItems(
                           weight: data.weight ?? "N/A",
@@ -570,29 +847,8 @@ class ProductDetailScreen extends ConsumerWidget {
                           description: data.description!,
                         ),
                         SizedBox(
-                          height: 10.h,
-                        ),
-                        GeneralTextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => VendorHomeScreen(
-                                    vendorName: data.user!.name!,
-                                    vid: int.tryParse(data.user_id!)!,
-
-                                    ),
-                              ));
-                            },
-                            marginH: 1,
-                            width: MediaQuery.of(context).size.width,
-                            prefixImage: ImageConstant.visitStore,
-                            bgColor: const Color(0xff362677),
-                            fgColor: Colors.white,
-                            isSmallText: true,
-                            title: 'Visit Store'),
-                        SizedBox(
                           height: 20.h,
                         ),
-                        const ScratchWinContainer(),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -776,38 +1032,42 @@ class TabBarItems extends StatelessWidget {
 }
 
 class ScratchWinContainer extends StatelessWidget {
-  const ScratchWinContainer({
+  ScratchWinContainer({
     super.key,
+    required this.ontap,
   });
-
+  Function()? ontap;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 6.h),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
-        child: Row(
-          children: [
-            Image.asset(
-              ImageConstant.scartchWinImage,
-            ),
-            Expanded(
-              child: RichTextWidget(
-                  title: "Visit our virtual store ",
-                  // titleStyle: TextStyle(
-                  //     fontSize: 10.sp,
-                  //     fontWeight: FontWeight.w700),
-                  subtitle: "Subscribe us to win FREE prizes & get our deals",
-                  subtitleStyle: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400),
-                  onPressed: () {}),
-            )
-          ],
+    return InkWell(
+      onTap: ontap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 9),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
+          child: Row(
+            children: [
+              Image.asset(
+                ImageConstant.scartchWinImage,
+              ),
+              Expanded(
+                child: RichTextWidget(
+                    title: "Visit our virtual store ",
+                    // titleStyle: TextStyle(
+                    //     fontSize: 10.sp,
+                    //     fontWeight: FontWeight.w700),
+                    subtitle: "Subscribe us to win FREE prizes & get our deals",
+                    subtitleStyle: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
+                    onPressed: () {}),
+              )
+            ],
+          ),
         ),
       ),
     );

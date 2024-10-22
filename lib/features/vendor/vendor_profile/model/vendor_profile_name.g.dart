@@ -14,6 +14,7 @@ _$VendorDataImpl _$$VendorDataImplFromJson(Map<String, dynamic> json) =>
       advertisements: (json['advertisements'] as List<dynamic>?)
           ?.map((e) => Advertisement.fromJson(e as Map<String, dynamic>))
           .toList(),
+      scratch_banner: json['scratch_banner'] as String?,
       vendorposts: (json['vendorposts'] as List<dynamic>?)
           ?.map((e) => VendorPost.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$VendorDataImplToJson(_$VendorDataImpl instance) =>
     <String, dynamic>{
       'vendor': instance.vendor,
       'advertisements': instance.advertisements,
+      'scratch_banner': instance.scratch_banner,
       'vendorposts': instance.vendorposts,
     };
 

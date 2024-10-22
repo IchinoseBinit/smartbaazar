@@ -7,7 +7,7 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginApi{
+class LoginApi {
   final SmartClinet _client = SmartClinet(); // Ensure consistent naming
 
   Future<LoginData?> login(String email, String password) async {
@@ -24,11 +24,14 @@ class LoginApi{
       );
 
       // Check for successful response
-      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
         if (response.data != null) {
           // Parse user data from response
           final user = LoginData.fromJson(response.data);
-
+          print("ram${user.result.email}");
+          final name = user.result.name;
           // Update tokens
           SmartClinet.token = user.extra.authToken;
           SmartClinet.refresh = user.extra.refreshToken;
@@ -38,6 +41,7 @@ class LoginApi{
           await prefs.setString("session", json.encode(user.toJson()));
           await prefs.setString("accessToken", SmartClinet.token);
           await prefs.setString("refreshToken", SmartClinet.refresh);
+          await prefs.setString('name', name);
 
           if (kDebugMode) {
             print("Login successful: $response");
@@ -47,7 +51,8 @@ class LoginApi{
           throw Exception("No user data found in response");
         }
       } else {
-        throw Exception("Login failed with status code: ${response.statusCode}");
+        throw Exception(
+            "Login failed with status code: ${response.statusCode}");
       }
     } catch (e) {
       if (kDebugMode) {
