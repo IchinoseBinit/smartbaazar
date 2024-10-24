@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Ensure you have this import for SvgPicture
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/follow_and_suggestion/view/follow_and_suggestion_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({
-    super.key,
-  });
+  const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class CustomDrawer extends StatelessWidget {
       {'imageIcon': eventIcon, 'title': 'Event'},
       {'imageIcon': groceryIcon, 'title': 'Grocery'},
     ];
+
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.57,
       backgroundColor: Colors.white,
@@ -35,75 +37,87 @@ class CustomDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(ImageConstant.appLogo),
-            SizedBox(
-              height: 20.h,
-            ),
+            SizedBox(height: 20.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "All Product",
                   style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xff362677)),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff362677),
+                  ),
                 ),
                 InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.clear))
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.clear),
+                ),
               ],
             ),
-            SizedBox(
-              height: 45.h,
-            ),
+            SizedBox(height: 45.h),
             Expanded(
               child: DrawerItemWidget(
                 listOfDrawerItem: drawerList,
-                onTap: (ttile) {
-                  switch (ttile) {
-                    case 'Products':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ));
-                    // case 'Products':
-                    //   Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (_) => const AllProductType()));
+                onTap: (title) {
+                  if (title == 'Products') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                    );
+                  } else if (title == 'BrandBazar') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const BrandBazarScreen(),
+                      ),
+                    );
+                  } else if (title == 'B2B') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const B2bScreen(),
+                      ),
+                    );
+                  } else if (title == 'Event') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const EventsScreen(),
+                      ),
+                    );
+                  } else if (title == 'Services') {
+                     Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ServicesScreen(),
+                        ));
+
+                    // Handle navigation for Services if needed
+                  } else if (title == 'Used') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UsedScreen(),
+                        ));
+                  }else if(title=='Jobs'){
+                     Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => JobssScreen(),
+                        ));
+                  }else{Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GrocarysScreen(),
+                        ));
+
                   }
-                  switch (ttile) {
-                    case 'BrandBazar':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const BrandBazarScreen()));
-                  }
-                  switch (ttile) {
-                    case 'B2B':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const B2bScreen()));
-                  }
-                  switch (ttile) {
-                    case 'Event':
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) =>
-                                  const FollowAndSuggestionScreen()));
-                  }
-                  switch (ttile) {
-                    case 'Services':
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) => const ScratchWinHomeScreen()));
-                  }
+                  // Add more conditions as needed for other titles
                 },
               ),
             ),
@@ -111,25 +125,21 @@ class CustomDrawer extends StatelessWidget {
               thickness: 1.0,
               color: const Color(0xff000000).withOpacity(0.15),
             ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 10.h),
             InkWell(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const CreateNewListinScreen()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CreateNewListinScreen(),
+                  ),
+                );
               },
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 20.w,
-                  ),
+                  SizedBox(width: 20.w),
                   const Icon(Icons.add),
-                  SizedBox(
-                    width: 5.w,
-                  ),
+                  SizedBox(width: 5.w),
                   Text(
                     'Creating Listing',
                     style: TextStyle(
@@ -156,8 +166,12 @@ class CustomDrawer extends StatelessWidget {
 class DrawerItemWidget extends StatelessWidget {
   final List<Map<String, dynamic>> listOfDrawerItem;
   final Function(String) onTap;
-  const DrawerItemWidget(
-      {super.key, required this.listOfDrawerItem, required this.onTap});
+
+  const DrawerItemWidget({
+    super.key,
+    required this.listOfDrawerItem,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -175,11 +189,11 @@ class DrawerItemWidget extends StatelessWidget {
                 SvgPicture.asset(
                   listOfDrawerItem[index]['imageIcon'],
                   colorFilter: const ColorFilter.mode(
-                      Color(0xff000000), BlendMode.srcIn),
+                    Color(0xff000000),
+                    BlendMode.srcIn,
+                  ),
                 ),
-                SizedBox(
-                  width: 12.w,
-                ),
+                SizedBox(width: 12.w),
                 Text(
                   listOfDrawerItem[index]['title'],
                   style: TextStyle(
@@ -189,14 +203,10 @@ class DrawerItemWidget extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                const Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                  ],
-                )
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                ),
               ],
             ),
           ],

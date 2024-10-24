@@ -159,7 +159,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                         CarouselSlider(
                             items: slider.map(
                               (e) {
-                                print("ram ${e.image}}");
                                 return Image.network(
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -218,9 +217,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                   );
                 },
                 error: (err, stack) => Center(child: Text('Error: $err')),
-                loading: () {
-                  return const Center(child: CircularProgressIndicator());
-                }
+                  loading: () {
+                        return SimpleDialog(
+                          children: [
+                            adsList.isLoading
+                                ? const SizedBox()
+                                : Image.network(adsList.value!.first.image!)
+                          ],
+                        );
+                      },
               )
             ],
           ),
