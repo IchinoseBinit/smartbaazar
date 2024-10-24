@@ -21,6 +21,7 @@ class ApiConstants {
       '$baseUrl/homeSections/vendor_product_suggest';
   static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
   static String getAdsUrl = '$baseUrl/homeSections/loadads';
+  static String producttypeurl = '$baseUrl/pages/posttype';
 
   static String reportComplainUrl = '$baseUrl/posts';
   //cart item
@@ -42,6 +43,7 @@ class ApiConstants {
   static String fetchCategoryList = '$baseUrl/categories';
   static String fetchProductType = '$baseUrl/packages';
   static String fetchCities = '$baseUrl/countries/NP/cities';
+  static String postlisting = '$baseUrl/posts';
 
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';

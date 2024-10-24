@@ -34,7 +34,6 @@ Future<bool> contactSeller(
 
     // Check if the response is successful
     if (response.statusCode == 201 && response.data['success'] == true) {
-      print("bibash${response.data}");
       return true;
     } else {
       print("Failed: ${response.data}");

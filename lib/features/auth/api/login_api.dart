@@ -30,8 +30,7 @@ class LoginApi {
         if (response.data != null) {
           // Parse user data from response
           final user = LoginData.fromJson(response.data);
-          print("ram${user.result.email}");
-          final name = user.result.name;
+          // final name = user.result.name;
           // Update tokens
           SmartClinet.token = user.extra.authToken;
           SmartClinet.refresh = user.extra.refreshToken;
@@ -41,7 +40,7 @@ class LoginApi {
           await prefs.setString("session", json.encode(user.toJson()));
           await prefs.setString("accessToken", SmartClinet.token);
           await prefs.setString("refreshToken", SmartClinet.refresh);
-          await prefs.setString('name', name);
+          // await prefs.setString('name', name);
 
           if (kDebugMode) {
             print("Login successful: $response");

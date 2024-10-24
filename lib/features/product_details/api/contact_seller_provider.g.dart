@@ -6,7 +6,7 @@ part of 'contact_seller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$contactSellerHash() => r'2028d28943a8b2cbfc7edc963a61fb6e91b99b0a';
+String _$contactSellerHash() => r'cc98fc557f9e53a80216098bc273e67b2d949054';
 
 /// Copied from Dart SDK
 class _SystemHash {

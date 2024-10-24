@@ -63,10 +63,10 @@ class NewListingRepository {
     }
   }
 
-  Future<List<CityList>> fetchCities(int page) async {
+  Future<List<CityList>> fetchCities(int? pagenum) async {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: '${ApiConstants.fetchCities}?page=$page',
+      url: '${ApiConstants.fetchCities}?page=$pagenum',
     );
 
     if (response.statusCode == 200) {

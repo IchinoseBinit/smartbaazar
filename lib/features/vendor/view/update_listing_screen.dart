@@ -574,7 +574,7 @@ class _UpdateListingState extends State<UpdateListing> {
                 SizedBox(
                   height: 15.h,
                 ),
-                const SellerInformationWidget(),
+                //  SellerInformationWidget(),
               ],
             ),
           ),

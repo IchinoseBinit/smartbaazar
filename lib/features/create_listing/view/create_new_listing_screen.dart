@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -10,10 +12,10 @@ import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/view/category_feild.dart';
-import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -28,18 +30,46 @@ class CreateNewListinScreen extends ConsumerStatefulWidget {
 
 class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TypeList? selectedType;
+  CityList? slectedcity;
   ProductType? selectedProductType;
-  bool _isChecked = false;
-
+  // bool _isChecked = false;
+  bool _acceptterms = false;
+  Category? selectedcategory;
   List<TypeList> typeListItems = [];
+  List<CityList>? citylistsitems = [];
   List<ProductType> productTypeListItems = [];
+  TextEditingController titlecontroller = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController heightcontroller = TextEditingController();
+
+  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController pricecontroller = TextEditingController();
+  TextEditingController discountcontroller = TextEditingController();
+
+  TextEditingController weightcontroller = TextEditingController();
+  TextEditingController widthcontroller = TextEditingController();
+  TextEditingController lengthcontroller = TextEditingController();
+  String accept = '0';
 
   @override
   void initState() {
     super.initState();
     _fetchTypeList();
-
+    _fetchcities();
     _fetchProductTypeList();
+  }
+
+  Future<void> _fetchcities() async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      List<CityList> fetchedTypes = await repository.fetchCities(1);
+      setState(() {
+        citylistsitems = fetchedTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
   }
 
   Future<void> _fetchTypeList() async {
@@ -191,24 +221,34 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           )
                         ],
                       ),
-                      const Spacer(),
-                      CustomDropdownButton<TypeList>(
-                        items: typeListItems,
-                        dropdownValue: selectedType,
-                        onChanged: (TypeList? newValue) {
-                          setState(() {
-                            selectedType = newValue!;
-                          });
-                        },
-                        getItemLabel: (TypeList item) => item.typeName,
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<TypeList>(
+                          items: typeListItems,
+                          dropdownValue: selectedType,
+                          onChanged: (TypeList? newValue) {
+                            setState(() {
+                              selectedType = newValue!;
+                            });
+                          },
+                          getItemLabel: (TypeList item) => item.typeName,
+                        ),
                       ),
                     ],
                   ),
                 ),
+
                 SizedBox(
                   height: 10.h,
                 ),
-                const CategoryFeild(),
+                CategoryFeild(
+                  onCategorySelected: (Category? category) {
+                    setState(() {
+                      selectedcategory = category;
+                    });
+                    print("Selected category: ${category?.name}");
+                  },
+                ),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -237,8 +277,131 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
+                        controller: titlecontroller,
                         decoration: InputDecoration.collapsed(
-                            hintText: 'Listing Tile',
+                            hintText: 'Enter title',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'City',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: slectedcity,
+                          onChanged: (CityList? newValue) {
+                            setState(() {
+                              slectedcity = newValue!;
+                            });
+                            print("ram $slectedcity");
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Price',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter price',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Discount',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: discountcontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter discount',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
@@ -277,6 +440,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       height: 15.h,
                     ),
                     TextField(
+                      controller: descriptionController,
                       decoration: InputDecoration.collapsed(
                           hintText: 'Describe what makes your listing unique',
                           hintStyle: TextStyle(
@@ -284,156 +448,154 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               fontSize: 14.sp,
                               color: const Color(0xffADADAD))),
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
                   ],
                 )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Text(
-                      "What's  in the box?",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      width: 30.w,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration.collapsed(
-                            hintText: "Mention what's included",
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Brand',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Brand name',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Product Type',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      CustomDropdownButton<ProductType>(
-                        items: productTypeListItems,
-                        dropdownValue: selectedProductType,
-                        onChanged: (ProductType? newValue) {
-                          setState(() {
-                            selectedProductType = newValue!;
-                          });
-                        },
-                        getItemLabel: (ProductType item) => item.name,
-                      ),
-                    ],
-                  ),
-                ),
-                const ReturnPolicyCardWidget(),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Packaged Product Dimension',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    CustomCheckbox(
-                      value: _isChecked,
-                      onChanged: (bool newValue) {
-                        setState(() {
-                          _isChecked = newValue;
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Text(
-                      'Hyper Delivery',
-                      style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(
-                            (0xff888888),
-                          )),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
+                // SizedBox(
+                //   height: 10.h,
+                // ),
+                // CreateListingCardWidget(
+                //     child: Row(
+                //   children: [
+                //     Text(
+                //       "What's  in the box?",
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.w500,
+                //           fontSize: 14.sp,
+                //           color: Colors.black),
+                //     ),
+                //     SizedBox(
+                //       width: 30.w,
+                //     ),
+                //     Expanded(
+                //       child: TextField(
+                //         decoration: InputDecoration.collapsed(
+                //             hintText: "Mention what's included",
+                //             hintStyle: TextStyle(
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 14.sp,
+                //                 color: const Color(0xffADADAD))),
+                //       ),
+                //     ),
+                //   ],
+                // )),
+
+                // CreateListingCardWidget(
+                //     child: Row(
+                //   children: [
+                //     Row(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           'Brand',
+                //           style: TextStyle(
+                //               fontSize: 14.sp,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.black),
+                //         ),
+                //         Text(
+                //           ' *',
+                //           style: TextStyle(
+                //               color: const Color(0xffD33636),
+                //               fontWeight: FontWeight.w500,
+                //               fontSize: 14.sp),
+                //         )
+                //       ],
+                //     ),
+                //     const Spacer(),
+                //     Expanded(
+                //       child: TextField(
+                //         decoration: InputDecoration.collapsed(
+                //             hintText: 'Brand name',
+                //             hintStyle: TextStyle(
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 14.sp,
+                //                 color: const Color(0xffADADAD))),
+                //       ),
+                //     ),
+                //   ],
+                // )),
+                // SizedBox(
+                //   height: 10.h,
+                // ),
+                // CreateListingCardWidget(
+                //   child: Row(
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //       Row(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             'Product Type',
+                //             style: TextStyle(
+                //                 fontSize: 14.sp,
+                //                 fontWeight: FontWeight.w500,
+                //                 color: Colors.black),
+                //           ),
+                //           Text(
+                //             ' *',
+                //             style: TextStyle(
+                //                 color: const Color(0xffD33636),
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 14.sp),
+                //           )
+                //         ],
+                //       ),
+                //       const Spacer(),
+                //       // CustomDropdownButton<ProductType>(
+                //       //   items: productTypeListItems,
+                //       //   dropdownValue: selectedProductType,
+                //       //   onChanged: (ProductType? newValue) {
+                //       //     setState(() {
+                //       //       selectedProductType = newValue!;
+                //       //     });
+                //       //   },
+                //       //   getItemLabel: (ProductType item) => item.name,
+                //       // ),
+                //     ],
+                //   ),
+                // ),
+                // const ReturnPolicyCardWidget(),
+                // SizedBox(
+                //   height: 10.h,
+                // ),
+                // Row(
+                //   children: [
+                //     Text(
+                //       'Packaged Product Dimension',
+                //       style: TextStyle(
+                //           fontSize: 14.sp,
+                //           fontWeight: FontWeight.w600,
+                //           color: Colors.black),
+                //     ),
+                //     const Spacer(),
+                //     CustomCheckbox(
+                //       value: _isChecked,
+                //       onChanged: (bool newValue) {
+                //         setState(() {
+                //           _isChecked = newValue;
+                //         });
+                //       },
+                //     ),
+                //     SizedBox(
+                //       width: 10.w,
+                //     ),
+                //     Text(
+                //       'Hyper Delivery',
+                //       style: TextStyle(
+                //           fontSize: 12.sp,
+                //           fontWeight: FontWeight.w500,
+                //           color: const Color(
+                //             (0xff888888),
+                //           )),
+                //     )
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 10.h,
+                // ),
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -466,6 +628,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
+                        controller: lengthcontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Lenght in cm',
                             hintStyle: TextStyle(
@@ -512,6 +675,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
+                        controller: widthcontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Width in cm',
                             hintStyle: TextStyle(
@@ -538,6 +702,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
+                        controller: heightcontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Height in cm',
                             hintStyle: TextStyle(
@@ -555,7 +720,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     child: Row(
                   children: [
                     Text(
-                      'Weight (cm)',
+                      'Weight (Km)',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.sp,
@@ -564,6 +729,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
+                        controller: weightcontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Weight in KG',
                             hintStyle: TextStyle(
@@ -574,94 +740,145 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
-                SizedBox(
-                  height: 10.w,
-                ),
-                const CityField(),
+
+                // const CityField(),
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                    child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      "Tags",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffEDECEC),
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(
-                              width: 1.w, color: const Color(0xff888888))),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.close,
-                            color: Color(0xff888888),
-                          ),
-                          Text('Acer')
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffEDECEC),
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(
-                              width: 1.w, color: const Color(0xff888888))),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.close,
-                            color: Color(0xff888888),
-                          ),
-                          Text('Black')
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffEDECEC),
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(
-                              width: 1.w, color: const Color(0xff888888))),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.close,
-                            color: Color(0xff888888),
-                          ),
-                          Text('Laptop')
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                  ],
-                )),
+                // CreateListingCardWidget(
+                //     child: Row(
+                //   mainAxisSize: MainAxisSize.max,
+                //   children: [
+                //     Text(
+                //       "Tags",
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.w500,
+                //           fontSize: 14.sp,
+                //           color: Colors.black),
+                //     ),
+                //     const Spacer(),
+                //     Container(
+                //       padding:
+                //           EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                //       decoration: BoxDecoration(
+                //           color: const Color(0xffEDECEC),
+                //           borderRadius: BorderRadius.circular(10.r),
+                //           border: Border.all(
+                //               width: 1.w, color: const Color(0xff888888))),
+                //       child: const Row(
+                //         children: [
+                //           Icon(
+                //             Icons.close,
+                //             color: Color(0xff888888),
+                //           ),
+                //           Text('Acer')
+                //         ],
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 8.w,
+                //     ),
+                //     Container(
+                //       padding:
+                //           EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                //       decoration: BoxDecoration(
+                //           color: const Color(0xffEDECEC),
+                //           borderRadius: BorderRadius.circular(10.r),
+                //           border: Border.all(
+                //               width: 1.w, color: const Color(0xff888888))),
+                //       child: const Row(
+                //         children: [
+                //           Icon(
+                //             Icons.close,
+                //             color: Color(0xff888888),
+                //           ),
+                //           Text('Black')
+                //         ],
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 8.w,
+                //     ),
+                //     Container(
+                //       padding:
+                //           EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                //       decoration: BoxDecoration(
+                //           color: const Color(0xffEDECEC),
+                //           borderRadius: BorderRadius.circular(10.r),
+                //           border: Border.all(
+                //               width: 1.w, color: const Color(0xff888888))),
+                //       child: const Row(
+                //         children: [
+                //           Icon(
+                //             Icons.close,
+                //             color: Color(0xff888888),
+                //           ),
+                //           Text('Laptop')
+                //         ],
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       width: 8.w,
+                //     ),
+                //   ],
+                // )),
                 SizedBox(
                   height: 15.h,
                 ),
-                const SellerInformationWidget(),
+                Row(
+                  children: [
+                    CustomCheckbox(
+                      value: _acceptterms,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          _acceptterms = newValue;
+                        });
+                        accept = (_acceptterms) ? '1' : '0';
+                      },
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Text(
+                      'Do you accept all the terms and conditions',
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(
+                            (0xff888888),
+                          )),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+
+                SellerInformationWidget(
+                  category: selectedcategory?.id.toString() ?? '',
+                  type: selectedType?.typeId.toString() ??
+                      '', // Provide a default value or handle null safely
+                  description: descriptionController.text,
+                  height: heightcontroller.text.isNotEmpty
+                      ? heightcontroller.text
+                      : '0', // Fallback to '0' if empty
+                  length: lengthcontroller.text.isNotEmpty
+                      ? lengthcontroller.text
+                      : '0', // Fallback to '0' if empty
+                  phonecoontroller: phonecontroller,
+                  price: pricecontroller.text,
+                  title: titlecontroller.text,
+                  city: slectedcity?.id.toString() ??
+                      '', // Provide a default value or handle null safely
+                  weight: weightcontroller.text.isNotEmpty
+                      ? weightcontroller.text
+                      : '0', // Fallback to '0' if empty
+                  width: widthcontroller.text.isNotEmpty
+                      ? widthcontroller.text
+                      : '0', // Fallback to '0' if empty
+                  terms: accept,
+                  discount: discountcontroller.text,
+                ),
               ],
             ),
           ),
@@ -671,10 +888,61 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   }
 }
 
-class SellerInformationWidget extends StatelessWidget {
-  const SellerInformationWidget({
-    super.key,
-  });
+class SellerInformationWidget extends StatefulWidget {
+  SellerInformationWidget(
+      {super.key,
+      this.category,
+      this.title,
+      this.city,
+      this.price,
+      this.description,
+      this.length = '0',
+      this.width = '0',
+      this.type,
+      this.height = '0',
+      this.weight = '0',
+      this.phonecoontroller,
+      this.terms = '0',
+      this.discount = '0'});
+
+  String? type;
+  String? category;
+  String? title;
+  String? city;
+  String? price;
+  String? description;
+  String? length;
+  String? width;
+  String? height;
+  String? weight;
+  TextEditingController? phonecoontroller;
+  String? terms;
+  String discount;
+
+  @override
+  State<SellerInformationWidget> createState() =>
+      _SellerInformationWidgetState();
+}
+
+class _SellerInformationWidgetState extends State<SellerInformationWidget> {
+  TextEditingController emailcontroller = TextEditingController();
+
+  TextEditingController pickupcontroller = TextEditingController();
+  TextEditingController nameconroller = TextEditingController();
+
+  List<File?> selectedImages = [];
+  void onImagesSelected(List<File?> images) {
+    setState(() {
+      selectedImages = images;
+    });
+  }
+
+  Future<String> convertFileToBase64(File file) async {
+    // Read the file as bytes
+    final bytes = await file.readAsBytes();
+    // Convert bytes to base64
+    return base64Encode(bytes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -712,6 +980,7 @@ class SellerInformationWidget extends StatelessWidget {
             const Spacer(),
             Expanded(
               child: TextField(
+                controller: emailcontroller,
                 decoration: InputDecoration.collapsed(
                     hintText: 'XXX@gmail.com',
                     hintStyle: TextStyle(
@@ -722,9 +991,33 @@ class SellerInformationWidget extends StatelessWidget {
             ),
           ],
         )),
-        SizedBox(
-          height: 10.h,
-        ),
+        // SizedBox(
+        //   height: 10.h,
+        // ),
+        CreateListingCardWidget(
+            child: Row(
+          children: [
+            Text(
+              'Enter name',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: Colors.black),
+            ),
+            const Spacer(),
+            Expanded(
+              child: TextField(
+                controller: nameconroller,
+                decoration: InputDecoration.collapsed(
+                    hintText: 'John Doe',
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp,
+                        color: const Color(0xffADADAD))),
+              ),
+            ),
+          ],
+        )),
         CreateListingCardWidget(
             child: Row(
           children: [
@@ -738,6 +1031,7 @@ class SellerInformationWidget extends StatelessWidget {
             const Spacer(),
             Expanded(
               child: TextField(
+                controller: pickupcontroller,
                 decoration: InputDecoration.collapsed(
                     hintText: 'Select location',
                     hintStyle: TextStyle(
@@ -764,6 +1058,7 @@ class SellerInformationWidget extends StatelessWidget {
             const Spacer(),
             Expanded(
               child: TextField(
+                controller: widget.phonecoontroller,
                 decoration: InputDecoration.collapsed(
                     hintText: '98XXXXXX',
                     hintStyle: TextStyle(
@@ -820,7 +1115,13 @@ class SellerInformationWidget extends StatelessWidget {
         SizedBox(
           height: 15.h,
         ),
-        const SelectPhotFromFilesContainer(),
+        SelectPhotFromFilesContainer(
+          onImagesSelected: (image) {
+            setState(() {
+              selectedImages = image;
+            });
+          },
+        ),
         Center(
           child: Text(
             'Add up to 6 pictures. Use real pictures of your products, not cataloges.',
@@ -868,35 +1169,35 @@ class SellerInformationWidget extends StatelessWidget {
               fontSize: 10.sp,
               color: const Color(0xffADADAD)),
         ),
-        SizedBox(
-          height: 15.h,
-        ),
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            Text(
-              'Regular (Free)',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            const Spacer(),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration.collapsed(
-                    hintText: 'Rs. 0.00',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
-                        color: const Color(0xffADADAD))),
-              ),
-            ),
-          ],
-        )),
-        SizedBox(
-          height: 4.h,
-        ),
+        // SizedBox(
+        //   height: 15.h,
+        // ),
+        // CreateListingCardWidget(
+        //     child: Row(
+        //   children: [
+        //     Text(
+        //       'Regular (Free)',
+        //       style: TextStyle(
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 14.sp,
+        //           color: Colors.black),
+        //     ),
+        //     const Spacer(),
+        //     Expanded(
+        //       child: TextField(
+        //         decoration: InputDecoration.collapsed(
+        //             hintText: 'Rs. 0.00',
+        //             hintStyle: TextStyle(
+        //                 fontWeight: FontWeight.w500,
+        //                 fontSize: 14.sp,
+        //                 color: const Color(0xffADADAD))),
+        //       ),
+        //     ),
+        //   ],
+        // )),
+        // SizedBox(
+        //   height: 4.h,
+        // ),
         Text(
           'Keep online for 60 days',
           style: TextStyle(
@@ -939,6 +1240,7 @@ class SellerInformationWidget extends StatelessWidget {
         SizedBox(
           height: 7.h,
         ),
+
         Text(
           "90 days of promotion | Facebook Ads (4 days) | Up to 10 images allowed. Facebook boost fir 4 days (5 per day) + 2 discount | Pay only 18 with free designing! Call 9840714218 for details | Displayed at the top of the page in search result page | Featured on the home page | Featured in the category | Keep online for 90 days.",
           style: TextStyle(
@@ -950,7 +1252,62 @@ class SellerInformationWidget extends StatelessWidget {
           height: 30.h,
         ),
         Center(
-            child: GeneralEelevatedButton(text: 'Submit', onPresssed: () {})),
+            child: GeneralEelevatedButton(
+                text: 'Submit',
+                onPresssed: () async {
+                  try {
+                    // Dummy data
+                    String responseMessage = await createlisting(
+                        null, // ref
+                        widget.category!.trim(), // category
+                        widget.title!.trim(), // title
+                        widget.city!.trim(), // city
+                        widget.price!.trim(), // price
+                        widget.description!.trim(), // description
+                        widget.length?.trim() ?? '0', // length
+                        widget.weight?.trim() ?? '0', // width
+                        widget.height?.trim() ?? '0', // height
+                        widget.weight?.trim() ?? '0', // weight
+                        widget.discount.trim(), // discounted price
+                        widget.type?.trim() ?? '0', // type
+                        emailcontroller.text, // email
+                        widget.phonecoontroller!.text, // phone
+                        nameconroller.text, // username
+                        pickupcontroller.text, // pickup
+                        selectedImages, // images
+                        widget.terms?.trim() ??
+                            '0', // accept (e.g., "1" for yes, or whatever value is expected)
+                        pickupcontroller
+                            .text // address (use the appropriate address here)
+                        );
+                  } catch (e) {
+                    showAboutDialog(
+                    
+                      
+                      // ignore: use_build_context_synchronously
+                      context: context, children: [
+                        const AlertDialog(
+                          actions: [],
+
+                          contentPadding: EdgeInsets.zero,
+                          
+                      title: Text("Successful !"),
+                      content: Column(
+                        children: [
+                          Divider(),
+                          Text("Yourlisting has been created wait for some time before it is being verified")
+
+                        ],
+                      ),
+                    )
+                    ]);
+                    // ScaffoldMes
+                    // senger.of(context).showSnackBar(SnackBar(
+                    //     content: Text(
+                    //         "Yourlisting has been created wait for some time before it is being verified")));
+                    print("API call failed: $e");
+                  }
+                })),
         SizedBox(
           height: 20.h,
         )
@@ -962,7 +1319,9 @@ class SellerInformationWidget extends StatelessWidget {
 class SelectPhotFromFilesContainer extends StatefulWidget {
   const SelectPhotFromFilesContainer({
     super.key,
+    required this.onImagesSelected,
   });
+  final Function(List<File?>) onImagesSelected;
 
   @override
   State<SelectPhotFromFilesContainer> createState() =>
@@ -982,6 +1341,8 @@ class _SelectPhotFromFilesContainerState
         setState(() {
           images.addAll(selectedImages);
         });
+        // Pass the selected images to the parent using the callback
+        widget.onImagesSelected(images);
       }
     } else {
       _imagePickerService.showSnackBar(

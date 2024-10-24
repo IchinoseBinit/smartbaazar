@@ -94,7 +94,6 @@
 //         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", ''),
         
 //         ));
-//     // print("bibash is ${vendorProfileModelDataAsyncValue.value!.vendorposts}");
 //     return SafeArea(
 //       child: Scaffold(
 //         key: _key,

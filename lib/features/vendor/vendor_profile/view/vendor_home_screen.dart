@@ -113,8 +113,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
     final vendorProfileModelDataAsyncValue = ref.watch(
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
-    // print(
-    //     "bibash is ${vendorProfileModelDataAsyncValue.value!.advertisements![0].image}");
     return SafeArea(
       child: Scaffold(
         key: _key,
@@ -462,7 +460,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              SubscribeAndWinEveryDay(),
+                                              const SubscribeAndWinEveryDay(),
                                         ));
                                   },
                                   child: Image.network(scratch))
@@ -632,7 +630,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                       Skeleton.replace(
                         width: productCardWidth,
                         child: Container(
-                          margin: EdgeInsets.only(right: 2, top: 4),
+                          margin: const EdgeInsets.only(right: 2, top: 4),
                           width: productCardWidth,
                           height: 100.h,
                           decoration: BoxDecoration(

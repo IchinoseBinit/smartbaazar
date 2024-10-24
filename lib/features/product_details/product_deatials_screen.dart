@@ -1214,7 +1214,7 @@ class ProductAvilableColorsWidget extends StatelessWidget {
                       color: Color(0xff000000),
                     ),
                     SizedBox(width: 2.w),
-                    Text(data.value!,
+                    Text(data.value?? '',
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,

@@ -11,7 +11,7 @@ Future<BrandBazarModel> getBrandBazaarResponse(GetBrandBazaarResponseRef ref) as
   final SmartClinet client = SmartClinet(); // Assuming this is your API client
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url: ApiConstants.getBrandBazzarUrl, // Ensure this is the correct URL
     );
     

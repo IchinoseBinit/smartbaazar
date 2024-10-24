@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
@@ -135,7 +134,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           SizedBox(
                             height: 2.h,
                           ),
-                          Container(
+                          SizedBox(
                             height: 110.h,
                             width: double.infinity,
                             child: brandbajarAsyncValue.when(
@@ -161,7 +160,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ));
                               },
                               loading: () =>
-                                  Center(child: CircularProgressIndicator()),
+                                  const Center(child: CircularProgressIndicator()),
                               error: (error, stack) =>
                                   Center(child: Text('Error: $error')),
                             ),

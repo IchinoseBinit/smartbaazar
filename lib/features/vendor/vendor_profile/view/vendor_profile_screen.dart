@@ -203,30 +203,40 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           title: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                height: 40.h,
-                width: 40.h,
-                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                decoration: BoxDecoration(
-                    color: const Color(0xffF5BF05),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      width: 1.w,
-                    )),
-                child: Image.asset(
-                  ImageConstant.personImage,
+              InkWell(
+                onTap: () {
+                  
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      height: 40.h,
+                      width: 40.h,
+                      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffF5BF05),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 1.w,
+                          )),
+                      child: Image.asset(
+                        ImageConstant.personImage,
+                      ),
+                    ),
+                       SizedBox(
+                  width: 10.h,
+                ),
+                Text(
+                  'Vendor Name',
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black),
+                ),
+                  ],
                 ),
               ),
-              SizedBox(
-                width: 10.h,
-              ),
-              Text(
-                'Vendor Name',
-                style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black),
-              ),
+           
               const Spacer(),
               Container(
                 height: 32.h,
