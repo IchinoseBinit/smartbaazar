@@ -6,6 +6,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_skeleton.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class FavouriteListingScreen extends ConsumerWidget {
   const FavouriteListingScreen({super.key});
@@ -83,7 +84,10 @@ class FavouriteListingScreen extends ConsumerWidget {
                         return const SizedBox.shrink();
                       }
                       final item = favouriteList[index];
-                      return FavouriteListProductDetails(item: item);
+                      return FavouriteListProductDetails(
+                        item: item,
+                        ref: ref,
+                      );
                     },
                     separatorBuilder: (context, index) => SizedBox(
                       height: 16.h,
@@ -112,14 +116,16 @@ class FavouriteListingScreen extends ConsumerWidget {
 class FavouriteListProductDetails extends ConsumerStatefulWidget {
   // final bool isSelected;
   // final ValueChanged<bool> onSelected;
- final Product item;
+  final Product item;
+  final WidgetRef ref;
 
-  const FavouriteListProductDetails({
-    // required this.isSelected,
-    // required this.onSelected,
-    super.key,
-    required this.item,
-  });
+  const FavouriteListProductDetails(
+      {
+      // required this.isSelected,
+      // required this.onSelected,
+      super.key,
+      required this.item,
+      required this.ref});
 
   @override
   ConsumerState<FavouriteListProductDetails> createState() =>
@@ -267,29 +273,58 @@ class _FavouriteListProductDetailsState
                   ),
                   GestureDetector(
                       onTap: () async {
-                        final deleteResult = ref.read(
+                         final deleteResult = ref.read(
                             deleteFavouriteProductProvider(widget.item.id!));
-                        deleteResult.when(
-                          data: (_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Item deleted successfully'),backgroundColor: Colors.white70,),
-                            );
-                            ref.invalidate(getFavouriteListProvider);
-                          },
-                          loading: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Deleting item...'),backgroundColor: Colors.white70,),
-                            );
-                          },
-                          error: (error, stack) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content:
-                                      Text('Failed to delete item: $error'),backgroundColor: Colors.white70,),
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              height: 30.h,
+                              child: AlertDialog(
+                                elevation: 1,
+                                alignment: Alignment.center,
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Message"),
+                                    IconButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          ref.refresh(getFavouriteListProvider);
+                                        },
+                                        icon: Icon(Icons.close))
+                                  ],
+                                ),
+                                content: Text(
+                                    "Deleted Favourite Lsiting successfully !"),
+                              ),
                             );
                           },
                         );
+
+                       
+                        // deleteResult.when(
+                        //   data: (_) {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(
+                        //           content: Text('Item deleted successfully'),backgroundColor: Colors.white70,),
+                        //     );
+                        //     ref.invalidate(getFavouriteListProvider);
+                        //   },
+                        //   loading: () {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(content: Text('Deleting item...'),backgroundColor: Colors.white70,),
+                        //     );
+                        //   },
+                        //   error: (error, stack) {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       SnackBar(
+                        //           content:
+                        //               Text('Failed to delete item: $error'),backgroundColor: Colors.white70,),
+                        //     );
+                        //   },
+                        // );
                       },
                       child: SvgPicture.asset(deleteIcon)),
                 ],

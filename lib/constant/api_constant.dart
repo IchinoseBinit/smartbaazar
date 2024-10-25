@@ -87,6 +87,7 @@ class ApiConstants {
   static String storeSponsorBanner = '$baseUrl/users/sponsorbanner';
   static String postGiftStoreUrl = '$baseUrl/users/sponsorship_store';
   static String postCouponStoreUrl = '$baseUrl/users/sponsorship_store';
+static String sponsorshipDestroy = '$baseUrl/users/sponsorship_destroy';
   //dispute
   static String getDisputeUrl = '$baseUrl/dispute';
   static String submitDisputeUrl = '$baseUrl/storedispute';

@@ -14,6 +14,7 @@ import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
@@ -539,204 +540,230 @@ class ProductDetailScreen extends ConsumerWidget {
                                       // print("binod ${username.getKeys()}");
                                       String? name = srf.getString('name');
                                       String? id = srf.getString('userId');
-                                      showDialog(
+                                      print("bibash $name and $id");
+                                      await showDialog(
                                         context: context,
-                                        builder: (ctx) {
-                                          return Form(
-                                            key: _formKey,
-                                            child: SimpleDialog(
-                                              titlePadding: EdgeInsets.zero,
-                                              contentPadding:
-                                                  const EdgeInsets.all(10),
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    const Text(
-                                                      'Message',
-                                                      style: TextStyle(
-                                                          fontSize: 13),
-                                                    ),
-                                                    IconButton(
-                                                      icon: const Icon(
-                                                          Icons.close,
-                                                          size: 15),
-                                                      onPressed: () {
-                                                        Navigator.of(ctx)
-                                                            .pop(); // Close the dialog
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Text(
-                                                  'Contact Author',
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Color.fromARGB(
-                                                        255, 1, 139, 251),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.brown),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                  padding: const EdgeInsets.all(
-                                                      8.0), // Add padding for better appearance
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      const Text(
-                                                        "Phone Number",
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                          width:
-                                                              10), // Add some spacing between text and field
-                                                      Container(
-                                                        height: 50,
-                                                        width: 100.w,
-                                                        alignment:
-                                                            Alignment.topCenter,
-                                                        child: TextFormField(
-                                                          controller:
-                                                              phonecontroller,
-                                                          decoration:
-                                                              const InputDecoration(
-                                                            hintText:
-                                                                "+977 1245783645",
-                                                            hintStyle:
-                                                                TextStyle(
-                                                                    fontSize:
-                                                                        14),
-                                                            border: InputBorder
-                                                                .none, // Remove the inner border for simplicity
-                                                          ),
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .phone,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Container(
-                                                  height: 200.h,
-                                                  width: 50.w,
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5, bottom: 5),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.brown),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                  padding: const EdgeInsets.all(
-                                                      8.0), // Add padding for better appearance
+                                        builder: (context) {
+                                          return SizedBox(
+                                            child: AlertDialog(
+                                              shape: BeveledRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              content:
+                                                  Builder(builder: (context) {
+                                                return SizedBox(
+                                                  height: 450.h,
+                                                  width: 900.w,
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
-                                                            .start,
+                                                            .center,
                                                     children: [
-                                                      const Text(
-                                                        "Phone Number",
-                                                        style: TextStyle(
-                                                          fontSize: 13,
-                                                        ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Message",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 19),
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              icon: Icon(
+                                                                  Icons.close)),
+                                                        ],
                                                       ),
-                                                      TextFormField(
-                                                        controller:
-                                                            msgcontroller,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          hintText:
-                                                              "This ia a message to the seller",
-                                                          border: InputBorder
-                                                              .none, // Remove the inner border for simplicity
-                                                        ),
-                                                        keyboardType:
-                                                            TextInputType.text,
+                                                      SizedBox(
+                                                        height: 5.h,
                                                       ),
+                                                      CreateListingCardWidget(
+                                                          child: Row(
+                                                        children: [
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                'Phone number',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Colors
+                                                                        .blue),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10.w,
+                                                              ),
+                                                              Text(
+                                                                ' *',
+                                                                style: TextStyle(
+                                                                    color: const Color(
+                                                                        0xffD33636),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        14.sp),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              controller:
+                                                                  phonecontroller,
+                                                              decoration: InputDecoration.collapsed(
+                                                                  hintText:
+                                                                      'Enter phone',
+                                                                  hintStyle: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      color: const Color(
+                                                                          0xffADADAD))),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
+                                                      SizedBox(
+                                                        height: 5.h,
+                                                      ),
+                                                      CreateListingCardWidget(
+                                                          child: SizedBox(
+                                                        height: 200.h,
+                                                        width: double.infinity,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Enter Message',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .blue),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 15.h,
+                                                            ),
+                                                            TextFormField(
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .done,
+                                                              minLines:
+                                                                  3, // Set this
+                                                              maxLines:
+                                                                  6, // and this
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .multiline,
+
+                                                              controller:
+                                                                  msgcontroller,
+                                                              decoration: InputDecoration.collapsed(
+                                                                  hintText:
+                                                                      'hello ....',
+                                                                  hintStyle: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      color: const Color(
+                                                                          0xffADADAD))),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
+                                                      GeneralEelevatedButton(
+                                                        width: double.infinity,
+                                                        text: "Send Message",
+                                                        onPresssed: () async {
+                                                          if (phonecontroller
+                                                                  .text
+                                                                  .isEmpty ||
+                                                              msgcontroller.text
+                                                                  .isEmpty) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                  content: Text(
+                                                                      "Fields cannot be empty!")),
+                                                            );
+                                                          } else {
+                                                            // Call the contactSeller provider and wait for the response
+                                                            final success =
+                                                                await ref.read(
+                                                              contactSellerProvider(
+                                                                name!,
+                                                                phonecontroller
+                                                                    .text,
+                                                                msgcontroller
+                                                                    .text,
+                                                                int.tryParse(
+                                                                    id!)!,
+                                                              ).future,
+                                                            );
+
+                                                            // Handle the response based on success or failure
+                                                            if (success) {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                const SnackBar(
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                    content: Text(
+                                                                        "Message sent successfully!")),
+                                                              );
+                                                              Navigator.pop(
+                                                                  context);
+                                                            } else {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                const SnackBar(
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                    content: Text(
+                                                                        "Failed to send the message!")),
+                                                              );
+                                                            }
+                                                          }
+                                                        },
+                                                      )
                                                     ],
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                GeneralEelevatedButton(
-                                                  text: 'Send Message',
-                                                  onPresssed: () async {
-                                                    if (phonecontroller
-                                                            .text.isEmpty ||
-                                                        msgcontroller
-                                                            .text.isEmpty) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                            content: Text(
-                                                                "Fields cannot be empty!")),
-                                                      );
-                                                    } else {
-                                                      // Call the contactSeller provider and wait for the response
-                                                      final success =
-                                                          await ref.read(
-                                                        contactSellerProvider(
-                                                          name!,
-                                                          phonecontroller.text,
-                                                          msgcontroller.text,
-                                                          int.tryParse(id!)!,
-                                                        ).future,
-                                                      );
-
-                                                      // Handle the response based on success or failure
-                                                      if (success) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          3),
-                                                              content: Text(
-                                                                  "Message sent successfully!")),
-                                                        );
-                                                        Navigator.pop(context);
-                                                      } else {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          3),
-                                                              content: Text(
-                                                                  "Failed to send the message!")),
-                                                        );
-                                                      }
-                                                    }
-                                                  },
-                                                )
-                                              ],
+                                                );
+                                              }),
                                             ),
                                           );
                                         },
@@ -827,60 +854,76 @@ class ProductDetailScreen extends ConsumerWidget {
                                 ),
                               );
 
-                              // Show the AlertDialog with scratch card
                               await showDialog(
                                 context: context,
-                                builder: (BuildContext context) {
+                                builder: (context) {
                                   return AlertDialog(
-                                    icon: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 1,
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.close),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    title: const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "You Earned a Gift Card!",
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    content: SizedBox(
+                                      height: 450.h,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Message",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 19),
+                                              ),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon: Icon(Icons.close)),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          Text(
+                                            "Thank you for subscribing",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 20),
+                                          ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          Text(
+                                            "Scratch and win",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,
+                                                color: Colors.blue),
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          scratchAndWinResponse.when(
+                                            data: (data) {
+                                              return _ScratchCardContent(
+                                                gift: data,
+                                              );
+                                            },
+                                            error: (error, stackTrace) {
+                                              return const Text(
+                                                  "An error occurred, please try again later.");
+                                            },
+                                            loading: () {
+                                              return const CircularProgressIndicator();
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    content: scratchAndWinResponse.when(
-                                      data: (data) {
-                                        return _ScratchCardContent(
-                                          gift: data,
-                                        );
-                                      },
-                                      error: (error, stackTrace) {
-                                        return const Text(
-                                            "An error occurred, please try again later.");
-                                      },
-                                      loading: () {
-                                        return const CircularProgressIndicator();
-                                      },
                                     ),
                                   );
                                 },
                               );
 
-                              // Navigate after showing the SnackBar and dialog
-                              await Future.delayed(const Duration(seconds: 2));
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1322,7 +1365,7 @@ class ProductTagListWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 10.h),
+          // SizedBox(height: 10.h),
           SizedBox(height: 15.h),
 
           // Use ListView.builder to display tags
@@ -1489,10 +1532,8 @@ class SimilarListingProduct extends StatelessWidget {
               itemBuilder: (context, index) {
                 SimilarItems data = items[index];
                 List<Picture> pics = data.pictures!;
-                print("sim ${ApiConstants.imgUrl}${pics.first.filename}");
                 return InkWell(
                   onTap: () {
-                    print("id is ${data.id}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
