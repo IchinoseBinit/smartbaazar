@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
@@ -26,13 +28,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   bool _showSearchResults = false;
-    final _debouncer = BehaviorSubject<String>();
+  final _debouncer = BehaviorSubject<String>();
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
       _showSearchResults = hasFocus;
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -49,19 +52,18 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
       });
     });
   }
-    @override
+
+  @override
   void dispose() {
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
   }
 
- 
-
-
   @override
   Widget build(BuildContext context) {
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+    final brandbajardata = ref.watch(getBrandBazaarResponseProvider);
     final searchResults = ref.watch(searchProvider(_searchController.text));
     final adsList = ref.watch(getAdsProvider);
 
@@ -72,10 +74,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
           resizeToAvoidBottomInset: false,
           backgroundColor: const Color(0xffF6F1F1),
           appBar: AppbarWidget(
-
-            onsubmit: (p0) {
-              
-            },
+            onsubmit: (p0) {},
             scaffoldKey: _key,
             searchController: _searchController,
             onCartTap: () {
@@ -93,63 +92,100 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  if (_showSearchResults)
-                Positioned(
-                  top: 0.h, // Position just below the search bar
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    color: Colors.white,
-                    child: searchResults.when(
-                      data: (results) {
-                        if (results.isEmpty) {
-                          return const SizedBox(
-                            child: Text('No result found'),
-                          ); // No results
-                        }
-                        return Card(
-                          elevation: 8,
-                          child: ListView.separated(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: results.length,
-                            itemBuilder: (context, index) {
-                              final product = results[index];
-                              return ListTile(
-                                title: Text(product.title),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SearchScreen(
-                                          query: _searchController.text,
-                                        ),
-                                      ));
+                if (_showSearchResults)
+                  Positioned(
+                    top: 0.h, // Position just below the search bar
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.white,
+                      child: searchResults.when(
+                        data: (results) {
+                          if (results.isEmpty) {
+                            return const SizedBox(
+                              child: Text('No result found'),
+                            ); // No results
+                          }
+                          return Card(
+                            elevation: 8,
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: results.length,
+                              itemBuilder: (context, index) {
+                                final product = results[index];
+                                return ListTile(
+                                  title: Text(product.title),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SearchScreen(
+                                            query: _searchController.text,
+                                          ),
+                                        ));
 
-                                  setState(() {
-                                    _showSearchResults = false;
+                                    setState(() {
+                                      _showSearchResults = false;
 
-                                    FocusScope.of(context).unfocus();
-                                  });
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) =>
-                                  //         ProductDetailsScreen(
-                                  //       productId: product.id,
-                                  //     ),
-                                  //   ),
-                                  // );
-                                },
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                          ),
-                        );
-                      },
-                      loading: () {
+                                      FocusScope.of(context).unfocus();
+                                    });
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         ProductDetailsScreen(
+                                    //       productId: product.id,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                  },
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const Divider(),
+                            ),
+                          );
+                        },
+                        loading: () {
+                          return SimpleDialog(
+                            children: [
+                              adsList.isLoading
+                                  ? const SizedBox()
+                                  : Image.network(adsList.value!.first.image!)
+                            ],
+                          );
+                        },
+                        error: (error, stack) =>
+                            const Center(child: CircularProgressIndicator()),
+                      ),
+                    ),
+                  ),
+                  brandbajardata.when(
+                    data: (data) {
+                      return    CarouselSlider(
+                              items: data.data.trandBanners?.map((e) {
+                                 return Image.network(
+                                      width: double.infinity,
+                                      fit: BoxFit.fill,
+                                      e.image!);
+                                
+                              },).toList(),
+                              options: CarouselOptions(
+                                height: 140.h,
+                                aspectRatio: 0.1,
+                                reverse: true,
+                                viewportFraction: 1,
+                                autoPlay: true,
+                                enlargeCenterPage: true,
+                              ));
+                      
+                    },
+                     error: (error, stackTrace) {
+                       return Text("error occured $stackTrace");
+                     },
+                         loading: () {
                         return SimpleDialog(
                           children: [
                             adsList.isLoading
@@ -157,14 +193,37 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
                                 : Image.network(adsList.value!.first.image!)
                           ],
                         );
-                      },
-                      error: (error, stack) =>
-                          const Center(child: CircularProgressIndicator()),
-                    ),
-                  ),
-                ),
+                      },)
+                // CarouselSlider(
+                //               items: homePostsData.map(
+                //                 data: (data) {
 
-                Padding(
+                //                 },
+                //                  error: (error) {
+                //                    print("error came")
+                //                  },
+                //                  loading:
+                //                  loading)
+
+                //               .map(
+                //                 (e) {
+                //                   print("ram ${e.image}}");
+                //                   return Image.network(
+                //                       width: double.infinity,
+                //                       fit: BoxFit.cover,
+                //                       e.image!);
+                //                 },
+                //               ).toList(),
+                //               options: CarouselOptions(
+                //                 height: 130.h,
+                //                 aspectRatio: 0.1,
+                //                 reverse: true,
+                //                 viewportFraction: 1,
+                //                 autoPlay: true,
+                //                 enlargeCenterPage: true,
+                //               )),
+
+               , Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 5.w,
                   ),
@@ -245,7 +304,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
               ],
             ),
           ),
-        
         ));
   }
 }

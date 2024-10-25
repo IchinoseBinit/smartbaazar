@@ -22,6 +22,7 @@ class ApiConstants {
   static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
   static String getAdsUrl = '$baseUrl/homeSections/loadads';
   static String producttypeurl = '$baseUrl/pages/posttype';
+  static String scratchandwinurl = '$baseUrl/users/lottery';
 
   static String reportComplainUrl = '$baseUrl/posts';
   //cart item

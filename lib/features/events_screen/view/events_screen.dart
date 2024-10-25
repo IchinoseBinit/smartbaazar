@@ -104,8 +104,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                     List<UsedAdvertisement> ads = data.advertisements!;
                     // final UsedModel maindata = data;
 
-                    // print("bibash ${maindata.hot_products!.length!}");
-                    // print("bibash ${maindata.products!.data![2]}");
+                  
 
                     // List<Product> hotproducts = data.hot_products!;
 

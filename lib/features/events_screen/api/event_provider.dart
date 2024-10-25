@@ -16,7 +16,6 @@ Future<UsedModel> geteventResponse(GeteventResponseRef ref) async {
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.producttypeurl}/5", // Consider moving to a constant
     );
-    print("bibash $response");
 
     print("Response: $response");
 

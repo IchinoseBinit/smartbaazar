@@ -16,7 +16,6 @@ Future<UsedModel> getGrocertResponse(GetGrocertResponseRef ref) async {
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.producttypeurl}/8", // Consider moving to a constant
     );
-    print("bibash $response");
 
     print("Response: $response");
 

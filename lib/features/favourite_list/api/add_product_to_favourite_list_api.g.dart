@@ -6,7 +6,7 @@ part of 'add_product_to_favourite_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$addToFavoritesHash() => r'b5436f0499a2c5726da6531fbd6bb6f5d5b6dbb2';
+String _$addToFavoritesHash() => r'809ab3e31ca034cf0e05c833b7dc1443dd418363';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const addToFavoritesProvider = AddToFavoritesFamily();
 
 /// See also [addToFavorites].
-class AddToFavoritesFamily extends Family<AsyncValue<void>> {
+class AddToFavoritesFamily extends Family<AsyncValue<String>> {
   /// See also [addToFavorites].
   const AddToFavoritesFamily();
 
@@ -75,7 +75,7 @@ class AddToFavoritesFamily extends Family<AsyncValue<void>> {
 }
 
 /// See also [addToFavorites].
-class AddToFavoritesProvider extends AutoDisposeFutureProvider<void> {
+class AddToFavoritesProvider extends AutoDisposeFutureProvider<String> {
   /// See also [addToFavorites].
   AddToFavoritesProvider(
     String userId,
@@ -115,7 +115,7 @@ class AddToFavoritesProvider extends AutoDisposeFutureProvider<void> {
 
   @override
   Override overrideWith(
-    FutureOr<void> Function(AddToFavoritesRef provider) create,
+    FutureOr<String> Function(AddToFavoritesRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -133,7 +133,7 @@ class AddToFavoritesProvider extends AutoDisposeFutureProvider<void> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<void> createElement() {
+  AutoDisposeFutureProviderElement<String> createElement() {
     return _AddToFavoritesProviderElement(this);
   }
 
@@ -154,7 +154,7 @@ class AddToFavoritesProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
-mixin AddToFavoritesRef on AutoDisposeFutureProviderRef<void> {
+mixin AddToFavoritesRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `userId` of this provider.
   String get userId;
 
@@ -163,7 +163,7 @@ mixin AddToFavoritesRef on AutoDisposeFutureProviderRef<void> {
 }
 
 class _AddToFavoritesProviderElement
-    extends AutoDisposeFutureProviderElement<void> with AddToFavoritesRef {
+    extends AutoDisposeFutureProviderElement<String> with AddToFavoritesRef {
   _AddToFavoritesProviderElement(super.provider);
 
   @override
