@@ -50,6 +50,7 @@ class ApiConstants {
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
   static String getVendorProfileDataByID = '$baseUrl/users/vendor';
   static String followunfollowvendorurl = '$baseUrl/users/follow';
+  static String checkuserverifyurl = '$baseUrl/userverify';
   //subscribe and win everyday
   static String getSubscribeAndWinUrl = '$baseUrl/users/scwn';
   static String getMySubscriptionUrl = '$baseUrl/subscription';
@@ -87,7 +88,7 @@ class ApiConstants {
   static String storeSponsorBanner = '$baseUrl/users/sponsorbanner';
   static String postGiftStoreUrl = '$baseUrl/users/sponsorship_store';
   static String postCouponStoreUrl = '$baseUrl/users/sponsorship_store';
-static String sponsorshipDestroy = '$baseUrl/users/sponsorship_destroy';
+  static String sponsorshipDestroy = '$baseUrl/users/sponsorship_destroy';
   //dispute
   static String getDisputeUrl = '$baseUrl/dispute';
   static String submitDisputeUrl = '$baseUrl/storedispute';

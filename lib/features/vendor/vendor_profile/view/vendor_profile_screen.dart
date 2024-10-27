@@ -22,6 +22,7 @@ import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -51,10 +52,11 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     });
   }
 
-   @override
+  @override
   void initState() {
     super.initState();
     getname();
+   
   }
 
   final List<Map<String, dynamic>> profileList = [
@@ -242,9 +244,8 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                     SizedBox(
                       width: 10.h,
                     ),
-                    
                     Text(
-                      vname?? "loading..",
+                      vname ?? "loading..",
                       style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,

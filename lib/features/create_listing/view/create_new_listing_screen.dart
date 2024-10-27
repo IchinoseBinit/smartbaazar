@@ -18,6 +18,7 @@ import 'package:smartbazar/features/create_listing/model/dropdown_value_model.da
 import 'package:smartbazar/features/create_listing/view/category_feild.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class CreateNewListinScreen extends ConsumerStatefulWidget {
@@ -50,9 +51,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TextEditingController widthcontroller = TextEditingController();
   TextEditingController lengthcontroller = TextEditingController();
   String accept = '0';
+  String? isUserVerified;
 
   @override
   void initState() {
+    checkuserverified().then(
+      (value) {
+        isUserVerified = value;
+      },
+    );
     super.initState();
     _fetchTypeList();
     _fetchcities();
@@ -75,12 +82,16 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   Future<void> _fetchTypeList() async {
     try {
       NewListingRepository repository = NewListingRepository();
-      List<TypeList> fetchedTypes = await repository.fetchTypeList();
+      var allItems = await repository.fetchTypeList();
       setState(() {
-        typeListItems = fetchedTypes;
+        typeListItems = isUserVerified == '1'
+            ? allItems
+            : allItems
+                .where((item) =>
+                    ["Used", "Jobs", "Events"].contains(item.typeName))
+                .toList();
       });
     } catch (e) {
-      // Handle error, maybe show a message to the user
       print('Failed to load types: $e');
     }
   }
@@ -152,49 +163,53 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 18.h,
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 11.h, horizontal: 14.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: const Color(0xff362677)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichTextWidget(
-                          title: 'Verfiy your account ',
-                          titleStyle: TextStyle(
-                              // decoration: TextDecoration.underline,
-                              decoration: TextDecoration.underline,
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500),
-                          subtitle: ' to post Brand New',
-                          subtitleStyle: TextStyle(
-                              decoration: TextDecoration.none,
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500),
-                          onPressed: () {}),
-                      Text(
-                        'product & Business to Business (B2B) products & Services. its FREE & takes only few minutes!',
-                        style: TextStyle(
-                            decoration: TextDecoration.none,
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        'Verify your account',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                ),
+                isUserVerified == null
+                    ? SizedBox()
+                    : isUserVerified == '0'
+                        ? Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 11.h, horizontal: 14.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: const Color(0xff362677)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichTextWidget(
+                                    title: 'Verfiy your account ',
+                                    titleStyle: TextStyle(
+                                        // decoration: TextDecoration.underline,
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500),
+                                    subtitle: ' to post Brand New',
+                                    subtitleStyle: TextStyle(
+                                        decoration: TextDecoration.none,
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500),
+                                    onPressed: () {}),
+                                Text(
+                                  'product & Business to Business (B2B) products & Services. its FREE & takes only few minutes!',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.none,
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  'Verify your account',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -314,6 +329,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 fontSize: 14.sp),
                           )
                         ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
@@ -970,6 +988,9 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
         CreateListingCardWidget(
             child: Row(
           children: [
+            SizedBox(
+              width: 5.w,
+            ),
             Text(
               'Email',
               style: TextStyle(
@@ -977,7 +998,19 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            const Spacer(),
+            SizedBox(
+              width: 5.w,
+            ),
+            Text(
+              '*',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: Colors.black),
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
             Expanded(
               child: TextField(
                 controller: emailcontroller,
@@ -1048,6 +1081,9 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
         CreateListingCardWidget(
             child: Row(
           children: [
+            SizedBox(
+              width: 5.w,
+            ),
             Text(
               'Phone Number',
               style: TextStyle(
@@ -1055,7 +1091,16 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            const Spacer(),
+            Text(
+              '*',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: Colors.black),
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
             Expanded(
               child: TextField(
                 controller: widget.phonecoontroller,
@@ -1281,26 +1326,60 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                             .text // address (use the appropriate address here)
                         );
                   } catch (e) {
-                    showAboutDialog(
-                    
-                      
-                      // ignore: use_build_context_synchronously
-                      context: context, children: [
-                        const AlertDialog(
-                          actions: [],
-
-                          contentPadding: EdgeInsets.zero,
-                          
-                      title: Text("Successful !"),
-                      content: Column(
-                        children: [
-                          Divider(),
-                          Text("Yourlisting has been created wait for some time before it is being verified")
-
-                        ],
-                      ),
-                    )
-                    ]);
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          child: AlertDialog(
+                            shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            content: Builder(
+                              builder: (context) {
+                                return SizedBox(
+                                  height: 300.h,
+                                  width: 900.w,
+                                  child: Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text(
+                                                "Message",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 19),
+                                              ),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon:
+                                                      const Icon(Icons.close)),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 30.h,
+                                          ),
+                                          Text(
+                                            "Your listing has been created wait for some time before it is being verified",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 19),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
                     // ScaffoldMes
                     // senger.of(context).showSnackBar(SnackBar(
                     //     content: Text(

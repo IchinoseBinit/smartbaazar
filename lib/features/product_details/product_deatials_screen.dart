@@ -540,7 +540,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                       // print("binod ${username.getKeys()}");
                                       String? name = srf.getString('name');
                                       String? id = srf.getString('userId');
-                                      print("bibash $name and $id");
                                       await showDialog(
                                         context: context,
                                         builder: (context) {
