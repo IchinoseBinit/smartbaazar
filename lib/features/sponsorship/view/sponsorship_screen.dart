@@ -317,7 +317,7 @@ class SponsorShipDetailsWidget extends StatelessWidget {
                         (value) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
-                            "${value}",
+                            value,
                           )));
                           Navigator.pop(context);
                         },

@@ -81,7 +81,6 @@ Future<String> createlisting(
     }
 
     // Log the prepared data for debugging
-    print("Form Data: ${formData.fields}");
 
     // Send the request using SmartClinet's request method
     final response = await client.request(

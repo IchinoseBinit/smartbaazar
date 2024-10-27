@@ -92,7 +92,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           },
           onSearchFocusChanged: _onSearchFocusChanged,
         ),
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {},

@@ -91,7 +91,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen> {
           },
           onSearchFocusChanged: _onSearchFocusChanged,
         ),
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {},
@@ -395,7 +395,7 @@ class UsedProductSlider extends StatelessWidget {
                     return SizedBox(width: 12.w);
                   },
                 )
-              : Center(
+              : const Center(
                   child: Text('No products available'),
                 ),
         ),

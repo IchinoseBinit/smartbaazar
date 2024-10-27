@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smartbazar/features/home/model/product_model.dart';
 
 part 'used_model.freezed.dart';
 part 'used_model.g.dart';

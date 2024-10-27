@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -130,8 +131,11 @@ class _OtpScreenState extends State<OtpScreen> {
                 GeneralEelevatedButton(
                   text: 'Send',
                   onPresssed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const BottomNavigationScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const BottomNavigationScreen()));
                   },
                 ),
                 SizedBox(
@@ -140,7 +144,13 @@ class _OtpScreenState extends State<OtpScreen> {
                 RichTextWidget(
                   title: 'Want to reach home screen? ',
                   subtitle: 'Go back',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ));
+                  },
                 ),
                 SizedBox(
                   height: 20.h,

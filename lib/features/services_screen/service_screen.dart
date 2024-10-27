@@ -93,7 +93,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
           },
           onSearchFocusChanged: _onSearchFocusChanged,
         ),
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {},

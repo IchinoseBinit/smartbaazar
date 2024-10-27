@@ -287,16 +287,16 @@ class _FavouriteListProductDetailsState
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Message"),
+                                    const Text("Message"),
                                     IconButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                           ref.refresh(getFavouriteListProvider);
                                         },
-                                        icon: Icon(Icons.close))
+                                        icon: const Icon(Icons.close))
                                   ],
                                 ),
-                                content: Text(
+                                content: const Text(
                                     "Deleted Favourite Lsiting successfully !"),
                               ),
                             );

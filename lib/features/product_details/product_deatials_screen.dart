@@ -388,7 +388,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     content: Text(
                                                         addFavoriteMessage),
                                                     duration:
-                                                        Duration(seconds: 2),
+                                                        const Duration(seconds: 2),
                                                   ),
                                                 );
                                               } catch (e) {
@@ -564,7 +564,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Text(
+                                                          const Text(
                                                             "Message",
                                                             style: TextStyle(
                                                                 fontWeight:
@@ -577,7 +577,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                 Navigator.pop(
                                                                     context);
                                                               },
-                                                              icon: Icon(
+                                                              icon: const Icon(
                                                                   Icons.close)),
                                                         ],
                                                       ),
@@ -868,7 +868,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 "Message",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
@@ -878,13 +878,13 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  icon: Icon(Icons.close)),
+                                                  icon: const Icon(Icons.close)),
                                             ],
                                           ),
                                           SizedBox(
                                             height: 5.h,
                                           ),
-                                          Text(
+                                          const Text(
                                             "Thank you for subscribing",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w800,
@@ -893,7 +893,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                           SizedBox(
                                             height: 5.h,
                                           ),
-                                          Text(
+                                          const Text(
                                             "Scratch and win",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -1717,7 +1717,7 @@ class _ScratchCardContent extends StatefulWidget {
   final String gift;
 
   // Constructor to initialize gift
-  _ScratchCardContent({Key? key, required this.gift}) : super(key: key);
+  const _ScratchCardContent({Key? key, required this.gift}) : super(key: key);
 
   @override
   __ScratchCardContentState createState() => __ScratchCardContentState();

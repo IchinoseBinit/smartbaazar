@@ -40,6 +40,23 @@ class VendorProfileScreen extends StatefulWidget {
 }
 
 class _VendorProfileScreenState extends State<VendorProfileScreen> {
+  String? vname;
+
+  Future<void> getname() async {
+    SharedPreferences srf = await SharedPreferences.getInstance();
+    String? name = srf.getString("name");
+
+    setState(() {
+      vname = name;
+    });
+  }
+
+   @override
+  void initState() {
+    super.initState();
+    getname();
+  }
+
   final List<Map<String, dynamic>> profileList = [
     {"icon": Icons.mail, "title": '1', "subtitle": 'mail'},
     {"icon": Icons.visibility, "title": '55', "subtitle": 'visits'},
@@ -204,15 +221,14 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
             mainAxisSize: MainAxisSize.max,
             children: [
               InkWell(
-                onTap: () {
-                  
-                },
+                onTap: () {},
                 child: Row(
                   children: [
                     Container(
                       height: 40.h,
                       width: 40.h,
-                      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
                       decoration: BoxDecoration(
                           color: const Color(0xffF5BF05),
                           shape: BoxShape.circle,
@@ -223,20 +239,20 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                         ImageConstant.personImage,
                       ),
                     ),
-                       SizedBox(
-                  width: 10.h,
-                ),
-                Text(
-                  'Vendor Name',
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black),
-                ),
+                    SizedBox(
+                      width: 10.h,
+                    ),
+                    
+                    Text(
+                      vname?? "loading..",
+                      style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black),
+                    ),
                   ],
                 ),
               ),
-           
               const Spacer(),
               Container(
                 height: 32.h,

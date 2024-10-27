@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CarsoselWidget extends StatefulWidget {
-  CarsoselWidget({Key? key, required this.items, int? dots})
+  const CarsoselWidget({Key? key, required this.items, int? dots})
       : dots = dots ?? items.length,  // Sets dots to a stable value
         super(key: key);
 
@@ -48,7 +48,7 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
           // Dots representing the current index
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(widget.dots!, (index) {
+            children: List.generate(widget.dots, (index) {
               return GestureDetector(
                 onTap: () {
                   setState(() {

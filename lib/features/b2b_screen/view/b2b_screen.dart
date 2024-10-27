@@ -86,7 +86,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
           },
           onSearchFocusChanged: _onSearchFocusChanged,
         ),
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {},
@@ -279,7 +279,7 @@ class B2bProductSlider extends StatelessWidget {
             shrinkWrap: true,
             itemCount: length ?? 0,
             itemBuilder: (context, index) {
-              print("rama ${length}");
+              print("rama $length");
               final Product product = data.hot_products![index];
               return ProductCard(
                 product: product,
