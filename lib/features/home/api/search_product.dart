@@ -13,15 +13,13 @@ Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
   final client = Dio(
     BaseOptions(
       followRedirects: false, // Disable automatic redirection
-      validateStatus: (status) {
-        return status != null && status >= 200 && status < 400;
-      },
+      validateStatus: (status) => status != null && status >= 200 && status < 400,
     ),
   );
 
-  try {
-    final response = await client.post(
-      ApiConstants.homeScreenSearchBar,
+  Future<Response> sendRequest(String url) async {
+    return await client.post(
+      url,
       options: Options(
         headers: {
           'Content-Type': 'application/json',
@@ -32,40 +30,24 @@ Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
       ),
       data: jsonEncode({'query': query}),
     );
+  }
 
+  try {
+    // Send the initial request
+    Response response = await sendRequest(ApiConstants.homeScreenSearchBar);
+
+    // Handle redirection if necessary
     if (response.statusCode == 301) {
-      // Handle redirection manually
       final redirectUrl = response.headers['location']?.first;
       if (redirectUrl != null) {
-        final redirectedResponse = await client.post(
-          redirectUrl,
-          options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-              'accept': '*/*',
-              'Connection': 'Keep-Alive',
-              'X-AppApiToken': 'Yala@Techies_Nepal',
-            },
-          ),
-          data: jsonEncode({'query': query}),
-        );
-
-        if (redirectedResponse.statusCode! >= 200 && redirectedResponse.statusCode! < 300) {
-          final data = redirectedResponse.data;
-          print('Redirected Response Data: $data'); // Log redirected response data
-          if (data is Map<String, dynamic> && data.containsKey('data')) {
-            final List<dynamic> productList = data['data'];
-            return productList.map((item) => SearchProductModel.fromJson(item)).toList();
-          } else {
-            throw Exception('Invalid response format');
-          }
-        } else {
-          throw Exception('Failed to load search results after redirection');
-        }
+        response = await sendRequest(redirectUrl); // Handle the redirected request
       } else {
         throw Exception('Redirection URL is missing');
       }
-    } else if (response.statusCode! >= 200 && response.statusCode! < 300) {
+    }
+
+    // Handle successful responses
+    if (response.statusCode! >= 200 && response.statusCode! < 300) {
       final data = response.data;
       print('Response Data: $data'); // Log response data
       if (data is Map<String, dynamic> && data.containsKey('data')) {

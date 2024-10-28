@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CarsoselWidget extends StatefulWidget {
-  const CarsoselWidget({super.key, required this.items});
+  const CarsoselWidget({Key? key, required this.items, int? dots})
+      : dots = dots ?? items.length,  // Sets dots to a stable value
+        super(key: key);
+
   final List<String> items;
+  final int dots;
 
   @override
   State<CarsoselWidget> createState() => _CarsoselWidgetState();
@@ -44,7 +48,7 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
           // Dots representing the current index
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(widget.items.length, (index) {
+            children: List.generate(widget.dots, (index) {
               return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -57,11 +61,13 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                       ? 16.0
                       : 12.0, // Larger dot for active index
                   height: currentIndex == index ? 16.0 : 12.0,
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: currentIndex == index ? const Color.fromARGB(255, 83, 81, 81) : Colors.grey,
+                    color: currentIndex == index
+                        ? const Color.fromARGB(255, 83, 81, 81)
+                        : Colors.grey,
                   ),
                 ),
               );

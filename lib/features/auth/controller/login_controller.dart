@@ -37,6 +37,8 @@ class LoginController extends StateNotifier<GenericState> {
 
       final String userId = loginData!.result.id.toString();
       final String userName = loginData.result.name;
+        String useremail = loginData.result.email?.toString() ?? '';
+        print("useremail$useremail");
       final prefs = await SharedPreferences.getInstance();
       SmartClinet.userId = userId; // Set userId in SmartClinet
       SmartClinet.userName = userName; // Set userName in SmartClinet
@@ -57,24 +59,30 @@ class LoginController extends StateNotifier<GenericState> {
     SmartClinet.token = pref.getString('accessToken') ?? '';
     SmartClinet.refresh = pref.getString('refreshToken') ?? '';
     state = LoadingState();
+
     try {
       if (sessionString != null) {
         final session = json.decode(sessionString);
-        // String userName = session['result']?['name']?.toString() ?? '';
-        // String userId = session['result']?['id']?.toString() ?? '';
-        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-        // SmartClinet.userId = userId;
-        // SmartClinet.userName = userName;
-        // await pref.setString('userId', userId);
-        // await pref.setString('userName', userName);
-        // print(
-        //     "................................................$userId , $userName");
-        await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const BottomNavigationScreen(),
-          ),
-        );
+         String userId = session['result']?['id']?.toString() ?? '';
+      
+        if (userId.isNotEmpty) {
+          state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+          SmartClinet.userId = userId;
+          await pref.setString('userId', userId);
+          await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const BottomNavigationScreen(),
+            ),
+          );
+        } else {
+          await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+            ),
+          );
+        }
       } else {
         await Navigator.pushReplacement(
           context,
@@ -92,4 +100,5 @@ class LoginController extends StateNotifier<GenericState> {
       );
     }
   }
+  
 }

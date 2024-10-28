@@ -7,7 +7,9 @@ class ForgetPasswordApi {
   final SmartClinet _clinet = SmartClinet();
 
   foergetPassword(
-      {required String phone,
+      {
+
+      required int phone,
       required String phone_country,
       required String login}) async {
     final parameter = {

@@ -166,17 +166,17 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     text: 'Sign Up',
                     onPresssed: () async {
                       if (_formKey.currentState!.validate()) {
-                        await signUpProvider.signUp(context,
-                            name: nameController.text,
-                            phone: phoneController.text,
-                            email: emailController.text,
-                            passsword: passwordController.text,
-                            password_confirmation:
-                                confirmPasswordController.text,
-                            country_code: 'NP',
-                            username: usernameController.text,
-                            accept_terms: 1,
-                            accept_marketing_offers: 1);
+                        // await signUpProvider.signUp(context,
+                        //     name: nameController.text,
+                        //     phone: phoneController.text,
+                        //     email: emailController.text,
+                        //     passsword: passwordController.text,
+                        //     password_confirmation:
+                        //         confirmPasswordController.text,
+                        //     country_code: 'NP',
+                        //     username: usernameController.text,
+                        //     accept_terms: 1,
+                        //     accept_marketing_offers: 1);
                       }
                     },
                   ),

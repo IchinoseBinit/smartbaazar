@@ -23,6 +23,7 @@ import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';

@@ -43,7 +43,6 @@ Future<SearchDetails> getSearchDetails(
 
       // Extract and parse the relevant data based on the category
       final data = response.data['data'];
-      print("nana $data");
       if (data != null) {
         if (category == 'brand_new') {
           final brandNewData = data['brand_new'];

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/sponsorship/api/delete_sponsor_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_sponsor_banner_api.dart';
 import 'package:smartbazar/features/sponsorship/api/sponsor_gift_api.dart';
 import 'package:smartbazar/features/sponsorship/model/sponsor_gift_model.dart';
@@ -26,7 +27,10 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
   Future<void> submitbanner() async {
     if (imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide an image'),backgroundColor: Colors.white70,),
+        const SnackBar(
+          content: Text('Please provide an image'),
+          backgroundColor: Colors.white70,
+        ),
       );
       return;
     }
@@ -34,11 +38,16 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
       await ref.read(postSponsorBannerProvider(imageFile!).future);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Banner posted successfully! for sponsership'),backgroundColor: Colors.white70,),
+          content: Text('Banner posted successfully! for sponsership'),
+          backgroundColor: Colors.white70,
+        ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to post Banner: $e'),backgroundColor: Colors.white70,),
+        SnackBar(
+          content: Text('Failed to post Banner: $e'),
+          backgroundColor: Colors.white70,
+        ),
       );
     }
   }
@@ -302,7 +311,19 @@ class SponsorShipDetailsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SvgPicture.asset(deleteIcon),
+                InkWell(
+                    onTap: () async {
+                      deletegift(giftModel.id!).then(
+                        (value) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                            value,
+                          )));
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                    child: SvgPicture.asset(deleteIcon)),
               ],
             ),
             SizedBox(height: 10.h),

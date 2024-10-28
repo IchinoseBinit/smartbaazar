@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
@@ -17,7 +18,8 @@ class ForgetPasswordController extends StateNotifier<GenericState> {
   final ForgetPasswordApi _forgetPasswordApi;
   ForgetPasswordController(this._forgetPasswordApi) : super(InitialState());
   Future<void> forgetPassword(BuildContext context,
-      {required String phone,
+      {
+        required int phone,
       required String phone_country,
       required String login}) async {
     state = LoadingState();

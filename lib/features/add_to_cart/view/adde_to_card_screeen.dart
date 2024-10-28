@@ -8,6 +8,7 @@ import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
@@ -208,26 +209,30 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                         ),
                       ),
                       const Spacer(),
-                      const Icon(
-                        size: 15,
-                        Icons.arrow_back_ios,
-                        color: Color(0xffADADAD),
-                      ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const BottomNavigationScreen()),
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                              ));
                         },
-                        child: Text(
-                          'Continue Shopping',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff888888),
-                          ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              size: 15,
+                              Icons.arrow_back_ios,
+                              color: Color(0xffADADAD),
+                            ),
+                            Text(
+                              'Continue Shopping',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xff888888),
+                              ),
+                            )
+                          ],
                         ),
                       )
                     ],

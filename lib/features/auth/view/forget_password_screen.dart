@@ -90,9 +90,9 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   height: 22.h,
                 ),
                 CustomTextFieldWidget(
-                  icon: Icons.mail,
+                  icon: Icons.phone,
                   hintText: 'Phone number',
-                  controller: emailController,
+                  controller: phoneNumberController,
                   validator: (_) {
                     return null;
                   },
@@ -102,7 +102,12 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                 ),
                 GeneralEelevatedButton(
                   text: 'Send',
-                  onPresssed: () {},
+                  onPresssed: () async {
+                    await forgetPasswordProvider.forgetPassword(context,
+                        phone: int.tryParse(phoneNumberController.text)!,
+                        phone_country: "NP",
+                        login: emailController.text);
+                  },
                 ),
                 SizedBox(
                   height: 120.h,
@@ -111,12 +116,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   title: 'Want to reach home screen? ',
                   subtitle: 'Go back',
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      await forgetPasswordProvider.forgetPassword(context,
-                          phone: phoneNumberController.text,
-                          phone_country: "NP",
-                          login: emailController.text);
-                    }
+                    Navigator.pop(context);
                   },
                 ),
                 SizedBox(

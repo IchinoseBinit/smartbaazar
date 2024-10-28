@@ -3,19 +3,28 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scratcher/widgets.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
+import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/contact_seller_provider.dart';
+import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
+import 'package:smartbazar/features/product_details/api/subscribe_vendor_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
+import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
@@ -29,7 +38,10 @@ final currentIndexProvider = StateProvider<int>((ref) => 0);
 class ProductDetailScreen extends ConsumerWidget {
   List<String> itemsList = [];
   // List<Ad>? preloadAds;
+  final _formKey = GlobalKey<FormState>();
 
+  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController msgcontroller = TextEditingController();
   final String productId;
   ProductDetailScreen({super.key, required this.productId});
 
@@ -39,6 +51,7 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
     final adsList = ref.watch(getAdsProvider);
+    final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
 
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
@@ -48,65 +61,64 @@ class ProductDetailScreen extends ConsumerWidget {
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
-        child: Scaffold(
-      // backgroundColor: const Color(0xffF6F1F1),
+      child: Scaffold(
+        // backgroundColor: const Color(0xffF6F1F1),
 
-      body: productDetailsAsyncValue.when(
-        data: (data) {
-          for (int i = 0; i < data.pictures!.length; i++) {
-            itemsList
-                .add("${ApiConstants.imgUrl}${data.pictures?[i].filename}");
-          }
-          // print("ramk ${data.title.split('/')[0]}");
+        body: productDetailsAsyncValue.when(
+          data: (data) {
+            final itemsList = data.pictures!
+                .map((picture) => "${ApiConstants.imgUrl}${picture.filename}")
+                .toList();
 
-          return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Icon(Icons.arrow_back_ios)),
-                            favouriteListAsyncValue.when(
-                                loading: () =>
-                                    const CircularProgressIndicator(),
-                                error: (error, stackTrace) =>
-                                    const CircularProgressIndicator(),
-                                data: (favouritelist) {
-                                  final isFavorite = favouritelist
-                                      .data!.savedProducts!.data
-                                      ?.any((item) => item.id == productId);
-                                  return Container(
-                                      padding: EdgeInsets.all(12.h),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: isFavorite!
-                                              ? Colors.yellow
-                                              : const Color(0xffFFFFFF)),
-                                      child: SvgPicture.asset(invoiceIcon));
-                                }),
-                          ]),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Column(
-                        children: [CarsoselWidget(items: itemsList)],
-                      ),
-                    ],
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Icon(Icons.arrow_back_ios)),
+                              favouriteListAsyncValue.when(
+                                  loading: () =>
+                                      const CircularProgressIndicator(),
+                                  error: (error, stackTrace) =>
+                                      const CircularProgressIndicator(),
+                                  data: (favouritelist) {
+                                    final isFavorite = favouritelist
+                                        .data!.savedProducts!.data
+                                        ?.any((item) => item.id == productId);
+                                    return Container(
+                                        padding: EdgeInsets.all(12.h),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: isFavorite!
+                                                ? Colors.yellow
+                                                : const Color(0xffFFFFFF)),
+                                        child: SvgPicture.asset(invoiceIcon));
+                                  }),
+                            ]),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        CarsoselWidget(
+                          items: itemsList,
+                          dots: itemsList.length,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Container(
+                  Container(
                     height: 1780.h,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -357,24 +369,35 @@ class ProductDetailScreen extends ConsumerWidget {
                                           IconButton(
                                             onPressed: () async {
                                               try {
-                                                // Call the API to add the product to favorites
-                                                await ref.read(
-                                                    addToFavoritesProvider(
-                                                            data.user_id!,
-                                                            productId)
-                                                        .future);
-                                                // Show a Snackbar indicating success
+                                                // Call the API to add the product to favorites and get the response message
+                                                final addFavoriteMessage =
+                                                    await ref.read(
+                                                  addToFavoritesProvider(
+                                                          data.user_id!,
+                                                          productId)
+                                                      .future,
+                                                );
+
+                                                // Refresh the favorite list provider to get updated data
+                                                ref.refresh(
+                                                    getFavouriteListProvider);
+
+                                                // Print the message from the API
+                                                print(
+                                                    "Favorite Response: $addFavoriteMessage");
+
+                                                // Show a Snackbar with the API response message
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
-                                                  const SnackBar(
+                                                  SnackBar(
                                                     content: Text(
-                                                        'Product added to your favorites!'),
+                                                        addFavoriteMessage),
                                                     duration:
-                                                        Duration(seconds: 2),
+                                                        const Duration(seconds: 2),
                                                   ),
                                                 );
                                               } catch (e) {
-                                                // Handle any errors
+                                                // Handle any errors with a fallback message
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   const SnackBar(
@@ -515,8 +538,241 @@ class ProductDetailScreen extends ConsumerWidget {
                                     width: 10.w,
                                   ),
                                   InkWell(
-                                    onTap: () => launchUrl(
-                                        Uri.parse('sms:${data.phone}')),
+                                    onTap: () async {
+                                      SharedPreferences srf =
+                                          await SharedPreferences.getInstance();
+                                      // String? name = username.getString("name");
+                                      // print("binod ${username.getKeys()}");
+                                      String? name = srf.getString('name');
+                                      String? id = srf.getString('userId');
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return SizedBox(
+                                            child: AlertDialog(
+                                              shape: BeveledRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              content:
+                                                  Builder(builder: (context) {
+                                                return SizedBox(
+                                                  height: 450.h,
+                                                  width: 900.w,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          const Text(
+                                                            "Message",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 19),
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              icon: const Icon(
+                                                                  Icons.close)),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5.h,
+                                                      ),
+                                                      CreateListingCardWidget(
+                                                          child: Row(
+                                                        children: [
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                'Phone number',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Colors
+                                                                        .blue),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10.w,
+                                                              ),
+                                                              Text(
+                                                                ' *',
+                                                                style: TextStyle(
+                                                                    color: const Color(
+                                                                        0xffD33636),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        14.sp),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              controller:
+                                                                  phonecontroller,
+                                                              decoration: InputDecoration.collapsed(
+                                                                  hintText:
+                                                                      'Enter phone',
+                                                                  hintStyle: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      color: const Color(
+                                                                          0xffADADAD))),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
+                                                      SizedBox(
+                                                        height: 5.h,
+                                                      ),
+                                                      CreateListingCardWidget(
+                                                          child: SizedBox(
+                                                        height: 200.h,
+                                                        width: double.infinity,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              'Enter Message',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .blue),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 15.h,
+                                                            ),
+                                                            TextFormField(
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .done,
+                                                              minLines:
+                                                                  3, // Set this
+                                                              maxLines:
+                                                                  6, // and this
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .multiline,
+
+                                                              controller:
+                                                                  msgcontroller,
+                                                              decoration: InputDecoration.collapsed(
+                                                                  hintText:
+                                                                      'hello ....',
+                                                                  hintStyle: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      color: const Color(
+                                                                          0xffADADAD))),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
+                                                      GeneralEelevatedButton(
+                                                        width: double.infinity,
+                                                        text: "Send Message",
+                                                        onPresssed: () async {
+                                                          if (phonecontroller
+                                                                  .text
+                                                                  .isEmpty ||
+                                                              msgcontroller.text
+                                                                  .isEmpty) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                  content: Text(
+                                                                      "Fields cannot be empty!")),
+                                                            );
+                                                          } else {
+                                                            // Call the contactSeller provider and wait for the response
+                                                            final success =
+                                                                await ref.read(
+                                                              contactSellerProvider(
+                                                                name!,
+                                                                phonecontroller
+                                                                    .text,
+                                                                msgcontroller
+                                                                    .text,
+                                                                int.tryParse(
+                                                                    id!)!,
+                                                              ).future,
+                                                            );
+
+                                                            // Handle the response based on success or failure
+                                                            if (success) {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                const SnackBar(
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                    content: Text(
+                                                                        "Message sent successfully!")),
+                                                              );
+                                                              Navigator.pop(
+                                                                  context);
+                                                            } else {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                const SnackBar(
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                    content: Text(
+                                                                        "Failed to send the message!")),
+                                                              );
+                                                            }
+                                                          }
+                                                        },
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              }),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
                                     child: Column(
                                       children: [
                                         SvgPicture.asset(messagesIcon),
@@ -558,11 +814,138 @@ class ProductDetailScreen extends ConsumerWidget {
                               SizedBox(
                                 height: 10.h,
                               ),
-                              const SizedBox(
-                                height: 5,
+                              SizedBox(
+                                height: 10.h,
                               ),
                             ],
                           ),
+                        ),
+                        GeneralTextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => VendorHomeScreen(
+                                  vendorName: data.user!.name!,
+                                  vid: int.tryParse(data.user_id!)!,
+                                ),
+                              ));
+                            },
+                            marginH: 9,
+                            width: double.infinity,
+                            prefixImage: ImageConstant.visitStore,
+                            bgColor: const Color(0xff362677),
+                            fgColor: Colors.white,
+                            isSmallText: true,
+                            title: 'Visit Store'),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        ScratchWinContainer(
+                          ontap: () async {
+                            // Using ref.read() since it's a one-time action
+                            final subscribe = await ref.read(
+                              subscribevendorProvider(
+                                      vendorid: data.user_id.toString())
+                                  .future,
+                            );
+
+                            // Use ScaffoldMessenger to show SnackBar messages
+                            if (subscribe == "1") {
+                              // Assuming "1" means subscribed
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Thank you for subscribing"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: SizedBox(
+                                      height: 450.h,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text(
+                                                "Message",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 19),
+                                              ),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon: const Icon(Icons.close)),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          const Text(
+                                            "Thank you for subscribing",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 20),
+                                          ),
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          const Text(
+                                            "Scratch and win",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,
+                                                color: Colors.blue),
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          scratchAndWinResponse.when(
+                                            data: (data) {
+                                              return _ScratchCardContent(
+                                                gift: data,
+                                              );
+                                            },
+                                            error: (error, stackTrace) {
+                                              return const Text(
+                                                  "An error occurred, please try again later.");
+                                            },
+                                            loading: () {
+                                              return const CircularProgressIndicator();
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
+                                    vendorName: data.user!.username!,
+                                    vid: int.tryParse(data.user_id!)!,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("You unsubscribed from vendor"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         TabBarItems(
                           weight: data.weight ?? "N/A",
@@ -570,26 +953,8 @@ class ProductDetailScreen extends ConsumerWidget {
                           description: data.description!,
                         ),
                         SizedBox(
-                          height: 10.h,
-                        ),
-                        GeneralTextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DummyVendorHomeScreen(
-                                    vendorName: data.user!.name!),
-                              ));
-                            },
-                            marginH: 1,
-                            width: MediaQuery.of(context).size.width,
-                            prefixImage: ImageConstant.visitStore,
-                            bgColor: const Color(0xff362677),
-                            fgColor: Colors.white,
-                            isSmallText: true,
-                            title: 'Visit Store'),
-                        SizedBox(
                           height: 20.h,
                         ),
-                        const ScratchWinContainer(),
                         SizedBox(
                           height: 10.h,
                         ),
@@ -620,26 +985,29 @@ class ProductDetailScreen extends ConsumerWidget {
                         data.widgetSimilarPosts == null
                             ? const SizedBox()
                             : SimilarListingProduct(
+                                query: data.title!,
                                 items: data.widgetSimilarPosts!,
                               ),
                       ],
-                    ))
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+          error: (error, stackTrace) => Center(child: Text('Error: $error')),
+          loading: () {
+            return SimpleDialog(
+              children: [
+                adsList.isLoading
+                    ? const SizedBox()
+                    : Image.network(adsList.value!.first.image!)
               ],
-            ),
-          );
-        },
-        error: (error, stackTrace) => Center(child: Text('Error: $error')),
-        loading: () {
-          return SimpleDialog(
-            children: [
-              adsList.isLoading
-                  ? const SizedBox()
-                  : Image.network(adsList.value!.first.image!)
-            ],
-          );
-        },
+            );
+          },
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -773,38 +1141,42 @@ class TabBarItems extends StatelessWidget {
 }
 
 class ScratchWinContainer extends StatelessWidget {
-  const ScratchWinContainer({
+  ScratchWinContainer({
     super.key,
+    required this.ontap,
   });
-
+  Function()? ontap;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 6.h),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
-        child: Row(
-          children: [
-            Image.asset(
-              ImageConstant.scartchWinImage,
-            ),
-            Expanded(
-              child: RichTextWidget(
-                  title: "Visit our virtual store ",
-                  // titleStyle: TextStyle(
-                  //     fontSize: 10.sp,
-                  //     fontWeight: FontWeight.w700),
-                  subtitle: "Subscribe us to win FREE prizes & get our deals",
-                  subtitleStyle: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400),
-                  onPressed: () {}),
-            )
-          ],
+    return InkWell(
+      onTap: ontap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 9),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
+          child: Row(
+            children: [
+              Image.asset(
+                ImageConstant.scartchWinImage,
+              ),
+              Expanded(
+                child: RichTextWidget(
+                    title: "Visit our virtual store ",
+                    // titleStyle: TextStyle(
+                    //     fontSize: 10.sp,
+                    //     fontWeight: FontWeight.w700),
+                    subtitle: "Subscribe us to win FREE prizes & get our deals",
+                    subtitleStyle: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
+                    onPressed: () {}),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -951,7 +1323,7 @@ class ProductAvilableColorsWidget extends StatelessWidget {
                       color: Color(0xff000000),
                     ),
                     SizedBox(width: 2.w),
-                    Text(data.value!,
+                    Text(data.value ?? '',
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
@@ -997,7 +1369,7 @@ class ProductTagListWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 10.h),
+          // SizedBox(height: 10.h),
           SizedBox(height: 15.h),
 
           // Use ListView.builder to display tags
@@ -1114,11 +1486,11 @@ class BuyNowProdcutMinuteWidget extends StatelessWidget {
 
 class SimilarListingProduct extends StatelessWidget {
   final List<SimilarItems> items;
+  final String query;
 
-  const SimilarListingProduct({
-    Key? key,
-    required this.items,
-  }) : super(key: key);
+  const SimilarListingProduct(
+      {Key? key, required this.items, required this.query})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1137,12 +1509,22 @@ class SimilarListingProduct extends StatelessWidget {
                     color: const Color(0xff000000),
                     fontWeight: FontWeight.w700),
               ),
-              Text(
-                'View all',
-                style: TextStyle(
-                    fontSize: 10.sp,
-                    color: const Color(0xff000000),
-                    fontWeight: FontWeight.w500),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SearchScreen(query: query.split(' ')[0]),
+                      ));
+                },
+                child: Text(
+                  'View all',
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w500),
+                ),
               ),
             ],
           ),
@@ -1154,10 +1536,8 @@ class SimilarListingProduct extends StatelessWidget {
               itemBuilder: (context, index) {
                 SimilarItems data = items[index];
                 List<Picture> pics = data.pictures!;
-                print("sim ${ApiConstants.imgUrl}${pics.first.filename}");
                 return InkWell(
                   onTap: () {
-                    print("id is ${data.id}");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -1329,6 +1709,54 @@ class CustomDialougeBox {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Separate widget for scratch card content with state management
+class _ScratchCardContent extends StatefulWidget {
+  final String gift;
+
+  // Constructor to initialize gift
+  const _ScratchCardContent({Key? key, required this.gift}) : super(key: key);
+
+  @override
+  __ScratchCardContentState createState() => __ScratchCardContentState();
+}
+
+class __ScratchCardContentState extends State<_ScratchCardContent> {
+  double _opacity = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scratcher(
+      color: const Color.fromARGB(255, 144, 127, 120),
+      // image: Image.asset("assets/images/laptopImgae.png"),
+      accuracy: ScratchAccuracy.low,
+      threshold: 25,
+      brushSize: 40,
+      onThreshold: () {
+        setState(() {
+          _opacity = 1.0; // Reveal the reward when the threshold is met
+        });
+      },
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 250),
+        opacity: _opacity,
+        child: Container(
+          height: 300.h,
+          width: 300.w,
+          alignment: Alignment.center,
+          child: Text(
+            widget.gift, // Use the gift text passed to the constructor
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 40,
+              color: Colors.green,
+            ),
           ),
         ),
       ),

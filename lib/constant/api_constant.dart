@@ -8,6 +8,7 @@ class ApiConstants {
   static String refreshTokenUrl = "$baseUrl/auth/refresh-token";
   static String logoUrl = '$baseUrl/app_logo_loader';
   static String logoutUrl = '$baseUrl/auth/logout/';
+  static String getcontactSellerUrl = '$baseUrl/threads';
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -16,8 +17,12 @@ class ApiConstants {
   static String homeSlider1BannerUrl = '$baseUrl/homeSections/home1';
   static String homeSlider2BannerUrl = '$baseUrl/homeSections/home2';
   static String homeScreenSearchBar = '$baseUrl/homeSections/search_suggest/';
+  static String vendorSearchSuggest =
+      '$baseUrl/homeSections/vendor_product_suggest';
   static String getBrandBazzarUrl = '$baseUrl/users/brandbazar';
   static String getAdsUrl = '$baseUrl/homeSections/loadads';
+  static String producttypeurl = '$baseUrl/pages/posttype';
+  static String scratchandwinurl = '$baseUrl/users/lottery';
 
   static String reportComplainUrl = '$baseUrl/posts';
   //cart item
@@ -43,6 +48,7 @@ class ApiConstants {
   static String fetchCategoryList = '$baseUrl/categories';
   static String fetchProductType = '$baseUrl/packages';
   static String fetchCities = '$baseUrl/countries/NP/cities';
+  static String postlisting = '$baseUrl/posts';
 
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
@@ -53,6 +59,8 @@ class ApiConstants {
   static String updateUserDetailsUrl = '$baseUrl/users';
   static String verifyUserAccount = '$baseUrl/users/verify_vendor_account';
 
+  static String followunfollowvendorurl = '$baseUrl/users/follow';
+  static String checkuserverifyurl = '$baseUrl/userverify';
   //subscribe and win everyday
   static String getSubscribeAndWinUrl = '$baseUrl/users/scwn';
   static String getMySubscriptionUrl = '$baseUrl/subscription';
@@ -90,6 +98,7 @@ class ApiConstants {
   static String storeSponsorBanner = '$baseUrl/users/sponsorbanner';
   static String postGiftStoreUrl = '$baseUrl/users/sponsorship_store';
   static String postCouponStoreUrl = '$baseUrl/users/sponsorship_store';
+  static String sponsorshipDestroy = '$baseUrl/users/sponsorship_destroy';
   //dispute
   static String getDisputeUrl = '$baseUrl/dispute';
   static String submitDisputeUrl = '$baseUrl/storedispute';

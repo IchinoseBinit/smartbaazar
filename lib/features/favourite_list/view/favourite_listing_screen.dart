@@ -8,6 +8,7 @@ import 'package:smartbazar/features/favourite_list/model/favourite_product_list.
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_skeleton.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class FavouriteListingScreen extends ConsumerWidget {
   const FavouriteListingScreen({super.key});
@@ -118,12 +119,13 @@ class FavouriteListProductDetails extends ConsumerStatefulWidget {
   // final ValueChanged<bool> onSelected;
   final Product item;
 
-  const FavouriteListProductDetails({
-    // required this.isSelected,
-    // required this.onSelected,
-    super.key,
-    required this.item,
-  });
+  const FavouriteListProductDetails(
+      {
+      // required this.isSelected,
+      // required this.onSelected,
+      super.key,
+      required this.item,
+    });
 
   @override
   ConsumerState<FavouriteListProductDetails> createState() =>

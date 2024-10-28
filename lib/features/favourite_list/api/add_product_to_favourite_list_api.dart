@@ -6,7 +6,8 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'add_product_to_favourite_list_api.g.dart';
 
 @riverpod
-Future<void> addToFavorites(AddToFavoritesRef ref, String userId, String postId) async {
+Future<String> addToFavorites(
+    AddToFavoritesRef ref, String userId, String postId) async {
   final SmartClinet client = SmartClinet();
 
   try {
@@ -20,14 +21,14 @@ Future<void> addToFavorites(AddToFavoritesRef ref, String userId, String postId)
     );
 
     final responseData = response.data;
-    
+
     if (responseData['success'] == true) {
-      print('Listing saved in favorites successfully!');
+      return responseData['message'];
     } else {
       throw Exception('Failed to save favorite product: ${responseData['message']}');
     }
   } catch (e) {
-    print('Error posting favorite list product: $e');
+    print('Error adding product to favorite list: $e');
     throw Exception('Failed to save favorite product: $e');
   }
 }

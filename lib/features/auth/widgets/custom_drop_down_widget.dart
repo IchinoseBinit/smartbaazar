@@ -159,26 +159,6 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
               }).toList()
             : [],
 
-        // Customize the selected item display (on the screen after selection)
-        selectedItemBuilder: (BuildContext context) {
-          return widget.items.map<Widget>((T item) {
-            return Align(
-              alignment: Alignment
-                  .centerRight, // Right-align only the displayed selected item
-              child: Text(
-                widget.getItemLabel(item),
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: widget.color ?? Colors.black,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-            );
-          }).toList();
-        },
-
         onChanged: widget.items.isNotEmpty ? widget.onChanged : null,
       ),
     );
