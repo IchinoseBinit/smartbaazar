@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
+import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/my_subscribe_and_win_api.dart';
 import 'package:smartbazar/features/vendor/view/model/my_subscribe_and_win_model.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
@@ -498,6 +499,21 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
               'No mileage information available',
               style: TextStyle(fontSize: 12.sp, color: Colors.black),
             ),
+          //
+          Center(
+            child: GeneralEelevatedButton(
+              width: MediaQuery.of(context).size.width / 1.7,
+              text: 'Become a Prize Sponsor',
+              onPresssed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const SponsorshipScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -548,13 +564,6 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
             ),
           ),
           SizedBox(height: 3.h),
-          Center(
-            child: GeneralEelevatedButton(
-              width: MediaQuery.of(context).size.width / 1.5,
-              text: 'Become a Prize Sponsor',
-              onPresssed: () {},
-            ),
-          ),
         ],
       ),
     );

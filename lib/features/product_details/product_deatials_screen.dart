@@ -206,9 +206,14 @@ class ProductDetailScreen extends ConsumerWidget {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const OrderDetailsScreen(
-                                                      selectedProductIds: [],
-                                                      selectedVendorIds: [])));
+                                                  OrderDetailsScreen(
+                                                    selectedProductIds: [
+                                                      data.id.toString()
+                                                    ],
+                                                    selectedVendorIds: [
+                                                      data.user!.id.toString()
+                                                    ],
+                                                  )));
                                     },
                                     child: Container(
                                       alignment: Alignment.center,
@@ -1184,7 +1189,7 @@ class SimilarListingProduct extends StatelessWidget {
                           overflow: TextOverflow.ellipsis, // Prevent overflow
                         ),
                         Text(
-                          data.price!,
+                          data.price ?? '',
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.black54,

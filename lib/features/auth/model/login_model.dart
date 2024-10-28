@@ -21,12 +21,12 @@ class LoginDataResult with _$LoginDataResult {
     required String name,
     required String username,
     required String photo_url,
-    required String gender_id,
-    required String photo,
+    required String? gender_id,
+    required String? photo,
     required String phone,
     required String email,
     required String dob,
-    required String gender,
+    required String? gender,
   }) = _LoginDataResult;
 
   factory LoginDataResult.fromJson(Map<String, dynamic> json) =>

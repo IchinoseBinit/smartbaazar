@@ -7,7 +7,7 @@ part of 'post_profile_bg_and_desc.api.dart';
 // **************************************************************************
 
 String _$postProfileBGAndDescHash() =>
-    r'5ca06238110e1148a23c0c06bf81f18cfa3b76bf';
+    r'f27ccf1952a918e81c8a06316847ce96f59e5a9e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,12 +41,14 @@ class PostProfileBGAndDescFamily extends Family<AsyncValue<bool>> {
 
   /// See also [postProfileBGAndDesc].
   PostProfileBGAndDescProvider call(
-    File imageFile,
-    String desc,
+    File? imageFile,
+    String? desc,
+    File? profileImageFile,
   ) {
     return PostProfileBGAndDescProvider(
       imageFile,
       desc,
+      profileImageFile,
     );
   }
 
@@ -57,6 +59,7 @@ class PostProfileBGAndDescFamily extends Family<AsyncValue<bool>> {
     return call(
       provider.imageFile,
       provider.desc,
+      provider.profileImageFile,
     );
   }
 
@@ -79,13 +82,15 @@ class PostProfileBGAndDescFamily extends Family<AsyncValue<bool>> {
 class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
   /// See also [postProfileBGAndDesc].
   PostProfileBGAndDescProvider(
-    File imageFile,
-    String desc,
+    File? imageFile,
+    String? desc,
+    File? profileImageFile,
   ) : this._internal(
           (ref) => postProfileBGAndDesc(
             ref as PostProfileBGAndDescRef,
             imageFile,
             desc,
+            profileImageFile,
           ),
           from: postProfileBGAndDescProvider,
           name: r'postProfileBGAndDescProvider',
@@ -98,6 +103,7 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
               PostProfileBGAndDescFamily._allTransitiveDependencies,
           imageFile: imageFile,
           desc: desc,
+          profileImageFile: profileImageFile,
         );
 
   PostProfileBGAndDescProvider._internal(
@@ -109,10 +115,12 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
     required super.from,
     required this.imageFile,
     required this.desc,
+    required this.profileImageFile,
   }) : super.internal();
 
-  final File imageFile;
-  final String desc;
+  final File? imageFile;
+  final String? desc;
+  final File? profileImageFile;
 
   @override
   Override overrideWith(
@@ -129,6 +137,7 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
         debugGetCreateSourceHash: null,
         imageFile: imageFile,
         desc: desc,
+        profileImageFile: profileImageFile,
       ),
     );
   }
@@ -142,7 +151,8 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
   bool operator ==(Object other) {
     return other is PostProfileBGAndDescProvider &&
         other.imageFile == imageFile &&
-        other.desc == desc;
+        other.desc == desc &&
+        other.profileImageFile == profileImageFile;
   }
 
   @override
@@ -150,6 +160,7 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, imageFile.hashCode);
     hash = _SystemHash.combine(hash, desc.hashCode);
+    hash = _SystemHash.combine(hash, profileImageFile.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -157,10 +168,13 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
 
 mixin PostProfileBGAndDescRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `imageFile` of this provider.
-  File get imageFile;
+  File? get imageFile;
 
   /// The parameter `desc` of this provider.
-  String get desc;
+  String? get desc;
+
+  /// The parameter `profileImageFile` of this provider.
+  File? get profileImageFile;
 }
 
 class _PostProfileBGAndDescProviderElement
@@ -169,9 +183,12 @@ class _PostProfileBGAndDescProviderElement
   _PostProfileBGAndDescProviderElement(super.provider);
 
   @override
-  File get imageFile => (origin as PostProfileBGAndDescProvider).imageFile;
+  File? get imageFile => (origin as PostProfileBGAndDescProvider).imageFile;
   @override
-  String get desc => (origin as PostProfileBGAndDescProvider).desc;
+  String? get desc => (origin as PostProfileBGAndDescProvider).desc;
+  @override
+  File? get profileImageFile =>
+      (origin as PostProfileBGAndDescProvider).profileImageFile;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

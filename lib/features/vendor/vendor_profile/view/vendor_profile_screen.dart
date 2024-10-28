@@ -19,6 +19,7 @@ import 'package:smartbazar/features/online_transaction_record/online_transacatio
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
+import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
@@ -73,13 +74,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.saved_search,
       "title": 'Saved',
       "subtitle": 'Searches',
-      "screen": const PendingApprovalScreen(),
+      "screen": const SavedSearchScreen(),
     },
     {
       "icon": Icons.notifications,
       "title": 'Buyer',
       "subtitle": 'Account',
-      "screen": const OfflineListingScreen(),
+      "screen": const VendroDetailsScreen(),
     },
     {
       "icon": Icons.volume_down,
@@ -141,7 +142,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.mail,
       "title": 'Seller',
       "subtitle": 'Account',
-      "screen": const MyOrderScreen(),
+      "screen": const VendroDetailsScreen(),
     },
     {
       "icon": Icons.mail,
@@ -220,10 +221,10 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const VendroDetailsScreen()));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (_) => const VendroDetailsScreen()));
                 },
                 child: Container(
                   height: 40.h,

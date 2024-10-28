@@ -9,21 +9,22 @@ part 'update_user_details_api.g.dart';
 
 @riverpod
 Future<UpdateUserDetail> updateUserDetails(
-    UpdateUserDetailsRef ref,
-    String genderID,
-    String fullName,
-    String phoneNumber,
-    String userName,
-    String email,
-    String userId) async {
+  UpdateUserDetailsRef ref,
+  String fullName,
+  String phoneNumber,
+  String userName,
+  String email,
+  String userId,
+  String genderID,
+) async {
   final SmartClinet client = SmartClinet();
 
   try {
     FormData formData = FormData.fromMap({
       'gender_id': genderID,
       'name': fullName,
-      'phone_number': phoneNumber,
-      'user_name': userName,
+      'phone': phoneNumber,
+      'username': userName,
       'email': email,
 
       // 'image': await MultipartFile.fromFile(imageFile.path,

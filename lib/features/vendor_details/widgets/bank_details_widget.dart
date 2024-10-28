@@ -21,6 +21,9 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
   String? bankName, bankBranch, accountHolder, accountNumber;
   File? imageFile;
 
+  // Use a GlobalKey to manage the state of ChooseFileWidget
+  final GlobalKey<ChooseFileWidgetState> _imageWidgetKey = GlobalKey<ChooseFileWidgetState>();
+
   void _submitBankDetails() {
     bool isFormValid = _formKey.currentState!.validate();
     if (!isFormValid || imageFile == null) {
@@ -51,6 +54,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
     ).future)
         .then((success) {
       if (success) {
+        _resetForm(); // Reset form fields and image
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Bank details submitted successfully!')),
         );
@@ -59,6 +63,25 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
           const SnackBar(content: Text('Failed to submit bank details.')),
         );
       }
+    });
+  }
+
+  void _updateImage(File? image) {
+    setState(() {
+      imageFile = image;
+    });
+  }
+
+  void _resetForm() {
+    setState(() {
+      _formKey.currentState!.reset();
+      bankName = null;
+      bankBranch = null;
+      accountHolder = null;
+      accountNumber = null;
+      imageFile = null;
+      // Notify the image picker widget to reset the image
+      _imageWidgetKey.currentState?.resetImage();
     });
   }
 
@@ -109,7 +132,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.2.h),
                   CustomTextFieldWidget(
-                     textInputType: TextInputAction.next,
+                    textInputType: TextInputAction.next,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.location_city,
@@ -120,7 +143,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.2.h),
                   CustomTextFieldWidget(
-                     textInputType: TextInputAction.next,
+                    textInputType: TextInputAction.next,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.person_outline,
@@ -131,7 +154,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.2.h),
                   CustomTextFieldWidget(
-                     textInputType: TextInputAction.done,
+                    textInputType: TextInputAction.done,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.account_balance,
@@ -142,12 +165,10 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
                   ),
                   SizedBox(height: 10.h),
                   ChooseFileWidget(
+                    key: _imageWidgetKey, // Assign the key here
                     textColor: Colors.red,
-                    onImageSelected: (selectedImage) {
-                      setState(() {
-                        imageFile = selectedImage;
-                      });
-                    },
+                    onImageSelected: _updateImage,
+                    initialImage: imageFile,
                   ),
                   SizedBox(height: 15.h),
                   GeneralTextButton(
@@ -171,30 +192,45 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
   }
 }
 
+
 class ChooseFileWidget extends StatefulWidget {
-  final Function(File) onImageSelected;
+  final Function(File?) onImageSelected;
   final Color? textColor;
+  final File? initialImage;
 
   const ChooseFileWidget({
     super.key,
     required this.onImageSelected,
     this.textColor,
+    this.initialImage,
   });
 
   @override
-  State<ChooseFileWidget> createState() => _ChooseFileWidgetState();
+  State<ChooseFileWidget> createState() => ChooseFileWidgetState();
 }
 
-class _ChooseFileWidgetState extends State<ChooseFileWidget> {
+class ChooseFileWidgetState extends State<ChooseFileWidget> {
   File? _selectedImage;
-  final ImagePicker _picker = ImagePicker(); // Add ImagePicker instance here
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedImage = widget.initialImage; // Set initial image if provided
+  }
+
+  void resetImage() {
+    setState(() {
+      _selectedImage = null;
+    });
+  }
 
   Future<void> pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
-        widget.onImageSelected(_selectedImage!);
+        widget.onImageSelected(_selectedImage);
       });
     }
   }
@@ -235,7 +271,7 @@ class _ChooseFileWidgetState extends State<ChooseFileWidget> {
                 Text(
                   _selectedImage == null
                       ? 'No File Chosen'
-                      : 'File Selected', // Update based on image selection
+                      : 'File Selected',
                   style: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w400,
@@ -247,11 +283,10 @@ class _ChooseFileWidgetState extends State<ChooseFileWidget> {
           ),
         ),
         SizedBox(height: 10.h),
-        // Show image preview if available
         _selectedImage != null
             ? Container(
                 width: double.infinity,
-                height: 150.h, // You can adjust the height as per your design
+                height: 150.h,
                 decoration: BoxDecoration(
                   border: Border.all(color: const Color(0xffADADAD)),
                   borderRadius: BorderRadius.circular(8.r),
@@ -260,12 +295,18 @@ class _ChooseFileWidgetState extends State<ChooseFileWidget> {
                   borderRadius: BorderRadius.circular(8.r),
                   child: Image.file(
                     _selectedImage!,
-                    fit: BoxFit.cover, // Adjust fit to fill the container
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(child: Text('Error loading image'));
+                    },
                   ),
                 ),
               )
-            : Container(), // Empty container if no image is selected
+            : Container(),
       ],
     );
   }
 }
+
+
+

@@ -211,20 +211,20 @@ class MyReturnScreen extends ConsumerWidget {
                 loading: () => const Center(child: CircularProgressIndicator()),
               )),
               SizedBox(height: 25.h),
-              GeneralTextButton(
-                width: MediaQuery.of(context).size.width,
-                title: 'Pending Approval',
-                fgColor: Colors.white,
-                bgColor: const Color(0xff362677),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const PendingApprovalScreen(),
-                    ),
-                  );
-                },
-              ),
+              // GeneralTextButton(
+              //   width: MediaQuery.of(context).size.width,
+              //   title: 'Pending Approval',
+              //   fgColor: Colors.white,
+              //   bgColor: const Color(0xff362677),
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (_) => const PendingApprovalScreen(),
+              //       ),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),

@@ -35,11 +35,17 @@ class LoginController extends StateNotifier<GenericState> {
       final loginData = await _loginApi.login(email, password);
       state = LoadedState<LoginData>(response: loginData);
 
+      final String userId = loginData!.result.id.toString();
+      final String userName = loginData.result.name;
+      final prefs = await SharedPreferences.getInstance();
+      SmartClinet.userId = userId; // Set userId in SmartClinet
+      SmartClinet.userName = userName; // Set userName in SmartClinet
+      await prefs.setString('userId', userId);
+      await prefs.setString('userName', userName);
+
       // Navigate to the bottom navigation screen, replacing the login screen
-      await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => const BottomNavigationScreen()));
+      await Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
     } catch (e) {
       state = ErrorState(getCustomException(e));
     }
@@ -54,14 +60,15 @@ class LoginController extends StateNotifier<GenericState> {
     try {
       if (sessionString != null) {
         final session = json.decode(sessionString);
-        String userName = session['result']?['name']?.toString() ?? '';
-        String userId = session['result']?['id']?.toString() ?? '';
+        // String userName = session['result']?['name']?.toString() ?? '';
+        // String userId = session['result']?['id']?.toString() ?? '';
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-        SmartClinet.userId = userId;
-        SmartClinet.userName = userName;
-        await pref.setString('userId', userId);
-        await pref.setString('userName', userName);
-        print("................................................$userId , $userName");
+        // SmartClinet.userId = userId;
+        // SmartClinet.userName = userName;
+        // await pref.setString('userId', userId);
+        // await pref.setString('userName', userName);
+        // print(
+        //     "................................................$userId , $userName");
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(

@@ -1,17 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/vendor_details/api/verify_vendor_account_api.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/account_details_widget.dart';
 import 'package:smartbazar/features/vendor_details/widgets/background_image_description_widgt.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
-import 'package:smartbazar/features/vendor_details/widgets/photo_avatar_container_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendroDetailsScreen extends ConsumerStatefulWidget {
@@ -91,10 +94,10 @@ class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
                 SizedBox(
                   height: 30.h,
                 ),
-                const PhotoAvatarContainerWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
+                // const PhotoAvatarContainerWidget(),
+                // SizedBox(
+                //   height: 16.h,
+                // ),
                 const BackgroundImageDescriptionWidget(),
                 SizedBox(
                   height: 16.h,
@@ -256,10 +259,79 @@ class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
   }
 }
 
-class VerifyAccountWidget extends StatelessWidget {
-  const VerifyAccountWidget({
-    super.key,
-  });
+class VerifyAccountWidget extends ConsumerStatefulWidget {
+  const VerifyAccountWidget({Key? key}) : super(key: key);
+
+  @override
+  _VerifyAccountWidgetState createState() => _VerifyAccountWidgetState();
+}
+
+class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
+  File? panVatFile;
+  File? taxCertificateFile;
+  File? registerCertificateFile;
+  bool _isLoading = false;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickFile(String docType) async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        switch (docType) {
+          case 'PAN':
+            panVatFile = File(pickedFile.path);
+            break;
+          case 'Tax':
+            taxCertificateFile = File(pickedFile.path);
+            break;
+          case 'Register':
+            registerCertificateFile = File(pickedFile.path);
+            break;
+        }
+      });
+    }
+  }
+
+Future<void> _verifyAccount() async {
+  if (panVatFile == null || taxCertificateFile == null || registerCertificateFile == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please add all required documents')),
+    );
+    return;
+  }
+
+  setState(() => _isLoading = true);
+
+  // Expecting a String? as the success message
+  final message = await ref.read(verifyVendorAccountProvider(
+    panVatFile!,
+    taxCertificateFile!,
+    registerCertificateFile!,
+  ).future);
+
+  setState(() => _isLoading = false);
+
+  if (message != null) {
+    // Clear the files to reset image containers upon success
+    setState(() {
+      panVatFile = null;
+      taxCertificateFile = null;
+      registerCertificateFile = null;
+    });
+
+    // Show the success message from API response
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to submit verification.')),
+    );
+  }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -267,8 +339,9 @@ class VerifyAccountWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(bottom: 18.w),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(width: 1, color: const Color(0xffADADAD))),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(width: 1, color: const Color(0xffADADAD)),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -288,37 +361,42 @@ class VerifyAccountWidget extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          const Divider(
-            color: Color(0xffADADAD),
-          ),
+          const Divider(color: Color(0xffADADAD)),
           Padding(
             padding: EdgeInsets.only(left: 10.w, right: 45.w, top: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    VerifyAccountPhotoContainer(),
-                    VerifyAccountPhotoContainer(),
-                    VerifyAccountPhotoContainer(),
+                    VerifyAccountPhotoContainer(
+                      title: 'PAN',
+                      onTap: () => _pickFile('PAN'),
+                      selectedFile: panVatFile,
+                    ),
+                    VerifyAccountPhotoContainer(
+                      title: 'Tax Certificate',
+                      onTap: () => _pickFile('Tax'),
+                      selectedFile: taxCertificateFile,
+                    ),
+                    VerifyAccountPhotoContainer(
+                      title: 'Register Certificate',
+                      onTap: () => _pickFile('Register'),
+                      selectedFile: registerCertificateFile,
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                GeneralTextButton(
-                  marginH: 0,
-                  height: 25.h,
-                  width: 100.w,
-                  title: 'Update',
-                  fgColor: Colors.white,
-                  bgColor: const Color(0xff362677),
-                  isSmallText: true,
-                )
               ],
             ),
-          )
+          ),
+          const SizedBox(height: 10),
+          GeneralTextButton(
+            title: 'Update',
+            onPressed: _isLoading ? null : _verifyAccount,
+            fgColor: Colors.white,
+            bgColor: const Color(0xff362677),
+          ),
         ],
       ),
     );
@@ -326,41 +404,50 @@ class VerifyAccountWidget extends StatelessWidget {
 }
 
 class VerifyAccountPhotoContainer extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+  final File? selectedFile;
+
   const VerifyAccountPhotoContainer({
-    super.key,
-  });
+    Key? key,
+    required this.title,
+    required this.onTap,
+    this.selectedFile,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 75.h,
-          width: 95.w,
-          decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            height: 75.h,
+            width: 95.w,
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(width: 1.w, color: const Color(0xffADADAD))),
-          child: Center(
-            child: Text(
-              'Add Photo',
-              style: TextStyle(
-                  fontSize: 10.sp,
-                  color: const Color(0xff888888),
-                  fontWeight: FontWeight.w700),
+              border: Border.all(width: 1, color: const Color(0xffADADAD)),
+            ),
+            child: Center(
+              child: selectedFile != null
+                  ? Image.file(selectedFile!, fit: BoxFit.cover)
+                  : Text(
+                      'Add Photo',
+                      style: TextStyle(
+                          fontSize: 10.sp,
+                          color: const Color(0xff888888),
+                          fontWeight: FontWeight.w700),
+                    ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 5.h,
-        ),
-        Text(
-          'PAN',
-          style: TextStyle(
-              color: const Color(0xff888888),
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w700),
-        )
-      ],
+          const SizedBox(height: 5),
+          Text(title,
+              style: const TextStyle(
+                  color: Color(0xff888888),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700)),
+        ],
+      ),
     );
   }
 }

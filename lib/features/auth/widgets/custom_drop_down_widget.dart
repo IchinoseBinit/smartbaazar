@@ -111,9 +111,10 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(
-        maxWidth: double.infinity,
-      ),
+      width: MediaQuery.of(context).size.width,
+      // constraints: const BoxConstraints(
+      //   maxWidth: double.infinity,
+      // ),
       child: DropdownButtonFormField<T>(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 16.0.w),

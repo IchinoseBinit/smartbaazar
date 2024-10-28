@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/my_listing_api.dart';
+import 'package:smartbazar/features/vendor/view/api/post_offline_listing.dart';
 import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
@@ -82,13 +85,13 @@ class MyListingScreen extends ConsumerWidget {
   }
 }
 
-class MyListinDetails extends StatelessWidget {
+class MyListinDetails extends ConsumerWidget {
   final ProductData product;
 
   const MyListinDetails({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Parse the created_at string into a DateTime object
     final DateTime createdAt =
         DateTime.tryParse(product.createdAt ?? '') ?? DateTime.now();
@@ -131,12 +134,175 @@ class MyListinDetails extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.w),
-              const Icon(
-                Icons.visibility_off,
-                color: Color(0xffADADAD),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      bool isOperationSuccessful = false;
+                      String productName = product.title!;
+                      DateTime deletionDate =
+                          DateTime.now().add(const Duration(days: 30));
+
+                      return StatefulBuilder(
+                        builder:
+                            (BuildContext context, StateSetter setStateDialog) {
+                          return AlertDialog(
+                            title: Column(
+                              children: [
+                                isOperationSuccessful
+                                    ? const SizedBox()
+                                    : const Icon(
+                                        Icons.report,
+                                        color: Color(0xFF781740),
+                                        size: 100,
+                                      ),
+                                Text(
+                                  isOperationSuccessful
+                                      ? "Listing Put Offline Successfully"
+                                      : "Are you sure you want to perform this action?",
+                                  style: TextStyle(
+                                    color: const Color(0xff362677),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.sp,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const Divider(),
+                              ],
+                            ),
+                            content: isOperationSuccessful
+                                ? Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'The listing "$productName" has been put offline successfully.',
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        'You can re-publish it by browsing the list of the offline listings.',
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        'If you do nothing, the listing will be permanently deleted on ${DateFormat('MMM d, yyyy').format(deletionDate)}.',
+                                        style: TextStyle(fontSize: 14.sp),
+                                      ),
+                                    ],
+                                  )
+                                : null,
+                            actions: !isOperationSuccessful
+                                ? [
+                                    GeneralTextButton(
+                                      width: MediaQuery.of(context).size.width,
+                                      marginH: 0,
+                                      fgColor: Colors.white,
+                                      bgColor: const Color(0xff362677),
+                                      title: 'Yes',
+                                      onPressed: () async {
+                                        try {
+                                          await ref.read(
+                                              addToOfflineListingProvider(
+                                                      product.id!)
+                                                  .future);
+                                          setStateDialog(() {
+                                            isOperationSuccessful = true;
+                                            // Refresh the listing data after adding to offline
+                                            ref.refresh(
+                                                getMyListingResponseProvider);
+                                          });
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Failed to save product: $e'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(height: 15.h),
+                                    GeneralTextButton(
+                                      width: MediaQuery.of(context).size.width,
+                                      marginH: 0,
+                                      fgColor: Colors.white,
+                                      bgColor: const Color(0xffADADAD),
+                                      title: 'No',
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ]
+                                : [
+                                    GeneralTextButton(
+                                      width: MediaQuery.of(context).size.width,
+                                      marginH: 0,
+                                      fgColor: Colors.white,
+                                      bgColor: const Color(0xff362677),
+                                      title: 'OK',
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(
+                  Icons.visibility_off,
+                  color: Color(0xffADADAD),
+                ),
               ),
               SizedBox(width: 10.w),
-              SvgPicture.asset(deleteIcon),
+              GestureDetector(
+                  onTap: () async {
+                    // Show deleting message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text(
+                          'Deleting item...',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.grey,
+                      ),
+                    );
+
+                    try {
+                      // Delete the listing
+                      await ref.read(deleteListingProvider(product.id!).future);
+
+                      // Refresh the listing provider to get updated data
+                      ref.invalidate(getMyListingResponseProvider);
+
+                      // Notify the user of successful deletion
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Item deleted successfully'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    } catch (e) {
+                      // Show error message if deletion fails
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to delete item: $e'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(deleteIcon),
+                  )),
             ],
           ),
           SizedBox(height: 10.h),

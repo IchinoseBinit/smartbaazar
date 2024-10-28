@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
@@ -49,6 +48,18 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   void updateStreet(String street) {
     setState(() {
       selectedStreet = street;
+    });
+  }
+
+  void updatePaymentMethod(String value) {
+    setState(() {
+      selectedPaymentMethod = value;
+    });
+  }
+
+  void updateDeliveryOption(String value) {
+    setState(() {
+      selectedDeliveryOption = value;
     });
   }
 
@@ -157,14 +168,9 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 10.h,
                   ),
                   CustomRadioButton(
-                    title1: 'Pre-Payement',
-                    title2: 'Cash on delivery',
-                    onChanged: (value) {
-                      setState(() {
-                        selectedPaymentMethod =
-                            value == 1 ? 'Pre-Payment' : 'Cash on delivery';
-                      });
-                    },
+                    title1: 'Pre-Payment',
+                    title2: 'Cash on Delivery',
+                    onChanged: updatePaymentMethod,
                   ),
                   const Divider(
                     thickness: 2,
@@ -181,14 +187,9 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 10.h,
                   ),
                   CustomRadioButton(
-                    title1: 'Slef Pickup',
+                    title1: 'Self Pickup',
                     title2: 'Home Delivery',
-                    onChanged: (value) {
-                      setState(() {
-                        selectedDeliveryOption =
-                            value == 1 ? 'Self Pickup' : 'Home Delivery';
-                      });
-                    },
+                    onChanged: updateDeliveryOption,
                   ),
                   ShippingCitiesField(
                     onSelected: updateCity,
@@ -388,10 +389,10 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                               ?.map((e) => e.name!)
                               .toList() ??
                           [];
-                      final image = checkoutDetails.data!.items
-                              ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
-                              .toList() ??
-                          [];
+                      // final image = checkoutDetails.data!.items
+                      //         ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
+                      //         .toList() ??
+                      //     [];
 
                       print('Username: $userName');
                       print(
@@ -410,7 +411,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       print('Selected Coupon: $selectedCoupon');
                       print(
                           'Selected Product IDs: ${widget.selectedProductIds}');
-                      print('image $image');
+                      // print('image $image');
                       final success = ref.read(postCheckoutFormProvider(
                         userName,
                         address,
@@ -426,7 +427,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                         quantities,
                         prices, // Add prices here
                         total,
-                        image,
+                        // image,
                       ));
                       if (success == true) {
                         // Handle successful order placement (e.g., navigate to a success page)
@@ -579,6 +580,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             setState(() {
               selectedOption = value!;
             });
+            widget.onChanged!(value == 1 ? widget.title1 : widget.title2);
           },
         ),
         Text(
@@ -600,6 +602,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             setState(() {
               selectedOption = value!;
             });
+            widget.onChanged!(value == 1 ? widget.title1 : widget.title2);
           },
         ),
         Text(

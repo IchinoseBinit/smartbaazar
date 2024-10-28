@@ -201,12 +201,12 @@ mixin _$LoginDataResult {
   String get name => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get photo_url => throw _privateConstructorUsedError;
-  String get gender_id => throw _privateConstructorUsedError;
-  String get photo => throw _privateConstructorUsedError;
+  String? get gender_id => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get dob => throw _privateConstructorUsedError;
-  String get gender => throw _privateConstructorUsedError;
+  String? get gender => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -225,12 +225,12 @@ abstract class $LoginDataResultCopyWith<$Res> {
       String name,
       String username,
       String photo_url,
-      String gender_id,
-      String photo,
+      String? gender_id,
+      String? photo,
       String phone,
       String email,
       String dob,
-      String gender});
+      String? gender});
 }
 
 /// @nodoc
@@ -250,12 +250,12 @@ class _$LoginDataResultCopyWithImpl<$Res, $Val extends LoginDataResult>
     Object? name = null,
     Object? username = null,
     Object? photo_url = null,
-    Object? gender_id = null,
-    Object? photo = null,
+    Object? gender_id = freezed,
+    Object? photo = freezed,
     Object? phone = null,
     Object? email = null,
     Object? dob = null,
-    Object? gender = null,
+    Object? gender = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -274,14 +274,14 @@ class _$LoginDataResultCopyWithImpl<$Res, $Val extends LoginDataResult>
           ? _value.photo_url
           : photo_url // ignore: cast_nullable_to_non_nullable
               as String,
-      gender_id: null == gender_id
+      gender_id: freezed == gender_id
           ? _value.gender_id
           : gender_id // ignore: cast_nullable_to_non_nullable
-              as String,
-      photo: null == photo
+              as String?,
+      photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
@@ -294,10 +294,10 @@ class _$LoginDataResultCopyWithImpl<$Res, $Val extends LoginDataResult>
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as String,
-      gender: null == gender
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -315,12 +315,12 @@ abstract class _$$LoginDataResultImplCopyWith<$Res>
       String name,
       String username,
       String photo_url,
-      String gender_id,
-      String photo,
+      String? gender_id,
+      String? photo,
       String phone,
       String email,
       String dob,
-      String gender});
+      String? gender});
 }
 
 /// @nodoc
@@ -338,12 +338,12 @@ class __$$LoginDataResultImplCopyWithImpl<$Res>
     Object? name = null,
     Object? username = null,
     Object? photo_url = null,
-    Object? gender_id = null,
-    Object? photo = null,
+    Object? gender_id = freezed,
+    Object? photo = freezed,
     Object? phone = null,
     Object? email = null,
     Object? dob = null,
-    Object? gender = null,
+    Object? gender = freezed,
   }) {
     return _then(_$LoginDataResultImpl(
       id: null == id
@@ -362,14 +362,14 @@ class __$$LoginDataResultImplCopyWithImpl<$Res>
           ? _value.photo_url
           : photo_url // ignore: cast_nullable_to_non_nullable
               as String,
-      gender_id: null == gender_id
+      gender_id: freezed == gender_id
           ? _value.gender_id
           : gender_id // ignore: cast_nullable_to_non_nullable
-              as String,
-      photo: null == photo
+              as String?,
+      photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
@@ -382,10 +382,10 @@ class __$$LoginDataResultImplCopyWithImpl<$Res>
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as String,
-      gender: null == gender
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -417,9 +417,9 @@ class _$LoginDataResultImpl implements _LoginDataResult {
   @override
   final String photo_url;
   @override
-  final String gender_id;
+  final String? gender_id;
   @override
-  final String photo;
+  final String? photo;
   @override
   final String phone;
   @override
@@ -427,7 +427,7 @@ class _$LoginDataResultImpl implements _LoginDataResult {
   @override
   final String dob;
   @override
-  final String gender;
+  final String? gender;
 
   @override
   String toString() {
@@ -480,12 +480,12 @@ abstract class _LoginDataResult implements LoginDataResult {
       required final String name,
       required final String username,
       required final String photo_url,
-      required final String gender_id,
-      required final String photo,
+      required final String? gender_id,
+      required final String? photo,
       required final String phone,
       required final String email,
       required final String dob,
-      required final String gender}) = _$LoginDataResultImpl;
+      required final String? gender}) = _$LoginDataResultImpl;
 
   factory _LoginDataResult.fromJson(Map<String, dynamic> json) =
       _$LoginDataResultImpl.fromJson;
@@ -499,9 +499,9 @@ abstract class _LoginDataResult implements LoginDataResult {
   @override
   String get photo_url;
   @override
-  String get gender_id;
+  String? get gender_id;
   @override
-  String get photo;
+  String? get photo;
   @override
   String get phone;
   @override
@@ -509,7 +509,7 @@ abstract class _LoginDataResult implements LoginDataResult {
   @override
   String get dob;
   @override
-  String get gender;
+  String? get gender;
   @override
   @JsonKey(ignore: true)
   _$$LoginDataResultImplCopyWith<_$LoginDataResultImpl> get copyWith =>

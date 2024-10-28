@@ -27,6 +27,7 @@ class ApiConstants {
   static String incrementQuantity = '$baseUrl/users/addToCart';
   static String decrementQuantity = '$baseUrl/users/cart_minus';
   static String getCheckoutDetailsUrl = '$baseUrl/users/checkout';
+  static String removeCartItemUrl = '$baseUrl/users/cart_remove';
   //  checkoutDetails
 
   static String getShippingCitiesUrl = '$baseUrl/users/get_shipping_cities';
@@ -50,6 +51,7 @@ class ApiConstants {
   static String getUserDataUrl = '$baseUrl/users/get_user_data';
   static String postUserBankDetailsUrl = '$baseUrl/users/bankdetails';
   static String updateUserDetailsUrl = '$baseUrl/users';
+  static String verifyUserAccount = '$baseUrl/users/verify_vendor_account';
 
   //subscribe and win everyday
   static String getSubscribeAndWinUrl = '$baseUrl/users/scwn';
@@ -93,7 +95,11 @@ class ApiConstants {
   static String submitDisputeUrl = '$baseUrl/storedispute';
   //myListing
   static String getMyListingUrl = '$baseUrl/posts/mylistings';
+  static String postOfflineListing ='$baseUrl/posts';
   static String getMYSubscribeAndWinUrl = '$baseUrl/mysubscribeandwin';
   //become a brand member
   static String brandMemberStore = '$baseUrl/users/brandbazar_store';
+  //saved searches
+  static String savedSearchesUrl = '$baseUrl/savedSearches';
+  static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
 }

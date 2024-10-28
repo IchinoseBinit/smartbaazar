@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/utils/custom_exception.dart';
 
 class AddToCartScreen extends ConsumerStatefulWidget {
   const AddToCartScreen({super.key});
@@ -171,6 +174,11 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     });
   }
 
+  void deleteCartItem(String cartItemId) async {
+    await ref.read(deleteCartItemProvider(cartItemId));
+    ref.invalidate(getCartItemProvider); // Refresh cart after deletion
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartItemsAsyncValue = ref.watch(getCartItemProvider);
@@ -205,12 +213,21 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                         Icons.arrow_back_ios,
                         color: Color(0xffADADAD),
                       ),
-                      Text(
-                        'Continue Shopping',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff888888),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const BottomNavigationScreen()),
+                          );
+                        },
+                        child: Text(
+                          'Continue Shopping',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff888888),
+                          ),
                         ),
                       )
                     ],
@@ -222,10 +239,18 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                   data: (data) {
                     final cartItems = data['cart'] as List<CartItem>? ?? [];
                     final vendors = data['vendors'] as List<Vendor>? ?? [];
-
-                    if (selectedItems.isEmpty) {
+                    if (selectedItems.isEmpty ||
+                        selectedItems.length < cartItems.length) {
                       selectedItems =
                           List<bool>.filled(cartItems.length, false);
+                    }
+                    if (cartItems.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'No products available in cart',
+                          style: TextStyle(fontSize: 16.sp),
+                        ),
+                      );
                     }
 
                     final groupedItems = groupItemsByVendor(cartItems);
@@ -320,9 +345,6 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                                       color: Color(0xffADADAD),
                                     ),
                                     const Spacer(),
-                                    InkWell(
-                                      child: SvgPicture.asset(deleteIcon),
-                                    ),
                                   ],
                                 ),
                                 ListView.separated(
@@ -333,19 +355,37 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                                     final cartItem =
                                         vendorItems[vendorItemIndex];
 
-                                    return AddToCartPRoductDetails(
-                                      cartItem: cartItem,
-                                      vendors: vendors,
-                                      isSelected: selectedItems[
-                                          cartItems.indexOf(cartItem)],
-                                      onDecrement: () =>
-                                          decrementQuantity(cartItem),
-                                      onIncrement: () =>
-                                          incrementQuantity(cartItem),
-                                      onSelected: (isSelected) {
-                                        updateItemSelection(
-                                            cartItem, isSelected);
-                                      },
+                                    return Column(
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: InkWell(
+                                              child:
+                                                  SvgPicture.asset(deleteIcon),
+                                              onTap: () {
+                                                deleteCartItem(
+                                                    cartItem.postId!);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        AddToCartPRoductDetails(
+                                          cartItem: cartItem,
+                                          vendors: vendors,
+                                          isSelected: selectedItems[
+                                              cartItems.indexOf(cartItem)],
+                                          onDecrement: () =>
+                                              decrementQuantity(cartItem),
+                                          onIncrement: () =>
+                                              incrementQuantity(cartItem),
+                                          onSelected: (isSelected) {
+                                            updateItemSelection(
+                                                cartItem, isSelected);
+                                          },
+                                        ),
+                                      ],
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -359,7 +399,13 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                     );
                   },
                   loading: () => const CircularProgressIndicator(),
-                  error: (err, stack) => Text('Error: $err'),
+                  error: (err, stack) {
+                    String errorMessage = 'Something went wrong';
+                    if (err is CustomException) {
+                    errorMessage = err.message; // Get the specific error message
+                  }
+                    return Center(child: Text(errorMessage, style: TextStyle(fontSize: 16.sp, color: Colors.red),));
+                  } ,
                 ),
                 SizedBox(height: 20.h),
                 Padding(
@@ -420,7 +466,7 @@ class AddToCartPRoductDetails extends StatefulWidget {
   final List<Vendor> vendors;
   final bool isSelected;
   final ValueChanged<bool> onSelected;
-  // final VoidCallback onDelete;
+
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 
@@ -430,7 +476,6 @@ class AddToCartPRoductDetails extends StatefulWidget {
     required this.isSelected,
     required this.onSelected,
     required this.onDecrement,
-    // required this.onDelete,
     required this.onIncrement,
     super.key,
   });
@@ -543,6 +588,7 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     ),
                   ),
                 ),
+
                 SizedBox(
                   width: 7.w,
                 ),
@@ -624,7 +670,7 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                       },
                     )
                   ],
-                )
+                ),
               ],
             )
           ],

@@ -22,12 +22,8 @@ LoadingAd _$LoadingAdFromJson(Map<String, dynamic> json) {
 mixin _$LoadingAd {
   String? get image => throw _privateConstructorUsedError;
 
-  /// Serializes this LoadingAd to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of LoadingAd
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $LoadingAdCopyWith<LoadingAd> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,8 +46,6 @@ class _$LoadingAdCopyWithImpl<$Res, $Val extends LoadingAd>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of LoadingAd
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,8 +79,6 @@ class __$$LoadingAdImplCopyWithImpl<$Res>
       _$LoadingAdImpl _value, $Res Function(_$LoadingAdImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of LoadingAd
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -125,13 +117,11 @@ class _$LoadingAdImpl implements _LoadingAd {
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, image);
 
-  /// Create a copy of LoadingAd
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadingAdImplCopyWith<_$LoadingAdImpl> get copyWith =>
@@ -153,11 +143,8 @@ abstract class _LoadingAd implements LoadingAd {
 
   @override
   String? get image;
-
-  /// Create a copy of LoadingAd
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadingAdImplCopyWith<_$LoadingAdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

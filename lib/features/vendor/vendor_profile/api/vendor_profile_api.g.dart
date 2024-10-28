@@ -7,7 +7,7 @@ part of 'vendor_profile_api.dart';
 // **************************************************************************
 
 String _$getVendorProfileDataHash() =>
-    r'1480c8f412e60127cd895bd9e88b7701a47cc20a';
+    r'81c90eda3d43ee255424ec37eded91a199a4f0de';
 
 /// Copied from Dart SDK
 class _SystemHash {

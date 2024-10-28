@@ -25,12 +25,12 @@ _$LoginDataResultImpl _$$LoginDataResultImplFromJson(
       name: json['name'] as String,
       username: json['username'] as String,
       photo_url: json['photo_url'] as String,
-      gender_id: json['gender_id'] as String,
-      photo: json['photo'] as String,
+      gender_id: json['gender_id'] as String?,
+      photo: json['photo'] as String?,
       phone: json['phone'] as String,
       email: json['email'] as String,
       dob: json['dob'] as String,
-      gender: json['gender'] as String,
+      gender: json['gender'] as String?,
     );
 
 Map<String, dynamic> _$$LoginDataResultImplToJson(
