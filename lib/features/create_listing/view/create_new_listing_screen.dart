@@ -164,7 +164,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   height: 18.h,
                 ),
                 isUserVerified == null
-                    ? SizedBox()
+                    ? const SizedBox()
                     : isUserVerified == '0'
                         ? Container(
                             padding: EdgeInsets.symmetric(
@@ -209,7 +209,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               ],
                             ),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -1363,7 +1363,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                                           SizedBox(
                                             height: 30.h,
                                           ),
-                                          Text(
+                                          const Text(
                                             "Your listing has been created wait for some time before it is being verified",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,

@@ -10,7 +10,6 @@ import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
 import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';

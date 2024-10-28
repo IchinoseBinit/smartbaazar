@@ -6,7 +6,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_skeleton.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class FavouriteListingScreen extends ConsumerWidget {
   const FavouriteListingScreen({super.key});

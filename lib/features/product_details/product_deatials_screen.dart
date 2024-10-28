@@ -1564,7 +1564,7 @@ class SimilarListingProduct extends StatelessWidget {
                           overflow: TextOverflow.ellipsis, // Prevent overflow
                         ),
                         Text(
-                          data.price!,
+                          data.price?? "loading",
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.black54,
