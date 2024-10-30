@@ -12,9 +12,10 @@ Future<AlertModel> getAlertMessage(GetAlertMessageRef ref) async {
 
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url: ApiConstants.getAlertMessageUrl,
     );
+    print("bibash ${response}");
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;

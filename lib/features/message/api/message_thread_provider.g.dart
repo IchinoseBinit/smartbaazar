@@ -1,25 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'alert_message_api.dart';
+part of 'message_thread_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getAlertMessageHash() => r'a8e6cb13f5aded004f56a89792cf0289c198c442';
+String _$messageFilterStateHash() =>
+    r'8ab8460bce5fcabc6ae1a5bbb54642b0e188a621';
 
-/// See also [getAlertMessage].
-@ProviderFor(getAlertMessage)
-final getAlertMessageProvider = AutoDisposeFutureProvider<AlertModel>.internal(
-  getAlertMessage,
-  name: r'getAlertMessageProvider',
+/// See also [MessageFilterState].
+@ProviderFor(MessageFilterState)
+final messageFilterStateProvider =
+    AutoDisposeNotifierProvider<MessageFilterState, String>.internal(
+  MessageFilterState.new,
+  name: r'messageFilterStateProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$getAlertMessageHash,
+      : _$messageFilterStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GetAlertMessageRef = AutoDisposeFutureProviderRef<AlertModel>;
+typedef _$MessageFilterState = AutoDisposeNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

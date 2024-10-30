@@ -6,14 +6,19 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'message_thread_api.g.dart';
 
+// Assuming getMessageThread has a Family
 @riverpod
-Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref) async {
+Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref, {required String filter}) async {
   final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getMessageThreadUrl,
+      parameter: {
+        'filter': filter,
+      },
     );
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
       return MessageThreadModel.fromJson(jsonResponse);
@@ -21,7 +26,7 @@ Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref) async {
       throw Exception('Failed to load message content');
     }
   } catch (e) {
-    print('Error loading Message :$e');
+    print('Error loading Message: $e');
     throw Exception('Failed to load message content: $e');
   }
 }

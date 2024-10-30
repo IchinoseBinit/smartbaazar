@@ -387,8 +387,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   SnackBar(
                                                     content: Text(
                                                         addFavoriteMessage),
-                                                    duration:
-                                                        const Duration(seconds: 2),
+                                                    duration: const Duration(
+                                                        seconds: 2),
                                                   ),
                                                 );
                                               } catch (e) {
@@ -540,6 +540,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                       // print("binod ${username.getKeys()}");
                                       String? name = srf.getString('name');
                                       String? id = srf.getString('userId');
+                                      String email = srf.getString("email")!;
                                       await showDialog(
                                         context: context,
                                         builder: (context) {
@@ -719,14 +720,21 @@ class ProductDetailScreen extends ConsumerWidget {
                                                             // Call the contactSeller provider and wait for the response
                                                             final success =
                                                                 await ref.read(
+                                                                  
                                                               contactSellerProvider(
                                                                 name!,
                                                                 phonecontroller
                                                                     .text,
                                                                 msgcontroller
                                                                     .text,
+                                                                    
                                                                 int.tryParse(
-                                                                    id!)!,
+                                                                    id!,
+                                                                    
+                                                                    )!,
+                                                                    email
+                                                                    
+                                                                    
                                                               ).future,
                                                             );
 
@@ -877,7 +885,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  icon: const Icon(Icons.close)),
+                                                  icon:
+                                                      const Icon(Icons.close)),
                                             ],
                                           ),
                                           SizedBox(
@@ -1564,7 +1573,7 @@ class SimilarListingProduct extends StatelessWidget {
                           overflow: TextOverflow.ellipsis, // Prevent overflow
                         ),
                         Text(
-                          data.price?? "loading",
+                          data.price ?? "loading",
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.black54,

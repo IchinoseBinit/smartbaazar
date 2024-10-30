@@ -42,7 +42,7 @@ class LoginApi {
           await prefs.setString("refreshToken", SmartClinet.refresh);
           await prefs.setString('name', user.result.name);
           await prefs.setString('userId', user.result.id.toString());
-
+          await prefs.setString("email", user.result.email!);
 
           if (kDebugMode) {
             print("Login successful: $response");
