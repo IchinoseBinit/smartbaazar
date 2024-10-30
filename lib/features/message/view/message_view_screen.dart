@@ -44,7 +44,7 @@ class MessageViewScreen extends ConsumerWidget {
                             value: 'unread', child: Text('Unread')),
                         DropdownMenuItem(
                             value: 'important', child: Text('Important')),
-                        DropdownMenuItem(value: 'other', child: Text('Other')),
+                        DropdownMenuItem(value: 'Started', child: Text('Started')),
                       ],
                       onChanged: (value) {
                         if (value != null) {
