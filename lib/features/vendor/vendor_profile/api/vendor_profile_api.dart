@@ -21,6 +21,7 @@ Future<VendorData> getVendorProfileData(
       url:
           '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
     );
+    print("${response.headers}");
 
     if (response.statusCode == 200 && response.data != null) {
       final data = response.data['data'];

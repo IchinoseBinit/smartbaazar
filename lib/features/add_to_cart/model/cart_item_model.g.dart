@@ -31,10 +31,12 @@ Map<String, dynamic> _$$CartItemImplToJson(_$CartItemImpl instance) =>
 _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
       id: json['id'] as String,
       name: json['name'] as String,
+      username: json['username'] as String?,
     );
 
 Map<String, dynamic> _$$VendorImplToJson(_$VendorImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'username': instance.username,
     };

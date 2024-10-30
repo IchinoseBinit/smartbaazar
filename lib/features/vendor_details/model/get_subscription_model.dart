@@ -1,12 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../add_to_cart/model/cart_item_model.dart';
+
 part 'get_subscription_model.freezed.dart';
 part 'get_subscription_model.g.dart';
 
 @freezed
 class GetSubscriptionModel with _$GetSubscriptionModel {
   const factory GetSubscriptionModel({
-    required List<Subscription>? subscriptions,
+     List<Subscription>? subscriptions,
   }) = _GetSubscriptionModel;
 
   factory GetSubscriptionModel.fromJson(Map<String, dynamic> json) =>
@@ -16,26 +18,26 @@ class GetSubscriptionModel with _$GetSubscriptionModel {
 @freezed
 class Subscription with _$Subscription {
   const factory Subscription({
-    required String? id,
-    required String? userId,
-    required String? vendorId,
+     String? id,
+     String? userId,
+     String? vendorId,
     @JsonKey(name: 'followed_date') required String? followedDate,
-    required String? status,
-    required Vendor vendor,
+     String? status,
+     Vendor? vendor,
   }) = _Subscription;
 
   factory Subscription.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionFromJson(json);
 }
 
-@freezed
-class Vendor with _$Vendor {
-  const factory Vendor({
-    required String? id,
-    required String? name,
-    required String? username,
-  }) = _Vendor;
+// @freezed
+// class Vendor with _$Vendor {
+//   const factory Vendor({
+//     required String? id,
+//     required String? name,
+//     required String? username,
+//   }) = _Vendor;
 
-  factory Vendor.fromJson(Map<String, dynamic> json) =>
-      _$VendorFromJson(json);
-}
+//   factory Vendor.fromJson(Map<String, dynamic> json) =>
+//       _$VendorFromJson(json);
+// }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor_details/api/get_subscription_api.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
@@ -58,7 +59,8 @@ class MySubscriptionScreen extends ConsumerWidget {
               ),
               // Subscription Data UI
               subscriptionAsyncValue.when(
-                data: (subscriptionData) => _buildSubscriptionList(subscriptionData),
+                data: (subscriptionData) =>
+                    _buildSubscriptionList(subscriptionData, context),
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stackTrace) => Center(
                   child: Text(
@@ -75,7 +77,8 @@ class MySubscriptionScreen extends ConsumerWidget {
   }
 
   // Helper method to build the subscription list from the data
-  Widget _buildSubscriptionList(GetSubscriptionModel subscriptionData) {
+  Widget _buildSubscriptionList(
+      GetSubscriptionModel subscriptionData, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -94,7 +97,7 @@ class MySubscriptionScreen extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(subscription.vendor.name!),
+                    Text(subscription.vendor?.name ?? "loading.."),
                     GeneralTextButton(
                       marginH: 0,
                       height: 28.h,
@@ -102,6 +105,17 @@ class MySubscriptionScreen extends ConsumerWidget {
                       fgColor: Colors.white,
                       title: 'Profile',
                       onPressed: () {
+                        print(
+                            "binod ${subscription.vendor!.id} and ${subscription}");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VendorHomeScreen(
+                                  vendorName: subscription.vendor!.username!,
+                                  vid: int.tryParse(subscription.vendor!.id)!
+                                  
+                                  ),
+                            ));
                         // Handle profile button tap
                       },
                     ),

@@ -319,7 +319,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                             ),
                                             SizedBox(height: 4.h),
                                             Text(
-                                              vendorProfile.vendor!.phone!,
+                                              vendorProfile.vendor?.phone?? "N/A",
                                               style: TextStyle(
                                                 fontSize: 12.sp,
                                                 color: Colors.black,
@@ -503,6 +503,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   loading: () {
                     return SimpleDialog(
                       children: [
+                  
                         adsList.isLoading
                             ? const SizedBox()
                             : Image.network(adsList.value!.first.image!)

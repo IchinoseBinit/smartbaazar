@@ -43,6 +43,7 @@ class ProductDetailScreen extends ConsumerWidget {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController msgcontroller = TextEditingController();
   final String productId;
+
   ProductDetailScreen({super.key, required this.productId});
 
   int currentIndex = 0;
@@ -173,7 +174,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                   const Spacer(),
                                   InkWell(
                                     onTap: () async {
-                                      print("id is ${data.id}");
                                       // await  _apiService
                                       //     .addToCart(data.);
                                       ApiService()
@@ -304,7 +304,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                         Icons.star,
                                         color: Color(0xfff781740)),
                                     onRatingUpdate: (rating) {
-                                      print(rating);
                                     },
                                   ),
                                   SizedBox(
@@ -377,9 +376,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                 ref.refresh(
                                                     getFavouriteListProvider);
 
-                                                // Print the message from the API
-                                                print(
-                                                    "Favorite Response: $addFavoriteMessage");
+                                         
 
                                                 // Show a Snackbar with the API response message
                                                 ScaffoldMessenger.of(context)
@@ -720,22 +717,17 @@ class ProductDetailScreen extends ConsumerWidget {
                                                             // Call the contactSeller provider and wait for the response
                                                             final success =
                                                                 await ref.read(
-                                                                  
                                                               contactSellerProvider(
-                                                                name!,
-                                                                phonecontroller
-                                                                    .text,
-                                                                msgcontroller
-                                                                    .text,
-                                                                    
-                                                                int.tryParse(
-                                                                    id!,
-                                                                    
-                                                                    )!,
-                                                                    email
-                                                                    
-                                                                    
-                                                              ).future,
+                                                                      name!,
+                                                                      phonecontroller
+                                                                          .text,
+                                                                      msgcontroller
+                                                                          .text,
+                                                                      int.tryParse(
+                                                                        id!,
+                                                                      )!,
+                                                                      email)
+                                                                  .future,
                                                             );
 
                                                             // Handle the response based on success or failure
@@ -827,7 +819,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => VendorHomeScreen(
-                                  vendorName: data.user!.name!,
+                                  vendorName: data.user!.username!,
                                   vid: int.tryParse(data.user_id!)!,
                                 ),
                               ));
