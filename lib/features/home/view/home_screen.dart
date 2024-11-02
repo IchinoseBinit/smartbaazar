@@ -139,16 +139,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             width: double.infinity,
                             child: brandbajarAsyncValue.when(
                               data: (brandBazar) {
-                                print(
-                                    "we got ${brandBazar.data.trandBanners![0]}");
+                           
                                 // Render your data
                                 return CarouselSlider(
                                     items: brandBazar.data.trandBanners!
                                         .map((banner) {
                                       return Image.network(
-                                          height: 110.h,
                                           width: double.infinity,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
                                           banner.image!);
                                     }).toList(),
                                     options: CarouselOptions(

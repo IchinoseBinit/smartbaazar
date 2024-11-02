@@ -32,7 +32,7 @@ class MessageViewScreen extends ConsumerWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     DropdownButton<String>(
-                      underline: SizedBox(),
+                      underline: const SizedBox(),
                       
 
                      padding: EdgeInsets.zero,

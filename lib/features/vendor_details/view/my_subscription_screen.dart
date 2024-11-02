@@ -106,7 +106,7 @@ class MySubscriptionScreen extends ConsumerWidget {
                       title: 'Profile',
                       onPressed: () {
                         print(
-                            "binod ${subscription.vendor!.id} and ${subscription}");
+                            "binod ${subscription.vendor!.id} and $subscription");
                         Navigator.push(
                             context,
                             MaterialPageRoute(
