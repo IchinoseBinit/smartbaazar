@@ -68,6 +68,14 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User details updated successfully!')),
       );
+      setState(() {
+        fullName = '';
+        phoneNumber = '';
+        email = '';
+        userName = '';
+        genderID = null; // Reset gender selection
+      });
+      _formKey.currentState?.reset();
     } catch (error) {
       // Display error message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -214,7 +222,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                     marginH: 0,
                     height: 25.h,
                     width: 100.w,
-                    title: isLoading ? 'Updating...' : 'Update',
+                    title: 'Update',
                     fgColor: Colors.white,
                     bgColor: const Color(0xff362677),
                     isSmallText: true,

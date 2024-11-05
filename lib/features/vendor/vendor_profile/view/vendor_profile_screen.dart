@@ -27,6 +27,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verifie
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -81,7 +82,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.notifications,
       "title": 'Buyer',
       "subtitle": 'Account',
-      "screen": const VendroDetailsScreen(),
+      "screen": const BuyerDetailsScreen(),
     },
     {
       "icon": Icons.volume_down,

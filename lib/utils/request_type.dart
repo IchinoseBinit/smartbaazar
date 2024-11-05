@@ -7,5 +7,6 @@ enum RequestType {
   postWithTokenFormData,
   deleteWithToken,
   putWithToken,
-  putWithTokenFormData
+  putWithTokenFormData,
+  putWithTokenEncoded
 }
