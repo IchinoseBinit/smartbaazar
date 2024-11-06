@@ -22,36 +22,19 @@ class ProductImportScreen extends ConsumerStatefulWidget {
 
 class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
   File? imageFile;
-Future<void> _viewCsv() async {
-  try {
-    // Load the CSV file as bytes
-    final ByteData data = await rootBundle.load('assets/so.csv');
-
-    // Get the application documents directory
-    final directory = await getApplicationDocumentsDirectory();
-    final csvFilePath = '${directory.path}/so.csv';
-
-    // Write the CSV data to a file
-    final List<int> bytes = data.buffer.asUint8List();
-    final File csvFile = File(csvFilePath);
-    await csvFile.writeAsBytes(bytes);
-
-    // Check for permissions (optional depending on your use case)
-    // You may need to request WRITE_EXTERNAL_STORAGE permission on Android
-    // final status = await Permission.storage.request();
-
-    // Use content URI for Android 7.0 (Nougat) and above
-    final Uri contentUri = Uri.file(csvFilePath);
-    
-    if (await canLaunch(contentUri.toString())) {
-      await launch(contentUri.toString());
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
     } else {
-      print('Could not launch $contentUri');
+      // Handle the error more gracefully, perhaps show an alert dialog
+      print('Could not launch $url');
     }
-  } catch (e) {
-    print('Error: $e');
   }
-}
+
   @override
   Widget build(BuildContext context) {
 //  final privacyPolicyAsync = ref.watch(storeProductImportProvider);
@@ -148,17 +131,25 @@ Future<void> _viewCsv() async {
                       SizedBox(
                         height: 10.h,
                       ),
-                       DownloadFileSampleWidget(
-                        onclicked: _viewCsv,
-
+                      DownloadFileSampleWidget(
+                        onclicked: () async {
+                          final uri = Uri.parse(
+                              "https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv");
+                          await launchUrl(uri,
+                                );
+                        },
                         text: 'Donwload Sample',
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
-                       DownloadFileSampleWidget(
-                        onclicked: () {
-                          
+                      DownloadFileSampleWidget(
+                        onclicked: () async{
+                                 final uri = Uri.parse(
+                              "https://smartbazaar.com.np/uploads/samples/SmartBazaar_Product_Import_Documentation.pdf");
+                          await launchUrl(uri,
+                                );
+
                         },
                         text: 'Donwload Documents',
                       ),
@@ -168,20 +159,20 @@ Future<void> _viewCsv() async {
                 SizedBox(
                   height: 80.h,
                 ),
-                GeneralTextButton(
-                  // marginH: 0,
-                  width: MediaQuery.of(context).size.width,
-                  title: 'Online Transaction',
-                  fgColor: Colors.white,
-                  bgColor: const Color(0xff362677),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                const OnlineTransactionRecordScreen()));
-                  },
-                ),
+                // GeneralTextButton(
+                //   // marginH: 0,
+                //   width: MediaQuery.of(context).size.width,
+                //   title: 'Online Transaction',
+                //   fgColor: Colors.white,
+                //   bgColor: const Color(0xff362677),
+                //   onPressed: () {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (_) =>
+                //                 const OnlineTransactionRecordScreen()));
+                //   },
+                // ),
               ],
             ),
           ),
@@ -194,7 +185,8 @@ Future<void> _viewCsv() async {
 class DownloadFileSampleWidget extends StatelessWidget {
   final String text;
   final Function()? onclicked;
-  const DownloadFileSampleWidget({super.key, required this.text,required this.onclicked});
+  const DownloadFileSampleWidget(
+      {super.key, required this.text, required this.onclicked});
 
   @override
   Widget build(BuildContext context) {
