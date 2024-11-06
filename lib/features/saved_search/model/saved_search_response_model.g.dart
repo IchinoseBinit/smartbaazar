@@ -24,12 +24,24 @@ _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
       brandNew: (json['brand_new'] as List<dynamic>?)
           ?.map((e) => BrandNew.fromJson(e as Map<String, dynamic>))
           .toList(),
-      used: json['used'] as List<dynamic>,
-      services: json['services'] as List<dynamic>,
-      jobs: json['jobs'] as List<dynamic>,
-      events: json['events'] as List<dynamic>,
-      b2B: json['b2b'] as List<dynamic>,
-      grocery: json['grocery'] as List<dynamic>,
+      used: (json['used'] as List<dynamic>?)
+          ?.map((e) => Used.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      services: (json['services'] as List<dynamic>?)
+          ?.map((e) => Services.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      jobs: (json['jobs'] as List<dynamic>)
+          .map((e) => Jobs.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      events: (json['events'] as List<dynamic>)
+          .map((e) => Events.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      b2B: (json['b2b'] as List<dynamic>)
+          .map((e) => B2B.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      grocery: (json['grocery'] as List<dynamic>)
+          .map((e) => Grocery.fromJson(e as Map<String, dynamic>))
+          .toList(),
       posts: Posts.fromJson(json['posts'] as Map<String, dynamic>),
     );
 
@@ -111,4 +123,107 @@ Map<String, dynamic> _$$LinkImplToJson(_$LinkImpl instance) =>
       'url': instance.url,
       'label': instance.label,
       'active': instance.active,
+    };
+
+_$GroceryImpl _$$GroceryImplFromJson(Map<String, dynamic> json) =>
+    _$GroceryImpl(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$GroceryImplToJson(_$GroceryImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'title': instance.title,
+      'price': instance.price,
+      'image': instance.image,
+    };
+
+_$UsedImpl _$$UsedImplFromJson(Map<String, dynamic> json) => _$UsedImpl(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$UsedImplToJson(_$UsedImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'title': instance.title,
+      'price': instance.price,
+      'image': instance.image,
+    };
+
+_$ServicesImpl _$$ServicesImplFromJson(Map<String, dynamic> json) =>
+    _$ServicesImpl(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$ServicesImplToJson(_$ServicesImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'title': instance.title,
+      'price': instance.price,
+      'image': instance.image,
+    };
+
+_$JobsImpl _$$JobsImplFromJson(Map<String, dynamic> json) => _$JobsImpl(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$JobsImplToJson(_$JobsImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'title': instance.title,
+      'price': instance.price,
+      'image': instance.image,
+    };
+
+_$EventsImpl _$$EventsImplFromJson(Map<String, dynamic> json) => _$EventsImpl(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$EventsImplToJson(_$EventsImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'title': instance.title,
+      'price': instance.price,
+      'image': instance.image,
+    };
+
+_$B2BImpl _$$B2BImplFromJson(Map<String, dynamic> json) => _$B2BImpl(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      image: json['image'] as String,
+    );
+
+Map<String, dynamic> _$$B2BImplToJson(_$B2BImpl instance) => <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'title': instance.title,
+      'price': instance.price,
+      'image': instance.image,
     };

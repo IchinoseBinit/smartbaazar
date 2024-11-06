@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 // import 'package:path_provider/path_provider.dart';
@@ -62,42 +61,9 @@ Future<bool> postCheckoutForm(
       'qty[]': qty,
       'price[]': price,
       'total': total,
+      'del_cost': 100
     });
 
-    // // Add image(s) to the form data
-    // if (imagePath != null && imagePath.isNotEmpty) {
-    //   for (var path in imagePath) {
-    //     if (path != null) {
-    //       File localFile;
-
-    //       // Convert URL to local file
-    //       if (path.startsWith('http')) {
-    //         localFile = await convertUrlToFile(path);
-    //       } else {
-    //         // It's already a local file path, so we can use it directly
-    //         localFile = File(path);
-    //       }
-
-    //       // Get the file extension
-    //       String extension = localFile.path.split('.').last.toLowerCase();
-
-    //       // Check if the file type is allowed
-    //       if (!['jpg', 'jpeg', 'png', 'gif', 'svg'].contains(extension)) {
-    //         print('Warning: Unsupported file type $extension');
-    //         continue;
-    //       }
-
-    //       // Add the file to the form data using the correct name
-    //       formData.files.add(
-    //         MapEntry(
-    //           'image[]',
-    //           MultipartFile.fromBytes(await localFile.readAsBytes(),
-    //               filename: 'image.$extension'),
-    //         ),
-    //       );
-    //     }
-    //   }
-    // }
 
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
@@ -105,8 +71,7 @@ Future<bool> postCheckoutForm(
       parameter: formData,
     );
 
-    if (response.statusCode == 200 && response.data['success']) {
-      print('Order placed successfully!');
+if (response.statusCode == 200 && response.data['msg'] != null) {      print('Order placed successfully!');
       return true;
     } else {
       print('Error: ${response.data}');

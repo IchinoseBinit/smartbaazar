@@ -7,7 +7,7 @@ part of 'search_from_saved_search_api.dart';
 // **************************************************************************
 
 String _$searchFromSavedSearchHash() =>
-    r'f5c44d38845ba77d6c9d670128056083041fa95f';
+    r'81d84db51b1c010e21e73255d2acc289708382e6';
 
 /// Copied from Dart SDK
 class _SystemHash {

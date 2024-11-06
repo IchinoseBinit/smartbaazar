@@ -18,12 +18,12 @@ class SavedSearchesResponseModel with _$SavedSearchesResponseModel {
 class Data with _$Data {
   const factory Data({
     @JsonKey(name: "brand_new") required List<BrandNew>? brandNew,
-    @JsonKey(name: "used") required List<dynamic> used,
-    @JsonKey(name: "services") required List<dynamic> services,
-    @JsonKey(name: "jobs") required List<dynamic> jobs,
-    @JsonKey(name: "events") required List<dynamic> events,
-    @JsonKey(name: "b2b") required List<dynamic> b2B,
-    @JsonKey(name: "grocery") required List<dynamic> grocery,
+    @JsonKey(name: "used") required List<Used>? used,
+    @JsonKey(name: "services") required List<Services>? services,
+    @JsonKey(name: "jobs") required List<Jobs> jobs,
+    @JsonKey(name: "events") required List<Events> events,
+    @JsonKey(name: "b2b") required List<B2B> b2B,
+    @JsonKey(name: "grocery") required List<Grocery> grocery,
     @JsonKey(name: "posts") required Posts posts,
   }) = _Data;
 
@@ -34,17 +34,14 @@ class Data with _$Data {
 class BrandNew with _$BrandNew {
   const factory BrandNew({
     @JsonKey(name: "id") required String id,
-
     @JsonKey(name: "user_id") required String userId,
-
     @JsonKey(name: "title") required String title,
-
- 
     @JsonKey(name: "price") required String price,
     required String image,
   }) = _BrandNew;
 
-  factory BrandNew.fromJson(Map<String, dynamic> json) => _$BrandNewFromJson(json);
+  factory BrandNew.fromJson(Map<String, dynamic> json) =>
+      _$BrandNewFromJson(json);
 }
 
 @freezed
@@ -77,4 +74,96 @@ class Link with _$Link {
   }) = _Link;
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
+}
+
+@freezed
+class Grocery with _$Grocery {
+  const factory Grocery({
+    @JsonKey(name: "id") required String id,
+    @JsonKey(name: "user_id") required String userId,
+    // @JsonKey(name: "category_id") required String categoryId,
+    // @JsonKey(name: "post_type_id") required String postTypeId,
+    @JsonKey(name: "title") required String title,
+    // @JsonKey(name: "description") required String description,
+    @JsonKey(name: "price") required String price,
+    required String image,
+  }) = _Grocery;
+  factory Grocery.fromJson(Map<String, dynamic> json) =>
+      _$GroceryFromJson(json);
+}
+
+@freezed
+class Used with _$Used {
+  const factory Used({
+    @JsonKey(name: "id") required String id,
+    @JsonKey(name: "user_id") required String userId,
+    // @JsonKey(name: "category_id") required String categoryId,
+    // @JsonKey(name: "post_type_id") required String postTypeId,
+    @JsonKey(name: "title") required String title,
+    // @JsonKey(name: "description") required String description,
+    @JsonKey(name: "price") required String price,
+    required String image,
+  }) = _Used;
+  factory Used.fromJson(Map<String, dynamic> json) => _$UsedFromJson(json);
+}
+
+@freezed
+class Services with _$Services {
+  const factory Services({
+    @JsonKey(name: "id") required String id,
+    @JsonKey(name: "user_id") required String userId,
+    // @JsonKey(name: "category_id") required String categoryId,
+    // @JsonKey(name: "post_type_id") required String postTypeId,
+    @JsonKey(name: "title") required String title,
+    // @JsonKey(name: "description") required String description,
+    @JsonKey(name: "price") required String price,
+    required String image,
+  }) = _Services;
+  factory Services.fromJson(Map<String, dynamic> json) =>
+      _$ServicesFromJson(json);
+}
+
+@freezed
+class Jobs with _$Jobs {
+  const factory Jobs({
+    @JsonKey(name: "id") required String id,
+    @JsonKey(name: "user_id") required String userId,
+    // @JsonKey(name: "category_id") required String categoryId,
+    // @JsonKey(name: "post_type_id") required String postTypeId,
+    @JsonKey(name: "title") required String title,
+    // @JsonKey(name: "description") required String description,
+    @JsonKey(name: "price") required String price,
+    required String image,
+  }) = _Jobs;
+  factory Jobs.fromJson(Map<String, dynamic> json) => _$JobsFromJson(json);
+}
+
+@freezed
+class Events with _$Events {
+  const factory Events({
+    @JsonKey(name: "id") required String id,
+    @JsonKey(name: "user_id") required String userId,
+    // @JsonKey(name: "category_id") required String categoryId,
+    // @JsonKey(name: "post_type_id") required String postTypeId,
+    @JsonKey(name: "title") required String title,
+    // @JsonKey(name: "description") required String description,
+    @JsonKey(name: "price") required String price,
+    required String image,
+  }) = _Events;
+  factory Events.fromJson(Map<String, dynamic> json) => _$EventsFromJson(json);
+}
+
+@freezed
+class B2B with _$B2B {
+  const factory B2B({
+    @JsonKey(name: "id") required String id,
+    @JsonKey(name: "user_id") required String userId,
+    // @JsonKey(name: "category_id") required String categoryId,
+    // @JsonKey(name: "post_type_id") required String postTypeId,
+    @JsonKey(name: "title") required String title,
+    // @JsonKey(name: "description") required String description,
+    @JsonKey(name: "price") required String price,
+    required String image,
+  }) = _B2B;
+  factory B2B.fromJson(Map<String, dynamic> json) => _$B2BFromJson(json);
 }

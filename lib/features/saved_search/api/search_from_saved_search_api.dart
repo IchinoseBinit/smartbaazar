@@ -7,21 +7,22 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'search_from_saved_search_api.g.dart';
 
 @riverpod
-Future<List<BrandNew>?> searchFromSavedSearch(SearchFromSavedSearchRef ref, String query) async {
+Future<List<BrandNew>?> searchFromSavedSearch(
+    SearchFromSavedSearchRef ref, String query) async {
   final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.post,
-      url: '${ApiConstants.searchFromSavedSearchUrl}?$query',
+      url: '${ApiConstants.searchFromSavedSearchUrl}?query=$query',
     );
-    
+
     print('API Response: ${response.data}');
-    
+
     if (response.statusCode == 200 && response.data['brand_new'] != null) {
       final brandNewList = response.data['brand_new'];
-      
+
       print('Brand New List: $brandNewList');
-      
+
       if (brandNewList is List) {
         return brandNewList.map((item) => BrandNew.fromJson(item)).toList();
       } else {

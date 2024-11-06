@@ -210,17 +210,17 @@ mixin _$Data {
   @JsonKey(name: "brand_new")
   List<BrandNew>? get brandNew => throw _privateConstructorUsedError;
   @JsonKey(name: "used")
-  List<dynamic> get used => throw _privateConstructorUsedError;
+  List<Used>? get used => throw _privateConstructorUsedError;
   @JsonKey(name: "services")
-  List<dynamic> get services => throw _privateConstructorUsedError;
+  List<Services>? get services => throw _privateConstructorUsedError;
   @JsonKey(name: "jobs")
-  List<dynamic> get jobs => throw _privateConstructorUsedError;
+  List<Jobs> get jobs => throw _privateConstructorUsedError;
   @JsonKey(name: "events")
-  List<dynamic> get events => throw _privateConstructorUsedError;
+  List<Events> get events => throw _privateConstructorUsedError;
   @JsonKey(name: "b2b")
-  List<dynamic> get b2B => throw _privateConstructorUsedError;
+  List<B2B> get b2B => throw _privateConstructorUsedError;
   @JsonKey(name: "grocery")
-  List<dynamic> get grocery => throw _privateConstructorUsedError;
+  List<Grocery> get grocery => throw _privateConstructorUsedError;
   @JsonKey(name: "posts")
   Posts get posts => throw _privateConstructorUsedError;
 
@@ -236,12 +236,12 @@ abstract class $DataCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "brand_new") List<BrandNew>? brandNew,
-      @JsonKey(name: "used") List<dynamic> used,
-      @JsonKey(name: "services") List<dynamic> services,
-      @JsonKey(name: "jobs") List<dynamic> jobs,
-      @JsonKey(name: "events") List<dynamic> events,
-      @JsonKey(name: "b2b") List<dynamic> b2B,
-      @JsonKey(name: "grocery") List<dynamic> grocery,
+      @JsonKey(name: "used") List<Used>? used,
+      @JsonKey(name: "services") List<Services>? services,
+      @JsonKey(name: "jobs") List<Jobs> jobs,
+      @JsonKey(name: "events") List<Events> events,
+      @JsonKey(name: "b2b") List<B2B> b2B,
+      @JsonKey(name: "grocery") List<Grocery> grocery,
       @JsonKey(name: "posts") Posts posts});
 
   $PostsCopyWith<$Res> get posts;
@@ -261,8 +261,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   @override
   $Res call({
     Object? brandNew = freezed,
-    Object? used = null,
-    Object? services = null,
+    Object? used = freezed,
+    Object? services = freezed,
     Object? jobs = null,
     Object? events = null,
     Object? b2B = null,
@@ -274,30 +274,30 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
           ? _value.brandNew
           : brandNew // ignore: cast_nullable_to_non_nullable
               as List<BrandNew>?,
-      used: null == used
+      used: freezed == used
           ? _value.used
           : used // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      services: null == services
+              as List<Used>?,
+      services: freezed == services
           ? _value.services
           : services // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Services>?,
       jobs: null == jobs
           ? _value.jobs
           : jobs // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Jobs>,
       events: null == events
           ? _value.events
           : events // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Events>,
       b2B: null == b2B
           ? _value.b2B
           : b2B // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<B2B>,
       grocery: null == grocery
           ? _value.grocery
           : grocery // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Grocery>,
       posts: null == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
@@ -323,12 +323,12 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "brand_new") List<BrandNew>? brandNew,
-      @JsonKey(name: "used") List<dynamic> used,
-      @JsonKey(name: "services") List<dynamic> services,
-      @JsonKey(name: "jobs") List<dynamic> jobs,
-      @JsonKey(name: "events") List<dynamic> events,
-      @JsonKey(name: "b2b") List<dynamic> b2B,
-      @JsonKey(name: "grocery") List<dynamic> grocery,
+      @JsonKey(name: "used") List<Used>? used,
+      @JsonKey(name: "services") List<Services>? services,
+      @JsonKey(name: "jobs") List<Jobs> jobs,
+      @JsonKey(name: "events") List<Events> events,
+      @JsonKey(name: "b2b") List<B2B> b2B,
+      @JsonKey(name: "grocery") List<Grocery> grocery,
       @JsonKey(name: "posts") Posts posts});
 
   @override
@@ -346,8 +346,8 @@ class __$$DataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? brandNew = freezed,
-    Object? used = null,
-    Object? services = null,
+    Object? used = freezed,
+    Object? services = freezed,
     Object? jobs = null,
     Object? events = null,
     Object? b2B = null,
@@ -359,30 +359,30 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value._brandNew
           : brandNew // ignore: cast_nullable_to_non_nullable
               as List<BrandNew>?,
-      used: null == used
+      used: freezed == used
           ? _value._used
           : used // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      services: null == services
+              as List<Used>?,
+      services: freezed == services
           ? _value._services
           : services // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Services>?,
       jobs: null == jobs
           ? _value._jobs
           : jobs // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Jobs>,
       events: null == events
           ? _value._events
           : events // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Events>,
       b2B: null == b2B
           ? _value._b2B
           : b2B // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<B2B>,
       grocery: null == grocery
           ? _value._grocery
           : grocery // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Grocery>,
       posts: null == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
@@ -396,12 +396,12 @@ class __$$DataImplCopyWithImpl<$Res>
 class _$DataImpl implements _Data {
   const _$DataImpl(
       {@JsonKey(name: "brand_new") required final List<BrandNew>? brandNew,
-      @JsonKey(name: "used") required final List<dynamic> used,
-      @JsonKey(name: "services") required final List<dynamic> services,
-      @JsonKey(name: "jobs") required final List<dynamic> jobs,
-      @JsonKey(name: "events") required final List<dynamic> events,
-      @JsonKey(name: "b2b") required final List<dynamic> b2B,
-      @JsonKey(name: "grocery") required final List<dynamic> grocery,
+      @JsonKey(name: "used") required final List<Used>? used,
+      @JsonKey(name: "services") required final List<Services>? services,
+      @JsonKey(name: "jobs") required final List<Jobs> jobs,
+      @JsonKey(name: "events") required final List<Events> events,
+      @JsonKey(name: "b2b") required final List<B2B> b2B,
+      @JsonKey(name: "grocery") required final List<Grocery> grocery,
       @JsonKey(name: "posts") required this.posts})
       : _brandNew = brandNew,
         _used = used,
@@ -425,55 +425,59 @@ class _$DataImpl implements _Data {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<dynamic> _used;
+  final List<Used>? _used;
   @override
   @JsonKey(name: "used")
-  List<dynamic> get used {
+  List<Used>? get used {
+    final value = _used;
+    if (value == null) return null;
     if (_used is EqualUnmodifiableListView) return _used;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_used);
+    return EqualUnmodifiableListView(value);
   }
 
-  final List<dynamic> _services;
+  final List<Services>? _services;
   @override
   @JsonKey(name: "services")
-  List<dynamic> get services {
+  List<Services>? get services {
+    final value = _services;
+    if (value == null) return null;
     if (_services is EqualUnmodifiableListView) return _services;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_services);
+    return EqualUnmodifiableListView(value);
   }
 
-  final List<dynamic> _jobs;
+  final List<Jobs> _jobs;
   @override
   @JsonKey(name: "jobs")
-  List<dynamic> get jobs {
+  List<Jobs> get jobs {
     if (_jobs is EqualUnmodifiableListView) return _jobs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_jobs);
   }
 
-  final List<dynamic> _events;
+  final List<Events> _events;
   @override
   @JsonKey(name: "events")
-  List<dynamic> get events {
+  List<Events> get events {
     if (_events is EqualUnmodifiableListView) return _events;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_events);
   }
 
-  final List<dynamic> _b2B;
+  final List<B2B> _b2B;
   @override
   @JsonKey(name: "b2b")
-  List<dynamic> get b2B {
+  List<B2B> get b2B {
     if (_b2B is EqualUnmodifiableListView) return _b2B;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_b2B);
   }
 
-  final List<dynamic> _grocery;
+  final List<Grocery> _grocery;
   @override
   @JsonKey(name: "grocery")
-  List<dynamic> get grocery {
+  List<Grocery> get grocery {
     if (_grocery is EqualUnmodifiableListView) return _grocery;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_grocery);
@@ -533,12 +537,12 @@ class _$DataImpl implements _Data {
 abstract class _Data implements Data {
   const factory _Data(
       {@JsonKey(name: "brand_new") required final List<BrandNew>? brandNew,
-      @JsonKey(name: "used") required final List<dynamic> used,
-      @JsonKey(name: "services") required final List<dynamic> services,
-      @JsonKey(name: "jobs") required final List<dynamic> jobs,
-      @JsonKey(name: "events") required final List<dynamic> events,
-      @JsonKey(name: "b2b") required final List<dynamic> b2B,
-      @JsonKey(name: "grocery") required final List<dynamic> grocery,
+      @JsonKey(name: "used") required final List<Used>? used,
+      @JsonKey(name: "services") required final List<Services>? services,
+      @JsonKey(name: "jobs") required final List<Jobs> jobs,
+      @JsonKey(name: "events") required final List<Events> events,
+      @JsonKey(name: "b2b") required final List<B2B> b2B,
+      @JsonKey(name: "grocery") required final List<Grocery> grocery,
       @JsonKey(name: "posts") required final Posts posts}) = _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
@@ -548,22 +552,22 @@ abstract class _Data implements Data {
   List<BrandNew>? get brandNew;
   @override
   @JsonKey(name: "used")
-  List<dynamic> get used;
+  List<Used>? get used;
   @override
   @JsonKey(name: "services")
-  List<dynamic> get services;
+  List<Services>? get services;
   @override
   @JsonKey(name: "jobs")
-  List<dynamic> get jobs;
+  List<Jobs> get jobs;
   @override
   @JsonKey(name: "events")
-  List<dynamic> get events;
+  List<Events> get events;
   @override
   @JsonKey(name: "b2b")
-  List<dynamic> get b2B;
+  List<B2B> get b2B;
   @override
   @JsonKey(name: "grocery")
-  List<dynamic> get grocery;
+  List<Grocery> get grocery;
   @override
   @JsonKey(name: "posts")
   Posts get posts;
@@ -1434,5 +1438,1412 @@ abstract class _Link implements Link {
   @override
   @JsonKey(ignore: true)
   _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Grocery _$GroceryFromJson(Map<String, dynamic> json) {
+  return _Grocery.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Grocery {
+  @JsonKey(name: "id")
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_id")
+  String get userId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $GroceryCopyWith<Grocery> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GroceryCopyWith<$Res> {
+  factory $GroceryCopyWith(Grocery value, $Res Function(Grocery) then) =
+      _$GroceryCopyWithImpl<$Res, Grocery>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class _$GroceryCopyWithImpl<$Res, $Val extends Grocery>
+    implements $GroceryCopyWith<$Res> {
+  _$GroceryCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$GroceryImplCopyWith<$Res> implements $GroceryCopyWith<$Res> {
+  factory _$$GroceryImplCopyWith(
+          _$GroceryImpl value, $Res Function(_$GroceryImpl) then) =
+      __$$GroceryImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class __$$GroceryImplCopyWithImpl<$Res>
+    extends _$GroceryCopyWithImpl<$Res, _$GroceryImpl>
+    implements _$$GroceryImplCopyWith<$Res> {
+  __$$GroceryImplCopyWithImpl(
+      _$GroceryImpl _value, $Res Function(_$GroceryImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_$GroceryImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$GroceryImpl implements _Grocery {
+  const _$GroceryImpl(
+      {@JsonKey(name: "id") required this.id,
+      @JsonKey(name: "user_id") required this.userId,
+      @JsonKey(name: "title") required this.title,
+      @JsonKey(name: "price") required this.price,
+      required this.image});
+
+  factory _$GroceryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GroceryImplFromJson(json);
+
+  @override
+  @JsonKey(name: "id")
+  final String id;
+  @override
+  @JsonKey(name: "user_id")
+  final String userId;
+// @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @override
+  @JsonKey(name: "title")
+  final String title;
+// @JsonKey(name: "description") required String description,
+  @override
+  @JsonKey(name: "price")
+  final String price;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'Grocery(id: $id, userId: $userId, title: $title, price: $price, image: $image)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GroceryImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, userId, title, price, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GroceryImplCopyWith<_$GroceryImpl> get copyWith =>
+      __$$GroceryImplCopyWithImpl<_$GroceryImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GroceryImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Grocery implements Grocery {
+  const factory _Grocery(
+      {@JsonKey(name: "id") required final String id,
+      @JsonKey(name: "user_id") required final String userId,
+      @JsonKey(name: "title") required final String title,
+      @JsonKey(name: "price") required final String price,
+      required final String image}) = _$GroceryImpl;
+
+  factory _Grocery.fromJson(Map<String, dynamic> json) = _$GroceryImpl.fromJson;
+
+  @override
+  @JsonKey(name: "id")
+  String get id;
+  @override
+  @JsonKey(name: "user_id")
+  String get userId;
+  @override // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title;
+  @override // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$$GroceryImplCopyWith<_$GroceryImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Used _$UsedFromJson(Map<String, dynamic> json) {
+  return _Used.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Used {
+  @JsonKey(name: "id")
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_id")
+  String get userId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UsedCopyWith<Used> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UsedCopyWith<$Res> {
+  factory $UsedCopyWith(Used value, $Res Function(Used) then) =
+      _$UsedCopyWithImpl<$Res, Used>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class _$UsedCopyWithImpl<$Res, $Val extends Used>
+    implements $UsedCopyWith<$Res> {
+  _$UsedCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$UsedImplCopyWith<$Res> implements $UsedCopyWith<$Res> {
+  factory _$$UsedImplCopyWith(
+          _$UsedImpl value, $Res Function(_$UsedImpl) then) =
+      __$$UsedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class __$$UsedImplCopyWithImpl<$Res>
+    extends _$UsedCopyWithImpl<$Res, _$UsedImpl>
+    implements _$$UsedImplCopyWith<$Res> {
+  __$$UsedImplCopyWithImpl(_$UsedImpl _value, $Res Function(_$UsedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_$UsedImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$UsedImpl implements _Used {
+  const _$UsedImpl(
+      {@JsonKey(name: "id") required this.id,
+      @JsonKey(name: "user_id") required this.userId,
+      @JsonKey(name: "title") required this.title,
+      @JsonKey(name: "price") required this.price,
+      required this.image});
+
+  factory _$UsedImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UsedImplFromJson(json);
+
+  @override
+  @JsonKey(name: "id")
+  final String id;
+  @override
+  @JsonKey(name: "user_id")
+  final String userId;
+// @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @override
+  @JsonKey(name: "title")
+  final String title;
+// @JsonKey(name: "description") required String description,
+  @override
+  @JsonKey(name: "price")
+  final String price;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'Used(id: $id, userId: $userId, title: $title, price: $price, image: $image)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UsedImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, userId, title, price, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UsedImplCopyWith<_$UsedImpl> get copyWith =>
+      __$$UsedImplCopyWithImpl<_$UsedImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$UsedImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Used implements Used {
+  const factory _Used(
+      {@JsonKey(name: "id") required final String id,
+      @JsonKey(name: "user_id") required final String userId,
+      @JsonKey(name: "title") required final String title,
+      @JsonKey(name: "price") required final String price,
+      required final String image}) = _$UsedImpl;
+
+  factory _Used.fromJson(Map<String, dynamic> json) = _$UsedImpl.fromJson;
+
+  @override
+  @JsonKey(name: "id")
+  String get id;
+  @override
+  @JsonKey(name: "user_id")
+  String get userId;
+  @override // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title;
+  @override // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$$UsedImplCopyWith<_$UsedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Services _$ServicesFromJson(Map<String, dynamic> json) {
+  return _Services.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Services {
+  @JsonKey(name: "id")
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_id")
+  String get userId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ServicesCopyWith<Services> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ServicesCopyWith<$Res> {
+  factory $ServicesCopyWith(Services value, $Res Function(Services) then) =
+      _$ServicesCopyWithImpl<$Res, Services>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class _$ServicesCopyWithImpl<$Res, $Val extends Services>
+    implements $ServicesCopyWith<$Res> {
+  _$ServicesCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ServicesImplCopyWith<$Res>
+    implements $ServicesCopyWith<$Res> {
+  factory _$$ServicesImplCopyWith(
+          _$ServicesImpl value, $Res Function(_$ServicesImpl) then) =
+      __$$ServicesImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class __$$ServicesImplCopyWithImpl<$Res>
+    extends _$ServicesCopyWithImpl<$Res, _$ServicesImpl>
+    implements _$$ServicesImplCopyWith<$Res> {
+  __$$ServicesImplCopyWithImpl(
+      _$ServicesImpl _value, $Res Function(_$ServicesImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_$ServicesImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ServicesImpl implements _Services {
+  const _$ServicesImpl(
+      {@JsonKey(name: "id") required this.id,
+      @JsonKey(name: "user_id") required this.userId,
+      @JsonKey(name: "title") required this.title,
+      @JsonKey(name: "price") required this.price,
+      required this.image});
+
+  factory _$ServicesImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ServicesImplFromJson(json);
+
+  @override
+  @JsonKey(name: "id")
+  final String id;
+  @override
+  @JsonKey(name: "user_id")
+  final String userId;
+// @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @override
+  @JsonKey(name: "title")
+  final String title;
+// @JsonKey(name: "description") required String description,
+  @override
+  @JsonKey(name: "price")
+  final String price;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'Services(id: $id, userId: $userId, title: $title, price: $price, image: $image)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ServicesImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, userId, title, price, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ServicesImplCopyWith<_$ServicesImpl> get copyWith =>
+      __$$ServicesImplCopyWithImpl<_$ServicesImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ServicesImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Services implements Services {
+  const factory _Services(
+      {@JsonKey(name: "id") required final String id,
+      @JsonKey(name: "user_id") required final String userId,
+      @JsonKey(name: "title") required final String title,
+      @JsonKey(name: "price") required final String price,
+      required final String image}) = _$ServicesImpl;
+
+  factory _Services.fromJson(Map<String, dynamic> json) =
+      _$ServicesImpl.fromJson;
+
+  @override
+  @JsonKey(name: "id")
+  String get id;
+  @override
+  @JsonKey(name: "user_id")
+  String get userId;
+  @override // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title;
+  @override // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$$ServicesImplCopyWith<_$ServicesImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Jobs _$JobsFromJson(Map<String, dynamic> json) {
+  return _Jobs.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Jobs {
+  @JsonKey(name: "id")
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_id")
+  String get userId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $JobsCopyWith<Jobs> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $JobsCopyWith<$Res> {
+  factory $JobsCopyWith(Jobs value, $Res Function(Jobs) then) =
+      _$JobsCopyWithImpl<$Res, Jobs>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class _$JobsCopyWithImpl<$Res, $Val extends Jobs>
+    implements $JobsCopyWith<$Res> {
+  _$JobsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$JobsImplCopyWith<$Res> implements $JobsCopyWith<$Res> {
+  factory _$$JobsImplCopyWith(
+          _$JobsImpl value, $Res Function(_$JobsImpl) then) =
+      __$$JobsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class __$$JobsImplCopyWithImpl<$Res>
+    extends _$JobsCopyWithImpl<$Res, _$JobsImpl>
+    implements _$$JobsImplCopyWith<$Res> {
+  __$$JobsImplCopyWithImpl(_$JobsImpl _value, $Res Function(_$JobsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_$JobsImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$JobsImpl implements _Jobs {
+  const _$JobsImpl(
+      {@JsonKey(name: "id") required this.id,
+      @JsonKey(name: "user_id") required this.userId,
+      @JsonKey(name: "title") required this.title,
+      @JsonKey(name: "price") required this.price,
+      required this.image});
+
+  factory _$JobsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$JobsImplFromJson(json);
+
+  @override
+  @JsonKey(name: "id")
+  final String id;
+  @override
+  @JsonKey(name: "user_id")
+  final String userId;
+// @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @override
+  @JsonKey(name: "title")
+  final String title;
+// @JsonKey(name: "description") required String description,
+  @override
+  @JsonKey(name: "price")
+  final String price;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'Jobs(id: $id, userId: $userId, title: $title, price: $price, image: $image)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$JobsImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, userId, title, price, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$JobsImplCopyWith<_$JobsImpl> get copyWith =>
+      __$$JobsImplCopyWithImpl<_$JobsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$JobsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Jobs implements Jobs {
+  const factory _Jobs(
+      {@JsonKey(name: "id") required final String id,
+      @JsonKey(name: "user_id") required final String userId,
+      @JsonKey(name: "title") required final String title,
+      @JsonKey(name: "price") required final String price,
+      required final String image}) = _$JobsImpl;
+
+  factory _Jobs.fromJson(Map<String, dynamic> json) = _$JobsImpl.fromJson;
+
+  @override
+  @JsonKey(name: "id")
+  String get id;
+  @override
+  @JsonKey(name: "user_id")
+  String get userId;
+  @override // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title;
+  @override // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$$JobsImplCopyWith<_$JobsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Events _$EventsFromJson(Map<String, dynamic> json) {
+  return _Events.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Events {
+  @JsonKey(name: "id")
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_id")
+  String get userId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EventsCopyWith<Events> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventsCopyWith<$Res> {
+  factory $EventsCopyWith(Events value, $Res Function(Events) then) =
+      _$EventsCopyWithImpl<$Res, Events>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class _$EventsCopyWithImpl<$Res, $Val extends Events>
+    implements $EventsCopyWith<$Res> {
+  _$EventsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$EventsImplCopyWith<$Res> implements $EventsCopyWith<$Res> {
+  factory _$$EventsImplCopyWith(
+          _$EventsImpl value, $Res Function(_$EventsImpl) then) =
+      __$$EventsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class __$$EventsImplCopyWithImpl<$Res>
+    extends _$EventsCopyWithImpl<$Res, _$EventsImpl>
+    implements _$$EventsImplCopyWith<$Res> {
+  __$$EventsImplCopyWithImpl(
+      _$EventsImpl _value, $Res Function(_$EventsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_$EventsImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$EventsImpl implements _Events {
+  const _$EventsImpl(
+      {@JsonKey(name: "id") required this.id,
+      @JsonKey(name: "user_id") required this.userId,
+      @JsonKey(name: "title") required this.title,
+      @JsonKey(name: "price") required this.price,
+      required this.image});
+
+  factory _$EventsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EventsImplFromJson(json);
+
+  @override
+  @JsonKey(name: "id")
+  final String id;
+  @override
+  @JsonKey(name: "user_id")
+  final String userId;
+// @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @override
+  @JsonKey(name: "title")
+  final String title;
+// @JsonKey(name: "description") required String description,
+  @override
+  @JsonKey(name: "price")
+  final String price;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'Events(id: $id, userId: $userId, title: $title, price: $price, image: $image)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EventsImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, userId, title, price, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EventsImplCopyWith<_$EventsImpl> get copyWith =>
+      __$$EventsImplCopyWithImpl<_$EventsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$EventsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Events implements Events {
+  const factory _Events(
+      {@JsonKey(name: "id") required final String id,
+      @JsonKey(name: "user_id") required final String userId,
+      @JsonKey(name: "title") required final String title,
+      @JsonKey(name: "price") required final String price,
+      required final String image}) = _$EventsImpl;
+
+  factory _Events.fromJson(Map<String, dynamic> json) = _$EventsImpl.fromJson;
+
+  @override
+  @JsonKey(name: "id")
+  String get id;
+  @override
+  @JsonKey(name: "user_id")
+  String get userId;
+  @override // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title;
+  @override // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$$EventsImplCopyWith<_$EventsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+B2B _$B2BFromJson(Map<String, dynamic> json) {
+  return _B2B.fromJson(json);
+}
+
+/// @nodoc
+mixin _$B2B {
+  @JsonKey(name: "id")
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_id")
+  String get userId =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title =>
+      throw _privateConstructorUsedError; // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $B2BCopyWith<B2B> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $B2BCopyWith<$Res> {
+  factory $B2BCopyWith(B2B value, $Res Function(B2B) then) =
+      _$B2BCopyWithImpl<$Res, B2B>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class _$B2BCopyWithImpl<$Res, $Val extends B2B> implements $B2BCopyWith<$Res> {
+  _$B2BCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$B2BImplCopyWith<$Res> implements $B2BCopyWith<$Res> {
+  factory _$$B2BImplCopyWith(_$B2BImpl value, $Res Function(_$B2BImpl) then) =
+      __$$B2BImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "id") String id,
+      @JsonKey(name: "user_id") String userId,
+      @JsonKey(name: "title") String title,
+      @JsonKey(name: "price") String price,
+      String image});
+}
+
+/// @nodoc
+class __$$B2BImplCopyWithImpl<$Res> extends _$B2BCopyWithImpl<$Res, _$B2BImpl>
+    implements _$$B2BImplCopyWith<$Res> {
+  __$$B2BImplCopyWithImpl(_$B2BImpl _value, $Res Function(_$B2BImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? title = null,
+    Object? price = null,
+    Object? image = null,
+  }) {
+    return _then(_$B2BImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$B2BImpl implements _B2B {
+  const _$B2BImpl(
+      {@JsonKey(name: "id") required this.id,
+      @JsonKey(name: "user_id") required this.userId,
+      @JsonKey(name: "title") required this.title,
+      @JsonKey(name: "price") required this.price,
+      required this.image});
+
+  factory _$B2BImpl.fromJson(Map<String, dynamic> json) =>
+      _$$B2BImplFromJson(json);
+
+  @override
+  @JsonKey(name: "id")
+  final String id;
+  @override
+  @JsonKey(name: "user_id")
+  final String userId;
+// @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @override
+  @JsonKey(name: "title")
+  final String title;
+// @JsonKey(name: "description") required String description,
+  @override
+  @JsonKey(name: "price")
+  final String price;
+  @override
+  final String image;
+
+  @override
+  String toString() {
+    return 'B2B(id: $id, userId: $userId, title: $title, price: $price, image: $image)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$B2BImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.image, image) || other.image == image));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, userId, title, price, image);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$B2BImplCopyWith<_$B2BImpl> get copyWith =>
+      __$$B2BImplCopyWithImpl<_$B2BImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$B2BImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _B2B implements B2B {
+  const factory _B2B(
+      {@JsonKey(name: "id") required final String id,
+      @JsonKey(name: "user_id") required final String userId,
+      @JsonKey(name: "title") required final String title,
+      @JsonKey(name: "price") required final String price,
+      required final String image}) = _$B2BImpl;
+
+  factory _B2B.fromJson(Map<String, dynamic> json) = _$B2BImpl.fromJson;
+
+  @override
+  @JsonKey(name: "id")
+  String get id;
+  @override
+  @JsonKey(name: "user_id")
+  String get userId;
+  @override // @JsonKey(name: "category_id") required String categoryId,
+// @JsonKey(name: "post_type_id") required String postTypeId,
+  @JsonKey(name: "title")
+  String get title;
+  @override // @JsonKey(name: "description") required String description,
+  @JsonKey(name: "price")
+  String get price;
+  @override
+  String get image;
+  @override
+  @JsonKey(ignore: true)
+  _$$B2BImplCopyWith<_$B2BImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

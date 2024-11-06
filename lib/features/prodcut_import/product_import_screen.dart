@@ -82,7 +82,7 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
                       SizedBox(
                         height: 5.h,
                       ),
-                       ChooseFileWidget(
+                      ChooseFileWidget(
                         textColor: Colors.red,
                         onImageSelected: (selectedImage) {
                           setState(() {

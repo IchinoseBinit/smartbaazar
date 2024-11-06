@@ -22,14 +22,14 @@ Future<bool> postSponsorBanner(PostSponsorBannerRef ref, File imageFile) async {
       parameter: formData,
     );
     if (response.statusCode == 200 && response.data['data'] == 'success') {
-      print('Dispute posted successfully!');
+      print('Sponser Banner posted successfully!');
       return true;
     } else {
       print('Error: ${response.data}');
       return false;
     }
   } catch (e) {
-    print('Error posting dispute: $e');
+    print('Error posting Sponser Banner: $e');
     return false;
   }
 }

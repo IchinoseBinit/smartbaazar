@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
@@ -61,6 +62,105 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
     setState(() {
       selectedDeliveryOption = value;
     });
+  }
+
+  Future<void> submitForm(
+      BuildContext context, CheckoutDetailsModel checkoutDetails) async {
+    try {
+      final userName = checkoutDetails.data!.user?.first.name ?? 'N/A';
+      final email = checkoutDetails.data!.user?.first.email ?? 'N/A';
+      final address = checkoutDetails.data!.user?.first.phone ?? 'N/A';
+      final total = checkoutDetails.data!.cartTotal?.toString() ?? '0';
+      final postIds =
+          checkoutDetails.data!.items?.map((e) => e.postId).toList() ?? [];
+      final prices =
+          checkoutDetails.data!.items?.map((e) => e.price).toList() ?? [];
+      final quantities =
+          checkoutDetails.data!.items?.map((e) => e.qty).toList() ?? [];
+      final postName =
+          checkoutDetails.data!.items?.map((e) => e.name!).toList() ?? [];
+
+      ref
+          .read(postCheckoutFormProvider(
+        userName,
+        address,
+        email,
+        selectedPaymentMethod,
+        selectedDeliveryOption,
+        "Standard",
+        selectedCity,
+        selectedStreet,
+        selectedCoupon,
+        postIds,
+        widget.selectedProductIds,
+        postName,
+        quantities,
+        prices,
+        total,
+      ).future)
+          .then((success) {
+        if (success) {
+          const message =
+              "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
+          showDialog(
+            context: context,
+            barrierDismissible: false, // Prevents dismissal on outside tap
+            builder: (_) => AlertDialog(
+              title: Center(
+                child: Text(
+                  'Successfull!',
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF362677)),
+                ),
+              ),
+              content: Text(
+                message,
+                style: TextStyle(fontSize: 12.sp),
+              ),
+              actions: [
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      // Navigate to the BottomNavigationScreen when the user clicks "OK"
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const BottomNavigationScreen()),
+                        (route) => false, // Remove all previous routes
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('OK'),
+                        SizedBox(width: 8.w),
+                        const Icon(
+                          Icons.check_circle,
+                          color: Color(0xFF362677),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Failed to place order. Please try again.')),
+          );
+        }
+      });
+    } catch (e) {
+      // Handle any error that occurred during submission
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to submit the order. Please try again.')),
+      );
+    }
   }
 
   @override
@@ -234,7 +334,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       onChanged: (selectedCoupon) {
                         // Handle coupon selection
                         setState(() {
-                          this.selectedCoupon = selectedCoupon ?? null;
+                          this.selectedCoupon = selectedCoupon;
                         });
                       },
                     )
@@ -365,90 +465,13 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     fgColor: Colors.white,
                     title: 'Place Order',
                     onPressed: () async {
-                      final userName =
-                          checkoutDetails.data!.user?.first.name ?? 'N/A';
-                      final email = checkoutDetails.data!.user?.first.email ??
-                          'N/A'; // Assuming you have email available
-                      final address = checkoutDetails.data!.user?.first.phone ??
-                          'N/A'; // Replace with actual address input
-                      final total =
-                          checkoutDetails.data!.cartTotal?.toString() ?? '0';
-                      final postIds = checkoutDetails.data!.items
-                              ?.map((e) => e.postId)
-                              .toList() ??
-                          [];
-                      final prices = checkoutDetails.data!.items
-                              ?.map((e) => e.price)
-                              .toList() ??
-                          [];
-                      final quantities = checkoutDetails.data!.items
-                              ?.map((e) => e.qty)
-                              .toList() ??
-                          [];
-                      final postName = checkoutDetails.data!.items
-                              ?.map((e) => e.name!)
-                              .toList() ??
-                          [];
+                      await submitForm(context, checkoutDetails);
+
                       // final image = checkoutDetails.data!.items
                       //         ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
                       //         .toList() ??
                       //     [];
-
-                      print('Username: $userName');
-                      print(
-                          'Email:???????????????????????????????????????????????????? $email');
-                      print('Address: $address');
-                      print('Total: $total');
-                      print('Post IDs: $postIds');
-                      print('Prices: $prices');
-                      print('Quantities: $quantities');
-                      print('Post Names: $postName');
-                      print('Selected Payment Method: $selectedPaymentMethod');
-                      print(
-                          'Selected Delivery Option: $selectedDeliveryOption');
-                      print('Selected City: $selectedCity');
-                      print('Selected Street: $selectedStreet');
-                      print('Selected Coupon: $selectedCoupon');
-                      print(
-                          'Selected Product IDs: ${widget.selectedProductIds}');
-                      // print('image $image');
-                      final success = ref.read(postCheckoutFormProvider(
-                        userName,
-                        address,
-                        email,
-                        selectedPaymentMethod,
-                        selectedDeliveryOption,
-                        "Standard",
-                        selectedCity,
-                        selectedStreet,
-                        selectedCoupon,
-                        postIds, widget.selectedProductIds,
-                        postName,
-                        quantities,
-                        prices, // Add prices here
-                        total,
-                        // image,
-                      ));
-                      if (success == true) {
-                        // Handle successful order placement (e.g., navigate to a success page)
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const ProceesToPayScreen()),
-                        );
-                      } else {
-                        // Handle failure (e.g., show a message)
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Failed to place order. Please try again.')),
-                        );
-                      }
                     },
-                    // onPressed: () => Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) => const ProceesToPayScreen())),
                   ),
                   SizedBox(
                     height: 20.h,

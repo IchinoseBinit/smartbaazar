@@ -113,7 +113,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                             final savedSearch = savedSearchList[index];
                             return GestureDetector(
                               onTap: () async {
-                                currentQuery = savedSearch.query!;
+                                currentQuery = savedSearch.keyword!;
                                 print('Current Query: $currentQuery');
                                 final searchAsync = ref.read(
                                     searchFromSavedSearchProvider(
@@ -217,7 +217,8 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                       ],
                     );
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (error, stackTrace) => Padding(
                     padding: EdgeInsets.only(top: 20.h),
                     child: Text(
