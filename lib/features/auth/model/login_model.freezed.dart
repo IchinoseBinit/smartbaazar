@@ -23,12 +23,8 @@ mixin _$LoginData {
   LoginDataResult get result => throw _privateConstructorUsedError;
   LoginDataExtra get extra => throw _privateConstructorUsedError;
 
-  /// Serializes this LoginData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $LoginDataCopyWith<LoginData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$LoginDataCopyWithImpl<$Res, $Val extends LoginData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,8 +68,6 @@ class _$LoginDataCopyWithImpl<$Res, $Val extends LoginData>
     ) as $Val);
   }
 
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LoginDataResultCopyWith<$Res> get result {
@@ -84,8 +76,6 @@ class _$LoginDataCopyWithImpl<$Res, $Val extends LoginData>
     });
   }
 
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LoginDataExtraCopyWith<$Res> get extra {
@@ -119,8 +109,6 @@ class __$$LoginDataImplCopyWithImpl<$Res>
       _$LoginDataImpl _value, $Res Function(_$LoginDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -167,13 +155,11 @@ class _$LoginDataImpl implements _LoginData {
             (identical(other.extra, extra) || other.extra == extra));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, result, extra);
 
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginDataImplCopyWith<_$LoginDataImpl> get copyWith =>
@@ -199,11 +185,8 @@ abstract class _LoginData implements LoginData {
   LoginDataResult get result;
   @override
   LoginDataExtra get extra;
-
-  /// Create a copy of LoginData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoginDataImplCopyWith<_$LoginDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -224,12 +207,8 @@ mixin _$LoginDataResult {
   String? get email => throw _privateConstructorUsedError;
   String? get dob => throw _privateConstructorUsedError;
 
-  /// Serializes this LoginDataResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of LoginDataResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $LoginDataResultCopyWith<LoginDataResult> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -262,8 +241,6 @@ class _$LoginDataResultCopyWithImpl<$Res, $Val extends LoginDataResult>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of LoginDataResult
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -346,8 +323,6 @@ class __$$LoginDataResultImplCopyWithImpl<$Res>
       _$LoginDataResultImpl _value, $Res Function(_$LoginDataResultImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of LoginDataResult
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -462,14 +437,12 @@ class _$LoginDataResultImpl implements _LoginDataResult {
             (identical(other.dob, dob) || other.dob == dob));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, username, photo_url,
       gender_id, photo, phone, email, dob);
 
-  /// Create a copy of LoginDataResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginDataResultImplCopyWith<_$LoginDataResultImpl> get copyWith =>
@@ -517,11 +490,8 @@ abstract class _LoginDataResult implements LoginDataResult {
   String? get email;
   @override
   String? get dob;
-
-  /// Create a copy of LoginDataResult
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoginDataResultImplCopyWith<_$LoginDataResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -535,12 +505,8 @@ mixin _$LoginDataExtra {
   String get authToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
 
-  /// Serializes this LoginDataExtra to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of LoginDataExtra
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $LoginDataExtraCopyWith<LoginDataExtra> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -564,8 +530,6 @@ class _$LoginDataExtraCopyWithImpl<$Res, $Val extends LoginDataExtra>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of LoginDataExtra
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -604,8 +568,6 @@ class __$$LoginDataExtraImplCopyWithImpl<$Res>
       _$LoginDataExtraImpl _value, $Res Function(_$LoginDataExtraImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of LoginDataExtra
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -655,13 +617,11 @@ class _$LoginDataExtraImpl implements _LoginDataExtra {
                 other.refreshToken == refreshToken));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, authToken, refreshToken);
 
-  /// Create a copy of LoginDataExtra
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginDataExtraImplCopyWith<_$LoginDataExtraImpl> get copyWith =>
@@ -688,11 +648,8 @@ abstract class _LoginDataExtra implements LoginDataExtra {
   String get authToken;
   @override
   String get refreshToken;
-
-  /// Create a copy of LoginDataExtra
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoginDataExtraImplCopyWith<_$LoginDataExtraImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

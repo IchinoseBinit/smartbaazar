@@ -103,40 +103,47 @@ class CustomDropdownButton<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomDropdownButtonState<T> createState() => _CustomDropdownButtonState<T>();
+  _CustomDropdownButtonState<T> createState() =>
+      _CustomDropdownButtonState<T>();
 }
 
 class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(
-        maxWidth: double.infinity,
-      ),
-      child: Expanded(
-        child: DropdownButtonFormField<T>(
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.0.w),
-            border: InputBorder.none, // No underline/border
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      // constraints: const BoxConstraints(
+      //   maxWidth: double.infinity,
+      // ),
+      child: DropdownButtonFormField<T>(
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.0.w),
+          border: InputBorder.none, // No underline/border
+        ),
+        value: widget.dropdownValue != null && widget.items.isNotEmpty
+            ? widget.dropdownValue
+            : null,
+        hint: Text(
+          'Please select an option',
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: widget.color ?? Colors.black,
           ),
-          value: widget.dropdownValue,
-          hint: Text(
-            'Please select an option',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-              color: widget.color ?? Colors.black,
-            ),
-          ),
-          icon: Container(
-            padding: EdgeInsets.only(left: 8.0.w),
-            child: SvgPicture.asset(dropDownIcon),
-          ),
-          isExpanded: true, // Ensures the dropdown takes full width
-          items: widget.items.isNotEmpty
-              ? widget.items.map<DropdownMenuItem<T>>((T item) {
-                  return DropdownMenuItem<T>(
-                    value: item,
+        ),
+        icon: Padding(
+          padding: EdgeInsets.only(left: 8.0.w),
+          child: SvgPicture.asset(dropDownIcon),
+        ),
+        isExpanded: true, // Ensures the dropdown takes full width
+        items: widget.items.isNotEmpty
+            ? widget.items.map<DropdownMenuItem<T>>((T item) {
+                return DropdownMenuItem<T>(
+                  value: item,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.8,
+                    ),
                     child: Text(
                       widget.getItemLabel(item),
                       style: TextStyle(
@@ -147,12 +154,12 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
-                  );
-                }).toList()
-              : [],
-        
-          onChanged: widget.items.isNotEmpty ? widget.onChanged : null,
-        ),
+                  ),
+                );
+              }).toList()
+            : [],
+
+        onChanged: widget.items.isNotEmpty ? widget.onChanged : null,
       ),
     );
   }

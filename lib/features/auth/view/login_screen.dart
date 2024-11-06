@@ -95,6 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         SizedBox(height: 10.h),
                         CustomTextFieldWidget(
                           controller: emailController,
+                          textInputType: TextInputAction.next,
                           icon: Icons.mail,
                           hintText: 'Email',
                           validator: (value) {
@@ -108,6 +109,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         CustomTextFieldWidget(
                           controller: passwordController,
                           icon: Icons.lock,
+                          textInputType: TextInputAction.done,
                           hintText: 'Password',
                           obscureText: hidePassword,
                           validator: (value) {
@@ -202,7 +204,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       );
     }
-    return const SizedBox.shrink(); // Return an empty widget if no error message
+    return const SizedBox
+        .shrink(); // Return an empty widget if no error message
   }
 
   Widget _buildForgetPasswordLink() {

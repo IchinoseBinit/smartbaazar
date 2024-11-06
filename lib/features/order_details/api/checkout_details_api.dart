@@ -10,7 +10,7 @@ part 'checkout_details_api.g.dart';
 @riverpod
 Future<CheckoutDetailsModel> postSelectedItemOfCart(
   PostSelectedItemOfCartRef ref,
-  List<String> vendorId,
+  List<String?> vendorId,
   List<String> selectedProduct,
 ) async {
   final SmartClinet client = SmartClinet();
@@ -28,7 +28,7 @@ Future<CheckoutDetailsModel> postSelectedItemOfCart(
     if (response.statusCode == 200 &&
         response.data['msg'] != null &&
         response.data['msg'].contains('success')) {
-      print('Membership request posted successfully!');
+      print('CheckoutDetails fetched successfully!');
        final Map<String, dynamic> jsonResponse = response.data;
       return CheckoutDetailsModel.fromJson(jsonResponse);
     } else {
@@ -36,8 +36,8 @@ Future<CheckoutDetailsModel> postSelectedItemOfCart(
        throw Exception('Failed to load cart details');
     }
   } catch (e) {
-    print('Error posting brand membership request: $e');
-     print('Error loading cart details: $e');
-    throw Exception('Failed to load cart details: $e');
+    print('Error fetching request of checkout details: $e');
+     print('Error loading checkout details: $e');
+    throw Exception('Failed to load checkout details: $e');
   }
 }

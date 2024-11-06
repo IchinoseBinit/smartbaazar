@@ -23,12 +23,8 @@ mixin _$HomeAdvertisement {
   String get id => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
 
-  /// Serializes this HomeAdvertisement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of HomeAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HomeAdvertisementCopyWith<HomeAdvertisement> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,8 +48,6 @@ class _$HomeAdvertisementCopyWithImpl<$Res, $Val extends HomeAdvertisement>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomeAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,8 +86,6 @@ class __$$HomeAdvertisementImplCopyWithImpl<$Res>
       $Res Function(_$HomeAdvertisementImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -140,13 +132,11 @@ class _$HomeAdvertisementImpl implements _HomeAdvertisement {
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, image);
 
-  /// Create a copy of HomeAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeAdvertisementImplCopyWith<_$HomeAdvertisementImpl> get copyWith =>
@@ -173,11 +163,8 @@ abstract class _HomeAdvertisement implements HomeAdvertisement {
   String get id;
   @override
   String get image;
-
-  /// Create a copy of HomeAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HomeAdvertisementImplCopyWith<_$HomeAdvertisementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

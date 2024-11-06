@@ -32,8 +32,12 @@ class ApiConstants {
   static String incrementQuantity = '$baseUrl/users/addToCart';
   static String decrementQuantity = '$baseUrl/users/cart_minus';
   static String getCheckoutDetailsUrl = '$baseUrl/users/checkout';
-  // static String checkoutDetails
+  static String removeCartItemUrl = '$baseUrl/users/cart_remove';
+  //  checkoutDetails
 
+  static String getShippingCitiesUrl = '$baseUrl/users/get_shipping_cities';
+  static String getStreetAddressUrl = '$baseUrl/users/autocomplete-location';
+  static String finishCheckoutFormUrl = '$baseUrl/users/checkout_finish';
   //favourite list
   static String favouriteListUrl = '$baseUrl/savedPosts';
   static String saveFavouriteListingUrl = '$baseUrl/savedPosts';
@@ -49,6 +53,12 @@ class ApiConstants {
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
   static String getVendorProfileDataByID = '$baseUrl/users/vendor';
+  static String postVendorProfileBgAndDescUrl = '$baseUrl/users/desc_store';
+  static String getUserDataUrl = '$baseUrl/users/get_user_data';
+  static String postUserBankDetailsUrl = '$baseUrl/users/bankdetails';
+  static String updateUserDetailsUrl = '$baseUrl/users';
+  static String verifyUserAccount = '$baseUrl/users/verify_vendor_account';
+
   static String followunfollowvendorurl = '$baseUrl/users/follow';
   static String checkuserverifyurl = '$baseUrl/userverify';
   //subscribe and win everyday
@@ -94,7 +104,15 @@ class ApiConstants {
   static String submitDisputeUrl = '$baseUrl/storedispute';
   //myListing
   static String getMyListingUrl = '$baseUrl/posts/mylistings';
+  static String postOfflineListing = '$baseUrl/posts';
   static String getMYSubscribeAndWinUrl = '$baseUrl/mysubscribeandwin';
   //become a brand member
   static String brandMemberStore = '$baseUrl/users/brandbazar_store';
+  //saved searches
+  static String savedSearchesUrl = '$baseUrl/savedSearches';
+  static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
+  //product import
+    static String productimportapi = '$baseUrl/posts/product_import';
+
+
 }

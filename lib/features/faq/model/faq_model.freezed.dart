@@ -24,12 +24,8 @@ mixin _$FAQModel {
   String? get message => throw _privateConstructorUsedError;
   FAQResult get result => throw _privateConstructorUsedError;
 
-  /// Serializes this FAQModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of FAQModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FAQModelCopyWith<FAQModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$FAQModelCopyWithImpl<$Res, $Val extends FAQModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FAQModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -79,8 +73,6 @@ class _$FAQModelCopyWithImpl<$Res, $Val extends FAQModel>
     ) as $Val);
   }
 
-  /// Create a copy of FAQModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $FAQResultCopyWith<$Res> get result {
@@ -112,8 +104,6 @@ class __$$FAQModelImplCopyWithImpl<$Res>
       _$FAQModelImpl _value, $Res Function(_$FAQModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FAQModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -169,13 +159,11 @@ class _$FAQModelImpl implements _FAQModel {
             (identical(other.result, result) || other.result == result));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, success, message, result);
 
-  /// Create a copy of FAQModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FAQModelImplCopyWith<_$FAQModelImpl> get copyWith =>
@@ -204,11 +192,8 @@ abstract class _FAQModel implements FAQModel {
   String? get message;
   @override
   FAQResult get result;
-
-  /// Create a copy of FAQModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FAQModelImplCopyWith<_$FAQModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -228,12 +213,8 @@ mixin _$FAQResult {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
 
-  /// Serializes this FAQResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of FAQResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FAQResultCopyWith<FAQResult> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -262,8 +243,6 @@ class _$FAQResultCopyWithImpl<$Res, $Val extends FAQResult>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FAQResult
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -328,8 +307,6 @@ class __$$FAQResultImplCopyWithImpl<$Res>
       _$FAQResultImpl _value, $Res Function(_$FAQResultImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FAQResult
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -417,14 +394,12 @@ class _$FAQResultImpl implements _FAQResult {
             (identical(other.content, content) || other.content == content));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, parentId, type, name, title, content);
 
-  /// Create a copy of FAQResult
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FAQResultImplCopyWith<_$FAQResultImpl> get copyWith =>
@@ -457,17 +432,14 @@ abstract class _FAQResult implements FAQResult {
   @override
   String get type;
   @override
-  String get name; // required String slug,
+  String get name;
+  @override // required String slug,
 // required String? picture,
-  @override
   String get title;
   @override
   String get content;
-
-  /// Create a copy of FAQResult
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FAQResultImplCopyWith<_$FAQResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

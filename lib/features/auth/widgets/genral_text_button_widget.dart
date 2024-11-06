@@ -105,15 +105,17 @@ class GeneralTextButton extends StatelessWidget {
                 width: 5,
               ),
             Expanded(
-              child: Text(
-                title,
-                style: isSmallText
-                    ? Theme.of(context).textTheme.titleSmall!.copyWith(
-                        color: fgColor ?? const Color(0xff362677),
-                        fontWeight: FontWeight.w700,fontSize: 12.sp)
-                    : Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: fgColor ?? const Color(0xff362677),
-                        fontWeight: FontWeight.w700),
+              child: Center(
+                child: Text(
+                  title,
+                  style: isSmallText
+                      ? Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: fgColor ?? const Color(0xff362677),
+                          fontWeight: FontWeight.w700,fontSize: 12.sp)
+                      : Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: fgColor ?? const Color(0xff362677),
+                          fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           ],

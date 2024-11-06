@@ -11,6 +11,8 @@ class SmartClinet {
   static String token = '';
   static String refresh = '';
   static String userId = '';
+  static String userName = '';
+  static String userEmail = '';
   static final SmartClinet _instance = SmartClinet._internal();
 
   factory SmartClinet() {
@@ -47,12 +49,15 @@ class SmartClinet {
               requestOptions.headers['Authorization'] = 'Bearer $token';
               try {
                 final response = await _retry(requestOptions);
-                return handler.resolve(response); // Return successful retry response
+                return handler
+                    .resolve(response); // Return successful retry response
               } on DioException catch (retryError) {
-                return handler.next(retryError); // Handle retry failure properly
+                return handler
+                    .next(retryError); // Handle retry failure properly
               }
             }
-            return handler.next(error); // If token refresh fails, return original error
+            return handler
+                .next(error); // If token refresh fails, return original error
           }
           return handler.next(error); // Forward any other error
         },
@@ -117,82 +122,114 @@ class SmartClinet {
       };
 
       // Merge headers with token if needed
-      Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);
+      Map<String, String> mergedHeaders =
+          _mergeHeaders(defaultHeaders, headers);
 
       switch (requestType) {
         case RequestType.get:
-          return await _client.get(
-            url,
-            options: Options(headers: mergedHeaders),
-            queryParameters: queryParameters,
-          ).timeout(timeOutDuration);
+          return await _client
+              .get(
+                url,
+                options: Options(headers: mergedHeaders),
+                queryParameters: queryParameters,
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.getWithToken:
-          return await _client.get(
-            url,
-            options: Options(headers: mergedHeaders),
-            queryParameters: queryParameters,
-          ).timeout(timeOutDuration);
+          return await _client
+              .get(
+                url,
+                options: Options(headers: mergedHeaders),
+                queryParameters: queryParameters,
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.post:
-          return await _client.post(
-            url.trim(),
-            queryParameters: queryParameters,
-            data: jsonEncode(parameter),
-            options: Options(headers: mergedHeaders),
-          ).timeout(timeOutDuration);
+          return await _client
+              .post(
+                url.trim(),
+                queryParameters: queryParameters,
+                data: jsonEncode(parameter),
+                options: Options(headers: mergedHeaders),
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.postWithHeaders:
-          return await _client.post(
-            url.trim(),
-            data: jsonEncode(parameter),
-            options: Options(headers: {...defaultHeaders, ...headers}),
-          ).timeout(timeOutDuration);
+          return await _client
+              .post(
+                url.trim(),
+                data: jsonEncode(parameter),
+                options: Options(headers: {...defaultHeaders, ...headers}),
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.postWithToken:
-          return await _client.post(
-            url,
-            data: jsonEncode(parameter),
-            options: Options(headers: mergedHeaders),
-          ).timeout(timeOutDuration);
+          return await _client
+              .post(
+                url,
+                data: jsonEncode(parameter),
+                options: Options(headers: mergedHeaders),
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.postWithTokenFormData:
-          return await _client.post(
-            url,
-            data: parameter,
-            options: Options(
-              headers: {
-                ...mergedHeaders,
-                'Content-Type': 'multipart/form-data',
-              },
-            ),
-          ).timeout(timeOutDuration);
+          return await _client
+              .post(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.deleteWithToken:
-          return await _client.delete(
-            url,
-            options: Options(headers: mergedHeaders),
-            data: parameter,
-          ).timeout(timeOutDuration);
+          return await _client
+              .delete(
+                url,
+                options: Options(headers: mergedHeaders),
+                data: parameter,
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.putWithToken:
-          return await _client.put(
-            url,
-            options: Options(headers: mergedHeaders),
-            data: parameter,
-          ).timeout(timeOutDuration);
+          return await _client
+              .put(
+                url,
+                options: Options(headers: mergedHeaders),
+                data: parameter,
+              )
+              .timeout(timeOutDuration);
 
         case RequestType.putWithTokenFormData:
-          return await _client.post(
-            url,
-            data: parameter,
-            options: Options(
-              headers: {
-                ...mergedHeaders,
-                'Content-Type': 'multipart/form-data',
-              },
-            ),
-          ).timeout(timeOutDuration);
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
+        case RequestType.putWithTokenEncoded:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
 
         default:
           throw Exception("Unsupported request type");
@@ -209,7 +246,8 @@ class SmartClinet {
   }
 
   // Method to merge headers
-  Map<String, String> _mergeHeaders(Map<String, String> defaultHeaders, dynamic additionalHeaders) {
+  Map<String, String> _mergeHeaders(
+      Map<String, String> defaultHeaders, dynamic additionalHeaders) {
     if (additionalHeaders != null) {
       return {...defaultHeaders, ...additionalHeaders};
     }

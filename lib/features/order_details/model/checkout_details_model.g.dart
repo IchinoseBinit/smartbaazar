@@ -9,37 +9,55 @@ part of 'checkout_details_model.dart';
 _$CheckoutDetailsModelImpl _$$CheckoutDetailsModelImplFromJson(
         Map<String, dynamic> json) =>
     _$CheckoutDetailsModelImpl(
-      vendor: (json['vendor'] as List<dynamic>?)
-          ?.map((e) => Vendor.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      user: (json['user'] as List<dynamic>?)
-          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      coupons: (json['coupons'] as List<dynamic>?)
-          ?.map((e) => Coupon.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      cartTotal: (json['cart_total'] as num?)?.toInt(),
-      items: (json['items'] as List<dynamic>?)
-          ?.map((e) => Item.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: json['data'] == null
+          ? null
+          : CheckoutData.fromJson(json['data'] as Map<String, dynamic>),
       message: json['msg'] as String?,
     );
 
 Map<String, dynamic> _$$CheckoutDetailsModelImplToJson(
         _$CheckoutDetailsModelImpl instance) =>
     <String, dynamic>{
+      'data': instance.data,
+      'msg': instance.message,
+    };
+
+_$CheckoutDataImpl _$$CheckoutDataImplFromJson(Map<String, dynamic> json) =>
+    _$CheckoutDataImpl(
+      vendor: (json['vendor'] as List<dynamic>?)
+          ?.map((e) => Vendor.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      user: (json['user'] as List<dynamic>?)
+          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      coupons: json['coupons'] as List<dynamic>?,
+      cartTotal: (json['cart_total'] as num?)?.toInt(),
+      items: (json['items'] as List<dynamic>?)
+          ?.map((e) => Item.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$CheckoutDataImplToJson(_$CheckoutDataImpl instance) =>
+    <String, dynamic>{
       'vendor': instance.vendor,
       'user': instance.user,
       'coupons': instance.coupons,
       'cart_total': instance.cartTotal,
       'items': instance.items,
-      'msg': instance.message,
     };
 
-_$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl();
+_$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
+      id: json['id'] as String?,
+      name: json['name'] as String?,
+      paymentQr: json['payment_qr'] as String?,
+    );
 
 Map<String, dynamic> _$$VendorImplToJson(_$VendorImpl instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'payment_qr': instance.paymentQr,
+    };
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       id: json['id'] as String?,
@@ -56,19 +74,14 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'phone': instance.phone,
     };
 
-_$CouponImpl _$$CouponImplFromJson(Map<String, dynamic> json) => _$CouponImpl();
-
-Map<String, dynamic> _$$CouponImplToJson(_$CouponImpl instance) =>
-    <String, dynamic>{};
-
 _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       id: json['id'] as String?,
       userId: json['user_id'] as String?,
       vendorId: json['vendor_id'] as String?,
       postId: json['post_id'] as String?,
       name: json['name'] as String?,
-      qty: json['qty'] as String?,
-      price: json['price'] as String?,
+      qty: json['qty'] as String,
+      price: json['price'] as String,
       image: json['image'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,

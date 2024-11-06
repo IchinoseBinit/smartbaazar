@@ -19,13 +19,16 @@ import 'package:smartbazar/features/online_transaction_record/online_transacatio
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
+import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendorProfileScreen extends StatefulWidget {
@@ -40,22 +43,18 @@ class VendorProfileScreen extends StatefulWidget {
 }
 
 class _VendorProfileScreenState extends State<VendorProfileScreen> {
-  String? vname;
-
-  Future<void> getname() async {
-    SharedPreferences srf = await SharedPreferences.getInstance();
-    String? name = srf.getString("name");
-
-    setState(() {
-      vname = name;
-    });
-  }
-
+  String? vendorName;
   @override
   void initState() {
     super.initState();
-    getname();
-   
+    _loadUserName(); // Load user name from SharedPreferences
+  }
+
+  Future<void> _loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      vendorName = prefs.getString('userName');
+    });
   }
 
   final List<Map<String, dynamic>> profileList = [
@@ -76,13 +75,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.saved_search,
       "title": 'Saved',
       "subtitle": 'Searches',
-      "screen": const PendingApprovalScreen(),
+      "screen": const SavedSearchScreen(),
     },
     {
       "icon": Icons.notifications,
       "title": 'Buyer',
       "subtitle": 'Account',
-      "screen": const OfflineListingScreen(),
+      "screen": const BuyerDetailsScreen(),
     },
     {
       "icon": Icons.volume_down,
@@ -144,7 +143,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.mail,
       "title": 'Seller',
       "subtitle": 'Account',
-      "screen": const MyOrderScreen(),
+      "screen": const VendroDetailsScreen(),
     },
     {
       "icon": Icons.mail,
@@ -221,37 +220,37 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           title: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              InkWell(
-                onTap: () {},
-                child: Row(
-                  children: [
-                    Container(
-                      height: 40.h,
-                      width: 40.h,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffF5BF05),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 1.w,
-                          )),
-                      child: Image.asset(
-                        ImageConstant.personImage,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.h,
-                    ),
-                    Text(
-                      vname ?? "loading..",
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (_) => const VendroDetailsScreen()));
+                },
+                child: Container(
+                  height: 40.h,
+                  width: 40.h,
+                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffF5BF05),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 1.w,
+                      )),
+                  child: Image.asset(
+                    ImageConstant.personImage,
+                  ),
                 ),
+              ),
+              SizedBox(
+                width: 10.h,
+              ),
+              Text(
+                '$vendorName',
+                style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black),
               ),
               const Spacer(),
               Container(

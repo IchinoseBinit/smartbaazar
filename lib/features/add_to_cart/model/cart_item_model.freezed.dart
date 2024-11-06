@@ -32,12 +32,8 @@ mixin _$CartItem {
   String get price => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
 
-  /// Serializes this CartItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -67,8 +63,6 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -139,8 +133,6 @@ class __$$CartItemImplCopyWithImpl<$Res>
       _$CartItemImpl _value, $Res Function(_$CartItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -239,14 +231,12 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, vendorId, postId, name, qty, price, image);
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
@@ -274,11 +264,11 @@ abstract class _CartItem implements CartItem {
       _$CartItemImpl.fromJson;
 
   @override
-  String get id; // required String userId,
-  @override
+  String get id;
+  @override // required String userId,
   @JsonKey(name: 'vendor_id')
-  String? get vendorId; //  required String? vendorId,
-  @override
+  String? get vendorId;
+  @override //  required String? vendorId,
   @JsonKey(name: 'post_id')
   String? get postId;
   @override
@@ -289,11 +279,8 @@ abstract class _CartItem implements CartItem {
   String get price;
   @override
   String get image;
-
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -308,12 +295,8 @@ mixin _$Vendor {
   String get name => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
 
-  /// Serializes this Vendor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorCopyWith<Vendor> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -335,8 +318,6 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -379,8 +360,6 @@ class __$$VendorImplCopyWithImpl<$Res>
       _$VendorImpl _value, $Res Function(_$VendorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -436,13 +415,11 @@ class _$VendorImpl implements _Vendor {
                 other.username == username));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, username);
 
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
@@ -470,11 +447,8 @@ abstract class _Vendor implements Vendor {
   String get name;
   @override
   String? get username;
-
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

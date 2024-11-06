@@ -218,9 +218,14 @@ class ProductDetailScreen extends ConsumerWidget {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const OrderDetailsScreen(
-                                                      selectedProductIds: [],
-                                                      selectedVendorIds: [])));
+                                                  OrderDetailsScreen(
+                                                    selectedProductIds: [
+                                                      data.id.toString()
+                                                    ],
+                                                    selectedVendorIds: [
+                                                      data.user!.id.toString()
+                                                    ],
+                                                  )));
                                     },
                                     child: Container(
                                       alignment: Alignment.center,

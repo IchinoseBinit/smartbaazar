@@ -22,12 +22,8 @@ PendingApprovalModel _$PendingApprovalModelFromJson(Map<String, dynamic> json) {
 mixin _$PendingApprovalModel {
   Products get products => throw _privateConstructorUsedError;
 
-  /// Serializes this PendingApprovalModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of PendingApprovalModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PendingApprovalModelCopyWith<PendingApprovalModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$PendingApprovalModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PendingApprovalModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -69,8 +63,6 @@ class _$PendingApprovalModelCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of PendingApprovalModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProductsCopyWith<$Res> get products {
@@ -102,8 +94,6 @@ class __$$PendingApprovalModelImplCopyWithImpl<$Res>
       $Res Function(_$PendingApprovalModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PendingApprovalModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -143,13 +133,11 @@ class _$PendingApprovalModelImpl implements _PendingApprovalModel {
                 other.products == products));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, products);
 
-  /// Create a copy of PendingApprovalModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PendingApprovalModelImplCopyWith<_$PendingApprovalModelImpl>
@@ -174,11 +162,8 @@ abstract class _PendingApprovalModel implements PendingApprovalModel {
 
   @override
   Products get products;
-
-  /// Create a copy of PendingApprovalModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PendingApprovalModelImplCopyWith<_$PendingApprovalModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -210,12 +195,8 @@ mixin _$Products {
   int? get to => throw _privateConstructorUsedError;
   int? get total => throw _privateConstructorUsedError;
 
-  /// Serializes this Products to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Products
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ProductsCopyWith<Products> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -251,8 +232,6 @@ class _$ProductsCopyWithImpl<$Res, $Val extends Products>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Products
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -359,8 +338,6 @@ class __$$ProductsImplCopyWithImpl<$Res>
       _$ProductsImpl _value, $Res Function(_$ProductsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Products
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -537,7 +514,7 @@ class _$ProductsImpl implements _Products {
             (identical(other.total, total) || other.total == total));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -555,9 +532,7 @@ class _$ProductsImpl implements _Products {
       to,
       total);
 
-  /// Create a copy of Products
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductsImplCopyWith<_$ProductsImpl> get copyWith =>
@@ -623,11 +598,8 @@ abstract class _Products implements Products {
   int? get to;
   @override
   int? get total;
-
-  /// Create a copy of Products
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ProductsImplCopyWith<_$ProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -733,12 +705,8 @@ mixin _$ProductData {
   @JsonKey(name: 'savedByLoggedUser')
   List<dynamic>? get savedByLoggedUser => throw _privateConstructorUsedError;
 
-  /// Serializes this ProductData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ProductData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ProductDataCopyWith<ProductData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -822,8 +790,6 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ProductData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1212,8 +1178,6 @@ class __$$ProductDataImplCopyWithImpl<$Res>
       _$ProductDataImpl _value, $Res Function(_$ProductDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ProductData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1864,7 +1828,7 @@ class _$ProductDataImpl implements _ProductData {
                 .equals(other._savedByLoggedUser, _savedByLoggedUser));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1930,9 +1894,7 @@ class _$ProductDataImpl implements _ProductData {
         const DeepCollectionEquality().hash(_savedByLoggedUser)
       ]);
 
-  /// Create a copy of ProductData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductDataImplCopyWith<_$ProductDataImpl> get copyWith =>
@@ -2169,11 +2131,8 @@ abstract class _ProductData implements ProductData {
   @override
   @JsonKey(name: 'savedByLoggedUser')
   List<dynamic>? get savedByLoggedUser;
-
-  /// Create a copy of ProductData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ProductDataImplCopyWith<_$ProductDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2188,12 +2147,8 @@ mixin _$PageLink {
   String? get label => throw _privateConstructorUsedError;
   bool? get active => throw _privateConstructorUsedError;
 
-  /// Serializes this PageLink to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of PageLink
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PageLinkCopyWith<PageLink> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2216,8 +2171,6 @@ class _$PageLinkCopyWithImpl<$Res, $Val extends PageLink>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PageLink
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2261,8 +2214,6 @@ class __$$PageLinkImplCopyWithImpl<$Res>
       _$PageLinkImpl _value, $Res Function(_$PageLinkImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PageLink
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2317,13 +2268,11 @@ class _$PageLinkImpl implements _PageLink {
             (identical(other.active, active) || other.active == active));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, url, label, active);
 
-  /// Create a copy of PageLink
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PageLinkImplCopyWith<_$PageLinkImpl> get copyWith =>
@@ -2352,11 +2301,8 @@ abstract class _PageLink implements PageLink {
   String? get label;
   @override
   bool? get active;
-
-  /// Create a copy of PageLink
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PageLinkImplCopyWith<_$PageLinkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

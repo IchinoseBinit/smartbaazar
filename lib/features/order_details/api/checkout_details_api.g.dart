@@ -7,7 +7,7 @@ part of 'checkout_details_api.dart';
 // **************************************************************************
 
 String _$postSelectedItemOfCartHash() =>
-    r'7c4fa250cc80e41d8764ea58b7b7ead85c190447';
+    r'fc175c9ea74b8b3b7613ef12156409444823c1da';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,7 +42,7 @@ class PostSelectedItemOfCartFamily
 
   /// See also [postSelectedItemOfCart].
   PostSelectedItemOfCartProvider call(
-    List<String> vendorId,
+    List<String?> vendorId,
     List<String> selectedProduct,
   ) {
     return PostSelectedItemOfCartProvider(
@@ -81,7 +81,7 @@ class PostSelectedItemOfCartProvider
     extends AutoDisposeFutureProvider<CheckoutDetailsModel> {
   /// See also [postSelectedItemOfCart].
   PostSelectedItemOfCartProvider(
-    List<String> vendorId,
+    List<String?> vendorId,
     List<String> selectedProduct,
   ) : this._internal(
           (ref) => postSelectedItemOfCart(
@@ -113,7 +113,7 @@ class PostSelectedItemOfCartProvider
     required this.selectedProduct,
   }) : super.internal();
 
-  final List<String> vendorId;
+  final List<String?> vendorId;
   final List<String> selectedProduct;
 
   @override
@@ -161,7 +161,7 @@ class PostSelectedItemOfCartProvider
 mixin PostSelectedItemOfCartRef
     on AutoDisposeFutureProviderRef<CheckoutDetailsModel> {
   /// The parameter `vendorId` of this provider.
-  List<String> get vendorId;
+  List<String?> get vendorId;
 
   /// The parameter `selectedProduct` of this provider.
   List<String> get selectedProduct;
@@ -173,7 +173,7 @@ class _PostSelectedItemOfCartProviderElement
   _PostSelectedItemOfCartProviderElement(super.provider);
 
   @override
-  List<String> get vendorId =>
+  List<String?> get vendorId =>
       (origin as PostSelectedItemOfCartProvider).vendorId;
   @override
   List<String> get selectedProduct =>

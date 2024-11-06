@@ -27,12 +27,8 @@ mixin _$MessageThreadModel {
   @JsonKey(name: 'result')
   Result? get result => throw _privateConstructorUsedError;
 
-  /// Serializes this MessageThreadModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of MessageThreadModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MessageThreadModelCopyWith<MessageThreadModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,8 +57,6 @@ class _$MessageThreadModelCopyWithImpl<$Res, $Val extends MessageThreadModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MessageThreadModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,8 +80,6 @@ class _$MessageThreadModelCopyWithImpl<$Res, $Val extends MessageThreadModel>
     ) as $Val);
   }
 
-  /// Create a copy of MessageThreadModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ResultCopyWith<$Res>? get result {
@@ -126,8 +118,6 @@ class __$$MessageThreadModelImplCopyWithImpl<$Res>
       $Res Function(_$MessageThreadModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of MessageThreadModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -188,13 +178,11 @@ class _$MessageThreadModelImpl implements _MessageThreadModel {
             (identical(other.result, result) || other.result == result));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, success, message, result);
 
-  /// Create a copy of MessageThreadModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MessageThreadModelImplCopyWith<_$MessageThreadModelImpl> get copyWith =>
@@ -228,11 +216,8 @@ abstract class _MessageThreadModel implements MessageThreadModel {
   @override
   @JsonKey(name: 'result')
   Result? get result;
-
-  /// Create a copy of MessageThreadModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MessageThreadModelImplCopyWith<_$MessageThreadModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -250,12 +235,8 @@ mixin _$Result {
   @JsonKey(name: 'meta')
   Meta? get meta => throw _privateConstructorUsedError;
 
-  /// Serializes this Result to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ResultCopyWith<Result> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -283,8 +264,6 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -308,8 +287,6 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
     ) as $Val);
   }
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LinksCopyWith<$Res>? get links {
@@ -322,8 +299,6 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
     });
   }
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MetaCopyWith<$Res>? get meta {
@@ -363,8 +338,6 @@ class __$$ResultImplCopyWithImpl<$Res>
       _$ResultImpl _value, $Res Function(_$ResultImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -434,14 +407,12 @@ class _$ResultImpl implements _Result {
             (identical(other.meta, meta) || other.meta == meta));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_data), links, meta);
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
@@ -472,11 +443,8 @@ abstract class _Result implements Result {
   @override
   @JsonKey(name: 'meta')
   Meta? get meta;
-
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -494,12 +462,8 @@ mixin _$ThreadData {
   @JsonKey(name: 'subject')
   String? get subject => throw _privateConstructorUsedError;
 
-  /// Serializes this ThreadData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ThreadData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ThreadDataCopyWith<ThreadData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -526,8 +490,6 @@ class _$ThreadDataCopyWithImpl<$Res, $Val extends ThreadData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ThreadData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -574,8 +536,6 @@ class __$$ThreadDataImplCopyWithImpl<$Res>
       _$ThreadDataImpl _value, $Res Function(_$ThreadDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ThreadData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -636,13 +596,11 @@ class _$ThreadDataImpl implements _ThreadData {
             (identical(other.subject, subject) || other.subject == subject));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, postId, subject);
 
-  /// Create a copy of ThreadData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ThreadDataImplCopyWith<_$ThreadDataImpl> get copyWith =>
@@ -674,11 +632,8 @@ abstract class _ThreadData implements ThreadData {
   @override
   @JsonKey(name: 'subject')
   String? get subject;
-
-  /// Create a copy of ThreadData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ThreadDataImplCopyWith<_$ThreadDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -698,12 +653,8 @@ mixin _$Links {
   @JsonKey(name: 'next')
   String? get next => throw _privateConstructorUsedError;
 
-  /// Serializes this Links to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Links
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $LinksCopyWith<Links> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -729,8 +680,6 @@ class _$LinksCopyWithImpl<$Res, $Val extends Links>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Links
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -782,8 +731,6 @@ class __$$LinksImplCopyWithImpl<$Res>
       _$LinksImpl _value, $Res Function(_$LinksImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Links
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -854,13 +801,11 @@ class _$LinksImpl implements _Links {
             (identical(other.next, next) || other.next == next));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, first, last, prev, next);
 
-  /// Create a copy of Links
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LinksImplCopyWith<_$LinksImpl> get copyWith =>
@@ -895,11 +840,8 @@ abstract class _Links implements Links {
   @override
   @JsonKey(name: 'next')
   String? get next;
-
-  /// Create a copy of Links
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LinksImplCopyWith<_$LinksImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -927,12 +869,8 @@ mixin _$Meta {
   @JsonKey(name: 'total')
   int? get total => throw _privateConstructorUsedError;
 
-  /// Serializes this Meta to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MetaCopyWith<Meta> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -962,8 +900,6 @@ class _$MetaCopyWithImpl<$Res, $Val extends Meta>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1038,8 +974,6 @@ class __$$MetaImplCopyWithImpl<$Res>
   __$$MetaImplCopyWithImpl(_$MetaImpl _value, $Res Function(_$MetaImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1161,14 +1095,12 @@ class _$MetaImpl implements _Meta {
             (identical(other.total, total) || other.total == total));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, currentPage, from, lastPage,
       const DeepCollectionEquality().hash(_links), path, perPage, to, total);
 
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
@@ -1219,11 +1151,8 @@ abstract class _Meta implements Meta {
   @override
   @JsonKey(name: 'total')
   int? get total;
-
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1241,12 +1170,8 @@ mixin _$MetaLink {
   @JsonKey(name: 'active')
   bool? get active => throw _privateConstructorUsedError;
 
-  /// Serializes this MetaLink to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of MetaLink
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MetaLinkCopyWith<MetaLink> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1272,8 +1197,6 @@ class _$MetaLinkCopyWithImpl<$Res, $Val extends MetaLink>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MetaLink
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1320,8 +1243,6 @@ class __$$MetaLinkImplCopyWithImpl<$Res>
       _$MetaLinkImpl _value, $Res Function(_$MetaLinkImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of MetaLink
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1382,13 +1303,11 @@ class _$MetaLinkImpl implements _MetaLink {
             (identical(other.active, active) || other.active == active));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, url, label, active);
 
-  /// Create a copy of MetaLink
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MetaLinkImplCopyWith<_$MetaLinkImpl> get copyWith =>
@@ -1420,11 +1339,8 @@ abstract class _MetaLink implements MetaLink {
   @override
   @JsonKey(name: 'active')
   bool? get active;
-
-  /// Create a copy of MetaLink
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MetaLinkImplCopyWith<_$MetaLinkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -35,6 +35,17 @@ class LoginController extends StateNotifier<GenericState> {
       final loginData = await _loginApi.login(email, password);
       state = LoadedState<LoginData>(response: loginData);
 
+      final String userId = loginData!.result.id.toString();
+      final String userName = loginData.result.name;
+      String useremail = loginData.result.email?.toString() ?? '';
+      // print("useremail$useremail");
+      final prefs = await SharedPreferences.getInstance();
+      SmartClinet.userId = userId; // Set userId in SmartClinet
+      SmartClinet.userName = userName; // Set userName in SmartClinet
+      SmartClinet.userEmail = useremail; // Set userEmail in SmartClinet
+      await prefs.setString('userId', userId);
+      await prefs.setString('userName', userName);
+      await prefs.setString('userEmail', useremail);
       // Navigate to the bottom navigation screen, replacing the login screen
       await Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
@@ -54,8 +65,7 @@ class LoginController extends StateNotifier<GenericState> {
       if (sessionString != null) {
         final session = json.decode(sessionString);
         String userId = session['result']?['id']?.toString() ?? '';
-        String useremail = session['result']?['email']?.toString() ?? '';
-        print("useremail$useremail");
+
         if (userId.isNotEmpty) {
           state = LoadedState<LoginData>(response: LoginData.fromJson(session));
           SmartClinet.userId = userId;

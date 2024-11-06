@@ -31,6 +31,8 @@ class LogoutApi {
         SmartClinet.token = '';
         SmartClinet.refresh = '';
         SmartClinet.userId = '';
+        SmartClinet.userName = '';
+        SmartClinet.userEmail = '';
 
         print('SharedPreferences cleared and tokens reset.');
 
