@@ -11,7 +11,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
-import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
@@ -38,7 +37,7 @@ final currentIndexProvider = StateProvider<int>((ref) => 0);
 class ProductDetailScreen extends ConsumerWidget {
   List<String> itemsList = [];
   // List<Ad>? preloadAds;
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController msgcontroller = TextEditingController();
@@ -108,7 +107,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                 : const Color(0xffFFFFFF)),
                                         child: SvgPicture.asset(invoiceIcon));
                                   }),
-                            ]),
+                            ],
+                            ),
                         SizedBox(
                           height: 15.h,
                         ),
@@ -120,7 +120,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    height: 1780.h,
+                    height: 1700.h,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
