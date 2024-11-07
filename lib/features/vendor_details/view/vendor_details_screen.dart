@@ -12,7 +12,6 @@ import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart'
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/vendor_details/api/change_password_api.dart';
 import 'package:smartbazar/features/vendor_details/api/verify_vendor_account_api.dart';
-import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/account_details_widget.dart';
 import 'package:smartbazar/features/vendor_details/widgets/background_image_description_widgt.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';

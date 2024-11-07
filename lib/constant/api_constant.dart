@@ -104,11 +104,15 @@ class ApiConstants {
   static String submitDisputeUrl = '$baseUrl/storedispute';
   //myListing
   static String getMyListingUrl = '$baseUrl/posts/mylistings';
-  static String postOfflineListing ='$baseUrl/posts';
+  static String postOfflineListing = '$baseUrl/posts';
   static String getMYSubscribeAndWinUrl = '$baseUrl/mysubscribeandwin';
   //become a brand member
   static String brandMemberStore = '$baseUrl/users/brandbazar_store';
   //saved searches
   static String savedSearchesUrl = '$baseUrl/savedSearches';
   static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
+  //product import
+    static String productimportapi = '$baseUrl/posts/product_import';
+
+
 }

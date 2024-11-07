@@ -40,8 +40,10 @@ class LoginApi {
           await prefs.setString("session", json.encode(user.toJson()));
           await prefs.setString("accessToken", SmartClinet.token);
           await prefs.setString("refreshToken", SmartClinet.refresh);
-          await prefs.setString('userName', user.result.name);
+          await prefs.setString('userName', user.result.username);
+          await prefs.setString('name', user.result.name);
           await prefs.setString('userId', user.result.id.toString());
+          await prefs.setString("email", user.result.email!);
           await prefs.setString('userEmail', user.result.id.toString());
 
 

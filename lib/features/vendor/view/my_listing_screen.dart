@@ -266,8 +266,8 @@ class MyListinDetails extends ConsumerWidget {
                   onTap: () async {
                     // Show deleting message
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text(
+                      const SnackBar(
+                        content: Text(
                           'Deleting item...',
                           style: TextStyle(color: Colors.white),
                         ),

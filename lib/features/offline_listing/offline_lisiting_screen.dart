@@ -345,7 +345,7 @@ class OfflineListingContainer extends ConsumerWidget {
                           color: Color(0xff888888),
                         ),
                         Text(
-                          "${timeAgo(productData.updatedAt!)}",
+                          timeAgo(productData.updatedAt!),
                           style: TextStyle(fontSize: 8.sp),
                         ),
                         const Spacer(),
@@ -355,8 +355,7 @@ class OfflineListingContainer extends ConsumerWidget {
                           color: Color(0xff888888),
                         ),
                         Text(
-                          (productData.pickup != null &&
-                                  productData.pickup.isNotEmpty)
+                          (productData.pickup.isNotEmpty)
                               ? extractLocation(productData.pickup)
                               : "Kathmandu", // Fallback if pickup is null or empty
                           overflow: TextOverflow.ellipsis,

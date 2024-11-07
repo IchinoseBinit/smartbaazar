@@ -293,6 +293,7 @@ Vendor _$VendorFromJson(Map<String, dynamic> json) {
 mixin _$Vendor {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -304,7 +305,7 @@ abstract class $VendorCopyWith<$Res> {
   factory $VendorCopyWith(Vendor value, $Res Function(Vendor) then) =
       _$VendorCopyWithImpl<$Res, Vendor>;
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, String? username});
 }
 
 /// @nodoc
@@ -322,6 +323,7 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? username = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -332,6 +334,10 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -343,7 +349,7 @@ abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
       __$$VendorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, String? username});
 }
 
 /// @nodoc
@@ -359,6 +365,7 @@ class __$$VendorImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? username = freezed,
   }) {
     return _then(_$VendorImpl(
       id: null == id
@@ -369,6 +376,10 @@ class __$$VendorImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -376,7 +387,7 @@ class __$$VendorImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VendorImpl implements _Vendor {
-  _$VendorImpl({required this.id, required this.name});
+  _$VendorImpl({required this.id, required this.name, this.username});
 
   factory _$VendorImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorImplFromJson(json);
@@ -385,10 +396,12 @@ class _$VendorImpl implements _Vendor {
   final String id;
   @override
   final String name;
+  @override
+  final String? username;
 
   @override
   String toString() {
-    return 'Vendor(id: $id, name: $name)';
+    return 'Vendor(id: $id, name: $name, username: $username)';
   }
 
   @override
@@ -397,12 +410,14 @@ class _$VendorImpl implements _Vendor {
         (other.runtimeType == runtimeType &&
             other is _$VendorImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.username, username) ||
+                other.username == username));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, username);
 
   @JsonKey(ignore: true)
   @override
@@ -419,8 +434,10 @@ class _$VendorImpl implements _Vendor {
 }
 
 abstract class _Vendor implements Vendor {
-  factory _Vendor({required final String id, required final String name}) =
-      _$VendorImpl;
+  factory _Vendor(
+      {required final String id,
+      required final String name,
+      final String? username}) = _$VendorImpl;
 
   factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
 
@@ -428,6 +445,8 @@ abstract class _Vendor implements Vendor {
   String get id;
   @override
   String get name;
+  @override
+  String? get username;
   @override
   @JsonKey(ignore: true)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>

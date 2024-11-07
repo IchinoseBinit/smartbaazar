@@ -110,7 +110,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
 class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       // constraints: const BoxConstraints(
       //   maxWidth: double.infinity,

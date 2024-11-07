@@ -12,7 +12,7 @@ Future<AlertModel> getAlertMessage(GetAlertMessageRef ref) async {
 
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url: ApiConstants.getAlertMessageUrl,
     );
 

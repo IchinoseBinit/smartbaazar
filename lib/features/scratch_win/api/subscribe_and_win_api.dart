@@ -15,12 +15,12 @@ Future<SubscribeAndWinModel> getSubscribeAndWin(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getSubscribeAndWinUrl,
     );
-    if(response.statusCode == 200) {
-      final Map<String,dynamic> jsonResponse = response.data;
+    print("biabsh $response");
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = response.data;
       return SubscribeAndWinModel.fromJson(jsonResponse);
-    }else{
-          throw Exception('Failed to load suscribe and win everyday content');
-
+    } else {
+      throw Exception('Failed to load suscribe and win everyday content');
     }
   } catch (e) {
     print('Error loading suscribe and win everyday :$e');

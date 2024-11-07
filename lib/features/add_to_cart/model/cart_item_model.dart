@@ -28,6 +28,7 @@ class Vendor with _$Vendor {
   factory Vendor({
     required String id,
     required String name,
+     String? username,
   }) = _Vendor;
 
   factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);

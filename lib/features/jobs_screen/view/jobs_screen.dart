@@ -103,8 +103,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen> {
                     List<UsedAdvertisement> ads = data.advertisements!;
                     // final UsedModel maindata = data;
 
-         
-
                     // List<Product> hotproducts = data.hot_products!;
 
                     return SingleChildScrollView(
@@ -175,7 +173,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen> {
                           CarouselSlider(
                               items: slider.map(
                                 (e) {
-                                  print("ram ${e.image}}");
                                   return Image.network(
                                       width: double.infinity,
                                       fit: BoxFit.cover,
@@ -286,12 +283,12 @@ class UsedProductSlider extends StatelessWidget {
                     final modeldata = data[index];
                     return InkWell(
                       onTap: () {
-                         Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProductDetailScreen(productId: modeldata.id!),
-                      ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetailScreen(productId: modeldata.id!),
+                            ));
                         // Add navigation or other actions here
                       },
                       child: SizedBox(

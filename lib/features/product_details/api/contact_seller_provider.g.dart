@@ -6,7 +6,7 @@ part of 'contact_seller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$contactSellerHash() => r'cc98fc557f9e53a80216098bc273e67b2d949054';
+String _$contactSellerHash() => r'269f98d285c78ff914092c465b07327f6fce9b28';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,12 +44,14 @@ class ContactSellerFamily extends Family<AsyncValue<bool>> {
     String phoneNumber,
     String body,
     int postId,
+    String email,
   ) {
     return ContactSellerProvider(
       username,
       phoneNumber,
       body,
       postId,
+      email,
     );
   }
 
@@ -62,6 +64,7 @@ class ContactSellerFamily extends Family<AsyncValue<bool>> {
       provider.phoneNumber,
       provider.body,
       provider.postId,
+      provider.email,
     );
   }
 
@@ -88,6 +91,7 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
     String phoneNumber,
     String body,
     int postId,
+    String email,
   ) : this._internal(
           (ref) => contactSeller(
             ref as ContactSellerRef,
@@ -95,6 +99,7 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
             phoneNumber,
             body,
             postId,
+            email,
           ),
           from: contactSellerProvider,
           name: r'contactSellerProvider',
@@ -109,6 +114,7 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
           phoneNumber: phoneNumber,
           body: body,
           postId: postId,
+          email: email,
         );
 
   ContactSellerProvider._internal(
@@ -122,12 +128,14 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
     required this.phoneNumber,
     required this.body,
     required this.postId,
+    required this.email,
   }) : super.internal();
 
   final String username;
   final String phoneNumber;
   final String body;
   final int postId;
+  final String email;
 
   @override
   Override overrideWith(
@@ -146,6 +154,7 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
         phoneNumber: phoneNumber,
         body: body,
         postId: postId,
+        email: email,
       ),
     );
   }
@@ -161,7 +170,8 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
         other.username == username &&
         other.phoneNumber == phoneNumber &&
         other.body == body &&
-        other.postId == postId;
+        other.postId == postId &&
+        other.email == email;
   }
 
   @override
@@ -171,6 +181,7 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, phoneNumber.hashCode);
     hash = _SystemHash.combine(hash, body.hashCode);
     hash = _SystemHash.combine(hash, postId.hashCode);
+    hash = _SystemHash.combine(hash, email.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -188,6 +199,9 @@ mixin ContactSellerRef on AutoDisposeFutureProviderRef<bool> {
 
   /// The parameter `postId` of this provider.
   int get postId;
+
+  /// The parameter `email` of this provider.
+  String get email;
 }
 
 class _ContactSellerProviderElement
@@ -202,6 +216,8 @@ class _ContactSellerProviderElement
   String get body => (origin as ContactSellerProvider).body;
   @override
   int get postId => (origin as ContactSellerProvider).postId;
+  @override
+  String get email => (origin as ContactSellerProvider).email;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

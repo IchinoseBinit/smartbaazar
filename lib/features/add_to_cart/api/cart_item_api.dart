@@ -21,7 +21,7 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
     if (response.statusCode == 200) {
       final data = response.data['data'];
 
-      if (data == null || !(data is Map) || !data.containsKey('cart')) {
+      if (data == null || data is! Map || !data.containsKey('cart')) {
         throw CustomException('Please log in to continue.');
       }
 

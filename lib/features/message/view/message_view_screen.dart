@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
+import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -12,6 +13,7 @@ class MessageViewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentfilter = ref.watch(messageFilterStateProvider);
     return GenericSafeArea(
       child: Scaffold(
         body: DefaultTabController(
@@ -29,17 +31,31 @@ class MessageViewScreen extends ConsumerWidget {
                       "Message",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    PopupMenuButton(
-                      offset: const Offset(20, 40),
-                      icon: const Icon(Icons.more_horiz),
-                      onSelected: (item) {
-                        // Handle menu selection
-                      },
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        const PopupMenuItem(child: Text('Unread')),
-                        const PopupMenuItem(child: Text('Started')),
-                        const PopupMenuItem(child: Text('Important')),
+                    DropdownButton<String>(
+                      underline: const SizedBox(),
+                      
+
+                     padding: EdgeInsets.zero,
+                      borderRadius: BorderRadius.zero,
+                      elevation: 0,
+                      value: currentfilter,
+                      items: const [
+                        DropdownMenuItem(
+                            value: 'unread', child: Text('Unread')),
+                        DropdownMenuItem(
+                            value: 'important', child: Text('Important')),
+                        DropdownMenuItem(value: 'Started', child: Text('Started')),
                       ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          ref
+                              .read(messageFilterStateProvider.notifier)
+                              .updateFilter(value); // Update the filter
+                          ref.refresh(getMessageThreadProvider(
+                              filter:
+                                  value)); // Refetch messages with the new filter
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -66,8 +82,8 @@ class MessageViewScreen extends ConsumerWidget {
                       // Chat Tab
                       Consumer(
                         builder: (context, ref, _) {
-                          final messageThreadProvider =
-                              ref.watch(getMessageThreadProvider);
+                          final messageThreadProvider = ref.watch(
+                              getMessageThreadProvider(filter: currentfilter));
                           return messageThreadProvider.when(
                             data: (messageThread) {
                               final messages = messageThread.result!.data;

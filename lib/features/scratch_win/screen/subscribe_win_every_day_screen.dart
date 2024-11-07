@@ -6,7 +6,6 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/scratch_win/api/subscribe_and_win_api.dart';
 import 'package:smartbazar/features/scratch_win/model/subscribe_and_win_model.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
-import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class SubscribeAndWinEveryDay extends ConsumerWidget {

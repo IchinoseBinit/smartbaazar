@@ -27,7 +27,9 @@ _$SubscriptionImpl _$$SubscriptionImplFromJson(Map<String, dynamic> json) =>
       vendorId: json['vendorId'] as String?,
       followedDate: json['followed_date'] as String?,
       status: json['status'] as String?,
-      vendor: Vendor.fromJson(json['vendor'] as Map<String, dynamic>),
+      vendor: json['vendor'] == null
+          ? null
+          : Vendor.fromJson(json['vendor'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$SubscriptionImplToJson(_$SubscriptionImpl instance) =>
@@ -38,17 +40,4 @@ Map<String, dynamic> _$$SubscriptionImplToJson(_$SubscriptionImpl instance) =>
       'followed_date': instance.followedDate,
       'status': instance.status,
       'vendor': instance.vendor,
-    };
-
-_$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
-      id: json['id'] as String?,
-      name: json['name'] as String?,
-      username: json['username'] as String?,
-    );
-
-Map<String, dynamic> _$$VendorImplToJson(_$VendorImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'username': instance.username,
     };

@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
@@ -12,6 +13,7 @@ Future<bool> contactSeller(
   String phoneNumber, // Assuming phone number is an int, will convert to string later
   String body,
   int postId,
+   String email,
 ) async {
   final SmartClinet client = SmartClinet();
 
@@ -21,14 +23,17 @@ Future<bool> contactSeller(
       throw Exception("All fields must be filled correctly.");
     }
 
+    SharedPreferences srf = await SharedPreferences.getInstance();
     final response = await client.request(
       requestType: RequestType.postWithToken,
       url: ApiConstants.getcontactSellerUrl, // No need to interpolate if static
       parameter: {
-        'from_name': username,            // Ensure this value is provided
+        'auth_field': 'email',
+        'from_email': email,
+        'from_name': username, // Ensure this value is provided
         'from_phone': phoneNumber.toString(), // Convert phone number to string
-        'body': body,                     // Ensure message body is provided
-        'post_id': postId.toString(),     // Ensure 'post_id' is passed as string
+        'body': body, // Ensure message body is provided
+        'post_id': postId.toString(), // Ensure 'post_id' is passed as string
       },
     );
 

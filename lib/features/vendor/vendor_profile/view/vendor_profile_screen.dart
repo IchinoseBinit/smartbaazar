@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
@@ -23,7 +24,6 @@ import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -254,14 +254,24 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                     color: Colors.black),
               ),
               const Spacer(),
-              Container(
-                height: 32.h,
-                width: 32.h,
-                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 1.w, color: Colors.black)),
-                child: SvgPicture.asset(openCart),
+              InkWell(
+                onTap: () {
+                     Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const AddToCartScreen(),
+              ),
+            );
+                },
+                child: Container(
+                  height: 32.h,
+                  width: 32.h,
+                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 1.w, color: Colors.black)),
+                  child: SvgPicture.asset(openCart),
+                ),
               ),
             ],
           ),

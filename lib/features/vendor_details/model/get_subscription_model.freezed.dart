@@ -98,8 +98,7 @@ class __$$GetSubscriptionModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GetSubscriptionModelImpl implements _GetSubscriptionModel {
-  const _$GetSubscriptionModelImpl(
-      {required final List<Subscription>? subscriptions})
+  const _$GetSubscriptionModelImpl({final List<Subscription>? subscriptions})
       : _subscriptions = subscriptions;
 
   factory _$GetSubscriptionModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -152,8 +151,7 @@ class _$GetSubscriptionModelImpl implements _GetSubscriptionModel {
 
 abstract class _GetSubscriptionModel implements GetSubscriptionModel {
   const factory _GetSubscriptionModel(
-          {required final List<Subscription>? subscriptions}) =
-      _$GetSubscriptionModelImpl;
+      {final List<Subscription>? subscriptions}) = _$GetSubscriptionModelImpl;
 
   factory _GetSubscriptionModel.fromJson(Map<String, dynamic> json) =
       _$GetSubscriptionModelImpl.fromJson;
@@ -178,7 +176,7 @@ mixin _$Subscription {
   @JsonKey(name: 'followed_date')
   String? get followedDate => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
-  Vendor get vendor => throw _privateConstructorUsedError;
+  Vendor? get vendor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -198,9 +196,9 @@ abstract class $SubscriptionCopyWith<$Res> {
       String? vendorId,
       @JsonKey(name: 'followed_date') String? followedDate,
       String? status,
-      Vendor vendor});
+      Vendor? vendor});
 
-  $VendorCopyWith<$Res> get vendor;
+  $VendorCopyWith<$Res>? get vendor;
 }
 
 /// @nodoc
@@ -221,7 +219,7 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
     Object? vendorId = freezed,
     Object? followedDate = freezed,
     Object? status = freezed,
-    Object? vendor = null,
+    Object? vendor = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -244,17 +242,21 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      vendor: null == vendor
+      vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
-              as Vendor,
+              as Vendor?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $VendorCopyWith<$Res> get vendor {
-    return $VendorCopyWith<$Res>(_value.vendor, (value) {
+  $VendorCopyWith<$Res>? get vendor {
+    if (_value.vendor == null) {
+      return null;
+    }
+
+    return $VendorCopyWith<$Res>(_value.vendor!, (value) {
       return _then(_value.copyWith(vendor: value) as $Val);
     });
   }
@@ -274,10 +276,10 @@ abstract class _$$SubscriptionImplCopyWith<$Res>
       String? vendorId,
       @JsonKey(name: 'followed_date') String? followedDate,
       String? status,
-      Vendor vendor});
+      Vendor? vendor});
 
   @override
-  $VendorCopyWith<$Res> get vendor;
+  $VendorCopyWith<$Res>? get vendor;
 }
 
 /// @nodoc
@@ -296,7 +298,7 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
     Object? vendorId = freezed,
     Object? followedDate = freezed,
     Object? status = freezed,
-    Object? vendor = null,
+    Object? vendor = freezed,
   }) {
     return _then(_$SubscriptionImpl(
       id: freezed == id
@@ -319,10 +321,10 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      vendor: null == vendor
+      vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
-              as Vendor,
+              as Vendor?,
     ));
   }
 }
@@ -331,12 +333,12 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SubscriptionImpl implements _Subscription {
   const _$SubscriptionImpl(
-      {required this.id,
-      required this.userId,
-      required this.vendorId,
+      {this.id,
+      this.userId,
+      this.vendorId,
       @JsonKey(name: 'followed_date') required this.followedDate,
-      required this.status,
-      required this.vendor});
+      this.status,
+      this.vendor});
 
   factory _$SubscriptionImpl.fromJson(Map<String, dynamic> json) =>
       _$$SubscriptionImplFromJson(json);
@@ -353,7 +355,7 @@ class _$SubscriptionImpl implements _Subscription {
   @override
   final String? status;
   @override
-  final Vendor vendor;
+  final Vendor? vendor;
 
   @override
   String toString() {
@@ -396,12 +398,12 @@ class _$SubscriptionImpl implements _Subscription {
 
 abstract class _Subscription implements Subscription {
   const factory _Subscription(
-      {required final String? id,
-      required final String? userId,
-      required final String? vendorId,
+      {final String? id,
+      final String? userId,
+      final String? vendorId,
       @JsonKey(name: 'followed_date') required final String? followedDate,
-      required final String? status,
-      required final Vendor vendor}) = _$SubscriptionImpl;
+      final String? status,
+      final Vendor? vendor}) = _$SubscriptionImpl;
 
   factory _Subscription.fromJson(Map<String, dynamic> json) =
       _$SubscriptionImpl.fromJson;
@@ -418,178 +420,9 @@ abstract class _Subscription implements Subscription {
   @override
   String? get status;
   @override
-  Vendor get vendor;
+  Vendor? get vendor;
   @override
   @JsonKey(ignore: true)
   _$$SubscriptionImplCopyWith<_$SubscriptionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Vendor _$VendorFromJson(Map<String, dynamic> json) {
-  return _Vendor.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Vendor {
-  String? get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
-  String? get username => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $VendorCopyWith<Vendor> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $VendorCopyWith<$Res> {
-  factory $VendorCopyWith(Vendor value, $Res Function(Vendor) then) =
-      _$VendorCopyWithImpl<$Res, Vendor>;
-  @useResult
-  $Res call({String? id, String? name, String? username});
-}
-
-/// @nodoc
-class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
-    implements $VendorCopyWith<$Res> {
-  _$VendorCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? username = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      username: freezed == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
-  factory _$$VendorImplCopyWith(
-          _$VendorImpl value, $Res Function(_$VendorImpl) then) =
-      __$$VendorImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String? id, String? name, String? username});
-}
-
-/// @nodoc
-class __$$VendorImplCopyWithImpl<$Res>
-    extends _$VendorCopyWithImpl<$Res, _$VendorImpl>
-    implements _$$VendorImplCopyWith<$Res> {
-  __$$VendorImplCopyWithImpl(
-      _$VendorImpl _value, $Res Function(_$VendorImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? username = freezed,
-  }) {
-    return _then(_$VendorImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      username: freezed == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$VendorImpl implements _Vendor {
-  const _$VendorImpl(
-      {required this.id, required this.name, required this.username});
-
-  factory _$VendorImpl.fromJson(Map<String, dynamic> json) =>
-      _$$VendorImplFromJson(json);
-
-  @override
-  final String? id;
-  @override
-  final String? name;
-  @override
-  final String? username;
-
-  @override
-  String toString() {
-    return 'Vendor(id: $id, name: $name, username: $username)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$VendorImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.username, username) ||
-                other.username == username));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, username);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
-      __$$VendorImplCopyWithImpl<_$VendorImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$VendorImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Vendor implements Vendor {
-  const factory _Vendor(
-      {required final String? id,
-      required final String? name,
-      required final String? username}) = _$VendorImpl;
-
-  factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
-
-  @override
-  String? get id;
-  @override
-  String? get name;
-  @override
-  String? get username;
-  @override
-  @JsonKey(ignore: true)
-  _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
