@@ -7,7 +7,7 @@ part of 'search_from_saved_search_api.dart';
 // **************************************************************************
 
 String _$searchFromSavedSearchHash() =>
-    r'81d84db51b1c010e21e73255d2acc289708382e6';
+    r'c56c6b8c245a6324cdb6896a1126e0294d11b6a0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,7 +35,8 @@ class _SystemHash {
 const searchFromSavedSearchProvider = SearchFromSavedSearchFamily();
 
 /// See also [searchFromSavedSearch].
-class SearchFromSavedSearchFamily extends Family<AsyncValue<List<BrandNew>?>> {
+class SearchFromSavedSearchFamily
+    extends Family<AsyncValue<SavedSearchesResponseModel?>> {
   /// See also [searchFromSavedSearch].
   const SearchFromSavedSearchFamily();
 
@@ -74,7 +75,7 @@ class SearchFromSavedSearchFamily extends Family<AsyncValue<List<BrandNew>?>> {
 
 /// See also [searchFromSavedSearch].
 class SearchFromSavedSearchProvider
-    extends AutoDisposeFutureProvider<List<BrandNew>?> {
+    extends AutoDisposeFutureProvider<SavedSearchesResponseModel?> {
   /// See also [searchFromSavedSearch].
   SearchFromSavedSearchProvider(
     String query,
@@ -109,7 +110,8 @@ class SearchFromSavedSearchProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<BrandNew>?> Function(SearchFromSavedSearchRef provider)
+    FutureOr<SavedSearchesResponseModel?> Function(
+            SearchFromSavedSearchRef provider)
         create,
   ) {
     return ProviderOverride(
@@ -127,7 +129,8 @@ class SearchFromSavedSearchProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<BrandNew>?> createElement() {
+  AutoDisposeFutureProviderElement<SavedSearchesResponseModel?>
+      createElement() {
     return _SearchFromSavedSearchProviderElement(this);
   }
 
@@ -146,13 +149,13 @@ class SearchFromSavedSearchProvider
 }
 
 mixin SearchFromSavedSearchRef
-    on AutoDisposeFutureProviderRef<List<BrandNew>?> {
+    on AutoDisposeFutureProviderRef<SavedSearchesResponseModel?> {
   /// The parameter `query` of this provider.
   String get query;
 }
 
 class _SearchFromSavedSearchProviderElement
-    extends AutoDisposeFutureProviderElement<List<BrandNew>?>
+    extends AutoDisposeFutureProviderElement<SavedSearchesResponseModel?>
     with SearchFromSavedSearchRef {
   _SearchFromSavedSearchProviderElement(super.provider);
 

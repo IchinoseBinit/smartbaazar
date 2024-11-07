@@ -30,19 +30,21 @@ _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
       services: (json['services'] as List<dynamic>?)
           ?.map((e) => Services.fromJson(e as Map<String, dynamic>))
           .toList(),
-      jobs: (json['jobs'] as List<dynamic>)
-          .map((e) => Jobs.fromJson(e as Map<String, dynamic>))
+      jobs: (json['jobs'] as List<dynamic>?)
+          ?.map((e) => Jobs.fromJson(e as Map<String, dynamic>))
           .toList(),
-      events: (json['events'] as List<dynamic>)
-          .map((e) => Events.fromJson(e as Map<String, dynamic>))
+      events: (json['events'] as List<dynamic>?)
+          ?.map((e) => Events.fromJson(e as Map<String, dynamic>))
           .toList(),
-      b2B: (json['b2b'] as List<dynamic>)
-          .map((e) => B2B.fromJson(e as Map<String, dynamic>))
+      b2B: (json['b2b'] as List<dynamic>?)
+          ?.map((e) => B2B.fromJson(e as Map<String, dynamic>))
           .toList(),
-      grocery: (json['grocery'] as List<dynamic>)
-          .map((e) => Grocery.fromJson(e as Map<String, dynamic>))
+      grocery: (json['grocery'] as List<dynamic>?)
+          ?.map((e) => Grocery.fromJson(e as Map<String, dynamic>))
           .toList(),
-      posts: Posts.fromJson(json['posts'] as Map<String, dynamic>),
+      posts: json['posts'] == null
+          ? null
+          : Posts.fromJson(json['posts'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
@@ -59,10 +61,10 @@ Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
 
 _$BrandNewImpl _$$BrandNewImplFromJson(Map<String, dynamic> json) =>
     _$BrandNewImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
       image: json['image'] as String,
     );
 
@@ -76,23 +78,23 @@ Map<String, dynamic> _$$BrandNewImplToJson(_$BrandNewImpl instance) =>
     };
 
 _$PostsImpl _$$PostsImplFromJson(Map<String, dynamic> json) => _$PostsImpl(
-      currentPage: (json['current_page'] as num).toInt(),
+      currentPage: (json['current_page'] as num?)?.toInt(),
       data: (json['data'] as List<dynamic>)
           .map((e) => BrandNew.fromJson(e as Map<String, dynamic>))
           .toList(),
-      firstPageUrl: json['first_page_url'] as String,
-      from: (json['from'] as num).toInt(),
-      lastPage: (json['last_page'] as num).toInt(),
-      lastPageUrl: json['last_page_url'] as String,
+      firstPageUrl: json['first_page_url'] as String?,
+      from: (json['from'] as num?)?.toInt(),
+      lastPage: (json['last_page'] as num?)?.toInt(),
+      lastPageUrl: json['last_page_url'] as String?,
       links: (json['links'] as List<dynamic>)
           .map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
       nextPageUrl: json['next_page_url'],
-      path: json['path'] as String,
-      perPage: (json['per_page'] as num).toInt(),
+      path: json['path'] as String?,
+      perPage: (json['per_page'] as num?)?.toInt(),
       prevPageUrl: json['prev_page_url'],
-      to: (json['to'] as num).toInt(),
-      total: (json['total'] as num).toInt(),
+      to: (json['to'] as num?)?.toInt(),
+      total: (json['total'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$PostsImplToJson(_$PostsImpl instance) =>
@@ -114,7 +116,7 @@ Map<String, dynamic> _$$PostsImplToJson(_$PostsImpl instance) =>
 
 _$LinkImpl _$$LinkImplFromJson(Map<String, dynamic> json) => _$LinkImpl(
       url: json['url'] as String?,
-      label: json['label'] as String,
+      label: json['label'] as String?,
       active: json['active'] as bool,
     );
 
@@ -127,11 +129,11 @@ Map<String, dynamic> _$$LinkImplToJson(_$LinkImpl instance) =>
 
 _$GroceryImpl _$$GroceryImplFromJson(Map<String, dynamic> json) =>
     _$GroceryImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$GroceryImplToJson(_$GroceryImpl instance) =>
@@ -144,11 +146,11 @@ Map<String, dynamic> _$$GroceryImplToJson(_$GroceryImpl instance) =>
     };
 
 _$UsedImpl _$$UsedImplFromJson(Map<String, dynamic> json) => _$UsedImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$UsedImplToJson(_$UsedImpl instance) =>
@@ -162,11 +164,11 @@ Map<String, dynamic> _$$UsedImplToJson(_$UsedImpl instance) =>
 
 _$ServicesImpl _$$ServicesImplFromJson(Map<String, dynamic> json) =>
     _$ServicesImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$ServicesImplToJson(_$ServicesImpl instance) =>
@@ -179,11 +181,11 @@ Map<String, dynamic> _$$ServicesImplToJson(_$ServicesImpl instance) =>
     };
 
 _$JobsImpl _$$JobsImplFromJson(Map<String, dynamic> json) => _$JobsImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$JobsImplToJson(_$JobsImpl instance) =>
@@ -196,11 +198,11 @@ Map<String, dynamic> _$$JobsImplToJson(_$JobsImpl instance) =>
     };
 
 _$EventsImpl _$$EventsImplFromJson(Map<String, dynamic> json) => _$EventsImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$EventsImplToJson(_$EventsImpl instance) =>
@@ -213,11 +215,11 @@ Map<String, dynamic> _$$EventsImplToJson(_$EventsImpl instance) =>
     };
 
 _$B2BImpl _$$B2BImplFromJson(Map<String, dynamic> json) => _$B2BImpl(
-      id: json['id'] as String,
-      userId: json['user_id'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      userId: json['user_id'] as String?,
+      title: json['title'] as String?,
+      price: json['price'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$B2BImplToJson(_$B2BImpl instance) => <String, dynamic>{
