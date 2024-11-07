@@ -9,7 +9,9 @@ part of 'saved_search_response_model.dart';
 _$SavedSearchesResponseModelImpl _$$SavedSearchesResponseModelImplFromJson(
         Map<String, dynamic> json) =>
     _$SavedSearchesResponseModelImpl(
-      data: Data.fromJson(json['data'] as Map<String, dynamic>),
+      data: json['data'] == null
+          ? null
+          : Data.fromJson(json['data'] as Map<String, dynamic>),
       msg: json['msg'] as String?,
     );
 
@@ -79,15 +81,15 @@ Map<String, dynamic> _$$BrandNewImplToJson(_$BrandNewImpl instance) =>
 
 _$PostsImpl _$$PostsImplFromJson(Map<String, dynamic> json) => _$PostsImpl(
       currentPage: (json['current_page'] as num?)?.toInt(),
-      data: (json['data'] as List<dynamic>)
-          .map((e) => BrandNew.fromJson(e as Map<String, dynamic>))
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => BrandNew.fromJson(e as Map<String, dynamic>))
           .toList(),
       firstPageUrl: json['first_page_url'] as String?,
       from: (json['from'] as num?)?.toInt(),
       lastPage: (json['last_page'] as num?)?.toInt(),
       lastPageUrl: json['last_page_url'] as String?,
-      links: (json['links'] as List<dynamic>)
-          .map((e) => Link.fromJson(e as Map<String, dynamic>))
+      links: (json['links'] as List<dynamic>?)
+          ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
       nextPageUrl: json['next_page_url'],
       path: json['path'] as String?,
@@ -117,7 +119,7 @@ Map<String, dynamic> _$$PostsImplToJson(_$PostsImpl instance) =>
 _$LinkImpl _$$LinkImplFromJson(Map<String, dynamic> json) => _$LinkImpl(
       url: json['url'] as String?,
       label: json['label'] as String?,
-      active: json['active'] as bool,
+      active: json['active'] as bool?,
     );
 
 Map<String, dynamic> _$$LinkImplToJson(_$LinkImpl instance) =>

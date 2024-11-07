@@ -22,7 +22,7 @@ SavedSearchesResponseModel _$SavedSearchesResponseModelFromJson(
 /// @nodoc
 mixin _$SavedSearchesResponseModel {
   @JsonKey(name: "data")
-  Data get data => throw _privateConstructorUsedError;
+  Data? get data => throw _privateConstructorUsedError;
   @JsonKey(name: "msg")
   String? get msg => throw _privateConstructorUsedError;
 
@@ -40,9 +40,9 @@ abstract class $SavedSearchesResponseModelCopyWith<$Res> {
           SavedSearchesResponseModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: "data") Data data, @JsonKey(name: "msg") String? msg});
+      {@JsonKey(name: "data") Data? data, @JsonKey(name: "msg") String? msg});
 
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -59,14 +59,14 @@ class _$SavedSearchesResponseModelCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? data = freezed,
     Object? msg = freezed,
   }) {
     return _then(_value.copyWith(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
+              as Data?,
       msg: freezed == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -76,8 +76,12 @@ class _$SavedSearchesResponseModelCopyWithImpl<$Res,
 
   @override
   @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res> get data {
-    return $DataCopyWith<$Res>(_value.data, (value) {
+  $DataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $DataCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -93,10 +97,10 @@ abstract class _$$SavedSearchesResponseModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "data") Data data, @JsonKey(name: "msg") String? msg});
+      {@JsonKey(name: "data") Data? data, @JsonKey(name: "msg") String? msg});
 
   @override
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -112,14 +116,14 @@ class __$$SavedSearchesResponseModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? data = freezed,
     Object? msg = freezed,
   }) {
     return _then(_$SavedSearchesResponseModelImpl(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
+              as Data?,
       msg: freezed == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -141,7 +145,7 @@ class _$SavedSearchesResponseModelImpl implements _SavedSearchesResponseModel {
 
   @override
   @JsonKey(name: "data")
-  final Data data;
+  final Data? data;
   @override
   @JsonKey(name: "msg")
   final String? msg;
@@ -182,7 +186,7 @@ class _$SavedSearchesResponseModelImpl implements _SavedSearchesResponseModel {
 abstract class _SavedSearchesResponseModel
     implements SavedSearchesResponseModel {
   const factory _SavedSearchesResponseModel(
-          {@JsonKey(name: "data") required final Data data,
+          {@JsonKey(name: "data") required final Data? data,
           @JsonKey(name: "msg") required final String? msg}) =
       _$SavedSearchesResponseModelImpl;
 
@@ -191,7 +195,7 @@ abstract class _SavedSearchesResponseModel
 
   @override
   @JsonKey(name: "data")
-  Data get data;
+  Data? get data;
   @override
   @JsonKey(name: "msg")
   String? get msg;
@@ -399,14 +403,14 @@ class __$$DataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DataImpl implements _Data {
   const _$DataImpl(
-      {@JsonKey(name: "brand_new") required final List<BrandNew>? brandNew,
-      @JsonKey(name: "used") required final List<Used>? used,
-      @JsonKey(name: "services") required final List<Services>? services,
-      @JsonKey(name: "jobs") required final List<Jobs>? jobs,
-      @JsonKey(name: "events") required final List<Events>? events,
-      @JsonKey(name: "b2b") required final List<B2B>? b2B,
-      @JsonKey(name: "grocery") required final List<Grocery>? grocery,
-      @JsonKey(name: "posts") required this.posts})
+      {@JsonKey(name: "brand_new") final List<BrandNew>? brandNew,
+      @JsonKey(name: "used") final List<Used>? used,
+      @JsonKey(name: "services") final List<Services>? services,
+      @JsonKey(name: "jobs") final List<Jobs>? jobs,
+      @JsonKey(name: "events") final List<Events>? events,
+      @JsonKey(name: "b2b") final List<B2B>? b2B,
+      @JsonKey(name: "grocery") final List<Grocery>? grocery,
+      @JsonKey(name: "posts") this.posts})
       : _brandNew = brandNew,
         _used = used,
         _services = services,
@@ -548,14 +552,14 @@ class _$DataImpl implements _Data {
 
 abstract class _Data implements Data {
   const factory _Data(
-      {@JsonKey(name: "brand_new") required final List<BrandNew>? brandNew,
-      @JsonKey(name: "used") required final List<Used>? used,
-      @JsonKey(name: "services") required final List<Services>? services,
-      @JsonKey(name: "jobs") required final List<Jobs>? jobs,
-      @JsonKey(name: "events") required final List<Events>? events,
-      @JsonKey(name: "b2b") required final List<B2B>? b2B,
-      @JsonKey(name: "grocery") required final List<Grocery>? grocery,
-      @JsonKey(name: "posts") required final Posts? posts}) = _$DataImpl;
+      {@JsonKey(name: "brand_new") final List<BrandNew>? brandNew,
+      @JsonKey(name: "used") final List<Used>? used,
+      @JsonKey(name: "services") final List<Services>? services,
+      @JsonKey(name: "jobs") final List<Jobs>? jobs,
+      @JsonKey(name: "events") final List<Events>? events,
+      @JsonKey(name: "b2b") final List<B2B>? b2B,
+      @JsonKey(name: "grocery") final List<Grocery>? grocery,
+      @JsonKey(name: "posts") final Posts? posts}) = _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 
@@ -829,7 +833,7 @@ mixin _$Posts {
   @JsonKey(name: "current_page")
   int? get currentPage => throw _privateConstructorUsedError;
   @JsonKey(name: "data")
-  List<BrandNew> get data => throw _privateConstructorUsedError;
+  List<BrandNew>? get data => throw _privateConstructorUsedError;
   @JsonKey(name: "first_page_url")
   String? get firstPageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: "from")
@@ -839,7 +843,7 @@ mixin _$Posts {
   @JsonKey(name: "last_page_url")
   String? get lastPageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: "links")
-  List<Link> get links => throw _privateConstructorUsedError;
+  List<Link>? get links => throw _privateConstructorUsedError;
   @JsonKey(name: "next_page_url")
   dynamic get nextPageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: "path")
@@ -865,12 +869,12 @@ abstract class $PostsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<BrandNew> data,
+      @JsonKey(name: "data") List<BrandNew>? data,
       @JsonKey(name: "first_page_url") String? firstPageUrl,
       @JsonKey(name: "from") int? from,
       @JsonKey(name: "last_page") int? lastPage,
       @JsonKey(name: "last_page_url") String? lastPageUrl,
-      @JsonKey(name: "links") List<Link> links,
+      @JsonKey(name: "links") List<Link>? links,
       @JsonKey(name: "next_page_url") dynamic nextPageUrl,
       @JsonKey(name: "path") String? path,
       @JsonKey(name: "per_page") int? perPage,
@@ -893,12 +897,12 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
   @override
   $Res call({
     Object? currentPage = freezed,
-    Object? data = null,
+    Object? data = freezed,
     Object? firstPageUrl = freezed,
     Object? from = freezed,
     Object? lastPage = freezed,
     Object? lastPageUrl = freezed,
-    Object? links = null,
+    Object? links = freezed,
     Object? nextPageUrl = freezed,
     Object? path = freezed,
     Object? perPage = freezed,
@@ -911,10 +915,10 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int?,
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<BrandNew>,
+              as List<BrandNew>?,
       firstPageUrl: freezed == firstPageUrl
           ? _value.firstPageUrl
           : firstPageUrl // ignore: cast_nullable_to_non_nullable
@@ -931,10 +935,10 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
           ? _value.lastPageUrl
           : lastPageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      links: null == links
+      links: freezed == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>,
+              as List<Link>?,
       nextPageUrl: freezed == nextPageUrl
           ? _value.nextPageUrl
           : nextPageUrl // ignore: cast_nullable_to_non_nullable
@@ -972,12 +976,12 @@ abstract class _$$PostsImplCopyWith<$Res> implements $PostsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<BrandNew> data,
+      @JsonKey(name: "data") List<BrandNew>? data,
       @JsonKey(name: "first_page_url") String? firstPageUrl,
       @JsonKey(name: "from") int? from,
       @JsonKey(name: "last_page") int? lastPage,
       @JsonKey(name: "last_page_url") String? lastPageUrl,
-      @JsonKey(name: "links") List<Link> links,
+      @JsonKey(name: "links") List<Link>? links,
       @JsonKey(name: "next_page_url") dynamic nextPageUrl,
       @JsonKey(name: "path") String? path,
       @JsonKey(name: "per_page") int? perPage,
@@ -998,12 +1002,12 @@ class __$$PostsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currentPage = freezed,
-    Object? data = null,
+    Object? data = freezed,
     Object? firstPageUrl = freezed,
     Object? from = freezed,
     Object? lastPage = freezed,
     Object? lastPageUrl = freezed,
-    Object? links = null,
+    Object? links = freezed,
     Object? nextPageUrl = freezed,
     Object? path = freezed,
     Object? perPage = freezed,
@@ -1016,10 +1020,10 @@ class __$$PostsImplCopyWithImpl<$Res>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int?,
-      data: null == data
+      data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<BrandNew>,
+              as List<BrandNew>?,
       firstPageUrl: freezed == firstPageUrl
           ? _value.firstPageUrl
           : firstPageUrl // ignore: cast_nullable_to_non_nullable
@@ -1036,10 +1040,10 @@ class __$$PostsImplCopyWithImpl<$Res>
           ? _value.lastPageUrl
           : lastPageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      links: null == links
+      links: freezed == links
           ? _value._links
           : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>,
+              as List<Link>?,
       nextPageUrl: freezed == nextPageUrl
           ? _value.nextPageUrl
           : nextPageUrl // ignore: cast_nullable_to_non_nullable
@@ -1073,12 +1077,12 @@ class __$$PostsImplCopyWithImpl<$Res>
 class _$PostsImpl implements _Posts {
   const _$PostsImpl(
       {@JsonKey(name: "current_page") required this.currentPage,
-      @JsonKey(name: "data") required final List<BrandNew> data,
+      @JsonKey(name: "data") required final List<BrandNew>? data,
       @JsonKey(name: "first_page_url") required this.firstPageUrl,
       @JsonKey(name: "from") required this.from,
       @JsonKey(name: "last_page") required this.lastPage,
       @JsonKey(name: "last_page_url") required this.lastPageUrl,
-      @JsonKey(name: "links") required final List<Link> links,
+      @JsonKey(name: "links") required final List<Link>? links,
       @JsonKey(name: "next_page_url") required this.nextPageUrl,
       @JsonKey(name: "path") required this.path,
       @JsonKey(name: "per_page") required this.perPage,
@@ -1094,13 +1098,15 @@ class _$PostsImpl implements _Posts {
   @override
   @JsonKey(name: "current_page")
   final int? currentPage;
-  final List<BrandNew> _data;
+  final List<BrandNew>? _data;
   @override
   @JsonKey(name: "data")
-  List<BrandNew> get data {
+  List<BrandNew>? get data {
+    final value = _data;
+    if (value == null) return null;
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_data);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -1115,13 +1121,15 @@ class _$PostsImpl implements _Posts {
   @override
   @JsonKey(name: "last_page_url")
   final String? lastPageUrl;
-  final List<Link> _links;
+  final List<Link>? _links;
   @override
   @JsonKey(name: "links")
-  List<Link> get links {
+  List<Link>? get links {
+    final value = _links;
+    if (value == null) return null;
     if (_links is EqualUnmodifiableListView) return _links;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_links);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -1209,12 +1217,12 @@ class _$PostsImpl implements _Posts {
 abstract class _Posts implements Posts {
   const factory _Posts(
       {@JsonKey(name: "current_page") required final int? currentPage,
-      @JsonKey(name: "data") required final List<BrandNew> data,
+      @JsonKey(name: "data") required final List<BrandNew>? data,
       @JsonKey(name: "first_page_url") required final String? firstPageUrl,
       @JsonKey(name: "from") required final int? from,
       @JsonKey(name: "last_page") required final int? lastPage,
       @JsonKey(name: "last_page_url") required final String? lastPageUrl,
-      @JsonKey(name: "links") required final List<Link> links,
+      @JsonKey(name: "links") required final List<Link>? links,
       @JsonKey(name: "next_page_url") required final dynamic nextPageUrl,
       @JsonKey(name: "path") required final String? path,
       @JsonKey(name: "per_page") required final int? perPage,
@@ -1229,7 +1237,7 @@ abstract class _Posts implements Posts {
   int? get currentPage;
   @override
   @JsonKey(name: "data")
-  List<BrandNew> get data;
+  List<BrandNew>? get data;
   @override
   @JsonKey(name: "first_page_url")
   String? get firstPageUrl;
@@ -1244,7 +1252,7 @@ abstract class _Posts implements Posts {
   String? get lastPageUrl;
   @override
   @JsonKey(name: "links")
-  List<Link> get links;
+  List<Link>? get links;
   @override
   @JsonKey(name: "next_page_url")
   dynamic get nextPageUrl;
@@ -1280,7 +1288,7 @@ mixin _$Link {
   @JsonKey(name: "label")
   String? get label => throw _privateConstructorUsedError;
   @JsonKey(name: "active")
-  bool get active => throw _privateConstructorUsedError;
+  bool? get active => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1295,7 +1303,7 @@ abstract class $LinkCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "url") String? url,
       @JsonKey(name: "label") String? label,
-      @JsonKey(name: "active") bool active});
+      @JsonKey(name: "active") bool? active});
 }
 
 /// @nodoc
@@ -1313,7 +1321,7 @@ class _$LinkCopyWithImpl<$Res, $Val extends Link>
   $Res call({
     Object? url = freezed,
     Object? label = freezed,
-    Object? active = null,
+    Object? active = freezed,
   }) {
     return _then(_value.copyWith(
       url: freezed == url
@@ -1324,10 +1332,10 @@ class _$LinkCopyWithImpl<$Res, $Val extends Link>
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String?,
-      active: null == active
+      active: freezed == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ) as $Val);
   }
 }
@@ -1342,7 +1350,7 @@ abstract class _$$LinkImplCopyWith<$Res> implements $LinkCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "url") String? url,
       @JsonKey(name: "label") String? label,
-      @JsonKey(name: "active") bool active});
+      @JsonKey(name: "active") bool? active});
 }
 
 /// @nodoc
@@ -1357,7 +1365,7 @@ class __$$LinkImplCopyWithImpl<$Res>
   $Res call({
     Object? url = freezed,
     Object? label = freezed,
-    Object? active = null,
+    Object? active = freezed,
   }) {
     return _then(_$LinkImpl(
       url: freezed == url
@@ -1368,10 +1376,10 @@ class __$$LinkImplCopyWithImpl<$Res>
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String?,
-      active: null == active
+      active: freezed == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ));
   }
 }
@@ -1395,7 +1403,7 @@ class _$LinkImpl implements _Link {
   final String? label;
   @override
   @JsonKey(name: "active")
-  final bool active;
+  final bool? active;
 
   @override
   String toString() {
@@ -1434,7 +1442,7 @@ abstract class _Link implements Link {
   const factory _Link(
       {@JsonKey(name: "url") required final String? url,
       @JsonKey(name: "label") required final String? label,
-      @JsonKey(name: "active") required final bool active}) = _$LinkImpl;
+      @JsonKey(name: "active") required final bool? active}) = _$LinkImpl;
 
   factory _Link.fromJson(Map<String, dynamic> json) = _$LinkImpl.fromJson;
 
@@ -1446,7 +1454,7 @@ abstract class _Link implements Link {
   String? get label;
   @override
   @JsonKey(name: "active")
-  bool get active;
+  bool? get active;
   @override
   @JsonKey(ignore: true)
   _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>

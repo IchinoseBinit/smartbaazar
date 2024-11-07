@@ -6,7 +6,7 @@ part 'saved_search_response_model.g.dart';
 @freezed
 class SavedSearchesResponseModel with _$SavedSearchesResponseModel {
   const factory SavedSearchesResponseModel({
-    @JsonKey(name: "data") required Data data,
+    @JsonKey(name: "data") required Data? data,
     @JsonKey(name: "msg") required String? msg,
   }) = _SavedSearchesResponseModel;
 
@@ -17,18 +17,19 @@ class SavedSearchesResponseModel with _$SavedSearchesResponseModel {
 @freezed
 class Data with _$Data {
   const factory Data({
-    @JsonKey(name: "brand_new") required List<BrandNew>? brandNew,
-    @JsonKey(name: "used") required List<Used>? used,
-    @JsonKey(name: "services") required List<Services>? services,
-    @JsonKey(name: "jobs") required List<Jobs>? jobs,
-    @JsonKey(name: "events") required List<Events>? events,
-    @JsonKey(name: "b2b") required List<B2B>? b2B,
-    @JsonKey(name: "grocery") required List<Grocery>? grocery,
-    @JsonKey(name: "posts") required Posts? posts,
+    @JsonKey(name: "brand_new") List<BrandNew>? brandNew,
+    @JsonKey(name: "used") List<Used>? used,
+    @JsonKey(name: "services") List<Services>? services,
+    @JsonKey(name: "jobs") List<Jobs>? jobs,
+    @JsonKey(name: "events") List<Events>? events,
+    @JsonKey(name: "b2b") List<B2B>? b2B,
+    @JsonKey(name: "grocery") List<Grocery>? grocery,
+    @JsonKey(name: "posts") Posts? posts,
   }) = _Data;
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 }
+
 
 @freezed
 class BrandNew with _$BrandNew {
@@ -48,12 +49,12 @@ class BrandNew with _$BrandNew {
 class Posts with _$Posts {
   const factory Posts({
     @JsonKey(name: "current_page") required int? currentPage,
-    @JsonKey(name: "data") required List<BrandNew> data,
+    @JsonKey(name: "data") required List<BrandNew>? data,
     @JsonKey(name: "first_page_url") required String? firstPageUrl,
     @JsonKey(name: "from") required int? from,
     @JsonKey(name: "last_page") required int? lastPage,
     @JsonKey(name: "last_page_url") required String? lastPageUrl,
-    @JsonKey(name: "links") required List<Link> links,
+    @JsonKey(name: "links") required List<Link>? links,
     @JsonKey(name: "next_page_url") required dynamic nextPageUrl,
     @JsonKey(name: "path") required String? path,
     @JsonKey(name: "per_page") required int? perPage,
@@ -70,7 +71,7 @@ class Link with _$Link {
   const factory Link({
     @JsonKey(name: "url") required String? url,
     @JsonKey(name: "label") required String? label,
-    @JsonKey(name: "active") required bool active,
+    @JsonKey(name: "active") required bool? active,
   }) = _Link;
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);

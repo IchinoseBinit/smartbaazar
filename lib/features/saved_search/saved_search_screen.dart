@@ -3,256 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/saved_search/api/delete_saved_search_api.dart';
 import 'package:smartbazar/features/saved_search/api/saved_search_api.dart';
 import 'package:smartbazar/features/saved_search/api/search_from_saved_search_api.dart';
 import 'package:smartbazar/features/saved_search/model/saved_search_response_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-// class SavedSearchScreen extends ConsumerStatefulWidget {
-//   const SavedSearchScreen({super.key});
-
-//   @override
-//   ConsumerState<SavedSearchScreen> createState() => _SavedSearchScreenState();
-// }
-
-// class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
-//   List<SavedSearchesResponseModel> searchResults = [];
-//   bool isShowingSearchResults = false;
-//   String currentQuery = '';
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     // Use ref.listen in initState if you need to perform actions on state changes
-//   }
-
-//   void _onSavedSearchTapped(String keyword) {
-//     setState(() {
-//       currentQuery = keyword;
-//       isShowingSearchResults = false;
-//     });
-
-//     ref.listen(
-//       searchFromSavedSearchProvider(currentQuery),
-//       (previous, next) {
-//         next.when(
-//           data: (searchResultsData) {
-//             setState(() {
-//               isShowingSearchResults = true;
-//               searchResults = searchResultsData as List<SavedSearchesResponseModel>? ?? [];
-//             });
-//             print('Updated Search Results: $searchResults');
-//           },
-//           loading: () {
-//             setState(() {
-//               isShowingSearchResults = false;
-//               searchResults = [];
-//             });
-//           },
-//           error: (error, stackTrace) {
-//             setState(() {
-//               isShowingSearchResults = false;
-//               searchResults = [];
-//             });
-//             print('Error during search: $error');
-//           },
-//         );
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final savedSearchesAsync = ref.watch(getSavedSearchesProvider);
-
-//     return GenericSafeArea(
-//       child: Scaffold(
-//         backgroundColor: const Color(0xFFF6F1F1),
-//         body: SingleChildScrollView(
-//           child: Padding(
-//             padding: EdgeInsets.symmetric(vertical: 20.h),
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 const Divider(thickness: 2, color: Color(0xffD9D9D9)),
-//                 Text(
-//                   "Please select a saved search to show the result.",
-//                   style: TextStyle(
-//                       color: const Color(0xFFADADAD), fontSize: 12.sp),
-//                 ),
-//                 SizedBox(height: 8.h),
-//                 savedSearchesAsync.when(
-//                   data: (savedSearchData) {
-//                     final savedSearchList =
-//                         savedSearchData.result?.savedSearches?.data ?? [];
-
-//                     if (savedSearchList.isEmpty) {
-//                       return Padding(
-//                         padding: EdgeInsets.only(top: 20.h),
-//                         child: Text(
-//                           "No saved searches found.",
-//                           style:
-//                               TextStyle(fontSize: 14.sp, color: Colors.black),
-//                         ),
-//                       );
-//                     }
-
-//                     return Column(
-//                       children: [
-//                         ListView.separated(
-//                           shrinkWrap: true,
-//                           physics: const NeverScrollableScrollPhysics(),
-//                           itemBuilder: (context, index) {
-//                             final savedSearch = savedSearchList[index];
-//                             return GestureDetector(
-//                               onTap: () {
-//                                 _onSavedSearchTapped(savedSearch.keyword!);
-//                               },
-//                               child: Card(
-//                                 color: Colors.white.withOpacity(0.9),
-//                                 child: ListTile(
-//                                   title:
-//                                       Text(savedSearch.keyword ?? 'No keyword'),
-//                                   trailing: Padding(
-//                                     padding: const EdgeInsets.all(8.0),
-//                                     child: InkWell(
-//                                       child: SvgPicture.asset(deleteIcon),
-//                                       onTap: () {
-//                                         // Handle delete action here
-//                                       },
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                             );
-//                           },
-//                           separatorBuilder: (context, index) =>
-//                               SizedBox(height: 1.h),
-//                           itemCount: savedSearchList.length,
-//                         ),
-//                         SizedBox(height: 20.h),
-//                         if (isShowingSearchResults)
-//                           Column(
-//                             children: [
-//                               Text(
-//                                 'Search results for "$currentQuery":',
-//                                 style: TextStyle(
-//                                     fontSize: 16.sp,
-//                                     fontWeight: FontWeight.bold),
-//                               ),
-//                               SizedBox(height: 10.h),
-//                               if (searchResults.isEmpty)
-//                                 const Text("No matching results found.",
-//                                     style: TextStyle(color: Colors.grey))
-//                               else
-//                                 Column(
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                   children: [
-//                                     if (searchResults.first.data.brandNew!.isNotEmpty)
-//                                       _buildCategorySection(
-//                                           'Brand New', searchResults.first.data.brandNew!),
-//                                     if (searchResults.first.data.used!.isNotEmpty)
-//                                       _buildCategorySection(
-//                                           'Used', searchResults.first.data.used!),
-//                                     if (searchResults.first.data.services!.isNotEmpty)
-//                                       _buildCategorySection(
-//                                           'Services', searchResults.first.data.services!),
-//                                     if (searchResults.first.data.jobs.isNotEmpty)
-//                                       _buildCategorySection(
-//                                           'Jobs', searchResults.first.data.jobs),
-//                                     if (searchResults.first.data.events.isNotEmpty)
-//                                       _buildCategorySection(
-//                                           'Events', searchResults.first.data.events),
-//                                     if (searchResults.first.data.grocery.isNotEmpty)
-//                                       _buildCategorySection(
-//                                           'Grocery', searchResults.first.data.grocery),
-//                                     _buildPostsSection(searchResults.first.data.posts),
-//                                   ],
-//                                 ),
-//                             ],
-//                           ),
-//                       ],
-//                     );
-//                   },
-//                   loading: () =>
-//                       const Center(child: CircularProgressIndicator()),
-//                   error: (error, stackTrace) => Padding(
-//                     padding: EdgeInsets.only(top: 20.h),
-//                     child: Text(
-//                       "Error loading saved searches: $error",
-//                       style: TextStyle(fontSize: 14.sp, color: Colors.red),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildCategorySection(String title, List<dynamic> items) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Padding(
-//           padding: EdgeInsets.symmetric(vertical: 10.h),
-//           child: Text(
-//             title,
-//             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-//           ),
-//         ),
-//         ListView.builder(
-//           shrinkWrap: true,
-//           physics: const NeverScrollableScrollPhysics(),
-//           itemCount: items.length,
-//           itemBuilder: (context, index) {
-//             final item = items[index];
-//             return Card(
-//               margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-//               child: ListTile(
-//                 title: Text(item.title ?? 'No Title'),
-//                 subtitle: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text('Price: ${item.price ?? 'N/A'}'),
-//                     const SizedBox(height: 4),
-//                   ],
-//                 ),
-//                 leading: Image.network(
-//                   item.image ?? 'https://via.placeholder.com/150',
-//                   width: 50.w,
-//                   height: 50.h,
-//                   fit: BoxFit.cover,
-//                 ),
-//               ),
-//             );
-//           },
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildPostsSection(Posts posts) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Padding(
-//           padding: EdgeInsets.symmetric(vertical: 10.h),
-//           child: Text(
-//             'Posts',
-//             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-//           ),
-//         ),
-//         ListTile(
-//           title: Text(posts.data.first.title ?? 'No Title'),
-//           subtitle: Text('Description: ${posts.data.first.price ?? 'No description'}'),
-//         ),
-//       ],
-//     );
-//   }
-// }
 // Define a provider that handles the search results logic
 final searchResultsProvider = StateNotifierProvider<SearchResultsNotifier,
     AsyncValue<List<SavedSearchesResponseModel>>>(
@@ -281,7 +38,6 @@ class SearchResultsNotifier
   }
 }
 
-// Your ConsumerStatefulWidget
 class SavedSearchScreen extends ConsumerStatefulWidget {
   const SavedSearchScreen({super.key});
 
@@ -315,7 +71,51 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Divider(thickness: 2, color: Color(0xffD9D9D9)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.notifications,
+                        size: 25,
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        'Saved Searches',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        size: 15,
+                        Icons.arrow_back_ios,
+                        color: Color(0xffADADAD),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Go back',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff888888),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  thickness: 2,
+                  color: Color(0xffD9D9D9),
+                ),
                 Text(
                   "Please select a saved search to show the result.",
                   style: TextStyle(
@@ -358,8 +158,42 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: InkWell(
                                       child: SvgPicture.asset(deleteIcon),
-                                      onTap: () {
-                                        // Handle delete action here
+                                      onTap: () async {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text('Deleting item...'),
+                                              backgroundColor: Colors.grey),
+                                        );
+                                        try {
+                                          // Call the delete function
+                                          await ref.read(
+                                              deleteSavedSearchProvider(
+                                                      savedSearch.id!
+                                                          .toString())
+                                                  .future);
+
+                                          // Show success message and invalidate the provider to refresh the list
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Search deleted successfully'),
+                                                backgroundColor: Colors.grey),
+                                          );
+
+                                          ref.invalidate(
+                                              getSavedSearchesProvider);
+                                        } catch (e) {
+                                          // Show error message
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    'Failed to delete search: $e'),
+                                                backgroundColor: Colors.grey),
+                                          );
+                                        }
                                       },
                                     ),
                                   ),
@@ -392,7 +226,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
 
                                   // Extract the lists from search results
                                   final brandNewList =
-                                      searchResults.first.data.brandNew!;
+                                      searchResults.first.data?.brandNew!;
                                   // final usedList =
                                   //     searchResults.first.data.used!;
                                   // final servicesList =
@@ -402,9 +236,9 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      if (brandNewList.isNotEmpty)
-                                        _buildCategorySection(
-                                            'Brand New', brandNewList),
+                                      // if (brandNewList!.isNotEmpty)
+                                      _buildCategorySection(
+                                          'Brand New', brandNewList ?? []),
                                       // if (usedList.isNotEmpty)
                                       //   _buildCategorySection('Used', usedList),
                                       // if (servicesList.isNotEmpty)
@@ -446,20 +280,202 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10.h),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            return ListTile(
-              title: Text(item.toString()), // Replace with your item property
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 7.w),
+              child: Card(
+                elevation: 6,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailScreen(productId: item.id),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: const Color(0xffFFFFFF),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(0.2),
+                          spreadRadius: 10,
+                          blurRadius: 10,
+                          offset: const Offset(1, 0),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Checkbox(
+                            //   value: true,
+                            //   onChanged: (value) {},
+                            // ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     setState(() {
+                            //       _isChecked = !_isChecked;
+                            //     });
+                            //   },
+                            //   child: Container(
+                            //     width: 15,
+                            //     height: 15,
+                            //     decoration: BoxDecoration(
+                            //       color: _isChecked
+                            //           ? const Color(0xff362677)
+                            //           : null,
+                            //       shape: BoxShape.circle,
+                            //       border: Border.all(
+                            //           color: _isChecked
+                            //               ? const Color(0xff362677)
+                            //               : const Color(0xffD9D9D9),
+                            //           width: 1.0),
+                            //     ),
+                            //     child: _isChecked
+                            //         ? const Icon(
+                            //             Icons.check,
+                            //             size: 12.0,
+                            //             color: Colors.white,
+                            //           )
+                            //         : null,
+                            //   ),
+                            // ),
+                            SizedBox(
+                              width: 7.w,
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(
+                                    top: 15.h,
+                                    left: 8.w,
+                                    right: 8.w,
+                                    bottom: 20.h),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  color: const Color(0xffF6F1F1),
+                                ),
+                                child: Image.network(
+                                  item.image!,
+                                  height: 70.h,
+                                )),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Expanded(
+                                child: Column(
+                              children: [
+                                Text(
+                                  item.title!,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 40.h,
+                                ),
+                                Column(
+                                  children: [
+                                    // if (item.discountedPrice != null &&
+                                    //     item.discountedPrice!.isNotEmpty) ...[
+                                    //   SizedBox(width: 10.w),
+                                    //   Text(
+                                    //     'Rs${item.price ?? ''}',
+                                    //     style: TextStyle(
+                                    //         color: const Color(0xffB5B5B5),
+                                    //         fontSize: 14.sp,
+                                    //         fontWeight: FontWeight.w400,
+                                    //         decoration:
+                                    //             TextDecoration.lineThrough),
+                                    //   ),
+                                    // ],
+                                    // if (item.discountedPrice != null &&
+                                    //     item.discountedPrice!.isNotEmpty)
+                                    //   Text(
+                                    //     'Rs${item.discountedPrice!}',
+                                    //     style: TextStyle(
+                                    //         color: const Color(0xff36383C),
+                                    //         fontSize: 16.sp,
+                                    //         fontWeight: FontWeight.w700),
+                                    //   )
+                                    // else
+                                    Text(
+                                      'Rs${item.price ?? ''}',
+                                      style: TextStyle(
+                                          color: const Color(0xff36383C),
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )),
+                            //  const Spacer(),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     // Show deleting message
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       const SnackBar(
+                            //           content: Text('Deleting item...'),
+                            //           backgroundColor: Colors.grey),
+                            //     );
+
+                            //     try {
+                            //       // Call the delete function
+                            //       await ref.read(deleteFavouriteProductProvider(
+                            //               widget.item.id!)
+                            //           .future);
+
+                            //       // Show success message and invalidate the provider to refresh the list
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         const SnackBar(
+                            //             content:
+                            //                 Text('Item deleted successfully'),
+                            //             backgroundColor: Colors.grey),
+                            //       );
+
+                            //       ref.invalidate(getFavouriteListProvider);
+                            //     } catch (e) {
+                            //       // Show error message
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         SnackBar(
+                            //             content:
+                            //                 Text('Failed to delete item: $e'),
+                            //             backgroundColor: Colors.grey),
+                            //       );
+                            //     }
+                            //   },
+                            //   child: SvgPicture.asset(deleteIcon),
+                            // ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             );
+            // return ListTile(
+            //   title: Text(item.title), // Replace with your item property
+            // );
           },
         ),
         SizedBox(height: 20.h),
