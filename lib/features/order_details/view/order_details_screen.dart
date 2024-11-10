@@ -12,7 +12,6 @@ import 'package:smartbazar/features/order_details/api/checkout_form_submission_a
 import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/order_details/model/checkout_details_model.dart';
-import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class OrderDetailsScreen extends ConsumerStatefulWidget {
