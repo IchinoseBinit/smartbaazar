@@ -74,6 +74,15 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
           resizeToAvoidBottomInset: false,
           backgroundColor: const Color(0xffF6F1F1),
           appBar: AppbarWidget(
+            serchontap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                      query: _searchController.text,
+                    ),
+                  ));
+            },
             onsubmit: (p0) {},
             scaffoldKey: _key,
             searchController: _searchController,
@@ -162,38 +171,39 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
                       ),
                     ),
                   ),
-                  brandbajardata.when(
-                    data: (data) {
-                      return    CarouselSlider(
-                              items: data.data.trandBanners?.map((e) {
-                                 return Image.network(
-                                      width: double.infinity,
-                                      fit: BoxFit.fill,
-                                      e.image!);
-                                
-                              },).toList(),
-                              options: CarouselOptions(
-                                height: 140.h,
-                                aspectRatio: 0.1,
-                                reverse: true,
-                                viewportFraction: 1,
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                              ));
-                      
-                    },
-                     error: (error, stackTrace) {
-                       return Text("error occured $stackTrace");
-                     },
-                         loading: () {
-                        return SimpleDialog(
-                          children: [
-                            adsList.isLoading
-                                ? const SizedBox()
-                                : Image.network(adsList.value!.first.image!)
-                          ],
-                        );
-                      },)
+                brandbajardata.when(
+                  data: (data) {
+                    return CarouselSlider(
+                        items: data.data.trandBanners?.map(
+                          (e) {
+                            return Image.network(
+                                width: double.infinity,
+                                fit: BoxFit.fill,
+                                e.image!);
+                          },
+                        ).toList(),
+                        options: CarouselOptions(
+                          height: 140.h,
+                          aspectRatio: 0.1,
+                          reverse: true,
+                          viewportFraction: 1,
+                          autoPlay: true,
+                          enlargeCenterPage: true,
+                        ));
+                  },
+                  error: (error, stackTrace) {
+                    return Text("error occured $stackTrace");
+                  },
+                  loading: () {
+                    return SimpleDialog(
+                      children: [
+                        adsList.isLoading
+                            ? const SizedBox()
+                            : Image.network(adsList.value!.first.image!)
+                      ],
+                    );
+                  },
+                )
                 // CarouselSlider(
                 //               items: homePostsData.map(
                 //                 data: (data) {
@@ -223,7 +233,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen> {
                 //                 enlargeCenterPage: true,
                 //               )),
 
-               , Padding(
+                ,
+                Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 5.w,
                   ),

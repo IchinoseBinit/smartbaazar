@@ -39,7 +39,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
 
     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
       debugPrint("Search query: $query");
-      ref.refresh(searchProvider(query));  // Ensure this provider works as expected
+      ref.refresh(
+          searchProvider(query)); // Ensure this provider works as expected
       setState(() {
         _showSearchResults = query.isNotEmpty;
       });
@@ -63,7 +64,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
   Widget build(BuildContext context) {
     final adsList = ref.watch(getAdsProvider);
     final AsyncbajarValue = ref.watch(getB2bResponseProvider);
-    final searchResults = ref.watch(searchProvider(_searchController.text));  // Ensure this updates correctly
+    final searchResults = ref.watch(searchProvider(
+        _searchController.text)); // Ensure this updates correctly
 
     return GenericSafeArea(
       color: Colors.white,
@@ -100,7 +102,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        if (_showSearchResults) 
+                        if (_showSearchResults)
                           Positioned(
                             top: 0.h, // Position just below the search bar
                             left: 0,
@@ -109,7 +111,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                               color: Colors.white,
                               child: searchResults.when(
                                 data: (results) {
-                                  debugPrint("Search results: $results"); // Debug print
+                                  debugPrint(
+                                      "Search results: $results"); // Debug print
                                   if (results.isEmpty) {
                                     return const SizedBox(
                                       child: Text('No result found'),
@@ -130,7 +133,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => SearchScreen(
+                                                builder: (context) =>
+                                                    SearchScreen(
                                                   query: _searchController.text,
                                                 ),
                                               ),
@@ -149,19 +153,31 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                   );
                                 },
                                 loading: () {
-                                  return const Center(child: CircularProgressIndicator());
+                                  return const Center(
+                                      child: CircularProgressIndicator());
                                 },
-                                error: (error, stack) => const Center(child: Text('Error loading search results')),
+                                error: (error, stack) => const Center(
+                                    child:
+                                        Text('Error loading search results')),
                               ),
                             ),
                           ),
                         CarouselSlider(
                             items: slider.map(
                               (e) {
-                                return Image.network(
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    e.image!);
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => B2bScreen(),
+                                        ));
+                                  },
+                                  child: Image.network(
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      e.image!),
+                                );
                               },
                             ).toList(),
                             options: CarouselOptions(
@@ -216,15 +232,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                   );
                 },
                 error: (err, stack) => Center(child: Text('Error: $err')),
-                  loading: () {
-                        return SimpleDialog(
-                          children: [
-                            adsList.isLoading
-                                ? const SizedBox()
-                                : Image.network(adsList.value!.first.image!)
-                          ],
-                        );
-                      },
+                loading: () {
+                  return SimpleDialog(
+                    children: [
+                      adsList.isLoading
+                          ? const SizedBox()
+                          : Image.network(adsList.value!.first.image!)
+                    ],
+                  );
+                },
               )
             ],
           ),

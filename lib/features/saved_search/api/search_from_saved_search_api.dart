@@ -60,4 +60,5 @@ Future<SavedSearchesResponseModel?> searchFromSavedSearch(
     print('Error in search request: $e');
     return null;
   }
+  return null;
 }

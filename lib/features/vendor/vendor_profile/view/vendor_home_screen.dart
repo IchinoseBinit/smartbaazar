@@ -119,6 +119,15 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
+                  serchontap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                      query: _searchController.text,
+                    ),
+                  ));
+            },
           onsubmit: (value) {
             if (_showSearchResults) {
               setState(() {

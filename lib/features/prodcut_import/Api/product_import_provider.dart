@@ -37,23 +37,16 @@ Future<String> storeProductImport(File myfile) async {
 }
 
 class FileUploadWidget extends StatelessWidget {
+  const FileUploadWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
         // Assume you have logic to pick a file
-        File? file; // Replace with your file picking logic
-
-        if (file != null) {
-          final responseMessage = await storeProductImport(file);
-          
-          // Show the response message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseMessage)),
-          );
-        }
+        File? file;
       },
-      child: Text('Upload File'),
+      child: const Text('Upload File'),
     );
   }
 }

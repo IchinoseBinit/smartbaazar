@@ -6,6 +6,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -80,6 +81,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
+          serchontap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    query: _searchController.text,
+                  ),
+                ));
+          },
           onsubmit: (p0) {},
           scaffoldKey: _key,
           searchController: _searchController,
@@ -139,15 +149,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             width: double.infinity,
                             child: brandbajarAsyncValue.when(
                               data: (brandBazar) {
-                           
                                 // Render your data
                                 return CarouselSlider(
                                     items: brandBazar.data.trandBanners!
                                         .map((banner) {
-                                      return Image.network(
-                                          width: double.infinity,
-                                          fit: BoxFit.fill,
-                                          banner.image!);
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const B2bScreen(),
+                                              ));
+                                        },
+                                        child: Image.network(
+                                            width: double.infinity,
+                                            fit: BoxFit.fill,
+                                            banner.image!),
+                                      );
                                     }).toList(),
                                     options: CarouselOptions(
                                       aspectRatio: 0.1,
@@ -157,8 +176,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       enlargeCenterPage: true,
                                     ));
                               },
-                              loading: () =>
-                                  const Center(child: CircularProgressIndicator()),
+                              loading: () => const Center(
+                                  child: CircularProgressIndicator()),
                               error: (error, stack) =>
                                   Center(child: Text('Error: $error')),
                             ),

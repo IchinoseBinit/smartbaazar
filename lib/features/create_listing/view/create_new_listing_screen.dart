@@ -1300,91 +1300,123 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             child: GeneralEelevatedButton(
                 text: 'Submit',
                 onPresssed: () async {
-                  try {
-                    // Dummy data
-                    String responseMessage = await createlisting(
-                        null, // ref
-                        widget.category!.trim(), // category
-                        widget.title!.trim(), // title
-                        widget.city!.trim(), // city
-                        widget.price!.trim(), // price
-                        widget.description!.trim(), // description
-                        widget.length?.trim() ?? '0', // length
-                        widget.weight?.trim() ?? '0', // width
-                        widget.height?.trim() ?? '0', // height
-                        widget.weight?.trim() ?? '0', // weight
-                        widget.discount.trim(), // discounted price
-                        widget.type?.trim() ?? '0', // type
-                        emailcontroller.text, // email
-                        widget.phonecoontroller!.text, // phone
-                        nameconroller.text, // username
-                        pickupcontroller.text, // pickup
-                        selectedImages, // images
-                        widget.terms?.trim() ??
-                            '0', // accept (e.g., "1" for yes, or whatever value is expected)
-                        pickupcontroller
-                            .text // address (use the appropriate address here)
-                        );
-                  } catch (e) {
+                  if (widget.category != null &&
+                      widget.title != null &&
+                      widget.city != null &&
+                      widget.price != null &&
+                      widget.description != null &&
+                      widget.type != null &&
+                      emailcontroller.text.isNotEmpty &&
+                      widget.phonecoontroller?.text.isNotEmpty == true &&
+                      nameconroller.text.isNotEmpty &&
+                      pickupcontroller.text.isNotEmpty &&
+                      selectedImages.isNotEmpty &&
+                      widget.terms != null) {
+                    try {
+                      // Dummy data
+                      String responseMessage = await createlisting(
+                          null, // ref
+                          widget.category!.trim(), // category
+                          widget.title!.trim(), // title
+                          widget.city!.trim(), // city
+                          widget.price!.trim(), // price
+                          widget.description!.trim(), // description
+                          widget.length?.trim() ?? '0', // length
+                          widget.weight?.trim() ?? '0', // width
+                          widget.height?.trim() ?? '0', // height
+                          widget.weight?.trim() ?? '0', // weight
+                          widget.discount.trim(), // discounted price
+                          widget.type?.trim() ?? '0', // type
+                          emailcontroller.text, // email
+                          widget.phonecoontroller!.text, // phone
+                          nameconroller.text, // username
+                          pickupcontroller.text, // pickup
+                          selectedImages, // images
+                          widget.terms?.trim() ??
+                              '0', // accept (e.g., "1" for yes, or whatever value is expected)
+                          pickupcontroller
+                              .text // address (use the appropriate address here)
+                          );
+                    } catch (e) {
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SizedBox(
+                            child: AlertDialog(
+                              shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              content: Builder(
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 300.h,
+                                    width: 900.w,
+                                    child: Column(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Message",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 19),
+                                                ),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                        Icons.close)),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 30.h,
+                                            ),
+                                            const Text(
+                                              "Your listing has been created wait for some time before it is being verified",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 19),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                      // ScaffoldMes
+                      // senger.of(context).showSnackBar(SnackBar(
+                      //     content: Text(
+                      //         "Yourlisting has been created wait for some time before it is being verified")));
+                      print("API call failed: $e");
+                    }
+                  } else {
                     await showDialog(
                       context: context,
                       builder: (context) {
-                        return SizedBox(
-                          child: AlertDialog(
-                            shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            content: Builder(
-                              builder: (context) {
-                                return SizedBox(
-                                  height: 300.h,
-                                  width: 900.w,
-                                  child: Column(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const Text(
-                                                "Message",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 19),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.close)),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 30.h,
-                                          ),
-                                          const Text(
-                                            "Your listing has been created wait for some time before it is being verified",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 19),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                        return AlertDialog(
+                          title: const Text("Missing Fields"),
+                          content: const Text(
+                              "Please fill in all required fields to create a listing."),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("OK"),
                             ),
-                          ),
+                          ],
                         );
                       },
                     );
-                    // ScaffoldMes
-                    // senger.of(context).showSnackBar(SnackBar(
-                    //     content: Text(
-                    //         "Yourlisting has been created wait for some time before it is being verified")));
-                    print("API call failed: $e");
                   }
                 })),
         SizedBox(

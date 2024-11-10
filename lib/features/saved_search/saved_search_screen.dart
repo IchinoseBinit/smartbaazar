@@ -377,6 +377,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                             ),
                             Expanded(
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   item.title!,
@@ -390,6 +391,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                                   height: 40.h,
                                 ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // if (item.discountedPrice != null &&
                                     //     item.discountedPrice!.isNotEmpty) ...[

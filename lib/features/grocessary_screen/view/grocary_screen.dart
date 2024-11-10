@@ -76,6 +76,15 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
+                  serchontap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                      query: _searchController.text,
+                    ),
+                  ));
+            },
           onsubmit: (p0) {},
           scaffoldKey: _key,
           searchController: _searchController,
