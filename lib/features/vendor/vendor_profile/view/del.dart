@@ -12,7 +12,9 @@
 // import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 // import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 // import 'package:smartbazar/features/home/api/search_product.dart';
+// import 'package:smartbazar/features/home/api/vendor_search.dart';
 // import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+// import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 // import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 // import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 // import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -21,21 +23,26 @@
 // import 'package:smartbazar/features/widgets/product_card.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-// class DummyVendorHomeScreen extends ConsumerStatefulWidget {
+// class VSCreen extends ConsumerStatefulWidget {
 //   final String vendorName;
-//   const DummyVendorHomeScreen({super.key, required this.vendorName});
+//   final int vid;
+//   const VSCreen(
+//       {super.key, required this.vendorName, required this.vid});
 
 //   @override
 //   ConsumerState<ConsumerStatefulWidget> createState() =>
-//       _DummyVendorHomeScreenState();
+//       _VSCreenState();
 // }
 
-// class _DummyVendorHomeScreenState extends ConsumerState<DummyVendorHomeScreen>
+// class _VSCreenState extends ConsumerState<VSCreen>
 //     with SingleTickerProviderStateMixin {
 //   final GlobalKey<ScaffoldState> _key = GlobalKey();
 //   final TextEditingController _searchController = TextEditingController();
+//   final TextEditingController _vendorsearchController = TextEditingController();
+
 //   final _debouncer = BehaviorSubject<String>();
 //   bool _showSearchResults = false;
+//   bool _vendorsearchResullts = false;
 //   late TabController _tabController;
 //   int _postType = 0; // Default to 'Home' tab with postType 0
 
@@ -43,7 +50,7 @@
 //   void initState() {
 //     super.initState();
 
-//   _tabController = TabController(length: 3, vsync: this);
+//     _tabController = TabController(length: 3, vsync: this);
 
 //     // Listen for tab changes
 //     _tabController.addListener(() {
@@ -54,6 +61,17 @@
 //           widget.vendorName.replaceAll(" ", ''),
 //           postType: _postType,
 //         ));
+//       });
+//     });
+//     _vendorsearchController.addListener(() {
+//       _debouncer.add(_vendorsearchController.text);
+//     });
+
+//     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+//       debugPrint("Vendor Search query: $query");
+//       ref.refresh(VendorSearchProvider(query, widget.vid));
+//       setState(() {
+//         _vendorsearchResullts = query.isNotEmpty; // Update this flag
 //       });
 //     });
 
@@ -80,6 +98,7 @@
 //   void dispose() {
 //     _debouncer.close();
 //     _searchController.dispose();
+//     _vendorsearchController.dispose();
 //     _tabController.dispose();
 //     super.dispose();
 //   }
@@ -89,17 +108,26 @@
 //     final adsList = ref.watch(getAdsProvider);
 
 //     final searchResults = ref.watch(searchProvider(_searchController.text));
+//     final vendorsearchResults = ref
+//         .watch(VendorSearchProvider(_vendorsearchController.text, widget.vid));
 
 //     final vendorProfileModelDataAsyncValue = ref.watch(
-//         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", ''),
-        
-//         ));
+//         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
 //     return SafeArea(
 //       child: Scaffold(
 //         key: _key,
 //         resizeToAvoidBottomInset: false,
 //         backgroundColor: const Color(0xffF6F1F1),
 //         appBar: AppbarWidget(
+//                   serchontap: () {
+//               Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => SearchScreen(
+//                       query: _searchController.text,
+//                     ),
+//                   ));
+//             },
 //           onsubmit: (value) {
 //             if (_showSearchResults) {
 //               setState(() {
@@ -124,84 +152,95 @@
 //           onSearchFocusChanged: _onSearchFocusChanged,
 //         ),
 //         drawer: const CustomDrawer(),
-//         body: SingleChildScrollView(
-//           scrollDirection: Axis.vertical,
-//           child: Column(
-//             children: [
-//               if (_showSearchResults)
-//                 Positioned(
-//                   top: 0.h, // Position just below the search bar
-//                   left: 0,
-//                   right: 0,
-//                   child: Container(
-//                     color: Colors.white,
-//                     child: searchResults.when(
-//                       data: (results) {
-//                         if (results.isEmpty) {
-//                           return const SizedBox(
-//                             child: Text('No result found'),
-//                           ); // No results
-//                         }
-//                         return Card(
-//                           elevation: 8,
-//                           child: ListView.separated(
-//                             padding: EdgeInsets.zero,
-//                             shrinkWrap: true,
-//                             primary: false,
-//                             itemCount: results.length,
-//                             itemBuilder: (context, index) {
-//                               final product = results[index];
-//                               return ListTile(
-//                                 title: Text(product.title),
-//                                 onTap: () {
-//                                   Navigator.push(
-//                                       context,
-//                                       MaterialPageRoute(
-//                                         builder: (context) => SearchScreen(
-//                                           query: _searchController.text,
-//                                         ),
-//                                       ));
-                  
-//                                   setState(() {
-//                                     _showSearchResults = false;
-                  
-//                                     FocusScope.of(context).unfocus();
-//                                   });
-//                                   // Navigator.push(
-//                                   //   context,
-//                                   //   MaterialPageRoute(
-//                                   //     builder: (context) =>
-//                                   //         ProductDetailsScreen(
-//                                   //       productId: product.id,
-//                                   //     ),
-//                                   //   ),
-//                                   // );
-//                                 },
-//                               );
-//                             },
-//                             separatorBuilder: (context, index) =>
-//                                 const Divider(),
-//                           ),
-//                         );
-//                       },
-//                       loading: () {
-//                         return SimpleDialog(
-//                           children: [
-//                             adsList.isLoading
-//                                 ? const SizedBox()
-//                                 : Image.network(adsList.value!.first.image!)
-//                           ],
-//                         );
-//                       },
-//                       error: (error, stack) =>
-//                           const Center(child: CircularProgressIndicator()),
+//         body: GestureDetector(
+//           behavior: HitTestBehavior.opaque,
+//           onTap: () {
+//             // if (_showSearchResults) {
+//             //   setState(() {
+//             //     _showSearchResults = false;
+//             //     FocusScope.of(context).unfocus();
+//             //   });
+//             // }
+//           },
+//           child: SingleChildScrollView(
+//             scrollDirection: Axis.vertical,
+//             // Add SingleChildScrollView here
+//             child: Column(
+//               children: [
+//                 if (_showSearchResults)
+//                   Positioned(
+//                     top: 0.h, // Position just below the search bar
+//                     left: 0,
+//                     right: 0,
+//                     child: Container(
+//                       color: Colors.white,
+//                       child: searchResults.when(
+//                         data: (results) {
+//                           if (results.isEmpty) {
+//                             return const SizedBox(
+//                               child: Text('No result found'),
+//                             ); // No results
+//                           }
+//                           return Card(
+//                             elevation: 8,
+//                             child: ListView.separated(
+//                               padding: EdgeInsets.zero,
+//                               shrinkWrap: true,
+//                               primary: false,
+//                               itemCount: results.length,
+//                               itemBuilder: (context, index) {
+//                                 final product = results[index];
+//                                 return ListTile(
+//                                   title: Text(product.title),
+//                                   onTap: () {
+//                                     Navigator.push(
+//                                         context,
+//                                         MaterialPageRoute(
+//                                           builder: (context) => SearchScreen(
+//                                             query: _searchController.text,
+//                                           ),
+//                                         ));
+
+//                                     setState(() {
+//                                       _showSearchResults = false;
+
+//                                       FocusScope.of(context).unfocus();
+//                                     });
+//                                     // Navigator.push(
+//                                     //   context,
+//                                     //   MaterialPageRoute(
+//                                     //     builder: (context) =>
+//                                     //         ProductDetailsScreen(
+//                                     //       productId: product.id,
+//                                     //     ),
+//                                     //   ),
+//                                     // );
+//                                   },
+//                                 );
+//                               },
+//                               separatorBuilder: (context, index) =>
+//                                   const Divider(),
+//                             ),
+//                           );
+//                         },
+//                         loading: () {
+//                           return SimpleDialog(
+//                             children: [
+//                               adsList.isLoading
+//                                   ? const SizedBox()
+//                                   : Image.network(adsList.value!.first.image!)
+//                             ],
+//                           );
+//                         },
+//                         error: (error, stack) =>
+//                             const Center(child: CircularProgressIndicator()),
+//                       ),
 //                     ),
 //                   ),
-//                 ),
-//               vendorProfileModelDataAsyncValue.when(
-//                 data: (vendorProfile) {
-//                   return SingleChildScrollView(
-//                     child: Column(
+//                 vendorProfileModelDataAsyncValue.when(
+//                   data: (vendorProfile) {
+//                     String scratch = vendorProfile.scratch_banner!;
+//                     return Column(
 //                       children: [
 //                         CarouselSlider(
 //                             items: vendorProfile.advertisements!.map(
@@ -289,7 +328,7 @@
 //                                             ),
 //                                             SizedBox(height: 4.h),
 //                                             Text(
-//                                               vendorProfile.vendor!.phone!,
+//                                               vendorProfile.vendor?.phone?? "N/A",
 //                                               style: TextStyle(
 //                                                 fontSize: 12.sp,
 //                                                 color: Colors.black,
@@ -359,18 +398,91 @@
 //                                 ),
 //                               ),
 //                               SizedBox(height: 10.h),
-//                               const SearchInStore(),
+//                               SearchInStore(
+//                                 searchController: _vendorsearchController,
+//                                 onsubmit: (value) {
+//                                   if (_showSearchResults) {
+//                                     setState(() {
+//                                       _showSearchResults = false;
+//                                       FocusScope.of(context).unfocus();
+//                                     });
+//                                   }
+//                                 },
+//                               ),
+//                               if (_vendorsearchResullts)
+//                                 Container(
+//                                   color: Colors.white,
+//                                   child: vendorsearchResults.when(
+//                                     data: (results) {
+//                                       if (results.isEmpty) {
+//                                         return const SizedBox(
+//                                           child: Text('No result found'),
+//                                         );
+//                                       }
+//                                       return Card(
+//                                         elevation: 8,
+//                                         child: ListView.separated(
+//                                           padding: EdgeInsets.zero,
+//                                           shrinkWrap: true,
+//                                           primary: false,
+//                                           itemCount: results.length,
+//                                           itemBuilder: (context, index) {
+//                                             final product = results[index];
+//                                             return ListTile(
+//                                               title: Text(product.title),
+//                                               onTap: () {
+//                                                 Navigator.push(
+//                                                     context,
+//                                                     MaterialPageRoute(
+//                                                       builder: (context) =>
+//                                                           SearchScreen(
+//                                                         query:
+//                                                             _vendorsearchController
+//                                                                 .text,
+//                                                       ),
+//                                                     ));
+//                                                 setState(() {
+//                                                   _vendorsearchResullts = false;
+//                                                   FocusScope.of(context)
+//                                                       .unfocus();
+//                                                 });
+//                                               },
+//                                             );
+//                                           },
+//                                           separatorBuilder: (context, index) =>
+//                                               const Divider(),
+//                                         ),
+//                                       );
+//                                     },
+//                                     loading: () =>
+//                                         const CircularProgressIndicator(),
+//                                     error: (error, stack) =>
+//                                         Center(child: Text('Error: $error')),
+//                                   ),
+//                                 ),
+//                               SizedBox(
+//                                 height: 10.h,
+//                               ),
+//                               InkWell(
+//                                   onTap: () {
+//                                     Navigator.push(
+//                                         context,
+//                                         MaterialPageRoute(
+//                                           builder: (context) =>
+//                                               const SubscribeAndWinEveryDay(),
+//                                         ));
+//                                   },
+//                                   child: Image.network(scratch))
 //                             ],
 //                           ),
 //                         ),
-//                         Container(
-//                             color: Colors.blue, // Example banner color
-//                             child: Image.network(
-//                                 vendorProfile.advertisements![0].image!)),
+//                         // Container(
+//                         //     color: Colors.blue, // Example banner color
+//                         //     child: Image.network(
+//                         //         vendorProfile.advertisements![0].image!)),
 //                         // TabBar placed inside the body
 //                         TabBar(
-                        
-//                           isScrollable: true,
+//                           isScrollable: false,
 //                           controller: _tabController,
 //                           tabs: const [
 //                             Tab(text: 'Home'),
@@ -381,68 +493,49 @@
 //                           ],
 //                         ),
 //                         SizedBox(
-//                           height: 300,
-                          
+//                           height: 1000,
 //                           child: TabBarView(
-                                  
-                       
+//                             dragStartBehavior: DragStartBehavior.down,
+//                             physics: const NeverScrollableScrollPhysics(),
 //                             controller: _tabController,
 //                             children: [
-//                               // Text("data"),
-//                               //  Text("data"),
-//                               //   Text("data"),
-//                            buildTabContent("brandnew", "Hot Products"),
-//                            buildTabContent("brandnew", "Brand New"),
-//                            buildTabContent("used", "Used Products")
-//                               // _buildHomeTab(
-//                               //     vendorProfile.vendorposts!, "Hot Products"),
-//                               //     _buildHomeTab(
-//                               //     vendorProfile.vendorposts!, "Brand New"),
-//                               //  _buildHomeTab(
-                                  
-//                               //     vendorProfile.vendorposts!, "Used Products"),
-                                  
-//                               // _buildHomeTab(vendorProfile.posts!.data!.length,
-//                               //     vendorProfile.posts!.data!, "Brand new"),
-//                               // // _buildHomeTab(vendorProfile.posts!.data!.length,
-//                               // //     vendorProfile.posts!.data!, "Hot Deals"),
-//                               // _buildHomeTab(vendorProfile.posts!.data!.length,
-//                               //     vendorProfile.posts!.data!, "Brand new"),
-//                               // _buildHomeTab(vendorProfile.posts!.data!.length,
-//                               //     vendorProfile.posts!.data!, "Used"),
+//                               buildTabContent("brandnew", "Hot Products"),
+//                               buildTabContent("brandnew", "Brand New"),
+//                               buildTabContent("used", "Used Products")
 //                             ],
 //                           ),
 //                         ),
 //                       ],
-//                     ),
-//                   );
-//                 },
-//                 error: (error, stack) => Center(child: Text('Error: $error')),
-//                 loading: () {
-//                   return SimpleDialog(
-//                     children: [
-//                       adsList.isLoading
-//                           ? const SizedBox()
-//                           : Image.network(adsList.value!.first.image!)
-//                     ],
-//                   );
-//                 },
-//               )
-//             ],
+//                     );
+//                   },
+//                   error: (error, stack) => Center(child: Text('Error: $error')),
+//                   loading: () {
+//                     return SimpleDialog(
+//                       children: [
+                  
+//                         adsList.isLoading
+//                             ? const SizedBox()
+//                             : Image.network(adsList.value!.first.image!)
+//                       ],
+//                     );
+//                   },
+//                 )
+//               ],
+//             ),
 //           ),
 //         ),
 //       ),
 //     );
 //   }
-//     Widget buildTabContent(String category, String name) {
+
+//   Widget buildTabContent(String category, String name) {
 //     final adsList = ref.watch(getAdsProvider);
 
 //     // Use ref.watch to get search results based on category
-//   final searchResults = ref.watch(
-//         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", ''),
-//         category: category,
-        
-//         ));
+//     final searchResults = ref.watch(getVendorProfileDataProvider(
+//       widget.vendorName.replaceAll(" ", ''),
+//       category: category,
+//     ));
 
 //     return searchResults.when(
 //       loading: () {
@@ -480,7 +573,7 @@
 //           return const Center(child: Text('No results found.'));
 //         }
 //         // Display search results in a grid
-//         return _buildHomeTab(data.vendorposts!,name);
+//         return _buildHomeTab(data.vendorposts!, name);
 //       },
 //     );
 //   }
@@ -508,11 +601,11 @@
 //           child: GridView.builder(
 //             scrollDirection: Axis.vertical,
 //             shrinkWrap: true,
-//             padding: const EdgeInsets.only(left: 10),
+//             padding: const EdgeInsets.only(left: 10, right: 5, top: 1),
 //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
 //               crossAxisCount: 2,
-//               crossAxisSpacing: 19.0,
-//               mainAxisSpacing: 19.0,
+//               crossAxisSpacing: 5.0,
+//               mainAxisSpacing: 5.0,
 //               childAspectRatio: 0.90,
 //             ),
 //             itemCount: data.length,
@@ -528,7 +621,7 @@
 //                 ),
 //                 child: Container(
 //                   margin: const EdgeInsets.only(top: 2),
-//                   padding: const EdgeInsets.all(2),
+//                   padding: const EdgeInsets.all(3),
 //                   decoration: BoxDecoration(
 //                     borderRadius: BorderRadius.circular(10),
 //                     border: Border.all(
@@ -540,10 +633,14 @@
 //                     crossAxisAlignment: CrossAxisAlignment.stretch,
 //                     mainAxisAlignment: MainAxisAlignment.start,
 //                     children: [
+//                       SizedBox(
+//                         height: 2.h,
+//                       ),
 //                       // Image display with Skeleton placeholder
 //                       Skeleton.replace(
 //                         width: productCardWidth,
 //                         child: Container(
+//                           margin: const EdgeInsets.only(right: 2, top: 4),
 //                           width: productCardWidth,
 //                           height: 100.h,
 //                           decoration: BoxDecoration(
@@ -555,7 +652,7 @@
 //                         ),
 //                       ),
 //                       SizedBox(height: 9.h),
-          
+
 //                       // Title text with skeleton placeholder
 //                       Skeleton.replace(
 //                         height: 15.h,
@@ -574,7 +671,7 @@
 //                         ),
 //                       ),
 //                       SizedBox(height: 4.h),
-          
+
 //                       // Price and username section
 //                       Row(
 //                         children: [
@@ -585,7 +682,7 @@
 //                         ],
 //                       ),
 //                       SizedBox(height: 2.h),
-          
+
 //                       // Username with skeleton placeholder
 //                       Skeleton.replace(
 //                         width: productCardWidth,
@@ -603,7 +700,7 @@
 //                         ),
 //                       ),
 //                       SizedBox(height: 12.h),
-          
+
 //                       // Views and pickup location section
 //                       Row(
 //                         mainAxisSize: MainAxisSize.min,

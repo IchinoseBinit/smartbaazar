@@ -23,7 +23,6 @@ class ForgetPasswordScreen extends ConsumerStatefulWidget {
 class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final phoneNumberController = TextEditingController();
-  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +77,17 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                 SizedBox(
                   height: 40.h,
                 ),
-                CustomTextFieldWidget(
-                  icon: Icons.mail,
-                  hintText: 'user email',
-                  controller: emailController,
-                  validator: (String) {
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 22.h,
-                ),
+                // CustomTextFieldWidget(
+                //   icon: Icons.mail,
+                //   hintText: 'user email',
+                //   controller: emailController,
+                //   validator: (String) {
+                //     return null;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 22.h,
+                // ),
                 CustomTextFieldWidget(
                   icon: Icons.phone,
                   hintText: 'Phone number',
@@ -106,7 +105,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                     await forgetPasswordProvider.forgetPassword(context,
                         phone: int.tryParse(phoneNumberController.text)!,
                         phone_country: "NP",
-                        login: emailController.text);
+                       );
                   },
                 ),
                 SizedBox(

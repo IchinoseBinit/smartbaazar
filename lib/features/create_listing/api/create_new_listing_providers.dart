@@ -6,7 +6,6 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'create_new_listing_providers.g.dart';
-
 @riverpod
 Future<String> createlisting(
     CreatelistingRef? ref,
@@ -53,8 +52,7 @@ Future<String> createlisting(
       MapEntry('phone', phone),
       const MapEntry('phone_country', "NP"), // assuming Nepal
       MapEntry('city_id', city),
-            MapEntry('accept_terms', accept),
-
+      MapEntry('accept_terms', accept),
       MapEntry('accept_marketing_offers', accept),
       MapEntry('email', email),
       MapEntry('address', address),
@@ -66,6 +64,12 @@ Future<String> createlisting(
       MapEntry('height', height.isNotEmpty ? height : '0'),
       MapEntry('weight', weight.isNotEmpty ? weight : '0'),
     ]);
+
+    // Log the fields in FormData for debugging
+    print("FormData fields:");
+    formData.fields.forEach((field) {
+      print("${field.key}: ${field.value}");
+    });
 
     // Prepare multipart file data for images
     for (var file in images) {
@@ -80,7 +84,11 @@ Future<String> createlisting(
       }
     }
 
-    // Log the prepared data for debugging
+    // Log the files being added
+    print("FormData files:");
+    for (var file in formData.files) {
+      print("File key: ${file.key}, File name: ${file.value.filename}");
+    }
 
     // Send the request using SmartClinet's request method
     final response = await client.request(
@@ -109,13 +117,12 @@ Future<String> createlisting(
     } else {
       throw Exception("Failed to create listing: ${response.data['message']}");
     }
- } catch (e) {
-  print("Error occurred: $e");
-  if (e is DioException) {
-    // Print the error response if available
-    print("Response Text: ${e.response?.data}");
+  } catch (e) {
+    print("Error occurred: $e");
+    if (e is DioException) {
+      // Print the error response if available
+      print("Response Text: ${e.response?.data}");
+    }
+    throw Exception("API request failed: ${e.toString()}");
   }
-  throw Exception("API request failed: ${e.toString()}");
-}
-
 }

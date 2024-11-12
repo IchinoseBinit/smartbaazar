@@ -6,25 +6,25 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
-import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
 import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/product_screen/Api/product_api_repository.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class B2bScreen extends ConsumerStatefulWidget {
-  const B2bScreen({super.key});
+class ProductScreen extends ConsumerStatefulWidget {
+  const ProductScreen({super.key});
 
   @override
-  _B2bScreenState createState() => _B2bScreenState();
+  _ProductScreenState createState() => _ProductScreenState();
 }
 
-class _B2bScreenState extends ConsumerState<B2bScreen> {
+class _ProductScreenState extends ConsumerState<ProductScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
@@ -64,7 +64,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
   @override
   Widget build(BuildContext context) {
     final adsList = ref.watch(getAdsProvider);
-    final AsyncbajarValue = ref.watch(getB2bResponseProvider);
+    final AsyncbajarValue = ref.watch(getprodwuctResposneProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -98,7 +98,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                 data: (data) {
                   List<B2bSlider> slider = data.sliders!;
                   List<B2bAdvertisement> ads = data.advertisements!;
-                  // List<Product> hotproducts = data.hot_products!;
 
                   return SingleChildScrollView(
                     child: Column(
@@ -168,21 +167,21 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                               (e) {
                                 return InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const B2bScreen(),
-                                        ));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           const subscribeanwinsc(),
+                                    //     ));
                                   },
                                   child: Image.network(
                                       width: double.infinity,
-                                      fit: BoxFit.contain,
+                                          fit: BoxFit.contain,
                                       e.image!),
                                 );
                               },
                             ).toList(),
-                            options: CarouselOptions(
+                          options: CarouselOptions(
                               height: 150.h,
                               aspectRatio: 0.1,
                               reverse: true,
@@ -193,14 +192,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        B2bProductSlider(
+                        ProductSlider(
                           data: data,
                           title: "Hot products",
-                          length: data.hot_products!.length,
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
+                       
                         CarouselSlider(
                             items: ads.map(
                               (e) {
@@ -220,21 +216,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                 );
                               },
                             ).toList(),
-                            options: CarouselOptions(
-                              height: 100.h,
+                           options: CarouselOptions(
+                              height: 150.h,
                               aspectRatio: 0.1,
                               reverse: true,
                               viewportFraction: 1,
                               autoPlay: true,
                               enlargeCenterPage: true,
                             )),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        B2bProductSlider(
+                      
+                        ProductSlider(
+                          ishot: false,
                           data: data,
                           title: "Products",
-                          length: data.products!.data!.length,
                         ),
                         SizedBox(
                           height: 10.h,
@@ -262,24 +256,26 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
   }
 }
 
-class B2bProductSlider extends StatelessWidget {
-  B2bProductSlider({
-    super.key,
-    required this.data,
-    // required this.valueExtractor,
-    required this.title,
-    required this.length,
-  });
+class ProductSlider extends StatelessWidget {
+  ProductSlider(
+      {super.key,
+      required this.data,
+      // required this.valueExtractor,
+      required this.title,
+      this.ishot = true
+      // required this.length,
+      });
 
   final String title;
   final B2bModel data;
-  int? length;
+  bool ishot;
+  // final int? length;
   // final List<Product> Function(HomePosts) valueExtractor;
 
   @override
   Widget build(BuildContext context) {
     // final value = homePostsData.;
-
+    // print("here is ${length}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -294,7 +290,7 @@ class B2bProductSlider extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 8.h,
+          height: 10.h,
         ),
         SizedBox(
           height: productCardHeight,
@@ -304,10 +300,9 @@ class B2bProductSlider extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             shrinkWrap: true,
-            itemCount: length ?? 0,
+            itemCount:ishot? data.hot_products!.length :data.products!.data!.length,
             itemBuilder: (context, index) {
-              print("rama $length");
-              final Product product = data.hot_products![index];
+              final Product product = ishot?  data.hot_products![index]: data.products!.data![index];
               return ProductCard(
                 product: product,
                 onTap: (product) {

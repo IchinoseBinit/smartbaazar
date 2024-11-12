@@ -11,11 +11,10 @@ class ForgetPasswordApi {
 
       required int phone,
       required String phone_country,
-      required String login}) async {
+    }) async {
     final parameter = {
       'phone': phone,
       'phone_country': phone_country,
-      'login': login,
     };
     try {
       final response = await _clinet.request(

@@ -45,7 +45,7 @@ class LoginApi {
           await prefs.setString('userId', user.result.id.toString());
           await prefs.setString("email", user.result.email!);
           await prefs.setString('userEmail', user.result.id.toString());
-
+          await prefs.setString('phone', user.result.phone!);
 
           if (kDebugMode) {
             print("Login successful: $response");

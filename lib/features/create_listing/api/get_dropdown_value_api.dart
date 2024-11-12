@@ -38,10 +38,13 @@ class NewListingRepository {
     // Fetch subcategories based on parentId
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: '${ApiConstants.fetchCategoryList}?parentId=$parentId&nestedIncluded=1',
+      url:
+          '${ApiConstants.fetchCategoryList}?parentId=$parentId&nestedIncluded=1',
     );
 
     if (response.statusCode == 200) {
+            print("binod $response");
+
       List<dynamic> data = response.data['result']['data'];
       return data.map((item) => Category.fromJson(item)).toList();
     } else {
