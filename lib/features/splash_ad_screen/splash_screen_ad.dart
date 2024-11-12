@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,10 +84,13 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       width: double.infinity,
                       height: 550.h,
-                      child: Image.network(
+                      child: CachedNetworkImage(
+                        errorListener: (value) => Text("Loading......"),
+                        
+                      imageUrl:  adsList.value!.first.image!,
+                      fit: BoxFit.cover,
+                      ),
 
-                        fit: BoxFit.cover,
-                        adsList.value!.first.image!),
                     )
                     : const Text('No ads available'),
           ],

@@ -52,7 +52,7 @@ class ProductDetailScreen extends ConsumerWidget {
     final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
     final adsList = ref.watch(getAdsProvider);
     final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
-    int diff=0;
+    int diff = 0;
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
 
@@ -72,7 +72,7 @@ class ProductDetailScreen extends ConsumerWidget {
             if (data.discounted_price != null) {
               double a = double.tryParse(data.discounted_price ?? '0.0') ?? 0.0;
               double b = double.tryParse(data.price!)!;
-               diff = (((a - b) / b) * 100).round();
+              diff = (((a - b) / b) * 100).round();
             }
 
             return SingleChildScrollView(

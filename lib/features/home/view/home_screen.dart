@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -154,19 +155,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     items: brandBazar.data.trandBanners!
                                         .map((banner) {
                                       return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const B2bScreen(),
-                                              ));
-                                        },
-                                        child: Image.network(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const B2bScreen(),
+                                                ));
+                                          },
+                                          child: CachedNetworkImage(
                                             width: double.infinity,
-                                            fit: BoxFit.fill,
-                                            banner.image!),
-                                      );
+                                            fit: BoxFit.cover,
+                                            imageUrl: banner.image!,
+                                          
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          ));
+                                      // Image.network(
+                                      //       width: double.infinity,
+                                      //       fit: BoxFit.fill,
+                                      //       ),
                                     }).toList(),
                                     options: CarouselOptions(
                                       aspectRatio: 0.1,
