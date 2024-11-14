@@ -68,7 +68,7 @@ Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
     print(">>> Response Status: ${response.statusCode}");
     print(">>> Response Data: ${response.data}");
     // Check if the API response is successful
-    if (response.statusCode == 200) {
+    if (response.statusCode! >= 200 && response.statusCode! < 300) {
       final Map<String, dynamic> jsonResponse = response.data;
       final messageReply = ReplyMessageModel.fromJson(jsonResponse);
       return messageReply;
