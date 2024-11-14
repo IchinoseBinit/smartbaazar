@@ -6,7 +6,7 @@ part of 'create_new_listing_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createlistingHash() => r'3ae2f53884143910e5082d28af702e56b2aae8f9';
+String _$createlistingHash() => r'262f926e641d9c21a71cdbb86ff17ae1db9909be';
 
 /// Copied from Dart SDK
 class _SystemHash {
