@@ -461,6 +461,8 @@ mixin _$ThreadData {
   String? get postId => throw _privateConstructorUsedError;
   @JsonKey(name: 'subject')
   String? get subject => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_important')
+  String? get isImportant => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -477,7 +479,8 @@ abstract class $ThreadDataCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int? id,
       @JsonKey(name: 'post_id') String? postId,
-      @JsonKey(name: 'subject') String? subject});
+      @JsonKey(name: 'subject') String? subject,
+      @JsonKey(name: 'is_important') String? isImportant});
 }
 
 /// @nodoc
@@ -496,6 +499,7 @@ class _$ThreadDataCopyWithImpl<$Res, $Val extends ThreadData>
     Object? id = freezed,
     Object? postId = freezed,
     Object? subject = freezed,
+    Object? isImportant = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -509,6 +513,10 @@ class _$ThreadDataCopyWithImpl<$Res, $Val extends ThreadData>
       subject: freezed == subject
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isImportant: freezed == isImportant
+          ? _value.isImportant
+          : isImportant // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -525,7 +533,8 @@ abstract class _$$ThreadDataImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'id') int? id,
       @JsonKey(name: 'post_id') String? postId,
-      @JsonKey(name: 'subject') String? subject});
+      @JsonKey(name: 'subject') String? subject,
+      @JsonKey(name: 'is_important') String? isImportant});
 }
 
 /// @nodoc
@@ -542,6 +551,7 @@ class __$$ThreadDataImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? postId = freezed,
     Object? subject = freezed,
+    Object? isImportant = freezed,
   }) {
     return _then(_$ThreadDataImpl(
       id: freezed == id
@@ -556,6 +566,10 @@ class __$$ThreadDataImplCopyWithImpl<$Res>
           ? _value.subject
           : subject // ignore: cast_nullable_to_non_nullable
               as String?,
+      isImportant: freezed == isImportant
+          ? _value.isImportant
+          : isImportant // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -566,7 +580,8 @@ class _$ThreadDataImpl implements _ThreadData {
   const _$ThreadDataImpl(
       {@JsonKey(name: 'id') this.id,
       @JsonKey(name: 'post_id') this.postId,
-      @JsonKey(name: 'subject') this.subject});
+      @JsonKey(name: 'subject') this.subject,
+      @JsonKey(name: 'is_important') this.isImportant});
 
   factory _$ThreadDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$ThreadDataImplFromJson(json);
@@ -580,10 +595,13 @@ class _$ThreadDataImpl implements _ThreadData {
   @override
   @JsonKey(name: 'subject')
   final String? subject;
+  @override
+  @JsonKey(name: 'is_important')
+  final String? isImportant;
 
   @override
   String toString() {
-    return 'ThreadData(id: $id, postId: $postId, subject: $subject)';
+    return 'ThreadData(id: $id, postId: $postId, subject: $subject, isImportant: $isImportant)';
   }
 
   @override
@@ -593,12 +611,15 @@ class _$ThreadDataImpl implements _ThreadData {
             other is _$ThreadDataImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.postId, postId) || other.postId == postId) &&
-            (identical(other.subject, subject) || other.subject == subject));
+            (identical(other.subject, subject) || other.subject == subject) &&
+            (identical(other.isImportant, isImportant) ||
+                other.isImportant == isImportant));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, postId, subject);
+  int get hashCode =>
+      Object.hash(runtimeType, id, postId, subject, isImportant);
 
   @JsonKey(ignore: true)
   @override
@@ -616,9 +637,11 @@ class _$ThreadDataImpl implements _ThreadData {
 
 abstract class _ThreadData implements ThreadData {
   const factory _ThreadData(
-      {@JsonKey(name: 'id') final int? id,
-      @JsonKey(name: 'post_id') final String? postId,
-      @JsonKey(name: 'subject') final String? subject}) = _$ThreadDataImpl;
+          {@JsonKey(name: 'id') final int? id,
+          @JsonKey(name: 'post_id') final String? postId,
+          @JsonKey(name: 'subject') final String? subject,
+          @JsonKey(name: 'is_important') final String? isImportant}) =
+      _$ThreadDataImpl;
 
   factory _ThreadData.fromJson(Map<String, dynamic> json) =
       _$ThreadDataImpl.fromJson;
@@ -632,6 +655,9 @@ abstract class _ThreadData implements ThreadData {
   @override
   @JsonKey(name: 'subject')
   String? get subject;
+  @override
+  @JsonKey(name: 'is_important')
+  String? get isImportant;
   @override
   @JsonKey(ignore: true)
   _$$ThreadDataImplCopyWith<_$ThreadDataImpl> get copyWith =>

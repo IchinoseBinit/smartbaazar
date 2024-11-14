@@ -6,6 +6,7 @@ import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class MessageViewScreen extends ConsumerWidget {
@@ -33,9 +34,7 @@ class MessageViewScreen extends ConsumerWidget {
                     ),
                     DropdownButton<String>(
                       underline: const SizedBox(),
-                      
-
-                     padding: EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
                       borderRadius: BorderRadius.zero,
                       elevation: 0,
                       value: currentfilter,
@@ -44,7 +43,8 @@ class MessageViewScreen extends ConsumerWidget {
                             value: 'unread', child: Text('Unread')),
                         DropdownMenuItem(
                             value: 'important', child: Text('Important')),
-                        DropdownMenuItem(value: 'Started', child: Text('Started')),
+                        DropdownMenuItem(
+                            value: 'Started', child: Text('Started')),
                       ],
                       onChanged: (value) {
                         if (value != null) {
@@ -100,7 +100,9 @@ class MessageViewScreen extends ConsumerWidget {
                                         data: (lastMessage) {
                                           return ListOfMessages(
                                             threadId: message.id.toString(),
+                                            postId: message.postId.toString(),
                                             subject: message.subject!,
+                                            isImportant: message.isImportant!,
                                             body: lastMessage?.body ??
                                                 'No messages yet',
                                           );
@@ -137,91 +139,106 @@ class MessageViewScreen extends ConsumerWidget {
                                 itemCount: alerts!.length,
                                 itemBuilder: (context, index) {
                                   final alert = alerts[index];
-                                  return Container(
-                                    padding: EdgeInsets.all(16.w),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 6,
-                                          offset: const Offset(0, 3),
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => ProductDetailScreen(
+                                            productId: alert.clickAction!,
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // Alert Icon and Title
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.notifications,
-                                              color:
-                                                  Colors.green.withOpacity(0.9),
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Expanded(
-                                              child: Text(
-                                                alert.title ?? 'No title',
-                                                style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10.h),
-
-                                        // Alert Body Text
-                                        Text(
-                                          alert.body ?? 'No body',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(16.w),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                        boxShadow: [
+                                          BoxShadow(
                                             color:
-                                                Colors.black.withOpacity(0.8),
+                                                Colors.black.withOpacity(0.1),
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 3),
                                           ),
-                                          maxLines: 5,
-                                          overflow: TextOverflow.ellipsis,
-                                          softWrap: true,
-                                        ),
-                                        SizedBox(height: 20.h),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Alert Icon and Title
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.notifications,
+                                                color: Colors.green
+                                                    .withOpacity(0.9),
+                                              ),
+                                              SizedBox(width: 8.w),
+                                              Expanded(
+                                                child: Text(
+                                                  alert.title ?? 'No title',
+                                                  style: TextStyle(
+                                                    fontSize: 18.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  softWrap: true,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10.h),
 
-                                        // Promotional Image
-                                        if (alert.image != null)
-                                          Center(
-                                            child: Image.network(
-                                              alert.image!,
-                                              fit: BoxFit.cover,
-                                              height: 100.h,
-                                              width: 180.h,
+                                          // Alert Body Text
+                                          Text(
+                                            alert.body ?? 'No body',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color:
+                                                  Colors.black.withOpacity(0.8),
                                             ),
+                                            maxLines: 5,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
                                           ),
-                                        SizedBox(height: 20.h),
+                                          SizedBox(height: 20.h),
 
-                                        // Date and Time Row
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              alert.createdAt!,
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: Colors.black
-                                                    .withOpacity(0.6),
+                                          // Promotional Image
+                                          if (alert.image != null)
+                                            Center(
+                                              child: Image.network(
+                                                alert.image!,
+                                                fit: BoxFit.cover,
+                                                height: 100.h,
+                                                width: 180.h,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
+                                          SizedBox(height: 20.h),
+
+                                          // Date and Time Row
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                alert.createdAt!,
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },
@@ -333,12 +350,16 @@ class ListOfMessages extends StatelessWidget {
   final String threadId;
   final String subject;
   final String body;
+  final String postId;
+  final String isImportant;
 
   const ListOfMessages({
     super.key,
     required this.threadId,
     required this.subject,
     required this.body,
+    required this.postId,
+    required this.isImportant,
   });
 
   @override
@@ -348,7 +369,12 @@ class ListOfMessages extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ChatScreen(threadId: threadId, username: subject),
+            builder: (_) => ChatScreen(
+                threadId: threadId,
+                username: subject,
+                postId: postId,
+              //  isImportant: isImportant,
+                ),
           ),
         );
       },

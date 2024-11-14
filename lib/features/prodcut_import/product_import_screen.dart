@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/prodcut_import/Api/product_import_provider.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:url_launcher/url_launcher.dart';

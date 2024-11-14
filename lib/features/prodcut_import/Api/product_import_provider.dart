@@ -37,6 +37,8 @@ Future<String> storeProductImport(File myfile) async {
 }
 
 class FileUploadWidget extends StatelessWidget {
+  const FileUploadWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -53,7 +55,7 @@ class FileUploadWidget extends StatelessWidget {
           );
         }
       },
-      child: Text('Upload File'),
+      child: const Text('Upload File'),
     );
   }
 }

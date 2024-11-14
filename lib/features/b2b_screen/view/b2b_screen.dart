@@ -20,7 +20,7 @@ class B2bScreen extends ConsumerStatefulWidget {
   const B2bScreen({super.key});
 
   @override
-  _B2bScreenState createState() => _B2bScreenState();
+  ConsumerState<B2bScreen> createState() => _B2bScreenState();
 }
 
 class _B2bScreenState extends ConsumerState<B2bScreen> {
@@ -62,7 +62,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
   @override
   Widget build(BuildContext context) {
     final adsList = ref.watch(getAdsProvider);
-    final AsyncbajarValue = ref.watch(getB2bResponseProvider);
+    final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final searchResults = ref.watch(searchProvider(_searchController.text));  // Ensure this updates correctly
 
     return GenericSafeArea(
@@ -91,7 +91,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
+              asyncbajarValue.when(
                 data: (data) {
                   List<B2bSlider> slider = data.sliders!;
                   List<B2bAdvertisement> ads = data.advertisements!;

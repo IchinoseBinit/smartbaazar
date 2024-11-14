@@ -128,7 +128,7 @@ class VerifyAccountWidget extends ConsumerStatefulWidget {
   const VerifyAccountWidget({Key? key}) : super(key: key);
 
   @override
-  _VerifyAccountWidgetState createState() => _VerifyAccountWidgetState();
+  ConsumerState<VerifyAccountWidget> createState() => _VerifyAccountWidgetState();
 }
 
 class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
@@ -329,7 +329,7 @@ class ChangePasswordWidget extends ConsumerStatefulWidget {
   const ChangePasswordWidget({Key? key}) : super(key: key);
 
   @override
-  _ChangePasswordWidgetState createState() => _ChangePasswordWidgetState();
+  ConsumerState<ChangePasswordWidget> createState() => _ChangePasswordWidgetState();
 }
 
 class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {

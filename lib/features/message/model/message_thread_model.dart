@@ -32,6 +32,7 @@ class ThreadData with _$ThreadData {
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'post_id') String? postId,
     @JsonKey(name: 'subject') String? subject,
+    @JsonKey(name: 'is_important') String? isImportant,
   }) = _ThreadData;
 
   factory ThreadData.fromJson(Map<String, dynamic> json) =>

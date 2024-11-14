@@ -698,7 +698,7 @@ mixin _$OrdersPlacedDatum {
   @JsonKey(name: "status")
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: "created_at")
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: "updated_at")
   dynamic get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: "post_title")
@@ -742,7 +742,7 @@ abstract class $OrdersPlacedDatumCopyWith<$Res> {
       @JsonKey(name: "delivery_address") String? deliveryAddress,
       @JsonKey(name: "coupon") String? coupon,
       @JsonKey(name: "status") String? status,
-      @JsonKey(name: "created_at") DateTime createdAt,
+      @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") dynamic updatedAt,
       @JsonKey(name: "post_title") String? postTitle,
       @JsonKey(name: "customer_name") String? customerName,
@@ -780,7 +780,7 @@ class _$OrdersPlacedDatumCopyWithImpl<$Res, $Val extends OrdersPlacedDatum>
     Object? deliveryAddress = freezed,
     Object? coupon = freezed,
     Object? status = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? postTitle = freezed,
     Object? customerName = freezed,
@@ -850,10 +850,10 @@ class _$OrdersPlacedDatumCopyWithImpl<$Res, $Val extends OrdersPlacedDatum>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -910,7 +910,7 @@ abstract class _$$OrdersPlacedDatumImplCopyWith<$Res>
       @JsonKey(name: "delivery_address") String? deliveryAddress,
       @JsonKey(name: "coupon") String? coupon,
       @JsonKey(name: "status") String? status,
-      @JsonKey(name: "created_at") DateTime createdAt,
+      @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") dynamic updatedAt,
       @JsonKey(name: "post_title") String? postTitle,
       @JsonKey(name: "customer_name") String? customerName,
@@ -946,7 +946,7 @@ class __$$OrdersPlacedDatumImplCopyWithImpl<$Res>
     Object? deliveryAddress = freezed,
     Object? coupon = freezed,
     Object? status = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? postTitle = freezed,
     Object? customerName = freezed,
@@ -1016,10 +1016,10 @@ class __$$OrdersPlacedDatumImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -1130,7 +1130,7 @@ class _$OrdersPlacedDatumImpl implements _OrdersPlacedDatum {
   final String? status;
   @override
   @JsonKey(name: "created_at")
-  final DateTime createdAt;
+  final String? createdAt;
   @override
   @JsonKey(name: "updated_at")
   final dynamic updatedAt;
@@ -1262,7 +1262,7 @@ abstract class _OrdersPlacedDatum implements OrdersPlacedDatum {
       @JsonKey(name: "delivery_address") final String? deliveryAddress,
       @JsonKey(name: "coupon") final String? coupon,
       @JsonKey(name: "status") required final String? status,
-      @JsonKey(name: "created_at") required final DateTime createdAt,
+      @JsonKey(name: "created_at") required final String? createdAt,
       @JsonKey(name: "updated_at") final dynamic updatedAt,
       @JsonKey(name: "post_title") required final String? postTitle,
       @JsonKey(name: "customer_name") required final String? customerName,
@@ -1322,7 +1322,7 @@ abstract class _OrdersPlacedDatum implements OrdersPlacedDatum {
   String? get status;
   @override
   @JsonKey(name: "created_at")
-  DateTime get createdAt;
+  String? get createdAt;
   @override
   @JsonKey(name: "updated_at")
   dynamic get updatedAt;

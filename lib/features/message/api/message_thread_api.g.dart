@@ -6,7 +6,7 @@ part of 'message_thread_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getMessageThreadHash() => r'63767a597655165449762acf1c3e751a35e2ba4e';
+String _$getMessageThreadHash() => r'8e0308531ff11a9ee7cd8f2d7181932f0d1a2ba9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,7 +40,7 @@ class GetMessageThreadFamily extends Family<AsyncValue<MessageThreadModel>> {
 
   /// See also [getMessageThread].
   GetMessageThreadProvider call({
-    required String filter,
+    required String? filter,
   }) {
     return GetMessageThreadProvider(
       filter: filter,
@@ -76,7 +76,7 @@ class GetMessageThreadProvider
     extends AutoDisposeFutureProvider<MessageThreadModel> {
   /// See also [getMessageThread].
   GetMessageThreadProvider({
-    required String filter,
+    required String? filter,
   }) : this._internal(
           (ref) => getMessageThread(
             ref as GetMessageThreadRef,
@@ -104,7 +104,7 @@ class GetMessageThreadProvider
     required this.filter,
   }) : super.internal();
 
-  final String filter;
+  final String? filter;
 
   @override
   Override overrideWith(
@@ -145,7 +145,7 @@ class GetMessageThreadProvider
 
 mixin GetMessageThreadRef on AutoDisposeFutureProviderRef<MessageThreadModel> {
   /// The parameter `filter` of this provider.
-  String get filter;
+  String? get filter;
 }
 
 class _GetMessageThreadProviderElement
@@ -154,7 +154,7 @@ class _GetMessageThreadProviderElement
   _GetMessageThreadProviderElement(super.provider);
 
   @override
-  String get filter => (origin as GetMessageThreadProvider).filter;
+  String? get filter => (origin as GetMessageThreadProvider).filter;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

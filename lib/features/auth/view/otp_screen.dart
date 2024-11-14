@@ -83,7 +83,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         valueListenable: otpTime,
                         builder: (context, value, child) {
                           return Text(
-                            'You will recive an OTP on your\n email within ${formattedTime(59)} secs',
+                            'You will recive an OTP on your\n phone within ${formattedTime(59)} secs',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 16.sp,

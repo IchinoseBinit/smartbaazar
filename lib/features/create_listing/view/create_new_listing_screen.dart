@@ -1024,9 +1024,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-        // SizedBox(
-        //   height: 10.h,
-        // ),
+
         CreateListingCardWidget(
             child: Row(
           children: [

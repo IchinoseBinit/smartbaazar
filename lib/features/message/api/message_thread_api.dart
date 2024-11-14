@@ -8,7 +8,7 @@ part 'message_thread_api.g.dart';
 
 // Assuming getMessageThread has a Family
 @riverpod
-Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref, {required String filter}) async {
+Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref, {required String? filter}) async {
   final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(

@@ -18,7 +18,7 @@ class EventsScreen extends ConsumerStatefulWidget {
   const EventsScreen({super.key});
 
   @override
-  _EventsScreenState createState() => _EventsScreenState();
+  ConsumerState<EventsScreen> createState() => _EventsScreenState();
 }
 
 class _EventsScreenState extends ConsumerState<EventsScreen> {
@@ -63,7 +63,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     ref.watch(getAdsProvider);
         final adsList = ref.watch(getAdsProvider);
 
-    final AsyncbajarValue = ref.watch(geteventResponseProvider);
+    final asyncbajarValue = ref.watch(geteventResponseProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -93,7 +93,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
+              asyncbajarValue.when(
                   data: (data) {
                     List<UsedSlider> slider = data.sliders!;
                     List<UsedAdvertisement> ads = data.advertisements!;

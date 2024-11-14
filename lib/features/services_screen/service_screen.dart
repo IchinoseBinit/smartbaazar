@@ -18,7 +18,7 @@ class ServicesScreen extends ConsumerStatefulWidget {
   const ServicesScreen({super.key});
 
   @override
-  _ServicesScreenState createState() => _ServicesScreenState();
+  ConsumerState<ServicesScreen> createState() => _ServicesScreenState();
 }
 
 class _ServicesScreenState extends ConsumerState<ServicesScreen> {
@@ -63,7 +63,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
     ref.watch(getAdsProvider);
         final adsList = ref.watch(getAdsProvider);
 
-    final AsyncbajarValue = ref.watch(getServiceProviderProvider);
+    final asyncbajarValue = ref.watch(getServiceProviderProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -93,7 +93,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
+              asyncbajarValue.when(
                   data: (data) {
                     List<UsedSlider> slider = data.sliders!;
                     List<UsedAdvertisement> ads = data.advertisements!;
