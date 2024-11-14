@@ -44,16 +44,7 @@ class FileUploadWidget extends StatelessWidget {
     return ElevatedButton(
       onPressed: () async {
         // Assume you have logic to pick a file
-        File? file; // Replace with your file picking logic
-
-        if (file != null) {
-          final responseMessage = await storeProductImport(file);
-          
-          // Show the response message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseMessage)),
-          );
-        }
+        File? file;
       },
       child: const Text('Upload File'),
     );

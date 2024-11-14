@@ -8,14 +8,16 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
   final VoidCallback onCartTap;
   final Function(bool) onSearchFocusChanged;
   final Function(String)? onsubmit;
+  Function()? serchontap;
 
-  const AppbarWidget({
+   AppbarWidget({
     Key? key,
     required this.scaffoldKey,
     required this.searchController,
     required this.onCartTap,
     required this.onSearchFocusChanged,
     required this.onsubmit,
+    this.serchontap
   }) : super(key: key);
 
   @override
@@ -57,19 +59,22 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
                       size: 20.sp,
                     ),
                   ),
-                  suffixIcon: Container(
-                    width: 70.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(25.r),
-                        topRight: Radius.circular(25.r),
+                  suffixIcon: InkWell(
+                         onTap:serchontap ,
+                    child: Container(
+                      width: 70.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(25.r),
+                          topRight: Radius.circular(25.r),
+                        ),
+                        color: const Color(0xff362677),
                       ),
-                      color: const Color(0xff362677),
-                    ),
-                    child: Icon(
-                      Icons.search,
-                      size: 30.sp,
-                      color: Colors.white,
+                      child: Icon(
+                        Icons.search,
+                        size: 30.sp,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   contentPadding: EdgeInsets.zero,

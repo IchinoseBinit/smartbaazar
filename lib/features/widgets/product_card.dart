@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,9 +40,12 @@ class ProductCard extends StatelessWidget {
                 height: 100.h,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(product.image),
+                    image: CachedNetworkImageProvider(product.image,
+                    errorListener: (p0) => Text("${product.title}")
+                    ),
                     fit: BoxFit.fill,
                   ),
+                  // NetworkImage(product.image)
                 ),
               ),
             ),

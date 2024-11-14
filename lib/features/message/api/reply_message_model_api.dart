@@ -16,7 +16,7 @@ Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
   final SmartClinet client = SmartClinet();
 
   // Prepare the form data
-  FormData formData = FormData();
+  // FormData formData = FormData();
 
   try {
     final prefs = await SharedPreferences.getInstance();
@@ -28,45 +28,24 @@ Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
     final String email = sessionData['result']['email'];
     final String phone = sessionData['result']['phone'];
 
-    formData.fields.add(MapEntry('post_id', threadId));
-    formData.fields.add(MapEntry('from_name', name));
-    formData.fields.add(MapEntry('from_email', email));
-    formData.fields.add(MapEntry('from_phone', phone));
-    // Add body to form data if it's not null
-    if (body != null && body.isNotEmpty) {
-      formData.fields.add(MapEntry('body', body));
-    } else {
-      formData.fields.add(const MapEntry('body', ''));
-    }
-
-    // Add image file to form data if it's provided and exists
-    if (imageFile != null && imageFile.existsSync()) {
-      formData.files.add(MapEntry(
-        'image',
-        await MultipartFile.fromFile(
-          imageFile.path,
-          filename: imageFile.path.split('/').last,
-        ),
-      ));
-    }
-    print(">>> Sending form data:");
-    for (var field in formData.fields) {
-      print("Field - ${field.key}: ${field.value}");
-    }
-    for (var file in formData.files) {
-      print("File - ${file.key}: ${file.value.filename}");
-    }
+    FormData formData = FormData.fromMap({
+      'post_id': threadId,
+      'filename': await MultipartFile.fromFile(imageFile!.path,
+          filename: imageFile.path.split('/').last),
+      'from_name': name,
+      'from_email': email,
+      'from_phone': phone,
+      'body': body ?? '',
+    });
 
     // Construct the API URL with threadId
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
       // url: "${ApiConstants.getMessageListUrl}/$threadId",
-      url: "${ApiConstants.getMessageListUrl}",
-
+      url: ApiConstants.getMessageListUrl,
       parameter: formData,
     );
-    print(">>> Response Status: ${response.statusCode}");
-    print(">>> Response Data: ${response.data}");
+
     // Check if the API response is successful
     if (response.statusCode! >= 200 && response.statusCode! < 300) {
       final Map<String, dynamic> jsonResponse = response.data;

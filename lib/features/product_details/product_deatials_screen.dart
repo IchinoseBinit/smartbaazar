@@ -52,7 +52,7 @@ class ProductDetailScreen extends ConsumerWidget {
     final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
     final adsList = ref.watch(getAdsProvider);
     final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
-
+    int diff = 0;
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
 
@@ -69,6 +69,11 @@ class ProductDetailScreen extends ConsumerWidget {
             final itemsList = data.pictures!
                 .map((picture) => "${ApiConstants.imgUrl}${picture.filename}")
                 .toList();
+            if (data.discounted_price != null) {
+              double a = double.tryParse(data.discounted_price ?? '0.0') ?? 0.0;
+              double b = double.tryParse(data.price!)!;
+              diff = (((a - b) / b) * 100).round();
+            }
 
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -82,33 +87,33 @@ class ProductDetailScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Icon(Icons.arrow_back_ios)),
-                              favouriteListAsyncValue.when(
-                                  loading: () =>
-                                      const CircularProgressIndicator(),
-                                  error: (error, stackTrace) =>
-                                      const CircularProgressIndicator(),
-                                  data: (favouritelist) {
-                                    final isFavorite = favouritelist
-                                        .data!.savedProducts!.data
-                                        ?.any((item) => item.id == productId);
-                                    return Container(
-                                        padding: EdgeInsets.all(12.h),
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: isFavorite!
-                                                ? Colors.yellow
-                                                : const Color(0xffFFFFFF)),
-                                        child: SvgPicture.asset(invoiceIcon));
-                                  }),
-                            ],
-                            ),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Icon(Icons.arrow_back_ios)),
+                            favouriteListAsyncValue.when(
+                                loading: () =>
+                                    const CircularProgressIndicator(),
+                                error: (error, stackTrace) =>
+                                    const CircularProgressIndicator(),
+                                data: (favouritelist) {
+                                  final isFavorite = favouritelist
+                                      .data!.savedProducts!.data
+                                      ?.any((item) => item.id == productId);
+                                  return Container(
+                                      padding: EdgeInsets.all(12.h),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isFavorite!
+                                              ? Colors.yellow
+                                              : const Color(0xffFFFFFF)),
+                                      child: SvgPicture.asset(invoiceIcon));
+                                }),
+                          ],
+                        ),
                         SizedBox(
                           height: 15.h,
                         ),
@@ -174,6 +179,16 @@ class ProductDetailScreen extends ConsumerWidget {
                                   const Spacer(),
                                   InkWell(
                                     onTap: () async {
+                                      // double a = double.tryParse(
+                                      //     data.discounted_price!)!;
+                                      // double b = double.tryParse(data.price!)!;
+
+                                      // int diff = (((a - b)/b)*100).ceil();
+                                      //     0;
+                                      // int b = int.parse(data.discounted_price?? '0');
+
+                                      // print(
+                                      //     "dataz ${data.discounted_price} and orig ${data.price} and $a and c $b and diff $diff");
                                       // await  _apiService
                                       //     .addToCart(data.);
                                       ApiService()
@@ -256,7 +271,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        data.discounted_price ?? '',
+                                        (data.discounted_price) ?? '',
                                         style: const TextStyle(
                                             decoration:
                                                 TextDecoration.lineThrough),
@@ -264,19 +279,21 @@ class ProductDetailScreen extends ConsumerWidget {
                                       SizedBox(
                                         width: 10.w,
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            left: 11.w,
-                                            top: 2.h,
-                                            bottom: 2.w,
-                                            right: 20),
-                                        color: const Color(0xff362677),
-                                        child: Text(
-                                          data.discounted_price ?? '-40% off',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      )
+                                      data.discounted_price == null && diff == 0
+                                          ? SizedBox()
+                                          : Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 11.w,
+                                                  top: 2.h,
+                                                  bottom: 2.w,
+                                                  right: 20),
+                                              color: const Color(0xff362677),
+                                              child: Text(
+                                                "${diff.toString()} %",
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            )
                                     ],
                                   )
                                 ],
@@ -544,7 +561,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                         isScrollControlled: true,
                                         showDragHandle: true,
                                         context: context,
-
                                         builder: (context) {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -594,8 +610,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
-                                                                color:
-                                                                    Colors.blue),
+                                                                color: Colors
+                                                                    .blue),
                                                           ),
                                                           SizedBox(
                                                             width: 10.w,
@@ -608,7 +624,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
-                                                                fontSize: 14.sp),
+                                                                fontSize:
+                                                                    14.sp),
                                                           )
                                                         ],
                                                       ),
@@ -626,7 +643,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500,
-                                                                  fontSize: 14.sp,
+                                                                  fontSize:
+                                                                      14.sp,
                                                                   color: const Color(
                                                                       0xffADADAD))),
                                                         ),
@@ -650,8 +668,10 @@ class ProductDetailScreen extends ConsumerWidget {
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight.w500,
-                                                              color: Colors.blue),
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.blue),
                                                         ),
                                                         SizedBox(
                                                           width: 15.h,
@@ -660,12 +680,14 @@ class ProductDetailScreen extends ConsumerWidget {
                                                           textInputAction:
                                                               TextInputAction
                                                                   .done,
-                                                          minLines: 3, // Set this
-                                                          maxLines: 6, // and this
+                                                          minLines:
+                                                              3, // Set this
+                                                          maxLines:
+                                                              6, // and this
                                                           keyboardType:
                                                               TextInputType
                                                                   .multiline,
-                                            
+
                                                           controller:
                                                               msgcontroller,
                                                           decoration: InputDecoration.collapsed(
@@ -675,7 +697,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500,
-                                                                  fontSize: 14.sp,
+                                                                  fontSize:
+                                                                      14.sp,
                                                                   color: const Color(
                                                                       0xffADADAD))),
                                                         ),
@@ -716,7 +739,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                   email)
                                                               .future,
                                                         );
-                                            
+
                                                         // Handle the response based on success or failure
                                                         if (success) {
                                                           ScaffoldMessenger.of(
@@ -730,7 +753,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                 content: Text(
                                                                     "Message sent successfully!")),
                                                           );
-                                                          Navigator.pop(context);
+                                                          Navigator.pop(
+                                                              context);
                                                         } else {
                                                           ScaffoldMessenger.of(
                                                                   context)

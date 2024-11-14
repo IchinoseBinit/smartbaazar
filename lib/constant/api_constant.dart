@@ -113,7 +113,5 @@ class ApiConstants {
   static String savedSearchesUrl = '$baseUrl/savedSearches';
   static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
   //product import
-    static String productimportapi = '$baseUrl/posts/product_import';
-
-
+  static String productimportapi = '$baseUrl/posts/product_import';
 }

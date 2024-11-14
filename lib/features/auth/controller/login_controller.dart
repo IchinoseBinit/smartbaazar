@@ -8,6 +8,7 @@ import 'package:smartbazar/features/auth/api/login_api.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
 
@@ -37,15 +38,18 @@ class LoginController extends StateNotifier<GenericState> {
 
       final String userId = loginData!.result.id.toString();
       final String userName = loginData.result.name;
-      String useremail = loginData.result.email?.toString() ?? '';
+     final String useremail = loginData.result.email?.toString() ?? '';
+     final String phone = loginData.result.phone?.toString()?? '';
       // print("useremail$useremail");
       final prefs = await SharedPreferences.getInstance();
       SmartClinet.userId = userId; // Set userId in SmartClinet
       SmartClinet.userName = userName; // Set userName in SmartClinet
       SmartClinet.userEmail = useremail; // Set userEmail in SmartClinet
+
       await prefs.setString('userId', userId);
       await prefs.setString('userName', userName);
       await prefs.setString('userEmail', useremail);
+      await prefs.setString('phone', phone);
       // Navigate to the bottom navigation screen, replacing the login screen
       await Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
@@ -73,7 +77,7 @@ class LoginController extends StateNotifier<GenericState> {
           await Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const BottomNavigationScreen(),
+              builder: (_) => const AdSplashScreen(),
             ),
           );
         } else {

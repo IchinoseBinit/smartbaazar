@@ -8,6 +8,7 @@ import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
 import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -39,7 +40,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
 
     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
       debugPrint("Search query: $query");
-      ref.refresh(searchProvider(query));  // Ensure this provider works as expected
+      ref.refresh(
+          searchProvider(query)); // Ensure this provider works as expected
       setState(() {
         _showSearchResults = query.isNotEmpty;
       });
@@ -95,12 +97,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                 data: (data) {
                   List<B2bSlider> slider = data.sliders!;
                   List<B2bAdvertisement> ads = data.advertisements!;
-                  List<Product> hotproducts = data.hot_products!;
+                  // List<Product> hotproducts = data.hot_products!;
 
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        if (_showSearchResults) 
+                        if (_showSearchResults)
                           Positioned(
                             top: 0.h, // Position just below the search bar
                             left: 0,
@@ -109,7 +111,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                               color: Colors.white,
                               child: searchResults.when(
                                 data: (results) {
-                                  debugPrint("Search results: $results"); // Debug print
+                                  debugPrint(
+                                      "Search results: $results"); // Debug print
                                   if (results.isEmpty) {
                                     return const SizedBox(
                                       child: Text('No result found'),
@@ -130,7 +133,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => SearchScreen(
+                                                builder: (context) =>
+                                                    SearchScreen(
                                                   query: _searchController.text,
                                                 ),
                                               ),
@@ -149,23 +153,36 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                   );
                                 },
                                 loading: () {
-                                  return const Center(child: CircularProgressIndicator());
+                                  return const Center(
+                                      child: CircularProgressIndicator());
                                 },
-                                error: (error, stack) => const Center(child: Text('Error loading search results')),
+                                error: (error, stack) => const Center(
+                                    child:
+                                        Text('Error loading search results')),
                               ),
                             ),
                           ),
                         CarouselSlider(
                             items: slider.map(
                               (e) {
-                                return Image.network(
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    e.image!);
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const B2bScreen(),
+                                        ));
+                                  },
+                                  child: Image.network(
+                                      width: double.infinity,
+                                      fit: BoxFit.contain,
+                                      e.image!),
+                                );
                               },
                             ).toList(),
                             options: CarouselOptions(
-                              height: 130.h,
+                              height: 150.h,
                               aspectRatio: 0.1,
                               reverse: true,
                               viewportFraction: 1,
@@ -186,14 +203,24 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                         CarouselSlider(
                             items: ads.map(
                               (e) {
-                                return Image.network(
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    e.image!);
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CreateNewListinScreen(),
+                                        ));
+                                  },
+                                  child: Image.network(
+                                      width: double.infinity,
+                                      fit: BoxFit.contain,
+                                      e.image!),
+                                );
                               },
                             ).toList(),
                             options: CarouselOptions(
-                              height: 80.h,
+                              height: 100.h,
                               aspectRatio: 0.1,
                               reverse: true,
                               viewportFraction: 1,
@@ -216,15 +243,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                   );
                 },
                 error: (err, stack) => Center(child: Text('Error: $err')),
-                  loading: () {
-                        return SimpleDialog(
-                          children: [
-                            adsList.isLoading
-                                ? const SizedBox()
-                                : Image.network(adsList.value!.first.image!)
-                          ],
-                        );
-                      },
+                loading: () {
+                  return SimpleDialog(
+                    children: [
+                      adsList.isLoading
+                          ? const SizedBox()
+                          : Image.network(adsList.value!.first.image!)
+                    ],
+                  );
+                },
               )
             ],
           ),

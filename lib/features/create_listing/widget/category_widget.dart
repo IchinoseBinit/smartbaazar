@@ -7,10 +7,13 @@ import 'package:smartbazar/features/create_listing/widget/create_listing_card_wi
 
 class CategoryField extends StatefulWidget {
   final Function(Category?) onCategorySelected;
+  final Function(Category?)
+      onSubCategorySelected; // New callback for subcategory selection
 
   const CategoryField({
     super.key,
     required this.onCategorySelected,
+    required this.onSubCategorySelected,
   });
 
   @override
@@ -19,9 +22,9 @@ class CategoryField extends StatefulWidget {
 
 class _CategoryFieldState extends State<CategoryField> {
   List<Category> categoryListItems = [];
-  List<Category> subCategoryListItems = [];
   Category? selectedCategory;
   Category? selectedSubCategory;
+  List<Category> subCategoryListItems = [];
 
   @override
   void initState() {
@@ -44,10 +47,12 @@ class _CategoryFieldState extends State<CategoryField> {
   Future<void> _fetchSubCategoryList(Category category) async {
     try {
       NewListingRepository repository = NewListingRepository();
-      List<Category> fetchedSubCategories = await repository.fetchSubCategoryList(category.id);
+      List<Category> fetchedSubCategories =
+          await repository.fetchSubCategoryList(category.id);
       setState(() {
         subCategoryListItems = fetchedSubCategories;
-        selectedSubCategory = null; // Reset selected subcategory when category changes
+        selectedSubCategory =
+            null; // Reset selected subcategory when category changes
       });
     } catch (e) {
       print('Failed to load subcategories: $e');
@@ -86,9 +91,10 @@ class _CategoryFieldState extends State<CategoryField> {
                     if (newValue != null) {
                       setState(() {
                         selectedCategory = newValue;
-                        widget.onCategorySelected(newValue);
+                        widget.onCategorySelected(
+                            newValue); // Notify parent of selected category
                       });
-                      _fetchSubCategoryList(newValue); // Fetch subcategories for the selected category
+                      _fetchSubCategoryList(selectedCategory!);
                     }
                     print("Category selected: ${selectedCategory?.id}");
                   },
@@ -97,6 +103,9 @@ class _CategoryFieldState extends State<CategoryField> {
               ),
             ],
           ),
+        ),
+        SizedBox(
+          height: 5.h,
         ),
         if (subCategoryListItems.isNotEmpty)
           CreateListingCardWidget(
@@ -126,6 +135,8 @@ class _CategoryFieldState extends State<CategoryField> {
                       if (newValue != null) {
                         setState(() {
                           selectedSubCategory = newValue;
+                          widget.onSubCategorySelected(
+                              newValue); // Notify parent of selected subcategory
                         });
                       }
                     },

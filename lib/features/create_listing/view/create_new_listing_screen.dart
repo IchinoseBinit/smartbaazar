@@ -7,18 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
+import 'package:smartbazar/features/create_listing/api/dropdown_providers.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
-import 'package:smartbazar/features/create_listing/view/category_feild.dart';
+import 'package:smartbazar/features/create_listing/widget/category_widget.dart';
+import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
+import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class CreateNewListinScreen extends ConsumerStatefulWidget {
@@ -31,12 +36,15 @@ class CreateNewListinScreen extends ConsumerStatefulWidget {
 
 class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TypeList? selectedType;
-  CityList? slectedcity;
   ProductType? selectedProductType;
   // bool _isChecked = false;
   bool _acceptterms = false;
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
+  List<Category> subcategoryList = [];
+  Category? subcatagory;
+  CityList? selectedCity;
+
   List<CityList>? citylistsitems = [];
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
@@ -52,9 +60,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TextEditingController lengthcontroller = TextEditingController();
   String accept = '0';
   String? isUserVerified;
-
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  NewListingRepository repository = NewListingRepository();
+  int? categoryId;
   @override
   void initState() {
+    getSellerData();
     checkuserverified().then(
       (value) {
         isUserVerified = value;
@@ -66,9 +78,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     _fetchProductTypeList();
   }
 
+  void getSellerData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    namecontroller.text = prefs.getString("name")!;
+    emailcontroller.text = prefs.getString("email")!;
+    phonecontroller.text = prefs.getString("phone")!;
+  }
+
   Future<void> _fetchcities() async {
     try {
-      NewListingRepository repository = NewListingRepository();
       List<CityList> fetchedTypes = await repository.fetchCities(1);
       setState(() {
         citylistsitems = fetchedTypes;
@@ -81,7 +99,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   Future<void> _fetchTypeList() async {
     try {
-      NewListingRepository repository = NewListingRepository();
       var allItems = await repository.fetchTypeList();
       setState(() {
         typeListItems = isUserVerified == '1'
@@ -91,6 +108,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ["Used", "Jobs", "Events"].contains(item.typeName))
                 .toList();
       });
+
+      // var subcategory = await repository.fetchCategoryList(parentId: typeListItems.);
     } catch (e) {
       print('Failed to load types: $e');
     }
@@ -98,7 +117,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   Future<void> _fetchProductTypeList() async {
     try {
-      NewListingRepository repository = NewListingRepository();
       // Assume we have a repository method to fetch product types
       List<ProductType> fetchedProductTypes =
           await repository.fetchProductType();
@@ -165,7 +183,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
                 isUserVerified == null
                     ? const SizedBox()
-                    : isUserVerified == '0'
+                    : isUserVerified != '0'
                         ? Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: 11.h, horizontal: 14.w),
@@ -198,13 +216,23 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                Text(
-                                  'Verify your account',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VendroDetailsScreen(),
+                                        ));
+                                  },
+                                  child: Text(
+                                    'Verify your account',
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ],
                             ),
@@ -241,7 +269,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         child: CustomDropdownButton<TypeList>(
                           items: typeListItems,
                           dropdownValue: selectedType,
-                          onChanged: (TypeList? newValue) {
+                          onChanged: (TypeList? newValue) async {
                             setState(() {
                               selectedType = newValue!;
                             });
@@ -256,17 +284,21 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CategoryFeild(
-                  onCategorySelected: (Category? category) {
+                CategoryField(
+                  onCategorySelected: (Category? category) async {
                     setState(() {
                       selectedcategory = category;
                     });
-                    print("Selected category: ${category?.name}");
+                    categoryId = selectedcategory!.id;
+                  },
+                  onSubCategorySelected: (Category? value) {
+                    categoryId = selectedcategory!.id;
                   },
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
+
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -337,12 +369,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         // Wrap the dropdown in Expanded to constrain its width
                         child: CustomDropdownButton<CityList>(
                           items: citylistsitems!,
-                          dropdownValue: slectedcity,
-                          onChanged: (CityList? newValue) {
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
                             setState(() {
-                              slectedcity = newValue!;
+                              selectedCity = newValue;
                             });
-                            print("ram $slectedcity");
                           },
                           getItemLabel: (CityList item) => item.name,
                         ),
@@ -886,7 +917,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   phonecoontroller: phonecontroller,
                   price: pricecontroller.text,
                   title: titlecontroller.text,
-                  city: slectedcity?.id.toString() ??
+                  city: selectedCity?.id.toString() ??
                       '', // Provide a default value or handle null safely
                   weight: weightcontroller.text.isNotEmpty
                       ? weightcontroller.text
@@ -896,6 +927,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       : '0', // Fallback to '0' if empty
                   terms: accept,
                   discount: discountcontroller.text,
+                  emailcontroller: emailcontroller,
+                  nameconroller: namecontroller,
                 ),
               ],
             ),
@@ -907,21 +940,24 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 }
 
 class SellerInformationWidget extends StatefulWidget {
-  SellerInformationWidget(
-      {super.key,
-      this.category,
-      this.title,
-      this.city,
-      this.price,
-      this.description,
-      this.length = '0',
-      this.width = '0',
-      this.type,
-      this.height = '0',
-      this.weight = '0',
-      this.phonecoontroller,
-      this.terms = '0',
-      this.discount = '0'});
+  SellerInformationWidget({
+    super.key,
+    this.category,
+    this.title,
+    this.city,
+    this.price,
+    this.description,
+    this.length = '0',
+    this.width = '0',
+    this.type,
+    this.height = '0',
+    this.weight = '0',
+    this.phonecoontroller,
+    this.terms = '0',
+    this.discount = '0',
+    this.emailcontroller,
+    this.nameconroller,
+  });
 
   String? type;
   String? category;
@@ -936,6 +972,9 @@ class SellerInformationWidget extends StatefulWidget {
   TextEditingController? phonecoontroller;
   String? terms;
   String discount;
+  TextEditingController? emailcontroller;
+
+  TextEditingController? nameconroller;
 
   @override
   State<SellerInformationWidget> createState() =>
@@ -943,10 +982,7 @@ class SellerInformationWidget extends StatefulWidget {
 }
 
 class _SellerInformationWidgetState extends State<SellerInformationWidget> {
-  TextEditingController emailcontroller = TextEditingController();
-
-  TextEditingController pickupcontroller = TextEditingController();
-  TextEditingController nameconroller = TextEditingController();
+  TextEditingController? pickupcontroller = TextEditingController();
 
   List<File?> selectedImages = [];
   void onImagesSelected(List<File?> images) {
@@ -1008,12 +1044,10 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            SizedBox(
-              width: 10.w,
-            ),
+            const Spacer(),
             Expanded(
               child: TextField(
-                controller: emailcontroller,
+                controller: widget.emailcontroller,
                 decoration: InputDecoration.collapsed(
                     hintText: 'XXX@gmail.com',
                     hintStyle: TextStyle(
@@ -1038,9 +1072,9 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             const Spacer(),
             Expanded(
               child: TextField(
-                controller: nameconroller,
+                controller: widget.nameconroller,
                 decoration: InputDecoration.collapsed(
-                    hintText: 'John Doe',
+                    hintText: widget.nameconroller?.text ?? 'name',
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14.sp,
@@ -1097,7 +1131,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   color: Colors.black),
             ),
             SizedBox(
-              width: 10.w,
+              width: 15.w,
             ),
             Expanded(
               child: TextField(
@@ -1298,91 +1332,116 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             child: GeneralEelevatedButton(
                 text: 'Submit',
                 onPresssed: () async {
-                  try {
-                    // Dummy data
-                    String responseMessage = await createlisting(
-                        null, // ref
-                        widget.category!.trim(), // category
-                        widget.title!.trim(), // title
-                        widget.city!.trim(), // city
-                        widget.price!.trim(), // price
-                        widget.description!.trim(), // description
-                        widget.length?.trim() ?? '0', // length
-                        widget.weight?.trim() ?? '0', // width
-                        widget.height?.trim() ?? '0', // height
-                        widget.weight?.trim() ?? '0', // weight
-                        widget.discount.trim(), // discounted price
-                        widget.type?.trim() ?? '0', // type
-                        emailcontroller.text, // email
-                        widget.phonecoontroller!.text, // phone
-                        nameconroller.text, // username
-                        pickupcontroller.text, // pickup
-                        selectedImages, // images
-                        widget.terms?.trim() ??
-                            '0', // accept (e.g., "1" for yes, or whatever value is expected)
-                        pickupcontroller
-                            .text // address (use the appropriate address here)
-                        );
-                  } catch (e) {
+                  if (widget.category != null &&
+                      widget.title != null &&
+                      widget.city != null &&
+                      widget.price != null &&
+                      widget.description != null &&
+                      widget.type != null &&
+                      widget.phonecoontroller?.text.isNotEmpty == true &&
+                      pickupcontroller!.text.isNotEmpty &&
+                      selectedImages.isNotEmpty &&
+                      widget.terms != null) {
+                    try {
+                      // Dummy data
+                      String responseMessage = await createlisting(
+                          null, // ref
+                          widget.category!.trim(), // category
+                          widget.title!.trim(), // title
+                          widget.city!.trim(), // city
+                          widget.price!.trim(), // price
+                          widget.description!.trim(), // description
+                          widget.length?.trim() ?? '0', // length
+                          widget.weight?.trim() ?? '0', // width
+                          widget.height?.trim() ?? '0', // height
+                          widget.weight?.trim() ?? '0', // weight
+                          widget.discount.trim(), // discounted price
+                          widget.type?.trim() ?? '0', // type
+                          widget.emailcontroller!.text, // email
+                          widget.phonecoontroller!.text, // phone
+                          widget.nameconroller!.text, // username
+                          pickupcontroller!.text, // pickup
+                          selectedImages, // images
+                          widget.terms?.trim() ??
+                              '0', // accept (e.g., "1" for yes, or whatever value is expected)
+                          pickupcontroller!
+                              .text // address (use the appropriate address here)
+                          );
+                    } catch (e) {
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SizedBox(
+                            child: AlertDialog(
+                              shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              content: Builder(
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 300.h,
+                                    width: 900.w,
+                                    child: Column(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Message",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 19),
+                                                ),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                        Icons.close)),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 30.h,
+                                            ),
+                                            const Text(
+                                              "Your listing has been created wait for some time before it is being verified",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 19),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  } else {
                     await showDialog(
                       context: context,
                       builder: (context) {
-                        return SizedBox(
-                          child: AlertDialog(
-                            shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            content: Builder(
-                              builder: (context) {
-                                return SizedBox(
-                                  height: 300.h,
-                                  width: 900.w,
-                                  child: Column(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const Text(
-                                                "Message",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 19),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.close)),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 30.h,
-                                          ),
-                                          const Text(
-                                            "Your listing has been created wait for some time before it is being verified",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 19),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                        return AlertDialog(
+                          title: const Text("Missing Fields"),
+                          content: const Text(
+                              "Please fill in all required fields to create a listing."),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("OK"),
                             ),
-                          ),
+                          ],
                         );
                       },
                     );
-                    // ScaffoldMes
-                    // senger.of(context).showSnackBar(SnackBar(
-                    //     content: Text(
-                    //         "Yourlisting has been created wait for some time before it is being verified")));
-                    print("API call failed: $e");
                   }
                 })),
         SizedBox(

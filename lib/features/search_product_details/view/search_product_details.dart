@@ -73,6 +73,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           drawer: const CustomDrawer(),
           key: _key,
           appBar: AppbarWidget(
+                    serchontap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                      query: _searchController.text,
+                    ),
+                  ));
+            },
           onsubmit: (value) {
                if (_showSearchResults) {
               setState(() {
