@@ -15,12 +15,13 @@ Future<String> subscribevendor(SubscribevendorRef ref,
       requestType: RequestType.postWithToken,
       url: ApiConstants.followunfollowvendorurl,
       parameter: {'vendor_id': vendorid},
-    
     );
 
     if (response.statusCode == 200) {
       final result = response.data['data'];
-      return result; // Expecting "0" for unfollow, other values for follow
+      print("bibashk ${response.data['msg']}");
+
+      return response.data['msg']; // Expecting "0" for unfollow, other values for follow
     } else {
       print("Failed to subscribe/unsubscribe: ${response.statusCode}");
       return 'Error: ${response.statusCode}';

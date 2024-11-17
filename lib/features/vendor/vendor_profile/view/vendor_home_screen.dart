@@ -13,6 +13,7 @@ import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/vendor_search.dart';
+import 'package:smartbazar/features/product_details/api/subscribe_vendor_provider.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
@@ -119,15 +120,15 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
-                  serchontap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchScreen(
-                      query: _searchController.text,
-                    ),
-                  ));
-            },
+          serchontap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    query: _searchController.text,
+                  ),
+                ));
+          },
           onsubmit: (value) {
             if (_showSearchResults) {
               setState(() {
@@ -261,9 +262,24 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             children: [
                               SizedBox(height: 2.h),
                               InkWell(
-                                onTap: () {
-                                  launchUrl(Uri.parse(
-                                      'tel:${vendorProfile.vendor?.phone}'));
+                                onTap: () async {
+                                  final subscribe = await ref
+                                      .read(
+                                    subscribevendorProvider(
+                                            vendorid: vendorProfile.vendor!.id!)
+                                        .future,
+                                  )
+                                      .then(
+                                    (value) {
+                                      ScaffoldMessenger.of(
+                                              context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  value)));
+                                    },
+                                  );
+                                    final vendorProfileModelDataAsyncValue = ref.refresh(
+        getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
                                 },
                                 child: Card(
                                   color: Colors.white,
@@ -328,7 +344,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                             ),
                                             SizedBox(height: 4.h),
                                             Text(
-                                              vendorProfile.vendor?.phone?? "N/A",
+                                              vendorProfile.vendor?.phone ??
+                                                  "N/A",
                                               style: TextStyle(
                                                 fontSize: 12.sp,
                                                 color: Colors.black,
@@ -383,13 +400,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                             ),
                                             SizedBox(height: 4.h),
                                             Text(
-                                              "Subscribe",
+                                              vendorProfile.subscribed ?? '...',
                                               style: TextStyle(
                                                 fontSize: 12.sp,
                                                 color: Colors.blue,
                                                 fontWeight: FontWeight.bold,
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ],
@@ -512,7 +529,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   loading: () {
                     return SimpleDialog(
                       children: [
-                  
                         adsList.isLoading
                             ? const SizedBox()
                             : Image.network(adsList.value!.first.image!)
@@ -606,7 +622,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
               crossAxisCount: 2,
               crossAxisSpacing: 5.0,
               mainAxisSpacing: 5.0,
-              childAspectRatio: 0.90,
+              childAspectRatio: 0.7,
             ),
             itemCount: data.length,
             itemBuilder: (context, index) {
@@ -710,7 +726,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             size: 15,
                             color: Color(0xff888888),
                           ),
-                          Text("${post.visits!}K Views"),
+                          Text(
+                            "${post.visits!}views",
+                          ),
                           const Spacer(),
                           Text(
                             (post.pickup != null && post.pickup!.isNotEmpty)

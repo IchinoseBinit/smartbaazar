@@ -210,7 +210,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const CreateNewListinScreen(),
+                                              CreateNewListinScreen(),
                                         ));
                                   },
                                   child: Image.network(

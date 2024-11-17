@@ -41,7 +41,7 @@ class ProductCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(product.image,
-                    errorListener: (p0) => Text("${product.title}")
+                    errorListener: (p0) => Text(product.title)
                     ),
                     fit: BoxFit.fill,
                   ),

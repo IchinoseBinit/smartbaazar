@@ -165,12 +165,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           },
                                           child: CachedNetworkImage(
                                             width: double.infinity,
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.fill,
                                             imageUrl: banner.image!,
-                                          
                                             errorWidget:
                                                 (context, url, error) =>
-                                                    Icon(Icons.error),
+                                                    const Icon(Icons.error),
                                           ));
                                       // Image.network(
                                       //       width: double.infinity,

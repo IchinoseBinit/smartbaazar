@@ -6,6 +6,7 @@ part 'vendor_profile_name.g.dart';
 @freezed
 class VendorData with _$VendorData {
   const factory VendorData({
+    String? subscribed,
     Vendor? vendor,
     List<Advertisement>? advertisements,
     String? scratch_banner,
