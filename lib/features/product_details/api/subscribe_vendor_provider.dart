@@ -19,7 +19,6 @@ Future<String> subscribevendor(SubscribevendorRef ref,
 
     if (response.statusCode == 200) {
       final result = response.data['data'];
-      print("bibashk ${response.data['msg']}");
 
       return response.data['msg']; // Expecting "0" for unfollow, other values for follow
     } else {
