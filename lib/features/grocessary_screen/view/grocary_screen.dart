@@ -22,7 +22,7 @@ class GrocarysScreen extends ConsumerStatefulWidget {
   const GrocarysScreen({super.key});
 
   @override
-  _GrocarysScreenState createState() => _GrocarysScreenState();
+  ConsumerState<GrocarysScreen> createState() => _GrocarysScreenState();
 }
 
 class _GrocarysScreenState extends ConsumerState<GrocarysScreen> {
@@ -65,7 +65,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen> {
   @override
   Widget build(BuildContext context) {
     ref.watch(getAdsProvider);
-    final AsyncbajarValue = ref.watch(getGrocertResponseProvider);
+    final asyncbajarValue = ref.watch(getGrocertResponseProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -104,7 +104,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
+              asyncbajarValue.when(
                   data: (data) {
                     List<UsedSlider> slider = data.sliders!;
                     List<UsedAdvertisement> ads = data.advertisements!;

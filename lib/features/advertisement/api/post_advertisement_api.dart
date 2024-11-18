@@ -28,7 +28,7 @@ Future<bool> postAdvertisement(
       parameter: formData,
     );
 
-    if (response.statusCode == 200 && response.data['success'] == true) {
+    if (response.statusCode == 200) {
       print('Advertisement posted successfully!');
       return true;
     } else {

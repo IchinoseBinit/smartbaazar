@@ -6,7 +6,7 @@ part of 'post_coupon_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCouponHash() => r'4c45fcaa7de8a6cef55a9e4f5a33248491706cf5';
+String _$postCouponHash() => r'035416b0479a6ef6472ff8cf1b61e5200f17cd7d';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post_sponsor_banner_api.dart';
+part of 'delete_message_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postSponsorBannerHash() => r'b042b05e81a80394b544dbdda57b60ebf2ee8f2e';
+String _$deleteMessageHash() => r'6b8854403a7c4ee1782695f6e2267514604bcb96';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [postSponsorBanner].
-@ProviderFor(postSponsorBanner)
-const postSponsorBannerProvider = PostSponsorBannerFamily();
+/// See also [deleteMessage].
+@ProviderFor(deleteMessage)
+const deleteMessageProvider = DeleteMessageFamily();
 
-/// See also [postSponsorBanner].
-class PostSponsorBannerFamily extends Family<AsyncValue<bool>> {
-  /// See also [postSponsorBanner].
-  const PostSponsorBannerFamily();
+/// See also [deleteMessage].
+class DeleteMessageFamily extends Family<AsyncValue<void>> {
+  /// See also [deleteMessage].
+  const DeleteMessageFamily();
 
-  /// See also [postSponsorBanner].
-  PostSponsorBannerProvider call(
-    File imageFile,
+  /// See also [deleteMessage].
+  DeleteMessageProvider call(
+    String threadId,
   ) {
-    return PostSponsorBannerProvider(
-      imageFile,
+    return DeleteMessageProvider(
+      threadId,
     );
   }
 
   @override
-  PostSponsorBannerProvider getProviderOverride(
-    covariant PostSponsorBannerProvider provider,
+  DeleteMessageProvider getProviderOverride(
+    covariant DeleteMessageProvider provider,
   ) {
     return call(
-      provider.imageFile,
+      provider.threadId,
     );
   }
 
@@ -68,91 +68,91 @@ class PostSponsorBannerFamily extends Family<AsyncValue<bool>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'postSponsorBannerProvider';
+  String? get name => r'deleteMessageProvider';
 }
 
-/// See also [postSponsorBanner].
-class PostSponsorBannerProvider extends AutoDisposeFutureProvider<bool> {
-  /// See also [postSponsorBanner].
-  PostSponsorBannerProvider(
-    File imageFile,
+/// See also [deleteMessage].
+class DeleteMessageProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [deleteMessage].
+  DeleteMessageProvider(
+    String threadId,
   ) : this._internal(
-          (ref) => postSponsorBanner(
-            ref as PostSponsorBannerRef,
-            imageFile,
+          (ref) => deleteMessage(
+            ref as DeleteMessageRef,
+            threadId,
           ),
-          from: postSponsorBannerProvider,
-          name: r'postSponsorBannerProvider',
+          from: deleteMessageProvider,
+          name: r'deleteMessageProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$postSponsorBannerHash,
-          dependencies: PostSponsorBannerFamily._dependencies,
+                  : _$deleteMessageHash,
+          dependencies: DeleteMessageFamily._dependencies,
           allTransitiveDependencies:
-              PostSponsorBannerFamily._allTransitiveDependencies,
-          imageFile: imageFile,
+              DeleteMessageFamily._allTransitiveDependencies,
+          threadId: threadId,
         );
 
-  PostSponsorBannerProvider._internal(
+  DeleteMessageProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.imageFile,
+    required this.threadId,
   }) : super.internal();
 
-  final File imageFile;
+  final String threadId;
 
   @override
   Override overrideWith(
-    FutureOr<bool> Function(PostSponsorBannerRef provider) create,
+    FutureOr<void> Function(DeleteMessageRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: PostSponsorBannerProvider._internal(
-        (ref) => create(ref as PostSponsorBannerRef),
+      override: DeleteMessageProvider._internal(
+        (ref) => create(ref as DeleteMessageRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        imageFile: imageFile,
+        threadId: threadId,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<bool> createElement() {
-    return _PostSponsorBannerProviderElement(this);
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _DeleteMessageProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PostSponsorBannerProvider && other.imageFile == imageFile;
+    return other is DeleteMessageProvider && other.threadId == threadId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, imageFile.hashCode);
+    hash = _SystemHash.combine(hash, threadId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin PostSponsorBannerRef on AutoDisposeFutureProviderRef<bool> {
-  /// The parameter `imageFile` of this provider.
-  File get imageFile;
+mixin DeleteMessageRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `threadId` of this provider.
+  String get threadId;
 }
 
-class _PostSponsorBannerProviderElement
-    extends AutoDisposeFutureProviderElement<bool> with PostSponsorBannerRef {
-  _PostSponsorBannerProviderElement(super.provider);
+class _DeleteMessageProviderElement
+    extends AutoDisposeFutureProviderElement<void> with DeleteMessageRef {
+  _DeleteMessageProviderElement(super.provider);
 
   @override
-  File get imageFile => (origin as PostSponsorBannerProvider).imageFile;
+  String get threadId => (origin as DeleteMessageProvider).threadId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

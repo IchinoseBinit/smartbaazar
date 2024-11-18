@@ -18,7 +18,7 @@ class EventsScreen extends ConsumerStatefulWidget {
   const EventsScreen({super.key});
 
   @override
-  _EventsScreenState createState() => _EventsScreenState();
+  ConsumerState<EventsScreen> createState() => _EventsScreenState();
 }
 
 class _EventsScreenState extends ConsumerState<EventsScreen> {
@@ -61,9 +61,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   @override
   Widget build(BuildContext context) {
     ref.watch(getAdsProvider);
-        final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(getAdsProvider);
 
-    final AsyncbajarValue = ref.watch(geteventResponseProvider);
+    final asyncbajarValue = ref.watch(geteventResponseProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -74,15 +74,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppbarWidget(
-                  serchontap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchScreen(
-                      query: _searchController.text,
-                    ),
-                  ));
-            },
+          serchontap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    query: _searchController.text,
+                  ),
+                ));
+          },
           onsubmit: (p0) {},
           scaffoldKey: _key,
           searchController: _searchController,
@@ -102,150 +102,147 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
-                  data: (data) {
-                    List<UsedSlider> slider = data.sliders!;
-                    List<UsedAdvertisement> ads = data.advertisements!;
-                    // final UsedModel maindata = data;
+              asyncbajarValue.when(
+                data: (data) {
+                  List<UsedSlider> slider = data.sliders!;
+                  List<UsedAdvertisement> ads = data.advertisements!;
+                  // final UsedModel maindata = data;
 
-                  
+                  // List<Product> hotproducts = data.hot_products!;
 
-                    // List<Product> hotproducts = data.hot_products!;
-
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          if (_showSearchResults)
-                            Positioned(
-                              top: 0.h, // Position just below the search bar
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                color: Colors.white,
-                                child: searchResults.when(
-                                  data: (results) {
-                                    debugPrint(
-                                        "Search results: $results"); // Debug print
-                                    if (results.isEmpty) {
-                                      return const SizedBox(
-                                        child: Text('No result found'),
-                                      ); // No results
-                                    }
-                                    return Card(
-                                      elevation: 8,
-                                      child: ListView.separated(
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap: true,
-                                        primary: false,
-                                        itemCount: results.length,
-                                        itemBuilder: (context, index) {
-                                          final product = results[index];
-                                          return ListTile(
-                                            title: Text(product.title),
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SearchScreen(
-                                                    query:
-                                                        _searchController.text,
-                                                  ),
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        if (_showSearchResults)
+                          Positioned(
+                            top: 0.h, // Position just below the search bar
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              color: Colors.white,
+                              child: searchResults.when(
+                                data: (results) {
+                                  debugPrint(
+                                      "Search results: $results"); // Debug print
+                                  if (results.isEmpty) {
+                                    return const SizedBox(
+                                      child: Text('No result found'),
+                                    ); // No results
+                                  }
+                                  return Card(
+                                    elevation: 8,
+                                    child: ListView.separated(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      primary: false,
+                                      itemCount: results.length,
+                                      itemBuilder: (context, index) {
+                                        final product = results[index];
+                                        return ListTile(
+                                          title: Text(product.title),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SearchScreen(
+                                                  query: _searchController.text,
                                                 ),
-                                              );
+                                              ),
+                                            );
 
-                                              setState(() {
-                                                _showSearchResults = false;
-                                                FocusScope.of(context)
-                                                    .unfocus();
-                                              });
-                                            },
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) =>
-                                            const Divider(),
-                                      ),
-                                    );
-                                  },
-                                  loading: () {
-                                    return const Center(
-                                        child: CircularProgressIndicator());
-                                  },
-                                  error: (error, stack) => const Center(
-                                      child:
-                                          Text('Error loading search results')),
-                                ),
+                                            setState(() {
+                                              _showSearchResults = false;
+                                              FocusScope.of(context).unfocus();
+                                            });
+                                          },
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) =>
+                                          const Divider(),
+                                    ),
+                                  );
+                                },
+                                loading: () {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                                error: (error, stack) => const Center(
+                                    child:
+                                        Text('Error loading search results')),
                               ),
                             ),
-                          CarouselSlider(
-                              items: slider.map(
-                                (e) {
-                                  print("ram ${e.image}}");
-                                  return Image.network(
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      e.image!);
-                                },
-                              ).toList(),
-                              options: CarouselOptions(
-                                height: 130.h,
-                                aspectRatio: 0.1,
-                                reverse: true,
-                                viewportFraction: 1,
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                              )),
-                          SizedBox(
-                            height: 10.h,
                           ),
-                          UsedProductSlider(
-                            data: data.hot_products!,
-                            title: "Hot products",
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          CarouselSlider(
-                              items: ads.map(
-                                (e) {
-                                  return Image.network(
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      e.image!);
-                                },
-                              ).toList(),
-                              options: CarouselOptions(
-                                height: 80.h,
-                                aspectRatio: 0.1,
-                                reverse: true,
-                                viewportFraction: 1,
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                              )),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          UsedProductSlider(
-                            data: data.products!.data!,
-                            title: "Products",
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  error: (err, stack) => Center(child: Text('Error: $err')),
-                    loading: () {
-                        return SimpleDialog(
-                          children: [
-                            adsList.isLoading
-                                ? const SizedBox()
-                                : Image.network(adsList.value!.first.image!)
-                          ],
-                        );
-                      },)
+                        CarouselSlider(
+                            items: slider.map(
+                              (e) {
+                                print("ram ${e.image}}");
+                                return Image.network(
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    e.image!);
+                              },
+                            ).toList(),
+                            options: CarouselOptions(
+                              height: 130.h,
+                              aspectRatio: 0.1,
+                              reverse: true,
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                            )),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        UsedProductSlider(
+                          data: data.hot_products!,
+                          title: "Hot products",
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        CarouselSlider(
+                            items: ads.map(
+                              (e) {
+                                return Image.network(
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    e.image!);
+                              },
+                            ).toList(),
+                            options: CarouselOptions(
+                              height: 80.h,
+                              aspectRatio: 0.1,
+                              reverse: true,
+                              viewportFraction: 1,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                            )),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        UsedProductSlider(
+                          data: data.products!.data!,
+                          title: "Products",
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                error: (err, stack) => Center(child: Text('Error: $err')),
+                loading: () {
+                  return SimpleDialog(
+                    children: [
+                      adsList.isLoading
+                          ? const SizedBox()
+                          : Image.network(adsList.value!.first.image!)
+                    ],
+                  );
+                },
+              )
             ],
           ),
         ),
@@ -253,4 +250,3 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
     );
   }
 }
-

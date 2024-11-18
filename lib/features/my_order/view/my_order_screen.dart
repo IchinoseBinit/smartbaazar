@@ -72,71 +72,92 @@ class MyOrderScreen extends ConsumerWidget {
                                 // Order Received Tab
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 20.h),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        ListView.separated(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            final order =
-                                                data.ordersReceived.data[index];
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w),
-                                              child: OrderContainer(
-                                                order: order,
-                                                isOrderReceived: true,
+                                  child: ListView(
+                                    children: [
+                                      data.ordersReceived.data.isNotEmpty
+                                          ? ListView.separated(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, index) {
+                                                final order = data
+                                                    .ordersReceived
+                                                    .data[index];
+                                                return Padding(
+                                                  padding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10.w),
+                                                  child: OrderContainer(
+                                                    order: order,
+                                                    isOrderReceived: true,
+                                                  ),
+                                                );
+                                              },
+                                              separatorBuilder:
+                                                  (context, index) =>
+                                                      SizedBox(height: 14.h),
+                                              itemCount: data
+                                                  .ordersReceived.data.length,
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                'No products found in Order Received',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: Colors.grey,
+                                                ),
                                               ),
-                                            );
-                                          },
-                                          separatorBuilder: (context, index) =>
-                                              SizedBox(height: 14.h),
-                                          itemCount:
-                                              data.ordersReceived.data.length,
-                                        ),
-                                        SizedBox(height: 20.h),
-                                        Divider(
-                                            thickness: 2.w,
-                                            color: const Color(0xffD9D9D9)),
-                                      ],
-                                    ),
+                                            ),
+                                      SizedBox(height: 20.h),
+                                      Divider(
+                                          thickness: 2.w,
+                                          color: const Color(0xffD9D9D9)),
+                                    ],
                                   ),
                                 ),
                                 // Order Placed Tab
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 20.h),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        ListView.separated(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            final order =
-                                                data.ordersPlaced.data[index];
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w),
-                                              child: OrderContainer(
-                                                order: order,
-                                                isOrderReceived: false,
+                                  child: ListView(
+                                    children: [
+                                      data.ordersPlaced.data.isNotEmpty
+                                          ? ListView.separated(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, index) {
+                                                final order = data
+                                                    .ordersPlaced.data[index];
+                                                return Padding(
+                                                  padding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10.w),
+                                                  child: OrderContainer(
+                                                    order: order,
+                                                    isOrderReceived: false,
+                                                  ),
+                                                );
+                                              },
+                                              separatorBuilder:
+                                                  (context, index) =>
+                                                      SizedBox(height: 14.h),
+                                              itemCount: data
+                                                  .ordersPlaced.data.length,
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                'No products found in Order Placed',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: Colors.grey,
+                                                ),
                                               ),
-                                            );
-                                          },
-                                          separatorBuilder: (context, index) =>
-                                              SizedBox(height: 14.h),
-                                          itemCount:
-                                              data.ordersPlaced.data.length,
-                                        ),
-                                        SizedBox(height: 20.h),
-                                        Divider(
-                                            thickness: 2.w,
-                                            color: const Color(0xffD9D9D9)),
-                                      ],
-                                    ),
+                                            ),
+                                      SizedBox(height: 20.h),
+                                      Divider(
+                                          thickness: 2.w,
+                                          color: const Color(0xffD9D9D9)),
+                                    ],
                                   ),
                                 ),
                               ],

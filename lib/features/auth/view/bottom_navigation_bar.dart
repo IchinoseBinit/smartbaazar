@@ -68,7 +68,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 padding: EdgeInsets.all(12.h),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xff362677).withOpacity(0.9),
+                gradient: LinearGradient(colors:  [
+                  Color(0xff362677).withOpacity(0.9),
+                  const Color.fromARGB(255, 99, 96, 96)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight
+                )
                 ),
                 child: GestureDetector(
                     onTap: () {

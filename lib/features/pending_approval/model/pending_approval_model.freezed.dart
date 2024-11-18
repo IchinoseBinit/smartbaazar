@@ -623,48 +623,19 @@ mixin _$ProductData {
   String? get description => throw _privateConstructorUsedError;
   String? get tags => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
-  String? get negotiable => throw _privateConstructorUsedError;
   @JsonKey(name: 'contact_name')
   String? get contactName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_hidden')
-  String? get phoneHidden => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
   @JsonKey(name: 'city_id')
   String? get cityId => throw _privateConstructorUsedError;
-  String? get lon => throw _privateConstructorUsedError;
-  String? get lat => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ip_addr')
-  String? get ipAddr => throw _privateConstructorUsedError;
-  String? get length => throw _privateConstructorUsedError;
-  String? get width => throw _privateConstructorUsedError;
-  String? get weight => throw _privateConstructorUsedError;
-  String? get height => throw _privateConstructorUsedError;
   String? get pickup => throw _privateConstructorUsedError;
-  String? get longitude => throw _privateConstructorUsedError;
-  String? get latitude => throw _privateConstructorUsedError;
   @JsonKey(name: 'hyper_del')
   String? get hyperDel => throw _privateConstructorUsedError;
   @JsonKey(name: 'seller_del')
   String? get sellerDel => throw _privateConstructorUsedError;
   String? get visits => throw _privateConstructorUsedError;
-  @JsonKey(name: 'email_token')
-  String? get emailToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_token')
-  String? get phoneToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'tmp_token')
-  String? get tmpToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'verified_email')
-  String? get verifiedEmail => throw _privateConstructorUsedError;
-  @JsonKey(name: 'verified_phone')
-  String? get verifiedPhone => throw _privateConstructorUsedError;
-  @JsonKey(name: 'accept_terms')
-  String? get acceptTerms => throw _privateConstructorUsedError;
-  @JsonKey(name: 'accept_marketing_offers')
-  String? get acceptMarketingOffers => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_permanent')
-  String? get isPermanent => throw _privateConstructorUsedError;
   String? get reviewed => throw _privateConstructorUsedError;
   String? get featured => throw _privateConstructorUsedError;
   String? get archived => throw _privateConstructorUsedError;
@@ -727,34 +698,15 @@ abstract class $ProductDataCopyWith<$Res> {
       String? description,
       String? tags,
       String? price,
-      String? negotiable,
       @JsonKey(name: 'contact_name') String? contactName,
       String? email,
       String? phone,
-      @JsonKey(name: 'phone_hidden') String? phoneHidden,
       String? address,
       @JsonKey(name: 'city_id') String? cityId,
-      String? lon,
-      String? lat,
-      @JsonKey(name: 'ip_addr') String? ipAddr,
-      String? length,
-      String? width,
-      String? weight,
-      String? height,
       String? pickup,
-      String? longitude,
-      String? latitude,
       @JsonKey(name: 'hyper_del') String? hyperDel,
       @JsonKey(name: 'seller_del') String? sellerDel,
       String? visits,
-      @JsonKey(name: 'email_token') String? emailToken,
-      @JsonKey(name: 'phone_token') String? phoneToken,
-      @JsonKey(name: 'tmp_token') String? tmpToken,
-      @JsonKey(name: 'verified_email') String? verifiedEmail,
-      @JsonKey(name: 'verified_phone') String? verifiedPhone,
-      @JsonKey(name: 'accept_terms') String? acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
@@ -802,34 +754,15 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
     Object? description = freezed,
     Object? tags = freezed,
     Object? price = freezed,
-    Object? negotiable = freezed,
     Object? contactName = freezed,
     Object? email = freezed,
     Object? phone = freezed,
-    Object? phoneHidden = freezed,
     Object? address = freezed,
     Object? cityId = freezed,
-    Object? lon = freezed,
-    Object? lat = freezed,
-    Object? ipAddr = freezed,
-    Object? length = freezed,
-    Object? width = freezed,
-    Object? weight = freezed,
-    Object? height = freezed,
     Object? pickup = freezed,
-    Object? longitude = freezed,
-    Object? latitude = freezed,
     Object? hyperDel = freezed,
     Object? sellerDel = freezed,
     Object? visits = freezed,
-    Object? emailToken = freezed,
-    Object? phoneToken = freezed,
-    Object? tmpToken = freezed,
-    Object? verifiedEmail = freezed,
-    Object? verifiedPhone = freezed,
-    Object? acceptTerms = freezed,
-    Object? acceptMarketingOffers = freezed,
-    Object? isPermanent = freezed,
     Object? reviewed = freezed,
     Object? featured = freezed,
     Object? archived = freezed,
@@ -891,10 +824,6 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String?,
-      negotiable: freezed == negotiable
-          ? _value.negotiable
-          : negotiable // ignore: cast_nullable_to_non_nullable
-              as String?,
       contactName: freezed == contactName
           ? _value.contactName
           : contactName // ignore: cast_nullable_to_non_nullable
@@ -907,10 +836,6 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      phoneHidden: freezed == phoneHidden
-          ? _value.phoneHidden
-          : phoneHidden // ignore: cast_nullable_to_non_nullable
-              as String?,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -919,45 +844,9 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
           ? _value.cityId
           : cityId // ignore: cast_nullable_to_non_nullable
               as String?,
-      lon: freezed == lon
-          ? _value.lon
-          : lon // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lat: freezed == lat
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as String?,
-      ipAddr: freezed == ipAddr
-          ? _value.ipAddr
-          : ipAddr // ignore: cast_nullable_to_non_nullable
-              as String?,
-      length: freezed == length
-          ? _value.length
-          : length // ignore: cast_nullable_to_non_nullable
-              as String?,
-      width: freezed == width
-          ? _value.width
-          : width // ignore: cast_nullable_to_non_nullable
-              as String?,
-      weight: freezed == weight
-          ? _value.weight
-          : weight // ignore: cast_nullable_to_non_nullable
-              as String?,
-      height: freezed == height
-          ? _value.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as String?,
       pickup: freezed == pickup
           ? _value.pickup
           : pickup // ignore: cast_nullable_to_non_nullable
-              as String?,
-      longitude: freezed == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as String?,
-      latitude: freezed == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
       hyperDel: freezed == hyperDel
           ? _value.hyperDel
@@ -970,38 +859,6 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
       visits: freezed == visits
           ? _value.visits
           : visits // ignore: cast_nullable_to_non_nullable
-              as String?,
-      emailToken: freezed == emailToken
-          ? _value.emailToken
-          : emailToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneToken: freezed == phoneToken
-          ? _value.phoneToken
-          : phoneToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tmpToken: freezed == tmpToken
-          ? _value.tmpToken
-          : tmpToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      verifiedEmail: freezed == verifiedEmail
-          ? _value.verifiedEmail
-          : verifiedEmail // ignore: cast_nullable_to_non_nullable
-              as String?,
-      verifiedPhone: freezed == verifiedPhone
-          ? _value.verifiedPhone
-          : verifiedPhone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      acceptTerms: freezed == acceptTerms
-          ? _value.acceptTerms
-          : acceptTerms // ignore: cast_nullable_to_non_nullable
-              as String?,
-      acceptMarketingOffers: freezed == acceptMarketingOffers
-          ? _value.acceptMarketingOffers
-          : acceptMarketingOffers // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isPermanent: freezed == isPermanent
-          ? _value.isPermanent
-          : isPermanent // ignore: cast_nullable_to_non_nullable
               as String?,
       reviewed: freezed == reviewed
           ? _value.reviewed
@@ -1117,34 +974,15 @@ abstract class _$$ProductDataImplCopyWith<$Res>
       String? description,
       String? tags,
       String? price,
-      String? negotiable,
       @JsonKey(name: 'contact_name') String? contactName,
       String? email,
       String? phone,
-      @JsonKey(name: 'phone_hidden') String? phoneHidden,
       String? address,
       @JsonKey(name: 'city_id') String? cityId,
-      String? lon,
-      String? lat,
-      @JsonKey(name: 'ip_addr') String? ipAddr,
-      String? length,
-      String? width,
-      String? weight,
-      String? height,
       String? pickup,
-      String? longitude,
-      String? latitude,
       @JsonKey(name: 'hyper_del') String? hyperDel,
       @JsonKey(name: 'seller_del') String? sellerDel,
       String? visits,
-      @JsonKey(name: 'email_token') String? emailToken,
-      @JsonKey(name: 'phone_token') String? phoneToken,
-      @JsonKey(name: 'tmp_token') String? tmpToken,
-      @JsonKey(name: 'verified_email') String? verifiedEmail,
-      @JsonKey(name: 'verified_phone') String? verifiedPhone,
-      @JsonKey(name: 'accept_terms') String? acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
@@ -1190,34 +1028,15 @@ class __$$ProductDataImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? tags = freezed,
     Object? price = freezed,
-    Object? negotiable = freezed,
     Object? contactName = freezed,
     Object? email = freezed,
     Object? phone = freezed,
-    Object? phoneHidden = freezed,
     Object? address = freezed,
     Object? cityId = freezed,
-    Object? lon = freezed,
-    Object? lat = freezed,
-    Object? ipAddr = freezed,
-    Object? length = freezed,
-    Object? width = freezed,
-    Object? weight = freezed,
-    Object? height = freezed,
     Object? pickup = freezed,
-    Object? longitude = freezed,
-    Object? latitude = freezed,
     Object? hyperDel = freezed,
     Object? sellerDel = freezed,
     Object? visits = freezed,
-    Object? emailToken = freezed,
-    Object? phoneToken = freezed,
-    Object? tmpToken = freezed,
-    Object? verifiedEmail = freezed,
-    Object? verifiedPhone = freezed,
-    Object? acceptTerms = freezed,
-    Object? acceptMarketingOffers = freezed,
-    Object? isPermanent = freezed,
     Object? reviewed = freezed,
     Object? featured = freezed,
     Object? archived = freezed,
@@ -1279,10 +1098,6 @@ class __$$ProductDataImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String?,
-      negotiable: freezed == negotiable
-          ? _value.negotiable
-          : negotiable // ignore: cast_nullable_to_non_nullable
-              as String?,
       contactName: freezed == contactName
           ? _value.contactName
           : contactName // ignore: cast_nullable_to_non_nullable
@@ -1295,10 +1110,6 @@ class __$$ProductDataImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      phoneHidden: freezed == phoneHidden
-          ? _value.phoneHidden
-          : phoneHidden // ignore: cast_nullable_to_non_nullable
-              as String?,
       address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -1307,45 +1118,9 @@ class __$$ProductDataImplCopyWithImpl<$Res>
           ? _value.cityId
           : cityId // ignore: cast_nullable_to_non_nullable
               as String?,
-      lon: freezed == lon
-          ? _value.lon
-          : lon // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lat: freezed == lat
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as String?,
-      ipAddr: freezed == ipAddr
-          ? _value.ipAddr
-          : ipAddr // ignore: cast_nullable_to_non_nullable
-              as String?,
-      length: freezed == length
-          ? _value.length
-          : length // ignore: cast_nullable_to_non_nullable
-              as String?,
-      width: freezed == width
-          ? _value.width
-          : width // ignore: cast_nullable_to_non_nullable
-              as String?,
-      weight: freezed == weight
-          ? _value.weight
-          : weight // ignore: cast_nullable_to_non_nullable
-              as String?,
-      height: freezed == height
-          ? _value.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as String?,
       pickup: freezed == pickup
           ? _value.pickup
           : pickup // ignore: cast_nullable_to_non_nullable
-              as String?,
-      longitude: freezed == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as String?,
-      latitude: freezed == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
       hyperDel: freezed == hyperDel
           ? _value.hyperDel
@@ -1358,38 +1133,6 @@ class __$$ProductDataImplCopyWithImpl<$Res>
       visits: freezed == visits
           ? _value.visits
           : visits // ignore: cast_nullable_to_non_nullable
-              as String?,
-      emailToken: freezed == emailToken
-          ? _value.emailToken
-          : emailToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneToken: freezed == phoneToken
-          ? _value.phoneToken
-          : phoneToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tmpToken: freezed == tmpToken
-          ? _value.tmpToken
-          : tmpToken // ignore: cast_nullable_to_non_nullable
-              as String?,
-      verifiedEmail: freezed == verifiedEmail
-          ? _value.verifiedEmail
-          : verifiedEmail // ignore: cast_nullable_to_non_nullable
-              as String?,
-      verifiedPhone: freezed == verifiedPhone
-          ? _value.verifiedPhone
-          : verifiedPhone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      acceptTerms: freezed == acceptTerms
-          ? _value.acceptTerms
-          : acceptTerms // ignore: cast_nullable_to_non_nullable
-              as String?,
-      acceptMarketingOffers: freezed == acceptMarketingOffers
-          ? _value.acceptMarketingOffers
-          : acceptMarketingOffers // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isPermanent: freezed == isPermanent
-          ? _value.isPermanent
-          : isPermanent // ignore: cast_nullable_to_non_nullable
               as String?,
       reviewed: freezed == reviewed
           ? _value.reviewed
@@ -1500,35 +1243,15 @@ class _$ProductDataImpl implements _ProductData {
       required this.description,
       this.tags,
       required this.price,
-      this.negotiable,
       @JsonKey(name: 'contact_name') required this.contactName,
       required this.email,
       required this.phone,
-      @JsonKey(name: 'phone_hidden') this.phoneHidden,
       this.address,
       @JsonKey(name: 'city_id') required this.cityId,
-      required this.lon,
-      required this.lat,
-      @JsonKey(name: 'ip_addr') this.ipAddr,
-      this.length,
-      this.width,
-      this.weight,
-      this.height,
       required this.pickup,
-      required this.longitude,
-      required this.latitude,
       @JsonKey(name: 'hyper_del') this.hyperDel,
       @JsonKey(name: 'seller_del') this.sellerDel,
       required this.visits,
-      @JsonKey(name: 'email_token') this.emailToken,
-      @JsonKey(name: 'phone_token') this.phoneToken,
-      @JsonKey(name: 'tmp_token') required this.tmpToken,
-      @JsonKey(name: 'verified_email') required this.verifiedEmail,
-      @JsonKey(name: 'verified_phone') required this.verifiedPhone,
-      @JsonKey(name: 'accept_terms') required this.acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers')
-      required this.acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') required this.isPermanent,
       required this.reviewed,
       required this.featured,
       required this.archived,
@@ -1581,8 +1304,6 @@ class _$ProductDataImpl implements _ProductData {
   @override
   final String? price;
   @override
-  final String? negotiable;
-  @override
   @JsonKey(name: 'contact_name')
   final String? contactName;
   @override
@@ -1590,34 +1311,12 @@ class _$ProductDataImpl implements _ProductData {
   @override
   final String? phone;
   @override
-  @JsonKey(name: 'phone_hidden')
-  final String? phoneHidden;
-  @override
   final String? address;
   @override
   @JsonKey(name: 'city_id')
   final String? cityId;
   @override
-  final String? lon;
-  @override
-  final String? lat;
-  @override
-  @JsonKey(name: 'ip_addr')
-  final String? ipAddr;
-  @override
-  final String? length;
-  @override
-  final String? width;
-  @override
-  final String? weight;
-  @override
-  final String? height;
-  @override
   final String? pickup;
-  @override
-  final String? longitude;
-  @override
-  final String? latitude;
   @override
   @JsonKey(name: 'hyper_del')
   final String? hyperDel;
@@ -1626,30 +1325,6 @@ class _$ProductDataImpl implements _ProductData {
   final String? sellerDel;
   @override
   final String? visits;
-  @override
-  @JsonKey(name: 'email_token')
-  final String? emailToken;
-  @override
-  @JsonKey(name: 'phone_token')
-  final String? phoneToken;
-  @override
-  @JsonKey(name: 'tmp_token')
-  final String? tmpToken;
-  @override
-  @JsonKey(name: 'verified_email')
-  final String? verifiedEmail;
-  @override
-  @JsonKey(name: 'verified_phone')
-  final String? verifiedPhone;
-  @override
-  @JsonKey(name: 'accept_terms')
-  final String? acceptTerms;
-  @override
-  @JsonKey(name: 'accept_marketing_offers')
-  final String? acceptMarketingOffers;
-  @override
-  @JsonKey(name: 'is_permanent')
-  final String? isPermanent;
   @override
   final String? reviewed;
   @override
@@ -1723,7 +1398,7 @@ class _$ProductDataImpl implements _ProductData {
 
   @override
   String toString() {
-    return 'ProductData(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lon: $lon, lat: $lat, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, visits: $visits, emailToken: $emailToken, phoneToken: $phoneToken, tmpToken: $tmpToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, archivedManually: $archivedManually, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, branded: $branded, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, image: $image, avgRating: $avgRating, savedByLoggedUser: $savedByLoggedUser)';
+    return 'ProductData(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, contactName: $contactName, email: $email, phone: $phone, address: $address, cityId: $cityId, pickup: $pickup, hyperDel: $hyperDel, sellerDel: $sellerDel, visits: $visits, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, archivedManually: $archivedManually, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, branded: $branded, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, image: $image, avgRating: $avgRating, savedByLoggedUser: $savedByLoggedUser)';
   }
 
   @override
@@ -1744,49 +1419,18 @@ class _$ProductDataImpl implements _ProductData {
                 other.description == description) &&
             (identical(other.tags, tags) || other.tags == tags) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.negotiable, negotiable) ||
-                other.negotiable == negotiable) &&
             (identical(other.contactName, contactName) ||
                 other.contactName == contactName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.phoneHidden, phoneHidden) ||
-                other.phoneHidden == phoneHidden) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.cityId, cityId) || other.cityId == cityId) &&
-            (identical(other.lon, lon) || other.lon == lon) &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.ipAddr, ipAddr) || other.ipAddr == ipAddr) &&
-            (identical(other.length, length) || other.length == length) &&
-            (identical(other.width, width) || other.width == width) &&
-            (identical(other.weight, weight) || other.weight == weight) &&
-            (identical(other.height, height) || other.height == height) &&
             (identical(other.pickup, pickup) || other.pickup == pickup) &&
-            (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude) &&
             (identical(other.hyperDel, hyperDel) ||
                 other.hyperDel == hyperDel) &&
             (identical(other.sellerDel, sellerDel) ||
                 other.sellerDel == sellerDel) &&
             (identical(other.visits, visits) || other.visits == visits) &&
-            (identical(other.emailToken, emailToken) ||
-                other.emailToken == emailToken) &&
-            (identical(other.phoneToken, phoneToken) ||
-                other.phoneToken == phoneToken) &&
-            (identical(other.tmpToken, tmpToken) ||
-                other.tmpToken == tmpToken) &&
-            (identical(other.verifiedEmail, verifiedEmail) ||
-                other.verifiedEmail == verifiedEmail) &&
-            (identical(other.verifiedPhone, verifiedPhone) ||
-                other.verifiedPhone == verifiedPhone) &&
-            (identical(other.acceptTerms, acceptTerms) ||
-                other.acceptTerms == acceptTerms) &&
-            (identical(other.acceptMarketingOffers, acceptMarketingOffers) ||
-                other.acceptMarketingOffers == acceptMarketingOffers) &&
-            (identical(other.isPermanent, isPermanent) ||
-                other.isPermanent == isPermanent) &&
             (identical(other.reviewed, reviewed) ||
                 other.reviewed == reviewed) &&
             (identical(other.featured, featured) ||
@@ -1841,34 +1485,15 @@ class _$ProductDataImpl implements _ProductData {
         description,
         tags,
         price,
-        negotiable,
         contactName,
         email,
         phone,
-        phoneHidden,
         address,
         cityId,
-        lon,
-        lat,
-        ipAddr,
-        length,
-        width,
-        weight,
-        height,
         pickup,
-        longitude,
-        latitude,
         hyperDel,
         sellerDel,
         visits,
-        emailToken,
-        phoneToken,
-        tmpToken,
-        verifiedEmail,
-        verifiedPhone,
-        acceptTerms,
-        acceptMarketingOffers,
-        isPermanent,
         reviewed,
         featured,
         archived,
@@ -1919,35 +1544,15 @@ abstract class _ProductData implements ProductData {
       required final String? description,
       final String? tags,
       required final String? price,
-      final String? negotiable,
       @JsonKey(name: 'contact_name') required final String? contactName,
       required final String? email,
       required final String? phone,
-      @JsonKey(name: 'phone_hidden') final String? phoneHidden,
       final String? address,
       @JsonKey(name: 'city_id') required final String? cityId,
-      required final String? lon,
-      required final String? lat,
-      @JsonKey(name: 'ip_addr') final String? ipAddr,
-      final String? length,
-      final String? width,
-      final String? weight,
-      final String? height,
       required final String? pickup,
-      required final String? longitude,
-      required final String? latitude,
       @JsonKey(name: 'hyper_del') final String? hyperDel,
       @JsonKey(name: 'seller_del') final String? sellerDel,
       required final String? visits,
-      @JsonKey(name: 'email_token') final String? emailToken,
-      @JsonKey(name: 'phone_token') final String? phoneToken,
-      @JsonKey(name: 'tmp_token') required final String? tmpToken,
-      @JsonKey(name: 'verified_email') required final String? verifiedEmail,
-      @JsonKey(name: 'verified_phone') required final String? verifiedPhone,
-      @JsonKey(name: 'accept_terms') required final String? acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers')
-      required final String? acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') required final String? isPermanent,
       required final String? reviewed,
       required final String? featured,
       required final String? archived,
@@ -2000,8 +1605,6 @@ abstract class _ProductData implements ProductData {
   @override
   String? get price;
   @override
-  String? get negotiable;
-  @override
   @JsonKey(name: 'contact_name')
   String? get contactName;
   @override
@@ -2009,34 +1612,12 @@ abstract class _ProductData implements ProductData {
   @override
   String? get phone;
   @override
-  @JsonKey(name: 'phone_hidden')
-  String? get phoneHidden;
-  @override
   String? get address;
   @override
   @JsonKey(name: 'city_id')
   String? get cityId;
   @override
-  String? get lon;
-  @override
-  String? get lat;
-  @override
-  @JsonKey(name: 'ip_addr')
-  String? get ipAddr;
-  @override
-  String? get length;
-  @override
-  String? get width;
-  @override
-  String? get weight;
-  @override
-  String? get height;
-  @override
   String? get pickup;
-  @override
-  String? get longitude;
-  @override
-  String? get latitude;
   @override
   @JsonKey(name: 'hyper_del')
   String? get hyperDel;
@@ -2045,30 +1626,6 @@ abstract class _ProductData implements ProductData {
   String? get sellerDel;
   @override
   String? get visits;
-  @override
-  @JsonKey(name: 'email_token')
-  String? get emailToken;
-  @override
-  @JsonKey(name: 'phone_token')
-  String? get phoneToken;
-  @override
-  @JsonKey(name: 'tmp_token')
-  String? get tmpToken;
-  @override
-  @JsonKey(name: 'verified_email')
-  String? get verifiedEmail;
-  @override
-  @JsonKey(name: 'verified_phone')
-  String? get verifiedPhone;
-  @override
-  @JsonKey(name: 'accept_terms')
-  String? get acceptTerms;
-  @override
-  @JsonKey(name: 'accept_marketing_offers')
-  String? get acceptMarketingOffers;
-  @override
-  @JsonKey(name: 'is_permanent')
-  String? get isPermanent;
   @override
   String? get reviewed;
   @override

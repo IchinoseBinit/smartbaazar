@@ -21,9 +21,20 @@ class MyOrderDetailsScreen extends ConsumerStatefulWidget {
 class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   IssueDropdownList? dropdownvalue;
 
+ bool _isReturnEligible(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt).inDays;
+    return difference <= 15;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final order = widget.order; // Access the order data
+    final order = widget.order;
+    // Ensure createdAt is parsed as DateTime 
+   final createdAt = order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+
+    // Check eligibility if createdAt is successfully parsed
+    final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
 
     return GenericSafeArea(
       child: Scaffold(
@@ -160,48 +171,50 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         ],
                       ),
                       SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Action',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff36383C)),
-                          ),
-                          GeneralTextButton(
-                            marginH: 0,
-                            isSmallText: true,
-                            height: 25.h,
-                            width: 95.w,
-                            fgColor: Colors.white,
-                            bgColor: const Color(0xff362677),
-                            title: 'Return',
-                            onPressed: () {
-                              CustomDialougeBox().orderDetailDialouge(
-                                context,
-                                buttonTitle: 'Submit',
-                                callback: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            const MyReturnScreen())),
-                                widget: ReturnProductDetails(
-                                  //  IssueDropdownListItems: IssueDropdownListItems,
-                                  onDropdownChanged: (IssueDropdownList value) {
-                                    setState(() {
-                                      dropdownvalue = value;
-                                    });
-                                  },
-                                ),
-                                title: 'Action',
-                                heading: 'Return Products',
-                              );
-                            },
-                          )
-                        ],
-                      ),
+                      if (isReturnEligible)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Action',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xff36383C)),
+                            ),
+                            GeneralTextButton(
+                              marginH: 0,
+                              isSmallText: true,
+                              height: 25.h,
+                              width: 95.w,
+                              fgColor: Colors.white,
+                              bgColor: const Color(0xff362677),
+                              title: 'Return',
+                              onPressed: () {
+                                CustomDialougeBox().orderDetailDialouge(
+                                  context,
+                                  buttonTitle: 'Submit',
+                                  callback: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const MyReturnScreen())),
+                                  widget: ReturnProductDetails(
+                                    //  IssueDropdownListItems: IssueDropdownListItems,
+                                    onDropdownChanged:
+                                        (IssueDropdownList value) {
+                                      setState(() {
+                                        dropdownvalue = value;
+                                      });
+                                    },
+                                  ),
+                                  title: 'Action',
+                                  heading: 'Return Products',
+                                );
+                              },
+                            )
+                          ],
+                        ),
                     ],
                   ),
                 ),
@@ -235,9 +248,10 @@ class CustomDialougeBox {
           clipBehavior: Clip.hardEdge,
           backgroundColor: Colors.white,
           content: SizedBox(
-            width: screenWidth ,
+            width: screenWidth,
             child: SingleChildScrollView(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -287,9 +301,6 @@ class CustomDialougeBox {
     );
   }
 }
-
-
-
 
 class TrackOrderDetails extends StatelessWidget {
   final dynamic order;

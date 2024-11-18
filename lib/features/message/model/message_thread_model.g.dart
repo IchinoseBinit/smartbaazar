@@ -48,6 +48,7 @@ _$ThreadDataImpl _$$ThreadDataImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt(),
       postId: json['post_id'] as String?,
       subject: json['subject'] as String?,
+      isImportant: json['is_important'] as String?,
     );
 
 Map<String, dynamic> _$$ThreadDataImplToJson(_$ThreadDataImpl instance) =>
@@ -55,6 +56,7 @@ Map<String, dynamic> _$$ThreadDataImplToJson(_$ThreadDataImpl instance) =>
       'id': instance.id,
       'post_id': instance.postId,
       'subject': instance.subject,
+      'is_important': instance.isImportant,
     };
 
 _$LinksImpl _$$LinksImplFromJson(Map<String, dynamic> json) => _$LinksImpl(

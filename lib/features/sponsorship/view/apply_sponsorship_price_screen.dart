@@ -9,6 +9,7 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/sponsorship/api/post_coupon_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_gift_api.dart';
+import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -93,7 +94,9 @@ class _ApplySponsorshipPriceScreenState
       // Show error if any required field is missing
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Please fill all fields and select an image'),backgroundColor: Colors.white70,),
+          content: Text('Please fill all fields and select an image'),
+          backgroundColor: Colors.grey,
+        ),
       );
       return;
     }
@@ -109,15 +112,21 @@ class _ApplySponsorshipPriceScreenState
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gift posted successfully!'),backgroundColor: Colors.white70,),
+        const SnackBar(
+          content: Text('Gift posted successfully!'),
+          backgroundColor: Colors.grey,
+        ),
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const AdvertisementScreen()),
+        MaterialPageRoute(builder: (_) => const SponsorshipScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to post gift'),backgroundColor: Colors.white70,),
+        const SnackBar(
+          content: Text('Failed to post gift'),
+          backgroundColor: Colors.grey,
+        ),
       );
     }
   }
@@ -727,7 +736,10 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
               TextButton(
                 child: const Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context, rootNavigator: true).pop();
+                  couponController.clear();
+                  discountuptoController.clear();
+                  couponQtyController.clear();
                 },
               ),
             ],
@@ -744,7 +756,7 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
               TextButton(
                 child: const Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context, rootNavigator: true).pop();
                 },
               ),
             ],

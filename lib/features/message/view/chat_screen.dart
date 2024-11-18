@@ -6,9 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/message/api/delete_message_api.dart';
+import 'package:smartbazar/features/message/api/message_is_important_api.dart';
 import 'package:smartbazar/features/message/api/message_list_api.dart';
+import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/reply_message_model_api.dart';
 import 'package:smartbazar/features/message/model/message_list_model.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 final selectedImageProvider = StateProvider<XFile?>((ref) => null);
@@ -16,8 +20,16 @@ final selectedImageProvider = StateProvider<XFile?>((ref) => null);
 class ChatScreen extends ConsumerStatefulWidget {
   final String threadId;
   final String username;
+  final String postId;
+  // final String isImportant;
 
-  const ChatScreen({super.key, required this.threadId, required this.username});
+  const ChatScreen({
+    super.key,
+    required this.threadId,
+    required this.username,
+    required this.postId,
+    // required this.isImportant,
+  });
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
@@ -85,14 +97,32 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Future<void> _pickImage() async {
     // Use image_picker to select an image
-    final pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final pickedImage = await _imagePicker.pickImage(
+      source: await _showImageSourceDialog(context),
+    );
     if (pickedImage != null) {
       // Update the provider's state
       ref.read(selectedImageProvider.notifier).state =
           pickedImage; // Use provider to set the image
       print("Selected Image: ${pickedImage.path}");
     }
+  }
+
+  Future<ImageSource> _showImageSourceDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Choose Image Source"),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, ImageSource.camera),
+              child: const Text("Camera")),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, ImageSource.gallery),
+              child: const Text("Gallery")),
+        ],
+      ),
+    );
   }
 
   @override
@@ -112,7 +142,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
         body: Column(
           children: [
-            ChatUserDetailWidget(username: widget.username),
+            ChatUserDetailWidget(
+              username: widget.username,
+              threadId: widget.threadId,
+              postId: widget.postId,
+              //   isImportant: widget.isImportant,
+            ),
             SizedBox(height: 30.h),
 
             // Expanded widget to display messages
@@ -138,6 +173,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               ListView.builder(
+                                reverse: true,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: messages.length,
@@ -257,62 +293,133 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
+  // Future<void> _sendMessage() async {
+  //   // SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final message = _messageController.text;
+  //   final selectedImage = ref.read(selectedImageProvider);
+  //   print("..................................${selectedImage!.path}${selectedImage!.name}");
+  //   if (message.isNotEmpty || selectedImage != null) {
+  //     // Changed to use selectedImage directly
+  //     // Ensure user ID is available
+  //     try {
+  //       if (selectedImage != null) {
+  //         // If an image is selected, send it with the message
+  //         final replyMessageAsyncValue = ref.read(
+  //           sendReplyMessageProvider(
+  //                   widget.threadId, message, File(selectedImage.path))
+  //               .future,
+  //         );
+
+  //         final messageReply = await replyMessageAsyncValue;
+
+  //         if (messageReply.success) {
+  //           _messageController.clear();
+  //           ref.read(selectedImageProvider.notifier).state =
+  //               null; // Clear selected image after sending
+  //           ref.invalidate(
+  //               getMessageListProvider(widget.threadId, _currentPage));
+  //           ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(content: Text('Message sent successfully')),
+  //           );
+  //         } else {
+  //           ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(
+  //                 content: Text(
+  //                     'Failed to send message: ${messageReply.message ?? 'Unknown error'}')),
+  //           );
+  //         }
+  //       } else {
+  //         // Send only the message if no image is selected
+  //         final replyMessageAsyncValue = ref.read(
+  //           sendReplyMessageProvider(widget.threadId, message, File('')).future,
+  //         );
+
+  //         final messageReply = await replyMessageAsyncValue;
+
+  //         if (messageReply.success) {
+  //           _messageController.clear();
+  //           ref.invalidate(
+  //               getMessageListProvider(widget.threadId, _currentPage));
+  //           ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(content: Text('Message sent successfully')),
+  //           );
+  //         } else {
+  //           ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(
+  //                 content: Text(
+  //                     'Failed to send message: ${messageReply.message ?? 'Unknown error'}')),
+  //           );
+  //         }
+  //       }
+  //     } catch (e) {
+  //       print('Error sending message: $e');
+  //     }
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Please enter a message before sending')),
+  //     );
+  //   }
+  // }
   Future<void> _sendMessage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     final message = _messageController.text;
     final selectedImage = ref.read(selectedImageProvider);
+
     if (message.isNotEmpty || selectedImage != null) {
-      // Changed to use selectedImage directly
-      // Ensure user ID is available
       try {
-        if (selectedImage != null) {
-          // If an image is selected, send it with the message
-          final replyMessageAsyncValue = ref.read(
-            sendReplyMessageProvider(widget.threadId, message,
-                    File(selectedImage.path)) // Correctly access path
-                .future,
+        // Handle image-based message
+        final replyMessageAsyncValue = ref.read(
+          sendReplyMessageProvider(
+            widget.postId,
+            message,
+            selectedImage != null ? File(selectedImage.path) : null,
+          ).future,
+        );
+        print(">>>>>>>>>>>>>>>>>>>>>>>>${File(selectedImage!.path)}");
+        final messageReply = await replyMessageAsyncValue;
+
+        if (messageReply.success) {
+          _messageController.clear();
+          ref.read(selectedImageProvider.notifier).state =
+              null; // Clear selected image
+          ref.invalidate(getMessageListProvider(widget.threadId, _currentPage));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Message sent successfully')),
           );
-
-          final messageReply = await replyMessageAsyncValue;
-
-          if (messageReply.success) {
-            _messageController.clear();
-            ref.read(selectedImageProvider.notifier).state =
-                null; // Clear selected image after sending
-            ref.invalidate(
-                getMessageListProvider(widget.threadId, _currentPage));
-          } else {
-            throw Exception(messageReply.message ?? 'Failed to send message');
-          }
         } else {
-          // Send only the message if no image is selected
-          final replyMessageAsyncValue = ref.read(
-            sendReplyMessageProvider(widget.threadId, message, File('')).future,
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(
+                    'Failed to send message: ${messageReply.message ?? 'Unknown error'}')),
           );
-
-          final messageReply = await replyMessageAsyncValue;
-
-          if (messageReply.success) {
-            _messageController.clear();
-            ref.invalidate(
-                getMessageListProvider(widget.threadId, _currentPage));
-          } else {
-            throw Exception(messageReply.message ?? 'Failed to send message');
-          }
         }
       } catch (e) {
         print('Error sending message: $e');
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a message before sending')),
+      );
     }
   }
 }
 
-class ChatUserDetailWidget extends StatelessWidget {
+class ChatUserDetailWidget extends ConsumerWidget {
   final String username;
-  const ChatUserDetailWidget({super.key, required this.username});
+  final String threadId;
+  final String postId;
+
+  const ChatUserDetailWidget({
+    super.key,
+    required this.username,
+    required this.threadId,
+    required this.postId,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isImportantAsync = ref.watch(isMessageImportantProvider(threadId));
+    final messageThreadAsync =
+        ref.watch(getMessageThreadProvider(filter: null));
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -348,15 +455,77 @@ class ChatUserDetailWidget extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
-                    overflow:
-                        TextOverflow.ellipsis, // Use ellipsis for overflow
-                    maxLines: 1, // Restrict it to one line
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.white),
+                      IconButton(
+                        onPressed: () async {
+                          final success = await ref.read(
+                              markMessageIsImportantProvider(threadId).future);
+                          if (success) {
+                            // Invalidate to trigger a refresh
+                            ref.invalidate(
+                                getMessageThreadProvider(filter: null));
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Message set important successfully')),
+                            );
+                          }
+                        },
+                        icon: messageThreadAsync.when(
+                          data: (threadData) {
+                            final isImportant = threadData.result!.data
+                                    ?.firstWhere(
+                                        (item) => item.postId == postId)
+                                    .isImportant ==
+                                "1";
+                            return Icon(
+                              Icons.star,
+                              color: isImportant ? Colors.yellow : Colors.white,
+                            );
+                          },
+                          loading: () => const CircularProgressIndicator(),
+                          error: (_, __) => const Icon(Icons.error),
+                        ),
+                      ),
                       SizedBox(width: 3.w),
-                      const Icon(Icons.delete, color: Colors.white),
+                      GestureDetector(
+                          onTap: () async {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Deleting item...'),
+                                  backgroundColor: Colors.grey),
+                            );
+                            try {
+                              await ref
+                                  .read(deleteMessageProvider(threadId).future);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Item deleted successfully'),
+                                    backgroundColor: Colors.grey),
+                              );
+                              await Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const MessageViewScreen(),
+                                ),
+                              );
+                              // ref.invalidate(
+                              //     );
+                            } catch (e) {
+                              // Show error message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Failed to delete item: $e'),
+                                    backgroundColor: Colors.grey),
+                              );
+                            }
+                          },
+                          child: Icon(Icons.delete, color: Colors.white)),
                       SizedBox(width: 3.w),
                       const Icon(Icons.mail_outline, color: Colors.white),
                     ],
@@ -376,8 +545,8 @@ class ChatUserDetailWidget extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
-                overflow: TextOverflow.ellipsis, // Ellipsis for long text
-                maxLines: 2, // Can be wrapped to two lines
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
               ),
             ),
           ],

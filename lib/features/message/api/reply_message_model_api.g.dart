@@ -6,7 +6,7 @@ part of 'reply_message_model_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendReplyMessageHash() => r'85c79229bf669769737e16625dc6cf82c5c4a7bc';
+String _$sendReplyMessageHash() => r'3223e1103a3536566eb330d66008795d9d23df73';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,8 +41,8 @@ class SendReplyMessageFamily extends Family<AsyncValue<ReplyMessageModel>> {
   /// See also [sendReplyMessage].
   SendReplyMessageProvider call(
     String threadId,
-    String body,
-    File imageFile,
+    String? body,
+    File? imageFile,
   ) {
     return SendReplyMessageProvider(
       threadId,
@@ -83,8 +83,8 @@ class SendReplyMessageProvider
   /// See also [sendReplyMessage].
   SendReplyMessageProvider(
     String threadId,
-    String body,
-    File imageFile,
+    String? body,
+    File? imageFile,
   ) : this._internal(
           (ref) => sendReplyMessage(
             ref as SendReplyMessageRef,
@@ -119,8 +119,8 @@ class SendReplyMessageProvider
   }) : super.internal();
 
   final String threadId;
-  final String body;
-  final File imageFile;
+  final String? body;
+  final File? imageFile;
 
   @override
   Override overrideWith(
@@ -171,10 +171,10 @@ mixin SendReplyMessageRef on AutoDisposeFutureProviderRef<ReplyMessageModel> {
   String get threadId;
 
   /// The parameter `body` of this provider.
-  String get body;
+  String? get body;
 
   /// The parameter `imageFile` of this provider.
-  File get imageFile;
+  File? get imageFile;
 }
 
 class _SendReplyMessageProviderElement
@@ -185,9 +185,9 @@ class _SendReplyMessageProviderElement
   @override
   String get threadId => (origin as SendReplyMessageProvider).threadId;
   @override
-  String get body => (origin as SendReplyMessageProvider).body;
+  String? get body => (origin as SendReplyMessageProvider).body;
   @override
-  File get imageFile => (origin as SendReplyMessageProvider).imageFile;
+  File? get imageFile => (origin as SendReplyMessageProvider).imageFile;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

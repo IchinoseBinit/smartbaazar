@@ -29,24 +29,28 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please provide an image'),
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.grey,
         ),
       );
       return;
     }
     try {
       await ref.read(postSponsorBannerProvider(imageFile!).future);
+      setState(() {
+        // _hasSubmittedImage = true;
+        imageFile = null; // Clear the selected image
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Banner posted successfully! for sponsership'),
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.grey,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to post Banner: $e'),
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.grey,
         ),
       );
     }
@@ -195,6 +199,7 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
                               //  ChooseFileWidget(),
                               ChooseFileWidget(
                                 textColor: Colors.red,
+                                initialImage: imageFile,
                                 onImageSelected: (selectedImage) {
                                   setState(() {
                                     imageFile = selectedImage;

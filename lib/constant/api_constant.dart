@@ -77,6 +77,7 @@ class ApiConstants {
   static String getMessageThreadUrl = '$baseUrl/threads';
   static String getMessageListUrl = '$baseUrl/threads';
   static String getAlertMessageUrl = '$baseUrl/alerts';
+  static String markMessageIsImportantUrl ='$baseUrl/threads/is_important';
   //my order and returns
   static String getMyOrderUrl = '$baseUrl/myorders';
   static String getMyReturnsUrl = '$baseUrl/myreturns';
@@ -97,7 +98,7 @@ class ApiConstants {
   static String getSponsorshipUrl = '$baseUrl/users/sponsorship';
   static String storeSponsorBanner = '$baseUrl/users/sponsorbanner';
   static String postGiftStoreUrl = '$baseUrl/users/sponsorship_store';
-  static String postCouponStoreUrl = '$baseUrl/users/sponsorship_store';
+  static String postCouponStoreUrl = '$baseUrl/users/sponsorship_coupon_store';
   static String sponsorshipDestroy = '$baseUrl/users/sponsorship_destroy';
   //dispute
   static String getDisputeUrl = '$baseUrl/dispute';

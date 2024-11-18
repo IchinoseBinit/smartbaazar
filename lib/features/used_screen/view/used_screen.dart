@@ -9,12 +9,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
-import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
-import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
-import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/model/product_model.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/used_screen/api/used_provider.dart';
@@ -27,7 +22,7 @@ class UsedScreen extends ConsumerStatefulWidget {
   const UsedScreen({super.key});
 
   @override
-  _UsedScreenState createState() => _UsedScreenState();
+  ConsumerState<UsedScreen> createState() => _UsedScreenState();
 }
 
 class _UsedScreenState extends ConsumerState<UsedScreen> {
@@ -70,7 +65,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
   @override
   Widget build(BuildContext context) {
     final adsList = ref.watch(getAdsProvider);
-    final AsyncbajarValue = ref.watch(getUsedResponseProvider);
+    final asyncbajarValue = ref.watch(getUsedResponseProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -109,7 +104,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
+              asyncbajarValue.when(
                   data: (data) {
                     List<UsedSlider> slider = data.sliders!;
                     List<UsedAdvertisement> ads = data.advertisements!;

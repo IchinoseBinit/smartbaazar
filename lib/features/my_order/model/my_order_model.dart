@@ -54,7 +54,7 @@ class OrdersPlacedDatum with _$OrdersPlacedDatum {
     @JsonKey(name: "delivery_address") String? deliveryAddress,
     @JsonKey(name: "coupon") String? coupon,
     @JsonKey(name: "status") required String? status,
-    @JsonKey(name: "created_at") required DateTime createdAt,
+    @JsonKey(name: "created_at") required String? createdAt,
     @JsonKey(name: "updated_at") dynamic updatedAt,
     @JsonKey(name: "post_title") required String? postTitle,
     @JsonKey(name: "customer_name") required String? customerName,

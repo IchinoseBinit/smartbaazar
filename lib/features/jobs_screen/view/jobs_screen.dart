@@ -13,8 +13,6 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
-import 'package:smartbazar/features/services_screen/api/service_provider.dart';
-import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 import 'package:smartbazar/features/used_screen/model/used_model.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
@@ -24,7 +22,7 @@ class JobssScreen extends ConsumerStatefulWidget {
   const JobssScreen({super.key});
 
   @override
-  _JobssScreenState createState() => _JobssScreenState();
+  ConsumerState<JobssScreen> createState() => _JobssScreenState();
 }
 
 class _JobssScreenState extends ConsumerState<JobssScreen> {
@@ -67,7 +65,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen> {
   @override
   Widget build(BuildContext context) {
     ref.watch(getAdsProvider);
-    final AsyncbajarValue = ref.watch(getjobsResponseProvider);
+    final asyncbajarValue = ref.watch(getjobsResponseProvider);
     final searchResults = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
@@ -106,7 +104,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen> {
           onTap: () {},
           child: Stack(
             children: [
-              AsyncbajarValue.when(
+              asyncbajarValue.when(
                   data: (data) {
                     List<UsedSlider> slider = data.sliders!;
                     List<UsedAdvertisement> ads = data.advertisements!;

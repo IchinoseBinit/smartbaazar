@@ -81,7 +81,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
       accountNumber = null;
       imageFile = null;
       // Notify the image picker widget to reset the image
-      _imageWidgetKey.currentState?.resetImage();
+   //   _imageWidgetKey.currentState?.resetImage();
     });
   }
 
@@ -217,12 +217,21 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
     super.initState();
     _selectedImage = widget.initialImage; // Set initial image if provided
   }
-
-  void resetImage() {
-    setState(() {
-      _selectedImage = null;
-    });
+  @override
+  void didUpdateWidget(covariant ChooseFileWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialImage != widget.initialImage) {
+      setState(() {
+        _selectedImage = widget.initialImage;
+      });
+    }
   }
+
+  // void resetImage() {
+  //   setState(() {
+  //     _selectedImage = null;
+  //   });
+  // }
 
   Future<void> pickImage() async {
     final pickedFile =

@@ -6,17 +6,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/features/advertisement/api/post_advertisement_api.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
-import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 // Define your ChooseFileWidget
 class ChooseFileWidget extends StatefulWidget {
   final Function(File) onImageSelected;
   final Color textColor;
-
-  const ChooseFileWidget({super.key, 
+  final File? initialImage;
+  const ChooseFileWidget({
+    super.key,
     required this.onImageSelected,
     required this.textColor,
+    this.initialImage,
   });
 
   @override
@@ -26,6 +27,21 @@ class ChooseFileWidget extends StatefulWidget {
 class _ChooseFileWidgetState extends State<ChooseFileWidget> {
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker(); // Add ImagePicker instance here
+  @override
+  void initState() {
+    super.initState();
+    _selectedImage = widget.initialImage; // Initialize with initialImage
+  }
+
+  @override
+  void didUpdateWidget(covariant ChooseFileWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialImage != widget.initialImage) {
+      setState(() {
+        _selectedImage = widget.initialImage;
+      });
+    }
+  }
 
   Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -68,7 +84,8 @@ class _ChooseFileWidgetState extends State<ChooseFileWidget> {
                 ),
                 child: Image.file(_selectedImage!, fit: BoxFit.cover),
               )
-            : Text('No image selected', style: TextStyle(color: widget.textColor)),
+            : Text('No image selected',
+                style: TextStyle(color: widget.textColor)),
       ],
     );
   }
@@ -79,10 +96,12 @@ class ApplyAdvertisementScreen extends ConsumerStatefulWidget {
   const ApplyAdvertisementScreen({super.key});
 
   @override
-  ConsumerState<ApplyAdvertisementScreen> createState() => _ApplyAdvertisementScreenState();
+  ConsumerState<ApplyAdvertisementScreen> createState() =>
+      _ApplyAdvertisementScreenState();
 }
 
-class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScreen> {
+class _ApplyAdvertisementScreenState
+    extends ConsumerState<ApplyAdvertisementScreen> {
   final TextEditingController linkController = TextEditingController();
   final FocusNode linkFocusNode = FocusNode();
   File? imageFile;
@@ -90,7 +109,10 @@ class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScr
   Future<void> submitAdvertisement() async {
     if (imageFile == null || linkController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please provide both an image and a link'),backgroundColor: Colors.white70,),
+        const SnackBar(
+          content: Text('Please provide both an image and a link'),
+          backgroundColor: Colors.grey,
+        ),
       );
       return;
     }
@@ -101,15 +123,21 @@ class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScr
         linkController.text,
       ).future);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Advertisement posted successfully!'),backgroundColor: Colors.white70,),
+        const SnackBar(
+          content: Text('Advertisement posted successfully!'),
+          backgroundColor: Colors.grey,
+        ),
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const ProceesToPayScreen()),
-      );
+      setState(() {
+        imageFile = null;
+        linkController.clear();
+      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to post advertisement: $e'),backgroundColor: Colors.white70,),
+        SnackBar(
+          content: Text('Failed to post advertisement: $e'),
+          backgroundColor: Colors.grey,
+        ),
       );
     }
   }
@@ -185,6 +213,7 @@ class _ApplyAdvertisementScreenState extends ConsumerState<ApplyAdvertisementScr
                       SizedBox(height: 10.h),
                       ChooseFileWidget(
                         textColor: Colors.red,
+                        initialImage: imageFile,
                         onImageSelected: (selectedImage) {
                           setState(() {
                             imageFile = selectedImage;

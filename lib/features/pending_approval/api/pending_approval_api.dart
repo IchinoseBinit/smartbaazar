@@ -4,11 +4,13 @@ import 'package:smartbazar/features/pending_approval/model/pending_approval_mode
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'pending_approval_api.g.dart';
-@riverpod 
-Future<PendingApprovalModel> getPendingApprovalResponse(GetPendingApprovalResponseRef ref)async{
+part 'pending_approval_api.g.dart';
+
+@riverpod
+Future<PendingApprovalModel> getPendingApprovalResponse(
+    GetPendingApprovalResponseRef ref) async {
   final SmartClinet client = SmartClinet();
-   try {
+  try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getPendingApprovalUrl,

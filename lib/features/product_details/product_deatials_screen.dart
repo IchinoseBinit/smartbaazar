@@ -125,7 +125,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    height: 1700.h,
+                    height: 1695.h,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(

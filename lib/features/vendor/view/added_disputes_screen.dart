@@ -9,6 +9,8 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/my_order/view/dropdown_menu_item.dart';
 import 'package:smartbazar/features/vendor/view/api/add_dispute_api.dart';
+import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
+import 'package:smartbazar/features/vendor/view/model/dispute_model.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -45,29 +47,30 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
   }
 
   Future<void> submitDispute() async {
-  if (_selectedImages == null || _selectedImages!.isEmpty) {
-    showCustomSnackBar(context, "Please select at least one image.");
-    return;
-  }
+    if (_selectedImages == null || _selectedImages!.isEmpty) {
+      showCustomSnackBar(context, "Please select at least one image.");
+      return;
+    }
 
-  // Get the PostDisputeRef from the provider
-  final result = await ref.read(postDisputeProvider(
-          _vendorNameController.text,
-          getIssueLabel(_selectedIssue!),
-          _messageController.text,
-          _selectedImages!.first)
-      .future);
+    // Get the PostDisputeRef from the provider
+    final result = await ref.read(postDisputeProvider(
+            _vendorNameController.text,
+            getIssueLabel(_selectedIssue!),
+            _messageController.text,
+            _selectedImages!.first)
+        .future);
 
-  if (result) {
-    showCustomSnackBar(context, "Dispute submitted successfully!");
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const MyListingScreen()),
-    );
-  } else {
-    showCustomSnackBar(context, "Failed to submit dispute. Please try again.");
+    if (result) {
+      showCustomSnackBar(context, "Dispute submitted successfully!");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const DisputesScreen()),
+      );
+    } else {
+      showCustomSnackBar(
+          context, "Failed to submit dispute. Please try again.");
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -332,26 +335,27 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
       ),
     );
   }
-  void showCustomSnackBar(BuildContext context, String message) {
-  final snackBar = SnackBar(
-    content: Text(
-      message,
-      style: const TextStyle(color: Colors.black), // Text color
-    ),
-    backgroundColor: Colors.white, // SnackBar background color
-    behavior: SnackBarBehavior.floating,
-    action: SnackBarAction(
-      label: 'Close',
-      textColor: const Color(0xff362677), // Button color
-      onPressed: () {
-        // Close the SnackBar
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      },
-    ),
-  );
 
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-}
+  void showCustomSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.black), // Text color
+      ),
+      backgroundColor: Colors.white, // SnackBar background color
+      behavior: SnackBarBehavior.floating,
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: const Color(0xff362677), // Button color
+        onPressed: () {
+          // Close the SnackBar
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
 
 class ReturnOrderDetails extends StatelessWidget {

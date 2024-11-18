@@ -22,7 +22,7 @@ class ImagePickerService {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.grey,
         content: Text(content),
       ),
     );

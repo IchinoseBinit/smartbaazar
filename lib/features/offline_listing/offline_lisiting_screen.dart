@@ -6,7 +6,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/offline_listing/api/offline_listing_api.dart';
 import 'package:smartbazar/features/offline_listing/model/offline_listing_model.dart';
-import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/my_listing_api.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';

@@ -55,7 +55,7 @@ class _BecomeBrandbazaarMemberScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('GMembership Request posted successfully!'),
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.grey,
         ),
       );
       Navigator.pushReplacement(
@@ -66,7 +66,7 @@ class _BecomeBrandbazaarMemberScreenState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to post gift'),
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.grey,
         ),
       );
     }
