@@ -17,7 +17,7 @@ class AccountDetailsWidget extends ConsumerStatefulWidget {
 class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   final _formKey = GlobalKey<FormState>();
 
-  String? fullName, phoneNumber, email, userName, genderID;
+  String? fullName, phoneNumber, email, userName, genderID, dob;
   String? userId; // Updated to nullable type since we are loading it
   bool isLoading = false;
 
@@ -62,6 +62,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email!,
         userId!,
         genderID!,
+        dob!,
       ).future);
 
       // Display success message
@@ -74,6 +75,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email = '';
         userName = '';
         genderID = null; // Reset gender selection
+        dob = '';
       });
       _formKey.currentState?.reset();
     } catch (error) {
@@ -131,7 +133,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                   Padding(
                     padding: EdgeInsets.only(top: 10.h),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
                           'Gender',
@@ -148,7 +150,14 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           fillColor:
                               WidgetStateProperty.all(const Color(0xff362677)),
                         ),
-                        const Text('Male'),
+                        Text(
+                          'Male',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
                         Radio<String>(
                           value: '2', // Female
                           groupValue: genderID,
@@ -156,7 +165,29 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           fillColor:
                               WidgetStateProperty.all(const Color(0xff362677)),
                         ),
-                        const Text('Female'),
+                        Text(
+                          'Female',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Radio<String>(
+                          value: '3', // Others
+                          groupValue: genderID,
+                          onChanged: _updateGender,
+                          fillColor:
+                              WidgetStateProperty.all(const Color(0xff362677)),
+                        ),
+                        Text(
+                          'Others',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -198,6 +229,20 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Enter your email';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10.2.h),
+                  CustomTextFieldWidget(
+                    fill: true,
+                    fillColor: const Color(0xffF3F3F3),
+                    icon: Icons.calendar_today,
+                    hintText: "Date of Birth",
+                    onChanged: (value) => dob = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter your date of birth';
                       }
                       return null;
                     },

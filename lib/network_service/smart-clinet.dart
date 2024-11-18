@@ -42,7 +42,7 @@ class SmartClinet {
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          if (error.response?.statusCode == 401) {
+          if (error.response!.statusCode! >= 400) {
             final success = await _refreshToken();
             if (success) {
               RequestOptions requestOptions = error.requestOptions;

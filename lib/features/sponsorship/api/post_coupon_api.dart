@@ -30,7 +30,7 @@ Future<bool> postCoupon(
       url: ApiConstants.postCouponStoreUrl,
       parameter: formData,
     );
-    if (response.statusCode == 200 && response.data['data'] == 'success') {
+    if (response.statusCode == 200) {
       print('Coupon posted successfully!');
       return true;
     } else {

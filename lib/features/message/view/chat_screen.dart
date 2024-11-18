@@ -6,11 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/message/api/delete_message_api.dart';
 import 'package:smartbazar/features/message/api/message_is_important_api.dart';
 import 'package:smartbazar/features/message/api/message_list_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/reply_message_model_api.dart';
 import 'package:smartbazar/features/message/model/message_list_model.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 final selectedImageProvider = StateProvider<XFile?>((ref) => null);
@@ -143,7 +145,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ChatUserDetailWidget(
               username: widget.username,
               threadId: widget.threadId,
-               postId: widget.postId,
+              postId: widget.postId,
               //   isImportant: widget.isImportant,
             ),
             SizedBox(height: 30.h),
@@ -486,12 +488,44 @@ class ChatUserDetailWidget extends ConsumerWidget {
                               color: isImportant ? Colors.yellow : Colors.white,
                             );
                           },
-                          loading: () =>const CircularProgressIndicator(),
-                          error: (_, __) =>const Icon(Icons.error),
+                          loading: () => const CircularProgressIndicator(),
+                          error: (_, __) => const Icon(Icons.error),
                         ),
                       ),
                       SizedBox(width: 3.w),
-                      const Icon(Icons.delete, color: Colors.white),
+                      GestureDetector(
+                          onTap: () async {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Deleting item...'),
+                                  backgroundColor: Colors.grey),
+                            );
+                            try {
+                              await ref
+                                  .read(deleteMessageProvider(threadId).future);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Item deleted successfully'),
+                                    backgroundColor: Colors.grey),
+                              );
+                              await Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const MessageViewScreen(),
+                                ),
+                              );
+                              // ref.invalidate(
+                              //     );
+                            } catch (e) {
+                              // Show error message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Failed to delete item: $e'),
+                                    backgroundColor: Colors.grey),
+                              );
+                            }
+                          },
+                          child: Icon(Icons.delete, color: Colors.white)),
                       SizedBox(width: 3.w),
                       const Icon(Icons.mail_outline, color: Colors.white),
                     ],

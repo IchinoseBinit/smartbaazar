@@ -21,7 +21,7 @@ Future<bool> postSponsorBanner(PostSponsorBannerRef ref, File imageFile) async {
       url: ApiConstants.storeSponsorBanner,
       parameter: formData,
     );
-    if (response.statusCode == 200 && response.data['data'] == 'success') {
+    if (response.statusCode == 200) {
       print('Sponser Banner posted successfully!');
       return true;
     } else {
