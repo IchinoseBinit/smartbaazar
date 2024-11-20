@@ -20,6 +20,7 @@ VendorData _$VendorDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VendorData {
+  String? get subscribed => throw _privateConstructorUsedError;
   Vendor? get vendor => throw _privateConstructorUsedError;
   List<Advertisement>? get advertisements => throw _privateConstructorUsedError;
   String? get scratch_banner => throw _privateConstructorUsedError;
@@ -38,7 +39,8 @@ abstract class $VendorDataCopyWith<$Res> {
       _$VendorDataCopyWithImpl<$Res, VendorData>;
   @useResult
   $Res call(
-      {Vendor? vendor,
+      {String? subscribed,
+      Vendor? vendor,
       List<Advertisement>? advertisements,
       String? scratch_banner,
       List<VendorPost>? vendorposts});
@@ -59,12 +61,17 @@ class _$VendorDataCopyWithImpl<$Res, $Val extends VendorData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? subscribed = freezed,
     Object? vendor = freezed,
     Object? advertisements = freezed,
     Object? scratch_banner = freezed,
     Object? vendorposts = freezed,
   }) {
     return _then(_value.copyWith(
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
+              as String?,
       vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -106,7 +113,8 @@ abstract class _$$VendorDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Vendor? vendor,
+      {String? subscribed,
+      Vendor? vendor,
       List<Advertisement>? advertisements,
       String? scratch_banner,
       List<VendorPost>? vendorposts});
@@ -126,12 +134,17 @@ class __$$VendorDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? subscribed = freezed,
     Object? vendor = freezed,
     Object? advertisements = freezed,
     Object? scratch_banner = freezed,
     Object? vendorposts = freezed,
   }) {
     return _then(_$VendorDataImpl(
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
+              as String?,
       vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -156,7 +169,8 @@ class __$$VendorDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorDataImpl implements _VendorData {
   const _$VendorDataImpl(
-      {this.vendor,
+      {this.subscribed,
+      this.vendor,
       final List<Advertisement>? advertisements,
       this.scratch_banner,
       final List<VendorPost>? vendorposts})
@@ -166,6 +180,8 @@ class _$VendorDataImpl implements _VendorData {
   factory _$VendorDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorDataImplFromJson(json);
 
+  @override
+  final String? subscribed;
   @override
   final Vendor? vendor;
   final List<Advertisement>? _advertisements;
@@ -192,7 +208,7 @@ class _$VendorDataImpl implements _VendorData {
 
   @override
   String toString() {
-    return 'VendorData(vendor: $vendor, advertisements: $advertisements, scratch_banner: $scratch_banner, vendorposts: $vendorposts)';
+    return 'VendorData(subscribed: $subscribed, vendor: $vendor, advertisements: $advertisements, scratch_banner: $scratch_banner, vendorposts: $vendorposts)';
   }
 
   @override
@@ -200,6 +216,8 @@ class _$VendorDataImpl implements _VendorData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VendorDataImpl &&
+            (identical(other.subscribed, subscribed) ||
+                other.subscribed == subscribed) &&
             (identical(other.vendor, vendor) || other.vendor == vendor) &&
             const DeepCollectionEquality()
                 .equals(other._advertisements, _advertisements) &&
@@ -213,6 +231,7 @@ class _$VendorDataImpl implements _VendorData {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      subscribed,
       vendor,
       const DeepCollectionEquality().hash(_advertisements),
       scratch_banner,
@@ -234,7 +253,8 @@ class _$VendorDataImpl implements _VendorData {
 
 abstract class _VendorData implements VendorData {
   const factory _VendorData(
-      {final Vendor? vendor,
+      {final String? subscribed,
+      final Vendor? vendor,
       final List<Advertisement>? advertisements,
       final String? scratch_banner,
       final List<VendorPost>? vendorposts}) = _$VendorDataImpl;
@@ -242,6 +262,8 @@ abstract class _VendorData implements VendorData {
   factory _VendorData.fromJson(Map<String, dynamic> json) =
       _$VendorDataImpl.fromJson;
 
+  @override
+  String? get subscribed;
   @override
   Vendor? get vendor;
   @override

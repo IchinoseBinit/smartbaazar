@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/prodcut_import/Api/product_import_provider.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -130,10 +132,32 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
                       ),
                       DownloadFileSampleWidget(
                         onclicked: () async {
-                          final uri = Uri.parse(
-                              "https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv");
-                          await launchUrl(uri,
-                                );
+                          const String fileUrl = 'https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv';
+
+        try {
+          // Get the application directory to save the file
+          var dir = await getApplicationDocumentsDirectory();
+          String savePath = '${dir.path}/Smartbazaaruser.csv';
+
+          // Dio instance to handle file download
+          Dio dio = Dio();
+
+          // Start downloading the file
+          await dio.download(fileUrl, savePath);
+          print('File downloaded to $savePath');
+
+          // Optional: Show a success message or do something after download
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('File downloaded successfully!')),
+          );
+        } catch (e) {
+          print("Error downloading file: ${e.toString()}");
+
+          // Optional: Show an error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error downloading file: ${e.toString()}')),
+          );
+        }
                         },
                         text: 'Donwload Sample',
                       ),
@@ -141,12 +165,12 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
                         height: 10.h,
                       ),
                       DownloadFileSampleWidget(
-                        onclicked: () async{
-                                 final uri = Uri.parse(
+                        onclicked: () async {
+                          final uri = Uri.parse(
                               "https://smartbazaar.com.np/uploads/samples/SmartBazaar_Product_Import_Documentation.pdf");
-                          await launchUrl(uri,
-                                );
-
+                          await launchUrl(
+                            uri,
+                          );
                         },
                         text: 'Donwload Documents',
                       ),

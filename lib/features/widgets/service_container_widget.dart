@@ -5,8 +5,8 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/product_screen/view/product_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
@@ -21,7 +21,7 @@ class ServiceContainer extends StatefulWidget {
 
 class _ServiceContainerState extends State<ServiceContainer> {
   final List<Map<String, dynamic>> serviceLists = [
-    {'imageIcon': openCart, 'title': 'Products', 'screen': const HomeScreen()},
+    {'imageIcon': openCart, 'title': 'Products', 'screen': const ProductScreen()},
     // {'imageIcon': brandBazarIcon, 'title': 'B2B'},
     {'imageIcon': b2bIcon, 'title': 'B2B', 'screen': const B2bScreen()},
     {'imageIcon': usedIcon, 'title': 'Used', 'screen': const UsedScreen()},

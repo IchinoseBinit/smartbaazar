@@ -8,6 +8,7 @@ part of 'vendor_profile_name.dart';
 
 _$VendorDataImpl _$$VendorDataImplFromJson(Map<String, dynamic> json) =>
     _$VendorDataImpl(
+      subscribed: json['subscribed'] as String?,
       vendor: json['vendor'] == null
           ? null
           : Vendor.fromJson(json['vendor'] as Map<String, dynamic>),
@@ -22,6 +23,7 @@ _$VendorDataImpl _$$VendorDataImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$VendorDataImplToJson(_$VendorDataImpl instance) =>
     <String, dynamic>{
+      'subscribed': instance.subscribed,
       'vendor': instance.vendor,
       'advertisements': instance.advertisements,
       'scratch_banner': instance.scratch_banner,

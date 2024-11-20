@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Ensure you have this import for SvgPicture
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
@@ -52,6 +53,11 @@ class CustomDrawer extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BottomNavigationScreen(),
+                        ));
                   },
                   child: const Icon(Icons.clear),
                 ),
@@ -66,7 +72,7 @@ class CustomDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>  const ProductScreen(),
+                        builder: (context) => const ProductScreen(),
                       ),
                     );
                   } else if (title == 'BrandBazar') {
@@ -91,7 +97,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     );
                   } else if (title == 'Services') {
-                     Navigator.push(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const ServicesScreen(),
@@ -104,18 +110,18 @@ class CustomDrawer extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => const UsedScreen(),
                         ));
-                  }else if(title=='Jobs'){
-                     Navigator.push(
+                  } else if (title == 'Jobs') {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const JobssScreen(),
                         ));
-                  }else{Navigator.push(
+                  } else {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const GrocarysScreen(),
                         ));
-
                   }
                   // Add more conditions as needed for other titles
                 },
@@ -131,7 +137,7 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const CreateNewListinScreen(),
+                    builder: (_) => CreateNewListinScreen(),
                   ),
                 );
               },

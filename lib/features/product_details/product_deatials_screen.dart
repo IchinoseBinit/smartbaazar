@@ -125,7 +125,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     ),
                   ),
                   Container(
-                    height: 1700.h,
+                    height: 1695.h,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
@@ -280,7 +280,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                         width: 10.w,
                                       ),
                                       data.discounted_price == null && diff == 0
-                                          ? SizedBox()
+                                          ? const SizedBox()
                                           : Container(
                                               padding: EdgeInsets.only(
                                                   left: 11.w,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -174,10 +175,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                               const B2bScreen(),
                                         ));
                                   },
-                                  child: Image.network(
-                                      width: double.infinity,
-                                      fit: BoxFit.contain,
-                                      e.image!),
+                                  child:     CachedNetworkImage(
+                                          imageUrl:
+                                              e.image!,
+                                          height: 100.h,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
                                 );
                               },
                             ).toList(),
@@ -209,12 +216,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const CreateNewListinScreen(),
+                                              CreateNewListinScreen(),
                                         ));
                                   },
                                   child: Image.network(
                                       width: double.infinity,
-                                      fit: BoxFit.contain,
+                                      fit: BoxFit.fitWidth,
                                       e.image!),
                                 );
                               },

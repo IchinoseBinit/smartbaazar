@@ -85,7 +85,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
                       width: double.infinity,
                       height: 550.h,
                       child: CachedNetworkImage(
-                        errorListener: (value) => Text("Loading......"),
+                        errorListener: (value) => const Text("Loading......"),
                         
                       imageUrl:  adsList.value!.first.image!,
                       fit: BoxFit.cover,

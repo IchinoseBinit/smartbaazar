@@ -22,6 +22,8 @@ import 'package:smartbazar/features/create_listing/widget/category_widget.dart';
 import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
+import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
+import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -37,6 +39,8 @@ class CreateNewListinScreen extends ConsumerStatefulWidget {
 class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TypeList? selectedType;
   ProductType? selectedProductType;
+  List<ShippingCitiesModel> shippingcities = [];
+  ShippingCitiesModel? selectedpickup;
   // bool _isChecked = false;
   bool _acceptterms = false;
   Category? selectedcategory;
@@ -44,7 +48,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   List<Category> subcategoryList = [];
   Category? subcatagory;
   CityList? selectedCity;
-
   List<CityList>? citylistsitems = [];
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
@@ -131,6 +134,14 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
+    citySuggestionsAsync.when(
+      data: (data) {
+        shippingcities = data;
+      },
+      error: (error, stackTrace) {},
+      loading: () {},
+    );
     return GenericSafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),
@@ -183,7 +194,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
                 isUserVerified == null
                     ? const SizedBox()
-                    : isUserVerified != '0'
+                    : isUserVerified == '1'
                         ? Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: 11.h, horizontal: 14.w),
@@ -193,21 +204,31 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                RichTextWidget(
-                                    title: 'Verfiy your account ',
-                                    titleStyle: TextStyle(
-                                        // decoration: TextDecoration.underline,
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.white,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500),
-                                    subtitle: ' to post Brand New',
-                                    subtitleStyle: TextStyle(
-                                        decoration: TextDecoration.none,
-                                        color: Colors.white,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500),
-                                    onPressed: () {}),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VendroDetailsScreen(),
+                                        ));
+                                  },
+                                  child: RichTextWidget(
+                                      title: 'Verfiy your account ',
+                                      titleStyle: TextStyle(
+                                          // decoration: TextDecoration.underline,
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.white,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500),
+                                      subtitle: ' to post Brand New',
+                                      subtitleStyle: TextStyle(
+                                          decoration: TextDecoration.none,
+                                          color: Colors.white,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500),
+                                      onPressed: () {}),
+                                ),
                                 Text(
                                   'product & Business to Business (B2B) products & Services. its FREE & takes only few minutes!',
                                   style: TextStyle(
@@ -904,6 +925,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 SellerInformationWidget(
+                  shippingList: shippingcities,
                   category: selectedcategory?.id.toString() ?? '',
                   type: selectedType?.typeId.toString() ??
                       '', // Provide a default value or handle null safely
@@ -940,24 +962,24 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 }
 
 class SellerInformationWidget extends StatefulWidget {
-  SellerInformationWidget({
-    super.key,
-    this.category,
-    this.title,
-    this.city,
-    this.price,
-    this.description,
-    this.length = '0',
-    this.width = '0',
-    this.type,
-    this.height = '0',
-    this.weight = '0',
-    this.phonecoontroller,
-    this.terms = '0',
-    this.discount = '0',
-    this.emailcontroller,
-    this.nameconroller,
-  });
+  SellerInformationWidget(
+      {super.key,
+      this.category,
+      this.title,
+      this.city,
+      this.price,
+      this.description,
+      this.length = '0',
+      this.width = '0',
+      this.type,
+      this.height = '0',
+      this.weight = '0',
+      this.phonecoontroller,
+      this.terms = '0',
+      this.discount = '0',
+      this.emailcontroller,
+      this.nameconroller,
+      required this.shippingList});
 
   String? type;
   String? category;
@@ -975,6 +997,7 @@ class SellerInformationWidget extends StatefulWidget {
   TextEditingController? emailcontroller;
 
   TextEditingController? nameconroller;
+  List<ShippingCitiesModel> shippingList;
 
   @override
   State<SellerInformationWidget> createState() =>
@@ -983,8 +1006,10 @@ class SellerInformationWidget extends StatefulWidget {
 
 class _SellerInformationWidgetState extends State<SellerInformationWidget> {
   TextEditingController? pickupcontroller = TextEditingController();
-
+  ShippingCitiesModel? selectedpickup;
   List<File?> selectedImages = [];
+  bool isloading = false;
+
   void onImagesSelected(List<File?> images) {
     setState(() {
       selectedImages = images;
@@ -1058,7 +1083,33 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-
+        //   CreateListingCardWidget(
+        //     child: Row(
+        //   children: [
+        //     Text(
+        //       'Enter tag',
+        //       style: TextStyle(
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 14.sp,
+        //           color: Colors.black),
+        //     ),
+        //     const Spacer(),
+        //     Expanded(
+        //       child: TextField(
+        //         controller: widget.nameconroller,
+        //         decoration: InputDecoration.collapsed(
+        //             hintText: widget.nameconroller?.text ?? 'name',
+        //             hintStyle: TextStyle(
+        //                 fontWeight: FontWeight.w500,
+        //                 fontSize: 14.sp,
+        //                 color: const Color(0xffADADAD))),
+        //       ),
+        //     ),
+        //   ],
+        // )),
+        // SizedBox(
+        //   height: 10.h,
+        // ),
         CreateListingCardWidget(
             child: Row(
           children: [
@@ -1093,16 +1144,17 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            const Spacer(),
             Expanded(
-              child: TextField(
-                controller: pickupcontroller,
-                decoration: InputDecoration.collapsed(
-                    hintText: 'Select location',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
-                        color: const Color(0xffADADAD))),
+              // Wrap the dropdown in Expanded to constrain its width
+              child: CustomDropdownButton<ShippingCitiesModel>(
+                items: widget.shippingList,
+                dropdownValue: selectedpickup,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedpickup = newValue;
+                  });
+                },
+                getItemLabel: (ShippingCitiesModel item) => item.name,
               ),
             ),
           ],
@@ -1328,122 +1380,138 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
         SizedBox(
           height: 30.h,
         ),
-        Center(
-            child: GeneralEelevatedButton(
-                text: 'Submit',
-                onPresssed: () async {
-                  if (widget.category != null &&
-                      widget.title != null &&
-                      widget.city != null &&
-                      widget.price != null &&
-                      widget.description != null &&
-                      widget.type != null &&
-                      widget.phonecoontroller?.text.isNotEmpty == true &&
-                      pickupcontroller!.text.isNotEmpty &&
-                      selectedImages.isNotEmpty &&
-                      widget.terms != null) {
-                    try {
-                      // Dummy data
-                      String responseMessage = await createlisting(
-                          null, // ref
-                          widget.category!.trim(), // category
-                          widget.title!.trim(), // title
-                          widget.city!.trim(), // city
-                          widget.price!.trim(), // price
-                          widget.description!.trim(), // description
-                          widget.length?.trim() ?? '0', // length
-                          widget.weight?.trim() ?? '0', // width
-                          widget.height?.trim() ?? '0', // height
-                          widget.weight?.trim() ?? '0', // weight
-                          widget.discount.trim(), // discounted price
-                          widget.type?.trim() ?? '0', // type
-                          widget.emailcontroller!.text, // email
-                          widget.phonecoontroller!.text, // phone
-                          widget.nameconroller!.text, // username
-                          pickupcontroller!.text, // pickup
-                          selectedImages, // images
-                          widget.terms?.trim() ??
-                              '0', // accept (e.g., "1" for yes, or whatever value is expected)
-                          pickupcontroller!
-                              .text // address (use the appropriate address here)
-                          );
-                    } catch (e) {
-                      await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return SizedBox(
-                            child: AlertDialog(
-                              shape: BeveledRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              content: Builder(
+
+        isloading
+            ? const Center(child: CircularProgressIndicator())
+            : Center(
+                child: GeneralEelevatedButton(
+                    text: 'Submit',
+                    onPresssed: () async {
+                      setState(() {
+                        isloading = true;
+                      });
+                      if (widget.category != null &&
+                          widget.title != null &&
+                          widget.city != null &&
+                          widget.price != null &&
+                          widget.description != null &&
+                          widget.type != null &&
+                          widget.phonecoontroller?.text.isNotEmpty == true &&
+                          selectedpickup!.name.isNotEmpty&&
+                          selectedImages.isNotEmpty &&
+                          widget.terms != null) {
+                        try {
+                          // Dummy data
+                          await createlisting(
+                                  null, // ref
+                                  widget.category!.trim(), // category
+                                  widget.title!.trim(), // title
+                                  widget.city!.trim(), // city
+                                  widget.price!.trim(), // price
+                                  widget.description!.trim(), // description
+                                  widget.length?.trim() ?? '0', // length
+                                  widget.weight?.trim() ?? '0', // width
+                                  widget.height?.trim() ?? '0', // height
+                                  widget.weight?.trim() ?? '0', // weight
+                                  widget.discount.trim(), // discounted price
+                                  widget.type?.trim() ?? '0', // type
+                                  widget.emailcontroller!.text, // email
+                                  widget.phonecoontroller!.text, // phone
+                                  widget.nameconroller!.text, // username
+                                  selectedpickup!.name, // pickup
+                                  selectedImages, // images
+                                  widget.terms?.trim() ??
+                                      '0', // accept (e.g., "1" for yes, or whatever value is expected)
+                                  pickupcontroller!
+                                      .text // address (use the appropriate address here)
+                                  )
+                              .then(
+                            (value) async {
+                              setState(() {
+                                isloading = false;
+                              });
+                              return await showDialog(
+                                context: context,
                                 builder: (context) {
                                   return SizedBox(
-                                    height: 300.h,
-                                    width: 900.w,
-                                    child: Column(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                    child: AlertDialog(
+                                      shape: BeveledRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      content: Builder(
+                                        builder: (context) {
+                                          return SizedBox(
+                                            height: 300.h,
+                                            width: 900.w,
+                                            child: Column(
                                               children: [
-                                                const Text(
-                                                  "Message",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 19),
-                                                ),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    icon: const Icon(
-                                                        Icons.close)),
+                                                Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        const Text(
+                                                          "Message",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 19),
+                                                        ),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            icon: const Icon(
+                                                                Icons.close)),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 30.h,
+                                                    ),
+                                                    Text(
+                                                      value,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 19),
+                                                    )
+                                                  ],
+                                                )
                                               ],
                                             ),
-                                            SizedBox(
-                                              height: 30.h,
-                                            ),
-                                            const Text(
-                                              "Your listing has been created wait for some time before it is being verified",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 19),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                          );
+                                        },
+                                      ),
                                     ),
                                   );
                                 },
-                              ),
-                            ),
+                              );
+                            },
                           );
-                        },
-                      );
-                    }
-                  } else {
-                    await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text("Missing Fields"),
-                          content: const Text(
-                              "Please fill in all required fields to create a listing."),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text("OK"),
-                            ),
-                          ],
+                        } catch (e) {}
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Missing Fields"),
+                              content: const Text(
+                                  "Please fill in all required fields to create a listing."),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            );
+                          },
                         );
-                      },
-                    );
-                  }
-                })),
+                      }
+                    })),
         SizedBox(
           height: 20.h,
         )

@@ -21,7 +21,7 @@ Future<VendorData> getVendorProfileData(
       url:
           '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
     );
-    print("${response.headers}");
+
 
     if (response.statusCode == 200 && response.data != null) {
       final data = response.data['data'];
@@ -46,6 +46,7 @@ Future<VendorData> getVendorProfileData(
           : [];
       // Return the mapped VendorData with vendor, posts, and advertisements
       return VendorData(
+        subscribed:response.data["data"]["subscribed"] ,
         scratch_banner: response.data['data']['scratch_banner'],
         vendor: Vendor.fromJson(data['vendor']),
         advertisements: advertisementList,

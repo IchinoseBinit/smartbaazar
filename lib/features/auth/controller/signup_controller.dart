@@ -22,20 +22,24 @@ class SignUpController extends StateNotifier<GenericState> {
       required String passsword,
       required String password_confirmation,
       required String country_code,
+      required String dateofb,
       required String username,
       required int accept_terms,
+      required String ugender,
       required int accept_marketing_offers}) async {
     state = LoadedState();
     try {
-      final singUpData = await _signUpApi.signUp(
+      final SignupModel singUpData = await _signUpApi.signUp(
           name: name,
           phone: phone,
           email: email,
           passsword: passsword,
+          dob: dateofb,
           password_confirmation: password_confirmation,
           country_code: country_code,
           username: username,
           accept_terms: accept_terms,
+          gender: ugender,
           accept_marketing_offers: accept_marketing_offers);
       state = LoadedState<SignupModel>(response: singUpData);
       await Navigator.push(

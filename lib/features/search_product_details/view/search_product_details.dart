@@ -204,12 +204,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ],
               ),
               TabBar(
+
+                tabAlignment: TabAlignment.start,
+                 isScrollable: true,
                 onTap: (index) {
                   setState(() {
                     selectedTabIndex = index;
                   });
                 },
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 tabs: const [
                   Tab(text: "All Listing"),
                   Tab(text: "Brand New"),

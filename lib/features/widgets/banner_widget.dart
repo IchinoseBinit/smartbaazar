@@ -24,7 +24,7 @@ class BannerWidget extends ConsumerWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const CreateNewListinScreen(),
+                builder: (context) =>  CreateNewListinScreen(),
               ));
         },
         child: Container(
