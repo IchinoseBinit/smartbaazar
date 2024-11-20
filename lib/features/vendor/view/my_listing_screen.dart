@@ -107,7 +107,7 @@ class MyListinDetails extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: const Color(0xff00000040).withOpacity(0.1),
+            color: const Color(0xFF000040).withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 2,
             offset: const Offset(0, 2),

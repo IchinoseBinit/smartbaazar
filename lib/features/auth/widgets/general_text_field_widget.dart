@@ -14,6 +14,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final bool obscureText;
   final TextInputAction? textInputType;
   final double? hinttextFontSize;
+  final Color? iconColor;
 
   const CustomTextFieldWidget({
     super.key,
@@ -29,6 +30,7 @@ class CustomTextFieldWidget extends StatefulWidget {
     this.obscureText = false,
     this.textInputType,
     this.hinttextFontSize,
+    this.iconColor,
   });
 
   @override
@@ -64,19 +66,19 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
                 color: const Color(
-                  0xffAEC5FF,
+                  0xFFAEC5FF,
                 )),
             child: Icon(
               widget.icon,
-              color: const Color(0xff362677),
+              color: widget.iconColor ?? const Color(0xff362677),
             ),
           ),
         ),
         suffixIcon: widget.suffixIcon,
         hintText: widget.hintText,
-        hintStyle:  TextStyle(
-          color: const Color(0xffADADAD),
-          fontSize: widget.hinttextFontSize?? 14.sp,
+        hintStyle: TextStyle(
+          color: const Color(0xFFADADAD),
+          fontSize: widget.hinttextFontSize ?? 14.sp,
         ),
       ),
     );

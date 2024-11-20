@@ -6,7 +6,7 @@ part of 'update_user_details_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateUserDetailsHash() => r'6d159718ac082d74319d388a9a7d1490a1db96d3';
+String _$updateUserDetailsHash() => r'5d8210e0dffd18f4741a51835f4b625522257bf7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,7 +46,6 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
     String email,
     String userId,
     String genderID,
-    String dob,
   ) {
     return UpdateUserDetailsProvider(
       fullName,
@@ -55,7 +54,6 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
       email,
       userId,
       genderID,
-      dob,
     );
   }
 
@@ -70,7 +68,6 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
       provider.email,
       provider.userId,
       provider.genderID,
-      provider.dob,
     );
   }
 
@@ -100,7 +97,6 @@ class UpdateUserDetailsProvider
     String email,
     String userId,
     String genderID,
-    String dob,
   ) : this._internal(
           (ref) => updateUserDetails(
             ref as UpdateUserDetailsRef,
@@ -110,7 +106,6 @@ class UpdateUserDetailsProvider
             email,
             userId,
             genderID,
-            dob,
           ),
           from: updateUserDetailsProvider,
           name: r'updateUserDetailsProvider',
@@ -127,7 +122,6 @@ class UpdateUserDetailsProvider
           email: email,
           userId: userId,
           genderID: genderID,
-          dob: dob,
         );
 
   UpdateUserDetailsProvider._internal(
@@ -143,7 +137,6 @@ class UpdateUserDetailsProvider
     required this.email,
     required this.userId,
     required this.genderID,
-    required this.dob,
   }) : super.internal();
 
   final String fullName;
@@ -152,7 +145,6 @@ class UpdateUserDetailsProvider
   final String email;
   final String userId;
   final String genderID;
-  final String dob;
 
   @override
   Override overrideWith(
@@ -173,7 +165,6 @@ class UpdateUserDetailsProvider
         email: email,
         userId: userId,
         genderID: genderID,
-        dob: dob,
       ),
     );
   }
@@ -191,8 +182,7 @@ class UpdateUserDetailsProvider
         other.userName == userName &&
         other.email == email &&
         other.userId == userId &&
-        other.genderID == genderID &&
-        other.dob == dob;
+        other.genderID == genderID;
   }
 
   @override
@@ -204,7 +194,6 @@ class UpdateUserDetailsProvider
     hash = _SystemHash.combine(hash, email.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
     hash = _SystemHash.combine(hash, genderID.hashCode);
-    hash = _SystemHash.combine(hash, dob.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -228,9 +217,6 @@ mixin UpdateUserDetailsRef on AutoDisposeFutureProviderRef<UpdateUserDetail> {
 
   /// The parameter `genderID` of this provider.
   String get genderID;
-
-  /// The parameter `dob` of this provider.
-  String get dob;
 }
 
 class _UpdateUserDetailsProviderElement
@@ -250,8 +236,6 @@ class _UpdateUserDetailsProviderElement
   String get userId => (origin as UpdateUserDetailsProvider).userId;
   @override
   String get genderID => (origin as UpdateUserDetailsProvider).genderID;
-  @override
-  String get dob => (origin as UpdateUserDetailsProvider).dob;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

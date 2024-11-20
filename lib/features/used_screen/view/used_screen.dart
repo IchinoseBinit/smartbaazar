@@ -449,7 +449,7 @@ class UsedProductSlider extends StatelessWidget {
       itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
       itemBuilder: (context, _) => const Icon(
         Icons.star,
-        color: Color(0xfff781740),
+        color: Color(0xFF781740),
       ),
       onRatingUpdate: (rating) {},
     );
