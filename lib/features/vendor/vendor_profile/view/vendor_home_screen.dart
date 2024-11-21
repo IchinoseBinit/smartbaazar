@@ -22,7 +22,6 @@ import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_n
 import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;

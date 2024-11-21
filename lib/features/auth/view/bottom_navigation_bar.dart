@@ -69,7 +69,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                 gradient: LinearGradient(colors:  [
-                  Color(0xff362677).withOpacity(0.9),
+                  const Color(0xff362677).withOpacity(0.9),
                   const Color.fromARGB(255, 99, 96, 96)
                 ],
                 begin: Alignment.topLeft,

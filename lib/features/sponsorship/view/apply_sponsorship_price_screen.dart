@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
