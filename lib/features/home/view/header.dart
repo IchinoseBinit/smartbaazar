@@ -6,14 +6,14 @@ import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class NewScreen extends ConsumerStatefulWidget {
-  const NewScreen({super.key});
+class HeaderWithSearch extends ConsumerStatefulWidget {
+  const HeaderWithSearch({super.key});
 
   @override
-  ConsumerState<NewScreen> createState() => _NewScreenState();
+  ConsumerState<HeaderWithSearch> createState() => _HeaderWithSearchState();
 }
 
-class _NewScreenState extends ConsumerState<NewScreen> {
+class _HeaderWithSearchState extends ConsumerState<HeaderWithSearch> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
 

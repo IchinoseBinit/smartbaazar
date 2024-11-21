@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
-import 'package:smartbazar/features/home/view/copy.dart';
+import 'package:smartbazar/features/home/view/header.dart';
 
 class FeedScreen extends ConsumerStatefulWidget {
   const FeedScreen({super.key});
