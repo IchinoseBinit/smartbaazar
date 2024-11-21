@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/signup_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';

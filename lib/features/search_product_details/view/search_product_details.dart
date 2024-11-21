@@ -212,7 +212,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     selectedTabIndex = index;
                   });
                 },
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 tabs: const [
                   Tab(text: "All Listing"),
                   Tab(text: "Brand New"),

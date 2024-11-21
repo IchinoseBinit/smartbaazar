@@ -48,7 +48,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       });
       dateTimeController.text = selectedDate.toString();
       dateTimeController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
-      ;
     }
   }
 
@@ -147,7 +146,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   CustomTextFieldWidget(
                     suffixIcon: InkWell(
                         onTap: () => _selectDate(context),
-                        child: Icon(Icons.date_range_outlined)),
+                        child: const Icon(Icons.date_range_outlined)),
                     icon: Icons.lock,
                     hintText: 'Enter date',
                     controller: dateTimeController,
@@ -224,7 +223,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     height: 12.h,
                   ),
                   accept == '0'
-                      ? SizedBox()
+                      ? const SizedBox()
                       : GeneralEelevatedButton(
                           text: 'Sign Up',
                           onPresssed: () async {
@@ -244,7 +243,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                   accept_terms: int.tryParse(accept)!,
                                   accept_marketing_offers: 1);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     duration: Duration(seconds: 5),
                                       content: Text(
                                           "Your account has been created.")));

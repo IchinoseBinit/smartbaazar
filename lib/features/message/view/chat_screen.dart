@@ -525,7 +525,7 @@ class ChatUserDetailWidget extends ConsumerWidget {
                               );
                             }
                           },
-                          child: Icon(Icons.delete, color: Colors.white)),
+                          child: const Icon(Icons.delete, color: Colors.white)),
                       SizedBox(width: 3.w),
                       const Icon(Icons.mail_outline, color: Colors.white),
                     ],
