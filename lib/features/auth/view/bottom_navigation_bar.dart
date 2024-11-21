@@ -8,6 +8,7 @@ import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/story/story_screen.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -28,7 +29,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     // const Center(
     //   child: Text("Middle Tab"),
     // ),
-    const MyOrderScreen(),
+   const FeedScreen(),
+   // const MyOrderScreen(),
     //if  vendor login show disputes screen
     // DisputesScreen(),
     //
@@ -69,7 +71,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                 gradient: LinearGradient(colors:  [
-                  Color(0xff362677).withOpacity(0.9),
+                  const Color(0xff362677).withOpacity(0.9),
                   const Color.fromARGB(255, 99, 96, 96)
                 ],
                 begin: Alignment.topLeft,
