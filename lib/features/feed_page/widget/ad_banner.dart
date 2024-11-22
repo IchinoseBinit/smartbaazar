@@ -12,10 +12,10 @@ class AdsWidget extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.only(top: 5.h),
       height: 150.h,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
           Colors.white,
-          const Color.fromARGB(255, 231, 219, 219),
+          Color.fromARGB(255, 231, 219, 219),
           Color(0xFFa4a4a4)
         ],
         begin: Alignment.topLeft,
@@ -33,12 +33,12 @@ class AdsWidget extends StatelessWidget {
           
             fit: BoxFit.cover,
               height: 110, "assets/images/subscribe.png"),
-                  Text("Adidas"),
+                  const Text("Adidas"),
                   SizedBox(width: 5.w,),
-                     Icon(Icons.logout),
-                  Spacer(),
-                  Text("Global Brand"),
-                  SizedBox(width: 5,),
+                     const Icon(Icons.logout),
+                  const Spacer(),
+                  const Text("Global Brand"),
+                  const SizedBox(width: 5,),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: [
@@ -49,7 +49,7 @@ class AdsWidget extends StatelessWidget {
               // )
             ],
           ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
         Column(

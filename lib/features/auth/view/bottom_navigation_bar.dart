@@ -3,12 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/scan_screen.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/story/story_screen.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -29,8 +28,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     // const Center(
     //   child: Text("Middle Tab"),
     // ),
-   const FeedScreen(),
-   // const MyOrderScreen(),
+    const FeedScreen(),
+    // const MyOrderScreen(),
     //if  vendor login show disputes screen
     // DisputesScreen(),
     //
@@ -42,8 +41,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       _selectedTab = index;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +66,11 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 height: 80,
                 padding: EdgeInsets.all(12.h),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                gradient: LinearGradient(colors:  [
-                  const Color(0xff362677).withOpacity(0.9),
-                  const Color.fromARGB(255, 99, 96, 96)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight
-                )
-                ),
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(colors: [
+                      const Color(0xff362677).withOpacity(0.9),
+                      const Color.fromARGB(255, 99, 96, 96)
+                    ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
                 child: GestureDetector(
                     onTap: () {
                       setState(() {
