@@ -247,21 +247,24 @@ void showCustomBottomSheet(BuildContext context) {
                             OutlinedButton(
                               child: Text(
                                 "How To Play",
-                                style: TextStyle(color: Colors.white,),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10.sp),
                               ),
                               onPressed: () {},
                             ),
                             OutlinedButton(
                               child: Text(
                                 "View Rules",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10.sp),
                               ),
                               onPressed: () {},
                             ),
                             OutlinedButton(
                               child: Text(
                                 "Suscribe & Win",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10.sp),
                               ),
                               onPressed: () {},
                             ),
