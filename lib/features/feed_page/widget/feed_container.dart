@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 
 class FeedContainer extends StatelessWidget {
   const FeedContainer({super.key});
@@ -10,170 +11,176 @@ class FeedContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width, // Set your desired width
-            height: 99.h, // Set your desired height
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFFFFFFF), // White
-                  Color(0xFFDDDDDD), // Light Gray
-                  Color(0xFF888888), // Dark Gray
-                ],
-                stops: [0.19, 0.554, 1.0], // Define the gradient stops
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+          GestureDetector(
+            onTap: () {
+              showCustomBottomSheet(context);
+            },
+            child: Container(
+              width:
+                  MediaQuery.of(context).size.width, // Set your desired width
+              height: 99.h, // Set your desired height
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFFFFFFFF), // White
+                    Color(0xFFDDDDDD), // Light Gray
+                    Color(0xFF888888), // Dark Gray
+                  ],
+                  stops: [0.19, 0.554, 1.0], // Define the gradient stops
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundColor:
-                            const Color(0x7F7F7F73).withOpacity(0.45),
-                        child: ClipOval(
-                          child: Image.asset(
-                            "assets/images/reebok.png",
-                            fit: BoxFit.cover,
-                            width: 60,
-                            height: 60,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor:
+                              const Color(0x7F7F7F73).withOpacity(0.45),
+                          child: ClipOval(
+                            child: Image.asset(
+                              "assets/images/reebok.png",
+                              fit: BoxFit.cover,
+                              width: 60,
+                              height: 60,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Adidas",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.sp),
-                              ),
-                              SizedBox(width: 5.w),
-                              ShaderMask(
-                                shaderCallback: (Rect bounds) {
-                                  return const LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [
-                                      Color(0xFF41246e), // Dark purple
-                                      Color(0xFF721844), // Dark red
-                                    ],
-                                  ).createShader(bounds);
-                                },
-                                blendMode: BlendMode.srcIn,
-                                child: const Icon(
-                                  Icons.login,
-                                  size: 32,
-                                  color: Colors.white,
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Adidas",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.sp),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    "4.5k",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 11.sp),
+                                SizedBox(width: 5.w),
+                                ShaderMask(
+                                  shaderCallback: (Rect bounds) {
+                                    return const LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [
+                                        Color(0xFF41246e), // Dark purple
+                                        Color(0xFF721844), // Dark red
+                                      ],
+                                    ).createShader(bounds);
+                                  },
+                                  blendMode: BlendMode.srcIn,
+                                  child: const Icon(
+                                    Icons.login,
+                                    size: 32,
+                                    color: Colors.white,
                                   ),
-                                  Text(
-                                    "SUBSCRIBERS",
-                                    style: TextStyle(fontSize: 10.sp),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 15.w,
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "1.5k",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 11.sp),
-                                  ),
-                                  Text(
-                                    "PRODUCTS",
-                                    style: TextStyle(fontSize: 10.sp),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 10.w),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(Icons.public),
-                              Text(
-                                "GLOBAL BRAND",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    "8",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 11.sp),
-                                  ),
-                                  Text(
-                                    "LIVE PRIZES",
-                                    style: TextStyle(fontSize: 10.sp),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 15.w,
-                              ),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    size: 12.h,
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  Text(
-                                    "2.4 KM",
-                                    style: TextStyle(fontSize: 10.sp),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      "4.5k",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    Text(
+                                      "SUBSCRIBERS",
+                                      style: TextStyle(fontSize: 10.sp),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 15.w,
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "1.5k",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    Text(
+                                      "PRODUCTS",
+                                      style: TextStyle(fontSize: 10.sp),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 10.w),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.public),
+                                Text(
+                                  "GLOBAL BRAND",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10.sp),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      "8",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    Text(
+                                      "LIVE PRIZES",
+                                      style: TextStyle(fontSize: 10.sp),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 15.w,
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      size: 12.h,
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    Text(
+                                      "2.4 KM",
+                                      style: TextStyle(fontSize: 10.sp),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
