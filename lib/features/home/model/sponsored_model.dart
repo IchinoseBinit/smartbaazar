@@ -8,25 +8,25 @@ class SponsoredModel {
     if (json['sponsored_posts'] != null) {
       sponsoredPosts = <SponsoredPosts>[];
       json['sponsored_posts'].forEach((v) {
-        sponsoredPosts!.add(new SponsoredPosts.fromJson(v));
+        sponsoredPosts!.add(SponsoredPosts.fromJson(v));
       });
     }
     if (json['trending'] != null) {
       trending = <Trending>[];
       json['trending'].forEach((v) {
-        trending!.add(new Trending.fromJson(v));
+        trending!.add(Trending.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.sponsoredPosts != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (sponsoredPosts != null) {
       data['sponsored_posts'] =
-          this.sponsoredPosts!.map((v) => v.toJson()).toList();
+          sponsoredPosts!.map((v) => v.toJson()).toList();
     }
-    if (this.trending != null) {
-      data['trending'] = this.trending!.map((v) => v.toJson()).toList();
+    if (trending != null) {
+      data['trending'] = trending!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -225,66 +225,66 @@ class SponsoredPosts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['country_code'] = this.countryCode;
-    data['user_id'] = this.userId;
-    data['category_id'] = this.categoryId;
-    data['post_type_id'] = this.postTypeId;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['tags'] = this.tags;
-    data['price'] = this.price;
-    data['negotiable'] = this.negotiable;
-    data['contact_name'] = this.contactName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['phone_hidden'] = this.phoneHidden;
-    data['address'] = this.address;
-    data['city_id'] = this.cityId;
-    data['lon'] = this.lon;
-    data['lat'] = this.lat;
-    data['ip_addr'] = this.ipAddr;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['weight'] = this.weight;
-    data['height'] = this.height;
-    data['pickup'] = this.pickup;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['hyper_del'] = this.hyperDel;
-    data['seller_del'] = this.sellerDel;
-    data['visits'] = this.visits;
-    data['email_token'] = this.emailToken;
-    data['phone_token'] = this.phoneToken;
-    data['tmp_token'] = this.tmpToken;
-    data['verified_email'] = this.verifiedEmail;
-    data['verified_phone'] = this.verifiedPhone;
-    data['accept_terms'] = this.acceptTerms;
-    data['accept_marketing_offers'] = this.acceptMarketingOffers;
-    data['is_permanent'] = this.isPermanent;
-    data['reviewed'] = this.reviewed;
-    data['featured'] = this.featured;
-    data['archived'] = this.archived;
-    data['archived_at'] = this.archivedAt;
-    data['archived_manually'] = this.archivedManually;
-    data['deletion_mail_sent_at'] = this.deletionMailSentAt;
-    data['fb_profile'] = this.fbProfile;
-    data['partner'] = this.partner;
-    data['discounted_price'] = this.discountedPrice;
-    data['trending'] = this.trending;
-    data['stock'] = this.stock;
-    data['min_order'] = this.minOrder;
-    data['samp_price'] = this.sampPrice;
-    data['text_one'] = this.textOne;
-    data['text_two'] = this.textTwo;
-    data['ava_to'] = this.avaTo;
-    data['branded'] = this.branded;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['image'] = this.image;
-    data['avg_rating'] = this.avgRating;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['country_code'] = countryCode;
+    data['user_id'] = userId;
+    data['category_id'] = categoryId;
+    data['post_type_id'] = postTypeId;
+    data['title'] = title;
+    data['description'] = description;
+    data['tags'] = tags;
+    data['price'] = price;
+    data['negotiable'] = negotiable;
+    data['contact_name'] = contactName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['phone_hidden'] = phoneHidden;
+    data['address'] = address;
+    data['city_id'] = cityId;
+    data['lon'] = lon;
+    data['lat'] = lat;
+    data['ip_addr'] = ipAddr;
+    data['length'] = length;
+    data['width'] = width;
+    data['weight'] = weight;
+    data['height'] = height;
+    data['pickup'] = pickup;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['hyper_del'] = hyperDel;
+    data['seller_del'] = sellerDel;
+    data['visits'] = visits;
+    data['email_token'] = emailToken;
+    data['phone_token'] = phoneToken;
+    data['tmp_token'] = tmpToken;
+    data['verified_email'] = verifiedEmail;
+    data['verified_phone'] = verifiedPhone;
+    data['accept_terms'] = acceptTerms;
+    data['accept_marketing_offers'] = acceptMarketingOffers;
+    data['is_permanent'] = isPermanent;
+    data['reviewed'] = reviewed;
+    data['featured'] = featured;
+    data['archived'] = archived;
+    data['archived_at'] = archivedAt;
+    data['archived_manually'] = archivedManually;
+    data['deletion_mail_sent_at'] = deletionMailSentAt;
+    data['fb_profile'] = fbProfile;
+    data['partner'] = partner;
+    data['discounted_price'] = discountedPrice;
+    data['trending'] = trending;
+    data['stock'] = stock;
+    data['min_order'] = minOrder;
+    data['samp_price'] = sampPrice;
+    data['text_one'] = textOne;
+    data['text_two'] = textTwo;
+    data['ava_to'] = avaTo;
+    data['branded'] = branded;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['image'] = image;
+    data['avg_rating'] = avgRating;
     // if (this.savedByLoggedUser != null) {
     //   data['savedByLoggedUser'] =
     //       this.savedByLoggedUser!.map((v) => v.toJson()).toList();
@@ -486,66 +486,66 @@ class Trending {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['country_code'] = this.countryCode;
-    data['user_id'] = this.userId;
-    data['category_id'] = this.categoryId;
-    data['post_type_id'] = this.postTypeId;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['tags'] = this.tags;
-    data['price'] = this.price;
-    data['negotiable'] = this.negotiable;
-    data['contact_name'] = this.contactName;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['phone_hidden'] = this.phoneHidden;
-    data['address'] = this.address;
-    data['city_id'] = this.cityId;
-    data['lon'] = this.lon;
-    data['lat'] = this.lat;
-    data['ip_addr'] = this.ipAddr;
-    data['length'] = this.length;
-    data['width'] = this.width;
-    data['weight'] = this.weight;
-    data['height'] = this.height;
-    data['pickup'] = this.pickup;
-    data['longitude'] = this.longitude;
-    data['latitude'] = this.latitude;
-    data['hyper_del'] = this.hyperDel;
-    data['seller_del'] = this.sellerDel;
-    data['visits'] = this.visits;
-    data['email_token'] = this.emailToken;
-    data['phone_token'] = this.phoneToken;
-    data['tmp_token'] = this.tmpToken;
-    data['verified_email'] = this.verifiedEmail;
-    data['verified_phone'] = this.verifiedPhone;
-    data['accept_terms'] = this.acceptTerms;
-    data['accept_marketing_offers'] = this.acceptMarketingOffers;
-    data['is_permanent'] = this.isPermanent;
-    data['reviewed'] = this.reviewed;
-    data['featured'] = this.featured;
-    data['archived'] = this.archived;
-    data['archived_at'] = this.archivedAt;
-    data['archived_manually'] = this.archivedManually;
-    data['deletion_mail_sent_at'] = this.deletionMailSentAt;
-    data['fb_profile'] = this.fbProfile;
-    data['partner'] = this.partner;
-    data['discounted_price'] = this.discountedPrice;
-    data['trending'] = this.trending;
-    data['stock'] = this.stock;
-    data['min_order'] = this.minOrder;
-    data['samp_price'] = this.sampPrice;
-    data['text_one'] = this.textOne;
-    data['text_two'] = this.textTwo;
-    data['ava_to'] = this.avaTo;
-    data['branded'] = this.branded;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['image'] = this.image;
-    data['avg_rating'] = this.avgRating;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['country_code'] = countryCode;
+    data['user_id'] = userId;
+    data['category_id'] = categoryId;
+    data['post_type_id'] = postTypeId;
+    data['title'] = title;
+    data['description'] = description;
+    data['tags'] = tags;
+    data['price'] = price;
+    data['negotiable'] = negotiable;
+    data['contact_name'] = contactName;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['phone_hidden'] = phoneHidden;
+    data['address'] = address;
+    data['city_id'] = cityId;
+    data['lon'] = lon;
+    data['lat'] = lat;
+    data['ip_addr'] = ipAddr;
+    data['length'] = length;
+    data['width'] = width;
+    data['weight'] = weight;
+    data['height'] = height;
+    data['pickup'] = pickup;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['hyper_del'] = hyperDel;
+    data['seller_del'] = sellerDel;
+    data['visits'] = visits;
+    data['email_token'] = emailToken;
+    data['phone_token'] = phoneToken;
+    data['tmp_token'] = tmpToken;
+    data['verified_email'] = verifiedEmail;
+    data['verified_phone'] = verifiedPhone;
+    data['accept_terms'] = acceptTerms;
+    data['accept_marketing_offers'] = acceptMarketingOffers;
+    data['is_permanent'] = isPermanent;
+    data['reviewed'] = reviewed;
+    data['featured'] = featured;
+    data['archived'] = archived;
+    data['archived_at'] = archivedAt;
+    data['archived_manually'] = archivedManually;
+    data['deletion_mail_sent_at'] = deletionMailSentAt;
+    data['fb_profile'] = fbProfile;
+    data['partner'] = partner;
+    data['discounted_price'] = discountedPrice;
+    data['trending'] = trending;
+    data['stock'] = stock;
+    data['min_order'] = minOrder;
+    data['samp_price'] = sampPrice;
+    data['text_one'] = textOne;
+    data['text_two'] = textTwo;
+    data['ava_to'] = avaTo;
+    data['branded'] = branded;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['image'] = image;
+    data['avg_rating'] = avgRating;
     // if (this.savedByLoggedUser != null) {
     //   data['savedByLoggedUser'] =
     //       this.savedByLoggedUser!.map((v) => v.toJson()).toList();

@@ -200,13 +200,12 @@ mixin _$LoginDataResult {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  String get photo_url => throw _privateConstructorUsedError;
-  String get gender_id => throw _privateConstructorUsedError;
-  String get photo => throw _privateConstructorUsedError;
-  String get phone => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String get dob => throw _privateConstructorUsedError;
-  String get gender => throw _privateConstructorUsedError;
+  String? get photo_url => throw _privateConstructorUsedError;
+  String? get gender_id => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get dob => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -224,13 +223,12 @@ abstract class $LoginDataResultCopyWith<$Res> {
       {int id,
       String name,
       String username,
-      String photo_url,
-      String gender_id,
-      String photo,
-      String phone,
-      String email,
-      String dob,
-      String gender});
+      String? photo_url,
+      String? gender_id,
+      String? photo,
+      String? phone,
+      String? email,
+      String? dob});
 }
 
 /// @nodoc
@@ -249,13 +247,12 @@ class _$LoginDataResultCopyWithImpl<$Res, $Val extends LoginDataResult>
     Object? id = null,
     Object? name = null,
     Object? username = null,
-    Object? photo_url = null,
-    Object? gender_id = null,
-    Object? photo = null,
-    Object? phone = null,
-    Object? email = null,
-    Object? dob = null,
-    Object? gender = null,
+    Object? photo_url = freezed,
+    Object? gender_id = freezed,
+    Object? photo = freezed,
+    Object? phone = freezed,
+    Object? email = freezed,
+    Object? dob = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -270,34 +267,30 @@ class _$LoginDataResultCopyWithImpl<$Res, $Val extends LoginDataResult>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      photo_url: null == photo_url
+      photo_url: freezed == photo_url
           ? _value.photo_url
           : photo_url // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender_id: null == gender_id
+              as String?,
+      gender_id: freezed == gender_id
           ? _value.gender_id
           : gender_id // ignore: cast_nullable_to_non_nullable
-              as String,
-      photo: null == photo
+              as String?,
+      photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
+              as String?,
+      phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
+              as String?,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      dob: null == dob
+              as String?,
+      dob: freezed == dob
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
-          ? _value.gender
-          : gender // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -314,13 +307,12 @@ abstract class _$$LoginDataResultImplCopyWith<$Res>
       {int id,
       String name,
       String username,
-      String photo_url,
-      String gender_id,
-      String photo,
-      String phone,
-      String email,
-      String dob,
-      String gender});
+      String? photo_url,
+      String? gender_id,
+      String? photo,
+      String? phone,
+      String? email,
+      String? dob});
 }
 
 /// @nodoc
@@ -337,13 +329,12 @@ class __$$LoginDataResultImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? username = null,
-    Object? photo_url = null,
-    Object? gender_id = null,
-    Object? photo = null,
-    Object? phone = null,
-    Object? email = null,
-    Object? dob = null,
-    Object? gender = null,
+    Object? photo_url = freezed,
+    Object? gender_id = freezed,
+    Object? photo = freezed,
+    Object? phone = freezed,
+    Object? email = freezed,
+    Object? dob = freezed,
   }) {
     return _then(_$LoginDataResultImpl(
       id: null == id
@@ -358,34 +349,30 @@ class __$$LoginDataResultImplCopyWithImpl<$Res>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      photo_url: null == photo_url
+      photo_url: freezed == photo_url
           ? _value.photo_url
           : photo_url // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender_id: null == gender_id
+              as String?,
+      gender_id: freezed == gender_id
           ? _value.gender_id
           : gender_id // ignore: cast_nullable_to_non_nullable
-              as String,
-      photo: null == photo
+              as String?,
+      photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
+              as String?,
+      phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
+              as String?,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      dob: null == dob
+              as String?,
+      dob: freezed == dob
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
-          ? _value.gender
-          : gender // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -397,13 +384,12 @@ class _$LoginDataResultImpl implements _LoginDataResult {
       {required this.id,
       required this.name,
       required this.username,
-      required this.photo_url,
-      required this.gender_id,
-      required this.photo,
-      required this.phone,
-      required this.email,
-      required this.dob,
-      required this.gender});
+      this.photo_url,
+      this.gender_id,
+      this.photo,
+      this.phone,
+      this.email,
+      this.dob});
 
   factory _$LoginDataResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$LoginDataResultImplFromJson(json);
@@ -415,23 +401,21 @@ class _$LoginDataResultImpl implements _LoginDataResult {
   @override
   final String username;
   @override
-  final String photo_url;
+  final String? photo_url;
   @override
-  final String gender_id;
+  final String? gender_id;
   @override
-  final String photo;
+  final String? photo;
   @override
-  final String phone;
+  final String? phone;
   @override
-  final String email;
+  final String? email;
   @override
-  final String dob;
-  @override
-  final String gender;
+  final String? dob;
 
   @override
   String toString() {
-    return 'LoginDataResult(id: $id, name: $name, username: $username, photo_url: $photo_url, gender_id: $gender_id, photo: $photo, phone: $phone, email: $email, dob: $dob, gender: $gender)';
+    return 'LoginDataResult(id: $id, name: $name, username: $username, photo_url: $photo_url, gender_id: $gender_id, photo: $photo, phone: $phone, email: $email, dob: $dob)';
   }
 
   @override
@@ -450,14 +434,13 @@ class _$LoginDataResultImpl implements _LoginDataResult {
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.dob, dob) || other.dob == dob) &&
-            (identical(other.gender, gender) || other.gender == gender));
+            (identical(other.dob, dob) || other.dob == dob));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, username, photo_url,
-      gender_id, photo, phone, email, dob, gender);
+      gender_id, photo, phone, email, dob);
 
   @JsonKey(ignore: true)
   @override
@@ -479,13 +462,12 @@ abstract class _LoginDataResult implements LoginDataResult {
       {required final int id,
       required final String name,
       required final String username,
-      required final String photo_url,
-      required final String gender_id,
-      required final String photo,
-      required final String phone,
-      required final String email,
-      required final String dob,
-      required final String gender}) = _$LoginDataResultImpl;
+      final String? photo_url,
+      final String? gender_id,
+      final String? photo,
+      final String? phone,
+      final String? email,
+      final String? dob}) = _$LoginDataResultImpl;
 
   factory _LoginDataResult.fromJson(Map<String, dynamic> json) =
       _$LoginDataResultImpl.fromJson;
@@ -497,19 +479,17 @@ abstract class _LoginDataResult implements LoginDataResult {
   @override
   String get username;
   @override
-  String get photo_url;
+  String? get photo_url;
   @override
-  String get gender_id;
+  String? get gender_id;
   @override
-  String get photo;
+  String? get photo;
   @override
-  String get phone;
+  String? get phone;
   @override
-  String get email;
+  String? get email;
   @override
-  String get dob;
-  @override
-  String get gender;
+  String? get dob;
   @override
   @JsonKey(ignore: true)
   _$$LoginDataResultImplCopyWith<_$LoginDataResultImpl> get copyWith =>
@@ -523,6 +503,7 @@ LoginDataExtra _$LoginDataExtraFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$LoginDataExtra {
   String get authToken => throw _privateConstructorUsedError;
+  String get refreshToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -536,7 +517,7 @@ abstract class $LoginDataExtraCopyWith<$Res> {
           LoginDataExtra value, $Res Function(LoginDataExtra) then) =
       _$LoginDataExtraCopyWithImpl<$Res, LoginDataExtra>;
   @useResult
-  $Res call({String authToken});
+  $Res call({String authToken, String refreshToken});
 }
 
 /// @nodoc
@@ -553,11 +534,16 @@ class _$LoginDataExtraCopyWithImpl<$Res, $Val extends LoginDataExtra>
   @override
   $Res call({
     Object? authToken = null,
+    Object? refreshToken = null,
   }) {
     return _then(_value.copyWith(
       authToken: null == authToken
           ? _value.authToken
           : authToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -571,7 +557,7 @@ abstract class _$$LoginDataExtraImplCopyWith<$Res>
       __$$LoginDataExtraImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String authToken});
+  $Res call({String authToken, String refreshToken});
 }
 
 /// @nodoc
@@ -586,11 +572,16 @@ class __$$LoginDataExtraImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? authToken = null,
+    Object? refreshToken = null,
   }) {
     return _then(_$LoginDataExtraImpl(
       authToken: null == authToken
           ? _value.authToken
           : authToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -599,17 +590,20 @@ class __$$LoginDataExtraImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LoginDataExtraImpl implements _LoginDataExtra {
-  const _$LoginDataExtraImpl({required this.authToken});
+  const _$LoginDataExtraImpl(
+      {required this.authToken, required this.refreshToken});
 
   factory _$LoginDataExtraImpl.fromJson(Map<String, dynamic> json) =>
       _$$LoginDataExtraImplFromJson(json);
 
   @override
   final String authToken;
+  @override
+  final String refreshToken;
 
   @override
   String toString() {
-    return 'LoginDataExtra(authToken: $authToken)';
+    return 'LoginDataExtra(authToken: $authToken, refreshToken: $refreshToken)';
   }
 
   @override
@@ -618,12 +612,14 @@ class _$LoginDataExtraImpl implements _LoginDataExtra {
         (other.runtimeType == runtimeType &&
             other is _$LoginDataExtraImpl &&
             (identical(other.authToken, authToken) ||
-                other.authToken == authToken));
+                other.authToken == authToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, authToken);
+  int get hashCode => Object.hash(runtimeType, authToken, refreshToken);
 
   @JsonKey(ignore: true)
   @override
@@ -641,14 +637,17 @@ class _$LoginDataExtraImpl implements _LoginDataExtra {
 }
 
 abstract class _LoginDataExtra implements LoginDataExtra {
-  const factory _LoginDataExtra({required final String authToken}) =
-      _$LoginDataExtraImpl;
+  const factory _LoginDataExtra(
+      {required final String authToken,
+      required final String refreshToken}) = _$LoginDataExtraImpl;
 
   factory _LoginDataExtra.fromJson(Map<String, dynamic> json) =
       _$LoginDataExtraImpl.fromJson;
 
   @override
   String get authToken;
+  @override
+  String get refreshToken;
   @override
   @JsonKey(ignore: true)
   _$$LoginDataExtraImplCopyWith<_$LoginDataExtraImpl> get copyWith =>

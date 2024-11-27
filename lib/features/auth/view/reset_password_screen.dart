@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
@@ -46,7 +45,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xffADADAD)),
+                          color: const Color(0xffADADAD)),
                     )
                   ],
                 )),
@@ -56,12 +55,14 @@ class ResetPasswordScreen extends StatelessWidget {
                 CustomTextFieldWidget(
                   icon: Icons.lock,
                   hintText: 'New Pasword',
-                  suffixIcon: Icon(
+                  suffixIcon: const Icon(
                     Icons.visibility,
                     size: 30,
                     color: Color(0xffADADAD),
                   ),
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 22.h,
@@ -69,12 +70,14 @@ class ResetPasswordScreen extends StatelessWidget {
                 CustomTextFieldWidget(
                   icon: Icons.lock,
                   hintText: 'Re-type New Password',
-                  suffixIcon: Icon(
+                  suffixIcon: const Icon(
                     Icons.visibility,
                     size: 30,
                     color: Color(0xffADADAD),
                   ),
-                  validator: (String) {},
+                  validator: (String) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 60.h,
@@ -83,7 +86,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   text: 'Confirm',
                   onPresssed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => const HomeScreen()));
                   },
                 ),
                 SizedBox(

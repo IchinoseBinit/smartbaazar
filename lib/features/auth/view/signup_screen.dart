@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/controller/signup_controller.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
@@ -27,6 +29,27 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final phoneController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  final dateTimeController = TextEditingController();
+  final genderController = TextEditingController();
+
+  bool _acceptterms = false;
+  String accept = '0';
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+      dateTimeController.text = selectedDate.toString();
+      dateTimeController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +103,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.person_2_outlined,
                     hintText: 'Name',
                     controller: nameController,
-                    validator: (value) {},
+                    validator: (value) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -89,7 +114,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.call,
                     hintText: 'Phone Number',
                     controller: phoneController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -98,7 +125,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.mail,
                     hintText: 'Email',
                     controller: emailController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -107,23 +136,34 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.person_2_outlined,
                     hintText: 'User Name',
                     controller: usernameController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
                   ),
                   CustomTextFieldWidget(
-                    icon: Icons.local_activity,
-                    hintText: 'Age',
-                    validator: (String) {},
+                    suffixIcon: InkWell(
+                        onTap: () => _selectDate(context),
+                        child: const Icon(Icons.date_range_outlined)),
+                    icon: Icons.lock,
+                    hintText: 'Enter date',
+                    controller: dateTimeController,
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
-                    height: 22.h,
+                    height: 20.h,
                   ),
                   CustomTextFieldWidget(
+                    controller: genderController,
                     icon: Icons.person_2_rounded,
                     hintText: 'Sex',
-                    validator: (_) {},
+                    validator: (_) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -132,7 +172,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.lock,
                     hintText: 'Password',
                     controller: passwordController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 22.h,
@@ -141,36 +183,82 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     icon: Icons.lock,
                     hintText: 'Confirm Passowrd',
                     controller: confirmPasswordController,
-                    validator: (String) {},
+                    validator: (String) {
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 20.h,
                   ),
-                  GeneralEelevatedButton(
-                    text: 'Sign Up',
-                    onPresssed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await signUpProvider.signUp(context,
-                            name: nameController.text,
-                            phone: phoneController.text,
-                            email: emailController.text,
-                            passsword: passwordController.text,
-                            password_confirmation:
-                                confirmPasswordController.text,
-                            country_code: 'NP',
-                            username: usernameController.text,
-                            accept_terms: 1,
-                            accept_marketing_offers: 1);
-                      }
-                    },
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 22.h,
+                        child: CustomCheckbox(
+                          value: _acceptterms,
+                          onChanged: (bool newValue) {
+                            setState(() {
+                              _acceptterms = newValue;
+                            });
+
+                            accept = (_acceptterms) ? '1' : '0';
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Do you accept all the terms and conditions',
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(
+                              (0xff888888),
+                            )),
+                      ),
+                    ],
                   ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  accept == '0'
+                      ? const SizedBox()
+                      : GeneralEelevatedButton(
+                          text: 'Sign Up',
+                          onPresssed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              final val = await signUpProvider.signUp(
+                                  ugender: genderController.text,
+                                  context,
+                                  name: nameController.text,
+                                  dateofb: dateTimeController.text,
+                                  phone: phoneController.text,
+                                  email: emailController.text,
+                                  passsword: passwordController.text,
+                                  password_confirmation:
+                                      confirmPasswordController.text,
+                                  country_code: 'NP',
+                                  username: usernameController.text,
+                                  accept_terms: int.tryParse(accept)!,
+                                  accept_marketing_offers: 1);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    duration: Duration(seconds: 5),
+                                      content: Text(
+                                          "Your account has been created.")));
+                            }
+                          },
+                        ),
                   SizedBox(
                     height: 40.h,
                   ),
                   RichTextWidget(
                     title: 'Already have an account? ',
                     subtitle: 'Log In',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   SizedBox(
                     height: 20.h,

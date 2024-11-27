@@ -14,7 +14,7 @@ class PhotoAvatarContainerWidget extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 18.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(width: 1, color: Color(0xffADADAD))),
+          border: Border.all(width: 1, color: const Color(0xffADADAD))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -34,12 +34,12 @@ class PhotoAvatarContainerWidget extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          Divider(
+          const Divider(
             color: Color(0xffADADAD),
           ),
           Padding(
             padding: EdgeInsets.only(left: 15.w),
-            child: Text(
+            child: const Text(
               'Recommended 1:1 Size',
               style: TextStyle(color: Color(0xffFF282F)),
             ),
@@ -50,7 +50,7 @@ class PhotoAvatarContainerWidget extends StatelessWidget {
           Center(
             child: DottedBorder(
                 borderType: BorderType.RRect,
-                color: Color(0xffADADAD),
+                color: const Color(0xffADADAD),
                 padding: EdgeInsets.zero,
                 radius: Radius.circular(8.r),
                 strokeWidth: 2,
@@ -59,7 +59,7 @@ class PhotoAvatarContainerWidget extends StatelessWidget {
                   child: Container(
                     width: 118.w,
                     height: 95.h,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xffD9D9D9),
                     ),
                   ),
