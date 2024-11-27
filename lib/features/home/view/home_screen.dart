@@ -3,16 +3,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/common/appbar_widget.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
+import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
+import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/widgets/banner_widget.dart';
@@ -66,6 +70,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  List<String> _images = ['assets/images/home.png'];
+  List<String> _services = ['SHOPZONE', 'TRADEHUB', 'SERVICES', 'USED', 'HOB'];
   @override
   Widget build(BuildContext context) {
     final adsList = ref.watch(getAdsProvider);
@@ -75,318 +81,256 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
-    return GenericSafeArea(
-      color: Colors.white,
-      child: Scaffold(
+    return Scaffold(
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
-        appBar: AppbarWidget(
-          serchontap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                    query: _searchController.text,
-                  ),
-                ));
-          },
-          onsubmit: (p0) {},
-          scaffoldKey: _key,
-          searchController: _searchController,
-          onCartTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AddToCartScreen(),
-              ),
-            );
-          },
-          onSearchFocusChanged: _onSearchFocusChanged,
-        ),
         drawer: const CustomDrawer(),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {},
-          child: Stack(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SingleChildScrollView(
+              Container(
+                // height: 170,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50)),
+                  gradient: LinearGradient(colors: [
+                    Color(0xFF392574),
+                    Color(0xFF681b4e),
+                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 26.w, vertical: 24.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30.r),
-                                  topRight: Radius.circular(30.r)),
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xff362677),
-                                  Color(0xff781740),
-                                ],
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Image.asset('assets/images/group.png'),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        SizedBox(height: 40, child: NewSearchWidget()),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icon/b2bIcon.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
                               ),
                             ),
-                            child: Text(
-                              'Redefing shopping,\n trade and much more.',
+                            Text(
+                              "Live",
                               style: TextStyle(
-                                  fontSize: 24.sp, color: Colors.white),
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              openCart,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            Text(
+                              "Shopping",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // SizedBox(
+                        //   width: 25.w,
+                        // ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              'assets/images/loading.png',
+                            ),
+                            Text(
+                              "Everything",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icon/b2bIcon.svg',
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            Text(
+                              "TradeHub",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // SizedBox(
+                        //   width: 25.w,
+                        // ),
+                        Column(
+                          children: [
+                            SvgPicture.asset(
+                              jobIcon,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            Text(
+                              "TradeHub",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    const Divider(
+                      height: 0.1,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "Brandbazaar",
+                            style: TextStyle(
+                              color: Color(0xFFD9D9D9),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          SizedBox(
-                            height: 110.h,
-                            width: double.infinity,
-                            child: brandbajarAsyncValue.when(
-                              data: (brandBazar) {
-                                // Render your data
-                                return CarouselSlider(
-                                    items: brandBazar.data.trandBanners!
-                                        .map((banner) {
-                                      return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const B2bScreen(),
-                                                ));
-                                          },
-                                          child: CachedNetworkImage(
-                                            width: double.infinity,
-                                            fit: BoxFit.fill,
-                                            imageUrl: banner.image!,
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error),
-                                          ));
-                                      // Image.network(
-                                      //       width: double.infinity,
-                                      //       fit: BoxFit.fill,
-                                      //       ),
-                                    }).toList(),
-                                    options: CarouselOptions(
-                                      aspectRatio: 0.1,
-                                      reverse: true,
-                                      viewportFraction: 1,
-                                      autoPlay: true,
-                                      enlargeCenterPage: true,
-                                    ));
-                              },
-                              loading: () => const Center(
-                                  child: CircularProgressIndicator()),
-                              error: (error, stack) =>
-                                  Center(child: Text('Error: $error')),
+                          Text(
+                            "BuyOrWin",
+                            style: TextStyle(
+                              color: Color(0xFFD9D9D9),
+                              fontWeight: FontWeight.w500,
                             ),
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          const ServiceContainer(),
-                          SizedBox(
-                            height: 20.h,
                           ),
                         ],
                       ),
                     ),
-
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.sponsored_post,
-                      title: 'SPONSORED LISTINGS',
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    const BannerWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.trending,
-                      title: 'TRENDING',
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    const BannerWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.hot_products,
-                      title: 'HOT DEALS',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    const BannerWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    const BrandBazarWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    const BannerWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.new_products,
-                      title: 'SHOP FOR NEW PRODUCTS',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    const BannerWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.new_products,
-                      title: 'SAVE WITH THRIFTS',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.jobs,
-                      title: 'FIND JOBS FOR YOU',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.events,
-                      title: 'SEARCH LATEST EVENTS',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    // ProductSlider(
-                    //   homePostsData: homePostsData,
-                    //   valueExtractor: (product) => product.new_products,
-                    //   title: 'DISCOVER FOODS & RESTURANTS',
-                    // ),
-                    // SizedBox(
-                    //   height: 12.h,
-                    // ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.b2b_products,
-                      title: 'B2B PRODUCTS',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    const BannerWidget(),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProductSlider(
-                      homePostsData: homePostsData,
-                      valueExtractor: (product) => product.all_products,
-                      title: 'ALL PRODUCTS',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
                   ],
                 ),
               ),
-              if (_showSearchResults)
-                Positioned(
-                  top: 0.h, // Position just below the search bar
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    color: Colors.white,
-                    child: searchResults.when(
-                      data: (results) {
-                        if (results.isEmpty) {
-                          return const SizedBox(
-                            child: Text('No result found'),
-                          ); // No results
-                        }
-                        return Card(
-                          elevation: 8,
-                          child: ListView.separated(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: results.length,
-                            itemBuilder: (context, index) {
-                              final product = results[index];
-                              return ListTile(
-                                title: Text(product.title),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SearchScreen(
-                                          query: _searchController.text,
-                                        ),
-                                      ));
-
-                                  setState(() {
-                                    _showSearchResults = false;
-
-                                    FocusScope.of(context).unfocus();
-                                  });
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) =>
-                                  //         ProductDetailsScreen(
-                                  //       productId: product.id,
-                                  //     ),
-                                  //   ),
-                                  // );
-                                },
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                          ),
-                        );
-                      },
-                      loading: () {
-                        return SimpleDialog(
-                          children: [
-                            adsList.isLoading
-                                ? const SizedBox()
-                                : Image.network(adsList.value!.first.image!)
-                          ],
-                        );
-                      },
-                      error: (error, stack) =>
-                          const Center(child: CircularProgressIndicator()),
-                    ),
-                  ),
-                )
+              Center(
+                child: Container(
+                  alignment: AlignmentDirectional.centerStart,
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 7.h,
+                  width: 60.w,
+                  decoration: BoxDecoration(
+                      color: Color(0xFF681b4e),
+                      borderRadius: BorderRadius.circular(5)),
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return StoryAddWidget(index: index);
+                    }),
+              ),
+              SizedBox(
+                height: 200.h,
+                width: double.infinity,
+                child: PageView.builder(
+                  reverse: true,
+                  allowImplicitScrolling: true,
+                  itemCount: 5,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Image.asset(
+                        height: 150.h,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
+                        _images[0]);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _services.length,
+                  itemBuilder: (context, index) {
+                    String _fac = _services[index];
+                    return Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(5),
+                      width: 100.w,
+                      // padding: EdgeInsets.only(left: 17,top: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF681b4e),
+                      ),
+                      child: Text(
+                        _fac,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    );
+                  },
+                ),
+              )
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
