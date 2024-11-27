@@ -1,15 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
-import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
@@ -17,14 +12,10 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/header.dart';
-import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/widgets/banner_widget.dart';
-import 'package:smartbazar/features/widgets/brand_bazar_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
-import 'package:smartbazar/features/widgets/service_container_widget.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -90,6 +81,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+            
               Container(
                 // height: 170,
                 decoration: const BoxDecoration(
@@ -108,14 +100,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Image.asset('assets/images/group.png'),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
-                        SizedBox(height: 40, child: NewSearchWidget()),
+                        const SizedBox(height: 40, child: NewSearchWidget()),
                       ],
                     ),
                     SizedBox(
@@ -233,7 +225,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const Divider(
                       height: 0.1,
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +258,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   height: 7.h,
                   width: 60.w,
                   decoration: BoxDecoration(
-                      color: Color(0xFF681b4e),
+                      color: const Color(0xFF681b4e),
                       borderRadius: BorderRadius.circular(5)),
                 ),
               ),
@@ -311,15 +303,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     String _fac = _services[index];
                     return Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       width: 100.w,
                       // padding: EdgeInsets.only(left: 17,top: 10),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFF681b4e),
                       ),
                       child: Text(
                         _fac,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                             color: Colors.white),
@@ -327,7 +319,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     );
                   },
                 ),
-              )
+              ),
+              Product_item_widget()
+              //  const Expanded(
+            
+              //   child: Product_item_widget(),),
+             
+              // SizedBox(
+              //   height: 200.h,
+              //   child: ListView.builder(
+              //     shrinkWrap: true,
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: 5,
+              //     itemBuilder: (context, index) {
+              //       return  
+              //     },
+              //   ),
+              // )
             ],
           ),
         ));
