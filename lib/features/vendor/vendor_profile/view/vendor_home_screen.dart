@@ -1,15 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/gestures.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/vendor_search.dart';
@@ -22,6 +20,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_n
 import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
+import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
@@ -35,7 +34,7 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _vendorsearchController = TextEditingController();
@@ -44,6 +43,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   bool _showSearchResults = false;
   bool _vendorsearchResullts = false;
   late TabController _tabController;
+  late TabController _firstTabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
 
   @override
@@ -51,7 +51,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
-
+    _firstTabController = TabController(length: 2, vsync: this);
     // Listen for tab changes
     _tabController.addListener(() {
       setState(() {
@@ -63,6 +63,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         ));
       });
     });
+
     _vendorsearchController.addListener(() {
       _debouncer.add(_vendorsearchController.text);
     });
@@ -100,6 +101,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     _searchController.dispose();
     _vendorsearchController.dispose();
     _tabController.dispose();
+    _firstTabController.dispose();
     super.dispose();
   }
 
@@ -113,430 +115,383 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
     final vendorProfileModelDataAsyncValue = ref.watch(
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
-    return SafeArea(
+    return GenericSafeArea(
       child: Scaffold(
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
-        appBar: AppbarWidget(
-          serchontap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                    query: _searchController.text,
-                  ),
-                ));
-          },
-          onsubmit: (value) {
-            if (_showSearchResults) {
-              setState(() {
-                _showSearchResults = false;
-                FocusScope.of(context).unfocus();
-              });
-            }
-            // setState(() {
-            //      ref.watch(GetSearchDetailsProvider(value));
-            // });
-          },
-          scaffoldKey: _key,
-          searchController: _searchController,
-          onCartTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AddToCartScreen(),
-              ),
-            );
-          },
-          onSearchFocusChanged: _onSearchFocusChanged,
-        ),
         drawer: const CustomDrawer(),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
-            // if (_showSearchResults) {
-            //   setState(() {
-            //     _showSearchResults = false;
-            //     FocusScope.of(context).unfocus();
-            //   });
-            // }
-          },
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            // Add SingleChildScrollView here
-            child: Column(
-              children: [
-                if (_showSearchResults)
-                  Positioned(
-                    top: 0.h, // Position just below the search bar
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      color: Colors.white,
-                      child: searchResults.when(
-                        data: (results) {
-                          if (results.isEmpty) {
-                            return const SizedBox(
-                              child: Text('No result found'),
-                            ); // No results
-                          }
-                          return Card(
-                            elevation: 8,
-                            child: ListView.separated(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: results.length,
-                              itemBuilder: (context, index) {
-                                final product = results[index];
-                                return ListTile(
-                                  title: Text(product.title),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SearchScreen(
-                                            query: _searchController.text,
-                                          ),
-                                        ));
-
-                                    setState(() {
-                                      _showSearchResults = false;
-
-                                      FocusScope.of(context).unfocus();
-                                    });
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) =>
-                                    //         ProductDetailsScreen(
-                                    //       productId: product.id,
-                                    //     ),
-                                    //   ),
-                                    // );
-                                  },
+          onTap: () {},
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const VendorSearchContainer(),
+                    if (_showSearchResults)
+                      Positioned(
+                        top: 0.h,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          color: Colors.white,
+                          child: searchResults.when(
+                            data: (results) {
+                              if (results.isEmpty) {
+                                return const SizedBox(
+                                  child: Text('No result found'),
                                 );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  const Divider(),
-                            ),
-                          );
-                        },
-                        loading: () {
-                          return SimpleDialog(
-                            children: [
-                              adsList.isLoading
-                                  ? const SizedBox()
-                                  : Image.network(adsList.value!.first.image!)
-                            ],
-                          );
-                        },
-                        error: (error, stack) =>
-                            const Center(child: CircularProgressIndicator()),
+                              }
+                              return Card(
+                                elevation: 8,
+                                child: ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: results.length,
+                                  itemBuilder: (context, index) {
+                                    final product = results[index];
+                                    return ListTile(
+                                      title: Text(product.title),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SearchScreen(
+                                              query: _searchController.text,
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          _showSearchResults = false;
+                                          FocusScope.of(context).unfocus();
+                                        });
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                ),
+                              );
+                            },
+                            loading: () {
+                              return SimpleDialog(
+                                children: [
+                                  adsList.isLoading
+                                      ? const SizedBox()
+                                      : Image.network(
+                                          adsList.value!.first.image!)
+                                ],
+                              );
+                            },
+                            error: (error, stack) => const Center(
+                                child: CircularProgressIndicator()),
+                          ),
+                        ),
                       ),
+                    SizedBox(
+                      height: 20.h,
                     ),
-                  ),
-                vendorProfileModelDataAsyncValue.when(
-                  data: (vendorProfile) {
-                    String scratch = vendorProfile.scratch_banner!;
-                    return Column(
-                      children: [
-                        CarouselSlider(
-                            items: vendorProfile.advertisements!.map(
-                              (e) {
-                                return Image.network(e.image!);
-                              },
-                            ).toList(),
-                            options: CarouselOptions(
-                              aspectRatio: 5,
-                              reverse: true,
-                              viewportFraction: 1,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 2.h),
-                              InkWell(
-                                onTap: () async {
-                                  final subscribe = await ref
-                                      .read(
-                                    subscribevendorProvider(
-                                            vendorid: vendorProfile.vendor!.id!)
-                                        .future,
-                                  )
-                                      .then(
-                                    (value) {
-                                      ScaffoldMessenger.of(
-                                              context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  value)));
-                                    },
-                                  );
-                                    final vendorProfileModelDataAsyncValue = ref.refresh(
-        getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
+                    _buildDottedContainer(),
+                    VendorFirstTabBarSection(
+                      tabController: _firstTabController,
+                    ),
+                    vendorProfileModelDataAsyncValue.when(
+                      data: (vendorProfile) {
+                        String scratch = vendorProfile.scratch_banner!;
+                        return Column(
+                          children: [
+                            CarouselSlider(
+                              items: vendorProfile.advertisements!.map(
+                                (e) {
+                                  return Image.network(e.image!);
                                 },
-                                child: Card(
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  elevation: 4,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        CachedNetworkImage(
-                                          imageUrl:
-                                              vendorProfile.vendor!.photo!,
-                                          height: 100.h,
-                                          width: 100.w,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                        ),
-                                        SizedBox(width: 16.w),
-                                        Column(
+                              ).toList(),
+                              options: CarouselOptions(
+                                aspectRatio: 5,
+                                reverse: true,
+                                viewportFraction: 1,
+                                autoPlay: true,
+                                enlargeCenterPage: true,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 2.h),
+                                  InkWell(
+                                    onTap: () async {
+                                      final subscribe = await ref
+                                          .read(subscribevendorProvider(
+                                                  vendorid:
+                                                      vendorProfile.vendor!.id!)
+                                              .future)
+                                          .then(
+                                        (value) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(value)));
+                                        },
+                                      );
+                                      final vendorProfileModelDataAsyncValue =
+                                          ref.refresh(
+                                              getVendorProfileDataProvider(
+                                                  widget.vendorName
+                                                      .replaceAll(" ", '')));
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      elevation: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              vendorProfile.vendor!.name!,
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                            CachedNetworkImage(
+                                              imageUrl:
+                                                  vendorProfile.vendor!.photo!,
+                                              height: 100.h,
+                                              width: 100.w,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
                                             ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              "10000 Subscribers",
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: Colors.grey[700],
-                                              ),
-                                            ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              vendorProfile.vendor!.name!,
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: Colors.grey[600],
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.h),
-                                            Text(
-                                              "Contact Seller:",
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              vendorProfile.vendor?.phone ??
-                                                  "N/A",
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.h),
-                                            Row(
+                                            SizedBox(width: 16.w),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                SvgPicture.asset(
-                                                  whatsAppIcon,
-                                                  width: 14.w,
-                                                  height: 14.h,
+                                                Text(
+                                                  vendorProfile.vendor!.name!,
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                                SizedBox(width: 8.w),
-                                                SvgPicture.asset(
-                                                  viberIcon,
-                                                  width: 14.w,
-                                                  height: 14.h,
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  "10000 Subscribers",
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: Colors.grey[700],
+                                                  ),
                                                 ),
-                                                SizedBox(width: 8.w),
-                                                SvgPicture.asset(
-                                                  phoneIcon,
-                                                  width: 14.w,
-                                                  height: 14.h,
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  vendorProfile.vendor!.name!,
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: Colors.grey[600],
+                                                  ),
                                                 ),
+                                                SizedBox(height: 8.h),
+                                                Text(
+                                                  "Contact Seller:",
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  vendorProfile.vendor?.phone ??
+                                                      "Not Available",
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: Colors.grey[500],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8.h),
+                                                Row(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      whatsAppIcon,
+                                                      width: 14.w,
+                                                      height: 14.h,
+                                                    ),
+                                                    SizedBox(width: 8.w),
+                                                    SvgPicture.asset(
+                                                      viberIcon,
+                                                      width: 14.w,
+                                                      height: 14.h,
+                                                    ),
+                                                    SizedBox(width: 8.w),
+                                                    SvgPicture.asset(
+                                                      phoneIcon,
+                                                      width: 14.w,
+                                                      height: 14.h,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    // Handle Facebook share
+                                                  },
+                                                  child: Image.asset(
+                                                    ImageConstant
+                                                        .facebookShareImage,
+                                                    width: 50.w,
+                                                    height: 40.h,
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    // Handle Subscribe
+                                                  },
+                                                  child: Image.asset(
+                                                    ImageConstant
+                                                        .subscribeImage,
+                                                    width: 50.w,
+                                                    height: 50.h,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  vendorProfile.subscribed ??
+                                                      '...',
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: Colors.blue,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                )
                                               ],
                                             ),
                                           ],
                                         ),
-                                        Column(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                // Handle Facebook share
-                                              },
-                                              child: Image.asset(
-                                                ImageConstant
-                                                    .facebookShareImage,
-                                                width: 50.w,
-                                                height: 40.h,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                // Handle Subscribe
-                                              },
-                                              child: Image.asset(
-                                                ImageConstant.subscribeImage,
-                                                width: 50.w,
-                                                height: 50.h,
-                                              ),
-                                            ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              vendorProfile.subscribed ?? '...',
-                                              style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-                              SearchInStore(
-                                searchController: _vendorsearchController,
-                                onsubmit: (value) {
-                                  if (_showSearchResults) {
-                                    setState(() {
-                                      _showSearchResults = false;
-                                      FocusScope.of(context).unfocus();
-                                    });
-                                  }
-                                },
-                              ),
-                              if (_vendorsearchResullts)
-                                Container(
-                                  color: Colors.white,
-                                  child: vendorsearchResults.when(
-                                    data: (results) {
-                                      if (results.isEmpty) {
-                                        return const SizedBox(
-                                          child: Text('No result found'),
-                                        );
+                                  SizedBox(height: 10.h),
+                                  SearchInStore(
+                                    searchController: _vendorsearchController,
+                                    onsubmit: (value) {
+                                      if (_showSearchResults) {
+                                        setState(() {
+                                          _showSearchResults = false;
+                                          FocusScope.of(context).unfocus();
+                                        });
                                       }
-                                      return Card(
-                                        elevation: 8,
-                                        child: ListView.separated(
-                                          padding: EdgeInsets.zero,
-                                          shrinkWrap: true,
-                                          primary: false,
-                                          itemCount: results.length,
-                                          itemBuilder: (context, index) {
-                                            final product = results[index];
-                                            return ListTile(
-                                              title: Text(product.title),
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SearchScreen(
-                                                        query:
-                                                            _vendorsearchController
-                                                                .text,
-                                                      ),
-                                                    ));
-                                                setState(() {
-                                                  _vendorsearchResullts = false;
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                });
-                                              },
+                                    },
+                                  ),
+                                  if (_vendorsearchResullts)
+                                    Container(
+                                        color: Colors.white,
+                                        child: vendorsearchResults.when(
+                                          data: (results) {
+                                            if (results.isEmpty) {
+                                              return const SizedBox(
+                                                child: Text('No result found'),
+                                              );
+                                            }
+                                            return Card(
+                                              elevation: 8,
+                                              child: ListView.separated(
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                                primary: false,
+                                                itemCount: results.length,
+                                                itemBuilder: (context, index) {
+                                                  final product =
+                                                      results[index];
+                                                  return ListTile(
+                                                    title: Text(product.title),
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                SearchScreen(
+                                                              query:
+                                                                  _vendorsearchController
+                                                                      .text,
+                                                            ),
+                                                          ));
+                                                      setState(() {
+                                                        _vendorsearchResullts =
+                                                            false;
+                                                        FocusScope.of(context)
+                                                            .unfocus();
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                                separatorBuilder:
+                                                    (context, index) =>
+                                                        const Divider(),
+                                              ),
                                             );
                                           },
-                                          separatorBuilder: (context, index) =>
-                                              const Divider(),
-                                        ),
-                                      );
-                                    },
-                                    loading: () =>
-                                        const CircularProgressIndicator(),
-                                    error: (error, stack) =>
-                                        Center(child: Text('Error: $error')),
+                                          loading: () =>
+                                              const CircularProgressIndicator(),
+                                          error: (error, stack) => Center(
+                                              child: Text('Error: $error')),
+                                        )),
+                                  SizedBox(
+                                    height: 10.h,
                                   ),
-                                ),
-                              SizedBox(
-                                height: 10.h,
+                                  InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SubscribeAndWinEveryDay(),
+                                            ));
+                                      },
+                                      child: Image.network(scratch))
+                                ],
                               ),
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SubscribeAndWinEveryDay(),
-                                        ));
-                                  },
-                                  child: Image.network(scratch))
-                            ],
-                          ),
-                        ),
-                        // Container(
-                        //     color: Colors.blue, // Example banner color
-                        //     child: Image.network(
-                        //         vendorProfile.advertisements![0].image!)),
-                        // TabBar placed inside the body
-                        TabBar(
-                          isScrollable: false,
-                          controller: _tabController,
-                          tabs: const [
-                            Tab(text: 'Home'),
-                            Tab(
-                              text: 'Brand',
                             ),
-                            Tab(text: 'Used'),
                           ],
+                        );
+                      },
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (error, stack) =>
+                          Center(child: Text('Error: $error')),
+                    ),
+                    TabBar(
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(text: 'Home'),
+                        Tab(
+                          text: 'Brand',
                         ),
-                        SizedBox(
-                          height: 1000,
-                          child: TabBarView(
-                            dragStartBehavior: DragStartBehavior.down,
-                            physics: const NeverScrollableScrollPhysics(),
-                            controller: _tabController,
-                            children: [
-                              buildTabContent("brandnew", "Hot Products"),
-                              buildTabContent("brandnew", "Brand New"),
-                              buildTabContent("used", "Used Products")
-                            ],
-                          ),
-                        ),
+                        Tab(text: 'Used'),
                       ],
-                    );
-                  },
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                  loading: () {
-                    return SimpleDialog(
-                      children: [
-                        adsList.isLoading
-                            ? const SizedBox()
-                            : Image.network(adsList.value!.first.image!)
-                      ],
-                    );
-                  },
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              ),
+              SliverFillRemaining(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    buildTabContent("brandnew", "Hot Products"),
+                    buildTabContent("brandnew", "Brand New"),
+                    buildTabContent("used", "Used Products")
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -614,6 +569,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         // Wrap GridView.builder with Expanded to avoid layout issues
         Expanded(
           child: GridView.builder(
+            //  physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             padding: const EdgeInsets.only(left: 10, right: 5, top: 1),
@@ -727,6 +683,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           ),
                           Text(
                             "${post.visits!}views",
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                            ),
                           ),
                           const Spacer(),
                           Text(
@@ -740,6 +699,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     .elementAt(1) // Get the second last item
                                 : "Kathmandu", // Fallback if pickup is null or empty
                             overflow: TextOverflow.ellipsis, // Prevent overflow
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                            ),
                           ),
                           const SizedBox(
                             width: 2.5,
@@ -754,6 +716,327 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildDottedContainer() {
+    return SizedBox(
+      height: 210,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: List.generate(5, (index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: DottedBorder(
+              color: Colors.black,
+              strokeWidth: 2,
+              borderType: BorderType.RRect,
+              radius: const Radius.circular(12),
+              dashPattern: [6, 5],
+              child: Container(
+                width: 120,
+                height: 200,
+                //  padding: const EdgeInsets.all(10),
+                child: Image.asset(
+                  'assets/images/vendorDealImage.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class VendorFirstTabBarSection extends StatelessWidget {
+  final TabController tabController;
+  const VendorFirstTabBarSection({super.key, required this.tabController});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TabBar(
+          controller: tabController,
+          tabs: const [
+            Tab(text: 'Home'),
+            Tab(
+              text: 'About',
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 600,
+          child: TabBarView(controller: tabController, children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: DottedBorder(
+                color: Color(0xFF6D1A49),
+                strokeWidth: 1,
+                borderType: BorderType.RRect,
+                radius: const Radius.circular(12),
+                dashPattern: [7, 5],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(
+                            Icons.file_download_outlined,
+                            color: Color(0xFF6D1A49),
+                          ),
+                          Icon(
+                            Icons.more_vert_rounded,
+                            color: Color(0xFF6D1A49),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          children: [Text("Connect"), Text("Pass")],
+                        ),
+                        DottedBorder(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                          borderType: BorderType.Circle,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Text(
+                      "This is tab1",
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.black,
+                )),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 24.w, top: 32.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Opening hours : Sunday - Friday (10am - 8pm)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp,
+                          )),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Icon(Icons.phone,
+                              color: Color(0xFF8B6C6C), size: 14.h),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Text("9845654512",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp,
+                              )),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on,
+                              color: Color(0xFF8B6C6C), size: 14.h),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Text("Durbargmarg,Kathmandu",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp,
+                              )),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          Icon(Icons.email,
+                              color: Color(0xFF8B6C6C), size: 14.h),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Text("mypower@gmail.com",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp,
+                              )),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Text("Bio",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.sp,
+                          )),
+                      SizedBox(height: 10.h),
+                      Text(
+                          "Welcome to [Store Name], your ultimate destination for premium-quality earphones and audio gear. Established in [Year], we are passionate about delivering the best sound experience to music lovers, gamers, and audiophiles alike. Whether you're looking for crystal-clear audio, noise cancellation, or stylish designs, we have the perfect pair of earphones for you.",
+                          style: TextStyle(fontSize: 12.sp)),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ]),
+        ),
+      ],
+    );
+  }
+}
+
+class VendorSearchContainer extends StatelessWidget {
+  const VendorSearchContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 140,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50)),
+        gradient: LinearGradient(colors: [
+          Color(0xFF85237C),
+          Color(0xFF5C1E56),
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 40,
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+              const SizedBox(
+                width: 30,
+              ),
+              SizedBox(
+                  height: 50,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 120.h,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 5.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF46236a),
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.r),
+                              bottomLeft: Radius.circular(15.r),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    "assets/images/vendorDealImage.png",
+                                    width: 35,
+                                    height: 30,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 200.w,
+                          height: 180.h,
+                          padding: EdgeInsets.only(top: 10.h),
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: TextField(
+                            //  controller: searchController,
+                            decoration: InputDecoration(
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 0.2, color: Colors.white),
+                              ),
+                              hintText: "Search MyPower BizSpace",
+                              hintStyle: TextStyle(fontSize: 10.sp),
+                              isCollapsed: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.h, horizontal: 10.w),
+                              disabledBorder: InputBorder.none,
+                              isDense: true,
+                              enabled: true,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 180.h,
+                          padding: EdgeInsets.symmetric(horizontal: 15.w),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color: const Color(0xFF46236a),
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(15.r),
+                              bottomRight: Radius.circular(15.r),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(2.0.r),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                              size: 20.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            ],
+          ),
+          SizedBox(
+            height: 30.h,
+          ),
+        ],
+      ),
     );
   }
 }

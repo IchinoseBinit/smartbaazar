@@ -62,7 +62,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
       } else if (state is ErrorState) {
-        print(state.exception.message);
+        print(state.errorMessage);
       } else if (State is LoadingState) {
         onLoading(context);
       }

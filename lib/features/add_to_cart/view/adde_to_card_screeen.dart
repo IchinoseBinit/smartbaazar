@@ -404,8 +404,8 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                   loading: () => const CircularProgressIndicator(),
                   error: (err, stack) {
                     String errorMessage = 'Something went wrong';
-                    if (err is CustomException) {
-                    errorMessage = err.message; // Get the specific error message
+                    if (err is Exception) {
+                    errorMessage = err.toString(); // Get the specific error message
                   }
                     return Center(child: Text(errorMessage, style: TextStyle(fontSize: 16.sp, color: Colors.red),));
                   } ,

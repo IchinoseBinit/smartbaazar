@@ -235,11 +235,21 @@ class SmartClinet {
           throw Exception("Unsupported request type");
       }
     } catch (e) {
-      // Handle DioExceptions specifically
       if (e is DioException) {
-        // Log or rethrow with a user-friendly message
-        throw Exception("API request failed: ${e.message}");
+        // Log the response if available
+        if (e.response != null) {
+          print('API Error: ${e.response?.statusCode}');
+          print(
+              'Error Response: ${e.response?.data}'); // Show the error data from the API
+          // If the error contains a message or details from the API, you can extract it
+          final errorMessage = e.response?.data['message'] ?? 'Unknown error';
+          throw Exception(' $errorMessage');
+        } else {
+          print('Dio Error without response: ${e.error}');
+          throw Exception('Unexpected error: ${e.error}');
+        }
       } else {
+        print('Unexpected error: $e');
         throw Exception("Unexpected error: $e");
       }
     }

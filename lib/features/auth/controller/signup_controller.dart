@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
@@ -45,7 +46,19 @@ class SignUpController extends StateNotifier<GenericState> {
       await Navigator.push(
           context, MaterialPageRoute(builder: (_) => const LoginScreen()));
     } catch (e) {
-      state = ErrorState(getCustomException(e));
+      String errorMessage =
+          "An unexpected error occurred."; // Default error message
+      if (e is DioException && e.response?.statusCode == 400) {
+        final responseBody = e.response?.data;
+        if (responseBody is String) {
+          errorMessage =
+              responseBody; // Directly use the raw string error message
+        }
+        state = ErrorState(errorMessage);
+        print("$state, $responseBody");
+      }
+
+      print("Error: $errorMessage");
     }
   }
 }

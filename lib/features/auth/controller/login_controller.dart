@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +11,6 @@ import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 
 final authRepositoryProvider = Provider<LoginApi>((ref) {
   return LoginApi();
@@ -38,8 +38,8 @@ class LoginController extends StateNotifier<GenericState> {
 
       final String userId = loginData!.result.id.toString();
       final String userName = loginData.result.name;
-     final String useremail = loginData.result.email?.toString() ?? '';
-     final String phone = loginData.result.phone?.toString()?? '';
+      final String useremail = loginData.result.email?.toString() ?? '';
+      final String phone = loginData.result.phone?.toString() ?? '';
       // print("useremail$useremail");
       final prefs = await SharedPreferences.getInstance();
       SmartClinet.userId = userId; // Set userId in SmartClinet
@@ -54,7 +54,34 @@ class LoginController extends StateNotifier<GenericState> {
       await Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
     } catch (e) {
-      state = ErrorState(getCustomException(e));
+      String errorMessage = 'An unexpected error occurred.';
+
+      if (e is DioException) {
+        if (e.response != null) {
+          final responseData = e.response!.data;
+          if (responseData is Map<String, dynamic>) {
+            errorMessage =
+                responseData['message'] ?? 'An unexpected error occurred.';
+
+            // Handle specific server error messages for better user feedback
+            // if (responseData['message'] ==
+            //     "These credentials do not match our records.") {
+            //   errorMessage = "Invalid username or password. Please try again.";
+            // }
+          } else if (responseData is String) {
+            errorMessage = responseData;
+          }
+        } else {
+          errorMessage = 'Network error: Unable to connect to the server.';
+        }
+      } else if (e is Exception) {
+        errorMessage = e.toString().replaceAll('Exception: ', '');
+      }
+
+      print("Error: $errorMessage");
+      print("Error details: ${e.toString()}");
+      state = ErrorState(errorMessage);
+      print("Error type: ${e.runtimeType}");
     }
   }
 
