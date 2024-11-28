@@ -25,15 +25,18 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
   bool _showSearchResults = false;
+  late TabController tabController;
 
   @override
   void initState() {
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -81,7 +84,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            
               Container(
                 // height: 170,
                 decoration: const BoxDecoration(
@@ -320,22 +322,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                 ),
               ),
-              Product_item_widget()
-              //  const Expanded(
-            
-              //   child: Product_item_widget(),),
-             
-              // SizedBox(
-              //   height: 200.h,
-              //   child: ListView.builder(
-              //     shrinkWrap: true,
-              //     scrollDirection: Axis.horizontal,
-              //     itemCount: 5,
-              //     itemBuilder: (context, index) {
-              //       return  
-              //     },
-              //   ),
-              // )
+
+              // Expanded(
+
+              // child: Product_item_widget(),),
+              SizedBox(
+                height: 5.h,
+              ),
+
+              SizedBox(
+                height: 400.h,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      height: 450,
+                      child: Product_item_widget(),
+                    );
+                  },
+                ),
+              ),
+          
+          
             ],
           ),
         ));

@@ -39,7 +39,7 @@ class NewSearchWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 40.h,
+            height: 45.h,
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
             decoration: BoxDecoration(
               color: const Color(0xFF46236a),
@@ -68,7 +68,7 @@ class NewSearchWidget extends StatelessWidget {
           ),
           Container(
             width: 200.w,
-            height: 40.h,
+            height: 45.h,
             padding: EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
@@ -90,7 +90,7 @@ class NewSearchWidget extends StatelessWidget {
             ),
           ),
           Container(
-            height: 40.h,
+            height: 45.h,
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
