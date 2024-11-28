@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
+import 'package:smartbazar/features/home/view/hawa.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 
 void main() {
@@ -25,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(430, 990),
+      designSize: const Size(430, 690),
       splitScreenMode: true,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -37,7 +39,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SplashScreen(),
+        home:  SplashScreen(),
       ),
     );
   }

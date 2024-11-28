@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
@@ -11,6 +12,8 @@ import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
+import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
+import 'package:smartbazar/features/home/view/hawa.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -69,7 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final adsList = ref.watch(getAdsProvider);
-
+    double _mediaheight = MediaQuery.of(context).size.height;
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
     final brandbajarAsyncValue = ref.watch(getBrandBazaarResponseProvider);
 
@@ -81,272 +84,418 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         backgroundColor: const Color(0xffF6F1F1),
         drawer: const CustomDrawer(),
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                // height: 170,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50)),
-                  gradient: LinearGradient(colors: [
-                    Color(0xFF392574),
-                    Color(0xFF681b4e),
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Image.asset('assets/images/group.png'),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const SizedBox(height: 40, child: NewSearchWidget()),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icon/b2bIcon.svg',
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Text(
-                              "Live",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              openCart,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Text(
-                              "Shopping",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        // SizedBox(
-                        //   width: 25.w,
-                        // ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'assets/images/loading.png',
-                            ),
-                            Text(
-                              "Everything",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icon/b2bIcon.svg',
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Text(
-                              "TradeHub",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        // SizedBox(
-                        //   width: 25.w,
-                        // ),
-                        Column(
-                          children: [
-                            SvgPicture.asset(
-                              jobIcon,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Text(
-                              "TradeHub",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    const Divider(
-                      height: 0.1,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: _mediaheight + 1560.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  // height: 170,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(50),
+                        bottomRight: Radius.circular(50)),
+                    gradient: LinearGradient(colors: [
+                      Color(0xFF392574),
+                      Color(0xFF681b4e),
+                    ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Image.asset('assets/images/group.png'),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          const SizedBox(height: 40, child: NewSearchWidget()),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "Brandbazaar",
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icon/b2bIcon.svg',
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              Text(
+                                "Live",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "BuyOrWin",
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                openCart,
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              Text(
+                                "Shopping",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // SizedBox(
+                          //   width: 25.w,
+                          // ),
+                          Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/loading.png',
+                              ),
+                              Text(
+                                "Everything",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icon/b2bIcon.svg',
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              Text(
+                                "TradeHub",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // SizedBox(
+                          //   width: 25.w,
+                          // ),
+                          Column(
+                            children: [
+                              SvgPicture.asset(
+                                jobIcon,
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              Text(
+                                "TradeHub",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      const Divider(
+                        height: 0.1,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Brandbazaar",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              "BuyOrWin",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Center(
-                child: Container(
-                  alignment: AlignmentDirectional.centerStart,
-                  margin: EdgeInsets.only(top: 5.h),
-                  height: 7.h,
-                  width: 60.w,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF681b4e),
-                      borderRadius: BorderRadius.circular(5)),
+                Center(
+                  child: Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    margin: EdgeInsets.only(top: 5.h),
+                    height: 7.h,
+                    width: 60.w,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF681b4e),
+                        borderRadius: BorderRadius.circular(5)),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              SizedBox(
-                height: 100,
-                child: ListView.builder(
-                    padding: EdgeInsets.zero,
+                SizedBox(
+                  height: 10.h,
+                ),
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return StoryAddWidget(index: index);
+                      }),
+                ),
+                SizedBox(
+                  height: 200.h,
+                  width: double.infinity,
+                  child: PageView.builder(
+                    reverse: true,
+                    allowImplicitScrolling: true,
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Image.asset(
+                          height: 150.h,
+                          width: double.infinity,
+                          fit: BoxFit.fill,
+                          _images[0]);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _services.length,
+                    itemBuilder: (context, index) {
+                      String _fac = _services[index];
+                      return Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.all(5),
+                        width: 100.w,
+                        // padding: EdgeInsets.only(left: 17,top: 10),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF681b4e),
+                        ),
+                        child: Text(
+                          _fac,
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                // Expanded(
+
+                // child: Product_item_widget(),),
+                SizedBox(
+                  height: 5.h,
+                ),
+
+                SizedBox(
+                  height: 350.h,
+                  child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return StoryAddWidget(index: index);
-                    }),
-              ),
-              SizedBox(
-                height: 200.h,
-                width: double.infinity,
-                child: PageView.builder(
-                  reverse: true,
-                  allowImplicitScrolling: true,
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Image.asset(
-                        height: 150.h,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
-                        _images[0]);
-                  },
+                      return const SizedBox(
+                        height: 450,
+                        child: Product_item_widget(),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _services.length,
-                  itemBuilder: (context, index) {
-                    String _fac = _services[index];
-                    return Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.all(5),
-                      width: 100.w,
-                      // padding: EdgeInsets.only(left: 17,top: 10),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF681b4e),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: TabBar(
+                    controller: tabController,
+                    tabs: [
+                      const Tab(text: ' Global\n Brands'),
+                      const Tab(text: ' Domestic\n Brands'),
+                      const Tab(
+                          text:
+                              ' Spotlight\n Sellers'), // Changed label for clarity
+                    ],
+                    labelColor: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  height: 100,
+                  width: double.infinity,
+                  // Use Expanded for better layout management
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                            padding: EdgeInsets.only(top: 5.h),
+                            shrinkWrap: true,
+                            reverse: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return StoryAddWidget(index: index);
+                            }),
                       ),
-                      child: Text(
-                        _fac,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
+                      const Center(child: Text("Phone Number Content")),
+                      const Center(child: Text("Other Option Content")),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SizedBox(
+                  height: 350.h,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 450,
+                        child: Product_item_widget(),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+
+                Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "BuyOrWin",
+                        textAlign: TextAlign.center,
+                        style: headerstyle.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: const Color(0xff551b55)),
                       ),
-                    );
-                  },
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Center(
+                        child: Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          margin: EdgeInsets.only(bottom: 5.h),
+                          height: 5.h,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                              color: const Color(0xFF681b4e),
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-
-              // Expanded(
-
-              // child: Product_item_widget(),),
-              SizedBox(
-                height: 5.h,
-              ),
-
-              SizedBox(
-                height: 400.h,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      height: 450,
-                      child: Product_item_widget(),
-                    );
-                  },
+                SizedBox(
+                  height: 310.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return buyorwin_widget();
+                    },
+                  ),
                 ),
-              ),
-          
-          
-            ],
+                SizedBox(height: 5.h,),
+                Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Sponsored",
+                        textAlign: TextAlign.center,
+                        style: headerstyle.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: const Color(0xff551b55)),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Center(
+                        child: Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          margin: EdgeInsets.only(bottom: 5.h),
+                          height: 5.h,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                              color: const Color(0xFF681b4e),
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                                SizedBox(height: 10.h,),
+
+                   SizedBox(
+                  height: 350.h,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 450,
+                        child: Product_item_widget(),
+                      );
+                    },
+                  ),
+                ),
+                
+              ],
+            ),
           ),
         ));
   }
