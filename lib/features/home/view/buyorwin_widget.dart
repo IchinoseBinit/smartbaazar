@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/features/home/view/hawa.dart';
+import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 
 class buyorwin_widget extends StatelessWidget {

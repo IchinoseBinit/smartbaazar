@@ -13,7 +13,7 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
-import 'package:smartbazar/features/home/view/hawa.dart';
+import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
