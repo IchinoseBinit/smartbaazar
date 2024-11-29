@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/feed_page/widget/story_screen.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 
 class StoryAddWidget extends StatelessWidget {
   final int index;
-  const StoryAddWidget({super.key, required this.index});
+   StoryAddWidget({super.key, required this.index,});
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +78,9 @@ class StoryAddWidget extends StatelessWidget {
                 ),
               ),
             ),
+          
           ],
         ),
-       
       ],
     );
   }

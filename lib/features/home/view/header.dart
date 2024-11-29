@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HeaderWithSearch extends ConsumerStatefulWidget {
+  
   const HeaderWithSearch({super.key});
 
   @override
@@ -38,14 +39,14 @@ class NewSearchWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 180.h,
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+            height: 45.h,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
             decoration: BoxDecoration(
               color: const Color(0xFF46236a),
               border: Border.all(color: Colors.white),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15.r),
-                bottomLeft: Radius.circular(15.r),
+                topLeft: Radius.circular(19.r),
+                bottomLeft: Radius.circular(19.r),
               ),
             ),
             child: Column(
@@ -67,12 +68,13 @@ class NewSearchWidget extends StatelessWidget {
           ),
           Container(
             width: 200.w,
-            height: 180.h,
-            padding: EdgeInsets.only(top: 10.h),
+            height: 45.h,
+            padding: EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
               //  controller: searchController,
               decoration: InputDecoration(
+                
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
@@ -80,7 +82,7 @@ class NewSearchWidget extends StatelessWidget {
                 hintStyle: TextStyle(fontSize: 10.sp),
                 isCollapsed: true,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                    EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                 disabledBorder: InputBorder.none,
                 isDense: true,
                 enabled: true,
@@ -88,14 +90,14 @@ class NewSearchWidget extends StatelessWidget {
             ),
           ),
           Container(
-            height: 180.h,
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
+            height: 45.h,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
               color: const Color(0xFF46236a),
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(15.r),
-                bottomRight: Radius.circular(15.r),
+                topRight: Radius.circular(19.r),
+                bottomRight: Radius.circular(19.r),
               ),
             ),
             child: Padding(
