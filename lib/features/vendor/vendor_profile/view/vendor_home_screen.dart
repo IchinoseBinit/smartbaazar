@@ -813,7 +813,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                               backgroundColor: Colors.white,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Text(
