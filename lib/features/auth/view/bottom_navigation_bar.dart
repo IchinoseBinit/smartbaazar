@@ -51,7 +51,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         resizeToAvoidBottomInset: false,
         floatingActionButton: Padding(
           padding: EdgeInsets.only(top: 10.h),
-        
         ),
         body: _pages.elementAt(_selectedTab),
         bottomNavigationBar: ClipRRect(
@@ -60,13 +59,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             topRight: Radius.circular(35.r),
           ),
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 50.w),
-            child: SizedBox(
+            padding: EdgeInsets.symmetric(horizontal: 50.w),
+            child: Container(
+              color: Colors.transparent,
               height: 65.h,
               child: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: const Color(0xff362677),
-                selectedIconTheme: const IconThemeData(color: Color(0xff362677)),
+                selectedIconTheme:
+                    const IconThemeData(color: Color(0xff362677)),
                 selectedLabelStyle: TextStyle(
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w700,
@@ -77,6 +78,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   fontWeight: FontWeight.w700,
                   color: const Color(0xff36383C),
                 ),
+                //i want the  container that is wrapping this white container to be transparent
                 backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                 currentIndex: _selectedTab,
                 // onTap: (index) {
@@ -87,82 +89,53 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 onTap: (index) => _changeTab(index),
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: EdgeInsets.only(top: 2),
-            
-                      height: 40.h,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape:BoxShape.circle,
-                        border: Border.all(
-            
-                          
-                          color: Colors.black
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
                         ),
-                       
-                      ),
-                      child: Image.asset('assets/icon/home.png'),
-                    )
-                  ),
-                   BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: EdgeInsets.only(top: 2),
-            
-                      height: 40.h,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape:BoxShape.circle,
-                        border: Border.all(
-            
-                          
-                          color: Colors.black
-                        ),
-                       
-                      ),
-                      child: Image.asset('assets/icon/news.png'),
-                    )
-                  ),
+                        child: Image.asset('assets/icon/home.png'),
+                      )),
                   BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: EdgeInsets.only(top: 2),
-            
-                      height: 40.h,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape:BoxShape.circle,
-                        border: Border.all(
-            
-                          
-                          color: Colors.black
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
                         ),
-                       
-                      ),
-                      child: Image.asset('assets/icon/message.png'),
-                    )
-                  ),
+                        child: Image.asset('assets/icon/news.png'),
+                      )),
                   BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: EdgeInsets.only(top: 2),
-            
-                      height: 40.h,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape:BoxShape.circle,
-                        border: Border.all(
-            
-                          
-                          color: Colors.black
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
                         ),
-                       
-                      ),
-                      child: Image.asset('assets/icon/wifi.png'),
-                    )
-                  ),
-              
+                        child: Image.asset('assets/icon/message.png'),
+                      )),
+                  BottomNavigationBarItem(
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Image.asset('assets/icon/wifi.png'),
+                      )),
                 ],
               ),
             ),
