@@ -493,6 +493,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     },
                   ),
                 ),
+               Container(
+                    margin: EdgeInsets.only(top: 2),
+
+                    height: 40.h,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      shape:BoxShape.circle,
+                      border: Border.all(
+
+                        
+                        color: Colors.black
+                      ),
+                     
+                    ),
+                    child: Image.asset('assets/icon/home.png'),
+                  )
+
                 
               ],
             ),
