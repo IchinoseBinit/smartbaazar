@@ -768,12 +768,12 @@ class VendorFirstTabBarSection extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 600,
+          height: 700,
           child: TabBarView(controller: tabController, children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: DottedBorder(
-                color: Color(0xFF6D1A49),
+                color: const Color(0xFF6D1A49),
                 strokeWidth: 1,
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(12),
@@ -798,23 +798,320 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Column(
-                          children: [Text("Connect"), Text("Pass")],
+                          children: [
+                            Text(
+                              "Connect",
+                              style: TextStyle(fontSize: 9.sp),
+                            ),
+                            Text(
+                              "Pass",
+                              style: TextStyle(fontSize: 9.sp),
+                            )
+                          ],
                         ),
                         DottedBorder(
                           color: Colors.black,
                           strokeWidth: 2,
                           borderType: BorderType.Circle,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: CircleAvatar(
-                              radius: 20,
+                              radius: 50,
                               backgroundColor: Colors.white,
                             ),
                           ),
                         ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/nepalFlag.png",
+                              width: 50,
+                              height: 50,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              "Domestic",
+                              style: TextStyle(fontSize: 9.sp),
+                            ),
+                            Text(
+                              "Exclusive",
+                              style: TextStyle(fontSize: 9.sp),
+                            ),
+                            Text(
+                              "Brand",
+                              style: TextStyle(fontSize: 9.sp),
+                            )
+                          ],
+                        ),
                       ],
+                    ),
+                    SizedBox(height: 10.sp),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            "My Power",
+                            style: TextStyle(
+                                fontSize: 24.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "Keeps You On",
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: const Color(0xFF370C6B),
+                                  size: 15.w,
+                                ),
+                                Text(
+                                  "Open",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                                Icon(
+                                  Icons.directions,
+                                  color: const Color(0xFF370C6B),
+                                  size: 15.w,
+                                ),
+                                Text(
+                                  "Directions",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "New Road,Kathmandu",
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: const Color(0xFF370C6B),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.phone,
+                                  color: const Color(0xFF370C6B),
+                                  size: 15.w,
+                                ),
+                                Text(
+                                  "Customer Service",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                              ],
+                            ),
+                            Text(
+                              "9851280275",
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: const Color(0xFF370C6B),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    Container(
+                        width: MediaQuery.sizeOf(context).width,
+                        color: Color(0xFF4B004B),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 18.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    "4.5k",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Connections",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 15.w),
+                              Column(
+                                children: [
+                                  Text(
+                                    "343",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "DealzCircle",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 15.w),
+                              Column(
+                                children: [
+                                  Text(
+                                    "Rs.41K",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Prize Worth",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          color: const Color(0xFF4B004B),
+                          width: MediaQuery.sizeOf(context).width,
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 18.0),
+                            child: Text(
+                              "smartbazaar.com.np/MyPower",
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom:
+                              -40, // Adjust based on how much the CircleAvatar should overlap
+                          left: MediaQuery.sizeOf(context).width / 2 -
+                              50, // Center the avatar
+                          child: ClipOval(
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: Image.asset(
+                                'assets/images/appLogo.png',
+                                fit: BoxFit.cover,
+                                width: 140,
+                                height: 140,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text("Connect",
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          color: const Color(0xFF4B004B),
+                        ),
+                        textAlign: TextAlign.center),
+                    SizedBox(height: 20.h),
+                    Container(
+                      height: 30.h,
+                      child: Row(children: [
+                        Text(
+                          "Shop",
+                          style: TextStyle(
+                              color: const Color(0xFF4B004B),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        VerticalDivider(
+                          thickness: 2.w,
+                          color: const Color(0xFF4B004B),
+                        ),
+                        Text(
+                          "Profile",
+                          style: TextStyle(
+                              color: const Color(0xFF4B004B),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        VerticalDivider(
+                          thickness: 2.w,
+                          color: const Color(0xFF4B004B),
+                        ),
+                        Text(
+                          "Feed",
+                          style: TextStyle(
+                              color: const Color(0xFF4B004B),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        VerticalDivider(
+                          thickness: 2.w,
+                          color: const Color(0xFF4B004B),
+                        ),
+                        Text(
+                          "FreePrizes",
+                          style: TextStyle(
+                              color: const Color(0xFF4B004B),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        VerticalDivider(
+                          thickness: 2.w,
+                          color: const Color(0xFF4B004B),
+                        ),
+                        Text(
+                          "Brands",
+                          style: TextStyle(
+                              color: const Color(0xFF4B004B),
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ]),
                     ),
                     Text(
                       "This is tab1",
@@ -845,7 +1142,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.phone,
-                              color: Color(0xFF8B6C6C), size: 14.h),
+                              color: const Color(0xFF8B6C6C), size: 14.h),
                           SizedBox(
                             width: 10.w,
                           ),
@@ -860,7 +1157,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.location_on,
-                              color: Color(0xFF8B6C6C), size: 14.h),
+                              color: const Color(0xFF8B6C6C), size: 14.h),
                           SizedBox(
                             width: 10.w,
                           ),
@@ -875,7 +1172,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.email,
-                              color: Color(0xFF8B6C6C), size: 14.h),
+                              color: const Color(0xFF8B6C6C), size: 14.h),
                           SizedBox(
                             width: 10.w,
                           ),
