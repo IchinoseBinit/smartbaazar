@@ -488,6 +488,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                     buildTabContent("brandnew", "Hot Products"),
                     buildTabContent("brandnew", "Brand New"),
                     buildTabContent("used", "Used Products")
+                    
                   ],
                 ),
               )
@@ -1112,10 +1113,6 @@ class VendorFirstTabBarSection extends StatelessWidget {
                               fontWeight: FontWeight.w600),
                         ),
                       ]),
-                    ),
-                    Text(
-                      "This is tab1",
-                      style: TextStyle(fontSize: 14.sp),
                     ),
                   ],
                 ),
