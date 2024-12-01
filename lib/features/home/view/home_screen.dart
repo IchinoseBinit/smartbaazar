@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
@@ -13,10 +15,12 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
-import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/product_screen/view/product_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
@@ -67,14 +71,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     });
   }
 
-  List<String> _images = ['assets/images/home.png'];
-  List<String> _services = ['SHOPZONE', 'TRADEHUB', 'SERVICES', 'USED', 'HOB'];
+  final List<String> _images = ['assets/images/home.png'];
+  final List<String> _services = [
+    'SHOPZONE',
+    'TRADEHUB',
+    'SERVICES',
+    'USED',
+    'HOB'
+  ];
+ 
   @override
   Widget build(BuildContext context) {
-    final adsList = ref.watch(getAdsProvider);
-    double _mediaheight = MediaQuery.of(context).size.height;
-    final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    final brandbajarAsyncValue = ref.watch(getBrandBazaarResponseProvider);
+    // final adsList = ref.watch(getAdsProvider);
+    // double _mediaheight = MediaQuery.of(context).size.height;
+    // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+    // final brandbajarAsyncValue = ref.watch(getBrandBazaarResponseProvider);
 
     final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
@@ -83,9 +94,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         drawer: const CustomDrawer(),
-        body: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: _mediaheight + 1560.h),
+        body: Stack(children: [
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -106,126 +116,202 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         height: 40,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           const SizedBox(
                             width: 10,
                           ),
                           Image.asset('assets/images/group.png'),
-                          const SizedBox(
-                            width: 20,
+                          SizedBox(
+                            width: 2.w,
                           ),
-                          const SizedBox(height: 40, child: NewSearchWidget()),
+                          const SizedBox(height: 50, child: NewSearchWidget()),
                         ],
                       ),
                       SizedBox(
-                        height: 30.h,
+                        height: 25.h,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icon/b2bIcon.svg',
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.white,
-                                  BlendMode.srcIn,
+                      SizedBox(
+                        height: 80, // Increased height for better visibility
+                        width: double.infinity,
+                        child: ListView.builder(
+                          reverse: true,
+                          itemCount: items.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> data = items[index];
+                            return GestureDetector(
+                              onTap: () {
+                                if (data['screen'] != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => data['screen']),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10), // Spacing between items
+                                child: Column(
+                                  mainAxisSize: MainAxisSize
+                                      .min, // Shrinks to fit children
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center within available space
+                                  children: [
+                                    if (data['icon']
+                                        .toString()
+                                        .endsWith('.svg'))
+                                      SvgPicture.asset(
+                                        data['icon'],
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
+                                        width: 20, // Adjust size
+                                        height: 20,
+                                      )
+                                    else
+                                      Image.asset(
+                                        data['icon'],
+                                        width: 20, // Adjust size
+                                        height: 20,
+                                      ),
+                                    const SizedBox(
+                                        height:
+                                            8), // Space between icon and label
+                                    Text(
+                                      data['label'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                "Live",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                openCart,
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.white,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              Text(
-                                "Shopping",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // SizedBox(
-                          //   width: 25.w,
-                          // ),
-                          Column(
-                            children: [
-                              Image.asset(
-                                'assets/images/loading.png',
-                              ),
-                              Text(
-                                "Everything",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icon/b2bIcon.svg',
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.white,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              Text(
-                                "TradeHub",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // SizedBox(
-                          //   width: 25.w,
-                          // ),
-                          Column(
-                            children: [
-                              SvgPicture.asset(
-                                jobIcon,
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.white,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              Text(
-                                "TradeHub",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                            );
+                          },
+                        ),
                       ),
+
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: [
+                      //     InkWell(
+                      //       onTap: () {
+
+                      //       },
+                      //       child:
+                      //     ),
+                      //     InkWell(
+                      //       onTap: () {
+
+                      //       },
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           SvgPicture.asset(
+                      //             openCart,
+                      //             colorFilter: const ColorFilter.mode(
+                      //               Colors.white,
+                      //               BlendMode.srcIn,
+                      //             ),
+                      //           ),
+                      //           Text(
+                      //             "Shopping",
+                      //             style: TextStyle(
+                      //               fontSize: 12.sp,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     // SizedBox(
+                      //     //   width: 25.w,
+                      //     // ),
+                      //     InkWell(
+                      //       onTap: () {
+                      //         Navigator.push(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //               builder: (context) => HomeScreen(),
+                      //             ));
+                      //       },
+                      //       child: Column(
+                      //         children: [
+                      //           Image.asset(
+                      //             'assets/images/loading.png',
+                      //           ),
+                      //           Text(
+                      //             "Everything",
+                      //             style: TextStyle(
+                      //               fontSize: 12.sp,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     InkWell(
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           SvgPicture.asset(
+                      //             'assets/icon/b2bIcon.svg',
+                      //             colorFilter: const ColorFilter.mode(
+                      //               Colors.white,
+                      //               BlendMode.srcIn,
+                      //             ),
+                      //           ),
+                      //           Text(
+                      //             "TradeHub",
+                      //             style: TextStyle(
+                      //               fontSize: 12.sp,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+
+                      //     InkWell(
+                      //       onTap: () {
+
+                      //       },
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           SvgPicture.asset(
+                      //             'assets/icon/fileIcon.svg',
+                      //             colorFilter: const ColorFilter.mode(
+                      //               Colors.white,
+                      //               BlendMode.srcIn,
+                      //             ),
+                      //           ),
+                      //           Text(
+                      //             "Jobs",
+                      //             style: TextStyle(
+                      //               fontSize: 12.sp,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     // SizedBox(
+                      //     //   width: 25.w,
+                      //     // ),
+                      //   ],
+                      // ),
                       SizedBox(
                         height: 15.h,
                       ),
@@ -336,7 +422,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
 
                 SizedBox(
-                  height: 350.h,
+                  height: 400.h,
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
@@ -365,7 +451,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   ),
                 ),
                 SizedBox(
-                  height: 100,
+                  height: 100.h,
                   width: double.infinity,
                   // Use Expanded for better layout management
                   child: TabBarView(
@@ -392,16 +478,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   height: 10.h,
                 ),
                 SizedBox(
-                  height: 350.h,
+                  height: 400.h,
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return const Product_item_widget();
                     },
                   ),
                 ),
@@ -444,11 +527,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     shrinkWrap: true,
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return buyorwin_widget();
+                      return const buyorwin_widget();
                     },
                   ),
                 ),
-                SizedBox(height: 5.h,),
+                SizedBox(
+                  height: 5.h,
+                ),
                 Center(
                   child: Column(
                     children: [
@@ -477,44 +562,84 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     ],
                   ),
                 ),
-                                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
 
-                   SizedBox(
-                  height: 350.h,
+                SizedBox(
+                  height: 400.h,
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
                     itemBuilder: (context, index) {
                       return const SizedBox(
-                        height: 450,
                         child: Product_item_widget(),
                       );
                     },
                   ),
                 ),
-               Container(
-                    margin: EdgeInsets.only(top: 2),
-
-                    height: 40.h,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      shape:BoxShape.circle,
-                      border: Border.all(
-
-                        
-                        color: Colors.black
-                      ),
-                     
-                    ),
-                    child: Image.asset('assets/icon/home.png'),
-                  )
-
-                
               ],
             ),
           ),
-        ));
+          Positioned(
+              top: 200, // Fixed height from the top
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                // Explicit height set
+                decoration: BoxDecoration(
+                    color: const Color(0xffE2DAE5).withOpacity(0.8),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10))),
+                child: Center(
+                    child: Column(
+                  children: [
+                    const Icon(
+                      Icons.close,
+                      color: Color(0xff918994),
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Column(
+                          children: [
+                            Icon(
+                              Icons.document_scanner,
+                              color: Color(0xff918994),
+                            ),
+                            Text("Connect")
+                          ],
+                        )),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Column(
+                          children: [
+                            Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Color(0xff918994),
+                            ),
+                            Text("cart")
+                          ],
+                        )),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Column(
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Color(0xff918994),
+                            ),
+                            Text("add")
+                          ],
+                        )),
+                  ],
+                )),
+              ))
+          //
+        ]));
   }
 }
 

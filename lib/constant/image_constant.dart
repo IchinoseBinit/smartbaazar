@@ -1,3 +1,54 @@
+ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/product_screen/view/product_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+
+final List<Map<String, dynamic>> items = [
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'Live',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'Shopping',
+      'screen': const ProductScreen()
+    },
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'Live',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+  ];
+
+
+
 const String baseAsset = "assets/icon";
 
 const String drawerIcon = "$baseAsset/drawerIcon.svg";

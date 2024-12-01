@@ -1,18 +1,11 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
-TextStyle headerstyle = TextStyle(
-  fontSize: 10,
-  color: Colors.white
-);
+TextStyle headerstyle = const TextStyle(fontSize: 10, color: Colors.white);
 
 class Product_item_widget extends StatelessWidget {
   const Product_item_widget({
@@ -23,7 +16,7 @@ class Product_item_widget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 10.h,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       margin: EdgeInsets.only(left: 5.w),
       width: 230.w,
       decoration: BoxDecoration(
@@ -47,10 +40,65 @@ class Product_item_widget extends StatelessWidget {
                   )
                 ],
               ),
-              const Icon(
-                Icons.more_vert,
-                color: Colors.grey,
+              PopupMenuButton(
+                padding: EdgeInsets.zero,
+                menuPadding: EdgeInsets.zero,
+                color: const Color.fromARGB(102, 57, 58, 62).withOpacity(0.7),
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: Colors.grey,
+                ),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                        value: 'share',
+                        child: InkWell(
+                            onTap: () async {},
+                            child: Text(
+                              "Share",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'wishList',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Save",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'delete',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Contact Seller",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'delete',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Get Seller Directions",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'delete',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Report",
+                              style: headerstyle,
+                            ))),
+                  ];
+                },
+                onSelected: (String value) {
+                },
               ),
+              // const Icon(
+              //   Icons.more_vert,
+              //   color: Colors.grey,
+              // ),
             ],
           ),
           SizedBox(
@@ -164,7 +212,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset('assets/icon/Rectangle.png'),
-                      Text("78")
+                      const Text("78")
                     ],
                   )
                 ],
@@ -174,7 +222,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset("assets/icon/Vector.png"),
-                      Text("3.2K")
+                      const Text("3.2K")
                     ],
                   )
                 ],
@@ -187,7 +235,7 @@ class Product_item_widget extends StatelessWidget {
                         "assets/icon/solar.png",
                         color: Colors.grey,
                       ),
-                      Text("345")
+                      const Text("345")
                     ],
                   )
                 ],
@@ -210,8 +258,8 @@ class Product_item_widget extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: const Color(0xff3D215F),
+            decoration: const BoxDecoration(
+                color: Color(0xff3D215F),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),

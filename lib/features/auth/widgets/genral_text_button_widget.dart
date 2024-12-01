@@ -21,27 +21,29 @@ class GeneralTextButton extends StatelessWidget {
   final double? width;
 
   final double? marginH;
+  bool? showbtn;
 
-  const GeneralTextButton({
-    Key? key,
-    this.isSmallText = false,
-    this.isSvg = false,
-    required this.title,
-    this.borderSize,
-    this.borderColor,
-    this.bgColor,
-    this.fgColor,
-    this.onPressed,
-    this.borderRadius,
-    this.textPadding,
-    this.height,
-    this.marginH,
-    this.prefixImage,
-    this.prefixColor,
-    this.imageH,
-    this.prefixIcon,
-    this.width,
-  }) : super(key: key);
+   GeneralTextButton(
+      {Key? key,
+      this.isSmallText = false,
+      this.isSvg = false,
+      required this.title,
+      this.borderSize,
+      this.borderColor,
+      this.bgColor,
+      this.fgColor,
+      this.onPressed,
+      this.borderRadius,
+      this.textPadding,
+      this.height,
+      this.marginH,
+      this.prefixImage,
+      this.prefixColor,
+      this.imageH,
+      this.prefixIcon,
+      this.width,
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +113,8 @@ class GeneralTextButton extends StatelessWidget {
                   style: isSmallText
                       ? Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: fgColor ?? const Color(0xff362677),
-                          fontWeight: FontWeight.w700,fontSize: 12.sp)
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12.sp)
                       : Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: fgColor ?? const Color(0xff362677),
                           fontWeight: FontWeight.w700),
