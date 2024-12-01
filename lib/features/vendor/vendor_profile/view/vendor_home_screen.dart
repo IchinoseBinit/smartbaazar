@@ -17,6 +17,8 @@ import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_s
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
@@ -198,296 +200,433 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                     VendorFirstTabBarSection(
                       tabController: _firstTabController,
                     ),
-                    vendorProfileModelDataAsyncValue.when(
-                      data: (vendorProfile) {
-                        String scratch = vendorProfile.scratch_banner!;
-                        return Column(
-                          children: [
-                            CarouselSlider(
-                              items: vendorProfile.advertisements!.map(
-                                (e) {
-                                  return Image.network(e.image!);
-                                },
-                              ).toList(),
-                              options: CarouselOptions(
-                                aspectRatio: 5,
-                                reverse: true,
-                                viewportFraction: 1,
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 2.h),
-                                  InkWell(
-                                    onTap: () async {
-                                      final subscribe = await ref
-                                          .read(subscribevendorProvider(
-                                                  vendorid:
-                                                      vendorProfile.vendor!.id!)
-                                              .future)
-                                          .then(
-                                        (value) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(value)));
-                                        },
-                                      );
-                                      final vendorProfileModelDataAsyncValue =
-                                          ref.refresh(
-                                              getVendorProfileDataProvider(
-                                                  widget.vendorName
-                                                      .replaceAll(" ", '')));
-                                    },
-                                    child: Card(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      elevation: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            CachedNetworkImage(
-                                              imageUrl:
-                                                  vendorProfile.vendor!.photo!,
-                                              height: 100.h,
-                                              width: 100.w,
-                                              fit: BoxFit.cover,
-                                              placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
-                                            ),
-                                            SizedBox(width: 16.w),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  vendorProfile.vendor!.name!,
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  "10000 Subscribers",
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: Colors.grey[700],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  vendorProfile.vendor!.name!,
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8.h),
-                                                Text(
-                                                  "Contact Seller:",
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  vendorProfile.vendor?.phone ??
-                                                      "Not Available",
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: Colors.grey[500],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8.h),
-                                                Row(
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      whatsAppIcon,
-                                                      width: 14.w,
-                                                      height: 14.h,
-                                                    ),
-                                                    SizedBox(width: 8.w),
-                                                    SvgPicture.asset(
-                                                      viberIcon,
-                                                      width: 14.w,
-                                                      height: 14.h,
-                                                    ),
-                                                    SizedBox(width: 8.w),
-                                                    SvgPicture.asset(
-                                                      phoneIcon,
-                                                      width: 14.w,
-                                                      height: 14.h,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    // Handle Facebook share
-                                                  },
-                                                  child: Image.asset(
-                                                    ImageConstant
-                                                        .facebookShareImage,
-                                                    width: 50.w,
-                                                    height: 40.h,
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    // Handle Subscribe
-                                                  },
-                                                  child: Image.asset(
-                                                    ImageConstant
-                                                        .subscribeImage,
-                                                    width: 50.w,
-                                                    height: 50.h,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  vendorProfile.subscribed ??
-                                                      '...',
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    color: Colors.blue,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  SearchInStore(
-                                    searchController: _vendorsearchController,
-                                    onsubmit: (value) {
-                                      if (_showSearchResults) {
-                                        setState(() {
-                                          _showSearchResults = false;
-                                          FocusScope.of(context).unfocus();
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  if (_vendorsearchResullts)
-                                    Container(
-                                        color: Colors.white,
-                                        child: vendorsearchResults.when(
-                                          data: (results) {
-                                            if (results.isEmpty) {
-                                              return const SizedBox(
-                                                child: Text('No result found'),
-                                              );
-                                            }
-                                            return Card(
-                                              elevation: 8,
-                                              child: ListView.separated(
-                                                padding: EdgeInsets.zero,
-                                                shrinkWrap: true,
-                                                primary: false,
-                                                itemCount: results.length,
-                                                itemBuilder: (context, index) {
-                                                  final product =
-                                                      results[index];
-                                                  return ListTile(
-                                                    title: Text(product.title),
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                SearchScreen(
-                                                              query:
-                                                                  _vendorsearchController
-                                                                      .text,
-                                                            ),
-                                                          ));
-                                                      setState(() {
-                                                        _vendorsearchResullts =
-                                                            false;
-                                                        FocusScope.of(context)
-                                                            .unfocus();
-                                                      });
-                                                    },
-                                                  );
-                                                },
-                                                separatorBuilder:
-                                                    (context, index) =>
-                                                        const Divider(),
-                                              ),
-                                            );
-                                          },
-                                          loading: () =>
-                                              const CircularProgressIndicator(),
-                                          error: (error, stack) => Center(
-                                              child: Text('Error: $error')),
-                                        )),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SubscribeAndWinEveryDay(),
-                                            ));
-                                      },
-                                      child: Image.network(scratch))
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
-                      error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
-                    ),
+                    // vendorProfileModelDataAsyncValue.when(
+                    //   data: (vendorProfile) {
+                    //     String scratch = vendorProfile.scratch_banner!;
+                    //     return Column(
+                    //       children: [
+                    //         CarouselSlider(
+                    //           items: vendorProfile.advertisements!.map(
+                    //             (e) {
+                    //               return Image.network(e.image!);
+                    //             },
+                    //           ).toList(),
+                    //           options: CarouselOptions(
+                    //             aspectRatio: 5,
+                    //             reverse: true,
+                    //             viewportFraction: 1,
+                    //             autoPlay: true,
+                    //             enlargeCenterPage: true,
+                    //           ),
+                    //         ),
+                    //         Padding(
+                    //           padding: const EdgeInsets.all(8.0),
+                    //           child: Column(
+                    //             children: [
+                    //               SizedBox(height: 2.h),
+                    //               InkWell(
+                    //                 onTap: () async {
+                    //                   final subscribe = await ref
+                    //                       .read(subscribevendorProvider(
+                    //                               vendorid:
+                    //                                   vendorProfile.vendor!.id!)
+                    //                           .future)
+                    //                       .then(
+                    //                     (value) {
+                    //                       ScaffoldMessenger.of(context)
+                    //                           .showSnackBar(SnackBar(
+                    //                               content: Text(value)));
+                    //                     },
+                    //                   );
+                    //                   final vendorProfileModelDataAsyncValue =
+                    //                       ref.refresh(
+                    //                           getVendorProfileDataProvider(
+                    //                               widget.vendorName
+                    //                                   .replaceAll(" ", '')));
+                    //                 },
+                    //                 child: Card(
+                    //                   color: Colors.white,
+                    //                   shape: RoundedRectangleBorder(
+                    //                     borderRadius:
+                    //                         BorderRadius.circular(12.0),
+                    //                   ),
+                    //                   elevation: 4,
+                    //                   child: Padding(
+                    //                     padding: const EdgeInsets.all(16.0),
+                    //                     child: Row(
+                    //                       mainAxisAlignment:
+                    //                           MainAxisAlignment.spaceBetween,
+                    //                       crossAxisAlignment:
+                    //                           CrossAxisAlignment.center,
+                    //                       children: [
+                    //                         CachedNetworkImage(
+                    //                           imageUrl:
+                    //                               vendorProfile.vendor!.photo!,
+                    //                           height: 100.h,
+                    //                           width: 100.w,
+                    //                           fit: BoxFit.cover,
+                    //                           placeholder: (context, url) =>
+                    //                               const CircularProgressIndicator(),
+                    //                           errorWidget:
+                    //                               (context, url, error) =>
+                    //                                   const Icon(Icons.error),
+                    //                         ),
+                    //                         SizedBox(width: 16.w),
+                    //                         Column(
+                    //                           crossAxisAlignment:
+                    //                               CrossAxisAlignment.start,
+                    //                           children: [
+                    //                             Text(
+                    //                               vendorProfile.vendor!.name!,
+                    //                               style: TextStyle(
+                    //                                 fontSize: 14.sp,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                               ),
+                    //                             ),
+                    //                             SizedBox(height: 4.h),
+                    //                             Text(
+                    //                               "10000 Subscribers",
+                    //                               style: TextStyle(
+                    //                                 fontSize: 12.sp,
+                    //                                 color: Colors.grey[700],
+                    //                               ),
+                    //                             ),
+                    //                             SizedBox(height: 4.h),
+                    //                             Text(
+                    //                               vendorProfile.vendor!.name!,
+                    //                               style: TextStyle(
+                    //                                 fontSize: 12.sp,
+                    //                                 color: Colors.grey[600],
+                    //                               ),
+                    //                             ),
+                    //                             SizedBox(height: 8.h),
+                    //                             Text(
+                    //                               "Contact Seller:",
+                    //                               style: TextStyle(
+                    //                                 fontSize: 12.sp,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                               ),
+                    //                             ),
+                    //                             SizedBox(height: 4.h),
+                    //                             Text(
+                    //                               vendorProfile.vendor?.phone ??
+                    //                                   "Not Available",
+                    //                               style: TextStyle(
+                    //                                 fontSize: 12.sp,
+                    //                                 color: Colors.grey[500],
+                    //                               ),
+                    //                             ),
+                    //                             SizedBox(height: 8.h),
+                    //                             Row(
+                    //                               children: [
+                    //                                 SvgPicture.asset(
+                    //                                   whatsAppIcon,
+                    //                                   width: 14.w,
+                    //                                   height: 14.h,
+                    //                                 ),
+                    //                                 SizedBox(width: 8.w),
+                    //                                 SvgPicture.asset(
+                    //                                   viberIcon,
+                    //                                   width: 14.w,
+                    //                                   height: 14.h,
+                    //                                 ),
+                    //                                 SizedBox(width: 8.w),
+                    //                                 SvgPicture.asset(
+                    //                                   phoneIcon,
+                    //                                   width: 14.w,
+                    //                                   height: 14.h,
+                    //                                 ),
+                    //                               ],
+                    //                             ),
+                    //                           ],
+                    //                         ),
+                    //                         Column(
+                    //                           children: [
+                    //                             GestureDetector(
+                    //                               onTap: () {
+                    //                                 // Handle Facebook share
+                    //                               },
+                    //                               child: Image.asset(
+                    //                                 ImageConstant
+                    //                                     .facebookShareImage,
+                    //                                 width: 50.w,
+                    //                                 height: 40.h,
+                    //                               ),
+                    //                             ),
+                    //                             GestureDetector(
+                    //                               onTap: () {
+                    //                                 // Handle Subscribe
+                    //                               },
+                    //                               child: Image.asset(
+                    //                                 ImageConstant
+                    //                                     .subscribeImage,
+                    //                                 width: 50.w,
+                    //                                 height: 50.h,
+                    //                               ),
+                    //                             ),
+                    //                             SizedBox(height: 4.h),
+                    //                             Text(
+                    //                               vendorProfile.subscribed ??
+                    //                                   '...',
+                    //                               style: TextStyle(
+                    //                                 fontSize: 12.sp,
+                    //                                 color: Colors.blue,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                               ),
+                    //                             )
+                    //                           ],
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //               SizedBox(height: 10.h),
+                    //               SearchInStore(
+                    //                 searchController: _vendorsearchController,
+                    //                 onsubmit: (value) {
+                    //                   if (_showSearchResults) {
+                    //                     setState(() {
+                    //                       _showSearchResults = false;
+                    //                       FocusScope.of(context).unfocus();
+                    //                     });
+                    //                   }
+                    //                 },
+                    //               ),
+                    //               if (_vendorsearchResullts)
+                    //                 Container(
+                    //                     color: Colors.white,
+                    //                     child: vendorsearchResults.when(
+                    //                       data: (results) {
+                    //                         if (results.isEmpty) {
+                    //                           return const SizedBox(
+                    //                             child: Text('No result found'),
+                    //                           );
+                    //                         }
+                    //                         return Card(
+                    //                           elevation: 8,
+                    //                           child: ListView.separated(
+                    //                             padding: EdgeInsets.zero,
+                    //                             shrinkWrap: true,
+                    //                             primary: false,
+                    //                             itemCount: results.length,
+                    //                             itemBuilder: (context, index) {
+                    //                               final product =
+                    //                                   results[index];
+                    //                               return ListTile(
+                    //                                 title: Text(product.title),
+                    //                                 onTap: () {
+                    //                                   Navigator.push(
+                    //                                       context,
+                    //                                       MaterialPageRoute(
+                    //                                         builder: (context) =>
+                    //                                             SearchScreen(
+                    //                                           query:
+                    //                                               _vendorsearchController
+                    //                                                   .text,
+                    //                                         ),
+                    //                                       ));
+                    //                                   setState(() {
+                    //                                     _vendorsearchResullts =
+                    //                                         false;
+                    //                                     FocusScope.of(context)
+                    //                                         .unfocus();
+                    //                                   });
+                    //                                 },
+                    //                               );
+                    //                             },
+                    //                             separatorBuilder:
+                    //                                 (context, index) =>
+                    //                                     const Divider(),
+                    //                           ),
+                    //                         );
+                    //                       },
+                    //                       loading: () =>
+                    //                           const CircularProgressIndicator(),
+                    //                       error: (error, stack) => Center(
+                    //                           child: Text('Error: $error')),
+                    //                     )),
+                    //               SizedBox(
+                    //                 height: 10.h,
+                    //               ),
+                    //               InkWell(
+                    //                   onTap: () {
+                    //                     Navigator.push(
+                    //                         context,
+                    //                         MaterialPageRoute(
+                    //                           builder: (context) =>
+                    //                               const SubscribeAndWinEveryDay(),
+                    //                         ));
+                    //                   },
+                    //                   child: Image.network(scratch))
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     );
+                    //   },
+                    //   loading: () =>
+                    //       const Center(child: CircularProgressIndicator()),
+                    //   error: (error, stack) =>
+                    //       Center(child: Text('Error: $error')),
+                    // ),
                     TabBar(
                       controller: _tabController,
                       tabs: const [
-                        Tab(text: 'Home'),
+                        Tab(text: 'SHOP'),
                         Tab(
-                          text: 'Brand',
+                          text: 'CONNECT',
                         ),
-                        Tab(text: 'Used'),
+                        Tab(text: 'FREE PRIZES'),
                       ],
                     ),
                   ],
                 ),
               ),
               SliverFillRemaining(
+                hasScrollBody: true,
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    buildTabContent("brandnew", "Hot Products"),
-                    buildTabContent("brandnew", "Brand New"),
-                    buildTabContent("used", "Used Products")
+                    // First Tab
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          vendorProfileModelDataAsyncValue.when(
+                            data: (vendorProfile) {
+                              String scratch = vendorProfile.scratch_banner!;
+                              return Column(
+                                children: [
+                                  CarouselSlider(
+                                    items: vendorProfile.advertisements!.map(
+                                      (e) {
+                                        return Image.network(e.image!);
+                                      },
+                                    ).toList(),
+                                    options: CarouselOptions(
+                                      aspectRatio: 5,
+                                      reverse: true,
+                                      viewportFraction: 1,
+                                      autoPlay: true,
+                                      enlargeCenterPage: true,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
+                            error: (error, stack) =>
+                                Center(child: Text('Error: $error')),
+                          ),
+                          SizedBox(
+                            height: 350.h,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 450,
+                                  child: Product_item_widget(),
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 18.w),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "POSTS",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 350.h,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  height: 450,
+                                  child: PostCard(),
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 18.w),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "ALL PRODUCTS",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 450.h,
+                            child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 5.0,
+                                mainAxisSpacing: 10.0,
+                                childAspectRatio: 0.5,
+                              ),
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return const Product_item_widget(); // Replace with your widget
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Second Tab
+                    SingleChildScrollView(
+                      child: SizedBox(
+                        height: 350.h,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 450,
+                              child: Product_item_widget(),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    // Third Tab
+                    SingleChildScrollView(
+                      child: SizedBox(
+                        height: 350.h,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: 450,
+                              child: PostCard(),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -773,7 +912,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: DottedBorder(
-                color: Color(0xFF6D1A49),
+                color: const Color(0xFF6D1A49),
                 strokeWidth: 1,
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(12),
@@ -798,27 +937,322 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Column(
-                          children: [Text("Connect"), Text("Pass")],
+                          children: [
+                            Text(
+                              "Connect",
+                              style: TextStyle(fontSize: 9.sp),
+                            ),
+                            Text(
+                              "Pass",
+                              style: TextStyle(fontSize: 9.sp),
+                            )
+                          ],
                         ),
                         DottedBorder(
                           color: Colors.black,
                           strokeWidth: 2,
                           borderType: BorderType.Circle,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: CircleAvatar(
-                              radius: 20,
+                              radius: 50,
                               backgroundColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/nepalFlag.png",
+                              width: 50,
+                              height: 50,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              "Domestic",
+                              style: TextStyle(fontSize: 9.sp),
+                            ),
+                            Text(
+                              "Exclusive",
+                              style: TextStyle(fontSize: 9.sp),
+                            ),
+                            Text(
+                              "Brand",
+                              style: TextStyle(fontSize: 9.sp),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.sp),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            "My Power",
+                            style: TextStyle(
+                                fontSize: 24.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "Keeps You On",
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    Text(
-                      "This is tab1",
-                      style: TextStyle(fontSize: 14.sp),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: const Color(0xFF370C6B),
+                                  size: 15.w,
+                                ),
+                                Text(
+                                  "Open",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                                Icon(
+                                  Icons.directions,
+                                  color: const Color(0xFF370C6B),
+                                  size: 15.w,
+                                ),
+                                Text(
+                                  "Directions",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "New Road,Kathmandu",
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: const Color(0xFF370C6B),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.phone,
+                                  color: const Color(0xFF370C6B),
+                                  size: 15.w,
+                                ),
+                                Text(
+                                  "Customer Service",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                              ],
+                            ),
+                            Text(
+                              "9851280275",
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: const Color(0xFF370C6B),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    Container(
+                        width: MediaQuery.sizeOf(context).width,
+                        color: Color(0xFF4B004B),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 18.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    "4.5k",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Connections",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 15.w),
+                              Column(
+                                children: [
+                                  Text(
+                                    "343",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "DealzCircle",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 15.w),
+                              Column(
+                                children: [
+                                  Text(
+                                    "Rs.41K",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 13.sp,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Prize Worth",
+                                    style: TextStyle(
+                                        fontSize: 10.sp, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          color: const Color(0xFF4B004B),
+                          width: MediaQuery.sizeOf(context).width,
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 18.0),
+                            child: Text(
+                              "smartbazaar.com.np/MyPower",
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom:
+                              -40, // Adjust based on how much the CircleAvatar should overlap
+                          left: MediaQuery.sizeOf(context).width / 2 -
+                              50, // Center the avatar
+                          child: ClipOval(
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: Image.asset(
+                                'assets/images/appLogo.png',
+                                fit: BoxFit.cover,
+                                width: 140,
+                                height: 140,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text("Connect",
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          color: const Color(0xFF4B004B),
+                        ),
+                        textAlign: TextAlign.center),
+                    SizedBox(height: 20.h),
+                    Container(
+                      height: 30.h,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Shop",
+                              style: TextStyle(
+                                  color: const Color(0xFF4B004B),
+                                  fontSize: 8.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            VerticalDivider(
+                              thickness: 2.w,
+                              color: const Color(0xFF4B004B),
+                            ),
+                            Text(
+                              "Profile",
+                              style: TextStyle(
+                                  color: const Color(0xFF4B004B),
+                                  fontSize: 8.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            VerticalDivider(
+                              thickness: 2.w,
+                              color: const Color(0xFF4B004B),
+                            ),
+                            Text(
+                              "Feed",
+                              style: TextStyle(
+                                  color: const Color(0xFF4B004B),
+                                  fontSize: 8.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            VerticalDivider(
+                              thickness: 2.w,
+                              color: const Color(0xFF4B004B),
+                            ),
+                            Text(
+                              "FreePrizes",
+                              style: TextStyle(
+                                  color: const Color(0xFF4B004B),
+                                  fontSize: 8.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            VerticalDivider(
+                              thickness: 2.w,
+                              color: const Color(0xFF4B004B),
+                            ),
+                            Text(
+                              "Brands",
+                              style: TextStyle(
+                                  color: const Color(0xFF4B004B),
+                                  fontSize: 8.sp,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ]),
                     ),
                   ],
                 ),
@@ -845,7 +1279,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.phone,
-                              color: Color(0xFF8B6C6C), size: 14.h),
+                              color: const Color(0xFF8B6C6C), size: 14.h),
                           SizedBox(
                             width: 10.w,
                           ),
@@ -860,7 +1294,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.location_on,
-                              color: Color(0xFF8B6C6C), size: 14.h),
+                              color: const Color(0xFF8B6C6C), size: 14.h),
                           SizedBox(
                             width: 10.w,
                           ),
@@ -875,7 +1309,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.email,
-                              color: Color(0xFF8B6C6C), size: 14.h),
+                              color: const Color(0xFF8B6C6C), size: 14.h),
                           SizedBox(
                             width: 10.w,
                           ),
