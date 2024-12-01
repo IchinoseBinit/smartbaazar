@@ -37,7 +37,7 @@ class GeneralEelevatedButton extends StatelessWidget {
             );
       }
     }
-    return Container(
+    return SizedBox(
       // height: 55,
       width: width ?? 200.w,
       child: ElevatedButton(
@@ -45,11 +45,11 @@ class GeneralEelevatedButton extends StatelessWidget {
           onPresssed();
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Color(0xff362677),
+          backgroundColor: WidgetStateProperty.all(
+            const Color(0xff362677),
           ),
           padding:
-              MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 12.h)),
+              WidgetStateProperty.all(EdgeInsets.symmetric(vertical: 12.h)),
           // shape: RoundedRectangleBorder(
           //   borderRadius: BorderRadius.only(
           //     topLeft: Radius.circular(30.r),

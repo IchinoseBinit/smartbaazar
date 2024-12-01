@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
+import 'package:smartbazar/features/splash_screen/splash_api.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -13,19 +14,48 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    final loginProvider = ref.watch(loginController.notifier);
-    loginProvider.continueSession(context);
-    super.didChangeDependencies();
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        final loginProvider = ref.watch(loginController.notifier);
+        loginProvider.continueSession(context);
+      },
+    );
   }
 
   @override
   Widget build(
     BuildContext context,
   ) {
-    return Scaffold();
+    final splashApiResponse = ref.watch(getSplashApiProvider);
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Color(0xFF41246e), // Dark purple
+              Color(0xFF721844), // Dark red
+            ],
+          ),
+        ),
+        child: Center(
+          child: Container(
+              color: Colors.transparent,
+              child: splashApiResponse.when(
+                data: (splashModel) {
+                  return FadeInImage.assetNetwork(
+                    placeholder: "assets/images/appLogo.png",
+                    image: splashModel.logo,
+                    color: Colors.white,
+                  );
+                },
+                loading: () => const CircularProgressIndicator(),
+                error: (error, stack) => Text('Error: $error'),
+              )),
+        ),
+      ),
+    );
   }
 }

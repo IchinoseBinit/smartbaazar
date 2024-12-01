@@ -51,4 +51,6 @@ class ImageConstant {
   static String appleImage = '$basePath/appleImage.png';
   static String adBoostImage = '$basePath/adBoostImage.png';
   static String pageNotFound = '$basePath/pageNotFoundImage.png';
+  static String facebookShareImage = '$basePath/facebookShare.png';
+  static String subscribeImage = '$basePath/subscribe.png';
 }

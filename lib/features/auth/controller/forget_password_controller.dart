@@ -1,3 +1,5 @@
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
@@ -17,18 +19,31 @@ class ForgetPasswordController extends StateNotifier<GenericState> {
   final ForgetPasswordApi _forgetPasswordApi;
   ForgetPasswordController(this._forgetPasswordApi) : super(InitialState());
   Future<void> forgetPassword(BuildContext context,
-      {required String phone,
+      {
+        required int phone,
       required String phone_country,
-      required String login}) async {
+    }) async {
     state = LoadingState();
     try {
       final forgetPassword = await _forgetPasswordApi.foergetPassword(
-          phone: phone, phone_country: phone_country, login: login);
+          phone: phone, phone_country: phone_country,);
       state = LoadedState<ForgetPasswordModel>(response: forgetPassword);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => OtpScreen()));
-    } catch (ex) {
-      state = ErrorState(getCustomException(ex));
+          context, MaterialPageRoute(builder: (_) => const OtpScreen()));
+    } catch (e) {
+      String errorMessage =
+          "An unexpected error occurred."; // Default error message
+      if (e is DioException && e.response?.statusCode == 400) {
+        final responseBody = e.response?.data;
+        if (responseBody is String) {
+          errorMessage =
+              responseBody; // Directly use the raw string error message
+        }
+        state = ErrorState(errorMessage);
+        print("$state, $responseBody");
+      }
+
+      print("Error: $errorMessage");
     }
   }
 }

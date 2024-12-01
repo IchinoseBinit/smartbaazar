@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 
-final productCardHeight = 200.h;
-final productCardWidth = 200.w;
+final productCardHeight = 225.h;
+final productCardWidth = 215.w;
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -33,15 +34,18 @@ class ProductCard extends StatelessWidget {
           children: [
             Skeleton.replace(
               width: productCardWidth,
-              height: 100.h,
+              height: 110.h,
               child: Container(
                 width: productCardWidth,
                 height: 100.h,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(product.image),
-                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(product.image,
+                    errorListener: (p0) => Text(product.title)
+                    ),
+                    fit: BoxFit.fill,
                   ),
+                  // NetworkImage(product.image)
                 ),
               ),
             ),
@@ -69,7 +73,10 @@ class ProductCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Text('Rs. ${product.price}'),
+                Text(
+                  'Rs. ${product.price}',
+                  style: TextStyle(fontSize: 14.sp),
+                ),
                 // SizedBox(
                 //   width: 10.w,
                 // ),
@@ -148,7 +155,7 @@ class ProductCard extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff888888),
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(
@@ -156,7 +163,6 @@ class ProductCard extends StatelessWidget {
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Icon(
                   Icons.visibility,
@@ -166,36 +172,36 @@ class ProductCard extends StatelessWidget {
                 SizedBox(
                   width: 3.w,
                 ),
-                Text(
-                  '${NumberFormat.compact().format(
-                    int.parse(product.visits),
-                  )} Views',
-                  style: TextStyle(
-                    fontSize: 9.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff888888),
+                Flexible(
+                  child: Text(
+                    '${NumberFormat.compact().format(
+                      int.parse(product.visits),
+                    )} Views',
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff888888),
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(
-                  width: 24.w,
+                  width: 18.w,
                 ),
                 if (product.pickup != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        size: 20,
-                        color: Color(0xff888888),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Skeleton.replace(
-                        width: 80.w,
-                        height: 10.h,
-                        child: SizedBox(
-                          width: 80.w,
+                  Flexible(
+                    // Wrap this in a Flexible
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 20,
+                          color: Color(0xff888888),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Flexible(
                           child: Text(
                             product.pickup!,
                             maxLines: 1,
@@ -207,8 +213,8 @@ class ProductCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
               ],
             )

@@ -5,11 +5,9 @@ import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/controller/forget_password_controller.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/features/auth/view/otp_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/utils/custom_exception.dart';
 import 'package:smartbazar/utils/custom_loading_indicatior.dart';
@@ -25,7 +23,6 @@ class ForgetPasswordScreen extends ConsumerStatefulWidget {
 class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final phoneNumberController = TextEditingController();
-  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +32,9 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
         onLoading(context);
       } else if (state is LoadedState) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => LoginScreen()));
+            context, MaterialPageRoute(builder: (_) => const LoginScreen()));
       } else if (state is ErrorState) {
-        Exception(getCustomException(state.exception.message));
+        Exception(state.errorMessage);
       }
     });
     return GenericSafeArea(
@@ -73,34 +70,44 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                       style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xffADADAD)),
+                          color: const Color(0xffADADAD)),
                     )
                   ],
                 )),
                 SizedBox(
                   height: 40.h,
                 ),
+                // CustomTextFieldWidget(
+                //   icon: Icons.mail,
+                //   hintText: 'user email',
+                //   controller: emailController,
+                //   validator: (String) {
+                //     return null;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 22.h,
+                // ),
                 CustomTextFieldWidget(
-                  icon: Icons.mail,
-                  hintText: 'user email',
-                  controller: emailController,
-                  validator: (String) {},
-                ),
-                SizedBox(
-                  height: 22.h,
-                ),
-                CustomTextFieldWidget(
-                  icon: Icons.mail,
+                  icon: Icons.phone,
                   hintText: 'Phone number',
-                  controller: emailController,
-                  validator: (_) {},
+                  controller: phoneNumberController,
+                  validator: (_) {
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 60.h,
                 ),
                 GeneralEelevatedButton(
                   text: 'Send',
-                  onPresssed: () {},
+                  onPresssed: () async {
+                    await forgetPasswordProvider.forgetPassword(
+                      context,
+                      phone: int.tryParse(phoneNumberController.text)!,
+                      phone_country: "NP",
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 120.h,
@@ -109,12 +116,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                   title: 'Want to reach home screen? ',
                   subtitle: 'Go back',
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      await forgetPasswordProvider.forgetPassword(context,
-                          phone: phoneNumberController.text,
-                          phone_country: "NP",
-                          login: emailController.text);
-                    }
+                    Navigator.pop(context);
                   },
                 ),
                 SizedBox(
