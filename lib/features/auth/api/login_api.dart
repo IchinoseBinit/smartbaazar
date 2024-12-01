@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
@@ -55,15 +56,24 @@ class LoginApi {
           throw Exception("No user data found in response");
         }
       } else {
-        throw Exception(
-            "Login failed with status code: ${response.statusCode}");
+        if (response.data is Map<String, dynamic> &&
+            response.data.containsKey('message')) {
+          throw Exception(response.data['message']);
+        }
+        throw Exception("Login failed. Status code: ${response.statusCode}");
       }
+    } on DioException catch (e) {
+      String errorMessage = 'An unexpected error occurred.';
+      if (e.response != null) {
+        errorMessage = e.response?.data['message'] ?? 'Unknown server error';
+      } else if (e.type == DioExceptionType.connectionTimeout) {
+        errorMessage = 'Connection timeout. Please try again.';
+      } else {
+        errorMessage = 'Something went wrong. Please check your connection.';
+      }
+      throw Exception(e.response?.data['message'] ?? errorMessage);
     } catch (e) {
-      if (kDebugMode) {
-        print("Login error: $e");
-      }
-      // Optionally, wrap in a custom exception
-      throw Exception("An error occurred during login: $e");
+      throw Exception(' $e');
     }
   }
 }

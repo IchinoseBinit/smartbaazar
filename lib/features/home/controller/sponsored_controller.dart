@@ -21,7 +21,8 @@ class SponsoredController extends StateNotifier<GenericState> {
       final sponsoreData = await _sponsoredApi.getsponsoredData();
       state = LoadedState<SponsoredModel>(response: sponsoreData);
     } catch (ex) {
-      state = ErrorState(getCustomException(ex));
+      String errorMessage = ex.toString();
+      state = ErrorState(errorMessage);
     }
   }
 }

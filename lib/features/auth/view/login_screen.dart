@@ -26,7 +26,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false; // You can use this to show a loading indicator
-  String? errMessage;
+  String? errorMessage;
   bool hidePassword = true;
 
   @override
@@ -54,11 +54,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         showCustomToast(state.response.toString());
       } else if (state is ErrorState) {
         setState(() {
-          errMessage = state.exception.message; // Display error message
+          errorMessage = state.errorMessage;
+          isLoading = false;
         });
       } else if (state is LoadingState) {
         setState(() {
           isLoading = true;
+          errorMessage = null;
         });
       }
     });
@@ -91,7 +93,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                         SizedBox(height: 50.h),
-                        _buildErrorMessage(),
+                        if (errorMessage != null && errorMessage!.isNotEmpty)
+                          _buildErrorMessage(errorMessage!),
                         SizedBox(height: 10.h),
                         CustomTextFieldWidget(
                           controller: emailController,
@@ -142,6 +145,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         text: 'Log In',
                         onPresssed: () async {
                           if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              errorMessage = null;
+                              isLoading = true;
+                            });
                             try {
                               await loginProvider.login(
                                 context,
@@ -151,8 +158,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               );
                             } on DioException catch (e) {
                               // Display an error toast to the user
-                              showCustomToast(
-                                  "Error: ${e.response?.data['message'] ?? 'An unknown error occurred.'}");
+                              setState(() {
+                                errorMessage = e.response?.data['message'] ??
+                                    'An unknown error occurred.';
+                                isLoading = false;
+                              });
                             }
                           }
                         },
@@ -179,33 +189,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  Widget _buildErrorMessage() {
-    if (errMessage != null && errMessage!.isNotEmpty) {
-      return Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 12,
+  Widget _buildErrorMessage(String message) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      decoration: BoxDecoration(
+        color: Colors.red.shade100,
+        border: Border.all(
+          width: 1,
+          color: Colors.red.shade500,
         ),
-        decoration: BoxDecoration(
-          color: Colors.red.shade100,
-          border: Border.all(
-            width: 1,
-            color: Colors.red.shade500,
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(7),
-          ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(7),
         ),
-        child: Text(
-          errMessage!,
-          style: TextStyle(
-            color: Colors.red.shade900,
-          ),
+      ),
+      child: Text(
+        message,
+        style: TextStyle(
+          color: Colors.red.shade900,
         ),
-      );
-    }
-    return const SizedBox
-        .shrink(); // Return an empty widget if no error message
+      ),
+    );
   }
 
   Widget _buildForgetPasswordLink() {

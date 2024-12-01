@@ -34,7 +34,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => const LoginScreen()));
       } else if (state is ErrorState) {
-        Exception(getCustomException(state.exception.message));
+        Exception(state.errorMessage);
       }
     });
     return GenericSafeArea(
@@ -102,10 +102,11 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                 GeneralEelevatedButton(
                   text: 'Send',
                   onPresssed: () async {
-                    await forgetPasswordProvider.forgetPassword(context,
-                        phone: int.tryParse(phoneNumberController.text)!,
-                        phone_country: "NP",
-                       );
+                    await forgetPasswordProvider.forgetPassword(
+                      context,
+                      phone: int.tryParse(phoneNumberController.text)!,
+                      phone_country: "NP",
+                    );
                   },
                 ),
                 SizedBox(

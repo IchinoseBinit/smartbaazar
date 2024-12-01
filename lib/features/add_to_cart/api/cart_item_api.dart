@@ -22,7 +22,7 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
       final data = response.data['data'];
 
       if (data == null || data is! Map || !data.containsKey('cart')) {
-        throw CustomException('Please log in to continue.');
+        throw Exception('Please log in to continue.');
       }
 
       final cartList = data['cart'] as List?;
@@ -36,12 +36,12 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
         'vendors': vendors,
       };
     } else {
-      throw CustomException('Failed to load cart items.');
+      throw Exception('Failed to load cart items.');
     }
   } catch (e) {
-    final customException = getCustomException(e);
-    print('Error fetching cart items: ${customException.message}');  // Log specific message
-    throw customException; // Rethrow with specific message
+ //   final customException = getCustomException(e);
+    print('Error fetching cart items: ${e}');  // Log specific message
+    throw e.toString(); // Rethrow with specific message
   }
 }
 
