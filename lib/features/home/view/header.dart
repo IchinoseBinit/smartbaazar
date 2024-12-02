@@ -21,7 +21,7 @@ class NewSearchWidget extends StatefulWidget {
 class _NewSearchWidgetState extends State<NewSearchWidget> {
   final List<Map<String, String>> items = [
     {
-      'icon': 'assets/icon/loading.svg',
+      'icon': 'assets/icon/loadings.svg',
       'label': 'Everything',
     },
     {
@@ -127,18 +127,37 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, dynamic>>(
+        selectedItemBuilder: (context) {
+          return [
+             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(items.map((e) {
+                  return e['icon']
+                },).toString(), height: 10.h),
+                SizedBox(width: 8.w),
+                Text(
+                  item['label']!,
+                  style: headerstyle.copyWith(
+                      fontSize: 10.sp, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            
+          ];
+        },
         value: dropdownValue ?? items[0],
         onChanged: (newValue) {
           setState(() {
             dropdownValue = newValue!;
           });
-
-       
         },
         items: items.map((item) {
           return DropdownMenuItem(
             value: item,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(item['icon']!, height: 10.h),

@@ -15,12 +15,14 @@ class Product_item_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 10.h,
-      padding: const EdgeInsets.all(5),
-      margin: EdgeInsets.only(left: 5.w),
-      width: 230.w,
+      padding: EdgeInsets.zero,
+      width: 250.w,
       decoration: BoxDecoration(
-          color: Colors.white30, borderRadius: BorderRadius.circular(20)),
+        
+        borderRadius: BorderRadius.circular(10)
+      ),
+      margin: const EdgeInsets.all(3),
+      
       child: Column(
         children: [
           Row(
@@ -40,6 +42,7 @@ class Product_item_widget extends StatelessWidget {
                   )
                 ],
               ),
+              SizedBox(width: 100.w,),
               PopupMenuButton(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
@@ -95,6 +98,7 @@ class Product_item_widget extends StatelessWidget {
                 onSelected: (String value) {
                 },
               ),
+              SizedBox(height: 5.h,)
               // const Icon(
               //   Icons.more_vert,
               //   color: Colors.grey,
@@ -256,90 +260,105 @@ class Product_item_widget extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(5),
+          Expanded(
+            // width: double.infinity,
+            // padding: const EdgeInsets.all(5),
+            // decoration: const BoxDecoration(
+            //     color: Color(0xff3D215F),
+            // ),
+                // borderRadius: BorderRadius.only(
+                //     bottomLeft: Radius.circular(20),
+                //     bottomRight: Radius.circular(20))),
+            child: Container(
+             padding: const EdgeInsets.all(5),
+              margin: EdgeInsets.zero,
             decoration: const BoxDecoration(
-                color: Color(0xff3D215F),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/power.png"),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Dozoko",
-                              style: headerstyle.copyWith(
-                                  fontSize: 12, fontWeight: FontWeight.w700),
-                            ),
-                            const Icon(
-                              Icons.logout,
-                              color: Colors.white,
-                              size: 12,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.outlined_flag_rounded,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                            Text(
-                              "DOMESTIC BRAND",
-                              style: headerstyle.copyWith(
-                                  fontSize: 7, fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        Text(
-                          "2.5 km",
-                          style: headerstyle.copyWith(
-                              fontSize: 12, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.noise_aware,
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        Text(
-                          "SPONSERED",
-                          style: headerstyle.copyWith(
-                              fontSize: 7, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+              color: Color(0xff3D215F),
+              borderRadius: BorderRadius.only(
+                 bottomLeft: Radius.circular(10),
+                 bottomRight: Radius.circular(10)
+
+              )
+            ),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: AssetImage("assets/images/power.png"),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Dozoko",
+                                style: headerstyle.copyWith(
+                                    fontSize: 12, fontWeight: FontWeight.w700),
+                              ),
+                              const Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                                size: 12,
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.outlined_flag_rounded,
+                                color: Colors.white,
+                                size: 12,
+                              ),
+                              Text(
+                                "DOMESTIC BRAND",
+                                style: headerstyle.copyWith(
+                                    fontSize: 7, fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                          Text(
+                            "2.5 km",
+                            style: headerstyle.copyWith(
+                                fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.noise_aware,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                          Text(
+                            "SPONSERED",
+                            style: headerstyle.copyWith(
+                                fontSize: 7, fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           )
         ],

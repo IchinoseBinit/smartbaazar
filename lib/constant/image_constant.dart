@@ -5,10 +5,16 @@ import 'package:smartbazar/features/product_screen/view/product_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 
 final List<Map<String, dynamic>> items = [
+  
     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'Live',
       'screen': const HomeScreen()
+    },
+     {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
     },
     {
       'icon': 'assets/icon/openCartIcon.svg',
@@ -40,11 +46,7 @@ final List<Map<String, dynamic>> items = [
       'label': 'SocioShop',
       'screen': const HomeScreen()
     },
-    {
-      'icon': 'assets/icon/box.svg',
-      'label': 'ServiceHub',
-      'screen': const ServicesScreen()
-    },
+  
   ];
 
 

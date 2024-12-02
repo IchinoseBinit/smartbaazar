@@ -79,7 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     'USED',
     'HOB'
   ];
- 
+
   @override
   Widget build(BuildContext context) {
     // final adsList = ref.watch(getAdsProvider);
@@ -118,9 +118,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
                           Image.asset('assets/images/group.png'),
                           SizedBox(
                             width: 2.w,
@@ -132,9 +129,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         height: 25.h,
                       ),
                       SizedBox(
-                        height: 80, // Increased height for better visibility
+                        height: 80.h, // Increased height for better visibility
                         width: double.infinity,
                         child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
                           reverse: true,
                           itemCount: items.length,
                           scrollDirection: Axis.horizontal,
@@ -152,7 +150,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               },
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
-                                    horizontal: 10), // Spacing between items
+                                    horizontal: 30), // Spacing between items
                                 child: Column(
                                   mainAxisSize: MainAxisSize
                                       .min, // Shrinks to fit children
@@ -183,10 +181,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     Text(
                                       data['label'],
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.white,
+                                        color: ColorConstant.whiteColor,
                                       ),
                                     ),
                                   ],
@@ -407,7 +405,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white),
+                              color: ColorConstant.whiteColor),
                         ),
                       );
                     },
@@ -422,16 +420,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 370.h,
+                 
                   child: ListView.builder(
-                    shrinkWrap: true,
+
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
+                    
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return Card(
+                        margin: EdgeInsets.only(left: 5.w),
+                        elevation: 7,
+                        
+                        child: Product_item_widget());
                     },
                   ),
                 ),
@@ -440,10 +444,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   width: double.infinity,
                   child: TabBar(
                     controller: tabController,
-                    tabs: [
-                      const Tab(text: ' Global\n Brands'),
-                      const Tab(text: ' Domestic\n Brands'),
-                      const Tab(
+                    tabs: const [
+                      Tab(text: ' Global\n Brands'),
+                      Tab(text: ' Domestic\n Brands'),
+                      Tab(
                           text:
                               ' Spotlight\n Sellers'), // Changed label for clarity
                     ],
@@ -586,53 +590,82 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               top: 200, // Fixed height from the top
               right: 0,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
+                width: 60.w,
+                padding: EdgeInsets.symmetric(
+                  vertical: 5.h,
                 ),
                 // Explicit height set
                 decoration: BoxDecoration(
-                    color: const Color(0xffE2DAE5).withOpacity(0.8),
+                    color: const Color(0xffE2DAE5).withOpacity(0.9),
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         bottomLeft: Radius.circular(10))),
                 child: Center(
                     child: Column(
                   children: [
+                    SizedBox(
+                      height: 6.h,
+                    ),
                     const Icon(
                       Icons.close,
+                      size: 17,
                       color: Color(0xff918994),
+                    ),
+                    SizedBox(
+                      height: 6.h,
                     ),
                     IconButton(
                         onPressed: () {},
-                        icon: const Column(
+                        icon: Column(
                           children: [
-                            Icon(
-                              Icons.document_scanner,
+                            Image.asset(
+                              'assets/images/scanner.png',
+                              height: 15,
                               color: Color(0xff918994),
                             ),
-                            Text("Connect")
+                            Text(
+                              "Connect",
+                              style: headerstyle.copyWith(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff918994)),
+                            )
                           ],
                         )),
                     IconButton(
                         onPressed: () {},
-                        icon: const Column(
+                        icon: Column(
                           children: [
                             Icon(
                               Icons.shopping_cart_outlined,
+                              size: 15,
                               color: Color(0xff918994),
                             ),
-                            Text("cart")
+                            Text(
+                              "cart",
+                              style: headerstyle.copyWith(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff918994)),
+                            )
                           ],
                         )),
                     IconButton(
                         onPressed: () {},
-                        icon: const Column(
+                        icon: Column(
                           children: [
                             Icon(
                               Icons.add,
+                              size: 15,
                               color: Color(0xff918994),
                             ),
-                            Text("add")
+                            Text(
+                              "add",
+                              style: headerstyle.copyWith(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff918994)),
+                            )
                           ],
                         )),
                   ],
