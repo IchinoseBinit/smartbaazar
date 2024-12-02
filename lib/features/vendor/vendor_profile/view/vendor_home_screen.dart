@@ -1,25 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/vendor_search.dart';
-import 'package:smartbazar/features/product_details/api/subscribe_vendor_provider.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -126,476 +120,133 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {},
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    const VendorSearchContainer(),
-                    if (_showSearchResults)
-                      Positioned(
-                        top: 0.h,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          color: Colors.white,
-                          child: searchResults.when(
-                            data: (results) {
-                              if (results.isEmpty) {
-                                return const SizedBox(
-                                  child: Text('No result found'),
-                                );
-                              }
-                              return Card(
-                                elevation: 8,
-                                child: ListView.separated(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    final product = results[index];
-                                    return ListTile(
-                                      title: Text(product.title),
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SearchScreen(
-                                              query: _searchController.text,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const VendorSearchContainer(),
+                      if (_showSearchResults)
+                        Positioned(
+                          top: 0.h,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            color: Colors.white,
+                            child: searchResults.when(
+                              data: (results) {
+                                if (results.isEmpty) {
+                                  return const SizedBox(
+                                    child: Text('No result found'),
+                                  );
+                                }
+                                return Card(
+                                  elevation: 8,
+                                  child: ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: results.length,
+                                    itemBuilder: (context, index) {
+                                      final product = results[index];
+                                      return ListTile(
+                                        title: Text(product.title),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SearchScreen(
+                                                query: _searchController.text,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                        setState(() {
-                                          _showSearchResults = false;
-                                          FocusScope.of(context).unfocus();
-                                        });
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const Divider(),
-                                ),
-                              );
-                            },
-                            loading: () {
-                              return SimpleDialog(
-                                children: [
-                                  adsList.isLoading
-                                      ? const SizedBox()
-                                      : Image.network(
-                                          adsList.value!.first.image!)
-                                ],
-                              );
-                            },
-                            error: (error, stack) => const Center(
-                                child: CircularProgressIndicator()),
-                          ),
-                        ),
-                      ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    _buildDottedContainer(),
-                    VendorFirstTabBarSection(
-                      tabController: _firstTabController,
-                    ),
-                    // vendorProfileModelDataAsyncValue.when(
-                    //   data: (vendorProfile) {
-                    //     String scratch = vendorProfile.scratch_banner!;
-                    //     return Column(
-                    //       children: [
-                    //         CarouselSlider(
-                    //           items: vendorProfile.advertisements!.map(
-                    //             (e) {
-                    //               return Image.network(e.image!);
-                    //             },
-                    //           ).toList(),
-                    //           options: CarouselOptions(
-                    //             aspectRatio: 5,
-                    //             reverse: true,
-                    //             viewportFraction: 1,
-                    //             autoPlay: true,
-                    //             enlargeCenterPage: true,
-                    //           ),
-                    //         ),
-                    //         Padding(
-                    //           padding: const EdgeInsets.all(8.0),
-                    //           child: Column(
-                    //             children: [
-                    //               SizedBox(height: 2.h),
-                    //               InkWell(
-                    //                 onTap: () async {
-                    //                   final subscribe = await ref
-                    //                       .read(subscribevendorProvider(
-                    //                               vendorid:
-                    //                                   vendorProfile.vendor!.id!)
-                    //                           .future)
-                    //                       .then(
-                    //                     (value) {
-                    //                       ScaffoldMessenger.of(context)
-                    //                           .showSnackBar(SnackBar(
-                    //                               content: Text(value)));
-                    //                     },
-                    //                   );
-                    //                   final vendorProfileModelDataAsyncValue =
-                    //                       ref.refresh(
-                    //                           getVendorProfileDataProvider(
-                    //                               widget.vendorName
-                    //                                   .replaceAll(" ", '')));
-                    //                 },
-                    //                 child: Card(
-                    //                   color: Colors.white,
-                    //                   shape: RoundedRectangleBorder(
-                    //                     borderRadius:
-                    //                         BorderRadius.circular(12.0),
-                    //                   ),
-                    //                   elevation: 4,
-                    //                   child: Padding(
-                    //                     padding: const EdgeInsets.all(16.0),
-                    //                     child: Row(
-                    //                       mainAxisAlignment:
-                    //                           MainAxisAlignment.spaceBetween,
-                    //                       crossAxisAlignment:
-                    //                           CrossAxisAlignment.center,
-                    //                       children: [
-                    //                         CachedNetworkImage(
-                    //                           imageUrl:
-                    //                               vendorProfile.vendor!.photo!,
-                    //                           height: 100.h,
-                    //                           width: 100.w,
-                    //                           fit: BoxFit.cover,
-                    //                           placeholder: (context, url) =>
-                    //                               const CircularProgressIndicator(),
-                    //                           errorWidget:
-                    //                               (context, url, error) =>
-                    //                                   const Icon(Icons.error),
-                    //                         ),
-                    //                         SizedBox(width: 16.w),
-                    //                         Column(
-                    //                           crossAxisAlignment:
-                    //                               CrossAxisAlignment.start,
-                    //                           children: [
-                    //                             Text(
-                    //                               vendorProfile.vendor!.name!,
-                    //                               style: TextStyle(
-                    //                                 fontSize: 14.sp,
-                    //                                 fontWeight: FontWeight.bold,
-                    //                               ),
-                    //                             ),
-                    //                             SizedBox(height: 4.h),
-                    //                             Text(
-                    //                               "10000 Subscribers",
-                    //                               style: TextStyle(
-                    //                                 fontSize: 12.sp,
-                    //                                 color: Colors.grey[700],
-                    //                               ),
-                    //                             ),
-                    //                             SizedBox(height: 4.h),
-                    //                             Text(
-                    //                               vendorProfile.vendor!.name!,
-                    //                               style: TextStyle(
-                    //                                 fontSize: 12.sp,
-                    //                                 color: Colors.grey[600],
-                    //                               ),
-                    //                             ),
-                    //                             SizedBox(height: 8.h),
-                    //                             Text(
-                    //                               "Contact Seller:",
-                    //                               style: TextStyle(
-                    //                                 fontSize: 12.sp,
-                    //                                 fontWeight: FontWeight.bold,
-                    //                               ),
-                    //                             ),
-                    //                             SizedBox(height: 4.h),
-                    //                             Text(
-                    //                               vendorProfile.vendor?.phone ??
-                    //                                   "Not Available",
-                    //                               style: TextStyle(
-                    //                                 fontSize: 12.sp,
-                    //                                 color: Colors.grey[500],
-                    //                               ),
-                    //                             ),
-                    //                             SizedBox(height: 8.h),
-                    //                             Row(
-                    //                               children: [
-                    //                                 SvgPicture.asset(
-                    //                                   whatsAppIcon,
-                    //                                   width: 14.w,
-                    //                                   height: 14.h,
-                    //                                 ),
-                    //                                 SizedBox(width: 8.w),
-                    //                                 SvgPicture.asset(
-                    //                                   viberIcon,
-                    //                                   width: 14.w,
-                    //                                   height: 14.h,
-                    //                                 ),
-                    //                                 SizedBox(width: 8.w),
-                    //                                 SvgPicture.asset(
-                    //                                   phoneIcon,
-                    //                                   width: 14.w,
-                    //                                   height: 14.h,
-                    //                                 ),
-                    //                               ],
-                    //                             ),
-                    //                           ],
-                    //                         ),
-                    //                         Column(
-                    //                           children: [
-                    //                             GestureDetector(
-                    //                               onTap: () {
-                    //                                 // Handle Facebook share
-                    //                               },
-                    //                               child: Image.asset(
-                    //                                 ImageConstant
-                    //                                     .facebookShareImage,
-                    //                                 width: 50.w,
-                    //                                 height: 40.h,
-                    //                               ),
-                    //                             ),
-                    //                             GestureDetector(
-                    //                               onTap: () {
-                    //                                 // Handle Subscribe
-                    //                               },
-                    //                               child: Image.asset(
-                    //                                 ImageConstant
-                    //                                     .subscribeImage,
-                    //                                 width: 50.w,
-                    //                                 height: 50.h,
-                    //                               ),
-                    //                             ),
-                    //                             SizedBox(height: 4.h),
-                    //                             Text(
-                    //                               vendorProfile.subscribed ??
-                    //                                   '...',
-                    //                               style: TextStyle(
-                    //                                 fontSize: 12.sp,
-                    //                                 color: Colors.blue,
-                    //                                 fontWeight: FontWeight.bold,
-                    //                               ),
-                    //                             )
-                    //                           ],
-                    //                         ),
-                    //                       ],
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //               SizedBox(height: 10.h),
-                    //               SearchInStore(
-                    //                 searchController: _vendorsearchController,
-                    //                 onsubmit: (value) {
-                    //                   if (_showSearchResults) {
-                    //                     setState(() {
-                    //                       _showSearchResults = false;
-                    //                       FocusScope.of(context).unfocus();
-                    //                     });
-                    //                   }
-                    //                 },
-                    //               ),
-                    //               if (_vendorsearchResullts)
-                    //                 Container(
-                    //                     color: Colors.white,
-                    //                     child: vendorsearchResults.when(
-                    //                       data: (results) {
-                    //                         if (results.isEmpty) {
-                    //                           return const SizedBox(
-                    //                             child: Text('No result found'),
-                    //                           );
-                    //                         }
-                    //                         return Card(
-                    //                           elevation: 8,
-                    //                           child: ListView.separated(
-                    //                             padding: EdgeInsets.zero,
-                    //                             shrinkWrap: true,
-                    //                             primary: false,
-                    //                             itemCount: results.length,
-                    //                             itemBuilder: (context, index) {
-                    //                               final product =
-                    //                                   results[index];
-                    //                               return ListTile(
-                    //                                 title: Text(product.title),
-                    //                                 onTap: () {
-                    //                                   Navigator.push(
-                    //                                       context,
-                    //                                       MaterialPageRoute(
-                    //                                         builder: (context) =>
-                    //                                             SearchScreen(
-                    //                                           query:
-                    //                                               _vendorsearchController
-                    //                                                   .text,
-                    //                                         ),
-                    //                                       ));
-                    //                                   setState(() {
-                    //                                     _vendorsearchResullts =
-                    //                                         false;
-                    //                                     FocusScope.of(context)
-                    //                                         .unfocus();
-                    //                                   });
-                    //                                 },
-                    //                               );
-                    //                             },
-                    //                             separatorBuilder:
-                    //                                 (context, index) =>
-                    //                                     const Divider(),
-                    //                           ),
-                    //                         );
-                    //                       },
-                    //                       loading: () =>
-                    //                           const CircularProgressIndicator(),
-                    //                       error: (error, stack) => Center(
-                    //                           child: Text('Error: $error')),
-                    //                     )),
-                    //               SizedBox(
-                    //                 height: 10.h,
-                    //               ),
-                    //               InkWell(
-                    //                   onTap: () {
-                    //                     Navigator.push(
-                    //                         context,
-                    //                         MaterialPageRoute(
-                    //                           builder: (context) =>
-                    //                               const SubscribeAndWinEveryDay(),
-                    //                         ));
-                    //                   },
-                    //                   child: Image.network(scratch))
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     );
-                    //   },
-                    //   loading: () =>
-                    //       const Center(child: CircularProgressIndicator()),
-                    //   error: (error, stack) =>
-                    //       Center(child: Text('Error: $error')),
-                    // ),
-                    TabBar(
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(text: 'SHOP'),
-                        Tab(
-                          text: 'CONNECT',
-                        ),
-                        Tab(text: 'FREE PRIZES'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SliverToBoxAdapter(
-                
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // First Tab
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          vendorProfileModelDataAsyncValue.when(
-                            data: (vendorProfile) {
-                              String scratch = vendorProfile.scratch_banner!;
-                              return Column(
-                                children: [
-                                  CarouselSlider(
-                                    items: vendorProfile.advertisements!.map(
-                                      (e) {
-                                        return Image.network(e.image!);
-                                      },
-                                    ).toList(),
-                                    options: CarouselOptions(
-                                      aspectRatio: 5,
-                                      reverse: true,
-                                      viewportFraction: 1,
-                                      autoPlay: true,
-                                      enlargeCenterPage: true,
-                                    ),
+                                          );
+                                          setState(() {
+                                            _showSearchResults = false;
+                                            FocusScope.of(context).unfocus();
+                                          });
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        const Divider(),
                                   ),
-                                ],
-                              );
-                            },
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
-                            error: (error, stack) =>
-                                Center(child: Text('Error: $error')),
-                          ),
-                          SizedBox(
-                            height: 350.h,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return const SizedBox(
-                                  height: 450,
-                                  child: Product_item_widget(),
                                 );
                               },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 18.w),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "POSTS",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 350.h,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                  height: 450,
-                                  child: PostCard(),
+                              loading: () {
+                                return SimpleDialog(
+                                  children: [
+                                    adsList.isLoading
+                                        ? const SizedBox()
+                                        : Image.network(
+                                            adsList.value!.first.image!)
+                                  ],
                                 );
                               },
+                              error: (error, stack) => const Center(
+                                  child: CircularProgressIndicator()),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 18.w),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "ALL PRODUCTS",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 450.h,
-                            child: GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 5.0,
-                                mainAxisSpacing: 10.0,
-                                childAspectRatio: 0.5,
-                              ),
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return const Product_item_widget(); // Replace with your widget
-                              },
-                            ),
-                          ),
-                        ],
+                        ),
+                      SizedBox(
+                        height: 20.h,
                       ),
-                    ),
-                    // Second Tab
-                    SingleChildScrollView(
-                      child: SizedBox(
+                      _buildDottedContainer(),
+                      VendorFirstTabBarSection(
+                        tabController: _firstTabController,
+                      ),
+                    ],
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: TabBar(
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(text: 'SHOP'),
+                      Tab(
+                        text: 'CONNECT',
+                      ),
+                      Tab(text: 'FREE PRIZES'),
+                    ],
+                  ),
+                ),
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: [
+                // First Tab
+                SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      vendorProfileModelDataAsyncValue.when(
+                        data: (vendorProfile) {
+                          String scratch = vendorProfile.scratch_banner!;
+                          return Column(
+                            children: [
+                              CarouselSlider(
+                                items: vendorProfile.advertisements!.map((e) {
+                                  return Image.network(e.image!);
+                                }).toList(),
+                                options: CarouselOptions(
+                                  aspectRatio: 5,
+                                  reverse: true,
+                                  viewportFraction: 1,
+                                  autoPlay: true,
+                                  enlargeCenterPage: true,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        error: (error, stack) =>
+                            Center(child: Text('Error: $error')),
+                      ),
+                      SizedBox(
                         height: 350.h,
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -609,10 +260,19 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           },
                         ),
                       ),
-                    ),
-                    // Third Tab
-                    SingleChildScrollView(
-                      child: SizedBox(
+                      Padding(
+                        padding: EdgeInsets.only(left: 18.w),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "POSTS",
+                            style: TextStyle(
+                                fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
                         height: 350.h,
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -626,11 +286,92 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           },
                         ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsets.only(left: 18.w),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "ALL PRODUCTS",
+                            style: TextStyle(
+                                fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 3.h, // Horizontal spacing between items
+                        runSpacing: 9.w, // Vertical spacing between rows
+                        children: List.generate(5, (index) {
+                          return SizedBox(
+                            height: 310.h,
+                            width: MediaQuery.of(context).size.width / 2 -
+                                16, // Adjust width for 2 columns
+                            child: const Product_item_widget(),
+                          );
+                        }),
+                      ),
+
+                      // GridView.builder(
+                      //   physics: NeverScrollableScrollPhysics(),
+                      //   gridDelegate:
+                      //       const SliverGridDelegateWithFixedCrossAxisCount(
+                      //     crossAxisCount: 2,
+                      //     crossAxisSpacing: 5.0,
+                      //     mainAxisSpacing: 10.0,
+                      //     childAspectRatio: 0.5,
+                      //   ),
+                      //   itemCount: 5,
+                      //   itemBuilder: (context, index) {
+                      //     return const Product_item_widget();
+                      //   },
+                      // ),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                // Second Tab
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 350.h,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 450,
+                              child: Product_item_widget(),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Third Tab
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 350.h,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return SizedBox(
+                              height: 450,
+                              child: PostCard(),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
