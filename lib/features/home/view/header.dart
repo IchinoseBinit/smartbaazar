@@ -129,21 +129,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
       child: DropdownButton<Map<String, dynamic>>(
         selectedItemBuilder: (context) {
           return [
-             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(items.map((e) {
-                  return e['icon']
-                },).toString(), height: 10.h),
-                SizedBox(width: 8.w),
-                Text(
-                  item['label']!,
-                  style: headerstyle.copyWith(
-                      fontSize: 10.sp, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
+            
             
           ];
         },
