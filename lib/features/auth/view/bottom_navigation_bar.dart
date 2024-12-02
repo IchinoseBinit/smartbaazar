@@ -46,107 +46,99 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   Widget build(BuildContext context) {
     return GenericSafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xffF6F1F1),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(top: 10.h),
-          child: SizedBox(
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                border: Border.all(
-                  width: 1.w,
-                  color: const Color(0xFFf8f8f8),
-                ),
-              ),
-              child: Container(
-                height: 80,
-                padding: EdgeInsets.all(12.h),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(colors: [
-                      const Color(0xff362677).withOpacity(0.9),
-                      const Color.fromARGB(255, 99, 96, 96)
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-                child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedTab =
-                            2; // Set the selected tab to the middle placeholder
-                      });
-                    },
-                    child: SvgPicture.asset(qrIcon)),
-              ),
-            ),
-          ),
-        ),
+        backgroundColor: Colors.transparent,
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // resizeToAvoidBottomInset: false,
+        // floatingActionButton: Padding(
+        //   padding: EdgeInsets.only(top: 10.h),
+        
+        // ),
         body: _pages.elementAt(_selectedTab),
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(35.r),
             topRight: Radius.circular(35.r),
           ),
-          child: SizedBox(
-            height: 65.h,
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: const Color(0xff362677),
-              selectedIconTheme: const IconThemeData(color: Color(0xff362677)),
-              selectedLabelStyle: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xff36383C),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50.w),
+            child: Container(
+              color: Colors.transparent,
+              height: 65.h,
+              child: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: const Color(0xff362677),
+                selectedIconTheme:
+                    const IconThemeData(color: Color(0xff362677)),
+                selectedLabelStyle: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff36383C),
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff36383C),
+                ),
+                //i want the  container that is wrapping this white container to be transparent
+                backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                currentIndex: _selectedTab,
+                // onTap: (index) {
+                //   if (index != 2) {
+                //     _changeTab(index);
+                //   }
+                // },
+                onTap: (index) => _changeTab(index),
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Image.asset('assets/icon/home.png'),
+                      )),
+                  BottomNavigationBarItem(
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Image.asset('assets/icon/news.png'),
+                      )),
+                  BottomNavigationBarItem(
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Image.asset('assets/icon/message.png'),
+                      )),
+                  BottomNavigationBarItem(
+                      label: '',
+                      icon: Container(
+                        margin: EdgeInsets.only(top: 2),
+                        height: 40.h,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Image.asset('assets/icon/wifi.png'),
+                      )),
+                ],
               ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xff36383C),
-              ),
-              backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-              currentIndex: _selectedTab,
-              // onTap: (index) {
-              //   if (index != 2) {
-              //     _changeTab(index);
-              //   }
-              // },
-              onTap: (index) => _changeTab(index),
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    homeIcon,
-                    colorFilter: const ColorFilter.mode(
-                      Color(0xff36383C),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  label: 'Home',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.mail),
-                  label: 'Message',
-                ),
-                const BottomNavigationBarItem(
-                  icon: SizedBox.shrink(), // Empty placeholder for FAB
-                  label: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(listIcon),
-                  label: 'Feed',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 1.w, color: Colors.black),
-                    ),
-                    child: Image.asset(ImageConstant.personImage),
-                  ),
-                  label: 'Account',
-                ),
-              ],
             ),
           ),
         ),

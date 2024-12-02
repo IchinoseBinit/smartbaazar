@@ -483,8 +483,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   ],
                 ),
               ),
-              SliverFillRemaining(
-                hasScrollBody: true,
+              SliverToBoxAdapter(
+                
                 child: TabBarView(
                   controller: _tabController,
                   children: [

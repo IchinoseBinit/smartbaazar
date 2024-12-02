@@ -160,7 +160,7 @@ class FeedScreen extends ConsumerWidget {
                             itemBuilder: (context, index) {
                               return StoryAddWidget(index: index);
                             }),
-                      )
+                      ),
                     ],
                   )),
               SizedBox(
