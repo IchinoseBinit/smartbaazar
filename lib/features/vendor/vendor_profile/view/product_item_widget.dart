@@ -90,7 +90,7 @@ class Product_item_widget extends StatelessWidget {
                 style: headerstyle.copyWith(color: Colors.red, fontSize: 8.sp),
               ),
               SizedBox(
-                width: 10.w,
+                width: 5.w,
               ),
               Text(
                 "RS 10,000",
@@ -229,7 +229,7 @@ class Product_item_widget extends StatelessWidget {
                   child: Row(
                     children: [
                       const CircleAvatar(
-                        radius: 8,
+                        radius:7,
                         backgroundImage:
                             AssetImage("assets/images/vendorDealImage.png"),
                       ),
@@ -242,13 +242,13 @@ class Product_item_widget extends StatelessWidget {
                               Text(
                                 "Dozoko",
                                 style: headerstyle.copyWith(
-                                    fontSize: 9.sp,
+                                    fontSize: 7.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                               const Icon(
                                 Icons.logout,
                                 color: Colors.white,
-                                size: 12,
+                                size: 9,
                               )
                             ],
                           ),
@@ -257,7 +257,7 @@ class Product_item_widget extends StatelessWidget {
                               const Icon(
                                 Icons.outlined_flag_rounded,
                                 color: Colors.white,
-                                size: 12,
+                                size: 9,
                               ),
                               Text(
                                 "DOMESTIC BRAND",
@@ -293,7 +293,7 @@ class Product_item_widget extends StatelessWidget {
                         const Icon(
                           Icons.noise_aware,
                           color: Colors.white,
-                          size: 12,
+                          size: 9,
                         ),
                         Text(
                           "SPONSERED",
