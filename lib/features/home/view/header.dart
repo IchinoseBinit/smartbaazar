@@ -1,35 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_screen/view/product_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
-class HeaderWithSearch extends ConsumerStatefulWidget {
-  
-  const HeaderWithSearch({super.key});
-
-  @override
-  ConsumerState<HeaderWithSearch> createState() => _HeaderWithSearchState();
-}
-
-class _HeaderWithSearchState extends ConsumerState<HeaderWithSearch> {
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 30.h),
-          Expanded(child: NewSearchWidget()),
-        ],
-      ),
-    );
-  }
-}
-
-class NewSearchWidget extends StatelessWidget {
-  // final TextEditingController searchController;
-
+class NewSearchWidget extends StatefulWidget {
   const NewSearchWidget({super.key});
+
+  @override
+  State<NewSearchWidget> createState() => _NewSearchWidgetState();
+}
+
+class _NewSearchWidgetState extends State<NewSearchWidget> {
+  final List<Map<String, String>> items = [
+    {
+      'icon': 'assets/icon/loadings.svg',
+      'label': 'Everything',
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'Products',
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'Services',
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'B2B',
+    },
+    {
+      'icon': 'assets/icon/Vector.svg',
+      'label': 'Jobs',
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'Grocery',
+    }
+  ];
+
+  Map<String, dynamic>? dropdownValue;
 
   @override
   Widget build(BuildContext context) {
@@ -38,44 +63,18 @@ class NewSearchWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: 45.h,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-            decoration: BoxDecoration(
-              color: const Color(0xFF46236a),
-              border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(19.r),
-                bottomLeft: Radius.circular(19.r),
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.group,
-                  size: 12.sp,
-                  color: Colors.white,
-                ),
-                
-                Text(
-                  "Services",
-                  style: TextStyle(fontSize: 8.sp, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
+          // Dropdown Button Container
+          _buildDropdownButton(),
+
+          // Search TextField Container
           Container(
             width: 200.w,
             height: 45.h,
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
-              //  controller: searchController,
               decoration: InputDecoration(
-                
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
                 hintText: "Search Services",
@@ -85,10 +84,11 @@ class NewSearchWidget extends StatelessWidget {
                     EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                 disabledBorder: InputBorder.none,
                 isDense: true,
-                enabled: true,
               ),
             ),
           ),
+
+          // Search Icon Container
           Container(
             height: 45.h,
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
@@ -110,6 +110,56 @@ class NewSearchWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDropdownButton() {
+    return Container(
+      height: 45.h,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: const Color(0xFF46236a),
+        border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(19.r),
+          bottomLeft: Radius.circular(19.r),
+        ),
+      ),
+      child: DropdownButton<Map<String, dynamic>>(
+        selectedItemBuilder: (context) {
+          return [
+            
+            
+          ];
+        },
+        value: dropdownValue ?? items[0],
+        onChanged: (newValue) {
+          setState(() {
+            dropdownValue = newValue!;
+          });
+        },
+        items: items.map((item) {
+          return DropdownMenuItem(
+            value: item,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(item['icon']!, height: 10.h),
+                SizedBox(width: 8.w),
+                Text(
+                  item['label']!,
+                  style: headerstyle.copyWith(
+                      fontSize: 10.sp, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+        dropdownColor: const Color(0xff665B6B).withOpacity(0.5),
+        underline: const SizedBox(),
+        icon: const SizedBox(),
       ),
     );
   }

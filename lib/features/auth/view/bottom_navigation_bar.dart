@@ -47,11 +47,12 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     return GenericSafeArea(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(top: 10.h),
-        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // resizeToAvoidBottomInset: false,
+        // floatingActionButton: Padding(
+        //   padding: EdgeInsets.only(top: 10.h),
+        
+        // ),
         body: _pages.elementAt(_selectedTab),
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(

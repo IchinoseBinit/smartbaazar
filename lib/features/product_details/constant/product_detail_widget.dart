@@ -1,18 +1,11 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
-TextStyle headerstyle = TextStyle(
-  fontSize: 10,
-  color: Colors.white
-);
+TextStyle headerstyle = const TextStyle(fontSize: 10, color: Colors.white);
 
 class Product_item_widget extends StatelessWidget {
   const Product_item_widget({
@@ -22,12 +15,14 @@ class Product_item_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 10.h,
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.only(left: 5.w),
-      width: 230.w,
+      padding: EdgeInsets.zero,
+      width: 250.w,
       decoration: BoxDecoration(
-          color: Colors.white30, borderRadius: BorderRadius.circular(20)),
+        
+        borderRadius: BorderRadius.circular(10)
+      ),
+      margin: const EdgeInsets.all(3),
+      
       child: Column(
         children: [
           Row(
@@ -47,10 +42,67 @@ class Product_item_widget extends StatelessWidget {
                   )
                 ],
               ),
-              const Icon(
-                Icons.more_vert,
-                color: Colors.grey,
+              SizedBox(width: 100.w,),
+              PopupMenuButton(
+                padding: EdgeInsets.zero,
+               // menuPadding: EdgeInsets.zero,
+                color: const Color.fromARGB(102, 57, 58, 62).withOpacity(0.7),
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: Colors.grey,
+                ),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                        value: 'share',
+                        child: InkWell(
+                            onTap: () async {},
+                            child: Text(
+                              "Share",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'wishList',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Save",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'delete',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Contact Seller",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'delete',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Get Seller Directions",
+                              style: headerstyle,
+                            ))),
+                    PopupMenuItem(
+                        value: 'delete',
+                        child: InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Report",
+                              style: headerstyle,
+                            ))),
+                  ];
+                },
+                onSelected: (String value) {
+                },
               ),
+              SizedBox(height: 5.h,)
+              // const Icon(
+              //   Icons.more_vert,
+              //   color: Colors.grey,
+              // ),
             ],
           ),
           SizedBox(
@@ -164,7 +216,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset('assets/icon/Rectangle.png'),
-                      Text("78")
+                      const Text("78")
                     ],
                   )
                 ],
@@ -174,7 +226,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset("assets/icon/Vector.png"),
-                      Text("3.2K")
+                      const Text("3.2K")
                     ],
                   )
                 ],
@@ -187,7 +239,7 @@ class Product_item_widget extends StatelessWidget {
                         "assets/icon/solar.png",
                         color: Colors.grey,
                       ),
-                      Text("345")
+                      const Text("345")
                     ],
                   )
                 ],
@@ -208,90 +260,105 @@ class Product_item_widget extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: const Color(0xff3D215F),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/power.png"),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Dozoko",
-                              style: headerstyle.copyWith(
-                                  fontSize: 12, fontWeight: FontWeight.w700),
-                            ),
-                            const Icon(
-                              Icons.logout,
-                              color: Colors.white,
-                              size: 12,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.outlined_flag_rounded,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                            Text(
-                              "DOMESTIC BRAND",
-                              style: headerstyle.copyWith(
-                                  fontSize: 7, fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        Text(
-                          "2.5 km",
-                          style: headerstyle.copyWith(
-                              fontSize: 12, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.noise_aware,
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        Text(
-                          "SPONSERED",
-                          style: headerstyle.copyWith(
-                              fontSize: 7, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+          Expanded(
+            // width: double.infinity,
+            // padding: const EdgeInsets.all(5),
+            // decoration: const BoxDecoration(
+            //     color: Color(0xff3D215F),
+            // ),
+                // borderRadius: BorderRadius.only(
+                //     bottomLeft: Radius.circular(20),
+                //     bottomRight: Radius.circular(20))),
+            child: Container(
+             padding: const EdgeInsets.all(5),
+              margin: EdgeInsets.zero,
+            decoration: const BoxDecoration(
+              color: Color(0xff3D215F),
+              borderRadius: BorderRadius.only(
+                 bottomLeft: Radius.circular(10),
+                 bottomRight: Radius.circular(10)
+
+              )
+            ),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: AssetImage("assets/images/power.png"),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Dozoko",
+                                style: headerstyle.copyWith(
+                                    fontSize: 12, fontWeight: FontWeight.w700),
+                              ),
+                              const Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                                size: 12,
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.outlined_flag_rounded,
+                                color: Colors.white,
+                                size: 12,
+                              ),
+                              Text(
+                                "DOMESTIC BRAND",
+                                style: headerstyle.copyWith(
+                                    fontSize: 7, fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                          Text(
+                            "2.5 km",
+                            style: headerstyle.copyWith(
+                                fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.noise_aware,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                          Text(
+                            "SPONSERED",
+                            style: headerstyle.copyWith(
+                                fontSize: 7, fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           )
         ],
