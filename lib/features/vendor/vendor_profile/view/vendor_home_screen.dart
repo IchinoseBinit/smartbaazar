@@ -1,25 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/vendor_search.dart';
-import 'package:smartbazar/features/product_details/api/subscribe_vendor_provider.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/search_in_store.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -483,148 +477,151 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   ],
                 ),
               ),
-              SliverFillRemaining(
-                hasScrollBody: true,
-                child: TabBarView(
-                  controller: _tabController,
+              SliverToBoxAdapter(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // First Tab
-                    SingleChildScrollView(
-                      child: Column(
+                    Container(
+                      constraints: BoxConstraints(
+                        maxHeight: 600, // Set a max height
+                      ),
+                      child: TabBarView(
+                        controller: _tabController,
                         children: [
-                          vendorProfileModelDataAsyncValue.when(
-                            data: (vendorProfile) {
-                              String scratch = vendorProfile.scratch_banner!;
-                              return Column(
-                                children: [
-                                  CarouselSlider(
-                                    items: vendorProfile.advertisements!.map(
-                                      (e) {
-                                        return Image.network(e.image!);
-                                      },
-                                    ).toList(),
-                                    options: CarouselOptions(
-                                      aspectRatio: 5,
-                                      reverse: true,
-                                      viewportFraction: 1,
-                                      autoPlay: true,
-                                      enlargeCenterPage: true,
+                          // First Tab
+                          SingleChildScrollView(
+                            physics: NeverScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                vendorProfileModelDataAsyncValue.when(
+                                  data: (vendorProfile) {
+                                    String scratch =
+                                        vendorProfile.scratch_banner!;
+                                    return Column(
+                                      children: [
+                                        CarouselSlider(
+                                          items:
+                                              vendorProfile.advertisements!.map(
+                                            (e) {
+                                              return Image.network(e.image!);
+                                            },
+                                          ).toList(),
+                                          options: CarouselOptions(
+                                            aspectRatio: 5,
+                                            reverse: true,
+                                            viewportFraction: 1,
+                                            autoPlay: true,
+                                            enlargeCenterPage: true,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  loading: () => const Center(
+                                      child: CircularProgressIndicator()),
+                                  error: (error, stack) =>
+                                      Center(child: Text('Error: $error')),
+                                ),
+                                SizedBox(
+                                  height: 350.h,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) {
+                                      return const SizedBox(
+                                        height: 450,
+                                        child: Product_item_widget(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 18.w),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "POSTS",
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.left,
                                     ),
                                   ),
-                                ],
+                                ),
+                                SizedBox(
+                                  height: 350.h,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) {
+                                      return SizedBox(
+                                        height: 450,
+                                        child: PostCard(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 18.w),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "ALL PRODUCTS",
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 450.h,
+                                  child: GridView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 5.0,
+                                      mainAxisSpacing: 10.0,
+                                      childAspectRatio: 0.5,
+                                    ),
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) {
+                                      return const Product_item_widget(); // Replace with your widget
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Second Tab
+                          ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 450,
+                                child: Product_item_widget(),
                               );
                             },
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
-                            error: (error, stack) =>
-                                Center(child: Text('Error: $error')),
                           ),
-                          SizedBox(
-                            height: 350.h,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return const SizedBox(
-                                  height: 450,
-                                  child: Product_item_widget(),
-                                );
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 18.w),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "POSTS",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 350.h,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                  height: 450,
-                                  child: PostCard(),
-                                );
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 18.w),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "ALL PRODUCTS",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 450.h,
-                            child: GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 5.0,
-                                mainAxisSpacing: 10.0,
-                                childAspectRatio: 0.5,
-                              ),
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return const Product_item_widget(); // Replace with your widget
-                              },
-                            ),
+                          // Third Tab
+                          ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                height: 450,
+                                child: PostCard(),
+                              );
+                            },
                           ),
                         ],
-                      ),
-                    ),
-                    // Second Tab
-                    SingleChildScrollView(
-                      child: SizedBox(
-                        height: 350.h,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 450,
-                              child: Product_item_widget(),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    // Third Tab
-                    SingleChildScrollView(
-                      child: SizedBox(
-                        height: 350.h,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              height: 450,
-                              child: PostCard(),
-                            );
-                          },
-                        ),
                       ),
                     ),
                   ],
