@@ -162,16 +162,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         .endsWith('.svg'))
                                       SvgPicture.asset(
                                         data['icon'],
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.white,
-                                          BlendMode.srcIn,
-                                        ),
+                                      color: Color(0xffD9D9D9).withOpacity(0.5),
                                         width: 20, // Adjust size
                                         height: 20,
                                       )
                                     else
                                       Image.asset(
                                         data['icon'],
+                                                                              color: Color(0xffD9D9D9).withOpacity(0.5),
+
                                         width: 20, // Adjust size
                                         height: 20,
                                       ),
@@ -181,10 +180,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     Text(
                                       data['label'],
                                       textAlign: TextAlign.center,
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
-                                        color: ColorConstant.whiteColor,
+                                                                              color: Color(0xffD9D9D9).withOpacity(0.5),
                                       ),
                                     ),
                                   ],
@@ -357,7 +356,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   height: 10.h,
                 ),
                 SizedBox(
-                  height: 100,
+                  height: 130,
                   child: ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
@@ -434,7 +433,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       return Card(
                         margin: EdgeInsets.only(left: 5.w),
                         elevation: 7,
-                        
+
                         child: Product_item_widget());
                     },
                   ),

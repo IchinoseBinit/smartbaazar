@@ -127,12 +127,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, dynamic>>(
-        selectedItemBuilder: (context) {
-          return [
-            
-            
-          ];
-        },
+       
         value: dropdownValue ?? items[0],
         onChanged: (newValue) {
           setState(() {

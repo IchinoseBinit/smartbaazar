@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/widget/story_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 
 class StoryAddWidget extends StatelessWidget {
   final int index;
-   StoryAddWidget({super.key, required this.index,});
+  bool? showgift;
+  StoryAddWidget({
+    super.key,
+    required this.index,
+    this.showgift=false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +24,19 @@ class StoryAddWidget extends StatelessWidget {
           clipBehavior: Clip.none, // This prevents clipping of child widgets
           children: [
             Positioned(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                padding: EdgeInsets.all(40),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 4, color: Color(0xffEACACB)),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            // Positioned(child: Container())
+            Positioned(
+              left: 1,
+              bottom: 4,
               child: Column(
                 children: [
                   GestureDetector(
@@ -31,20 +50,20 @@ class StoryAddWidget extends StatelessWidget {
                       );
                     },
                     child: CircleAvatar(
-                      radius: 30,
+                      radius: 37,
                       backgroundColor:
                           const Color(0x7F7F7F73).withOpacity(0.45),
                       child: ClipOval(
                         child: Image.asset(
                           "assets/images/reebok.png",
                           fit: BoxFit.cover,
-                          width: 60,
-                          height: 60,
+                          width: 90,
+                          height: 90,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  SizedBox(height: 10.h),
                   SizedBox(
                     width: 100.w,
                     child: Text(
@@ -61,8 +80,8 @@ class StoryAddWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Positioned(
-              top: 41,
+            showgift!? Positioned(
+              bottom: 15,
               right: 0,
               left: 0,
               child: Container(
@@ -77,8 +96,26 @@ class StoryAddWidget extends StatelessWidget {
                   size: 24, // Set the size of the icon
                 ),
               ),
-            ),
-          
+            ):
+             Positioned(
+              bottom: 15,
+              right: 0,
+              left: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                padding: EdgeInsets.all(2),
+                child: Icon(
+                  Icons.search,
+                  color: Colors.red,
+                  size: 24, // Set the size of the icon
+                ),
+              ),
+            )
+            
+        
           ],
         ),
       ],
