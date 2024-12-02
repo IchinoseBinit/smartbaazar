@@ -39,6 +39,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   final _debouncer = BehaviorSubject<String>();
   bool _showSearchResults = false;
   late TabController tabController;
+  final ScrollController _scrollController = ScrollController();
+  bool _isSectionsVisible = true;
+  double _lastScrollOffset = 0;
+  Offset _initialDragPosition = Offset.zero; // Track initial drag position
 
   @override
   void initState() {
@@ -56,6 +60,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         _showSearchResults = query.isNotEmpty;
       });
     });
+    _scrollController.addListener(_handleScroll);
+  }
+
+  void _handleScroll() {
+    final scrollOffset = _scrollController.offset;
+
+    if (scrollOffset > _lastScrollOffset && scrollOffset > 100) {
+      setState(() {
+        _isSectionsVisible = false;
+      });
+    } else if (scrollOffset < _lastScrollOffset && scrollOffset < 50) {
+      setState(() {
+        _isSectionsVisible = true;
+      });
+    }
+
+    _lastScrollOffset = scrollOffset;
+  }
+
+  void _onDragUpdate(DragUpdateDetails details) {
+    final dragDistance = details.globalPosition.dy - _initialDragPosition.dy;
+    if (dragDistance > 50 && !_isSectionsVisible) {
+      setState(() {
+        _isSectionsVisible = true;
+      });
+    } else if (dragDistance < -50 && _isSectionsVisible) {
+      setState(() {
+        _isSectionsVisible = false;
+      });
+    }
+  }
+
+  void _onDragStart(DragStartDetails details) {
+    _initialDragPosition = details.globalPosition;
   }
 
   @override
@@ -96,6 +134,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         drawer: const CustomDrawer(),
         body: Stack(children: [
           SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -127,72 +166,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       ),
                       SizedBox(
                         height: 25.h,
-                      ),
-                      SizedBox(
-                        height: 80.h, // Increased height for better visibility
-                        width: double.infinity,
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          reverse: true,
-                          itemCount: items.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = items[index];
-                            return GestureDetector(
-                              onTap: () {
-                                if (data['screen'] != null) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => data['screen']),
-                                  );
-                                }
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 30), // Spacing between items
-                                child: Column(
-                                  mainAxisSize: MainAxisSize
-                                      .min, // Shrinks to fit children
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .center, // Center within available space
-                                  children: [
-                                    if (data['icon']
-                                        .toString()
-                                        .endsWith('.svg'))
-                                      SvgPicture.asset(
-                                        data['icon'],
-                                        colorFilter: const ColorFilter.mode(
-                                          Colors.white,
-                                          BlendMode.srcIn,
-                                        ),
-                                        width: 20, // Adjust size
-                                        height: 20,
-                                      )
-                                    else
-                                      Image.asset(
-                                        data['icon'],
-                                        width: 20, // Adjust size
-                                        height: 20,
-                                      ),
-                                    const SizedBox(
-                                        height:
-                                            8), // Space between icon and label
-                                    Text(
-                                      data['label'],
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorConstant.whiteColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
                       ),
 
                       // Row(
@@ -310,47 +283,137 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       //     // ),
                       //   ],
                       // ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      const Divider(
-                        height: 0.1,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                      if (_isSectionsVisible)
+                        Column(
                           children: [
-                            Text(
-                              "Brandbazaar",
-                              style: TextStyle(
-                                color: Color(0xFFD9D9D9),
-                                fontWeight: FontWeight.w500,
+                            SizedBox(
+                              height: 80.h,
+                              width: double.infinity,
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                reverse: true,
+                                itemCount: items.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> data = items[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (data['screen'] != null) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  data['screen']),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              30), // Spacing between items
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize
+                                            .min, // Shrinks to fit children
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center, // Center within available space
+                                        children: [
+                                          if (data['icon']
+                                              .toString()
+                                              .endsWith('.svg'))
+                                            SvgPicture.asset(
+                                              data['icon'],
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                Colors.white,
+                                                BlendMode.srcIn,
+                                              ),
+                                              width: 20, // Adjust size
+                                              height: 20,
+                                            )
+                                          else
+                                            Image.asset(
+                                              data['icon'],
+                                              width: 20, // Adjust size
+                                              height: 20,
+                                            ),
+                                          const SizedBox(
+                                              height:
+                                                  8), // Space between icon and label
+                                          Text(
+                                            data['label'],
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorConstant.whiteColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
-                            Text(
-                              "BuyOrWin",
-                              style: TextStyle(
-                                color: Color(0xFFD9D9D9),
-                                fontWeight: FontWeight.w500,
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            const Divider(
+                              height: 0.1,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "Brandbazaar",
+                                    style: TextStyle(
+                                      color: Color(0xFFD9D9D9),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    "BuyOrWin",
+                                    style: TextStyle(
+                                      color: Color(0xFFD9D9D9),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
                     ],
                   ),
                 ),
-                Center(
-                  child: Container(
-                    alignment: AlignmentDirectional.centerStart,
-                    margin: EdgeInsets.only(top: 5.h),
-                    height: 7.h,
-                    width: 60.w,
-                    decoration: BoxDecoration(
-                        color: const Color(0xFF681b4e),
-                        borderRadius: BorderRadius.circular(5)),
+                GestureDetector(
+                  onVerticalDragUpdate: _onDragUpdate,
+                  onVerticalDragStart: _onDragStart,
+                  onTap: () {
+                    //on dragging this also i want to expand and collapse above same _isSectionsVisible
+
+                    setState(() {
+                      _isSectionsVisible = !_isSectionsVisible;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        margin: EdgeInsets.only(top: 5.h),
+                        height: 7.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF681b4e),
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -421,21 +484,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                 SizedBox(
                   height: 370.h,
-                 
                   child: ListView.builder(
-
                     padding: EdgeInsets.zero,
                     clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
                     shrinkWrap: true,
-                    
                     itemBuilder: (context, index) {
                       return Card(
-                        margin: EdgeInsets.only(left: 5.w),
-                        elevation: 7,
-                        
-                        child: Product_item_widget());
+                          margin: EdgeInsets.only(left: 5.w),
+                          elevation: 7,
+                          child: Product_item_widget());
                     },
                   ),
                 ),
@@ -587,7 +646,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             ),
           ),
           Positioned(
-              top: 200, // Fixed height from the top
+              top: _isSectionsVisible ? 200 : 50,
               right: 0,
               child: Container(
                 width: 60.w,

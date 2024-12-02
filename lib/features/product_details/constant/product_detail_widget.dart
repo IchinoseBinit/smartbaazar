@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,12 +16,8 @@ class Product_item_widget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.zero,
       width: 250.w,
-      decoration: BoxDecoration(
-        
-        borderRadius: BorderRadius.circular(10)
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       margin: const EdgeInsets.all(3),
-      
       child: Column(
         children: [
           Row(
@@ -42,10 +37,12 @@ class Product_item_widget extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(width: 100.w,),
+              SizedBox(
+                width: 100.w,
+              ),
               PopupMenuButton(
                 padding: EdgeInsets.zero,
-               // menuPadding: EdgeInsets.zero,
+                // menuPadding: EdgeInsets.zero,
                 color: const Color.fromARGB(102, 57, 58, 62).withOpacity(0.7),
                 icon: const Icon(
                   Icons.more_vert,
@@ -95,10 +92,11 @@ class Product_item_widget extends StatelessWidget {
                             ))),
                   ];
                 },
-                onSelected: (String value) {
-                },
+                onSelected: (String value) {},
               ),
-              SizedBox(height: 5.h,)
+              SizedBox(
+                height: 5.h,
+              )
               // const Icon(
               //   Icons.more_vert,
               //   color: Colors.grey,
@@ -266,21 +264,17 @@ class Product_item_widget extends StatelessWidget {
             // decoration: const BoxDecoration(
             //     color: Color(0xff3D215F),
             // ),
-                // borderRadius: BorderRadius.only(
-                //     bottomLeft: Radius.circular(20),
-                //     bottomRight: Radius.circular(20))),
+            // borderRadius: BorderRadius.only(
+            //     bottomLeft: Radius.circular(20),
+            //     bottomRight: Radius.circular(20))),
             child: Container(
-             padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               margin: EdgeInsets.zero,
-            decoration: const BoxDecoration(
-              color: Color(0xff3D215F),
-              borderRadius: BorderRadius.only(
-                 bottomLeft: Radius.circular(10),
-                 bottomRight: Radius.circular(10)
-
-              )
-            ),
-
+              decoration: const BoxDecoration(
+                  color: Color(0xff3D215F),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
