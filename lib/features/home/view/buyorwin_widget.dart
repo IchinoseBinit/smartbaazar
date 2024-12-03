@@ -18,7 +18,7 @@ class buyorwin_widget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         child: Container(
             margin: const EdgeInsets.only(top: 5),
-            height: 310.h,
+            height: 320.h,
             width: 200.w,
             padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
@@ -244,7 +244,7 @@ class buyorwin_widget extends StatelessWidget {
                             )
                           ],
                         ),
-                        SizedBox(height: 5.h,)
+                        SizedBox(height: 10.h,)
                       ],
                     )),
                     SizedBox(height: 10.h,),

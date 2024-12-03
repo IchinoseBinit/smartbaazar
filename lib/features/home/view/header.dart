@@ -66,11 +66,17 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
               decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search,
+              size: 25,
+              color: Color(0xffD9D9D9),
+              ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
                 hintText: "Search Services",
-                hintStyle: TextStyle(fontSize: 10.sp),
+                hintStyle: TextStyle(fontSize: 13.sp,
+                color: Color(0xffD9D9D9)
+                ),
                 isCollapsed: true,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
