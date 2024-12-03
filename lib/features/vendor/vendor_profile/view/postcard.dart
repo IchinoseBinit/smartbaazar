@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PostCard extends StatelessWidget {
+  const PostCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 10.h,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       margin: EdgeInsets.only(left: 5.w),
       width: MediaQuery.sizeOf(context).width*0.75,
       decoration: BoxDecoration(
@@ -33,7 +35,7 @@ class PostCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.grey.shade300,
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Tech store",
                         style: TextStyle(fontSize: 10, color: Colors.black),
@@ -43,7 +45,7 @@ class PostCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   // Title and Info
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -58,13 +60,13 @@ class PostCard extends StatelessWidget {
                             style:
                                 TextStyle(fontSize: 12, color: Colors.grey),
                           ),
-                          const SizedBox(width: 5),
-                          const Text(
+                          SizedBox(width: 5),
+                          Text(
                             "•",
                             style:
                                 TextStyle(fontSize: 14, color: Colors.grey),
                           ),
-                          const SizedBox(width: 5),
+                          SizedBox(width: 5),
                           Text(
                             "20h",
                             style:
@@ -93,13 +95,13 @@ class PostCard extends StatelessWidget {
               ),
             ),
             // Description Section
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
               child: Text.rich(
                 TextSpan(
                   text:
                       "The company's product portfolio includes footwear, apparel accessories such as ad bags, sunglasses ",
-                  style: const TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 12),
                   children: [
                     TextSpan(
                       text: "More",

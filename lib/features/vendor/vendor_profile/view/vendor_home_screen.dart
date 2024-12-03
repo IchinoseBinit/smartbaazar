@@ -483,8 +483,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   ],
                 ),
               ),
-              SliverFillRemaining(
-                hasScrollBody: true,
+              SliverToBoxAdapter(
+                
                 child: TabBarView(
                   controller: _tabController,
                   children: [
@@ -871,8 +871,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
               strokeWidth: 2,
               borderType: BorderType.RRect,
               radius: const Radius.circular(12),
-              dashPattern: [6, 5],
-              child: Container(
+              dashPattern: const [6, 5],
+              child: SizedBox(
                 width: 120,
                 height: 200,
                 //  padding: const EdgeInsets.all(10),
@@ -916,7 +916,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                 strokeWidth: 1,
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(12),
-                dashPattern: [7, 5],
+                dashPattern: const [7, 5],
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1091,7 +1091,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                     ),
                     Container(
                         width: MediaQuery.sizeOf(context).width,
-                        color: Color(0xFF4B004B),
+                        color: const Color(0xFF4B004B),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 18.h),
                           child: Row(
@@ -1174,7 +1174,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                             child: Container(
                               width: 60,
                               height: 60,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
@@ -1196,7 +1196,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center),
                     SizedBox(height: 20.h),
-                    Container(
+                    SizedBox(
                       height: 30.h,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

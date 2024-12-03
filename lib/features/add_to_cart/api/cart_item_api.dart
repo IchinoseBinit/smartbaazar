@@ -40,7 +40,7 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
     }
   } catch (e) {
  //   final customException = getCustomException(e);
-    print('Error fetching cart items: ${e}');  // Log specific message
+    print('Error fetching cart items: $e');  // Log specific message
     throw e.toString(); // Rethrow with specific message
   }
 }

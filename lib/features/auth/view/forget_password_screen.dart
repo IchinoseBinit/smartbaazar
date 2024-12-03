@@ -9,7 +9,6 @@ import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 import 'package:smartbazar/utils/custom_loading_indicatior.dart';
 
 class ForgetPasswordScreen extends ConsumerStatefulWidget {

@@ -43,7 +43,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           child: Card(
             elevation: 5,
             shape:const StadiumBorder(),
-            color: Color(0xfff5f2f6),
+            color: const Color(0xfff5f2f6),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: BottomNavigationBar(
@@ -63,16 +63,16 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   fontWeight: FontWeight.w700,
                   color: const Color(0xff36383C),
                 ),
-                backgroundColor: Color(0xfff5f2f6),
+                backgroundColor: const Color(0xfff5f2f6),
                 currentIndex: _selectedTab,
                 onTap: _changeTab,
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     label: '',
                     icon: Container(
-                      margin: EdgeInsets.only(top: 2),
+                      margin: const EdgeInsets.only(top: 2),
                       height: 40.h,
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.black),
@@ -83,9 +83,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   BottomNavigationBarItem(
                     label: '',
                     icon: Container(
-                      margin: EdgeInsets.only(top: 2),
+                      margin: const EdgeInsets.only(top: 2),
                       height: 40.h,
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.black),
@@ -96,9 +96,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   BottomNavigationBarItem(
                     label: '',
                     icon: Container(
-                      margin: EdgeInsets.only(top: 2),
+                      margin: const EdgeInsets.only(top: 2),
                       height: 40.h,
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.black),
@@ -109,9 +109,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   BottomNavigationBarItem(
                     label: '',
                     icon: Container(
-                      margin: EdgeInsets.only(top: 2),
+                      margin: const EdgeInsets.only(top: 2),
                       height: 40.h,
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.black),

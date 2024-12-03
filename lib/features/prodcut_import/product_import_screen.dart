@@ -376,7 +376,7 @@ class _ChooseFileState extends State<ChooseFile> {
             fgColor: Colors.white,
             bgColor: const Color(0xff362677),
             title: 'Add'):
-            SizedBox(),
+            const SizedBox(),
       ],
     );
   }

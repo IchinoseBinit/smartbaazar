@@ -212,7 +212,7 @@ class FeedContainer extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FullscreenImageView(
+                          builder: (context) => const FullscreenImageView(
                             imagePath:
                                 "assets/images/rerbok_shoes.jpg", // Pass your image path
                           ),

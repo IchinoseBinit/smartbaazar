@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
-TextStyle headerstyle = TextStyle(fontSize: 10, color: Colors.white);
+TextStyle headerstyle = const TextStyle(fontSize: 10, color: Colors.white);
 
 class Product_item_widget extends StatelessWidget {
   const Product_item_widget({
@@ -20,7 +20,7 @@ class Product_item_widget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 10.h,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       margin: EdgeInsets.only(left: 5.w),
       width: 230.w,
       decoration: BoxDecoration(
@@ -168,7 +168,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset('assets/icon/Rectangle.png'),
-                      Text("78")
+                      const Text("78")
                     ],
                   )
                 ],
@@ -178,7 +178,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset("assets/icon/Vector.png"),
-                      Text("3.2K")
+                      const Text("3.2K")
                     ],
                   )
                 ],
@@ -191,7 +191,7 @@ class Product_item_widget extends StatelessWidget {
                         "assets/icon/solar.png",
                         color: Colors.grey,
                       ),
-                      Text("345")
+                      const Text("345")
                     ],
                   )
                 ],
@@ -217,8 +217,8 @@ class Product_item_widget extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: const Color(0xff3D215F),
+            decoration: const BoxDecoration(
+                color: Color(0xff3D215F),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),

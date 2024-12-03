@@ -180,7 +180,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     Text(
                                       data['label'],
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.white,
@@ -200,12 +200,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         height: 0.1,
                       ),
                       Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(
+                            const Text(
                               "Brandbazaar",
                               style: TextStyle(
                                 color: Color(0xFFD9D9D9),
@@ -217,16 +217,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 Text(
                                   "REDISCOVER SERVICES!",
                                   style: headerstyle.copyWith(
-                                      color: Color(0xffF9BB00), fontSize: 12),
+                                      color: const Color(0xffF9BB00), fontSize: 12),
                                 ),
                                 Text(
                                   "Connect,Save,Win & Beyond.",
                                   style: headerstyle.copyWith(
-                                      color: Color(0xffD9D9D9), fontSize: 10),
+                                      color: const Color(0xffD9D9D9), fontSize: 10),
                                 )
                               ],
                             ),
-                            Text(
+                            const Text(
                               "BuyOrWin",
                               style: TextStyle(
                                 color: Color(0xFFD9D9D9),
@@ -290,9 +290,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     shrinkWrap: true,
                     children: [
                       DottedBorder(
-                          borderPadding: EdgeInsets.only(left: 5),
-                          radius: Radius.circular(10),
-                          padding: EdgeInsets.all(27),
+                          borderPadding: const EdgeInsets.only(left: 5),
+                          radius: const Radius.circular(10),
+                          padding: const EdgeInsets.all(27),
                           strokeWidth: 1,
                           color: Colors.black,
                           child: Wrap(
@@ -308,9 +308,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           )),
                           SizedBox(width: 5.w,),
                       DottedBorder(
-                          borderPadding: EdgeInsets.only(left: 5),
-                          radius: Radius.circular(10),
-                          padding: EdgeInsets.all(20),
+                          borderPadding: const EdgeInsets.only(left: 5),
+                          radius: const Radius.circular(10),
+                          padding: const EdgeInsets.all(20),
                           strokeWidth: 1,
                           color: Colors.black,
                           child: Column(
@@ -333,9 +333,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           )),
                           SizedBox(width: 5.w,),
                       DottedBorder(
-                          borderPadding: EdgeInsets.only(left: 5),
-                          radius: Radius.circular(10),
-                          padding: EdgeInsets.all(20),
+                          borderPadding: const EdgeInsets.only(left: 5),
+                          radius: const Radius.circular(10),
+                          padding: const EdgeInsets.all(20),
                           strokeWidth: 1,
                           color: Colors.black,
                           child: Column(
@@ -363,14 +363,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.flight,
                             color: Color(0xff6E6E6E),
                           ),
                           Text(
                             "TRAVELS,\nTOURS",
                             style: headerstyle.copyWith(
-                                color: Color(0xff6E6E6E),
+                                color: const Color(0xff6E6E6E),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 13),
                           )
@@ -381,14 +381,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.tv,
                             color: Color(0xff6E6E6E),
                           ),
                           Text(
                             "ELECTRONICS,\n&",
                             style: headerstyle.copyWith(
-                                color: Color(0xff6E6E6E),
+                                color: const Color(0xff6E6E6E),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 13),
                           )
@@ -567,10 +567,10 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   width: double.infinity,
                   child: TabBar(
                     controller: tabController,
-                    tabs: [
-                      const Tab(text: ' Global\n Brands'),
-                      const Tab(text: ' Domestic\n Brands'),
-                      const Tab(
+                    tabs: const [
+                      Tab(text: ' Global\n Brands'),
+                      Tab(text: ' Domestic\n Brands'),
+                      Tab(
                           text:
                               ' Spotlight\n Sellers'), // Changed label for clarity
                     ],
@@ -667,7 +667,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                 width: double.infinity,
                 padding: EdgeInsets.all(40.w),
-                color: Color(0xff606164),
+                color: const Color(0xff606164),
                 child: Text("ADVERTISEMENT",
                 style: headerstyle,
                 ),
@@ -682,7 +682,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     scrollDirection: Axis.horizontal,
                     itemCount: _services.length,
                     itemBuilder: (context, index) {
-                      String _fac = _services[index];
+                      String fac = _services[index];
                       return Container(
                         alignment: Alignment.center,
                         margin: const EdgeInsets.all(5),
@@ -692,7 +692,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           color: Color(0xFF681b4e),
                         ),
                         child: Text(
-                          _fac,
+                          fac,
                           style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -734,13 +734,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
               top: 200, // Fixed height from the top
               right: 0,
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 20,
                 ),
                 // Explicit height set
                 decoration: BoxDecoration(
-                    color: Color(0xffE2DAE5).withOpacity(0.8),
-                    borderRadius: BorderRadius.only(
+                    color: const Color(0xffE2DAE5).withOpacity(0.8),
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         bottomLeft: Radius.circular(10))),
                 child: Center(
