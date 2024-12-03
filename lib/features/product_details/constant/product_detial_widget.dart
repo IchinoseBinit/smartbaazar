@@ -7,12 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
-TextStyle headerstyle = TextStyle(
-  fontSize: 10,
-  color: Colors.white
-);
+
 
 class Product_item_widget extends StatelessWidget {
   const Product_item_widget({
@@ -27,11 +25,14 @@ class Product_item_widget extends StatelessWidget {
       margin: EdgeInsets.only(left: 5.w),
       width: 230.w,
       decoration: BoxDecoration(
-          color: Colors.white30, borderRadius: BorderRadius.circular(20)),
+          color: Colors.white30,
+          borderRadius:
+              BorderRadius.circular(20)),
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
@@ -42,8 +43,9 @@ class Product_item_widget extends StatelessWidget {
                   ),
                   Text(
                     "TradeHub",
-                    style:
-                        headerstyle.copyWith(fontSize: 10, color: Colors.grey),
+                    style: headerstyle.copyWith(
+                        fontSize: 10,
+                        color: Colors.grey),
                   )
                 ],
               ),
@@ -70,7 +72,8 @@ class Product_item_widget extends StatelessWidget {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment:
+                MainAxisAlignment.spaceEvenly,
             children: [
               const Text("RS 60,000"),
               SizedBox(
@@ -83,7 +86,9 @@ class Product_item_widget extends StatelessWidget {
               ),
               Text(
                 "Best Proce",
-                style: headerstyle.copyWith(color: Colors.red, fontSize: 10),
+                style: headerstyle.copyWith(
+                    color: Colors.red,
+                    fontSize: 10),
               ),
               SizedBox(
                 width: 10.w,
@@ -93,13 +98,15 @@ class Product_item_widget extends StatelessWidget {
                 style: headerstyle.copyWith(
                     fontSize: 10,
                     color: Colors.grey,
-                    decoration: TextDecoration.lineThrough,
+                    decoration: TextDecoration
+                        .lineThrough,
                     decorationColor: Colors.grey),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
@@ -108,15 +115,23 @@ class Product_item_widget extends StatelessWidget {
                     backgroundColor: Colors.red,
                     child: Text(
                       "129",
-                      style: headerstyle.copyWith(fontSize: 10),
+                      style: headerstyle.copyWith(
+                          fontSize: 10),
                     ),
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(5),
-                            bottomRight: Radius.circular(5)),
-                        border: Border.all(color: Colors.grey)),
+                        borderRadius:
+                            const BorderRadius
+                                .only(
+                                topRight: Radius
+                                    .circular(5),
+                                bottomRight:
+                                    Radius
+                                        .circular(
+                                            5)),
+                        border: Border.all(
+                            color: Colors.grey)),
                     child: RatingBar.builder(
                       initialRating: 5,
                       minRating: 1,
@@ -124,9 +139,13 @@ class Product_item_widget extends StatelessWidget {
                       allowHalfRating: true,
                       itemCount: 5,
                       itemSize: 12,
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                      itemPadding:
+                          const EdgeInsets
+                              .symmetric(
+                              horizontal: 1.0),
                       itemBuilder: (context, _) =>
-                          const Icon(Icons.star, color: Colors.red),
+                          const Icon(Icons.star,
+                              color: Colors.red),
                       onRatingUpdate: (rating) {},
                     ),
                   ),
@@ -141,8 +160,9 @@ class Product_item_widget extends StatelessWidget {
                   ),
                   Text(
                     "30%",
-                    style:
-                        headerstyle.copyWith(color: Colors.red, fontSize: 10),
+                    style: headerstyle.copyWith(
+                        color: Colors.red,
+                        fontSize: 10),
                   ),
                   const Icon(
                     Icons.arrow_downward_rounded,
@@ -157,13 +177,15 @@ class Product_item_widget extends StatelessWidget {
             height: 5.h,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Row(
                     children: [
-                      Image.asset('assets/icon/Rectangle.png'),
+                      Image.asset(
+                          'assets/icon/Rectangle.png'),
                       Text("78")
                     ],
                   )
@@ -173,7 +195,8 @@ class Product_item_widget extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Image.asset("assets/icon/Vector.png"),
+                      Image.asset(
+                          "assets/icon/Vector.png"),
                       Text("3.2K")
                     ],
                   )
@@ -196,9 +219,11 @@ class Product_item_widget extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(color: Colors.grey),
+            decoration: const BoxDecoration(
+                color: Colors.grey),
             child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
               children: [
                 Text("ENQUIRE"),
                 Text('|'),
@@ -213,26 +238,38 @@ class Product_item_widget extends StatelessWidget {
             decoration: BoxDecoration(
                 color: const Color(0xff3D215F),
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20))),
+                    bottomLeft:
+                        Radius.circular(20),
+                    bottomRight:
+                        Radius.circular(20))),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     const CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/power.png"),
+                      backgroundImage: AssetImage(
+                          "assets/images/power.png"),
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment:
+                          MainAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment
+                              .start,
                       children: [
                         Row(
                           children: [
                             Text(
                               "Dozoko",
-                              style: headerstyle.copyWith(
-                                  fontSize: 12, fontWeight: FontWeight.w700),
+                              style: headerstyle
+                                  .copyWith(
+                                      fontSize:
+                                          12,
+                                      fontWeight:
+                                          FontWeight
+                                              .w700),
                             ),
                             const Icon(
                               Icons.logout,
@@ -244,14 +281,19 @@ class Product_item_widget extends StatelessWidget {
                         Row(
                           children: [
                             const Icon(
-                              Icons.outlined_flag_rounded,
+                              Icons
+                                  .outlined_flag_rounded,
                               color: Colors.white,
                               size: 12,
                             ),
                             Text(
                               "DOMESTIC BRAND",
-                              style: headerstyle.copyWith(
-                                  fontSize: 7, fontWeight: FontWeight.w700),
+                              style: headerstyle
+                                  .copyWith(
+                                      fontSize: 7,
+                                      fontWeight:
+                                          FontWeight
+                                              .w700),
                             ),
                           ],
                         ),
@@ -270,8 +312,12 @@ class Product_item_widget extends StatelessWidget {
                         ),
                         Text(
                           "2.5 km",
-                          style: headerstyle.copyWith(
-                              fontSize: 12, fontWeight: FontWeight.w700),
+                          style: headerstyle
+                              .copyWith(
+                                  fontSize: 12,
+                                  fontWeight:
+                                      FontWeight
+                                          .w700),
                         ),
                       ],
                     ),
@@ -284,8 +330,12 @@ class Product_item_widget extends StatelessWidget {
                         ),
                         Text(
                           "SPONSERED",
-                          style: headerstyle.copyWith(
-                              fontSize: 7, fontWeight: FontWeight.w700),
+                          style: headerstyle
+                              .copyWith(
+                                  fontSize: 7,
+                                  fontWeight:
+                                      FontWeight
+                                          .w700),
                         ),
                       ],
                     ),
