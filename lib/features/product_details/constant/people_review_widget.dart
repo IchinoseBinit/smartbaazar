@@ -14,13 +14,16 @@ class PeopleReviewsWidget extends StatelessWidget {
       height: 150.h,
       width: double.infinity,
       child: ListView.builder(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         itemCount: 5,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Card(
+            
             elevation: 4,
             child: Container(
+              width: 200.w,
+              
               decoration: BoxDecoration(
                 color: Colors.white,
                   // color: Colors.white,
@@ -29,9 +32,9 @@ class PeopleReviewsWidget extends StatelessWidget {
                         
                       
                       6),
-                      border: Border.all(color: Colors.grey)
+                      border: Border.all(color: Color(0xffD9D9D9))
                       ),
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 mainAxisAlignment:
                     MainAxisAlignment.start,
@@ -40,9 +43,9 @@ class PeopleReviewsWidget extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Padding(
+                      const Padding(
                         padding:
-                            const EdgeInsets.all(8.0),
+                            EdgeInsets.all(8.0),
                         child: CircleAvatar(
                           radius: 20,
                           backgroundColor: Colors.grey,
@@ -50,7 +53,7 @@ class PeopleReviewsWidget extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          Text("Sushma Singh"),
+                          const Text("Sushma Singh"),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -78,7 +81,7 @@ class PeopleReviewsWidget extends StatelessWidget {
                   SizedBox(
                     height: 5.h,
                   ),
-                  Text(
+                  const Text(
                       "I really like the fit and\n the comfort ")
                 ],
               ),

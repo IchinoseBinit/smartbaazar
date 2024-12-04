@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+
 
 class PriceRowWidget extends StatelessWidget {
   const PriceRowWidget({
@@ -12,8 +12,13 @@ class PriceRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Icon(Icons.arrow_downward_rounded,
+        size: 15,
+        
+
         color: ColorConstant.toastBackgroundColor,
         ),
         SizedBox(width: 5.w,),
@@ -21,9 +26,12 @@ class PriceRowWidget extends StatelessWidget {
         style: headerstyle,
         ),
         SizedBox(width: 5.w,),
-        const Icon(Icons.filter_drama_rounded,
-        color: ColorConstant.toastBackgroundColor,
-        )
+      Image.asset("assets/images/bflame.png",
+      height: 20,
+      color: ColorConstant.blackColor,
+      )
+       
+        
       ],
     );
   }

@@ -1,29 +1,18 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scratcher/widgets.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
-import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
-import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
-import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
-import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
-import 'package:smartbazar/features/product_details/api/contact_seller_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
-import 'package:smartbazar/features/product_details/api/subscribe_vendor_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/product_details/constant/additional_detailpage.dart';
 import 'package:smartbazar/features/product_details/constant/additional_perks_widget.dart';
@@ -34,19 +23,13 @@ import 'package:smartbazar/features/product_details/constant/header_banner.dart'
 import 'package:smartbazar/features/product_details/constant/location_widget.dart';
 import 'package:smartbazar/features/product_details/constant/people_review_widget.dart';
 import 'package:smartbazar/features/product_details/constant/price_banner.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/constant/product_detial_widget.dart';
 import 'package:smartbazar/features/product_details/constant/ratingbar_widget.dart';
-import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -69,7 +52,6 @@ class ProductDetailScreen extends ConsumerWidget {
     final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
     final adsList = ref.watch(getAdsProvider);
     final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
-    int diff = 0;
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
 
@@ -80,21 +62,27 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton.extended(
+          extendedPadding: EdgeInsets.all(10),
           backgroundColor: Colors.white,
           elevation: 2,
           shape: const StadiumBorder(),
           label: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset('assets/images/product_logo.png'),
-              SizedBox(
-                width: 10.w,
+              CircleAvatar(
+                radius: 25,
+                backgroundImage:
+                    AssetImage("assets/images/vendorDealImage.png"),
               ),
+              // SizedBox(
+              //   width: 10.w,
+              // ),
+
               Container(
+                margin: EdgeInsets.only(left: 5),
                 padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
                 decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                        colors: [Color(0xFF701947), Color(0xFF40246f)]),
+                        colors: [Color(0xff808080), Color(0xFF40246f)]),
                     border:
                         Border.all(color: ColorConstant.toastBackgroundColor)),
                 child: Column(
@@ -133,7 +121,6 @@ class ProductDetailScreen extends ConsumerWidget {
             if (data.discounted_price != null) {
               double a = double.tryParse(data.discounted_price ?? '0.0') ?? 0.0;
               double b = double.tryParse(data.price!)!;
-              diff = (((a - b) / b) * 100).round();
             }
 
             return SingleChildScrollView(
@@ -145,6 +132,7 @@ class ProductDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        margin: EdgeInsets.only(bottom: 2.h),
                         padding: const EdgeInsets.all(3),
                         color: const Color(0xFF808080),
                         width: double.infinity,
@@ -212,7 +200,7 @@ class ProductDetailScreen extends ConsumerWidget {
                       //   ],
                       // ),
                       SizedBox(
-                        height: 15.h,
+                        height: 5.h,
                       ),
                       CarsoselWidget(
                         items: itemsList,
@@ -229,438 +217,606 @@ class ProductDetailScreen extends ConsumerWidget {
                               topRight: Radius.circular(30.r)),
                           color: Colors.white),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                RichText(
-                                    text: TextSpan(children: [
-                                  TextSpan(
-                                    text: data.title!,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 19.sp,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  WidgetSpan(
-                                      child: Container(
-                                    margin: EdgeInsets.only(left: 10.h),
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xffD9D9D9),
-                                        borderRadius:
-                                            BorderRadius.circular(4.r)),
-                                    child: Text(
-                                      'Brand New',
-                                      style: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xff000000)),
-                                    ),
-                                  ))
-                                ])),
-                                SizedBox(
-                                  height: 15.h,
+                                Text(
+                                  data.title!,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19.sp,
+                                      fontWeight: FontWeight.w700),
                                 ),
                                 Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.w),
-                                  height: 50,
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    Color(0xFF888888),
-                                    Color(0xffd571e5b)
-                                  ])),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Rs 6000 - ",
-                                            style: headerstyle,
-                                          ),
-                                          Text(
-                                            "Rs 90,000",
-                                            style: headerstyle,
-                                          )
-                                        ],
-                                      ),
-                                      const PriceRowWidget(),
-                                    ],
-                                  ),
-                                ),
-                                const FeaturesBannerWidget(),
-                                const DiscountBoxWidget(),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                PerksWidget(
-                                  first: "COLORS",
-                                  fourth: "MODELS",
-                                  second: "Sizes",
-                                  third: "VARIATIONS",
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                const LocationWidget(),
-                                Container(
+                                  margin:
+                                      EdgeInsets.only(left: 10.h, top: 10.h),
                                   padding: const EdgeInsets.all(5),
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Color(0xFFf3f3f3)
-                                  ])),
-                                  child: const Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xffF6F1F1),
+                                      borderRadius: BorderRadius.circular(4.r)),
+                                  child: Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Icon(Icons.shield),
-                                          Text("WARRANTY\n DETAILS"),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.undo_rounded),
-                                          Text("RETURN\n POLICY"),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.shield),
-                                          Text("EXCHANGE\n POLICY"),
-                                        ],
-                                      ),
+                                      SvgPicture.asset(
+                                          "assets/icon/openCartIcon.svg"),
+                                      Text(
+                                        "TradeHub",
+                                        style: headerstyle.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10,
+                                            color: ColorConstant.blackColor),
+                                      )
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(5),
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Color(0xFFf3f3f3)
-                                  ])),
-                                  child: const Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(Icons
-                                              .check_box_outline_blank_rounded),
-                                          Text("30 IN STOCK"),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(Icons
-                                              .battery_charging_full_sharp),
-                                          Text("1.1KG"),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Color(0xFFf3f3f3)
-                                  ])),
-                                  child: Text(
-                                    "DESCRIPTION",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 20, color: Colors.black),
-                                  ),
-                                ),
-                                const Text("SAMBA OFFICIAL"),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                const Wrap(
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            height: 50,
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                              Color(0xFF888888),
+                              Color(0xffd571e5b)
+                            ])),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
                                   children: [
                                     Text(
-                                        "Born on the pitch, the Samba is a timeless icon of street style. This silhouette stays true to its legacy with a tasteful, low-profile, soft leather upper, suede overlays and gum sole, making it a staple in everyone's closet - on and off the pitch.")
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(7),
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    Color(0xFFf3f3f3),
-                                    Colors.white,
-                                  ])),
-                                  child: Text(
-                                    "ADDITIONAL DETAILS",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 20, color: Colors.black),
-                                  ),
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp:
-                                      "Ugreen USB\n Bluetooth 5.3\n Adopter for PC",
-                                  title: "What in the Box?",
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp: "Ugreen",
-                                  title: "Brand",
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp: "Product Type",
-                                  title: "Non-branded",
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp: "Other",
-                                  title: "Electric Brand",
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp: "5.3 BR+EDR,BLE",
-                                  title: "Model",
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp: "No Warranty",
-                                  title: "Warranty",
-                                ),
-                                AdditonalDetailsWidget(
-                                  desp: "",
-                                  title: "Availabel Colors:\n Black",
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.all(5),
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(
-                                        gradient: LinearGradient(colors: [
-                                      Colors.white,
-                                      Color(0xFFf3f3f3)
-                                    ])),
-                                    child: Text(
-                                      "REVIEWS & RATINGS",
-                                      style: headerstyle.copyWith(
-                                          fontSize: 15, color: Colors.black87),
-                                    )),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "4.3",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          "23 ratings",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.black45),
-                                        )
-                                      ],
+                                      "Rs 6000 - ",
+                                      style: headerstyle,
                                     ),
-                                    Column(
-                                      children: [
-                                        star_widget(
-                                          star: 5,
-                                          value: 0.8,
-                                          width: 100,
-                                          numstar: 5,
-                                        ),
-                                        star_widget(
-                                          numstar: 4,
-                                          star: 4,
-                                          value: 0.7,
-                                          width: 90,
-                                        ),
-                                        star_widget(
-                                          numstar: 3,
-                                          star: 3,
-                                          value: 0.6,
-                                          width: 90,
-                                        ),
-                                        star_widget(
-                                          numstar: 2,
-                                          star: 2,
-                                          value: 0.4,
-                                          width: 90,
-                                        ),
-                                        star_widget(
-                                          numstar: 1,
-                                          star: 1,
-                                          value: 0.1,
-                                          width: 90,
-                                        ),
-                                      ],
+                                    Text(
+                                      "Rs 90,000",
+                                      style: headerstyle,
                                     )
                                   ],
                                 ),
-                                const PeopleReviewsWidget(),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey, width: 1)),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Center(
-                                            child: Text("Write a Review")),
-                                        const TextField(
-                                          maxLines: 5,
-                                          decoration: InputDecoration(
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.black)),
-                                              hintText: "Write your comment"),
-                                        ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        FilledButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        const Color(
-                                                            0xFF362677))),
-                                            onPressed: () {},
-                                            child: const Text("Submit Review")),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        const chat_review_widget(),
-                                        const chat_review_widget(),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const AdsWidget(),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                PerksWidget(
-                                  first: "DEALS",
-                                  fourth: "SHOP",
-                                  second: "POSTS",
-                                  third: "LIVE PRIZES",
-                                ),
-
-                                SizedBox(
-                                  height: 200.h,
-                                  child: ListView.builder(
-                                    padding: const EdgeInsets.only(
-                                        left: 5, top: 5, right: 7),
-                                    shrinkWrap: true,
-                                    itemCount: 5,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return const dotted_widget();
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.all(10),
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(
-                                        gradient: LinearGradient(colors: [
-                                      Colors.white,
-                                      Color(0xFFf3f3f3)
-                                    ])),
-                                    child: Text(
-                                      "For you",
-                                      style: headerstyle.copyWith(
-                                          fontSize: 20, color: Colors.black87),
-                                    )),
-
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                 SizedBox(
-                                  width: double.infinity,
-                                  height: 370.h,
-                                  child:ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 5,
-                                    itemBuilder: (context, index) {
-                                      return Product_item_widget();
-                                    
-                                  },)
-                                ),
-                               
-                                 SizedBox(
-                                  width: double.infinity,
-                                  height: 370.h,
-                                  child:ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 5,
-                                    itemBuilder: (context, index) {
-                                      return Product_item_widget();
-                                    
-                                  },)
-                                ),
-                                // Container(
-                                //   width: double.infinity,
-                                //   color: Colors.red,
-                                //   height: 390,
-                                //   child: ListView.builder(
-
-                                //     padding: EdgeInsets.zero,
-
-                                //     scrollDirection: Axis.horizontal,
-                                //     shrinkWrap: true,
-                                //     itemCount: 5,
-                                //     itemBuilder: (context, index) {
-                                //       return P
-                                //     },
-                                //   ),
-                                // )
-                                // Row(
-                                //   children: [
-                                //     SvgPicture.asset(contactSellerIcon),
-                                //     SizedBox(
-                                //       width: 10.w,
-                                //     ),
-                                //     Text(
-                                //       'Contact Seller',
-                                //       style: TextStyle(
-                                //           fontSize: 16.sp,
-                                //           fontWeight: FontWeight.w700,
-                                //           color: const Color(0xff000000)),
-                                //     ),
-                                //   ],
-                                // ),
+                                const PriceRowWidget(),
                               ],
                             ),
-                          ]))
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          const FeaturesBannerWidget(),
+                          const DiscountBoxWidget(),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          PerksWidget(
+                            first: "COLORS",
+                            fourth: "MODELS",
+                            second: "Sizes",
+                            third: "VARIATIONS",
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          const LocationWidget(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/shield.png'),
+                                    const Text("WARRANTY\n DETAILS"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/undo.png'),
+                                    const Text("RETURN\n POLICY"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/undo.png'),
+                                    const Text("EXCHANGE\n POLICY"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 30.w),
+                            padding: const EdgeInsets.all(5),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/box.png'),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Text(
+                                      "30 IN STOCK",
+                                      style: headerstyle.copyWith(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: ColorConstant.blackColor),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 15.w,
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/weight.png'),
+                                    Text(
+                                      "1.1KG",
+                                      style: headerstyle.copyWith(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: ColorConstant.blackColor),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "DESCRIPTION",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text(
+                              "SAMBA OFFICIAL",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 20.w),
+                            child: const Wrap(
+                              children: [
+                                Text(
+                                    "Born on the pitch, the Samba is a timeless icon of street style. This silhouette stays true to its legacy with a tasteful, low-profile, soft leather upper, suede overlays and gum sole, making it a staple in everyone's closet - on and off the pitch.")
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "ADDITIONAL DETAILS",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "Ugreen USB\n Bluetooth 5.3\n Adopter for PC",
+                            title: "What in the Box?",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "Ugreen",
+                            title: "Brand",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "Product Type",
+                            title: "Non-branded",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "Other",
+                            title: "Electric Brand",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "5.3 BR+EDR,BLE",
+                            title: "Model",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "No Warranty",
+                            title: "Warranty",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "",
+                            title: "Availabel Colors:\n Black",
+                          ),
+                          SizedBox(
+                            height: 5.w,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "REVIEWS & RATINGS",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    "4.3",
+                                    style: headerstyle.copyWith(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    "23 ratings",
+                                    style: headerstyle.copyWith(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black45),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  star_widget(
+                                    star: 5,
+                                    value: 0.8,
+                                    width: 100,
+                                    numstar: 5,
+                                  ),
+                                  star_widget(
+                                    numstar: 4,
+                                    star: 4,
+                                    value: 0.7,
+                                    width: 90,
+                                  ),
+                                  star_widget(
+                                    numstar: 3,
+                                    star: 3,
+                                    value: 0.6,
+                                    width: 90,
+                                  ),
+                                  star_widget(
+                                    numstar: 2,
+                                    star: 2,
+                                    value: 0.4,
+                                    width: 90,
+                                  ),
+                                  star_widget(
+                                    numstar: 1,
+                                    star: 1,
+                                    value: 0.1,
+                                    width: 90,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          const PeopleReviewsWidget(),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  10,
+                                ),
+                                border:
+                                    Border.all(color: Colors.black, width: 1)),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                      child: Text(
+                                    "Write a Review",
+                                    style: headerstyle.copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                        color: Colors.black),
+                                  )),
+                                  const TextField(
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.black)),
+                                        hintText: "Write your comment"),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Color(0xFF362677)),
+                                    child: Text(
+                                      "Submit Review",
+                                      style: headerstyle,
+                                    ),
+                                  ),
+                                  // ElevatedButton(
+                                  //   style: const ButtonStyle(
+
+                                  //     backgroundColor: WidgetStatePropertyAll(Color(0xFF362677))
+                                  //   ),
+                                  //   onPressed: () {
+
+                                  // }, child: Text("Submit Review",
+                                  // style: headerstyle,
+                                  // )),
+                                  // FilledButton(
+
+                                  //     style: ButtonStyle(
+
+                                  //         backgroundColor:
+                                  //             WidgetStateProperty.all(
+                                  //                 const Color(0xFF362677))),
+                                  //     onPressed: () {},
+                                  //     child: const Text("Submit Review")),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  const chat_review_widget(),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 30.w),
+                                    child: const chat_review_widget(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const AdsWidget(),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          PerksWidget(
+                            first: "DEALS",
+                            fourth: "SHOP",
+                            second: "POSTS",
+                            third: "LIVE PRIZES",
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: SizedBox(
+                              height: 200.h,
+                              child: ListView.builder(
+                                padding: const EdgeInsets.only(
+                                    left: 5, top: 5, right: 7),
+                                shrinkWrap: true,
+                                itemCount: 5,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return const dotted_widget();
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                Colors.white,
+                                Color(0xFFf3f3f3)
+                              ])),
+                              child: Text(
+                                "For you",
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                    color: Colors.black87),
+                              )),
+
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: SizedBox(
+                              height: 391.h,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                clipBehavior: Clip.antiAlias,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 5,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                      shadowColor:
+                                          Colors.transparent.withOpacity(0.4),
+                                      margin: const EdgeInsets.all(2),
+                                      elevation: 2,
+                                      child: const Product_item_widget());
+                                },
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 391.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                    shadowColor:
+                                        Colors.transparent.withOpacity(0.4),
+                                    margin: const EdgeInsets.all(2),
+                                    elevation: 2,
+                                    child: const Product_item_widget());
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 391.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                    shadowColor:
+                                        Colors.transparent.withOpacity(0.4),
+                                    margin: const EdgeInsets.all(2),
+                                    elevation: 2,
+                                    child: const Product_item_widget());
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 391.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                    shadowColor:
+                                        Colors.transparent.withOpacity(0.4),
+                                    margin: const EdgeInsets.all(2),
+                                    elevation: 2,
+                                    child: const Product_item_widget());
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 391.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                    shadowColor:
+                                        Colors.transparent.withOpacity(0.4),
+                                    margin: const EdgeInsets.all(2),
+                                    elevation: 2,
+                                    child: const Product_item_widget());
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 391.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                    shadowColor:
+                                        Colors.transparent.withOpacity(0.4),
+                                    margin: const EdgeInsets.all(2),
+                                    elevation: 2,
+                                    child: const Product_item_widget());
+                              },
+                            ),
+                          ),
+                          // Container(
+                          //   width: double.infinity,
+                          //   color: Colors.red,
+                          //   height: 390,
+                          //   child: ListView.builder(
+
+                          //     padding: EdgeInsets.zero,
+
+                          //     scrollDirection: Axis.horizontal,
+                          //     shrinkWrap: true,
+                          //     itemCount: 5,
+                          //     itemBuilder: (context, index) {
+                          //       return P
+                          //     },
+                          //   ),
+                          // )
+                          // Row(
+                          //   children: [
+                          //     SvgPicture.asset(contactSellerIcon),
+                          //     SizedBox(
+                          //       width: 10.w,
+                          //     ),
+                          //     Text(
+                          //       'Contact Seller',
+                          //       style: TextStyle(
+                          //           fontSize: 16.sp,
+                          //           fontWeight: FontWeight.w700,
+                          //           color: const Color(0xff000000)),
+                          //     ),
+                          //   ],
+                          // ),
+                        ],
+                      ))
                 ],
               ),
             );

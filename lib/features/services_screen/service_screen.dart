@@ -3,23 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
-import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
-import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/model/home_posts_model.dart';
-import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
-import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 
 final List<String> _images = ['assets/images/home.png'];
@@ -41,7 +33,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 0;
   Offset _initialDragPosition = Offset.zero;
-  ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
 
   // bool _showSearchResults = false;
   late TabController tabController;
@@ -420,7 +412,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   height: 100.h,
                   width: double.infinity,
                   child: ListView(
-                    physics: BouncingScrollPhysics(
+                    physics: const BouncingScrollPhysics(
                       
                     ),
                     padding: EdgeInsets.only(left: 7.w),
@@ -432,9 +424,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         strokeWidth: 2,
                         color: Colors.grey,
                         borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        dashPattern: [15, 15],
-                        child: Container(
+                        radius: const Radius.circular(10),
+                        dashPattern: const [15, 15],
+                        child: SizedBox(
                           width: 100,
                           height: 100,
                           child: Column(
@@ -480,9 +472,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         strokeWidth: 2,
                         color: Colors.grey,
                         borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        dashPattern: [10, 10],
-                        child: Container(
+                        radius: const Radius.circular(10),
+                        dashPattern: const [10, 10],
+                        child: SizedBox(
                           width: 100.w,
                           height: 100.h,
                           child: Column(
@@ -512,9 +504,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         strokeWidth: 2,
                         color: Colors.grey,
                         borderType: BorderType.RRect,
-                        radius: Radius.circular(10),
-                        dashPattern: [10, 10],
-                        child: Container(
+                        radius: const Radius.circular(10),
+                        dashPattern: const [10, 10],
+                        child: SizedBox(
                           width: 100.w,
                           height: 100.h,
                           child: Column(
@@ -956,7 +948,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       _showSideBar.value = !value;
                     },
                     child: value
-                        ? CircleAvatar(
+                        ? const CircleAvatar(
                             radius: 25,
                             backgroundImage:
                                 AssetImage('assets/images/smart.png'),

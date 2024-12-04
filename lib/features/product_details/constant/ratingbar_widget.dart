@@ -37,15 +37,15 @@ class star_widget extends StatelessWidget {
           width: 2.w,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical: 20),
           width: width.w,
           height: 8,
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
               value: value,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-              backgroundColor: Color(0xffD6D6D6),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+              backgroundColor: const Color(0xffD6D6D6),
             ),
           ),
         ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+
 
 class FeaturesBannerWidget extends StatelessWidget {
   const FeaturesBannerWidget({
@@ -12,7 +10,7 @@ class FeaturesBannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
           const Color(0xFFd9d9d9).withOpacity(0.8),
@@ -31,13 +29,13 @@ class FeaturesBannerWidget extends StatelessWidget {
               TextSpan(text: 'PAYMENT\n',
               style: headerstyle.copyWith(
                 color: const Color.fromARGB(255, 63, 60, 60).withOpacity(0.7),
-                fontWeight: FontWeight.w800
+                fontWeight: FontWeight.w500
               ),
               ),
               TextSpan(text: 'OPTIONS',
                  style: headerstyle.copyWith(
                 color: const Color.fromARGB(255, 63, 60, 60).withOpacity(0.7),
-                fontWeight: FontWeight.w800
+              fontWeight: FontWeight.w500
               ),
               ),
               

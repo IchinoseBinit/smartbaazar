@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 class NewSearchWidget extends StatefulWidget {
   const NewSearchWidget({super.key});
@@ -66,7 +67,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
               decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search,
+              prefixIcon: const Icon(Icons.search,
               size: 25,
               color: Color(0xffD9D9D9),
               ),
@@ -75,7 +76,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
                 ),
                 hintText: "Search Services",
                 hintStyle: TextStyle(fontSize: 13.sp,
-                color: Color(0xffD9D9D9)
+                color: const Color(0xffD9D9D9)
                 ),
                 isCollapsed: true,
                 contentPadding:

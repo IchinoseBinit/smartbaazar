@@ -553,7 +553,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               scrollDirection: Axis.horizontal,
                               itemCount: 5,
                               itemBuilder: (context, index) {
-                                return SizedBox(
+                                return const SizedBox(
                                   height: 450,
                                   child: PostCard(),
                                 );
@@ -619,7 +619,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (context, index) {
-                            return SizedBox(
+                            return const SizedBox(
                               height: 450,
                               child: PostCard(),
                             );

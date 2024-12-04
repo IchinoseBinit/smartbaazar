@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartbazar/features/auth/view/hawa.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);
@@ -40,7 +38,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:   ProductDetailScreen(productId: '163',),
+        home:   BottomNavigationScreen()
       ),
     );
   }

@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class LocationWidget extends StatelessWidget {
   const LocationWidget({
@@ -13,9 +12,11 @@ class LocationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.all(5),
       width: double.infinity,
       decoration: const BoxDecoration(
+        borderRadius:BorderRadius.all(Radius.circular(10)),
           gradient: LinearGradient(colors: [
         Colors.white,
         Color(0xFFf3f3f3)
@@ -37,26 +38,34 @@ class LocationWidget extends StatelessWidget {
                     fontSize: 15
                   ),
                   ),
+                  SizedBox(height: 3.h,),
                   Container(
-                    height: 50,
-                    width: 300,
+                    width: 300.w,
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: Colors.grey)),
-                    child: Row(
+                            color: Color(0xffD9D9D9))),
+                    child:  Row(
                       mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
+                          MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.location_on),
+                       Row(
+                        children: [
+                           Icon(Icons.location_on),
+                        SizedBox(width: 10,),
                         Text("Durbarmarg,Kathmandu"),
-                        Icon(Icons
-                            .share_location_rounded)
+                        ],
+                       ),
+                         SizedBox(width: 10,),
+                        
+                        Image.asset("assets/images/point.png")
                       ],
                     ),
                   ),
                 ],
               ),
-              Image.asset("assets/images/fone.png")
+              Image.asset("assets/images/pathao.png")
             ],
           ),
             SizedBox(
@@ -68,18 +77,20 @@ class LocationWidget extends StatelessWidget {
               SizedBox(
                 width: 10.w,
               ),
-              Icon(Icons.location_on_outlined),
+                                         Icon(Icons.location_on),
+
               SizedBox(
                 width: 10.w,
               ),
-              Text("2.5KM"),
+              const Text("2.5KM"),
               SizedBox(
                 width: 10.w,
               ),
-              Icon(Icons.speed_outlined),
-              Text("24 to 48 hours"),
-              Spacer(),
-              Image.asset("assets/images/fone.png")
+             Image.asset('assets/images/clock.png'),
+             SizedBox(width: 5.w,),
+              const Text("24 to 48 hours"),
+              const Spacer(),
+              Image.asset("assets/images/upaye.png")
             ],
           ),
             SizedBox(

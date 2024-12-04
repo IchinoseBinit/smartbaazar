@@ -21,6 +21,7 @@ import 'package:smartbazar/features/product_details/constant/product_detail_widg
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/product_screen/view/product_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
@@ -34,7 +35,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
-  ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
@@ -58,7 +59,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     super.initState();
 
     // Default selected index to 3 (HomeScreen)
-    selectedIndex = 3;
+    selectedIndex = 6;
 
     // Initialize the PageController with the selected page
     _pageController = PageController(
@@ -232,7 +233,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             Map<String, dynamic> data = items[index];
 
                             // Highlight only when index == 3
-                            bool isActive = index == 3;
+                            bool isActive = index == 4;
 
                             return GestureDetector(
                               onTap: () {
@@ -437,8 +438,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
 
                 SizedBox(
-                  height: 380.h,
+                  height: 390.h,
+                  width: double.infinity,
                   child: ListView.builder(
+                    
                     padding: EdgeInsets.zero,
                     clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
@@ -448,7 +451,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       return Card(
                           shadowColor: Colors.transparent.withOpacity(0.4),
                           margin: const EdgeInsets.all(2),
-                          elevation: 7,
+                          elevation: 1,
                           child: const Product_item_widget());
                     },
                   ),
@@ -1043,7 +1046,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       _showSideBar.value = !value;
                     },
                     child: value
-                        ? CircleAvatar(
+                        ? const CircleAvatar(
                             radius: 25,
                             backgroundImage:
                                 AssetImage('assets/images/smart.png'),

@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
-TextStyle headerstyle = const TextStyle(fontSize: 10, color: Colors.white);
+TextStyle headerstyle = TextStyle(fontSize: 10, color: Colors.white);
 
 class Product_item_widget extends StatelessWidget {
   const Product_item_widget({
@@ -19,10 +19,10 @@ class Product_item_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 10.h,
+    
       padding: const EdgeInsets.all(5),
       margin: EdgeInsets.only(left: 5.w),
-      width: 230.w,
+      width: 210.w,
       decoration: BoxDecoration(
           color: Colors.white30, borderRadius: BorderRadius.circular(20)),
       child: Column(
@@ -168,7 +168,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset('assets/icon/Rectangle.png'),
-                      const Text("78")
+                      Text("78")
                     ],
                   )
                 ],
@@ -178,7 +178,7 @@ class Product_item_widget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset("assets/icon/Vector.png"),
-                      const Text("3.2K")
+                      Text("3.2K")
                     ],
                   )
                 ],
@@ -191,7 +191,7 @@ class Product_item_widget extends StatelessWidget {
                         "assets/icon/solar.png",
                         color: Colors.grey,
                       ),
-                      const Text("345")
+                      Text("345")
                     ],
                   )
                 ],
@@ -216,9 +216,9 @@ class Product_item_widget extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(5),
-            decoration: const BoxDecoration(
-                color: Color(0xff3D215F),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: const Color(0xff3D215F),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20))),
@@ -229,7 +229,7 @@ class Product_item_widget extends StatelessWidget {
                   child: Row(
                     children: [
                       const CircleAvatar(
-                        radius: 8,
+                        radius: 10,
                         backgroundImage:
                             AssetImage("assets/images/vendorDealImage.png"),
                       ),
