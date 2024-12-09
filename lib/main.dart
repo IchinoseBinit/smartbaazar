@@ -1,12 +1,18 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
+import 'package:smartbazar/features/home/view/hawa.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/splash_screen/splash_screen.dart';
+import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
+import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
+
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);
@@ -38,7 +44,8 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:   BottomNavigationScreen()
+        home: SplashScreen()
+        // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
       ),
     );
   }

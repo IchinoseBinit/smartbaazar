@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
-
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
@@ -13,6 +10,7 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 
 final List<String> _images = ['assets/images/home.png'];
 
@@ -412,15 +410,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   height: 100.h,
                   width: double.infinity,
                   child: ListView(
-                    physics: const BouncingScrollPhysics(
-                      
-                    ),
+                    physics: const BouncingScrollPhysics(),
                     padding: EdgeInsets.only(left: 7.w),
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     children: [
                       DottedBorder(
-                        
                         strokeWidth: 2,
                         color: Colors.grey,
                         borderType: BorderType.RRect,
@@ -431,22 +426,19 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           height: 100,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-
                             children: [
-                              Text("ALL",
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                              ),
+                              Text(
+                                "ALL",
+                                style: headerstyle.copyWith(
+                                    color: ColorConstant.blackColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text("SERVICES",
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                              )
-                              )
+                                  style: headerstyle.copyWith(
+                                      color: ColorConstant.blackColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold))
                             ],
                           ),
                         ),
@@ -466,74 +458,74 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       //       child: const Text("data"))
                       //     ),
                       SizedBox(
-                        width:20.w,
+                        width: 20.w,
                       ),
-                       DottedBorder(
+                      DottedBorder(
                         strokeWidth: 2,
                         color: Colors.grey,
                         borderType: BorderType.RRect,
                         radius: const Radius.circular(10),
                         dashPattern: const [10, 10],
                         child: SizedBox(
-                          width: 100.w,
-                          height: 100.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/cloth.png'),
-                              Wrap(
-                                children: [
-                                  Text(
-                                    "HEALTH,\nSPORTS",
-                                    style: headerstyle.copyWith(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13),
-                                  )
-                                ],
-                              ),
-                            ],
-                          )),
+                            width: 100.w,
+                            height: 100.h,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/images/cloth.png'),
+                                Wrap(
+                                  children: [
+                                    Text(
+                                      "HEALTH,\nSPORTS",
+                                      style: headerstyle.copyWith(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )),
                       ),
-                 
+
                       SizedBox(
                         width: 20.w,
                       ),
-                         DottedBorder(
+                      DottedBorder(
                         strokeWidth: 2,
                         color: Colors.grey,
                         borderType: BorderType.RRect,
                         radius: const Radius.circular(10),
                         dashPattern: const [10, 10],
                         child: SizedBox(
-                          width: 100.w,
-                          height: 100.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/cloth.png',
-                              ),
-                              Wrap(
-                                children: [
-                                  Text(
-                                    "SPORTS,\nAND",
-                                    style: headerstyle.copyWith(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 13),
-                                  )
-                                ],
-                              ),
-                            ],
-                          )),
+                            width: 100.w,
+                            height: 100.h,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/cloth.png',
+                                ),
+                                Wrap(
+                                  children: [
+                                    Text(
+                                      "SPORTS,\nAND",
+                                      style: headerstyle.copyWith(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )),
                       ),
-                        SizedBox(
+                      SizedBox(
                         width: 10.w,
                       ),
-                 
+
                       // DottedBorder(
                       //     borderPadding: const EdgeInsets.only(left: 5),
                       //     radius: const Radius.circular(10),
@@ -598,7 +590,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 fontWeight: FontWeight.w500,
                                 fontSize: 13),
                           ),
-                           Text(
+                          Text(
                             "&",
                             style: headerstyle.copyWith(
                                 color: const Color(0xff6E6E6E),
@@ -607,7 +599,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           )
                         ],
                       ),
-                      SizedBox(width: 10.w,)
+                      SizedBox(
+                        width: 10.w,
+                      )
                     ],
                   ),
                 ),
@@ -636,22 +630,22 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                 // Expanded(
 
-                // child: Product_item_widget(),),
+                // child: product_item_wid(),),
                 SizedBox(
                   height: 5.h,
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 360.h,
+                  width: double.infinity,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return const ProductDetailWidget();
                     },
                   ),
                 ),
@@ -673,22 +667,23 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                 // Expanded(
 
-                // child: Product_item_widget(),),
+                // child: product_item_wid(),),
                 SizedBox(
                   height: 5.h,
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 360.h,
+                  width: double.infinity,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                    
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return const ProductDetailWidget();
                     },
                   ),
                 ),
@@ -709,22 +704,22 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                 // Expanded(
 
-                // child: Product_item_widget(),),
+                // child: product_item_wid(),),
                 SizedBox(
                   height: 5.h,
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 360.h,
+                  width: double.infinity,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return const ProductDetailWidget();
                     },
                   ),
                 ),
@@ -745,22 +740,22 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                 // Expanded(
 
-                // child: Product_item_widget(),),
+                // child: product_item_wid(),),
                 SizedBox(
                   height: 5.h,
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 360.h,
+                  width: double.infinity,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return const ProductDetailWidget();
                     },
                   ),
                 ),
@@ -814,16 +809,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 360.h,
+                  width: double.infinity,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 450,
-                        child: Product_item_widget(),
-                      );
+                      return const ProductDetailWidget();
                     },
                   ),
                 ),
@@ -911,15 +906,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 ),
 
                 SizedBox(
-                  height: 400.h,
+                  height: 360.h,
+                  width: double.infinity,
                   child: ListView.builder(
-                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return const SizedBox(
-                        child: Product_item_widget(),
-                      );
+                      return const ProductDetailWidget();
                     },
                   ),
                 ),

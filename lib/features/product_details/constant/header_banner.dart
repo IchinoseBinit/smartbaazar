@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 
 class HeaderBannerWidget extends StatelessWidget {
@@ -13,7 +11,7 @@ class HeaderBannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.symmetric(horizontal: 5.w),
+      padding:  EdgeInsets.only(left: 5.w,top: 4,bottom: 4),
       decoration: const BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.white, Color(0xFf8c8c8c)])),
@@ -34,6 +32,8 @@ class HeaderBannerWidget extends StatelessWidget {
                   Text(
                     "NIC Asia Capital",
                     style: headerstyle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
                         color: Colors.black),
                   ),
                   SizedBox(
@@ -55,16 +55,20 @@ class HeaderBannerWidget extends StatelessWidget {
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
                color: const Color(0xffD9D9D9).withOpacity(0.5),
-               borderRadius: BorderRadius.circular(10)
+               borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10)
+               )
             
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(width: 3.w,),
                 Image.asset('assets/images/Rectangle.png',
                 color: ColorConstant.blackColor,
                 ),
+                SizedBox(width: 4.w,),
                 Text(
                   "GLOBAL BRAND ",
                   style: headerstyle.copyWith(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 class NewSearchWidget extends StatefulWidget {
   const NewSearchWidget({super.key});

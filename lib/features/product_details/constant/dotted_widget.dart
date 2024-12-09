@@ -1,7 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 
 class dotted_widget extends StatelessWidget {

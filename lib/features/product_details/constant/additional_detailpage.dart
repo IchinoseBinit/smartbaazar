@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 class AdditonalDetailsWidget extends StatelessWidget {
   final String title;
@@ -17,7 +16,7 @@ class AdditonalDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 20),
+      margin:  EdgeInsets.symmetric(horizontal: 10.w),
       padding: const EdgeInsets.all(5),
       width: double.infinity,
       color: const Color(0xFFf9fbfe),

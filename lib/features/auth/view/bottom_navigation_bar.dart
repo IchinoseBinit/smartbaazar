@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/auth/view/scan_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -19,9 +18,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const MessageViewScreen(),
-    const ScanScreen(),
     const FeedScreen(),
+    const MessageViewScreen(),
     const VendorProfileScreen(),
   ];
 

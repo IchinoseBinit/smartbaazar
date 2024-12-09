@@ -18,7 +18,7 @@ class FeedContainer extends StatelessWidget {
             child: Container(
               width:
                   MediaQuery.of(context).size.width, // Set your desired width
-              height: 150.h, // Set your desired height
+              height: 90.h, // Set your desired height
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -258,8 +258,11 @@ class FeedContainer extends StatelessWidget {
                         },
                         child: Row(
                           children: [
-                            Icon(Icons.chat_bubble_outline,
-                                color: Colors.white, size: 20.h),
+                            Image.asset(
+                              "assets/icon/Rectangle.png",
+                              width: 35.w,
+                              height: 35.h,
+                            ),
                             SizedBox(width: 4.w),
                           ],
                         ),
@@ -272,8 +275,11 @@ class FeedContainer extends StatelessWidget {
                         },
                         child: Row(
                           children: [
-                            Icon(Icons.arrow_outward_outlined,
-                                color: Colors.white, size: 20.h),
+                            Image.asset(
+                              "assets/images/mouse_pointer_icon.png",
+                              width: 40.w,
+                              height: 40.h,
+                            ),
                             SizedBox(width: 4.w),
                           ],
                         ),
@@ -284,8 +290,11 @@ class FeedContainer extends StatelessWidget {
                         onTap: () {
                           print("Shared!");
                         },
-                        child:
-                            Icon(Icons.share, color: Colors.white, size: 20.h),
+                        child: Image.asset(
+                          "assets/images/share_icon.png",
+                          width: 35.w,
+                          height: 35.h,
+                        ),
                       ),
                     ],
                   ),

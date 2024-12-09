@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 
 class FeaturesBannerWidget extends StatelessWidget {

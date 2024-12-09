@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 class CarsoselWidget extends StatefulWidget {
   const CarsoselWidget({Key? key, required this.items, int? dots})
@@ -85,9 +84,9 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
           child: Row(
             children: [
               Container(
-                margin: EdgeInsets.only(right: 1),
+                margin: const EdgeInsets.only(right: 1),
                    padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10.h),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: ColorConstant.whiteColor,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
               bottomLeft: Radius.circular(30)
@@ -101,34 +100,38 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                      
             color: ColorConstant.blackColor,
             ),
+             SizedBox(width: 7.w,),
             Text("3.8K",
             style: headerstyle.copyWith(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
               color: ColorConstant.blackColor
             ),
             
             ),
-            SizedBox(width: 10.w,),
+            SizedBox(width: 20.w,),
              Image.asset("assets/images/Frame.png",
              color: ColorConstant.blackColor,
              height: 30,
              width: 30,
              ),
+             SizedBox(width: 7.w,),
             Text("120",
-            style: headerstyle.copyWith(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+             style: headerstyle.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
               color: ColorConstant.blackColor
             ),
             
             ),
-            SizedBox(width: 10.w,),
+                       SizedBox(width: 20.w,),
+
              Image.asset("assets/icon/Frame.png"),
+             SizedBox(width: 7.w,),
             Text("4.5",
-            style: headerstyle.copyWith(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+             style: headerstyle.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
               color: ColorConstant.blackColor
             ),
             )
@@ -136,18 +139,26 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
           ),
               ),
               Container(
+
+                
                    padding: EdgeInsets.symmetric(vertical: 5.h),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: ColorConstant.whiteColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(30),
               bottomRight: Radius.circular(30)
               )
             ),
                 child: Row(
+
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                                        SizedBox(width: 5.w,),
+                                        SizedBox(width: 10.w,),
 
                     Column(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
                       children: [
                         Image.asset('assets/images/wave.png',
                                          
@@ -156,14 +167,14 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                         Text("ASk",
                         style: headerstyle.copyWith(
                           fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff362677)
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xff362677)
                         ),
                         )
                       ],
                     ),
-                    SizedBox(width: 5.w,),
-                    CircleAvatar(
+                    SizedBox(width: 10.w,),
+                    const CircleAvatar(
                       backgroundImage: AssetImage("assets/images/group.png"),
                     ),
                                         SizedBox(width: 5.w,),

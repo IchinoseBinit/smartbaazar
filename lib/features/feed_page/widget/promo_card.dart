@@ -111,35 +111,47 @@ class _PromoCardState extends State<PromoCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "LIMITED DISCOUNT FROM NIC !",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11.sp,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                color: const Color(0xFF4B004B),
+                                child: Image.asset(
+                                  "assets/images/announcement.png",
+                                  width: 25.w,
+                                  height: 20.h,
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 5.w),
-                            const CircleAvatar(
-                              radius: 2,
-                              backgroundColor: Colors.grey,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              "20h",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
+                              SizedBox(width: 10.w),
+                              Text(
+                                "LIMITED DISCOUNT FROM NIC !",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11.sp,
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                            const Icon(
-                              Icons.push_pin_rounded,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                          ],
+                              SizedBox(width: 5.w),
+                              const CircleAvatar(
+                                radius: 2,
+                                backgroundColor: Colors.grey,
+                              ),
+                              const SizedBox(width: 5),
+                              const Text(
+                                "20h",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const Spacer(),
+                              Image.asset(
+                                "assets/images/pin_icon.png",
+                                width: 25,
+                                height: 25,
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -190,41 +202,31 @@ class _PromoCardState extends State<PromoCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 110,
-            height: 120,
+            width: 114.w,
+            height: 95.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
               image: DecorationImage(
                 image: AssetImage(imagePath),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          const SizedBox(height: 5),
+          // const SizedBox(height: 5),
           Container(
+            width: 114.w,
             decoration: const BoxDecoration(
               color: Colors.black87,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  const Icon(
-                    Icons.whatshot,
-                    size: 16,
-                    color: Colors.orange,
-                  ),
-                ],
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                price,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

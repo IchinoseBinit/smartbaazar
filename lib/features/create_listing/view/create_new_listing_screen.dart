@@ -4,10 +4,12 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
@@ -24,6 +26,7 @@ import 'package:smartbazar/features/order_details/model/shipping_cities_model.da
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class CreateNewListinScreen extends ConsumerStatefulWidget {
   const CreateNewListinScreen({super.key});
@@ -128,6 +131,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       print('Failed to load product types: $e');
     }
   }
+
+  final _stringTagController = StringTagController();
 
   @override
   Widget build(BuildContext context) {
@@ -358,129 +363,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'City',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
-                          },
-                          getItemLabel: (CityList item) => item.name,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Price',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: pricecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter price',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Discount',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: discountcontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter discount',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -520,6 +402,775 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     // ),
                   ],
                 )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Whats in the box',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: InputDecoration.collapsed(
+                          hintText: "Mention what's included",
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              color: const Color(0xffADADAD))),
+                    ),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Brand',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: titlecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter brand',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Product Type',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Return Policy',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "7 days Exchange & Return",
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black),
+                          ),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: true,
+                                onChanged: (value) {},
+                              ),
+                              Text(
+                                "valid for change of mind",
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: false,
+                                onChanged: (value) {},
+                              ),
+                              const Text(
+                                  "valid for defective,\nmissing or demaged items")
+                            ],
+                          ),
+                        ],
+                      )),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Available colors',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Warranty',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Seller Type',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Model',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter price',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'RAM in GB',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'in GB',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Trending',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Checkbox(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
+                  ],
+                )),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Available Stock',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Available Qty',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      'Price',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      '*',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      width: 40.w,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: null,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'RS xxxxx',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30.w,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 12.h),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffEDECEC),
+                          borderRadius: BorderRadius.circular(10.r)),
+                      child: Column(
+                        children: [
+                          CustomCheckbox(value: false, onChanged: (value) {}),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            'Negotiable',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff888888),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Old price',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: discountcontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter discount',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: 5.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Offer',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Story Display Days',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Delivery Options',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Text("Packaged Product Dimensions"),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: false,
+                          onChanged: (value) {},
+                        ),
+                        const Text("Hyper Delivery")
+                      ],
+                    )
+                  ],
+                ),
+                // CreateListingCardWidget(
+                //     child: Row(
+                //   children: [
+                //     Row(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           'Discount',
+                //           style: TextStyle(
+                //               fontSize: 14.sp,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.black),
+                //         ),
+                //         Text(
+                //           ' *',
+                //           style: TextStyle(
+                //               color: const Color(0xffD33636),
+                //               fontWeight: FontWeight.w500,
+                //               fontSize: 14.sp),
+                //         )
+                //       ],
+                //     ),
+                //     const Spacer(),
+                //     Expanded(
+                //       child: TextField(
+                //         controller: discountcontroller,
+                //         decoration: InputDecoration.collapsed(
+                //             hintText: 'Enter discount',
+                //             hintStyle: TextStyle(
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 14.sp,
+                //                 color: const Color(0xffADADAD))),
+                //       ),
+                //     ),
+                //   ],
+                // )),
+
                 // SizedBox(
                 //   height: 10.h,
                 // ),
@@ -812,6 +1463,132 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'City',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<CityList>(
+                          items: citylistsitems!,
+                          dropdownValue: selectedCity,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCity = newValue;
+                            });
+                          },
+                          getItemLabel: (CityList item) => item.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tags',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: TextFieldTags<String>(
+                              textfieldTagsController: _stringTagController,
+                              initialTags: const ['python', 'java'],
+                              textSeparators: const [' ', ','],
+                              validator: (String tag) {
+                                if (tag == 'php') {
+                                  return 'Php not allowed';
+                                }
+                                return null;
+                              },
+                              inputFieldBuilder: (context, inputFieldValues) {
+                                return TextField(
+                                  // decoration: ,
+                                  controller:
+                                      inputFieldValues.textEditingController,
+                                  focusNode: inputFieldValues.focusNode,
+                                );
+                              })),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                  decoration: BoxDecoration(
+                    color: ColorConstant.whiteColor,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      
+                      color: ColorConstant.grayColor,
+                      width: 2
+                    )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                       Text("Discount on Bulk Order !",
+                      style: headerstyle.copyWith(
+                        color: ColorConstant.blackColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14
+
+                      ),
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      bulk_discount_widget()
+                    ],
+                  ),
+                )
                 // CreateListingCardWidget(
                 //     child: Row(
                 //   mainAxisSize: MainAxisSize.max,
@@ -889,6 +1666,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //     ),
                 //   ],
                 // )),
+                ,
                 SizedBox(
                   height: 15.h,
                 ),
@@ -953,6 +1731,311 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class bulk_discount_widget extends StatelessWidget {
+  const bulk_discount_widget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 15.h),
+      decoration: BoxDecoration(
+        color: Color(0xffFDFDFE),
+        borderRadius: BorderRadius.circular(10),
+       border: Border.all(
+    
+    color: ColorConstant.grayColor,
+    width: 1
+                        
+        )
+      ),
+      child: Row(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Text("Pieces",
+              style: headerstyle.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                color: ColorConstant.blackColor
+              ),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Material(
+                    elevation: 2,
+                   borderRadius:
+                              BorderRadius.circular(6),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(6),
+                          color: const Color(0xffFDFDFE)),
+                      child: Text(
+                        "2",
+                        style: headerstyle.copyWith(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xffADADAD)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 6.w,
+                  ),
+                  Text(
+                    'to',
+                    style: headerstyle.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: ColorConstant.blackColor),
+                  ),
+                  SizedBox(
+                    width: 6.w,
+                  ),
+                  Material(
+                    elevation: 2,
+                     borderRadius:
+                              BorderRadius.circular(6),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(6),
+                          color: const Color(0xffFDFDFE)),
+                      child: Text(
+                        "5",
+                        style: headerstyle.copyWith(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xffADADAD)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Material(
+                    elevation: 2,
+                     borderRadius:
+                              BorderRadius.circular(6),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(6),
+                          color: const Color(0xffFDFDFE)),
+                      child: Text(
+                        "6",
+                        style: headerstyle.copyWith(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xffADADAD)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Text(
+                    'to',
+                    style: headerstyle.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: ColorConstant.blackColor),
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Material(
+                    elevation: 2,
+                     borderRadius:
+                              BorderRadius.circular(6),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(6),
+                          color: const Color(0xffFDFDFE)),
+                      child: Text(
+                        "10",
+                        style: headerstyle.copyWith(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xffADADAD)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            width: 40.w,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              
+               Text("Rate/piece",
+                 style: headerstyle.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+                color: ColorConstant.blackColor
+              ),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              Material(
+                elevation: 2,
+                 borderRadius:
+                              BorderRadius.circular(6),
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 50, top: 5, bottom: 2),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: const Color(0xffFDFDFE)),
+                  child: Text(
+                    "Rs 50",
+                    style: headerstyle.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xffADADAD)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Material(
+                elevation: 2,
+                 borderRadius:
+                              BorderRadius.circular(6),
+                child: Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 50, top: 5, bottom: 2),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: const Color(0xffFDFDFE)),
+                  child: Text(
+                    "Rs 45",
+                    style: headerstyle.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xffADADAD)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.end,
+            // crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                  margin: EdgeInsets.only(top: 29.h),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    // shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(5),
+    
+                    border: Border.all(
+                        color: ColorConstant.grayColor),
+    
+                    // borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const CircleAvatar(
+                    backgroundColor: Color(0xff362677),
+                    radius: 12,
+                    child: Icon(
+                      Icons.add,
+                      color: ColorConstant.whiteColor,
+                    ),
+                  )),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.only(left: 5.w,right: 15.w),
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        // shape: BoxShape.circle,
+                        borderRadius:
+                            BorderRadius.circular(5),
+    
+                        border: Border.all(
+                            color: ColorConstant.grayColor),
+    
+                        // borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const CircleAvatar(
+                        backgroundColor: Color(0xff362677),
+                        radius: 12,
+                        child: Icon(
+                          Icons.add,
+                          color: ColorConstant.whiteColor,
+                        ),
+                      )),
+                  Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        // shape: BoxShape.circle,
+                        borderRadius:
+                            BorderRadius.circular(5),
+    
+                        border: Border.all(
+                            color: ColorConstant.grayColor),
+    
+                        // borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const CircleAvatar(
+                        backgroundColor: Color(0xff362677),
+                        radius: 12,
+                        child: Icon(
+                          Icons.delete,
+                          color: ColorConstant.whiteColor,
+                        ),
+                      )),
+                      SizedBox(height: 10.h,),
+                ],
+              )
+            ],
+          )
+        ],
       ),
     );
   }
@@ -1080,58 +2163,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-        //   CreateListingCardWidget(
-        //     child: Row(
-        //   children: [
-        //     Text(
-        //       'Enter tag',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 14.sp,
-        //           color: Colors.black),
-        //     ),
-        //     const Spacer(),
-        //     Expanded(
-        //       child: TextField(
-        //         controller: widget.nameconroller,
-        //         decoration: InputDecoration.collapsed(
-        //             hintText: widget.nameconroller?.text ?? 'name',
-        //             hintStyle: TextStyle(
-        //                 fontWeight: FontWeight.w500,
-        //                 fontSize: 14.sp,
-        //                 color: const Color(0xffADADAD))),
-        //       ),
-        //     ),
-        //   ],
-        // )),
-        // SizedBox(
-        //   height: 10.h,
-        // ),
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            Text(
-              'Enter name',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            const Spacer(),
-            Expanded(
-              child: TextField(
-                controller: widget.nameconroller,
-                decoration: InputDecoration.collapsed(
-                    hintText: widget.nameconroller?.text ?? 'name',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
-                        color: const Color(0xffADADAD))),
-              ),
-            ),
-          ],
-        )),
-        CreateListingCardWidget(
+          CreateListingCardWidget(
             child: Row(
           children: [
             Text(
@@ -1156,10 +2188,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-        SizedBox(
-          height: 10.h,
-        ),
-        CreateListingCardWidget(
+         CreateListingCardWidget(
             child: Row(
           children: [
             SizedBox(
@@ -1220,6 +2249,60 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             )
           ],
         )),
+        //   CreateListingCardWidget(
+        //     child: Row(
+        //   children: [
+        //     Text(
+        //       'Enter tag',
+        //       style: TextStyle(
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 14.sp,
+        //           color: Colors.black),
+        //     ),
+        //     const Spacer(),
+        //     Expanded(
+        //       child: TextField(
+        //         controller: widget.nameconroller,
+        //         decoration: InputDecoration.collapsed(
+        //             hintText: widget.nameconroller?.text ?? 'name',
+        //             hintStyle: TextStyle(
+        //                 fontWeight: FontWeight.w500,
+        //                 fontSize: 14.sp,
+        //                 color: const Color(0xffADADAD))),
+        //       ),
+        //     ),
+        //   ],
+        // )),
+        // SizedBox(
+        //   height: 10.h,
+        // ),
+        // CreateListingCardWidget(
+        //     child: Row(
+        //   children: [
+        //     Text(
+        //       'Enter name',
+        //       style: TextStyle(
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 14.sp,
+        //           color: Colors.black),
+        //     ),
+        //     const Spacer(),
+        //     Expanded(
+        //       child: TextField(
+        //         controller: widget.nameconroller,
+        //         decoration: InputDecoration.collapsed(
+        //             hintText: widget.nameconroller?.text ?? 'name',
+        //             hintStyle: TextStyle(
+        //                 fontWeight: FontWeight.w500,
+        //                 fontSize: 14.sp,
+        //                 color: const Color(0xffADADAD))),
+        //       ),
+        //     ),
+        //   ],
+        // )),
+      
+       
+       
         SizedBox(
           height: 15.h,
         ),
@@ -1394,7 +2477,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                           widget.description != null &&
                           widget.type != null &&
                           widget.phonecoontroller?.text.isNotEmpty == true &&
-                          selectedpickup!.name.isNotEmpty&&
+                          selectedpickup!.name.isNotEmpty &&
                           selectedImages.isNotEmpty &&
                           widget.terms != null) {
                         try {
@@ -1687,34 +2770,37 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
   Widget build(BuildContext context) {
     return CreateListingCardWidget(
         child: Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Return Policy',
+              'Sell to',
               style: TextStyle(
                   fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            SizedBox(height: 10.h,),
+              Text(
+              'Who do you want\nto sell',
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
           ],
         ),
-        SizedBox(width: 20.w),
+        SizedBox(width: 140.w),
         Expanded(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '7 days Exchange& Return',
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
+            
               Row(
                 children: [
                   CustomCheckbox(
@@ -1729,7 +2815,7 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   ),
                   Expanded(
                     child: Text(
-                      'Valid for change of mind',
+                      'Dealer',
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
@@ -1741,9 +2827,9 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                 ],
               ),
               SizedBox(
-                height: 5.h,
+                height: 8.h,
               ),
-              Row(
+                 Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -1757,7 +2843,91 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   ),
                   Expanded(
                     child: Text(
-                      'Valid for defective, missing',
+                      'Distributer',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+               SizedBox(
+                height: 8.h,
+              ),
+                 Row(
+                children: [
+                  CustomCheckbox(
+                      value: _isvalid,
+                      onChanged: (value) {
+                        setState(() {
+                          _isDamge = value;
+                        });
+                      }),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Importer',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+               SizedBox(
+                height: 8.h,
+              ),
+                 Row(
+                children: [
+                  CustomCheckbox(
+                      value: _isvalid,
+                      onChanged: (value) {
+                        setState(() {
+                          _isDamge = value;
+                        });
+                      }),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Retailer',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
+               SizedBox(
+                height: 8.h,
+              ),
+                 Row(
+                children: [
+                  CustomCheckbox(
+                      value: _isvalid,
+                      onChanged: (value) {
+                        setState(() {
+                          _isDamge = value;
+                        });
+                      }),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Wholeseller',
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,

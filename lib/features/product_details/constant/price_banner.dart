@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 
 class PriceRowWidget extends StatelessWidget {
@@ -16,14 +15,16 @@ class PriceRowWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Icon(Icons.arrow_downward_rounded,
-        size: 15,
+        size: 16,
         
 
         color: ColorConstant.toastBackgroundColor,
         ),
         SizedBox(width: 5.w,),
         Text("30%",
-        style: headerstyle,
+            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,)
         ),
         SizedBox(width: 5.w,),
       Image.asset("assets/images/bflame.png",

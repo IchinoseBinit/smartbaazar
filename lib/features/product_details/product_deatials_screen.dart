@@ -23,13 +23,14 @@ import 'package:smartbazar/features/product_details/constant/header_banner.dart'
 import 'package:smartbazar/features/product_details/constant/location_widget.dart';
 import 'package:smartbazar/features/product_details/constant/people_review_widget.dart';
 import 'package:smartbazar/features/product_details/constant/price_banner.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/ratingbar_widget.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -49,9 +50,9 @@ class ProductDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
+    // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
     final adsList = ref.watch(getAdsProvider);
-    final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
+    // final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
 
@@ -62,13 +63,13 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          extendedPadding: EdgeInsets.all(10),
+          extendedPadding: const EdgeInsets.all(10),
           backgroundColor: Colors.white,
           elevation: 2,
           shape: const StadiumBorder(),
           label: Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 25,
                 backgroundImage:
                     AssetImage("assets/images/vendorDealImage.png"),
@@ -78,7 +79,7 @@ class ProductDetailScreen extends ConsumerWidget {
               // ),
 
               Container(
-                margin: EdgeInsets.only(left: 5),
+                margin: const EdgeInsets.only(left: 5),
                 padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
                 decoration: BoxDecoration(
                     gradient: const LinearGradient(
@@ -119,8 +120,8 @@ class ProductDetailScreen extends ConsumerWidget {
                 .map((picture) => "${ApiConstants.imgUrl}${picture.filename}")
                 .toList();
             if (data.discounted_price != null) {
-              double a = double.tryParse(data.discounted_price ?? '0.0') ?? 0.0;
-              double b = double.tryParse(data.price!)!;
+              // double a = double.tryParse(data.discounted_price ?? '0.0') ?? 0.0;
+              // double b = double.tryParse(data.price!)!;
             }
 
             return SingleChildScrollView(
@@ -153,23 +154,36 @@ class ProductDetailScreen extends ConsumerWidget {
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Text("Pictures", style: headerstyle),
+                              Text("Pictures", style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+
+
+                              )),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Price & Variations", style: headerstyle),
+                              Text("Price & Variations", style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,)),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Delivery", style: headerstyle),
+                              Text("Delivery", style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,),),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Aftersales", style: headerstyle),
+                              Text("Aftersales", style:headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,),),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Description", style: headerstyle),
+                              Text("Description", style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,),)
                             ],
                           ),
                         ),
@@ -199,9 +213,9 @@ class ProductDetailScreen extends ConsumerWidget {
                       //         }),
                       //   ],
                       // ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
+                      // SizedBox(
+                      //   height: 5.h,
+                      // ),
                       CarsoselWidget(
                         items: itemsList,
                         dots: itemsList.length,
@@ -276,11 +290,15 @@ class ProductDetailScreen extends ConsumerWidget {
                                   children: [
                                     Text(
                                       "Rs 6000 - ",
-                                      style: headerstyle,
+                                    style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,)
                                     ),
                                     Text(
                                       "Rs 90,000",
-                                      style: headerstyle,
+                                           style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,)
                                     )
                                   ],
                                 ),
@@ -303,22 +321,24 @@ class ProductDetailScreen extends ConsumerWidget {
                             third: "VARIATIONS",
                           ),
                           SizedBox(
-                            height: 30.h,
+                            height: 20.h,
                           ),
                           const LocationWidget(),
                           SizedBox(
                             height: 20.h,
                           ),
                           Container(
-                            padding: const EdgeInsets.all(5),
+                            padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 5.h),
                             width: double.infinity,
                             decoration: const BoxDecoration(
                                 gradient: LinearGradient(
                                     colors: [Colors.white, Color(0xFFf3f3f3)])),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.asset('assets/images/shield.png'),
                                     const Text("WARRANTY\n DETAILS"),
@@ -388,7 +408,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 5.h,
                           ),
                           Container(
-                            margin: const EdgeInsets.only(left: 10),
+                            margin: const EdgeInsets.symmetric(horizontal:  10),
                             padding: const EdgeInsets.all(10),
                             width: double.infinity,
                             decoration: const BoxDecoration(
@@ -428,7 +448,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 5.h,
                           ),
                           Container(
-                            margin: const EdgeInsets.only(left: 10),
+                            margin:  EdgeInsets.symmetric(horizontal: 10.w),
                             padding: const EdgeInsets.all(10),
                             width: double.infinity,
                             decoration: const BoxDecoration(
@@ -547,7 +567,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                           const PeopleReviewsWidget(),
                           SizedBox(
-                            height: 5.h,
+                            height: 10.h,
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -570,6 +590,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                         fontSize: 15,
                                         color: Colors.black),
                                   )),
+                                  SizedBox(height: 4.h,),
                                   const TextField(
                                     maxLines: 5,
                                     decoration: InputDecoration(
@@ -582,11 +603,11 @@ class ProductDetailScreen extends ConsumerWidget {
                                     height: 10.h,
                                   ),
                                   Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 10),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
-                                        color: Color(0xFF362677)),
+                                        color: const Color(0xFF362677)),
                                     child: Text(
                                       "Submit Review",
                                       style: headerstyle,
@@ -625,7 +646,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                           const AdsWidget(),
                           SizedBox(
-                            height: 5.h,
+                            height: 10.h,
                           ),
                           PerksWidget(
                             first: "DEALS",
@@ -635,7 +656,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
 
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: SizedBox(
                               height: 200.h,
                               child: ListView.builder(
@@ -654,7 +675,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 10.h,
                           ),
                           Container(
-                              padding: const EdgeInsets.all(10),
+                              padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 5.h),
                               width: double.infinity,
                               decoration: const BoxDecoration(
                                   gradient: LinearGradient(colors: [
@@ -668,122 +689,74 @@ class ProductDetailScreen extends ConsumerWidget {
                                     fontSize: 17,
                                     color: Colors.black87),
                               )),
+Padding(padding: EdgeInsets.symmetric(horizontal: 10.w),
 
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: SizedBox(
-                              height: 391.h,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                clipBehavior: Clip.antiAlias,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 5,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return Card(
-                                      shadowColor:
-                                          Colors.transparent.withOpacity(0.4),
-                                      margin: const EdgeInsets.all(2),
-                                      elevation: 2,
-                                      child: const Product_item_widget());
-                                },
-                              ),
-                            ),
-                          ),
+child: Column(
+  children: [
+     SizedBox(
+                        height: 360.h,
+                       width: double.infinity,
+                       child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return const ProductDetailWidget();
+                    },
+                  ),
+                ),
+                 SizedBox(
+                        height: 360.h,
+                       width: double.infinity,
+                       child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return const ProductDetailWidget();
+                    },
+                  ),
+                ),
+                 SizedBox(
+                        height: 360.h,
+                       width: double.infinity,
+                       child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return const ProductDetailWidget();
+                    },
+                  ),
+                ),
+                 SizedBox(
+                        height: 360.h,
+                       width: double.infinity,
+                       child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return const ProductDetailWidget();
+                    },
+                  ),
+                ),
 
-                          SizedBox(
-                            height: 391.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                    shadowColor:
-                                        Colors.transparent.withOpacity(0.4),
-                                    margin: const EdgeInsets.all(2),
-                                    elevation: 2,
-                                    child: const Product_item_widget());
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 391.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                    shadowColor:
-                                        Colors.transparent.withOpacity(0.4),
-                                    margin: const EdgeInsets.all(2),
-                                    elevation: 2,
-                                    child: const Product_item_widget());
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 391.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                    shadowColor:
-                                        Colors.transparent.withOpacity(0.4),
-                                    margin: const EdgeInsets.all(2),
-                                    elevation: 2,
-                                    child: const Product_item_widget());
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 391.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                    shadowColor:
-                                        Colors.transparent.withOpacity(0.4),
-                                    margin: const EdgeInsets.all(2),
-                                    elevation: 2,
-                                    child: const Product_item_widget());
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 391.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                    shadowColor:
-                                        Colors.transparent.withOpacity(0.4),
-                                    margin: const EdgeInsets.all(2),
-                                    elevation: 2,
-                                    child: const Product_item_widget());
-                              },
-                            ),
-                          ),
+  ],
+),
+)
+                       
+                          
+
+                       ,
                           // Container(
                           //   width: double.infinity,
                           //   color: Colors.red,

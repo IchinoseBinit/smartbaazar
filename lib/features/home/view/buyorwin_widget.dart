@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 
 class buyorwin_widget extends StatelessWidget {
   const buyorwin_widget({

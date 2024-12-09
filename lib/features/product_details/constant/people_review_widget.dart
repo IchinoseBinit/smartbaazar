@@ -19,12 +19,15 @@ class PeopleReviewsWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Card(
-            
+                        margin: EdgeInsets.symmetric(horizontal:5.w),
+                        
+
             elevation: 4,
             child: Container(
               width: 200.w,
               
               decoration: BoxDecoration(
+                
                 color: Colors.white,
                   // color: Colors.white,
                   borderRadius:
@@ -32,7 +35,7 @@ class PeopleReviewsWidget extends StatelessWidget {
                         
                       
                       6),
-                      border: Border.all(color: Color(0xffD9D9D9))
+                      border: Border.all(color: const Color(0xffD9D9D9))
                       ),
               padding: const EdgeInsets.all(8),
               child: Column(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 
 class PerksWidget extends StatelessWidget {
@@ -20,9 +18,9 @@ class PerksWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       width: double.infinity,
-      padding: const EdgeInsets.all(8),
+      // padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
           gradient: LinearGradient(colors: [Colors.white, Color(0xFFf3f3f3)])),
       child: Row(
@@ -35,7 +33,7 @@ class PerksWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
                 color: Colors.white,
                 border: Border.all(
-                    width: 1, color: Color(0xffD9D9D9))),
+                    width: 1, color: const Color(0xffD9D9D9))),
             child: Text(
               first,
               style: headerstyle.copyWith(fontSize: 13, color: Colors.black),
@@ -48,7 +46,7 @@ class PerksWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
                 color: Colors.white,
                border: Border.all(
-                    width: 1, color: Color(0xffD9D9D9))),
+                    width: 1, color: const Color(0xffD9D9D9))),
             child: Text(
               second,
               style: headerstyle.copyWith(fontSize: 13, color: Colors.black),
@@ -61,7 +59,7 @@ class PerksWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
                 color: Colors.white,
                border: Border.all(
-                    width: 1, color: Color(0xffD9D9D9))),
+                    width: 1, color: const Color(0xffD9D9D9))),
             child: Text(
               third,
               style: headerstyle.copyWith(fontSize: 13, color: Colors.black),
@@ -74,7 +72,7 @@ class PerksWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(7),
                 color: Colors.white,
                 border: Border.all(
-                    width: 1, color: Color(0xffD9D9D9))),
+                    width: 1, color: const Color(0xffD9D9D9))),
             child: Text(
               fourth,
               style: headerstyle.copyWith(fontSize: 13, color: Colors.black),

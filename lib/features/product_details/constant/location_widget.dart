@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 
 class LocationWidget extends StatelessWidget {
@@ -12,7 +12,7 @@ class LocationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10),
+      margin:  EdgeInsets.symmetric(horizontal: 10.w),
       padding: const EdgeInsets.all(5),
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -41,23 +41,23 @@ class LocationWidget extends StatelessWidget {
                   SizedBox(height: 3.h,),
                   Container(
                     width: 300.w,
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: Color(0xffD9D9D9))),
+                            color: const Color(0xffD9D9D9))),
                     child:  Row(
                       mainAxisAlignment:
                           MainAxisAlignment.spaceBetween,
                       children: [
-                       Row(
+                       const Row(
                         children: [
                            Icon(Icons.location_on),
                         SizedBox(width: 10,),
                         Text("Durbarmarg,Kathmandu"),
                         ],
                        ),
-                         SizedBox(width: 10,),
+                         const SizedBox(width: 10,),
                         
                         Image.asset("assets/images/point.png")
                       ],
@@ -77,7 +77,7 @@ class LocationWidget extends StatelessWidget {
               SizedBox(
                 width: 10.w,
               ),
-                                         Icon(Icons.location_on),
+                                         const Icon(Icons.location_on),
 
               SizedBox(
                 width: 10.w,
