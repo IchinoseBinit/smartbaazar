@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class ProductDetailWidget extends StatelessWidget {
   const ProductDetailWidget({
@@ -12,14 +16,10 @@ class ProductDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 250.w,
-      child: Card(
-        shape: OutlineInputBorder(
-            borderSide: const BorderSide(color: ColorConstant.grayColor),
-            borderRadius: BorderRadius.circular(20)),
-        elevation: 1,
-        shadowColor: ColorConstant.blackColor.withOpacity(0.8),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
+      child: SizedBox(
+        width: 250.w,
         child: Column(
           children: [
             Column(
@@ -45,52 +45,100 @@ class ProductDetailWidget extends StatelessWidget {
                         ],
                       ),
                       PopupMenuButton(
+                        
                         padding: EdgeInsets.zero,
                         elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6))
+                        ),
+                        constraints: const BoxConstraints.expand(
+                            width: 150, height: 150),
+                        menuPadding: EdgeInsets.only(left: 10),
                         iconColor: const Color(0xffB6B4B4),
-                        color: const Color.fromARGB(102, 101, 102, 106),
+                        color: Color(0xff766c7a).withOpacity(0.9),
                         itemBuilder: (context) {
                           return [
                             PopupMenuItem(
+                                height: 30,
+                                padding: EdgeInsets.only(left: 5.w,top: 10.h),
+                                onTap: () {
+                                  Share.share('Cshare this');
+                                },
                                 child: Text(
-                              "Share",
-                              style: headerstyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                            )),
+                                  "Share",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 9,
+                                  ),
+                                )),
                             PopupMenuItem(
+                                height: 30,
+                                padding: EdgeInsets.only(left: 5),
                                 child: Text(
-                              "Save",
-                              style: headerstyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                            )),
+                                  "Save",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 8,
+                                  ),
+                                )),
                             PopupMenuItem(
+                                 height: 30,
+                                padding: EdgeInsets.only(left: 5),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            VendorProfileScreen(),
+                                      ));
+                                },
                                 child: Text(
-                              "Conatct Seller",
-                              style: headerstyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                            )),
+                                  "Conatct Seller",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 8,
+                                  ),
+                                )),
                             PopupMenuItem(
+                                 height: 30,
+                                padding: EdgeInsets.only(left: 5),
                                 child: Text(
-                              "Get Seler Directives",
-                              style: headerstyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                            )),
+                                  "Get Seler Directives",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 8,
+                                  ),
+                                )),
                             PopupMenuItem(
+  height: 30,
+                                padding: EdgeInsets.only(left: 5),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReportComplainScreen(
+                                                productId: "167",
+                                                productName: "techstore"),
+                                      ));
+                                },
                                 child: Text(
-                              "Report",
-                              style: headerstyle.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                            )),
+                                  "Report",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 8,
+                                  ),
+                                )),
                           ];
                         },
                       ),
@@ -117,8 +165,7 @@ class ProductDetailWidget extends StatelessWidget {
                         maxLines: 1,
                       ),
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "RS 60,000",
@@ -151,8 +198,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey,
-                                decoration:
-                                    TextDecoration.lineThrough,
+                                decoration: TextDecoration.lineThrough,
                                 decorationColor: Colors.grey),
                           ),
                         ],
@@ -161,7 +207,8 @@ class ProductDetailWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 5.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -172,8 +219,7 @@ class ProductDetailWidget extends StatelessWidget {
                             backgroundColor: const Color(0xff901B41),
                             child: Text(
                               "129",
-                              style:
-                                  headerstyle.copyWith(fontSize: 10),
+                              style: headerstyle.copyWith(fontSize: 10),
                             ),
                           ),
                           Container(
@@ -181,8 +227,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(5),
                                     bottomRight: Radius.circular(5)),
-                                border:
-                                    Border.all(color: Colors.grey)),
+                                border: Border.all(color: Colors.grey)),
                             child: RatingBar.builder(
                               initialRating: 5,
                               minRating: 1,
@@ -190,8 +235,8 @@ class ProductDetailWidget extends StatelessWidget {
                               allowHalfRating: true,
                               itemCount: 5,
                               itemSize: 12,
-                              itemPadding: const EdgeInsets.symmetric(
-                                  horizontal: 1.0),
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 1.0),
                               itemBuilder: (context, _) => const Icon(
                                 Icons.star,
                                 color: Color(0xff901B41),
@@ -207,12 +252,12 @@ class ProductDetailWidget extends StatelessWidget {
                             "assets/images/flameIcon.png",
                             height: 10,
                             width: 10,
-                             color: const Color(0xff901B41),
+                            color: const Color(0xff901B41),
                           ),
                           Text(
                             "30%",
                             style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w600,
                                 color: const Color(0xff901B41),
                                 fontSize: 10),
                           ),
@@ -235,8 +280,7 @@ class ProductDetailWidget extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  'assets/icon/Rectangle.png'),
+                              Image.asset('assets/icon/Rectangle.png'),
                               const Text("78")
                             ],
                           )
@@ -269,8 +313,8 @@ class ProductDetailWidget extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 15.w, vertical: 3.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
                   decoration: const BoxDecoration(color: Colors.grey),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,21 +376,23 @@ class ProductDetailWidget extends StatelessWidget {
                                 AssetImage("assets/images/power.png"),
                           ),
                           Column(
-                            mainAxisAlignment:
-                                MainAxisAlignment.start,
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(width: 4.w,),
+                                  SizedBox(
+                                    width: 4.w,
+                                  ),
                                   Text(
                                     "Dozoko",
                                     style: headerstyle.copyWith(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(width: 4.w,),
+                                  SizedBox(
+                                    width: 4.w,
+                                  ),
                                   const Icon(
                                     Icons.logout,
                                     color: Colors.white,
@@ -356,12 +402,16 @@ class ProductDetailWidget extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  SizedBox(width: 4.w,),
+                                  SizedBox(
+                                    width: 4.w,
+                                  ),
                                   Image.asset(
-                                      "assets/images/nepalFlag.png",
-                                      height: 9.h,
-                                      ),
-                                      SizedBox(width: 4.w,),
+                                    "assets/images/nepalFlag.png",
+                                    height: 9.h,
+                                  ),
+                                  SizedBox(
+                                    width: 4.w,
+                                  ),
                                   Text(
                                     "DOMESTIC BRAND",
                                     style: headerstyle.copyWith(
@@ -386,8 +436,7 @@ class ProductDetailWidget extends StatelessWidget {
                               Text(
                                 "2.5 km",
                                 style: headerstyle.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 12, fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),
@@ -397,8 +446,7 @@ class ProductDetailWidget extends StatelessWidget {
                               Text(
                                 "SPONSERED",
                                 style: headerstyle.copyWith(
-                                    fontSize: 7,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 7, fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),

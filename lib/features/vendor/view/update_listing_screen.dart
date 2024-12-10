@@ -500,7 +500,7 @@ class _UpdateListingState extends State<UpdateListing> {
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<CityList>(
-                              items: []!,
+                              items: [],
                               dropdownValue: null,
                               onChanged: (newValue) {
                                 setState(() {
@@ -542,7 +542,7 @@ class _UpdateListingState extends State<UpdateListing> {
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<CityList>(
-                              items: []!,
+                              items: [],
                               dropdownValue: null,
                               onChanged: (newValue) {
                                 setState(() {
@@ -584,7 +584,7 @@ class _UpdateListingState extends State<UpdateListing> {
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<CityList>(
-                              items: []!,
+                              items: [],
                               dropdownValue: null,
                               onChanged: (newValue) {
                                 setState(() {
@@ -907,7 +907,7 @@ class _UpdateListingState extends State<UpdateListing> {
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<CityList>(
-                              items: []!,
+                              items: [],
                               dropdownValue: null,
                               onChanged: (newValue) {
                                 setState(() {
@@ -950,7 +950,7 @@ class _UpdateListingState extends State<UpdateListing> {
                       SizedBox(
                         height: 15.h,
                       ),
-                      bulk_discount_widget()
+                      const bulk_discount_widget()
                     ],
                   ),
                 ),
@@ -1196,7 +1196,7 @@ class _UpdateListingState extends State<UpdateListing> {
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<ShippingCitiesModel>(
-                            items: [],
+                            items: const [],
                             dropdownValue: null,
                             onChanged: (newValue) {
                               setState(() {

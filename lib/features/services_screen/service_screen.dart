@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
@@ -26,7 +27,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
-  int? selectedIndex = 1;
+  int? selectedIndex = 3;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 0;
@@ -134,6 +135,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
+      bottomNavigationBar: BottomNavigationScreen(),
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
@@ -167,7 +169,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           const SizedBox(
                             width: 20,
                           ),
-                          const SizedBox(height: 50, child: NewSearchWidget()),
+                           SizedBox(height: 50, child: NewSearchWidget(
+                            onchnage: (p0) {
+                              
+                            },
+                           )),
                         ],
                       ),
                       SizedBox(

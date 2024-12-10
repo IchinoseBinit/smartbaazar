@@ -4,6 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,6 +15,8 @@ class MyApp extends StatelessWidget {
 }
 
 class CarouselDemo extends StatefulWidget {
+  const CarouselDemo({super.key});
+
   @override
   _CarouselDemoState createState() => _CarouselDemoState();
 }
@@ -27,7 +31,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Carousel with Buttons & Dots'),
+        title: const Text('Carousel with Buttons & Dots'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +44,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
                 color: Colors.blueAccent,
                 child: Text(
                   item,
-                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  style: const TextStyle(fontSize: 24, color: Colors.white),
                 ),
               );
             }).toList(),
@@ -56,14 +60,14 @@ class _CarouselDemoState extends State<CarouselDemo> {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: _items.asMap().entries.map((entry) {
               return Container(
                 width: 12.0,
                 height: 12.0,
-                margin: EdgeInsets.symmetric(horizontal: 4.0),
+                margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: _currentIndex == entry.key ? Colors.blue : Colors.grey,
@@ -71,7 +75,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
               );
             }).toList(),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -80,25 +84,25 @@ class _CarouselDemoState extends State<CarouselDemo> {
                   if (_currentIndex > 0) {
                     _carouselController.animateToPage(
                       _currentIndex - 1, // Move to previous slide
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
                   }
                 },
-                child: Text('Previous'),
+                child: const Text('Previous'),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_currentIndex < _items.length - 1) {
                     _carouselController.animateToPage(
                       _currentIndex + 1, // Move to next slide
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
                   }
                 },
-                child: Text('Next'),
+                child: const Text('Next'),
               ),
             ],
           ),

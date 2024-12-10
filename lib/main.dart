@@ -8,6 +8,7 @@ import 'package:smartbazar/features/home/view/hawa.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/product_screen/view/product_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';

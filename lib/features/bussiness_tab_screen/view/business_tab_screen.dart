@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
@@ -95,8 +96,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // bottomNavigationBar: BottomNavigationScreen(),
       body: SingleChildScrollView(
+        
+
         child: DefaultTabController(
+          
           length: 4,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -127,7 +132,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                         const SizedBox(
                           width: 20,
                         ),
-                        const SizedBox(height: 50, child: NewSearchWidget()),
+                         SizedBox(height: 50, child: NewSearchWidget(onchnage: (p0) {
+                          
+                        },)),
                       ],
                     ),
                     SizedBox(

@@ -5,10 +5,12 @@ import 'package:smartbazar/features/feed_page/widget/story_screen.dart';
 class StoryAddWidget extends StatelessWidget {
   final int index;
   bool? showgift;
+  bool? addSearch;
   StoryAddWidget({
     super.key,
     required this.index,
     this.showgift = false,
+    this.addSearch=false
   });
 
   @override
@@ -22,24 +24,20 @@ class StoryAddWidget extends StatelessWidget {
           clipBehavior: Clip.none, // This prevents clipping of child widgets
           children: [
             Positioned(
-                child: 
-                
-                Container(
-              margin: EdgeInsets.symmetric(horizontal: 5.w),
-              padding: const EdgeInsets.all(40),
-              decoration: BoxDecoration(
-                border: Border.all(width: 4, color: const Color(0xffEACACB)),
-                shape: BoxShape.circle,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                padding: const EdgeInsets.all(40),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 4, color: const Color(0xffEACACB)),
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),
-            
-            
             ),
 
             // Positioned(child: Container())
             Positioned(
-              left: 4,
-              bottom: 1,
+              left: 1,
+              bottom: 0,
               child: Column(
                 children: [
                   GestureDetector(
@@ -53,15 +51,13 @@ class StoryAddWidget extends StatelessWidget {
                       );
                     },
                     child: CircleAvatar(
-                      radius: 39,
+                      radius: 40,
                       backgroundColor:
                           const Color(0x7F7F7F73).withOpacity(0.45),
-                      child: ClipOval(
-                        child: Image.asset(
+                      child: CircleAvatar(
+                        radius: 38,
+                        backgroundImage: AssetImage(
                           "assets/images/reebok.png",
-                          fit: BoxFit.cover,
-                          width: 90,
-                          height: 90,
                         ),
                       ),
                     ),
@@ -83,6 +79,26 @@ class StoryAddWidget extends StatelessWidget {
                 ],
               ),
             ),
+           addSearch!?
+           Positioned(
+                    bottom: 15,
+                    right: 0,
+                    left: 0,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(2),
+                      child: const Icon(
+                        Icons.search,
+                        color: Color(0xffAA0018),
+                        size: 24, // Set the size of the icon
+                      ),
+                    ),
+                  ):
+
+
             showgift!
                 ? Positioned(
                     bottom: 15,
@@ -101,23 +117,7 @@ class StoryAddWidget extends StatelessWidget {
                       ),
                     ),
                   )
-                : Positioned(
-                    bottom: 15,
-                    right: 0,
-                    left: 0,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(2),
-                      child: const Icon(
-                        Icons.search,
-                        color: Colors.red,
-                        size: 24, // Set the size of the icon
-                      ),
-                    ),
-                  )
+                : SizedBox()
           ],
         ),
       ],

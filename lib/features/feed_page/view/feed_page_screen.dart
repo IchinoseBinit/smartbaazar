@@ -36,7 +36,7 @@ class FeedScreen extends ConsumerWidget {
                     const SizedBox(
                       height: 40,
                     ),
-                    const Row(
+                     Row(
                       children: [
                         SizedBox(
                           width: 10,
@@ -48,7 +48,11 @@ class FeedScreen extends ConsumerWidget {
                         SizedBox(
                           width: 30,
                         ),
-                        SizedBox(height: 50, child: NewSearchWidget()),
+                        SizedBox(height: 50, child: NewSearchWidget(
+                          onchnage: (p0) {
+                            
+                          },
+                        )),
                       ],
                     ),
                     SizedBox(

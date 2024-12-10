@@ -13,6 +13,9 @@ import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
+import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/offline_listing/offline_lisiting_screen.dart';
@@ -114,6 +117,19 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": '',
       "screen": const DisputesScreen(),
     },
+     {
+      "icon": Icons.emergency,
+      "title": 'Hot',
+      "subtitle": 'Products',
+      "screen": HotViewScreen(),
+    },
+       {
+      "icon": Icons.card_membership,
+      "title": 'Mermbership',
+      "subtitle": '',
+      "screen": LeftArrowScreen(),
+    },
+    
   ];
   final List<Map<String, dynamic>> sellerCenterListing = [
     {
@@ -188,6 +204,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": 'Bazar',
       "screen": const BottomNavigationScreen(),
     },
+      {
+      "icon": Icons.feed,
+      "title": 'Create',
+      "subtitle": 'Feed',
+      "screen": FeedScreen(),
+    },
+
   ];
 
   final List<Map<String, dynamic>> accointProfileList = [

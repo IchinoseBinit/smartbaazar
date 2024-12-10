@@ -4,7 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 
 class NewSearchWidget extends StatefulWidget {
-  const NewSearchWidget({super.key});
+   NewSearchWidget({super.key,required this.onchnage});
+  Function(String)? onchnage;
 
   @override
   State<NewSearchWidget> createState() => _NewSearchWidgetState();
@@ -65,18 +66,19 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
             padding: const EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
+              onChanged: widget.onchnage,
               decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search,
-              size: 25,
-              color: Color(0xffD9D9D9),
-              ),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  size: 25,
+                  color: Color(0xffD9D9D9),
+                ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
                 hintText: "Search Services",
-                hintStyle: TextStyle(fontSize: 13.sp,
-                color: const Color(0xffD9D9D9)
-                ),
+                hintStyle:
+                    TextStyle(fontSize: 13.sp, color: const Color(0xffD9D9D9)),
                 isCollapsed: true,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -125,7 +127,6 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, dynamic>>(
-       
         value: dropdownValue ?? items[0],
         onChanged: (newValue) {
           setState(() {
