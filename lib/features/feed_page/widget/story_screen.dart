@@ -188,7 +188,7 @@ class _StoryScreenState extends State<StoryScreen>
                   return Stack(
                     children: [
                       // Image
-                      Container(
+                      SizedBox(
                         width: double.infinity,
                         height: double.infinity,
                         child: Image.asset(
@@ -406,7 +406,7 @@ class _StoryScreenState extends State<StoryScreen>
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.whatshot,
                                 size: 50,
                                 color: Colors.orange,
@@ -435,7 +435,7 @@ class _StoryScreenState extends State<StoryScreen>
                                     color: Colors.white, fontSize: 10.sp),
                               ),
                               SizedBox(height: 10.h),
-                              Row(
+                              const Row(
                                 children: [
                                   Icon(
                                     Icons.check_box_outlined,

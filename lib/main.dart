@@ -1,13 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
-import 'package:smartbazar/features/vendor_details/widgets/account_details_widget.dart';
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);
@@ -30,17 +26,18 @@ class _MyAppState extends State<MyApp> {
       designSize: const Size(430, 690),
       splitScreenMode: true,
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          // textTheme: GoogleFonts.quicksandTextTheme(
-          //   Theme.of(context).textTheme,
-          // ),
-          fontFamily: GoogleFonts.quicksand().fontFamily,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: VendroDetailsScreen(),
-      ),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // textTheme: GoogleFonts.quicksandTextTheme(
+            //   Theme.of(context).textTheme,
+            // ),
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SplashScreen()
+          // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
+          ),
     );
   }
 }

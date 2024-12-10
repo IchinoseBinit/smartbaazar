@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 
 class buyorwin_widget extends StatelessWidget {
   const buyorwin_widget({
@@ -18,7 +18,7 @@ class buyorwin_widget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         child: Container(
             margin: const EdgeInsets.only(top: 5),
-            height: 300.h,
+            height: 320.h,
             width: 200.w,
             padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
@@ -243,10 +243,11 @@ class buyorwin_widget extends StatelessWidget {
                                   color: Colors.black, fontSize: 12),
                             )
                           ],
-                        )
+                        ),
+                        SizedBox(height: 10.h,)
                       ],
                     )),
-                    SizedBox(height: 5.h,),
+                    SizedBox(height: 10.h,),
               ],
             )),
       ),

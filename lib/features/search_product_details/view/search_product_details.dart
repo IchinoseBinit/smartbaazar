@@ -35,15 +35,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   };
   String dropdownValue = 'sort-type';
   bool _showSearchResults = false;
-    final _debouncer = BehaviorSubject<String>();
-
+  final _debouncer = BehaviorSubject<String>();
 
   @override
   void initState() {
     super.initState();
     _query = widget.query;
-    _searchController.text= _searchController.text.isEmpty? _query:_searchController.text;
-     _searchController.addListener(() {
+    _searchController.text =
+        _searchController.text.isEmpty ? _query : _searchController.text;
+    _searchController.addListener(() {
       _debouncer.add(_searchController.text);
     });
 
@@ -55,16 +55,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       });
     });
   }
-    void _onSearchFocusChanged(bool hasFocus) {
+
+  void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
       _showSearchResults = hasFocus;
     });
   }
 
-    int selectedTabIndex = 0;
+  int selectedTabIndex = 0;
   @override
   Widget build(BuildContext context) {
-      final searchResults = ref.watch(searchProvider(_searchController.text));
+    final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
     return GenericSafeArea(
       child: DefaultTabController(
@@ -73,7 +74,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           drawer: const CustomDrawer(),
           key: _key,
           appBar: AppbarWidget(
-                    serchontap: () {
+            serchontap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -82,37 +83,34 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     ),
                   ));
             },
-          onsubmit: (value) {
-               if (_showSearchResults) {
-              setState(() {
-                _showSearchResults = false;
-                FocusScope.of(context).unfocus();
-              });
-            }
-                        // setState(() {
-                        //      ref.watch(GetSearchDetailsProvider(value));
-                        // });
-
+            onsubmit: (value) {
+              if (_showSearchResults) {
+                setState(() {
+                  _showSearchResults = false;
+                  FocusScope.of(context).unfocus();
+                });
+              }
+              // setState(() {
+              //      ref.watch(GetSearchDetailsProvider(value));
+              // });
             },
             scaffoldKey: _key,
             searchController: _searchController,
             onCartTap: () {
-                  Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AddToCartScreen(),
-              ),
-            );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const AddToCartScreen(),
+                ),
+              );
             },
-            onSearchFocusChanged: (p0) {
-            },
+            onSearchFocusChanged: (p0) {},
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                
-           if (_showSearchResults)
+              if (_showSearchResults)
                 Positioned(
                   top: 0.h, // Position just below the search bar
                   left: 0,
@@ -142,7 +140,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SearchScreen(
-                                          query:_searchController.text,
+                                          query: _searchController.text,
                                         ),
                                       ));
 
@@ -204,9 +202,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ],
               ),
               TabBar(
-
                 tabAlignment: TabAlignment.start,
-                 isScrollable: true,
+                isScrollable: true,
                 onTap: (index) {
                   setState(() {
                     selectedTabIndex = index;

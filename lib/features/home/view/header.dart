@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_screen/view/product_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 class NewSearchWidget extends StatefulWidget {
   const NewSearchWidget({super.key});
@@ -74,11 +66,17 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
               decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search,
+              size: 25,
+              color: Color(0xffD9D9D9),
+              ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
                 hintText: "Search Services",
-                hintStyle: TextStyle(fontSize: 10.sp),
+                hintStyle: TextStyle(fontSize: 13.sp,
+                color: const Color(0xffD9D9D9)
+                ),
                 isCollapsed: true,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -127,12 +125,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, dynamic>>(
-        selectedItemBuilder: (context) {
-          return [
-            
-            
-          ];
-        },
+       
         value: dropdownValue ?? items[0],
         onChanged: (newValue) {
           setState(() {

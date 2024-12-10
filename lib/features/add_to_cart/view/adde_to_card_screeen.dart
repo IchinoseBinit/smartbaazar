@@ -9,7 +9,6 @@ import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 
 class AddToCartScreen extends ConsumerStatefulWidget {
   const AddToCartScreen({super.key});
