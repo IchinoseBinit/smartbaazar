@@ -396,21 +396,26 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                   //         onPressed: () {},
                   //         icon: const Icon(Icons.add_circle))),
                   SizedBox(height: 10.2.h),
-                  CustomTextFieldWidget(
-                    fill: true,
-                    fillColor: const Color(0xFFF6F2F2),
-                    // fillColor: const Color(0xFFF3F3F3),
-                    icon: Icons.watch_later_outlined,
-                    textInputType: TextInputAction.next,
-                    hintText: "Opening Hours",
-                    onChanged: (value) => openingHours = value,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your opening hours';
-                      }
-                      return null;
-                    },
+                  SizedBox(
+                    height: 350.h,
+                    child: const OpeningHoursWidget(),
                   ),
+                  // CustomTextFieldWidget(
+                  //   fill: true,
+                  //   fillColor: const Color(0xFFF6F2F2),
+                  //   // fillColor: const Color(0xFFF3F3F3),
+                  //   icon: Icons.watch_later_outlined,
+                  //   textInputType: TextInputAction.next,
+                  //   hintText: "Opening Hours",
+                  //   onChanged: (value) => openingHours = value,
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Enter your opening hours';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
+
                   SizedBox(height: 10.2.h),
                   TextFormField(
                     decoration: InputDecoration(
@@ -454,6 +459,211 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class OpeningHoursWidget extends StatefulWidget {
+  const OpeningHoursWidget({super.key});
+  @override
+  State<OpeningHoursWidget> createState() => _OpeningHoursWidgetState();
+}
+
+class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
+  final List<String> timeSlots = List.generate(
+      96,
+      (index) =>
+          '${(index ~/ 4).toString().padLeft(2, '0')}:${(index % 4) * 15} ${index < 48 ? 'AM' : 'PM'}');
+
+  final Map<String, Map<String, dynamic>> openingHours = {
+    'Sun': {'from': null, 'to': null, 'closed': false},
+    'Mon': {'from': null, 'to': null, 'closed': false},
+    'Tues': {'from': null, 'to': null, 'closed': false},
+    'Wed': {'from': null, 'to': null, 'closed': false},
+    'Thurs': {'from': null, 'to': null, 'closed': false},
+    'Fri': {'from': null, 'to': null, 'closed': false},
+    'Sat': {'from': null, 'to': null, 'closed': false},
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 10.w,
+            ),
+            Icon(
+              Icons.watch_later_outlined,
+              size: 28.sp,
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Text(
+              "Opening Hours",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
+            )
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const Spacer(
+                flex: 1,
+              ),
+              Text(
+                "From",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: 60.w,
+              ),
+              Text(
+                "To",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(
+                flex: 2,
+              ),
+            ],
+          ),
+        ),
+
+        // ListView Section
+        Expanded(
+          child: ListView.builder(
+            itemCount: openingHours.keys.length,
+            itemBuilder: (context, index) {
+              String day = openingHours.keys.elementAt(index);
+              return Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                    day,
+                    style:
+                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                  )),
+                  if (!openingHours[day]!['closed'])
+                    Expanded(
+                      child: Container(
+                        height: 20.h,
+                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border:
+                                Border.all(width: 1, color: Colors.black12)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: false,
+                            alignment: AlignmentDirectional.centerEnd,
+                            value: openingHours[day]!['from'],
+                            // hint: Text(
+                            //   'From',
+                            //   style: TextStyle(fontSize: 12.sp),
+                            // ),
+                            onChanged: (value) {
+                              setState(() {
+                                openingHours[day]!['from'] = value;
+                              });
+                            },
+                            items: timeSlots
+                                .map((time) => DropdownMenuItem(
+                                      alignment: Alignment.center,
+                                      value: time,
+                                      child: Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: Text(
+                                          time,
+                                          style: TextStyle(fontSize: 10.sp),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                            menuMaxHeight: 300.h,
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (!openingHours[day]!['closed'])
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                  if (!openingHours[day]!['closed'])
+                    Expanded(
+                      child: Container(
+                        height: 20.h,
+                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border:
+                                Border.all(width: 1, color: Colors.black12)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: openingHours[day]!['to'],
+                            // hint: Text(
+                            //   'To',
+                            //   style: TextStyle(fontSize: 12.sp),
+                            // ),
+                            onChanged: (value) {
+                              setState(() {
+                                openingHours[day]!['to'] = value;
+                              });
+                            },
+                            items: timeSlots
+                                .map((time) => DropdownMenuItem(
+                                      alignment: Alignment.center,
+                                      value: time,
+                                      child: Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: Text(
+                                          time,
+                                          style: TextStyle(fontSize: 10.sp),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                            menuMaxHeight: 300.h,
+                          ),
+                        ),
+                      ),
+                    ),
+                  Checkbox(
+                    value: openingHours[day]!['closed'],
+                    onChanged: (value) {
+                      setState(() {
+                        openingHours[day]!['closed'] = value!;
+                        if (value) {
+                          openingHours[day]!['from'] = null;
+                          openingHours[day]!['to'] = null;
+                        }
+                      });
+                    },
+                  ),
+                  Text(
+                    "Closed",
+                    style:
+                        TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                  )
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
+import 'package:smartbazar/features/vendor_details/widgets/account_details_widget.dart';
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const FeedScreen(),
+        home: VendroDetailsScreen(),
       ),
     );
   }
