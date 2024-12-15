@@ -731,7 +731,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         .similarproductCount,
                                                     membershipColor: prod
                                                         .user.first.memberColor,
-                                                         membershipTitle: prod.user.first.membershipTitle,
+                                                    membershipTitle: prod.user
+                                                        .first.membershipTitle,
                                                   ),
                                                 );
                                               },
@@ -811,7 +812,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             .user
                                                             .first
                                                             .memberColor,
-                                                             membershipTitle: prod.user.first.membershipTitle,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membershipTitle,
                                                       ),
                                                     );
                                                   },
@@ -877,7 +881,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         .similarproductCount,
                                                     membershipColor: prod
                                                         .user.first.memberColor,
-                                                         membershipTitle: prod.user.first.membershipTitle,
+                                                    membershipTitle: prod.user
+                                                        .first.membershipTitle,
                                                   ),
                                                 );
                                               },
@@ -920,8 +925,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           prefs.similarProductCount,
                                       membershipColor:
                                           prefs.userDetails!.memberColor,
-                                           membershipTitle: prefs.userDetails!.membershipTitle,
-                              
+                                      membershipTitle:
+                                          prefs.userDetails!.membershipTitle,
                                     );
                                   },
                                 ),
@@ -1049,7 +1054,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 prefs.similarProductCount,
                                             membershipColor:
                                                 prefs.userdetails!.memberColor,
-                                                membershipTitle: prefs.userdetails!.membershipTitle,
+                                            membershipTitle: prefs
+                                                .userdetails!.membershipTitle,
                                           );
                                         },
                                       ),
@@ -1144,7 +1150,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           .similarProductCount,
                                       membershipColor: data
                                           .allProducts[index].user.memberColor,
-                                          membershipTitle: data.allProducts[index].user.membershipTitle,
+                                      membershipTitle: data.allProducts[index]
+                                          .user.membershipTitle,
                                     ),
                                   );
                                 },
