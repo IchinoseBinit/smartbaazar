@@ -87,8 +87,6 @@ _$VendorUserImpl _$$VendorUserImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       name: json['name'] as String?,
       photo: json['photo'] as String?,
-      memberColor: json['membership_color'] as String?,
-      membershipTitle: json['membership_title'] as String?,
     );
 
 Map<String, dynamic> _$$VendorUserImplToJson(_$VendorUserImpl instance) =>
@@ -96,6 +94,18 @@ Map<String, dynamic> _$$VendorUserImplToJson(_$VendorUserImpl instance) =>
       'id': instance.id,
       'name': instance.name,
       'photo': instance.photo,
+    };
+
+_$VendorUserDetailImpl _$$VendorUserDetailImplFromJson(
+        Map<String, dynamic> json) =>
+    _$VendorUserDetailImpl(
+      memberColor: json['membership_color'] as String?,
+      membershipTitle: json['membership_title'] as String?,
+    );
+
+Map<String, dynamic> _$$VendorUserDetailImplToJson(
+        _$VendorUserDetailImpl instance) =>
+    <String, dynamic>{
       'membership_color': instance.memberColor,
       'membership_title': instance.membershipTitle,
     };

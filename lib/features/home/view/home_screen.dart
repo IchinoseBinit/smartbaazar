@@ -1148,10 +1148,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       similarproductCount: data
                                           .allProducts[index]
                                           .similarProductCount,
-                                      membershipColor: data
-                                          .allProducts[index].user.memberColor,
+                                      membershipColor: data.allProducts[index]
+                                          .userDetail.memberColor,
                                       membershipTitle: data.allProducts[index]
-                                          .user.membershipTitle,
+                                          .userDetail.membershipTitle,
                                     ),
                                   );
                                 },
