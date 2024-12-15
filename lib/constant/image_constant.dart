@@ -5,6 +5,7 @@ import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 final List<Map<String, dynamic>> items = [
@@ -31,7 +32,7 @@ final List<Map<String, dynamic>> items = [
     {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
-      'screen': const HomeScreen()
+      'screen': const SocioShopScreen()
     },
   
      {

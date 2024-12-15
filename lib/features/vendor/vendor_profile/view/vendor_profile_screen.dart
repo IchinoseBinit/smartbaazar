@@ -121,13 +121,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.emergency,
       "title": 'Hot',
       "subtitle": 'Products',
-      "screen": HotViewScreen(),
+      "screen": const HotViewScreen(),
     },
        {
       "icon": Icons.card_membership,
       "title": 'Mermbership',
       "subtitle": '',
-      "screen": LeftArrowScreen(),
+      "screen": const LeftArrowScreen(),
     },
     
   ];
@@ -208,7 +208,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.feed,
       "title": 'Create',
       "subtitle": 'Feed',
-      "screen": FeedScreen(),
+      "screen": const FeedScreen(),
     },
 
   ];

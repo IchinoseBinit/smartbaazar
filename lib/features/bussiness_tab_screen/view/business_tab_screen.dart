@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
@@ -98,10 +97,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     return Scaffold(
       // bottomNavigationBar: BottomNavigationScreen(),
       body: SingleChildScrollView(
-        
-
         child: DefaultTabController(
-          
           length: 4,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -132,9 +128,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                         const SizedBox(
                           width: 20,
                         ),
-                         SizedBox(height: 50, child: NewSearchWidget(onchnage: (p0) {
-                          
-                        },)),
+                        SizedBox(
+                            height: 50,
+                            child: NewSearchWidget(
+                              onchnage: (p0) {},
+                            )),
                       ],
                     ),
                     SizedBox(
@@ -309,7 +307,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 25.w),
+                    padding: EdgeInsets.symmetric(horizontal: 25.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -364,7 +362,6 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     tabs: [
                       Tab(
-                        
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -377,10 +374,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   color: ColorConstant.blackColor),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 5),
                               margin: EdgeInsets.only(left: 5.h),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5),
                                   color: const Color(0xff781740)),
                               child: Text(
                                 "21",
@@ -390,8 +388,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                           ],
                         ),
                       ),
-                       Tab(
-                        
+                      Tab(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -404,10 +401,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   color: ColorConstant.blackColor),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 5),
                               margin: EdgeInsets.only(left: 5.h),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5),
                                   color: const Color(0xff362677)),
                               child: Text(
                                 "10",
@@ -417,8 +415,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                           ],
                         ),
                       ),
-                       Tab(
-                        
+                      Tab(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -431,10 +428,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   color: ColorConstant.blackColor),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 5),
                               margin: EdgeInsets.only(left: 5.h),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5),
                                   color: const Color(0xff362677)),
                               child: Text(
                                 "5",
@@ -445,7 +443,6 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                         ),
                       ),
                       Tab(
-                        
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -458,10 +455,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   color: ColorConstant.blackColor),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 7, vertical: 5),
                               margin: EdgeInsets.only(left: 5.h),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(5),
                                   color: const Color(0xff362677)),
                               child: Text(
                                 "5",
@@ -473,81 +471,84 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                       ),
                     ],
                   ),
-                  SizedBox(height: 2000.h,
-                  width: double.infinity,
-                  child: TabBarView(
-                    children: [
-                   const Column(
-                     children: [
-                       big_container(),
-                        big_container(),
-                         big_container(),
-                     ],
-                   ),
-                   Column(
-                    children: [
+                  SizedBox(
+                    height: 2000.h,
+                    width: double.infinity,
+                    child: TabBarView(children: [
+                      const Column(
+                        children: [
+                          big_container(),
+                          big_container(),
+                          big_container(),
+                        ],
+                      ),
+                      Column(
+                        children: [
                           SizedBox(
-        height: 360.h,
-        width: double.infinity,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          clipBehavior: Clip.antiAlias,
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Card(
-              shadowColor: Colors.transparent.withOpacity(0.4),
-              margin: const EdgeInsets.all(2),
-              elevation: 1,
-              child: const ProductDetailWidget(),
-            );
-          },
-        ),
-      ),
-          SizedBox(
-        height: 360.h,
-        width: double.infinity,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          clipBehavior: Clip.antiAlias,
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Card(
-              shadowColor: Colors.transparent.withOpacity(0.4),
-              margin: const EdgeInsets.all(2),
-              elevation: 1,
-              child: const ProductDetailWidget(),
-            );
-          },
-        ),
-      ),
-          SizedBox(
-        height: 360.h,
-        width: double.infinity,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          clipBehavior: Clip.antiAlias,
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Card(
-              shadowColor: Colors.transparent.withOpacity(0.4),
-              margin: const EdgeInsets.all(2),
-              elevation: 1,
-              child: const ProductDetailWidget(),
-            );
-          },
-        ),
-      ),
-                    ],
-                   ),
-                    const Text("data"),
-                    const Text("data")
-                  ]),
+                            height: 360.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  shadowColor:
+                                      Colors.transparent.withOpacity(0.4),
+                                  margin: const EdgeInsets.all(2),
+                                  elevation: 1,
+                                  child: ProductDetailWidget(),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 360.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  shadowColor:
+                                      Colors.transparent.withOpacity(0.4),
+                                  margin: const EdgeInsets.all(2),
+                                  elevation: 1,
+                                  child: ProductDetailWidget(),
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 360.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  shadowColor:
+                                      Colors.transparent.withOpacity(0.4),
+                                  margin: const EdgeInsets.all(2),
+                                  elevation: 1,
+                                  child: ProductDetailWidget(),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Text("data"),
+                      const Text("data")
+                    ]),
                   )
                 ],
               )

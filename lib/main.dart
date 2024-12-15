@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/home/view/hawa.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/product_screen/view/product_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
-import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
-import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
-
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);
@@ -36,18 +36,18 @@ class _MyAppState extends State<MyApp> {
       designSize: const Size(430, 690),
       splitScreenMode: true,
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          // textTheme: GoogleFonts.quicksandTextTheme(
-          //   Theme.of(context).textTheme,
-          // ),
-          fontFamily: GoogleFonts.quicksand().fontFamily,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: SplashScreen()
-        // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
-      ),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // textTheme: GoogleFonts.quicksandTextTheme(
+            //   Theme.of(context).textTheme,
+            // ),
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const HomeScreen()
+          // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
+          ),
     );
   }
 }

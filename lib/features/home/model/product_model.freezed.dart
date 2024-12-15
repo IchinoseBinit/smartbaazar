@@ -20,14 +20,70 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Product {
-  String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get price => throw _privateConstructorUsedError;
-  String get image => throw _privateConstructorUsedError;
-  String get visits => throw _privateConstructorUsedError;
-  double get avg_rating => throw _privateConstructorUsedError;
-  String get contact_name => throw _privateConstructorUsedError;
-  String? get pickup => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError; // String? country_code,
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get category_id => throw _privateConstructorUsedError;
+  String? get post_type_id => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  String? get tags => throw _privateConstructorUsedError;
+  String? get price => throw _privateConstructorUsedError;
+  String? get negotiable => throw _privateConstructorUsedError;
+  String? get contact_name =>
+      throw _privateConstructorUsedError; // String? email,
+// String? phone,
+// String? phone_hidden,
+// String? address,
+// String? city_id,
+// String? lon,
+// String? lat,
+// String? ip_addr,
+// String? length,
+// String? width,
+// String? weight,
+// String? height,
+  String? get pickup =>
+      throw _privateConstructorUsedError; // String? longitude,
+// String? latitude,
+// String? hyper_del,
+// String? seller_del,
+  String? get visits => throw _privateConstructorUsedError;
+  String? get email_token =>
+      throw _privateConstructorUsedError; // String? phone_token,
+// String? tmp_token,
+// String? verified_email,
+// String? verified_phone,
+// String? accept_terms,
+// String? accept_marketing_offers,
+// String? is_permanent,
+// String? reviewed,
+// String? featured,
+// String? archived,
+// String? archived_at,
+// String? archived_manually,
+// String? deletion_mail_sent_at,
+// String? fb_profile,
+// String? partner,
+// String? discounted_price,
+// String? trending,
+// String? stock,
+// String? min_order,
+// String? samp_price,
+// String? text_one,
+// String? text_two,
+// String? ava_to,
+// String? branded,
+// String? wow,
+// String? offers,
+// String? story_display_days,
+// String? barcode,
+// String? b2b_pricing,
+// String? deleted_at,
+// String? created_at,
+// String? updated_at,
+  String? get image => throw _privateConstructorUsedError;
+  double? get avg_rating => throw _privateConstructorUsedError;
+  List<dynamic>? get savedByLoggedUser => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,14 +96,22 @@ abstract class $ProductCopyWith<$Res> {
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
   $Res call(
-      {String id,
-      String title,
-      String price,
-      String image,
-      String visits,
-      double avg_rating,
-      String contact_name,
-      String? pickup});
+      {String? id,
+      String? user_id,
+      String? category_id,
+      String? post_type_id,
+      String? title,
+      String? description,
+      String? tags,
+      String? price,
+      String? negotiable,
+      String? contact_name,
+      String? pickup,
+      String? visits,
+      String? email_token,
+      String? image,
+      double? avg_rating,
+      List<dynamic>? savedByLoggedUser});
 }
 
 /// @nodoc
@@ -63,48 +127,88 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? price = null,
-    Object? image = null,
-    Object? visits = null,
-    Object? avg_rating = null,
-    Object? contact_name = null,
+    Object? id = freezed,
+    Object? user_id = freezed,
+    Object? category_id = freezed,
+    Object? post_type_id = freezed,
+    Object? title = freezed,
+    Object? description = freezed,
+    Object? tags = freezed,
+    Object? price = freezed,
+    Object? negotiable = freezed,
+    Object? contact_name = freezed,
     Object? pickup = freezed,
+    Object? visits = freezed,
+    Object? email_token = freezed,
+    Object? image = freezed,
+    Object? avg_rating = freezed,
+    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
+              as String?,
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category_id: freezed == category_id
+          ? _value.category_id
+          : category_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      post_type_id: freezed == post_type_id
+          ? _value.post_type_id
+          : post_type_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
+              as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tags: freezed == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as String,
-      image: null == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String,
-      visits: null == visits
-          ? _value.visits
-          : visits // ignore: cast_nullable_to_non_nullable
-              as String,
-      avg_rating: null == avg_rating
-          ? _value.avg_rating
-          : avg_rating // ignore: cast_nullable_to_non_nullable
-              as double,
-      contact_name: null == contact_name
+              as String?,
+      negotiable: freezed == negotiable
+          ? _value.negotiable
+          : negotiable // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contact_name: freezed == contact_name
           ? _value.contact_name
           : contact_name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       pickup: freezed == pickup
           ? _value.pickup
           : pickup // ignore: cast_nullable_to_non_nullable
               as String?,
+      visits: freezed == visits
+          ? _value.visits
+          : visits // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email_token: freezed == email_token
+          ? _value.email_token
+          : email_token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      avg_rating: freezed == avg_rating
+          ? _value.avg_rating
+          : avg_rating // ignore: cast_nullable_to_non_nullable
+              as double?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value.savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>?,
     ) as $Val);
   }
 }
@@ -117,14 +221,22 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
-      String title,
-      String price,
-      String image,
-      String visits,
-      double avg_rating,
-      String contact_name,
-      String? pickup});
+      {String? id,
+      String? user_id,
+      String? category_id,
+      String? post_type_id,
+      String? title,
+      String? description,
+      String? tags,
+      String? price,
+      String? negotiable,
+      String? contact_name,
+      String? pickup,
+      String? visits,
+      String? email_token,
+      String? image,
+      double? avg_rating,
+      List<dynamic>? savedByLoggedUser});
 }
 
 /// @nodoc
@@ -138,48 +250,88 @@ class __$$ProductImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? price = null,
-    Object? image = null,
-    Object? visits = null,
-    Object? avg_rating = null,
-    Object? contact_name = null,
+    Object? id = freezed,
+    Object? user_id = freezed,
+    Object? category_id = freezed,
+    Object? post_type_id = freezed,
+    Object? title = freezed,
+    Object? description = freezed,
+    Object? tags = freezed,
+    Object? price = freezed,
+    Object? negotiable = freezed,
+    Object? contact_name = freezed,
     Object? pickup = freezed,
+    Object? visits = freezed,
+    Object? email_token = freezed,
+    Object? image = freezed,
+    Object? avg_rating = freezed,
+    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_$ProductImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
+              as String?,
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category_id: freezed == category_id
+          ? _value.category_id
+          : category_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      post_type_id: freezed == post_type_id
+          ? _value.post_type_id
+          : post_type_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
+              as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tags: freezed == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as String,
-      image: null == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String,
-      visits: null == visits
-          ? _value.visits
-          : visits // ignore: cast_nullable_to_non_nullable
-              as String,
-      avg_rating: null == avg_rating
-          ? _value.avg_rating
-          : avg_rating // ignore: cast_nullable_to_non_nullable
-              as double,
-      contact_name: null == contact_name
+              as String?,
+      negotiable: freezed == negotiable
+          ? _value.negotiable
+          : negotiable // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contact_name: freezed == contact_name
           ? _value.contact_name
           : contact_name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       pickup: freezed == pickup
           ? _value.pickup
           : pickup // ignore: cast_nullable_to_non_nullable
               as String?,
+      visits: freezed == visits
+          ? _value.visits
+          : visits // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email_token: freezed == email_token
+          ? _value.email_token
+          : email_token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      avg_rating: freezed == avg_rating
+          ? _value.avg_rating
+          : avg_rating // ignore: cast_nullable_to_non_nullable
+              as double?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value._savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>?,
     ));
   }
 }
@@ -188,39 +340,120 @@ class __$$ProductImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProductImpl implements _Product {
   _$ProductImpl(
-      {required this.id,
-      required this.title,
-      required this.price,
-      required this.image,
-      required this.visits,
-      this.avg_rating = 0,
-      required this.contact_name,
-      this.pickup});
+      {this.id,
+      this.user_id,
+      this.category_id,
+      this.post_type_id,
+      this.title,
+      this.description,
+      this.tags,
+      this.price,
+      this.negotiable,
+      this.contact_name,
+      this.pickup,
+      this.visits,
+      this.email_token,
+      this.image,
+      this.avg_rating,
+      final List<dynamic>? savedByLoggedUser})
+      : _savedByLoggedUser = savedByLoggedUser;
 
   factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
+// String? country_code,
   @override
-  final String title;
+  final String? user_id;
   @override
-  final String price;
+  final String? category_id;
   @override
-  final String image;
+  final String? post_type_id;
   @override
-  final String visits;
+  final String? title;
   @override
-  @JsonKey()
-  final double avg_rating;
+  final String? description;
   @override
-  final String contact_name;
+  final String? tags;
+  @override
+  final String? price;
+  @override
+  final String? negotiable;
+  @override
+  final String? contact_name;
+// String? email,
+// String? phone,
+// String? phone_hidden,
+// String? address,
+// String? city_id,
+// String? lon,
+// String? lat,
+// String? ip_addr,
+// String? length,
+// String? width,
+// String? weight,
+// String? height,
   @override
   final String? pickup;
+// String? longitude,
+// String? latitude,
+// String? hyper_del,
+// String? seller_del,
+  @override
+  final String? visits;
+  @override
+  final String? email_token;
+// String? phone_token,
+// String? tmp_token,
+// String? verified_email,
+// String? verified_phone,
+// String? accept_terms,
+// String? accept_marketing_offers,
+// String? is_permanent,
+// String? reviewed,
+// String? featured,
+// String? archived,
+// String? archived_at,
+// String? archived_manually,
+// String? deletion_mail_sent_at,
+// String? fb_profile,
+// String? partner,
+// String? discounted_price,
+// String? trending,
+// String? stock,
+// String? min_order,
+// String? samp_price,
+// String? text_one,
+// String? text_two,
+// String? ava_to,
+// String? branded,
+// String? wow,
+// String? offers,
+// String? story_display_days,
+// String? barcode,
+// String? b2b_pricing,
+// String? deleted_at,
+// String? created_at,
+// String? updated_at,
+  @override
+  final String? image;
+  @override
+  final double? avg_rating;
+  final List<dynamic>? _savedByLoggedUser;
+  @override
+  List<dynamic>? get savedByLoggedUser {
+    final value = _savedByLoggedUser;
+    if (value == null) return null;
+    if (_savedByLoggedUser is EqualUnmodifiableListView)
+      return _savedByLoggedUser;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Product(id: $id, title: $title, price: $price, image: $image, visits: $visits, avg_rating: $avg_rating, contact_name: $contact_name, pickup: $pickup)';
+    return 'Product(id: $id, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contact_name: $contact_name, pickup: $pickup, visits: $visits, email_token: $email_token, image: $image, avg_rating: $avg_rating, savedByLoggedUser: $savedByLoggedUser)';
   }
 
   @override
@@ -229,21 +462,51 @@ class _$ProductImpl implements _Product {
         (other.runtimeType == runtimeType &&
             other is _$ProductImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.category_id, category_id) ||
+                other.category_id == category_id) &&
+            (identical(other.post_type_id, post_type_id) ||
+                other.post_type_id == post_type_id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.tags, tags) || other.tags == tags) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.image, image) || other.image == image) &&
-            (identical(other.visits, visits) || other.visits == visits) &&
-            (identical(other.avg_rating, avg_rating) ||
-                other.avg_rating == avg_rating) &&
+            (identical(other.negotiable, negotiable) ||
+                other.negotiable == negotiable) &&
             (identical(other.contact_name, contact_name) ||
                 other.contact_name == contact_name) &&
-            (identical(other.pickup, pickup) || other.pickup == pickup));
+            (identical(other.pickup, pickup) || other.pickup == pickup) &&
+            (identical(other.visits, visits) || other.visits == visits) &&
+            (identical(other.email_token, email_token) ||
+                other.email_token == email_token) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.avg_rating, avg_rating) ||
+                other.avg_rating == avg_rating) &&
+            const DeepCollectionEquality()
+                .equals(other._savedByLoggedUser, _savedByLoggedUser));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, price, image, visits,
-      avg_rating, contact_name, pickup);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      user_id,
+      category_id,
+      post_type_id,
+      title,
+      description,
+      tags,
+      price,
+      negotiable,
+      contact_name,
+      pickup,
+      visits,
+      email_token,
+      image,
+      avg_rating,
+      const DeepCollectionEquality().hash(_savedByLoggedUser));
 
   @JsonKey(ignore: true)
   @override
@@ -261,33 +524,102 @@ class _$ProductImpl implements _Product {
 
 abstract class _Product implements Product {
   factory _Product(
-      {required final String id,
-      required final String title,
-      required final String price,
-      required final String image,
-      required final String visits,
-      final double avg_rating,
-      required final String contact_name,
-      final String? pickup}) = _$ProductImpl;
+      {final String? id,
+      final String? user_id,
+      final String? category_id,
+      final String? post_type_id,
+      final String? title,
+      final String? description,
+      final String? tags,
+      final String? price,
+      final String? negotiable,
+      final String? contact_name,
+      final String? pickup,
+      final String? visits,
+      final String? email_token,
+      final String? image,
+      final double? avg_rating,
+      final List<dynamic>? savedByLoggedUser}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
+  @override // String? country_code,
+  String? get user_id;
   @override
-  String get title;
+  String? get category_id;
   @override
-  String get price;
+  String? get post_type_id;
   @override
-  String get image;
+  String? get title;
   @override
-  String get visits;
+  String? get description;
   @override
-  double get avg_rating;
+  String? get tags;
   @override
-  String get contact_name;
+  String? get price;
   @override
+  String? get negotiable;
+  @override
+  String? get contact_name;
+  @override // String? email,
+// String? phone,
+// String? phone_hidden,
+// String? address,
+// String? city_id,
+// String? lon,
+// String? lat,
+// String? ip_addr,
+// String? length,
+// String? width,
+// String? weight,
+// String? height,
   String? get pickup;
+  @override // String? longitude,
+// String? latitude,
+// String? hyper_del,
+// String? seller_del,
+  String? get visits;
+  @override
+  String? get email_token;
+  @override // String? phone_token,
+// String? tmp_token,
+// String? verified_email,
+// String? verified_phone,
+// String? accept_terms,
+// String? accept_marketing_offers,
+// String? is_permanent,
+// String? reviewed,
+// String? featured,
+// String? archived,
+// String? archived_at,
+// String? archived_manually,
+// String? deletion_mail_sent_at,
+// String? fb_profile,
+// String? partner,
+// String? discounted_price,
+// String? trending,
+// String? stock,
+// String? min_order,
+// String? samp_price,
+// String? text_one,
+// String? text_two,
+// String? ava_to,
+// String? branded,
+// String? wow,
+// String? offers,
+// String? story_display_days,
+// String? barcode,
+// String? b2b_pricing,
+// String? deleted_at,
+// String? created_at,
+// String? updated_at,
+  String? get image;
+  @override
+  double? get avg_rating;
+  @override
+  List<dynamic>? get savedByLoggedUser;
   @override
   @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>

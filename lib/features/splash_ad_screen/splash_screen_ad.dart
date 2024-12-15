@@ -53,13 +53,13 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
 
     return GenericSafeArea(
       child: Scaffold(
         body: Column(
           children: [
-            SizedBox(height: 40.h),
+            SizedBox(height: 100.h),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -80,17 +80,20 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
             adsList.isLoading
                 ? const CircularProgressIndicator()
                 : adsList.value != null && adsList.value!.isNotEmpty
-                    ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      width: double.infinity,
-                      height: 550.h,
-                      child: CachedNetworkImage(
-                        errorListener: (value) => const Text("Loading......"),
-                        
-                      imageUrl:  adsList.value!.first.image!,
-                      fit: BoxFit.cover,
+                    ? Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 50.h),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        width: double.infinity,
+                        height: 100.h,
+                        child: CachedNetworkImage(
+                          errorListener: (value) => const Text("Loading......"),
+                          
+                        imageUrl:  adsList.value!.first.image!,
+                        fit: BoxFit.cover,
+                        ),
+                      
                       ),
-
                     )
                     : const Text('No ads available'),
           ],

@@ -105,7 +105,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final adsList = ref.watch(getAdsProvider);
+//     final adsList = ref.watch(fetchAdsProvider);
 
 //     final searchResults = ref.watch(searchProvider(_searchController.text));
 //     final vendorsearchResults = ref
@@ -529,7 +529,7 @@
 //   }
 
 //   Widget buildTabContent(String category, String name) {
-//     final adsList = ref.watch(getAdsProvider);
+//     final adsList = ref.watch(fetchAdsProvider);
 
 //     // Use ref.watch to get search results based on category
 //     final searchResults = ref.watch(getVendorProfileDataProvider(
