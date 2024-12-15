@@ -7,7 +7,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/background_image_description_widgt.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -175,18 +174,18 @@ class _BuyerAccountDetailsWidgetState
       isLoading = true;
     });
     try {
-      final updateUserDetail = await ref.read(updateUserDetailsProvider(
-        fullName!,
-        phoneNumber!,
-        userName!,
-        email!,
-        userId!,
-        genderID!,
-        // branchControllers,
-        // openingHours,
-        // description,
-        //  dob!,
-      ).future);
+      // final updateUserDetail = await ref.read(updateUserDetailsProvider(
+      //   fullName!,
+      //   phoneNumber!,
+      //   userName!,
+      //   email!,
+      //   userId!,
+      //   genderID!,
+      //   // branchControllers,
+      //   // openingHours,
+      //   // description,
+      //   //  dob!,
+      // ).future);
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(

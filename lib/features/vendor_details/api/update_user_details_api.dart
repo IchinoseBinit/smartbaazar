@@ -15,7 +15,10 @@ Future<UpdateUserDetail> updateUserDetails(
   String email,
   String userId,
   String genderID,
- // String dob,
+  List<String> branchLocations,
+  Map<String, Map<String, dynamic>> openingHours,
+
+  // String dob,
 ) async {
   final SmartClinet client = SmartClinet();
 
@@ -34,16 +37,23 @@ Future<UpdateUserDetail> updateUserDetails(
       'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
-  //    'dob': dob,
-      
+      'branch_location[]': branchLocations,
+      'opening_hours[]': openingHours.entries.map((entry) {
+        return {
+          'day': entry.key,
+          'from': entry.value['from'],
+          'to': entry.value['to'],
+          'closed': entry.value['closed']
+        };
+      }).toList()
 
+      //    'dob': dob,
     };
 
     final response = await client.request(
       requestType: RequestType.putWithTokenEncoded,
       url: "${ApiConstants.updateUserDetailsUrl}/$userId",
       parameter: formData,
-     
     );
 
     if (response.statusCode == 200) {

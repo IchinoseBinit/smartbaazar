@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/feed_page/api/get_feed_of_following_api.dart';
+import 'package:smartbazar/features/feed_page/api/get_for_you_feed_api.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/feed_page/widget/promo_card.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
@@ -14,167 +16,78 @@ class FeedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GenericSafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+    return DefaultTabController(
+      length: 2, // Two tabs: "Following" and "For You"
+      child: GenericSafeArea(
+        child: Scaffold(
+          extendBody: true,
+          body: Column(
             children: [
+              // Gradient Header Section
               Container(
                 height: 170,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50)),
-                  gradient: LinearGradient(colors: [
-                    Color(0xFF392574),
-                    Color(0xFF681b4e),
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF392574),
+                      Color(0xFF681b4e),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    const Row(
+                    const SizedBox(height: 40),
+                    Row(
                       children: [
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Icon(
+                        const SizedBox(width: 10),
+                        const Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
                         ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        SizedBox(height: 50, child: NewSearchWidget()),
+                        SizedBox(width: 10.w),
+                        const SizedBox(height: 50, child: NewSearchWidget()),
                       ],
                     ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
+                    SizedBox(height: 30.h),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              openCart,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Text(
-                              "Shopping",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Column(
-                          children: [
-                            SvgPicture.asset(
-                              servicesIcon,
-                              //  color: Colors.white,
-                            ),
-                            Text(
-                              "Services",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Column(
-                          children: [
-                            SvgPicture.asset(
-                              jobIcon,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Text(
-                              "TradeHub",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+                        _buildHeaderIcon(openCart, "Shopping"),
+                        SizedBox(width: 25.w),
+                        _buildHeaderIcon(servicesIcon, "Services"),
+                        SizedBox(width: 25.w),
+                        _buildHeaderIcon(jobIcon, "TradeHub"),
                       ],
                     )
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30.h,
+              // Tab Bar Section
+              TabBar(
+                indicatorColor: const Color(0xFF392574),
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.grey,
+                tabs: [
+                  Tab(text: "Following"),
+                  Tab(text: "For You"),
+                ],
               ),
-              SizedBox(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Positioned(
-                              child: Image.asset(
-                                  fit: BoxFit.cover,
-                                  height: 120,
-                                  "assets/images/subscribe.png")),
-                          Positioned(
-                              bottom: 12,
-                              right: 1,
-                              left: 1,
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    // borderRadius: BorderRadius.circular(1)
-                                  ),
-                                  child: const Icon(Icons.add)))
-                        ],
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return StoryAddWidget(index: index);
-                            }),
-                      ),
-                    ],
-                  )),
-              SizedBox(
-                height: 20.h,
-              ),
-              const FeedContainer(),
-              const PromoCard(),
-              SizedBox(
-                height: 30.h,
-              ),
-              const FeedContainer(),
-              const PromoCard(),
-              SizedBox(
-                height: 30.h,
+              // Tab Bar View Section
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // "Following" Tab Content
+                    _buildFollowingTabContent(ref),
+                    // "For You" Tab Content
+                    _buildForYouTabContent(ref),
+                  ],
+                ),
               ),
             ],
           ),
@@ -182,4 +95,429 @@ class FeedScreen extends ConsumerWidget {
       ),
     );
   }
+
+  // Helper Method to Build Header Icons
+  Widget _buildHeaderIcon(String assetPath, String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          assetPath,
+          colorFilter: const ColorFilter.mode(
+            Colors.white,
+            BlendMode.srcIn,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Following Tab Content
+  Widget _buildFollowingTabContent(WidgetRef ref) {
+    final asyncFollowingFeedContent = ref.watch(getFeedOfFollowingProvider);
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 30.h),
+          SizedBox(
+            height: 100,
+            child: Row(
+              children: [
+                Stack(
+                  children: [
+                    Positioned(
+                      child: Image.asset(
+                        fit: BoxFit.cover,
+                        height: 120,
+                        "assets/images/subscribe.png",
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 12,
+                      right: 1,
+                      left: 1,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.add),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      return StoryAddWidget(index: index);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20.h),
+          asyncFollowingFeedContent.when(
+            data: (feedData) {
+              if (feedData.data != null && feedData.data!.feedItems != null) {
+                final feedItems = feedData.data!.feedItems!;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: feedItems.length,
+                  itemBuilder: (context, index) {
+                    final feedItem = feedItems[index];
+                    final userDetails = feedItem.userDetail;
+                    final interested = feedItem.interested;
+                    final feedDetail = feedItem.feedDetail;
+
+                    // return _buildFeedItem(feedItems[index]);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FeedContainer(
+                            productCount: userDetails!.productCount.toString(),
+                            suscribers: userDetails.subscribers.toString(),
+                            vendorName: userDetails.vendorName!,
+                            vendorImage: userDetails.vendorImage!,
+                            livePrize: userDetails.livePrize.toString(),
+                            distance: userDetails.distance?.toString(),
+                            interested: interested?.interested?.toString(),
+                            engagement: interested?.engagement?.toString(),
+                            views: interested?.views,
+                            feedDetailImage: feedDetail!.image!,
+                            //feedDetail: feedItem.feedDetail,
+                          ),
+                          // SizedBox(height: 18.h),
+                          PromoCard(
+                            offers: feedItem.offers!,
+                            feedItem: feedItem,
+                          ),
+                          // _buildUserDetails(feedItem.userDetail),
+                          // SizedBox(height: 8.h),
+                          // _buildFeedContent(feedItem),
+                          // SizedBox(height: 8.h),
+                          // _buildEngagementSection(feedItem),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return const Center(child: Text('No feed items available'));
+              }
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Center(child: Text('Error: $error')),
+          ),
+          //const FeedContainer(),
+        ],
+      ),
+    );
+  }
+
+  // For You Tab Content
+  Widget _buildForYouTabContent(WidgetRef ref) {
+    final asyncForYouFeedContent = ref.watch(getForYouFeedApiProvider);
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 20.h),
+          SizedBox(
+            height: 100,
+            child: Row(
+              children: [
+                Stack(
+                  children: [
+                    Positioned(
+                      child: Image.asset(
+                        fit: BoxFit.cover,
+                        height: 120,
+                        "assets/images/subscribe.png",
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 12,
+                      right: 1,
+                      left: 1,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.add),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      return StoryAddWidget(index: index);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20.h),
+          asyncForYouFeedContent.when(
+            data: (feedData) {
+              if (feedData.data != null && feedData.data!.feedPost != null) {
+                final feedItems = feedData.data!.feedPost!;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: feedItems.length,
+                  itemBuilder: (context, index) {
+                    final feedItem = feedItems[index];
+                    final userDetails = feedItem.userDetail;
+                    final interested = feedItem.interested;
+                    final feedDetail = feedItem.feedDetail;
+
+                    // return _buildFeedItem(feedItems[index]);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FeedContainer(
+                            productCount: userDetails!.productCount.toString(),
+                            suscribers: userDetails.subscribers.toString(),
+                            vendorName: userDetails.vendorName!,
+                            vendorImage: userDetails.vendorImage!,
+                            livePrize: userDetails.livePrize.toString(),
+                            distance: userDetails.distance?.toString(),
+                            interested: interested?.interested?.toString(),
+                            engagement: interested?.engagement?.toString(),
+                            views: interested?.views,
+                            feedDetailImage: feedDetail!.image!,
+                            //feedDetail: feedItem.feedDetail,
+                          ),
+                          // SizedBox(height: 18.h),
+                          // PromoCard(
+                          //   offers: feedItem.offers!,
+                          //   feedItem: feedItem,
+                          // ),
+                          // _buildUserDetails(feedItem.userDetail),
+                          // SizedBox(height: 8.h),
+                          // _buildFeedContent(feedItem),
+                          // SizedBox(height: 8.h),
+                          // _buildEngagementSection(feedItem),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return const Center(child: Text('No feed items available'));
+              }
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Center(child: Text('Error: $error')),
+          )
+          // const FeedContainer(),
+          // const PromoCard(),
+        ],
+      ),
+    );
+  }
 }
+
+
+// class FeedScreen extends ConsumerWidget {
+//   const FeedScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return GenericSafeArea(
+//       child: Scaffold(
+//         body: SingleChildScrollView(
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.center,
+//             children: [
+//               Container(
+//                 height: 170,
+//                 decoration: const BoxDecoration(
+//                   borderRadius: BorderRadius.only(
+//                       bottomLeft: Radius.circular(50),
+//                       bottomRight: Radius.circular(50)),
+//                   gradient: LinearGradient(colors: [
+//                     Color(0xFF392574),
+//                     Color(0xFF681b4e),
+//                   ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+//                 ),
+//                 child: Column(
+//                   children: [
+//                     const SizedBox(
+//                       height: 40,
+//                     ),
+//                     Row(
+//                       children: [
+//                         const SizedBox(
+//                           width: 10,
+//                         ),
+//                         const Icon(
+//                           Icons.arrow_back_ios,
+//                           color: Colors.white,
+//                         ),
+//                         SizedBox(
+//                           width: 10.w,
+//                         ),
+//                         SizedBox(height: 50, child: NewSearchWidget()),
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: 30.h,
+//                     ),
+//                     Row(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         Column(
+//                           crossAxisAlignment: CrossAxisAlignment.center,
+//                           children: [
+//                             SvgPicture.asset(
+//                               openCart,
+//                               colorFilter: const ColorFilter.mode(
+//                                 Colors.white,
+//                                 BlendMode.srcIn,
+//                               ),
+//                             ),
+//                             Text(
+//                               "Shopping",
+//                               style: TextStyle(
+//                                 fontSize: 12.sp,
+//                                 fontWeight: FontWeight.w700,
+//                                 color: Colors.white,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         SizedBox(
+//                           width: 25.w,
+//                         ),
+//                         Column(
+//                           children: [
+//                             SvgPicture.asset(
+//                               servicesIcon,
+//                               //  color: Colors.white,
+//                             ),
+//                             Text(
+//                               "Services",
+//                               style: TextStyle(
+//                                 fontSize: 12.sp,
+//                                 fontWeight: FontWeight.w700,
+//                                 color: Colors.white,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         SizedBox(
+//                           width: 25.w,
+//                         ),
+//                         Column(
+//                           children: [
+//                             SvgPicture.asset(
+//                               jobIcon,
+//                               colorFilter: const ColorFilter.mode(
+//                                 Colors.white,
+//                                 BlendMode.srcIn,
+//                               ),
+//                             ),
+//                             Text(
+//                               "TradeHub",
+//                               style: TextStyle(
+//                                 fontSize: 12.sp,
+//                                 fontWeight: FontWeight.w700,
+//                                 color: Colors.white,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     )
+//                   ],
+//                 ),
+//               ),
+//               SizedBox(
+//                 height: 30.h,
+//               ),
+//               //i want a tabview following and For you
+//               SizedBox(
+//                 height: 100,
+//                 child: Row(
+//                   children: [
+//                     Stack(
+//                       children: [
+//                         Positioned(
+//                             child: Image.asset(
+//                                 fit: BoxFit.cover,
+//                                 height: 120,
+//                                 "assets/images/subscribe.png")),
+//                         Positioned(
+//                             bottom: 12,
+//                             right: 1,
+//                             left: 1,
+//                             child: Container(
+//                                 decoration: const BoxDecoration(
+//                                   color: Colors.white,
+//                                   shape: BoxShape.circle,
+//                                   // borderRadius: BorderRadius.circular(1)
+//                                 ),
+//                                 child: const Icon(Icons.add)))
+//                       ],
+//                     ),
+//                     Expanded(
+//                       child: ListView.builder(
+//                           padding: EdgeInsets.zero,
+//                           shrinkWrap: true,
+//                           scrollDirection: Axis.horizontal,
+//                           itemCount: 2,
+//                           itemBuilder: (context, index) {
+//                             return StoryAddWidget(index: index);
+//                           }),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               SizedBox(
+//                 height: 20.h,
+//               ),
+//               const FeedContainer(),
+//               const PromoCard(),
+//               SizedBox(
+//                 height: 30.h,
+//               ),
+//               const FeedContainer(),
+//               const PromoCard(),
+//               SizedBox(
+//                 height: 30.h,
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

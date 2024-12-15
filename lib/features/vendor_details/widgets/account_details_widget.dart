@@ -76,6 +76,15 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       isLoading = true;
     });
     try {
+      List<String> branchLocations =
+          branchControllers.map((controller) => controller.text).toList();
+      Map<String, Map<String, dynamic>> openingHours = {};
+      final openingHoursWidget =
+          context.findAncestorStateOfType<_OpeningHoursWidgetState>();
+      if (openingHoursWidget != null) {
+        openingHours = openingHoursWidget.openingHours;
+      }
+
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         fullName!,
         phoneNumber!,
@@ -83,8 +92,8 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email!,
         userId!,
         genderID!,
-        // branchControllers,
-        // openingHours,
+        branchLocations,
+        openingHours,
         // description,
         //  dob!,
       ).future);
@@ -98,8 +107,9 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         phoneNumber = '';
         email = '';
         userName = '';
-        genderID = null; // Reset gender selection
-        //  dob = '';
+        genderID = null; 
+        branchControllers.clear();
+        openingHours = {};
       });
       _formKey.currentState?.reset();
     } catch (error) {

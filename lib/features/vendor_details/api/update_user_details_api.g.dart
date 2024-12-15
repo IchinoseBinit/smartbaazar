@@ -6,7 +6,7 @@ part of 'update_user_details_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateUserDetailsHash() => r'5d8210e0dffd18f4741a51835f4b625522257bf7';
+String _$updateUserDetailsHash() => r'e2cfc05e416b855a7ecee2d282015d5ab23a045d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,6 +46,8 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
     String email,
     String userId,
     String genderID,
+    List<String> branchLocations,
+    Map<String, Map<String, dynamic>> openingHours,
   ) {
     return UpdateUserDetailsProvider(
       fullName,
@@ -54,6 +56,8 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
       email,
       userId,
       genderID,
+      branchLocations,
+      openingHours,
     );
   }
 
@@ -68,6 +72,8 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
       provider.email,
       provider.userId,
       provider.genderID,
+      provider.branchLocations,
+      provider.openingHours,
     );
   }
 
@@ -97,6 +103,8 @@ class UpdateUserDetailsProvider
     String email,
     String userId,
     String genderID,
+    List<String> branchLocations,
+    Map<String, Map<String, dynamic>> openingHours,
   ) : this._internal(
           (ref) => updateUserDetails(
             ref as UpdateUserDetailsRef,
@@ -106,6 +114,8 @@ class UpdateUserDetailsProvider
             email,
             userId,
             genderID,
+            branchLocations,
+            openingHours,
           ),
           from: updateUserDetailsProvider,
           name: r'updateUserDetailsProvider',
@@ -122,6 +132,8 @@ class UpdateUserDetailsProvider
           email: email,
           userId: userId,
           genderID: genderID,
+          branchLocations: branchLocations,
+          openingHours: openingHours,
         );
 
   UpdateUserDetailsProvider._internal(
@@ -137,6 +149,8 @@ class UpdateUserDetailsProvider
     required this.email,
     required this.userId,
     required this.genderID,
+    required this.branchLocations,
+    required this.openingHours,
   }) : super.internal();
 
   final String fullName;
@@ -145,6 +159,8 @@ class UpdateUserDetailsProvider
   final String email;
   final String userId;
   final String genderID;
+  final List<String> branchLocations;
+  final Map<String, Map<String, dynamic>> openingHours;
 
   @override
   Override overrideWith(
@@ -165,6 +181,8 @@ class UpdateUserDetailsProvider
         email: email,
         userId: userId,
         genderID: genderID,
+        branchLocations: branchLocations,
+        openingHours: openingHours,
       ),
     );
   }
@@ -182,7 +200,9 @@ class UpdateUserDetailsProvider
         other.userName == userName &&
         other.email == email &&
         other.userId == userId &&
-        other.genderID == genderID;
+        other.genderID == genderID &&
+        other.branchLocations == branchLocations &&
+        other.openingHours == openingHours;
   }
 
   @override
@@ -194,6 +214,8 @@ class UpdateUserDetailsProvider
     hash = _SystemHash.combine(hash, email.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
     hash = _SystemHash.combine(hash, genderID.hashCode);
+    hash = _SystemHash.combine(hash, branchLocations.hashCode);
+    hash = _SystemHash.combine(hash, openingHours.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -217,6 +239,12 @@ mixin UpdateUserDetailsRef on AutoDisposeFutureProviderRef<UpdateUserDetail> {
 
   /// The parameter `genderID` of this provider.
   String get genderID;
+
+  /// The parameter `branchLocations` of this provider.
+  List<String> get branchLocations;
+
+  /// The parameter `openingHours` of this provider.
+  Map<String, Map<String, dynamic>> get openingHours;
 }
 
 class _UpdateUserDetailsProviderElement
@@ -236,6 +264,12 @@ class _UpdateUserDetailsProviderElement
   String get userId => (origin as UpdateUserDetailsProvider).userId;
   @override
   String get genderID => (origin as UpdateUserDetailsProvider).genderID;
+  @override
+  List<String> get branchLocations =>
+      (origin as UpdateUserDetailsProvider).branchLocations;
+  @override
+  Map<String, Map<String, dynamic>> get openingHours =>
+      (origin as UpdateUserDetailsProvider).openingHours;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
