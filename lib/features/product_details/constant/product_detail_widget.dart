@@ -12,6 +12,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_sc
 class ProductDetailWidget extends StatelessWidget {
   ProductDetailWidget(
       {super.key,
+      // this.membership_title,
       this.title = "a",
       this.discounttedPrice = '0',
       this.views = 1,
@@ -22,491 +23,468 @@ class ProductDetailWidget extends StatelessWidget {
       this.distance = 2,
       this.Vimage = '',
       this.productImage = '',
-      this.lefttile='TradeHub',
-      this.membercolor=Colors.amber,
-      });
+      this.lefttile = 'TradeHub',
+      this.similarproductCount,
+      this.membershipColor,
+      this.sponsored=false,
+      this.membershipTitle});
   String? title;
   String? price;
   String? discounttedPrice;
+  int? similarproductCount;
   int? views, comment, share;
   String? vendorname;
+  // String? membership_title;
   double? distance;
-  String? Vimage, productImage,lefttile;
-  Color? membercolor;
+  String? Vimage, productImage, lefttile;
+  String? membershipColor;
+  String? membershipTitle;
+  bool sponsored;
 
   @override
   Widget build(BuildContext context) {
+    print("ramkbaba $Vimage");
+    print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       child: Card(
         shadowColor: const Color(0xff3D215F),
         elevation: 9,
-        
         margin: EdgeInsets.zero,
-         shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15.0),
-  ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         child: SizedBox(
           width: 250.w,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            SvgPicture.asset(
-                              b2bIcon,
-                              height: 10,
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              lefttile!,
-                              style: headerstyle.copyWith(
-                                  fontSize: 10, color: Colors.grey),
-                            )
-                          ],
+                        SvgPicture.asset(
+                          b2bIcon,
+                          height: 10,
+                          color: Colors.grey,
                         ),
-                        PopupMenuButton(
-                          padding: EdgeInsets.zero,
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(6))),
-                          constraints: const BoxConstraints.expand(
-                              width: 150, height: 150),
-                          menuPadding: const EdgeInsets.only(left: 10),
-                          iconColor: const Color(0xffB6B4B4),
-                          color: const Color(0xff766c7a).withOpacity(0.9),
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                  height: 30,
-                                  padding: EdgeInsets.only(left: 5.w, top: 10.h),
-                                  onTap: () {
-                                    Share.share('Cshare this');
-                                  },
-                                  child: Text(
-                                    "Share",
-                                    style: headerstyle.copyWith(
-                                      fontFamily:
-                                          GoogleFonts.quicksand().fontFamily,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 9,
-                                    ),
-                                  )),
-                              PopupMenuItem(
-                                  height: 30,
-                                  padding: const EdgeInsets.only(left: 5),
-                                  child: Text(
-                                    "Save",
-                                    style: headerstyle.copyWith(
-                                      fontFamily:
-                                          GoogleFonts.quicksand().fontFamily,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 8,
-                                    ),
-                                  )),
-                              PopupMenuItem(
-                                  height: 30,
-                                  padding: const EdgeInsets.only(left: 5),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const VendorProfileScreen(),
-                                        ));
-                                  },
-                                  child: Text(
-                                    "Conatct Seller",
-                                    style: headerstyle.copyWith(
-                                      fontFamily:
-                                          GoogleFonts.quicksand().fontFamily,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 8,
-                                    ),
-                                  )),
-                              PopupMenuItem(
-                                  height: 30,
-                                  padding: const EdgeInsets.only(left: 5),
-                                  child: Text(
-                                    "Get Seler Directives",
-                                    style: headerstyle.copyWith(
-                                      fontFamily:
-                                          GoogleFonts.quicksand().fontFamily,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 8,
-                                    ),
-                                  )),
-                              PopupMenuItem(
-                                  height: 30,
-                                  padding: const EdgeInsets.only(left: 5),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ReportComplainScreen(
-                                                  productId: "167",
-                                                  productName: "techstore"),
-                                        ));
-                                  },
-                                  child: Text(
-                                    "Report",
-                                    style: headerstyle.copyWith(
-                                      fontFamily:
-                                          GoogleFonts.quicksand().fontFamily,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 8,
-                                    ),
-                                  )),
-                            ];
-                          },
-                        ),
+                        Text(
+                          lefttile!,
+                          style: headerstyle.copyWith(
+                              fontSize: 9.sp, color: Colors.grey),
+                        )
                       ],
                     ),
-                  ),
-                  productImage == 'null'
-                      ? Image.asset(
-                          'assets/images/shoppingimages.png',
-                          height: 130.h,
-                          width: 200.2,
-                          fit: BoxFit.fill,
-                        )
-                      : Image.network(
-                          productImage ??
-                              '', // Ensure Vimage is not null or empty
-                          height: 130.h, // Adjust size accordingly
-                          width: 200.w,
-                          fit: BoxFit.fill,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child; // If no loading, show the image
-                            } else {
-                              return const Center(
-                                  child:
-                                      CircularProgressIndicator()); // Show loading indicator
-                            }
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(Icons
-                                .error); // Show error icon if image fails to load
-                          },
-                        ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    PopupMenuButton(
+                      padding: EdgeInsets.zero,
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6))),
+                      constraints:
+                          const BoxConstraints.expand(width: 150, height: 150),
+                      // menuPadding: const EdgeInsets.only(left: 10),
+                      iconColor: const Color(0xffB6B4B4),
+                      color: const Color(0xff766c7a).withOpacity(0.9),
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem(
+                              height: 30,
+                              padding: EdgeInsets.only(left: 5.w, top: 10.h),
+                              onTap: () {
+                                Share.share('Cshare this');
+                              },
+                              child: Text(
+                                "Share",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 9,
+                                ),
+                              )),
+                          PopupMenuItem(
+                              height: 30,
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Text(
+                                "Save",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 8,
+                                ),
+                              )),
+                          PopupMenuItem(
+                              height: 30,
+                              padding: const EdgeInsets.only(left: 5),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VendorProfileScreen(),
+                                    ));
+                              },
+                              child: Text(
+                                "Conatct Seller",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 8,
+                                ),
+                              )),
+                          PopupMenuItem(
+                              height: 30,
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Text(
+                                "Get Seller Directives",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 8,
+                                ),
+                              )),
+                          PopupMenuItem(
+                              height: 30,
+                              padding: const EdgeInsets.only(left: 5),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ReportComplainScreen(
+                                              productId: "167",
+                                              productName: "techstore"),
+                                    ));
+                              },
+                              child: Text(
+                                "Report",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 8,
+                                ),
+                              )),
+                        ];
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              productImage == 'null'
+                  ? Image.asset(
+                      'assets/images/shoppingimages.png',
+                      height: 130.h,
+                      width: 200.2,
+                      fit: BoxFit.fill,
+                    )
+                  : Image.network(
+                      productImage ?? '', // Ensure Vimage is not null or empty
+                      height: 130.h, // Adjust size accordingly
+                      width: 200.w,
+                      fit: BoxFit.fill,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child; // If no loading, show the image
+                        } else {
+                          return const Center(
+                              child:
+                                  CircularProgressIndicator()); // Show loading indicator
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons
+                            .error); // Show error icon if image fails to load
+                      },
+                    ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title!,
+                      style: headerstyle.copyWith(
+                          color: ColorConstant.blackColor,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800),
+                      softWrap: true,
+                      maxLines: 1,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          title!,
+                          'Rs ${price!}',
                           style: headerstyle.copyWith(
                               color: ColorConstant.blackColor,
-                              fontSize: 13,
+                              fontSize: 11.sp,
                               fontWeight: FontWeight.w800),
-                          softWrap: true,
-                          maxLines: 1,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "RS $price",
-                              style: headerstyle.copyWith(
-                                  color: ColorConstant.blackColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Row(
-                              children: [
-                                 const Icon(
-                              Icons.track_changes_sharp,
-                              color: Color(0xff901B41),
-                              size: 15,
-                            ),
-                            Text(
-                              "Best Price",
-                              style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xff901B41),
-                                  fontSize: 10),
-                            ),
+                        // SizedBox(
+                        //   width: 10.w,
+                        // ),
 
-                              ],
+                        discounttedPrice != "0"
+                            ? Row(
+                                children: [
+                                  const Icon(
+                                    Icons.track_changes_sharp,
+                                    color: Color(0xff901B41),
+                                    size: 15,
+                                  ),
+                                  Text(
+                                    "Best Price",
+                                    style: headerstyle.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xff901B41),
+                                        fontSize: 8.sp),
+                                  ),
+                                ],
+                              )
+                            : SizedBox(),
+
+                        discounttedPrice != '0'
+                            ? Text(
+                                'Rs${discounttedPrice} ',
+                                style: headerstyle.copyWith(
+                                    fontSize: 8.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: Colors.grey),
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 10,
+                          backgroundColor: const Color(0xff901B41),
+                          child: Text(
+                            "129",
+                            style: headerstyle.copyWith(fontSize: 8.sp),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(5),
+                                  bottomRight: Radius.circular(5)),
+                              border: Border.all(color: Colors.grey)),
+                          child: RatingBar.builder(
+                            initialRating: 5,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 12,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Color(0xff901B41),
                             ),
-                           
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Text(
-                              discounttedPrice!,
-                              style: headerstyle.copyWith(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationColor: Colors.grey),
-                            ),
-                          ],
+                            onRatingUpdate: (rating) {},
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(
+                      children: [
+                        Image.asset(
+                          "assets/images/flameIcon.png",
+                          height: 10,
+                          width: 10,
+                          color: const Color(0xff901B41),
+                        ),
+                        Text(
+                          "30%",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff901B41),
+                              fontSize: 10),
+                        ),
+                        const Icon(
+                          Icons.arrow_downward_rounded,
+                          size: 15,
+                          color: Color(0xff901B41),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
                         Row(
                           children: [
-                            CircleAvatar(
-                              radius: 10,
-                              backgroundColor: const Color(0xff901B41),
-                              child: Text(
-                                "129",
-                                style: headerstyle.copyWith(fontSize: 10),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(5),
-                                      bottomRight: Radius.circular(5)),
-                                  border: Border.all(color: Colors.grey)),
-                              child: RatingBar.builder(
-                                initialRating: 5,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 12,
-                                itemPadding:
-                                    const EdgeInsets.symmetric(horizontal: 1.0),
-                                itemBuilder: (context, _) => const Icon(
-                                  Icons.star,
-                                  color: Color(0xff901B41),
-                                ),
-                                onRatingUpdate: (rating) {},
-                              ),
-                            ),
+                            Image.asset('assets/icon/Rectangle.png'),
+                            const Text("78")
                           ],
-                        ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset("assets/icon/Vector.png"),
+                            const Text("3.2K")
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
                         Row(
                           children: [
                             Image.asset(
-                              "assets/images/flameIcon.png",
-                              height: 10,
-                              width: 10,
-                              color: const Color(0xff901B41),
+                              "assets/icon/solar.png",
+                              color: Colors.grey,
                             ),
-                            Text(
-                              "30%",
-                              style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xff901B41),
-                                  fontSize: 10),
-                            ),
-                            const Icon(
-                              Icons.arrow_downward_rounded,
-                              size: 15,
-                              color: Color(0xff901B41),
-                            )
+                            Text(similarproductCount?.toString() ?? '0')
                           ],
-                        ),
+                        )
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset('assets/icon/Rectangle.png'),
-                                const Text("78")
-                              ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset("assets/icon/Vector.png"),
-                                const Text("3.2K")
-                              ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  "assets/icon/solar.png",
-                                  color: Colors.grey,
-                                ),
-                                const Text("345")
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                decoration: const BoxDecoration(color: Colors.grey),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "ENQUIRE",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: ColorConstant.blackColor),
                     ),
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
-                    decoration: const BoxDecoration(color: Colors.grey),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "ENQUIRE",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
-                        Text(
-                          '|',
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
-                        Text(
-                          "wIN",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
-                        Text(
-                          '|',
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
-                        Text(
-                          "BUY",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
-                      ],
+                    Text(
+                      '|',
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: ColorConstant.blackColor),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(7),
-                    decoration:  BoxDecoration(
-                      color: membercolor,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(13),
-                        bottomRight: Radius.circular(13),
-                      ),
+                    Text(
+                      "wIN",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: ColorConstant.blackColor),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Text(
+                      '|',
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: ColorConstant.blackColor),
+                    ),
+                    Text(
+                      "BUY",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: ColorConstant.blackColor),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  color: membershipColor != null
+                      ? Color(
+                          int.parse(membershipColor!.replaceFirst('#', '0xFF')))
+                      : const Color(0xff3D215F), // Default color
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(13),
+                    bottomRight: Radius.circular(13),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 15,
-                              backgroundImage: NetworkImage(Vimage!)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    Text(
-                                      vendorname != null && vendorname!.length > 6
-                                          ? '${vendorname!.substring(0, 6)}...'
-                                          : vendorname ?? '',
-                                      style: headerstyle.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                      size: 12,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/nepalFlag.png",
-                                      height: 9.h,
-                                    ),
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    Text(
-                                      "DOMESTIC BRAND",
-                                      style: headerstyle.copyWith(
-                                          fontSize: 7,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(Vimage!),
+                          radius: 14.sp,
                         ),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 12,
+                                SizedBox(
+                                  width: 4.w,
                                 ),
                                 Text(
-                                  "2.5 km",
+                                  vendorname != null && vendorname!.length > 6
+                                      ? '${vendorname!.substring(0, 6)}...'
+                                      : vendorname ?? '',
                                   style: headerstyle.copyWith(
-                                      fontSize: 12, fontWeight: FontWeight.w700),
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
+                                SizedBox(
+                                  width: 4.w,
+                                ),
+                                const Icon(
+                                  Icons.logout,
+                                  color: Colors.white,
+                                  size: 12,
+                                )
                               ],
                             ),
                             Row(
                               children: [
-                                Image.asset("assets/images/mike.png"),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Image.asset(
+                                  "assets/images/nepalFlag.png",
+                                  height: 9.h,
+                                ),
+                                SizedBox(
+                                  width: 1.w,
+                                ),
                                 Text(
-                                  "SPONSERED",
+                                  membershipTitle ?? "Domestic Brand",
                                   style: headerstyle.copyWith(
-                                      fontSize: 7, fontWeight: FontWeight.w700),
+                                      fontSize: 9.sp,
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ],
                             ),
@@ -514,10 +492,40 @@ class ProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )
-                ],
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                            Text(
+                              "2.5 km",
+                              style: headerstyle.copyWith(
+                                  fontSize: 8.sp, fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset("assets/images/mike.png"),
+                            Text(
+                              sponsored ? 'Sponsored' : 'sponsored',
+                              style: headerstyle.copyWith(
+                                  fontSize: 7.sp, fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               )
-              // Icon(icons)
             ],
           ),
         ),

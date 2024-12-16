@@ -1191,7 +1191,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
@@ -1267,7 +1267,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   child: ProductDetailWidget(
                                                     lefttile: "B2b-Shop",
                                                     vendorname: prod.title,
-                                                    discounttedPrice: '0',
+                                                    discounttedPrice:
+                                                        prod.discounted_price,
                                                     Vimage: prod.user.photo,
                                                     price: prod.price,
                                                     title: prod.title,
@@ -1345,7 +1346,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   child: ProductDetailWidget(
                                                     lefttile: "B2b-Shop",
                                                     vendorname: prod.title,
-                                                    discounttedPrice: '0',
+                                                    discounttedPrice:
+                                                        prod.discounted_price,
                                                     Vimage: prod.user.photo,
                                                     price: prod.price,
                                                     title: prod.title,

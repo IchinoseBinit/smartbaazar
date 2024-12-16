@@ -6,7 +6,7 @@ part of 'shopzone_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeCategoryHash() => r'75f31c1e37872e8d35c13053799d8510011459ae';
+String _$homeCategoryHash() => r'd30805d9c363b4403b6da27a92e2afaa201c5097';
 
 /// See also [homeCategory].
 @ProviderFor(homeCategory)

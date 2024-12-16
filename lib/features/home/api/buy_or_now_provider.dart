@@ -79,6 +79,7 @@ class Home1GlobalModel {
   final String description;
   final String price;
   final String image;
+  final int? similarProductCount;
   final UserDetails? userDetails;
 
   Home1GlobalModel({
@@ -88,6 +89,7 @@ class Home1GlobalModel {
     required this.price,
     required this.image,
     this.userDetails,
+    required this.similarProductCount,
   });
 
   factory Home1GlobalModel.fromJson(Map<String, dynamic> json) {
@@ -97,6 +99,7 @@ class Home1GlobalModel {
       description: json['description'] as String,
       price: json['price'] as String,
       image: json['image'] as String,
+      similarProductCount: json['similarProductCount'] as int,
       userDetails: json['userdetails'] != null
           ? UserDetails.fromJson(json['userdetails'])
           : null,
@@ -108,18 +111,27 @@ class UserDetails {
   final String userId;
   final String? name;
   final String? photo;
+  final String? memberColor;
+  final String? membershipTitle;
+   final bool? sponsored;
 
   UserDetails({
     required this.userId,
     this.name,
     this.photo,
+    this.memberColor,
+    this.membershipTitle,
+    this.sponsored,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return UserDetails(
+      sponsored:   json['sponsored'] as bool?,
       userId: json['user_id'] as String,
       name: json['name'] as String?,
       photo: json['photo'] as String?,
+      memberColor: json['membership_color'] as String?,
+      membershipTitle: json['membership_title'] as String?,
     );
   }
 }
@@ -135,7 +147,6 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
     );
 
     final data = response.data;
-    print("bibi ${data['buy_or_win']}");
 
     final newProducts = (data['new_products'] as List<dynamic>?)
             ?.map((productJson) => Home1GlobalModel.fromJson(productJson))
@@ -163,13 +174,25 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-    final insid =
-        (data['brandbazar_global'] as List<dynamic>? ?? []).map((innerList) {
-      return (innerList as List<dynamic>)
-          .map((logoJson) =>
-              GlobalModel.fromJson(logoJson as Map<String, dynamic>))
-          .toList();
+    print("ronal ${data['brandbazar_global']}");
+    final rawBrandbazarGlobal =
+        data['brandbazar_global'] as List<dynamic>? ?? [];
+    print('Raw brandbazar_global: $rawBrandbazarGlobal');
+
+    final insid = rawBrandbazarGlobal.map((innerList) {
+      if (innerList is List<dynamic>) {
+        return innerList.map((logoJson) {
+          if (logoJson is Map<String, dynamic>) {
+            return GlobalModel.fromJson(logoJson);
+          } else {
+            throw Exception('Expected Map<String, dynamic>, found: $logoJson');
+          }
+        }).toList();
+      } else {
+        throw Exception('Expected List<dynamic>, found: $innerList');
+      }
     }).toList();
+
     final spotl = (data['spotlights'] as List<dynamic>? ?? []).map((innerList) {
       return (innerList as List<dynamic>)
           .map((logoJson) =>
@@ -183,7 +206,6 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
-
     return HotWithBuy(
         doma: domas,
         spot: spotl,
@@ -205,8 +227,10 @@ class GlobalModel {
   final String description;
   final String price;
   final String imageUrl;
+  final String discont;
   final List<UserDetails> user;
   final String contactName;
+  final int? similarproductCount;
 
   GlobalModel({
     required this.id,
@@ -216,14 +240,18 @@ class GlobalModel {
     required this.imageUrl,
     required this.user,
     required this.contactName,
+    required this.similarproductCount,
+    required this.discont
   });
 
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
+      discont: json['discounted_price']?? '0',
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
+      similarproductCount: json['similarProductCount'] ?? '',
       price: json['price'] ?? '',
       imageUrl: json['image'] ?? '',
       contactName: json['contact_name'] ?? '',

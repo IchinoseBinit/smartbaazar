@@ -1222,7 +1222,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Service-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
@@ -1278,8 +1278,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     ? const Center(
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 10),
-                                          child:
-                                              Text("No data available"),
+                                          child: Text("No data available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1295,7 +1294,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Service-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1345,8 +1344,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     ? const Center(
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 10),
-                                          child:
-                                              Text("No data available"),
+                                          child: Text("No data available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1362,7 +1360,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Service-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,

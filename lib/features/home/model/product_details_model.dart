@@ -13,10 +13,10 @@ class ProductDetailsModel with _$ProductDetailsModel {
     String? title,
     String? description,
     String? price,
-     String? pickup,
+    String? pickup,
     String? discounted_price,
     int? visits,
-     String? stock,
+    String? stock,
     String? contact_name,
     String? email,
     String? phone,
@@ -24,7 +24,7 @@ class ProductDetailsModel with _$ProductDetailsModel {
     String? weight,
     List<ColorOption>? colorOptions,
     List<String>? tags,
-     List<SimilarItems>? widgetSimilarPosts,
+    List<SimilarItems>? widgetSimilarPosts,
     Category? category,
     List<Picture>? pictures,
   }) = _ProductDetailsModel;
@@ -51,10 +51,25 @@ class VendorUser with _$VendorUser {
     String? id,
     String? name,
     String? photo,
+    // @JsonKey(name: 'membership_color') String? memberColor,
+    // @JsonKey(name: 'membership_title') String? membershipTitle,
   }) = _VendorUser;
 
   factory VendorUser.fromJson(Map<String, dynamic> json) =>
       _$VendorUserFromJson(json);
+}
+@freezed
+class VendorUserDetail with _$VendorUserDetail {
+  const factory VendorUserDetail({
+    // String? id,
+    // String? name,
+    // String? photo,
+    @JsonKey(name: 'membership_color') String? memberColor,
+    @JsonKey(name: 'membership_title') String? membershipTitle,
+  }) = _VendorUserDetail;
+
+  factory VendorUserDetail.fromJson(Map<String, dynamic> json) =>
+      _$VendorUserDetailFromJson(json);
 }
 
 @freezed
@@ -72,9 +87,9 @@ class ColorOption with _$ColorOption {
 class SimilarItems with _$SimilarItems {
   const factory SimilarItems({
     required int id,
-     String? title,
-     String? price,
-     List<Picture>? pictures,
+    String? title,
+    String? price,
+    List<Picture>? pictures,
   }) = _SimilarItems;
 
   factory SimilarItems.fromJson(Map<String, dynamic> json) =>

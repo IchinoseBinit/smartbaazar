@@ -249,7 +249,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           );
                         }),
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: 80.h,
                         child: PageView.builder(
                           itemCount: items.length,
@@ -267,7 +267,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                 setState(() {
                                   selectedIndex = index;
                                 });
-                            
                               },
                               child: AnimatedContainer(
                                 padding: EdgeInsets.zero,
@@ -846,7 +845,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 ),
 
                 // Expanded(
@@ -1115,7 +1115,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
@@ -1191,7 +1191,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                   child: ProductDetailWidget(
                                                     lefttile: "B2b-Shop",
                                                     vendorname: prod.title,
-                                                    discounttedPrice: '0',
+                                                    discounttedPrice:
+                                                        prod.discounted_price,
                                                     Vimage: prod.user.photo,
                                                     price: prod.price,
                                                     title: prod.title,
@@ -1269,7 +1270,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                   child: ProductDetailWidget(
                                                     lefttile: "B2b-Shop",
                                                     vendorname: prod.title,
-                                                    discounttedPrice: '0',
+                                                    discounttedPrice:
+                                                        prod.discounted_price,
                                                     Vimage: prod.user.photo,
                                                     price: prod.price,
                                                     title: prod.title,

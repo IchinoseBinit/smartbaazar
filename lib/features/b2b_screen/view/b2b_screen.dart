@@ -250,85 +250,87 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           );
                         }),
                       ),
-                     SizedBox(
-  height: 80.h,
-  child: PageView.builder(
-    itemCount: items.length,
-    padEnds: false,
-    controller: _pageController,
-    onPageChanged: _onPageChanged,
-    itemBuilder: (context, index) {
-      Map<String, dynamic> data = items[index];
+                      SizedBox(
+                        height: 80.h,
+                        child: PageView.builder(
+                          itemCount: items.length,
+                          padEnds: false,
+                          controller: _pageController,
+                          onPageChanged: _onPageChanged,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> data = items[index];
 
-      // Highlight only when index == 4
-      bool isActive = index == 0;
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            selectedIndex = index;
-          });
-          // Removed the auto-scrolling part
-        },
-        child: AnimatedContainer(
-          
-          
-          padding: EdgeInsets.zero,
-          duration: const Duration(milliseconds: 300),
-          alignment: Alignment.center,
-
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => data['screen']),
-              );
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (data['icon'].toString().endsWith('.svg'))
-                  SvgPicture.asset(
-                    data['icon'],
-                    alignment: Alignment.center,
-                    fit: BoxFit.contain,
-                    theme: const SvgTheme(currentColor: Color(0xffdd9d9d9)),
-                    color: isActive
-                        ? Colors.amber
-                        : const Color(0xffD9D9D9).withOpacity(0.5),
-                    width: 20,
-                    height: 20,
-                  )
-                else
-                  Image.asset(
-                    data['icon'],
-                    color: isActive
-                        ? Colors.amber
-                        : const Color(0xffD9D9D9).withOpacity(0.5),
-                    width: 20,
-                    height: 20,
-                  ),
-                const SizedBox(height: 8),
-                Text(
-                  data['label'],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: isActive
-                        ? Colors.amber
-                        : const Color(0xffD9D9D9).withOpacity(0.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  ),
-),
-
+                            // Highlight only when index == 4
+                            bool isActive = index == 0;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                                // Removed the auto-scrolling part
+                              },
+                              child: AnimatedContainer(
+                                padding: EdgeInsets.zero,
+                                duration: const Duration(milliseconds: 300),
+                                alignment: Alignment.center,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => data['screen']),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (data['icon']
+                                          .toString()
+                                          .endsWith('.svg'))
+                                        SvgPicture.asset(
+                                          data['icon'],
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.contain,
+                                          theme: const SvgTheme(
+                                              currentColor: Color(0xffdd9d9d9)),
+                                          color: isActive
+                                              ? Colors.amber
+                                              : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                          width: 20,
+                                          height: 20,
+                                        )
+                                      else
+                                        Image.asset(
+                                          data['icon'],
+                                          color: isActive
+                                              ? Colors.amber
+                                              : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        data['label'],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: isActive
+                                              ? Colors.amber
+                                              : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                       const Divider(
                         height: 0.1,
                         color: ColorConstant.grayColor,
@@ -1168,7 +1170,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
@@ -1244,7 +1246,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   child: ProductDetailWidget(
                                                     lefttile: "B2b-Shop",
                                                     vendorname: prod.title,
-                                                    discounttedPrice: '0',
+                                                    discounttedPrice:
+                                                        prod.discounted_price,
                                                     Vimage: prod.user.photo,
                                                     price: prod.price,
                                                     title: prod.title,
@@ -1322,7 +1325,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   child: ProductDetailWidget(
                                                     lefttile: "B2b-Shop",
                                                     vendorname: prod.title,
-                                                    discounttedPrice: '0',
+                                                    discounttedPrice:
+                                                        prod.discounted_price,
                                                     Vimage: prod.user.photo,
                                                     price: prod.price,
                                                     title: prod.title,
@@ -1598,8 +1602,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               child: Text("Error loading data"),
                             ),
                             loading: () => const Center(
-                                child: Center(
-                                    child: CircularProgressIndicator())),
+                                child:
+                                    Center(child: CircularProgressIndicator())),
                           ),
                         ],
                       );

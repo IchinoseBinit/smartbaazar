@@ -12,20 +12,17 @@ class HomeProductType {
   final List<CategoryProduct> services;
   final List<CategoryProduct> jobs;
   final List<CategoryProduct> b2b_products;
-    final List<CategoryProduct> event;
-        final List<CategoryProduct> grocarry;
+  final List<CategoryProduct> event;
+  final List<CategoryProduct> grocarry;
 
-
-
-  HomeProductType({
-    required this.new_products,
-    required this.used_products,
-    required this.services,
-    required this.jobs,
-    required this.b2b_products,
-    required this.event,
-    required this.grocarry
-  });
+  HomeProductType(
+      {required this.new_products,
+      required this.used_products,
+      required this.services,
+      required this.jobs,
+      required this.b2b_products,
+      required this.event,
+      required this.grocarry});
 }
 
 @riverpod
@@ -47,11 +44,11 @@ Future<HomeProductType> homeCategory(HomeCategoryRef ref) async {
 
       // Ensure we check if each list exists in the data to avoid errors
       return HomeProductType(
-        event:   (data['events'] as List?)
+        event: (data['events'] as List?)
                 ?.map((product) => CategoryProduct.fromJson(product))
                 .toList() ??
             [],
-             grocarry:   (data['grocery'] as List?)
+        grocarry: (data['grocery'] as List?)
                 ?.map((product) => CategoryProduct.fromJson(product))
                 .toList() ??
             [],
@@ -103,6 +100,7 @@ class CategoryProduct {
   final VendorUser user;
   final String image;
   final String? discounted_price;
+  final int? similarproductCount;
 
   CategoryProduct({
     required this.id,
@@ -112,6 +110,7 @@ class CategoryProduct {
     required this.image,
     required this.price,
     required this.discounted_price,
+    required this.similarproductCount,
   });
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) {
@@ -122,6 +121,7 @@ class CategoryProduct {
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
+      similarproductCount: json['similarProductCount'] ?? '',
       user: VendorUser.fromJson(json['userdetails'] ?? {}),
     );
   }
@@ -132,14 +132,23 @@ class VendorUser {
   final String id;
   final String name;
   final String photo;
+  final String? membercolor;
+  final String? membershipTitle;
 
-  VendorUser({required this.id, required this.name,required this.photo});
+  VendorUser(
+      {required this.id,
+      required this.name,
+      required this.photo,
+      required this.membershipTitle,
+      required this.membercolor});
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
-      photo: json['photo']?? '',
+      photo: json['photo'] ?? '',
       id: json['id'] ?? '',
       name: json['name'] ?? '',
+      membercolor: json['membership_color'] ?? '',
+      membershipTitle: json['membership_title'] ?? '',
     );
   }
 }

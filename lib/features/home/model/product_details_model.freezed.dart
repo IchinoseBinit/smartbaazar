@@ -994,6 +994,184 @@ abstract class _VendorUser implements VendorUser {
       throw _privateConstructorUsedError;
 }
 
+VendorUserDetail _$VendorUserDetailFromJson(Map<String, dynamic> json) {
+  return _VendorUserDetail.fromJson(json);
+}
+
+/// @nodoc
+mixin _$VendorUserDetail {
+// String? id,
+// String? name,
+// String? photo,
+  @JsonKey(name: 'membership_color')
+  String? get memberColor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_title')
+  String? get membershipTitle => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $VendorUserDetailCopyWith<VendorUserDetail> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VendorUserDetailCopyWith<$Res> {
+  factory $VendorUserDetailCopyWith(
+          VendorUserDetail value, $Res Function(VendorUserDetail) then) =
+      _$VendorUserDetailCopyWithImpl<$Res, VendorUserDetail>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'membership_color') String? memberColor,
+      @JsonKey(name: 'membership_title') String? membershipTitle});
+}
+
+/// @nodoc
+class _$VendorUserDetailCopyWithImpl<$Res, $Val extends VendorUserDetail>
+    implements $VendorUserDetailCopyWith<$Res> {
+  _$VendorUserDetailCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? memberColor = freezed,
+    Object? membershipTitle = freezed,
+  }) {
+    return _then(_value.copyWith(
+      memberColor: freezed == memberColor
+          ? _value.memberColor
+          : memberColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipTitle: freezed == membershipTitle
+          ? _value.membershipTitle
+          : membershipTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$VendorUserDetailImplCopyWith<$Res>
+    implements $VendorUserDetailCopyWith<$Res> {
+  factory _$$VendorUserDetailImplCopyWith(_$VendorUserDetailImpl value,
+          $Res Function(_$VendorUserDetailImpl) then) =
+      __$$VendorUserDetailImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'membership_color') String? memberColor,
+      @JsonKey(name: 'membership_title') String? membershipTitle});
+}
+
+/// @nodoc
+class __$$VendorUserDetailImplCopyWithImpl<$Res>
+    extends _$VendorUserDetailCopyWithImpl<$Res, _$VendorUserDetailImpl>
+    implements _$$VendorUserDetailImplCopyWith<$Res> {
+  __$$VendorUserDetailImplCopyWithImpl(_$VendorUserDetailImpl _value,
+      $Res Function(_$VendorUserDetailImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? memberColor = freezed,
+    Object? membershipTitle = freezed,
+  }) {
+    return _then(_$VendorUserDetailImpl(
+      memberColor: freezed == memberColor
+          ? _value.memberColor
+          : memberColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipTitle: freezed == membershipTitle
+          ? _value.membershipTitle
+          : membershipTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$VendorUserDetailImpl implements _VendorUserDetail {
+  const _$VendorUserDetailImpl(
+      {@JsonKey(name: 'membership_color') this.memberColor,
+      @JsonKey(name: 'membership_title') this.membershipTitle});
+
+  factory _$VendorUserDetailImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VendorUserDetailImplFromJson(json);
+
+// String? id,
+// String? name,
+// String? photo,
+  @override
+  @JsonKey(name: 'membership_color')
+  final String? memberColor;
+  @override
+  @JsonKey(name: 'membership_title')
+  final String? membershipTitle;
+
+  @override
+  String toString() {
+    return 'VendorUserDetail(memberColor: $memberColor, membershipTitle: $membershipTitle)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VendorUserDetailImpl &&
+            (identical(other.memberColor, memberColor) ||
+                other.memberColor == memberColor) &&
+            (identical(other.membershipTitle, membershipTitle) ||
+                other.membershipTitle == membershipTitle));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, memberColor, membershipTitle);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VendorUserDetailImplCopyWith<_$VendorUserDetailImpl> get copyWith =>
+      __$$VendorUserDetailImplCopyWithImpl<_$VendorUserDetailImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VendorUserDetailImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _VendorUserDetail implements VendorUserDetail {
+  const factory _VendorUserDetail(
+          {@JsonKey(name: 'membership_color') final String? memberColor,
+          @JsonKey(name: 'membership_title') final String? membershipTitle}) =
+      _$VendorUserDetailImpl;
+
+  factory _VendorUserDetail.fromJson(Map<String, dynamic> json) =
+      _$VendorUserDetailImpl.fromJson;
+
+  @override // String? id,
+// String? name,
+// String? photo,
+  @JsonKey(name: 'membership_color')
+  String? get memberColor;
+  @override
+  @JsonKey(name: 'membership_title')
+  String? get membershipTitle;
+  @override
+  @JsonKey(ignore: true)
+  _$$VendorUserDetailImplCopyWith<_$VendorUserDetailImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 ColorOption _$ColorOptionFromJson(Map<String, dynamic> json) {
   return _ColorOption.fromJson(json);
 }
