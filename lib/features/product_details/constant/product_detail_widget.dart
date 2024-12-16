@@ -48,7 +48,7 @@ class ProductDetailWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       child: Card(
-        shadowColor: const Color(0xff3D215F),
+        shadowColor: const Color(0xff3D215F).withOpacity(0.5),
         elevation: 9,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
@@ -228,7 +228,7 @@ class ProductDetailWidget extends StatelessWidget {
                           'Rs ${price!}',
                           style: headerstyle.copyWith(
                               color: ColorConstant.blackColor,
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w800),
                         ),
                         // SizedBox(
@@ -271,7 +271,7 @@ class ProductDetailWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -309,7 +309,7 @@ class ProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Row(
+                    discounttedPrice == '0'? SizedBox():Row(
                       children: [
                         Image.asset(
                           "assets/images/flameIcon.png",
@@ -375,51 +375,54 @@ class ProductDetailWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-                decoration: const BoxDecoration(color: Colors.grey),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "ENQUIRE",
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: ColorConstant.blackColor),
+              Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                    decoration: const BoxDecoration(color: Colors.grey),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "ENQUIRE",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
+                        Text(
+                          '|',
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
+                        Text(
+                          "WIN",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
+                        Text(
+                          '|',
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
+                        Text(
+                          "BUY",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '|',
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: ColorConstant.blackColor),
-                    ),
-                    Text(
-                      "wIN",
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: ColorConstant.blackColor),
-                    ),
-                    Text(
-                      '|',
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: ColorConstant.blackColor),
-                    ),
-                    Text(
-                      "BUY",
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: ColorConstant.blackColor),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
+                  ),
+                   Container(
+                margin: EdgeInsets.zero,
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
                   color: membershipColor != null
@@ -432,6 +435,7 @@ class ProductDetailWidget extends StatelessWidget {
                   ),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
@@ -450,8 +454,8 @@ class ProductDetailWidget extends StatelessWidget {
                                   width: 4.w,
                                 ),
                                 Text(
-                                  vendorname != null && vendorname!.length > 6
-                                      ? '${vendorname!.substring(0, 6)}...'
+                                  vendorname != null && vendorname!.length > 19
+                                      ? '${vendorname!.substring(0, 15)}...'
                                       : vendorname ?? '',
                                   style: headerstyle.copyWith(
                                     fontSize: 10.sp,
@@ -515,9 +519,9 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             Image.asset("assets/images/mike.png"),
                             Text(
-                              sponsored ? 'Sponsored' : 'sponsored',
+                              sponsored ? 'Sponsored' : 'Sponsore',
                               style: headerstyle.copyWith(
-                                  fontSize: 7.sp, fontWeight: FontWeight.w700),
+                                  fontSize: 8.sp, fontWeight: FontWeight.w700),
                             ),
                           ],
                         ),
@@ -526,6 +530,9 @@ class ProductDetailWidget extends StatelessWidget {
                   ],
                 ),
               )
+                ],
+              ),
+             
             ],
           ),
         ),

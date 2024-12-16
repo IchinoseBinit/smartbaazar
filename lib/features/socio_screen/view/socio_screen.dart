@@ -831,6 +831,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
+                            membershipColor: hot.user.membercolor,
+                            membershipTitle: hot.user.membershipTitle,
+                            similarproductCount: hot.similarProductCount,
+                            sponsored: hot.user.sponsored,
+
+                            discounttedPrice: hot.discounted_price,
                             lefttile: "Socio-Shop",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
@@ -1412,6 +1418,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
+                            vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1589,7 +1596,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

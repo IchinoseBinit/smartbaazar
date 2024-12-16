@@ -10,9 +10,11 @@ class buyorwin_widget extends StatelessWidget {
     required this.vendorname,
     required this.winners,
     required this.proctimage,
+    required this.vendorImage,
+    
 
   });
-  final String vendorname, winners, proctimage;
+  final String vendorname, winners, proctimage,vendorImage;
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +120,9 @@ class buyorwin_widget extends StatelessWidget {
                         children: [
                           Row(
                             children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(vendorImage),
+                              ),
                               
                               SizedBox(
                                 width: 10.w,
@@ -154,7 +159,7 @@ class buyorwin_widget extends StatelessWidget {
                                 width: 5.w,
                               ),
                               Text(
-                                "WINNDERS",
+                                "WINNERS",
                                 style: headerstyle.copyWith(
                                     color: const Color(0xff831F67),
                                     fontSize: 8,

@@ -57,6 +57,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     });
   }
 
+  int? dynamicsize;
   int _currentPage = 0;
 
   @override
@@ -156,7 +157,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
 
     // asyncbajarValue.when(data: (data) {
-
+    dynamicsize = 500;
     // }, error: (error, stackTrace) {
 
     // }, loading: () {
@@ -835,6 +836,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
+                            discounttedPrice: hot.discounted_price,
+                            sponsored: hot.user.sponsored,
                             lefttile: "B2b-Shop",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
@@ -912,6 +915,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             VProduct pro =
                                                 data.insidearr[0][index];
                                             return ProductDetailWidget(
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              sponsored: pro.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               Vimage: pro.user.photo,
                                               price: pro.price,
@@ -922,7 +928,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   pro.similarProductCount,
                                               membershipColor:
                                                   pro.user.membercolor,
-                                                  membershipTitle: pro.user.membershipTitle,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
                                             );
                                           },
                                         ),
@@ -980,6 +987,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[1][index];
                                       return ProductDetailWidget(
+                                        sponsored: pro.user.sponsored,
+                                        discounttedPrice: pro.discounted_price,
                                         lefttile: "B2b-Shop",
                                         Vimage: pro.user.photo,
                                         price: pro.price,
@@ -989,7 +998,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         similarproductCount:
                                             pro.similarProductCount,
                                         membershipColor: pro.user.membercolor,
-                                        membershipTitle: pro.user.membershipTitle,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
                                       );
                                     },
                                   ),
@@ -1037,6 +1047,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
                                       return ProductDetailWidget(
+                                        discounttedPrice: pro.discounted_price,
+                                        sponsored: pro.user.sponsored,
                                         lefttile: "B2b-Shop",
                                         Vimage: pro.user.photo,
                                         price: pro.price,
@@ -1046,7 +1058,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         similarproductCount:
                                             pro.similarProductCount,
                                         membershipColor: pro.user.membercolor,
-                                        membershipTitle: pro.user.membershipTitle,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
                                       );
                                     },
                                   ),
@@ -1094,6 +1107,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[4][index];
                                       return ProductDetailWidget(
+                                        discounttedPrice: pro.discounted_price,
+                                        sponsored: pro.user.sponsored,
                                         lefttile: "B2b-Shop",
                                         Vimage: pro.user.photo,
                                         price: pro.price,
@@ -1103,7 +1118,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         similarproductCount:
                                             pro.similarProductCount,
                                         membershipColor: pro.user.membercolor,
-                                        membershipTitle: pro.user.membershipTitle,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
                                       );
                                     },
                                   ),
@@ -1140,8 +1156,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 500.h,
-                      width: double.infinity,
+                      height: data.insidearr.isEmpty ? 150.h : dynamicsize!.h,
                       // Use Expanded for better layout management
                       child: TabBarView(
                         controller: tabController,
@@ -1159,6 +1174,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemCount: data.global.length,
                                     itemBuilder: (context, index) {
                                       LogoData res = data.global[index];
+                                      dynamicsize =
+                                          data.insidearr.isEmpty?  100 : 500;
 
                                       if (index == 0) {
                                         return StoryAddWidget(
@@ -1191,10 +1208,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              lefttile: "B2b-Shop",
+                                              lefttile: "B2b",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: '0',
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.title,
+                                              sponsored: prod.user.sponsored,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
@@ -1202,20 +1221,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   prod.similarProductCount,
                                               membershipColor:
                                                   prod.user.membercolor,
-                                                  membershipTitle: prod.user.membershipTitle,
-
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
                                       ),
                                     )
-                                  : Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 100, left: 100.w),
-                                      child: const SizedBox(
-                                        child: Text("No data available"),
-                                      ),
-                                    ),
+                                  : const SizedBox(
+                                    
+                                  ),
                             ],
                           ),
                           Column(
@@ -1230,6 +1245,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     scrollDirection: Axis.horizontal,
                                     itemCount: data.domestic.length,
                                     itemBuilder: (context, index) {
+                                       dynamicsize =
+                                          data.insidearr.isEmpty ? 100 : 500;
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
@@ -1248,27 +1265,28 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       return StoryAddWidget(index: index);
                                     }),
                               ),
-                              SizedBox(
+                               data.insidearr.isEmpty
+                                    ? const SizedBox(
+                                      
+                                    ):  SizedBox(
                                 height: 340.h,
-                                child: data.insidearr.isEmpty
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 100, left: 100.w),
-                                        child: const SizedBox(
-                                          child: Text("No data available"),
-                                        ),
-                                      )
-                                    : ListView.builder(
+                                child: 
+                                    ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
                                         itemCount: data.insidearr[1].length,
                                         itemBuilder: (context, index) {
+                                           dynamicsize =
+                                          data.insidearr[1].isEmpty ? 100 : 500;
                                           VProduct prod =
                                               data.insidearr[1][index];
+
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+                                              share: int.tryParse(prod.stock!),
+                                              sponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
                                               discounttedPrice: '0',
@@ -1280,7 +1298,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   prod.similarProductCount,
                                               membershipColor:
                                                   prod.user.membercolor,
-                                                   membershipTitle: prod.user.membershipTitle,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1292,7 +1311,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                                  SizedBox(
                                 height: 130,
                                 child: ListView.builder(
                                     padding: EdgeInsets.zero,
@@ -1318,17 +1337,13 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       return StoryAddWidget(index: index);
                                     }),
                               ),
-                              SizedBox(
+                           data.insidearr.isEmpty
+                                    ? const SizedBox(
+                                      
+                                    ):   SizedBox(
                                 height: 340.h,
-                                child: data.insidearr.isEmpty
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 100, left: 100.w),
-                                        child: const SizedBox(
-                                          child: Text("No data available"),
-                                        ),
-                                      )
-                                    : ListView.builder(
+                                child: 
+                                    ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
@@ -1339,6 +1354,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+                                              sponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
                                               discounttedPrice: '0',
@@ -1350,7 +1366,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   prod.similarProductCount,
                                               membershipColor:
                                                   prod.user.membercolor,
-                                                   membershipTitle: prod.user.membershipTitle,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1364,45 +1381,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                   },
                   error: (error, stackTrace) {
                     return Text("error $error");
-                  },
-                  loading: () {
-                    return const CircularProgressIndicator();
-                  },
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-
-                asyncbajarValue.when(
-                  data: (data) {
-                    return SizedBox(
-                      height: 340.h,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(3),
-                        clipBehavior: Clip.antiAlias,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.product.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          VProduct ref = data.product[index];
-                          return ProductDetailWidget(
-                            lefttile: "B2b-Shop",
-                            productImage: ref.image,
-                            price: ref.price,
-                            Vimage: ref.user.photo,
-                            title: ref.title,
-                            vendorname: ref.user.name,
-                            similarproductCount: ref.similarProductCount,
-                            membershipColor: ref.user.membercolor,
-                             membershipTitle: ref.user.membershipTitle,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Text(error.toString());
                   },
                   loading: () {
                     return const CircularProgressIndicator();
@@ -1440,7 +1418,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 300.h,
+                      height:   300.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
@@ -1450,6 +1428,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
+                            vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1500,9 +1479,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
+                  asyncbajarValue.when(data: (data) {
+                          List<List<VProduct>> productsList = [
+                                data.low_price_guarantee, // Corresponds to SHOPZONE
+                                data.Launch_offer, // Corresponds to HOB
+
+                                data.seasonal, // Corresponds to SERVICES
+
+                                data.promotional, // Corresponds to TRADEHUB
+                                data.Launch_festival_offer, // Corresponds to USED
+                              ];
+                    
+                    return SizedBox(
                   width: double.infinity,
-                  height: 420.h,
+                  height: productsList[selectedIndex!].isEmpty?100:  420.h,
                   child: ValueListenableBuilder<int>(
                     valueListenable: selectedIndexNotifier,
                     builder: (context, selectedIndex, child) {
@@ -1556,15 +1546,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           asyncbajarValue.when(
                             data: (data) {
                               // Define the products list corresponding to each category
-                              List<List<VProduct>> productsList = [
-                                data.low_price_guarantee, // Corresponds to SHOPZONE
-                                data.Launch_offer, // Corresponds to HOB
-
-                                data.seasonal, // Corresponds to SERVICES
-
-                                data.promotional, // Corresponds to TRADEHUB
-                                data.Launch_festival_offer, // Corresponds to USED
-                              ];
+                        
 
                               // Ensure the index is valid
                               if (selectedIndex < 0 ||
@@ -1576,16 +1558,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               List<VProduct> products =
                                   productsList[selectedIndex];
 
-                              return SizedBox(
-                                height: 340.h,
-                                child: data.insidearr.isEmpty
+                              return   data.insidearr.isEmpty
                                     ? const Padding(
-                                        padding: EdgeInsets.only(top: 100),
+                                        padding: EdgeInsets.only(top: 10),
                                         child: SizedBox(
                                           child: Text("No data available"),
                                         ),
                                       )
-                                    : ListView.builder(
+                                    :  SizedBox(
+                                height: 340.h,
+                                child:ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
@@ -1598,7 +1580,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: "0",
+                                              sponsored: prod.user.sponsored,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1607,7 +1591,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   prod.similarProductCount,
                                               membershipColor:
                                                   prod.user.membercolor,
-                                                   membershipTitle: prod.user.membershipTitle,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1642,7 +1627,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       );
                     },
                   ),
-                ),
+                );
+                    
+                  }, error: (error, stackTrace) {
+                    return Text("$error");
+                    
+                  }, loading: () {
+                    return CircularProgressIndicator();
+                    
+                  },) ,
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -1683,6 +1676,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
+                            sponsored: data.product[index].user.sponsored,
+                            discounttedPrice:
+                                data.product[index].discounted_price,
                             lefttile: "B2b-Shop",
                             productImage: data.product[index].image,
                             Vimage: data.product[index].user.photo,
@@ -1693,7 +1689,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 data.product[index].similarProductCount,
                             membershipColor:
                                 data.product[index].user.membercolor,
-                                membershipTitle: data.product[index].user.membershipTitle,
+                            membershipTitle:
+                                data.product[index].user.membershipTitle,
                           ),
                         );
                       },

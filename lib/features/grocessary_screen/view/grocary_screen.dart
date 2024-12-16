@@ -1365,6 +1365,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
+                            vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);

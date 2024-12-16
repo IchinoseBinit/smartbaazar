@@ -601,7 +601,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             onTap:
                                                 () {}, // Handle onTap if needed
                                             child: ProductDetailWidget(
-                                              lefttile:
+                                                                                            lefttile:
                                                   categories[selectedIndex],
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -943,42 +943,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 10.h,
                           ),
 
-                          buyorwin.when(
-                            data: (data) {
-                              return SizedBox(
-                                height: 340.h,
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.all(3),
-                                  clipBehavior: Clip.antiAlias,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: data.home.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    Home1GlobalModel prefs = data.home[index];
-                                    return ProductDetailWidget(
-                                      price: prefs.price,
-                                      productImage: prefs.image,
-                                      title: prefs.title,
-                                      vendorname: prefs.userDetails!.name,
-                                      Vimage: prefs.userDetails!.photo,
-                                      similarproductCount:
-                                          prefs.similarProductCount,
-                                      membershipColor:
-                                          prefs.userDetails!.memberColor,
-                                      membershipTitle:
-                                          prefs.userDetails!.membershipTitle,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            error: (error, stackTrace) {
-                              return Text("error $error");
-                            },
-                            loading: () {
-                              return const CircularProgressIndicator();
-                            },
-                          ),
+                          // buyorwin.when(
+                          //   data: (data) {
+                          //     return SizedBox(
+                          //       height: 340.h,
+                          //       child: ListView.builder(
+                          //         padding: const EdgeInsets.all(3),
+                          //         clipBehavior: Clip.antiAlias,
+                          //         scrollDirection: Axis.horizontal,
+                          //         itemCount: data.home.length,
+                          //         shrinkWrap: true,
+                          //         itemBuilder: (context, index) {
+                          //           Home1GlobalModel prefs = data.home[index];
+                          //           return ProductDetailWidget(
+                          //             price: prefs.price,
+                          //             productImage: prefs.image,
+                          //             title: prefs.title,
+                          //             vendorname: prefs.userDetails!.name,
+                          //             Vimage: prefs.userDetails!.photo,
+                          //             similarproductCount:
+                          //                 prefs.similarProductCount,
+                          //             membershipColor:
+                          //                 prefs.userDetails!.memberColor,
+                          //             membershipTitle:
+                          //                 prefs.userDetails!.membershipTitle,
+                          //           );
+                          //         },
+                          //       ),
+                          //     );
+                          //   },
+                          //   error: (error, stackTrace) {
+                          //     return Text("error $error");
+                          //   },
+                          //   loading: () {
+                          //     return const CircularProgressIndicator();
+                          //   },
+                          // ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -1026,6 +1026,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
+                                      vendorImage: resp.vendorImage,
                                         vendorname: resp.name,
                                         winners: resp.winners.toString(),
                                         proctimage: resp.image);
