@@ -55,8 +55,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     });
   }
 
-  int sizedboxval = 500;
-
   @override
   void initState() {
     super.initState();
@@ -155,6 +153,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
+    int dynSize = 500;
 
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
@@ -656,58 +655,81 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
-                              return SizedBox(
-                                height: data.insidearr.isEmpty
-                                    ? 10.h
-                                    : sizedboxval
-                                        .h, // Adjust height based on data
-                                width: double.infinity,
-                                child: TabBarView(
-                                  controller: tabController,
-                                  children: [
-                                    // First Tab
-                                    SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          if (data.global.isEmpty &&
-                                              data.insidearr.isEmpty)
-                                            const Center(
-                                              child: Text("No Data Available"),
-                                            )
-                                          else ...[
+                              return Builder(
+                                builder: (context) {
+                                    double dynamicHeight = data.global.isNotEmpty ? 500.h : 150.h;
+                                  return SizedBox(
+                                    height: data.insidearr.isEmpty
+                                        ? 10.h
+                                        : dynamicHeight.h, // Adjust height based on data
+                                    width: double.infinity,
+                                    child: TabBarView(
+                                      controller: tabController,
+                                      children: [
+                                        // First Tab
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
                                             if (data.global.isNotEmpty)
                                               SizedBox(
                                                 height: 130.h,
                                                 child: ListView.builder(
                                                   padding: EdgeInsets.zero,
                                                   shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
+                                                  scrollDirection: Axis.horizontal,
                                                   itemCount: data.global.length,
                                                   itemBuilder: (context, index) {
-                                                    sizedboxval =
-                                                        data.insidearr[0].isEmpty
-                                                            ? 150
-                                                            : 500;
-                                                    LogoData res =
+                                                    LogoData dat =
                                                         data.global[index];
-                                                    if (index == 0) {
-                                                      return StoryAddWidget(
-                                                          index: index,
-                                                          brandname:
-                                                              res.brandName);
-                                                    } else if (index >= 1 &&
-                                                        index <= 2) {
-                                                      return StoryAddWidget(
-                                                          index: index,
-                                                          showgift: true);
-                                                    }
-                                                    return StoryAddWidget(
-                                                        index: index);
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.w, top: 5.w),
+                                                      child: Column(
+                                                        children: [
+                                                          CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.grey,
+                                                            radius: 27,
+                                                            child: CircleAvatar(
+                                                              radius: 26,
+                                                              backgroundImage:
+                                                                  NetworkImage(dat
+                                                                      .brandLogo!),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            dat.brandName!,
+                                                            style: headerstyle.copyWith(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight.w500,
+                                                                color: ColorConstant
+                                                                    .blackColor),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                    // dynSize =
+                                                    //     data.insidearr[0].isEmpty
+                                                    //         ? 150
+                                                    //         : 500;
+                                                    // LogoData res =
+                                                    //     data.global[index];
+                                                    // if (index == 0) {
+                                                    //   return StoryAddWidget(
+                                                    //       index: index,
+                                                    //       brandname: res.brandName);
+                                                    // } else if (index >= 1 &&
+                                                    //     index <= 2) {
+                                                    //   return StoryAddWidget(
+                                                    //       index: index,
+                                                    //       showgift: true);
+                                                    // }
+                                                    // return StoryAddWidget(
+                                                    //     index: index);
                                                   },
                                                 ),
                                               ),
@@ -719,14 +741,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               child: data.insidearr.isNotEmpty &&
                                                       data.insidearr[0].isNotEmpty
                                                   ? ListView.builder(
-                                                      clipBehavior:
-                                                          Clip.antiAlias,
+                                                      clipBehavior: Clip.antiAlias,
                                                       padding:
                                                           const EdgeInsets.all(3),
                                                       scrollDirection:
                                                           Axis.horizontal,
-                                                      itemCount: data
-                                                          .insidearr[0].length,
+                                                      itemCount:
+                                                          data.insidearr[0].length,
                                                       itemBuilder:
                                                           (context, index) {
                                                         GlobalModel prod = data
@@ -735,9 +756,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           onTap: () {},
                                                           child:
                                                               ProductDetailWidget(
-                                                            sponsored: prod
-                                                                .user[0]
-                                                                .sponsored!,
+                                                            issponsored: prod
+                                                                .user[0].sponsored!,
                                                             vendorname:
                                                                 prod.contactName,
                                                             discounttedPrice:
@@ -761,55 +781,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         );
                                                       },
                                                     )
-                                                  : const Center(
-                                                      child: Text(
-                                                          "No Data Available"),
-                                                    ),
+                                                  : null,
                                             ),
-                                          ]
-                                        ],
-                                      ),
-                                    ),
-
-                                    // Second Tab
-                                    SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          if (data.domestic.isEmpty &&
-                                              data.doma.isEmpty)
-                                            const Center(
-                                              child: Text("No Data Available"),
-                                            )
-                                          else ...[
+                                          ],
+                                        ),
+                                  
+                                        // Second Tab
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
                                             if (data.domestic.isNotEmpty)
                                               SizedBox(
                                                 height: 130.h,
                                                 child: ListView.builder(
                                                   padding: EdgeInsets.zero,
                                                   shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
+                                                  scrollDirection: Axis.horizontal,
                                                   itemCount: data.domestic.length,
                                                   itemBuilder: (context, index) {
-                                                    sizedboxval =
-                                                        data.doma[0].isEmpty
-                                                            ? 150
-                                                            : 500;
+                                                  
+                                                    dynamicHeight = data.doma[0].length == 0
+                                                        ? 150
+                                                        : 500;
+                                  
                                                     LogoData res =
                                                         data.domestic[index];
-                                                    if (index == 0) {
-                                                      return StoryAddWidget(
-                                                          index: index,
-                                                          brandname:
-                                                              res.brandName);
-                                                    } else if (index >= 1 &&
-                                                        index <= 2) {
-                                                      return StoryAddWidget(
-                                                          index: index,
-                                                          showgift: true);
-                                                    }
-                                                    return StoryAddWidget(
-                                                        index: index);
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 5.w, top: 5.w),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.grey,
+                                                            radius: 27,
+                                                            child: CircleAvatar(
+                                                              radius: 26,
+                                                              backgroundImage:
+                                                                  NetworkImage(res
+                                                                      .brandLogo!),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            res.brandName!,
+                                                            style: headerstyle.copyWith(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight.w500,
+                                                                color: ColorConstant
+                                                                    .blackColor),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
                                                   },
                                                 ),
                                               ),
@@ -821,8 +853,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               child: data.doma.isNotEmpty &&
                                                       data.doma[0].isNotEmpty
                                                   ? ListView.builder(
-                                                      clipBehavior:
-                                                          Clip.antiAlias,
+                                                      clipBehavior: Clip.antiAlias,
                                                       padding:
                                                           const EdgeInsets.all(3),
                                                       scrollDirection:
@@ -837,8 +868,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           onTap: () {},
                                                           child:
                                                               ProductDetailWidget(
-                                                            vendorname:
-                                                                prod.title,
+                                                            vendorname: prod.title,
                                                             discounttedPrice:
                                                                 prod.discont,
                                                             Vimage:
@@ -861,59 +891,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         );
                                                       },
                                                     )
-                                                  : const Center(
-                                                      child: Text(
-                                                          "No Data Available"),
-                                                    ),
+                                                  : null,
                                             ),
                                           ],
-                                        ],
-                                      ),
-                                    ),
-
-                                    // Third Tab
-                                    SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          if (data.spot[0].isEmpty &&
-                                              data.spot.isEmpty)
-                                            const Center(
-                                              child: Text("No Data Available"),
-                                            )
-                                          else ...[
-                                            if (data.spot.isNotEmpty &&
-                                                data.spot[0].isNotEmpty)
+                                        ),
+                                  
+                                        // Third Tab
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (data.spotlight.isNotEmpty)
                                               SizedBox(
-                                                height: 130.h,
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: data.spot[0].length,
-                                                  itemBuilder: (context, index) {
-                                                    sizedboxval =
-                                                        data.spot[0].isEmpty
-                                                            ? 100
-                                                            : 500;
-                                                    GlobalModel res =
-                                                        data.spot[0][index];
-                                                    if (index == 0) {
-                                                      return StoryAddWidget(
-                                                          index: index,
-                                                          brandname:
-                                                              res.contactName);
-                                                    } else if (index >= 1 &&
-                                                        index <= 2) {
-                                                      return StoryAddWidget(
-                                                          index: index,
-                                                          showgift: true);
-                                                    }
-                                                    return StoryAddWidget(
-                                                        index: index);
-                                                  },
-                                                ),
-                                              ),
+                                                  height: 130.h,
+                                                  child: ListView.builder(
+                                                      padding: EdgeInsets.zero,
+                                                      shrinkWrap: true,
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      itemCount:
+                                                          data.spotlight.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        dynamicHeight =
+                                                            data.spotlight.isEmpty
+                                                                ? 100
+                                                                : 500;
+                                                        LogoData res =
+                                                            data.spotlight[index];
+                                                        return Padding(
+                                                          padding: EdgeInsets.only(
+                                                              left: 5.w, top: 5.w),
+                                                          child: Column(
+                                                            children: [
+                                                              CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors.grey,
+                                                                radius: 27,
+                                                                child: CircleAvatar(
+                                                                  radius: 26,
+                                                                  backgroundImage:
+                                                                      NetworkImage(res
+                                                                          .brandLogo!),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                res.brandName!,
+                                                                style: headerstyle.copyWith(
+                                                                    fontSize: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: ColorConstant
+                                                                        .blackColor),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        );
+                                                      })),
                                             SizedBox(
                                               height: data.spot.isNotEmpty &&
                                                       data.spot[0].isNotEmpty
@@ -922,8 +959,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               child: data.spot.isNotEmpty &&
                                                       data.spot[0].isNotEmpty
                                                   ? ListView.builder(
-                                                      clipBehavior:
-                                                          Clip.antiAlias,
+                                                      clipBehavior: Clip.antiAlias,
                                                       padding:
                                                           const EdgeInsets.all(3),
                                                       scrollDirection:
@@ -938,8 +974,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           onTap: () {},
                                                           child:
                                                               ProductDetailWidget(
-                                                            vendorname:
-                                                                prod.title,
+                                                            vendorname: prod.title,
                                                             discounttedPrice:
                                                                 prod.discont,
                                                             Vimage: prod
@@ -962,17 +997,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         );
                                                       },
                                                     )
-                                                  : const Center(
-                                                      child: Text(
-                                                          "No Data Available"),
-                                                    ),
+                                                  : null,
                                             ),
                                           ],
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  );
+                                }
                               );
                             },
                             error: (error, stackTrace) {
@@ -981,49 +1013,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             loading: () => const CircularProgressIndicator(),
                           ),
 
-                          SizedBox(
-                            height: 10.h,
-                          ),
-
-                          buyorwin.when(
-                            data: (data) {
-                              return SizedBox(
-                                height: 340.h,
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.all(3),
-                                  clipBehavior: Clip.antiAlias,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: data.home.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    Home1GlobalModel prefs = data.home[index];
-                                    return ProductDetailWidget(
-                                      price: prefs.price,
-                                      productImage: prefs.image,
-                                      title: prefs.title,
-                                      vendorname: prefs.userDetails!.name,
-                                      Vimage: prefs.userDetails!.photo,
-                                      similarproductCount:
-                                          prefs.similarProductCount,
-                                      membershipColor:
-                                          prefs.userDetails!.memberColor,
-                                      membershipTitle:
-                                          prefs.userDetails!.membershipTitle,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            error: (error, stackTrace) {
-                              return Text("error $error");
-                            },
-                            loading: () {
-                              return const CircularProgressIndicator();
-                            },
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
+                          // buyorwin.when(
+                          //   data: (data) {
+                          //     return SizedBox(
+                          //       height: 340.h,
+                          //       child: ListView.builder(
+                          //         padding: const EdgeInsets.all(3),
+                          //         clipBehavior: Clip.antiAlias,
+                          //         scrollDirection: Axis.horizontal,
+                          //         itemCount: data.home.length,
+                          //         shrinkWrap: true,
+                          //         itemBuilder: (context, index) {
+                          //           Home1GlobalModel prefs = data.home[index];
+                          //           return ProductDetailWidget(
+                          //             price: prefs.price,
+                          //             productImage: prefs.image,
+                          //             title: prefs.title,
+                          //             vendorname: prefs.userDetails!.name,
+                          //             Vimage: prefs.userDetails!.photo,
+                          //             similarproductCount:
+                          //                 prefs.similarProductCount,
+                          //             membershipColor:
+                          //                 prefs.userDetails!.memberColor,
+                          //             membershipTitle:
+                          //                 prefs.userDetails!.membershipTitle,
+                          //           );
+                          //         },
+                          //       ),
+                          //     );
+                          //   },
+                          //   error: (error, stackTrace) {
+                          //     return Text("error $error");
+                          //   },
+                          //   loading: () {
+                          //     return const CircularProgressIndicator();
+                          //   },
+                          // ),
 
                           Center(
                             child: Column(
@@ -1068,6 +1093,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
+                                        vendorImage: resp.vendorImage,
                                         vendorname: resp.name,
                                         winners: resp.winners.toString(),
                                         proctimage: resp.image);

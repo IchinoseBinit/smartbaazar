@@ -542,6 +542,7 @@ class VProduct {
   final int? commentcount;
   final String? discounted_price;
   final int? similarProductCount;
+  final String offers;
 
   VProduct(
       {required this.id,
@@ -553,11 +554,13 @@ class VProduct {
       required this.wow,
       required this.stock,
       required this.commentcount,
+      required this.offers,
       required this.similarProductCount,
       required this.discounted_price});
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
+        offers: json["offers"] ?? '',
         discounted_price: json['discounted_price'] ?? '',
         commentcount: json['commentcount'] ?? 0,
         stock: json['stock'] ?? '',
@@ -591,7 +594,7 @@ class VendorUser {
     required this.sponsored,
     required this.membershipStatus,
     required this.membercolor,
-    required this.membershipTitle, 
+    required this.membershipTitle,
   });
 
   // Factory constructor to create a VendorUser from JSON

@@ -38,13 +38,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchResults = false;
   late TabController tabController;
-  final List<Map<String, dynamic>> _services = [
-    {'label': 'Low Price Guarantee', 'id': 1},
-    {'label': 'Launch Offer', 'id': 2},
-    {'label': 'Seasonal offer', 'id': 3},
-    {'label': 'Promotional', 'id': 4},
-    {'label': 'Clearance sale', 'id': 5},
-  ];
+
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
   final PageController _adscontroller = PageController(
@@ -1365,6 +1359,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
+                            vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1434,7 +1429,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {
                           // Map category labels to their respective product lists
-                          List<String> categories = _services
+                          List<String> categories = services
                               .map((e) => e['label'] as String)
                               .toList();
 
@@ -1559,9 +1554,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             fontSize: 17,
                             color: Colors.black),
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                    
                     ],
                   ),
                 ),

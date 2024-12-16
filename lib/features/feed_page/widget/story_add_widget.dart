@@ -27,12 +27,12 @@ class StoryAddWidget extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => StoryScreen(author: 'Author ${index + 1}'),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (_) => StoryScreen(author: 'Author ${index + 1}'),
+            //   ),
+            // );
           },
           child: Stack(
             clipBehavior: Clip.none,

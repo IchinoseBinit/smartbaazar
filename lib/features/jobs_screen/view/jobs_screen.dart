@@ -1358,6 +1358,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                                      vendorImage: resp.vendorImage,
+
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
