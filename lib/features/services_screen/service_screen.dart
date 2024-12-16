@@ -1222,7 +1222,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Service-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
@@ -1294,7 +1295,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Service-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1360,7 +1362,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Service-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1462,8 +1465,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
-                                      vendorImage: resp.vendorImage,
-
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1522,7 +1524,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     builder: (context, selectedIndex, child) {
                       // Map category labels to their respective product lists
                       List<String> categories =
-                          _services.map((e) => e['label'] as String).toList();
+                          services.map((e) => e['label'] as String).toList();
 
                       return Column(
                         children: [
@@ -1654,9 +1656,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                             fontSize: 17,
                             color: Colors.black),
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                     
                     ],
                   ),
                 ),

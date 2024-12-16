@@ -38,14 +38,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchResults = false;
   late TabController tabController;
-  final List<Map<String, dynamic>> _services = [
-    {'label': 'Low Price Guarantee', 'id': 1},
-    {'label': 'Launch Offer', 'id': 2},
-    {'label': 'Seasonal offer', 'id': 3},
-    {'label': 'Promotional', 'id': 4},
-    {'label': 'Clearance sale', 'id': 5},
-    {'label': 'Festival sale', 'id': 5},
-  ];
+
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
   final PageController _adscontroller = PageController(
@@ -834,8 +827,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             membershipColor: hot.user.membercolor,
                             membershipTitle: hot.user.membershipTitle,
                             similarproductCount: hot.similarProductCount,
-                            sponsored: hot.user.sponsored,
-
+                            issponsored: hot.user.sponsored,
                             discounttedPrice: hot.discounted_price,
                             lefttile: "Socio-Shop",
                             productImage: hot.image,
@@ -1216,7 +1208,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
@@ -1288,7 +1281,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1353,7 +1347,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             child: ProductDetailWidget(
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1418,7 +1413,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
-                            vendorImage: resp.vendorImage,
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1476,7 +1471,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     builder: (context, selectedIndex, child) {
                       // Map category labels to their respective product lists
                       List<String> categories =
-                          _services.map((e) => e['label'] as String).toList();
+                          services.map((e) => e['label'] as String).toList();
 
                       return Column(
                         children: [
@@ -1570,6 +1565,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             onTap:
                                                 () {}, // Handle onTap if needed
                                             child: ProductDetailWidget(
+                                              offer: prod.offers,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.user.name,
                                               discounttedPrice: "0",
@@ -1606,9 +1602,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
                             color: Colors.black),
-                      ),
-                      SizedBox(
-                        width: 10.w,
                       ),
                     ],
                   ),

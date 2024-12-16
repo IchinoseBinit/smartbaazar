@@ -58,12 +58,7 @@ class FeedFormScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-<<<<<<< HEAD
                     border: Border.all(width: 1, color: const Color(0xffEDECEC))),
-=======
-                    border:
-                        Border.all(width: 1, color: const Color(0xffEDECEC))),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -118,12 +113,7 @@ class FeedFormScreen extends ConsumerWidget {
                             child: DropdownButton<String>(
                               alignment: Alignment.center,
                               icon: const Icon(Icons.arrow_drop_down),
-<<<<<<< HEAD
                               padding: const EdgeInsets.symmetric(horizontal: 5),
-=======
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                               isExpanded: true,
                               underline: const SizedBox(),
                               elevation: 0,
@@ -131,12 +121,7 @@ class FeedFormScreen extends ConsumerWidget {
                               hint: Text(
                                 "select Product",
                                 style: headerstyle.copyWith(
-<<<<<<< HEAD
                                     color: const Color.fromARGB(255, 108, 93, 93),
-=======
-                                    color:
-                                        const Color.fromARGB(255, 108, 93, 93),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -178,12 +163,7 @@ class FeedFormScreen extends ConsumerWidget {
                             child: DropdownButton<String>(
                               alignment: Alignment.center,
                               icon: const Icon(Icons.arrow_drop_down),
-<<<<<<< HEAD
                               padding: const EdgeInsets.symmetric(horizontal: 5),
-=======
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                               isExpanded: true,
                               underline: const SizedBox(),
                               elevation: 0,
@@ -191,12 +171,8 @@ class FeedFormScreen extends ConsumerWidget {
                               hint: Text(
                                 "select Product",
                                 style: headerstyle.copyWith(
-<<<<<<< HEAD
-                                    color: const Color.fromARGB(255, 108, 93, 93),
-=======
                                     color:
                                         const Color.fromARGB(255, 108, 93, 93),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -221,13 +197,8 @@ class FeedFormScreen extends ConsumerWidget {
                             color: Colors.white,
                           ),
                         ),
-<<<<<<< HEAD
-                           Container(
-                            padding: const EdgeInsets.all(3),
-=======
                         Container(
                           padding: const EdgeInsets.all(3),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                           margin: EdgeInsets.only(left: 5.w),
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle, color: Color(0xff362677)),
@@ -254,12 +225,8 @@ class FeedFormScreen extends ConsumerWidget {
                             child: DropdownButton<String>(
                               alignment: Alignment.center,
                               icon: const Icon(Icons.arrow_drop_down),
-<<<<<<< HEAD
-                              padding: const EdgeInsets.symmetric(horizontal: 5),
-=======
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 5),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                               isExpanded: true,
                               underline: const SizedBox(),
                               elevation: 0,
@@ -267,12 +234,8 @@ class FeedFormScreen extends ConsumerWidget {
                               hint: Text(
                                 "select Product",
                                 style: headerstyle.copyWith(
-<<<<<<< HEAD
-                                    color: const Color.fromARGB(255, 108, 93, 93),
-=======
                                     color:
                                         const Color.fromARGB(255, 108, 93, 93),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -297,13 +260,8 @@ class FeedFormScreen extends ConsumerWidget {
                             color: Colors.white,
                           ),
                         ),
-<<<<<<< HEAD
-                           Container(
-                            padding: const EdgeInsets.all(3),
-=======
                         Container(
                           padding: const EdgeInsets.all(3),
->>>>>>> 375477dc9eb434f78befb6ca868814141e7012e0
                           margin: EdgeInsets.only(left: 5.w),
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle, color: Color(0xff362677)),

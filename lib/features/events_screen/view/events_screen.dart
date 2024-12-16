@@ -845,7 +845,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             vendorname: hot.user.name,
                             similarproductCount: hot.similarProductCount,
                             membershipColor: hot.user.membercolor,
-                             membershipTitle: hot.user.membershipTitle,
+                            membershipTitle: hot.user.membershipTitle,
                           );
                         },
                       ),
@@ -924,7 +924,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                   pro.similarProductCount,
                                               membershipColor:
                                                   pro.user.membercolor,
-                                                   membershipTitle: pro.user.membershipTitle,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
                                             );
                                           },
                                         ),
@@ -990,7 +991,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         productImage: pro.image,
                                         similarproductCount:
                                             pro.similarProductCount,
-                                        membershipColor: pro.user.membercolor, membershipTitle: pro.user.membershipTitle,
+                                        membershipColor: pro.user.membercolor,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
                                       );
                                     },
                                   ),
@@ -1046,7 +1049,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         productImage: pro.image,
                                         similarproductCount:
                                             pro.similarProductCount,
-                                        membershipColor: pro.user.membercolor, membershipTitle: pro.user.membershipTitle,
+                                        membershipColor: pro.user.membercolor,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
                                       );
                                     },
                                   ),
@@ -1102,7 +1107,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         productImage: pro.image,
                                         similarproductCount:
                                             pro.similarProductCount,
-                                        membershipColor: pro.user.membercolor, membershipTitle: pro.user.membershipTitle,
+                                        membershipColor: pro.user.membercolor,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
                                       );
                                     },
                                   ),
@@ -1200,7 +1207,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1276,7 +1285,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1345,7 +1356,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1389,7 +1402,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             title: ref.title,
                             vendorname: ref.user.name,
                             similarproductCount: ref.similarProductCount,
-                            membershipColor: ref.user.membercolor, membershipTitle: ref.user.membershipTitle,
+                            membershipColor: ref.user.membercolor,
+                            membershipTitle: ref.user.membershipTitle,
                           );
                         },
                       ),
@@ -1444,7 +1458,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
-                            vendorImage: resp.vendorImage,
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1503,7 +1517,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                     builder: (context, selectedIndex, child) {
                       // Map category labels to their respective product lists
                       List<String> categories =
-                          _services.map((e) => e['label'] as String).toList();
+                          services.map((e) => e['label'] as String).toList();
 
                       return Column(
                         children: [
@@ -1601,7 +1615,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1649,9 +1665,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             fontSize: 17,
                             color: Colors.black),
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                    
                     ],
                   ),
                 ),
@@ -1687,7 +1701,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                 data.product[index].similarProductCount,
                             membershipColor:
                                 data.product[index].user.membercolor,
-                                membershipTitle: data.product[index].user.membershipTitle,
+                            membershipTitle:
+                                data.product[index].user.membershipTitle,
                           ),
                         );
                       },

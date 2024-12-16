@@ -113,7 +113,7 @@ class UserDetails {
   final String? photo;
   final String? memberColor;
   final String? membershipTitle;
-   final bool? sponsored;
+  final bool? sponsored;
 
   UserDetails({
     required this.userId,
@@ -126,7 +126,7 @@ class UserDetails {
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return UserDetails(
-      sponsored:   json['sponsored'] as bool?,
+      sponsored: json['sponsored'] as bool?,
       userId: json['user_id'] as String,
       name: json['name'] as String?,
       photo: json['photo'] as String?,
@@ -232,22 +232,21 @@ class GlobalModel {
   final String contactName;
   final int? similarproductCount;
 
-  GlobalModel({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.imageUrl,
-    required this.user,
-    required this.contactName,
-    required this.similarproductCount,
-    required this.discont
-  });
+  GlobalModel(
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.price,
+      required this.imageUrl,
+      required this.user,
+      required this.contactName,
+      required this.similarproductCount,
+      required this.discont});
 
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
-      discont: json['discounted_price']?? '0',
+      discont: json['discounted_price'] ?? '0',
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
