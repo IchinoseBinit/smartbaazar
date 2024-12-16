@@ -30,9 +30,9 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
   double offsetX = 0.0; // Horizontal swipe offset
   int currentIndex = 0; // Current card index
   List<Widget> cards = [
-    big_container(),
-    big_container(),
-    big_container(),
+    const big_container(),
+    const big_container(),
+    const big_container(),
   ];
 
   void handleSwipe() {
@@ -41,7 +41,7 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
       setState(() {
         // Show SnackBar
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Card deleted"),
             duration: Duration(seconds: 2),
           ),
@@ -105,7 +105,7 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
               controller: _tabController,
               isScrollable: true,
               indicatorPadding:
-                  EdgeInsets.symmetric(horizontal: 16), // Aligns indicator
+                  const EdgeInsets.symmetric(horizontal: 16), // Aligns indicator
               tabs: [
                 Tab(
                   icon: Image.asset(
@@ -148,8 +148,8 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
                         TextField(
                           decoration: InputDecoration(
                             hintText: "Business or Brand Name",
-                            suffixIcon: Icon(Icons.search),
-                            enabledBorder: OutlineInputBorder(
+                            suffixIcon: const Icon(Icons.search),
+                            enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0xffD9D9D9),
                               ),
@@ -174,7 +174,7 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
                               });
                             },
                             child: AnimatedSwitcher(
-                              duration: Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 300),
                               child: Transform.translate(
                                 offset: Offset(offsetX, 0),
                                 child: cards.isNotEmpty
@@ -186,7 +186,7 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
                         // Display second card if available
                         if (cards.length > 1)
                           AnimatedSwitcher(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             child: cards[1],
                           ),
                       ],

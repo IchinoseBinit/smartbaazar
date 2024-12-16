@@ -55,7 +55,7 @@ class HeaderBannerWidget extends StatelessWidget {
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
                color: const Color(0xffD9D9D9).withOpacity(0.5),
-               borderRadius: BorderRadius.only(
+               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10)
                )

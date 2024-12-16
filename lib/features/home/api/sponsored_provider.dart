@@ -11,6 +11,7 @@ class SponsoredProduct {
   final String description;
   final String price;
   final String image;
+  final int? similarProductCount;
   final UserDetails? userdetails;
 
   SponsoredProduct({
@@ -19,6 +20,7 @@ class SponsoredProduct {
     required this.description,
     required this.price,
     required this.image,
+    required this.similarProductCount,
     this.userdetails,
   });
 
@@ -29,6 +31,7 @@ class SponsoredProduct {
       description: json['description'] as String,
       price: json['price'] as String,
       image: json['image'] as String,
+      similarProductCount : json['similarProductCount'] as int,
       userdetails: json['userdetails'] != null
           ? UserDetails.fromJson(json['userdetails'])
           : null,
@@ -41,17 +44,20 @@ class UserDetails {
   final String membershipTitle;
   final String name;
   final String photo;
+  final String? memberColor;
 
   UserDetails({
     required this.userId,
     required this.membershipTitle,
     required this.name,
     required this.photo,
+    required this.memberColor,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return UserDetails(
       userId: json['user_id'] as String,
+      memberColor: json['membership_color'] as String,
       membershipTitle: json['membership_title'] as String,
       name: json['name'] as String,
       photo: json['photo'] as String,

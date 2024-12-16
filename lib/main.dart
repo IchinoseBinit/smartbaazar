@@ -3,6 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 
 void main() {
@@ -35,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SplashScreen()
+          home: const SplashScreen()
           // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
           ),
     );

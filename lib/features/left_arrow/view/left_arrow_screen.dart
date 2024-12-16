@@ -1,15 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class LeftArrowScreen extends ConsumerStatefulWidget {
@@ -37,6 +34,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   final CarouselSliderController _carouselController =
       CarouselSliderController(); // Correct CarouselController instance
 
+  @override
   void initState() {
     super.initState();
     _items = [
@@ -273,12 +271,12 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         return Container(
                           width: 12.0,
                           height: 12.0,
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _currentIndex == entry.key
-                                ? Color(0xff8F8989)
-                                : Color(0xffD9D9D9),
+                                ? const Color(0xff8F8989)
+                                : const Color(0xffD9D9D9),
                           ),
                         );
                       }).toList(),
@@ -293,12 +291,12 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                             if (_currentIndex > 0) {
                               _carouselController.animateToPage(
                                 _currentIndex - 1, // Move to previous slide
-                                duration: Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                               );
                             }
                           },
-                          icon: Icon(Icons.arrow_back_ios_new_rounded),
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
                         ),
                         Expanded(
                           // Wrap the Container with Expanded
@@ -328,12 +326,12 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                               if (_currentIndex < _items.length - 1) {
                                 _carouselController.animateToPage(
                                   _currentIndex + 1, // Move to next slide
-                                  duration: Duration(milliseconds: 300),
+                                  duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeInOut,
                                 );
                               }
                             },
-                            icon: Icon(Icons.arrow_forward_ios_rounded))
+                            icon: const Icon(Icons.arrow_forward_ios_rounded))
                       ],
                     )
                   ],

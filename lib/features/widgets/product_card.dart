@@ -33,18 +33,19 @@ class ProductCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Skeleton.replace(
+
               width: productCardWidth,
               height: 110.h,
               child: Container(
                 width: productCardWidth,
                 height: 100.h,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(product.image,
-                    errorListener: (p0) => Text(product.title)
-                    ),
-                    fit: BoxFit.fill,
-                  ),
+                decoration: const BoxDecoration(
+                  // image: DecorationImage(
+                  //   image: CachedNetworkImageProvider(product.image,
+                  //   errorListener: (p0) => Text(product.title)
+                  //   ),
+                  //   fit: BoxFit.fill,
+                  // ),
                   // NetworkImage(product.image)
                 ),
               ),
@@ -57,7 +58,7 @@ class ProductCard extends StatelessWidget {
               child: SizedBox(
                 height: 30.h,
                 child: Text(
-                  product.title,
+                  'product.title',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -104,22 +105,22 @@ class ProductCard extends StatelessWidget {
             SizedBox(
               height: 4.h,
             ),
-            Skeleton.replace(
-              height: 10.h,
-              width: productCardWidth,
-              child: SizedBox(
-                width: productCardWidth,
-                child: Text(
-                  product.contact_name,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
+            // Skeleton.replace(
+            //   height: 10.h,
+            //   width: productCardWidth,
+            //   child: SizedBox(
+            //     width: productCardWidth,
+            //     child: Text(
+            //       product.contact_name,
+            //       overflow: TextOverflow.ellipsis,
+            //       style: TextStyle(
+            //         fontSize: 10.sp,
+            //         fontWeight: FontWeight.w400,
+            //         color: Colors.black,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 6.h,
             ),
@@ -129,7 +130,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 Skeleton.unite(
                   child: RatingBar.builder(
-                    initialRating: product.avg_rating,
+                    // initialRating: product.avg_rating,
                     minRating: 0,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
@@ -172,19 +173,19 @@ class ProductCard extends StatelessWidget {
                 SizedBox(
                   width: 3.w,
                 ),
-                Flexible(
-                  child: Text(
-                    '${NumberFormat.compact().format(
-                      int.parse(product.visits),
-                    )} Views',
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xff888888),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                // Flexible(
+                //   child: Text(
+                //     '${NumberFormat.compact().format(
+                //       int.parse(product.visits),
+                //     )} Views',
+                //     style: TextStyle(
+                //       fontSize: 9.sp,
+                //       fontWeight: FontWeight.w400,
+                //       color: const Color(0xff888888),
+                //     ),
+                //     overflow: TextOverflow.ellipsis,
+                //   ),
+                // ),
                 SizedBox(
                   width: 18.w,
                 ),

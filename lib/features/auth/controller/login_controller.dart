@@ -32,56 +32,25 @@ class LoginController extends StateNotifier<GenericState> {
       required String password}) async {
     state = LoadingState();
     try {
-      // Use _loginApi instead of creating a new instance
       final loginData = await _loginApi.login(email, password);
       state = LoadedState<LoginData>(response: loginData);
 
-      final String userId = loginData!.result.id.toString();
-      final String userName = loginData.result.name;
-      final String useremail = loginData.result.email?.toString() ?? '';
-      final String phone = loginData.result.phone?.toString() ?? '';
-      // print("useremail$useremail");
       final prefs = await SharedPreferences.getInstance();
-      SmartClinet.userId = userId; // Set userId in SmartClinet
-      SmartClinet.userName = userName; // Set userName in SmartClinet
-      SmartClinet.userEmail = useremail; // Set userEmail in SmartClinet
+      SmartClinet.userId = loginData!.result.id.toString();
+      SmartClinet.userName = loginData.result.name;
+      SmartClinet.userEmail = loginData.result.email ?? '';
 
-      await prefs.setString('userId', userId);
-      await prefs.setString('userName', userName);
-      await prefs.setString('userEmail', useremail);
-      await prefs.setString('phone', phone);
-      // Navigate to the bottom navigation screen, replacing the login screen
-      await Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()));
+      await prefs.setString('userId', SmartClinet.userId);
+      await prefs.setString('userName', SmartClinet.userName);
+      await prefs.setString('userEmail', SmartClinet.userEmail);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const BottomNavigationScreen()),
+      );
     } catch (e) {
-      String errorMessage = 'An unexpected error occurred.';
-
-      if (e is DioException) {
-        if (e.response != null) {
-          final responseData = e.response!.data;
-          if (responseData is Map<String, dynamic>) {
-            errorMessage =
-                responseData['message'] ?? 'An unexpected error occurred.';
-
-            // Handle specific server error messages for better user feedback
-            // if (responseData['message'] ==
-            //     "These credentials do not match our records.") {
-            //   errorMessage = "Invalid username or password. Please try again.";
-            // }
-          } else if (responseData is String) {
-            errorMessage = responseData;
-          }
-        } else {
-          errorMessage = 'Network error: Unable to connect to the server.';
-        }
-      } else if (e is Exception) {
-        errorMessage = e.toString().replaceAll('Exception: ', '');
-      }
-
-      print("Error: $errorMessage");
-      print("Error details: ${e.toString()}");
+      String errorMessage = _getErrorMessage(e);
       state = ErrorState(errorMessage);
-      print("Error type: ${e.runtimeType}");
     }
   }
 
@@ -92,44 +61,46 @@ class LoginController extends StateNotifier<GenericState> {
     SmartClinet.refresh = pref.getString('refreshToken') ?? '';
     state = LoadingState();
 
-    try {
-      if (sessionString != null) {
-        final session = json.decode(sessionString);
-        String userId = session['result']?['id']?.toString() ?? '';
+    if (sessionString == null) {
+      _navigateToLoginScreen(context);
+      return;
+    }
 
-        if (userId.isNotEmpty) {
-          state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-          SmartClinet.userId = userId;
-          await pref.setString('userId', userId);
-          await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const AdSplashScreen(),
-            ),
-          );
-        } else {
-          await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const LoginScreen(),
-            ),
-          );
-        }
-      } else {
-        await Navigator.pushReplacement(
+    try {
+      final session = json.decode(sessionString);
+      final userId = session['result']?['id']?.toString() ?? '';
+      if (userId.isNotEmpty) {
+        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+        SmartClinet.userId = userId;
+        await pref.setString('userId', userId);
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (_) => const LoginScreen(),
-          ),
+          MaterialPageRoute(builder: (_) => const AdSplashScreen()),
         );
+      } else {
+        _navigateToLoginScreen(context);
       }
     } catch (e) {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        ),
-      );
+      print("Error during session continuation: $e");
+      _navigateToLoginScreen(context);
     }
+  }
+
+  String _getErrorMessage(dynamic e) {
+    if (e is DioException) {
+      final responseData = e.response?.data;
+      if (responseData is Map<String, dynamic>) {
+        return responseData['message'] ?? 'An unexpected error occurred.';
+      }
+      return responseData is String ? responseData : 'An unexpected error occurred.';
+    }
+    return e.toString();
+  }
+
+  void _navigateToLoginScreen(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+    );
   }
 }

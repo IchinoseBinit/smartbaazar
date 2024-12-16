@@ -101,7 +101,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // final adsList = ref.watch(getAdsProvider);
+    // final adsList = ref.watch(fetchAdsProvider);
 
     // final searchResults = ref.watch(searchProvider(_searchController.text));
     // final vendorsearchResults = ref
@@ -187,9 +187,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         //     ),
                         //   ),
                         // ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
                       _buildDottedContainer(),
                       VendorFirstTabBarSection(
                         tabController: _firstTabController,
@@ -378,7 +378,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   }
 
   Widget buildTabContent(String category, String name) {
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
 
     // Use ref.watch to get search results based on category
     final searchResults = ref.watch(getVendorProfileDataProvider(
@@ -940,8 +940,8 @@ class big_container extends StatelessWidget {
                           ),
                           Text(
                             "Connections",
-                            style: TextStyle(
-                                fontSize: 10.sp, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
                           ),
                         ],
                       ),
@@ -957,8 +957,8 @@ class big_container extends StatelessWidget {
                           ),
                           Text(
                             "DealzCircle",
-                            style: TextStyle(
-                                fontSize: 10.sp, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
                           ),
                         ],
                       ),
@@ -974,8 +974,8 @@ class big_container extends StatelessWidget {
                           ),
                           Text(
                             "Prize Worth",
-                            style: TextStyle(
-                                fontSize: 10.sp, color: Colors.white),
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
                           ),
                         ],
                       ),

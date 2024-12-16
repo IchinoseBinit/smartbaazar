@@ -51,7 +51,9 @@ class FeedScreen extends ConsumerWidget {
                           color: Colors.white,
                         ),
                         SizedBox(width: 10.w),
-                        const SizedBox(height: 50, child: NewSearchWidget()),
+                        SizedBox(height: 50, child: NewSearchWidget(onchnage: (p0) {
+                          
+                        },)),
                       ],
                     ),
                     SizedBox(height: 30.h),

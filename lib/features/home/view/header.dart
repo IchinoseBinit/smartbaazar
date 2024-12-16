@@ -4,7 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 
 class NewSearchWidget extends StatefulWidget {
-  const NewSearchWidget({super.key});
+   NewSearchWidget({super.key,required this.onchnage});
+  Function(String)? onchnage;
 
   @override
   State<NewSearchWidget> createState() => _NewSearchWidgetState();
@@ -15,34 +16,48 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
     {
       'icon': 'assets/icon/loadings.svg',
       'label': 'Everything',
-    },
+      
+         },
     {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'Products',
+      'key':'1',
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
+            'key':'2',
+
     },
     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'Services',
+            'key':'3',
+
     },
     {
       'icon': 'assets/icon/eventIcon.svg',
       'label': 'Events',
+            'key':'5',
+
     },
     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'B2B',
+            'key':'7',
+
     },
     {
       'icon': 'assets/icon/Vector.svg',
       'label': 'Jobs',
+            'key':'4',
+
     },
     {
       'icon': 'assets/icon/box.svg',
       'label': 'Grocery',
+            'key':'8',
+
     }
   ];
 
@@ -65,6 +80,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
             padding: const EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
+              onChanged: widget.onchnage,
               decoration: InputDecoration(
                 prefixIcon: const Icon(
                   Icons.search,
@@ -138,11 +154,15 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(item['icon']!, height: 10.h),
+                SvgPicture.asset(
+                  alignment: Alignment.topLeft,
+                  item['icon']!, height: 10.h,color: ColorConstant.whiteColor,),
                 SizedBox(width: 8.w),
                 Text(
+                  
                   item['label']!,
                   style: headerstyle.copyWith(
+                    
                       fontSize: 10.sp, fontWeight: FontWeight.w600),
                 ),
               ],

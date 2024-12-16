@@ -12,6 +12,7 @@ import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/product_details/constant/additional_detailpage.dart';
@@ -31,7 +32,6 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widg
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 // ignore: must_be_immutable
@@ -45,13 +45,20 @@ class ProductDetailScreen extends ConsumerWidget {
   final String productId;
 
   ProductDetailScreen({super.key, required this.productId});
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrolltoo(double position) {
+    _scrollController.animateTo(position,
+        duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+  }
 
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final double sch = MediaQuery.of(context).size.height;
     // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
     // final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
@@ -95,9 +102,21 @@ class ProductDetailScreen extends ConsumerWidget {
                     SizedBox(
                       width: 3.h,
                     ),
-                    Text(
-                      "Buy",
-                      style: headerstyle.copyWith(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OrderDetailsScreen(
+                                selectedProductIds: [],
+                                selectedVendorIds: [],
+                              ),
+                            ));
+                      },
+                      child: Text(
+                        "Buy",
+                        style: headerstyle.copyWith(),
+                      ),
                     )
                   ],
                 ),
@@ -105,9 +124,18 @@ class ProductDetailScreen extends ConsumerWidget {
               SizedBox(
                 width: 10.w,
               ),
-              const CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  child: Icon(Icons.shopping_bag_outlined))
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddToCartScreen(),
+                      ));
+                },
+                child: const CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: Icon(Icons.shopping_bag_outlined)),
+              )
             ],
           ),
           onPressed: () {},
@@ -125,6 +153,7 @@ class ProductDetailScreen extends ConsumerWidget {
             }
 
             return SingleChildScrollView(
+              controller: _scrollController,
               scrollDirection: Axis.vertical,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,36 +183,74 @@ class ProductDetailScreen extends ConsumerWidget {
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Text("Pictures", style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-
-
-                              )),
+                              InkWell(
+                                onTap: () {
+                                  _scrolltoo(0);
+                                },
+                                child: Text("Pictures",
+                                    style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                    )),
+                              ),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Price & Variations", style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,)),
+                              InkWell(
+                                onTap: () {
+                                  _scrolltoo(0);
+                                },
+                                child: Text("Price & Variations",
+                                    style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                    )),
+                              ),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Delivery", style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,),),
+                              InkWell(
+                                onTap: () {
+                                  _scrolltoo(sch);
+                                },
+                                child: Text(
+                                  "Delivery",
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Aftersales", style:headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,),),
+                              InkWell(
+                                onTap: () {
+                                  _scrolltoo(sch * 2);
+                                },
+                                child: Text(
+                                  "Aftersales",
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
                               SizedBox(
                                 width: 15.w,
                               ),
-                              Text("Description", style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,),)
+                              InkWell(
+                                onTap: () {
+                                  _scrolltoo(sch * 4);
+                                },
+                                child: Text(
+                                  "Description",
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -288,18 +355,16 @@ class ProductDetailScreen extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      "Rs 6000 - ",
-                                    style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,)
-                                    ),
-                                    Text(
-                                      "Rs 90,000",
-                                           style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,)
-                                    )
+                                    Text("Rs 6000 - ",
+                                        style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15,
+                                        )),
+                                    Text("Rs 90,000",
+                                        style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15,
+                                        ))
                                   ],
                                 ),
                                 const PriceRowWidget(),
@@ -328,7 +393,8 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 20.h,
                           ),
                           Container(
-                            padding:  EdgeInsets.symmetric(horizontal: 24.w,vertical: 5.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24.w, vertical: 5.h),
                             width: double.infinity,
                             decoration: const BoxDecoration(
                                 gradient: LinearGradient(
@@ -408,7 +474,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 5.h,
                           ),
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal:  10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                             padding: const EdgeInsets.all(10),
                             width: double.infinity,
                             decoration: const BoxDecoration(
@@ -448,7 +514,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 5.h,
                           ),
                           Container(
-                            margin:  EdgeInsets.symmetric(horizontal: 10.w),
+                            margin: EdgeInsets.symmetric(horizontal: 10.w),
                             padding: const EdgeInsets.all(10),
                             width: double.infinity,
                             decoration: const BoxDecoration(
@@ -590,7 +656,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                         fontSize: 15,
                                         color: Colors.black),
                                   )),
-                                  SizedBox(height: 4.h,),
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
                                   const TextField(
                                     maxLines: 5,
                                     decoration: InputDecoration(
@@ -675,7 +743,8 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 10.h,
                           ),
                           Container(
-                              padding:  EdgeInsets.symmetric(horizontal: 20.w,vertical: 5.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 5.h),
                               width: double.infinity,
                               decoration: const BoxDecoration(
                                   gradient: LinearGradient(colors: [
@@ -689,74 +758,69 @@ class ProductDetailScreen extends ConsumerWidget {
                                     fontSize: 17,
                                     color: Colors.black87),
                               )),
-Padding(padding: EdgeInsets.symmetric(horizontal: 10.w),
-
-child: Column(
-  children: [
-     SizedBox(
-                        height: 360.h,
-                       width: double.infinity,
-                       child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    clipBehavior: Clip.antiAlias,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return const ProductDetailWidget();
-                    },
-                  ),
-                ),
-                 SizedBox(
-                        height: 360.h,
-                       width: double.infinity,
-                       child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    clipBehavior: Clip.antiAlias,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return const ProductDetailWidget();
-                    },
-                  ),
-                ),
-                 SizedBox(
-                        height: 360.h,
-                       width: double.infinity,
-                       child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    clipBehavior: Clip.antiAlias,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return const ProductDetailWidget();
-                    },
-                  ),
-                ),
-                 SizedBox(
-                        height: 360.h,
-                       width: double.infinity,
-                       child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    clipBehavior: Clip.antiAlias,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return const ProductDetailWidget();
-                    },
-                  ),
-                ),
-
-  ],
-),
-)
-                       
-                          
-
-                       ,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 360.h,
+                                  width: double.infinity,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    clipBehavior: Clip.antiAlias,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return ProductDetailWidget();
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 360.h,
+                                  width: double.infinity,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    clipBehavior: Clip.antiAlias,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return ProductDetailWidget();
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 360.h,
+                                  width: double.infinity,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    clipBehavior: Clip.antiAlias,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return ProductDetailWidget();
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 360.h,
+                                  width: double.infinity,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    clipBehavior: Clip.antiAlias,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return ProductDetailWidget();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           // Container(
                           //   width: double.infinity,
                           //   color: Colors.red,

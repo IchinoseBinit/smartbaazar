@@ -5,14 +5,28 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
+import 'package:smartbazar/features/home/api/sponsored_provider.dart';
+import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
+import 'package:smartbazar/features/home/api/home_slider_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
+import 'package:smartbazar/features/home/controller/sponsored_controller.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -25,6 +39,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
+  int selectedIndex = 0; // State variable for selected index
+
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
@@ -33,9 +49,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   late TabController tabController;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
-  double _lastScrollOffset = 0;
+  double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
-  int? selectedIndex;
   PageController _pageController = PageController(viewportFraction: 0.3);
 
   void _onPageChanged(int index) {
@@ -43,6 +58,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       selectedIndex = index;
     });
   }
+
+  int sizedboxval = 500;
 
   @override
   void initState() {
@@ -54,12 +71,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     // Initialize the PageController with the selected page
     _pageController = PageController(
       viewportFraction: 0.3,
-      initialPage: selectedIndex!,
+      initialPage: selectedIndex,
     );
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(selectedIndex!);
+      _pageController.jumpToPage(selectedIndex);
     });
 
     tabController = TabController(length: 3, vsync: this);
@@ -128,30 +145,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   }
 
   final List<String> _images = ['assets/images/home.png'];
-  final List<String> _services = [
-    'SHOPZONE',
-    'TRADEHUB',
-    'SERVICES',
-    'USED',
-    'HOB'
+  final List<Map<String, dynamic>> _services = [
+    {'label': 'SHOPZONE', 'id': 1},
+    {'label': 'TRADEHUB', 'id': 2},
+    {'label': 'SERVICES', 'id': 3},
+    {'label': 'USED', 'id': 4},
+    {'label': 'JOB', 'id': 5},
+    {'label': 'Event', 'id': 6},
+    {'label': 'Grocery', 'id': 7},
   ];
 
   @override
   Widget build(BuildContext context) {
-    // final adsList = ref.watch(getAdsProvider);
+    List<String> categories =
+        _services.map((e) => e['label'] as String).toList();
+
+    // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+    final sliders = ref.watch(fetchAdvertisementsProvider);
+    final category = ref.watch(homeCategoryProvider);
+    ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
+    final buyorwin = ref.watch(fetchBuyAndHotProvider);
+    final getSponsored = ref.watch(fetchSponsoredProvider);
+
+    // category.when(
+    //   data: (data) {
+    //     print("bibash ${data.jobs.first.id}");
+    //   },
+    //   error: (error, stackTrace) {},
+    //   loading: () {},
+    // );
+
+    // ads.when(
+    //   data: (data) {
+    //     print("ram $data");
+    //   },
+    //   error: (error, stackTrace) {},
+    //   loading: () {},
+    // );
+    // ref.watch(fetchAdvertisementsProvider);
+    // print(homePostsData.when(
+    //   data: (data) {
+    //     print("data is $data");
+    //   },
+    //   error: (error, stackTrace) {},
+    //   loading: () {},
+    // ));
     // final brandbajarAsyncValue = ref.watch(getBrandBazaarResponseProvider);
 
     final searchResults = ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${searchResults.asData?.value}');
     return Scaffold(
+        extendBody: true,
         key: _key,
         resizeToAvoidBottomInset: false,
-        backgroundColor: const Color(0xffF6F1F1),
+        backgroundColor: ColorConstant.whiteColor,
         // drawer: const CustomDrawer(),
         body: Stack(children: [
-          SingleChildScrollView(
+          Positioned.fill(
+            child: SingleChildScrollView(
               controller: _scrollController,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,12 +231,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Image.asset('assets/images/group.png'),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VendorProfileScreen(),
+                                        ));
+                                  },
+                                  child:
+                                      Image.asset('assets/images/group.png')),
                               SizedBox(
                                 width: 2.w,
                               ),
-                              const SizedBox(
-                                  height: 50, child: NewSearchWidget()),
+                              SizedBox(
+                                  height: 50,
+                                  child: NewSearchWidget(
+                                    onchnage: (p0) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BusinessTabScreen(),
+                                          ));
+                                    },
+                                  )),
                             ],
                           ),
                           SizedBox(
@@ -204,8 +277,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   );
                                 },
                                 child: Container(
-                                  height: 5,
-                                  width: 5,
+                                  height: 5.h,
+                                  width: 5.w,
                                   margin: EdgeInsets.symmetric(horizontal: 5.w),
                                   decoration: BoxDecoration(
                                     color: selectedIndex == index
@@ -220,29 +293,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 80.h,
                             child: PageView.builder(
+                              itemCount: items.length,
+                              padEnds: false,
                               controller: _pageController,
                               onPageChanged: _onPageChanged,
-                              itemCount: items.length,
                               itemBuilder: (context, index) {
                                 Map<String, dynamic> data = items[index];
 
-                                // Highlight only when index == 3
-                                bool isActive = index == 4;
-
+                                // Highlight only when index == 4
+                                bool isActive = index == 1;
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       selectedIndex = index;
                                     });
                                     _pageController.animateToPage(
-                                      index,
+                                      2,
                                       duration:
                                           const Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
                                     );
                                   },
                                   child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
                                     duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -261,6 +336,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .endsWith('.svg'))
                                             SvgPicture.asset(
                                               data['icon'],
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                              theme: const SvgTheme(
+                                                  currentColor:
+                                                      Color(0xffdd9d9d9)),
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
@@ -299,31 +379,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               },
                             ),
                           ),
+
                           const Divider(
                             height: 0.1,
                             color: ColorConstant.grayColor,
                           ),
 
                           if (_isSectionsVisible)
-                            const Padding(
-                              padding: EdgeInsets.all(20),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
-                                    "Brandbazaar",
-                                    style: TextStyle(
-                                      color: Color(0xFFD9D9D9),
-                                      fontWeight: FontWeight.w500,
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BrandBazarScreen(),
+                                          ));
+                                    },
+                                    child: const Text(
+                                      "Brandbazaar",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFFD9D9D9),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
-                                  Text(
-                                    "BuyOrWin",
-                                    style: TextStyle(
-                                      color: Color(0xFFD9D9D9),
-                                      fontWeight: FontWeight.w500,
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SubscribeAndWinEveryDay(),
+                                          ));
+                                    },
+                                    child: const Text(
+                                      "BuyOrWin",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFFD9D9D9),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -361,7 +464,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       height: 5.h,
                     ),
                     SizedBox(
-                      height: 130,
+                      height: 130.h,
                       child: ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -371,6 +474,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             if (index == 0) {
                               return StoryAddWidget(
                                 index: index,
+                                addSearch: true,
                                 showgift: false,
                               );
                             } else if (index >= 1 && index <= 3) {
@@ -383,74 +487,154 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           }),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
                       child: Column(
                         children: [
+                          sliders.when(
+                            data: (data) {
+                              // print("binod ${data[0].image}");
+
+                              return SizedBox(
+                                height: 60.h,
+                                width: double.infinity,
+                                child: PageView.builder(
+                                  allowImplicitScrolling: true,
+                                  itemCount: data.advertisements.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return Image.network(
+                                      data.advertisements[index].image!,
+                                      height: 60.h,
+                                      width: double.infinity,
+                                      fit: BoxFit.fill,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text("try again $error");
+                            },
+                            loading: () {
+                              return const CircularProgressIndicator();
+                            },
+                          ),
                           SizedBox(
-                            height: 200.h,
-                            width: double.infinity,
-                            child: PageView.builder(
-                              reverse: true,
-                              allowImplicitScrolling: true,
-                              itemCount: 5,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return Image.asset(
-                                    height: 150.h,
-                                    width: double.infinity,
-                                    fit: BoxFit.fill,
-                                    _images[0]);
-                              },
-                            ),
+                            height: 5.h,
                           ),
                           SizedBox(
                             width: double.infinity,
-                            height: 50.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _services.length,
-                              itemBuilder: (context, index) {
-                                String fac = _services[index];
-                                return Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.all(5),
-                                  width: 100.w,
-                                  // padding: EdgeInsets.only(left: 17,top: 10),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF681b4e),
+                            height: 420.h,
+                            child: Column(
+                              children: [
+                                // Category Selector Row
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 50.h,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: categories.length,
+                                    itemBuilder: (context, index) {
+                                      bool isSelected = index == selectedIndex;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex =
+                                                index; // Update selected index
+                                          });
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.all(5),
+                                          width: 100.w,
+                                          decoration: BoxDecoration(
+                                            color: isSelected
+                                                ? const Color(0xFF681b4e)
+                                                : const Color(0xffA5A5A5),
+                                          ),
+                                          child: Text(
+                                            categories[index],
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorConstant.whiteColor,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  child: Text(
-                                    fac,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorConstant.whiteColor),
-                                  ),
-                                );
-                              },
+                                ),
+
+                                // Spacer
+                                SizedBox(height: 5.h),
+
+                                // Display Products for the selected category
+                                category.when(
+                                  data: (data) {
+                                    // Define the products list corresponding to each category
+                                    List<List<CategoryProduct>> productsList = [
+                                      data.new_products, // Corresponds to SHOPZONE
+                                      data.b2b_products, // Corresponds to HOB
+                                      data.services, // Corresponds to SERVICES
+                                      data.used_products, // Corresponds to TRADEHUB
+                                      data.jobs, // Corresponds to USED
+                                      data.event, // Corresponds to USED
+                                      data.grocarry
+                                    ];
+
+                                    // Ensure the index is valid
+                                    List<CategoryProduct> products =
+                                        productsList[selectedIndex];
+                                    return SizedBox(
+                                      height: 340.h,
+                                      child: ListView.builder(
+                                        clipBehavior: Clip.antiAlias,
+                                        padding: const EdgeInsets.all(3),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: products.length,
+                                        itemBuilder: (context, index) {
+                                          CategoryProduct prod =
+                                              products[index];
+                                          return InkWell(
+                                            onTap:
+                                                () {}, // Handle onTap if needed
+                                            child: ProductDetailWidget(
+                                              lefttile:
+                                                  categories[selectedIndex],
+                                              vendorname: prod.user.name,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
+                                              Vimage: prod.user.photo,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              similarproductCount:
+                                                  prod.similarproductCount,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  error: (error, stackTrace) =>
+                                      Text("Error: $error"),
+                                  loading: () =>
+                                      const CircularProgressIndicator(),
+                                ),
+                              ],
                             ),
                           ),
 
                           // Expanded(
 
                           // child: ProductDetailWidget(),),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
+
                           SizedBox(
                             height: 5.h,
                           ),
@@ -460,70 +644,300 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             child: TabBar(
                               controller: tabController,
                               tabs: const [
-                                Tab(text: ' Global\n Brands'),
+                                Tab(
+                                  text: ' Global\n Brands',
+                                ),
                                 Tab(text: ' Domestic\n Brands'),
                                 Tab(
                                     text:
                                         ' Spotlight\n Sellers'), // Changed label for clarity
                               ],
-                              labelColor: Colors.black,
+                              labelColor: const Color(0xff909090),
                             ),
                           ),
                           SizedBox(
                             height: 10.h,
                           ),
-                          SizedBox(
-                            height: 125.h,
-                            width: double.infinity,
-                            // Use Expanded for better layout management
-                            child: TabBarView(
-                              controller: tabController,
-                              children: [
-                                SizedBox(
-                                  height: 140,
-                                  child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: 5,
-                                      itemBuilder: (context, index) {
-                                        if (index == 0) {
-                                          return StoryAddWidget(
-                                            index: index,
-                                            showgift: false,
-                                          );
-                                        } else if (index >= 1 && index <= 3) {
-                                          return StoryAddWidget(
-                                            index: index,
-                                            showgift: true,
-                                          );
-                                        }
-                                        return StoryAddWidget(index: index);
-                                      }),
+
+                          buyorwin.when(
+                            data: (data) {
+                              return SizedBox(
+                                height: data.insidearr.isEmpty
+                                    ? 10.h
+                                    : sizedboxval.h,
+                                width: double.infinity,
+                                child: TabBarView(
+                                  controller: tabController,
+                                  children: [
+                                    // First Tab
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (data.global.isNotEmpty)
+                                          SizedBox(
+                                            height: 130.h,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: data.global.length,
+                                              itemBuilder: (context, index) {
+                                                LogoData res =
+                                                    data.global[index];
+                                                if (index == 0) {
+                                                  return StoryAddWidget(
+                                                    index: index,
+                                                    brandname: res.brandName,
+                                                  );
+                                                } else if (index >= 1 &&
+                                                    index <= 2) {
+                                                  return StoryAddWidget(
+                                                    index: index,
+                                                    showgift: true,
+                                                  );
+                                                }
+                                                return StoryAddWidget(
+                                                    index: index);
+                                              },
+                                            ),
+                                          ),
+                                        if (data.insidearr.isNotEmpty &&
+                                            data.insidearr[0].isNotEmpty)
+                                          SizedBox(
+                                            height: 340.h,
+                                            child: ListView.builder(
+                                              clipBehavior: Clip.antiAlias,
+                                              padding: const EdgeInsets.all(3),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  data.insidearr[0].length,
+                                              itemBuilder: (context, index) {
+                                                GlobalModel prod =
+                                                    data.insidearr[0][index];
+                                                return InkWell(
+                                                  onTap: () {},
+                                                  child: ProductDetailWidget(
+                                                    vendorname:
+                                                        prod.contactName,
+                                                    discounttedPrice: '0',
+                                                    Vimage: prod.title,
+                                                    price: prod.price,
+                                                    title: prod.title,
+                                                    productImage: prod.imageUrl,
+                                                    similarproductCount: prod
+                                                        .similarproductCount,
+                                                    membershipColor: prod
+                                                        .user.first.memberColor,
+                                                    membershipTitle: prod.user
+                                                        .first.membershipTitle,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+
+                                    Column(
+                                      children: [
+                                        if (data.domestic.isNotEmpty)
+                                          SizedBox(
+                                            height: 130.h,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: data.domestic.length,
+                                              itemBuilder: (context, index) {
+                                                LogoData res =
+                                                    data.domestic[index];
+                                                if (index == 0) {
+                                                  return StoryAddWidget(
+                                                    index: index,
+                                                    brandname: res.brandName,
+                                                  );
+                                                } else if (index >= 1 &&
+                                                    index <= 2) {
+                                                  return StoryAddWidget(
+                                                    index: index,
+                                                    showgift: true,
+                                                  );
+                                                }
+                                                return StoryAddWidget(
+                                                    index: index);
+                                              },
+                                            ),
+                                          ),
+                                        SizedBox(
+                                          height: 340.h,
+                                          child: data.doma[0].isEmpty
+                                              ? const Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 100),
+                                                  child: SizedBox(
+                                                    child: Text(
+                                                        "No data available"),
+                                                  ),
+                                                )
+                                              : ListView.builder(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.doma[0].length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    GlobalModel prod =
+                                                        data.doma[0][index];
+                                                    return InkWell(
+                                                      onTap: () {},
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        vendorname: prod.title,
+                                                        discounttedPrice: '0',
+                                                        Vimage:
+                                                            prod.contactName,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.imageUrl,
+                                                        similarproductCount: prod
+                                                            .similarproductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .first
+                                                            .memberColor,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membershipTitle,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Third Tab
+                                    Column(
+                                      children: [
+                                        if (data.spot.isNotEmpty &&
+                                            data.spot[0].isNotEmpty)
+                                          SizedBox(
+                                            height: 130.h,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: data.spot[0].length,
+                                              itemBuilder: (context, index) {
+                                                GlobalModel res =
+                                                    data.spot[0][index];
+                                                if (index == 0) {
+                                                  return StoryAddWidget(
+                                                    index: index,
+                                                    brandname: res.contactName,
+                                                  );
+                                                } else if (index >= 1 &&
+                                                    index <= 2) {
+                                                  return StoryAddWidget(
+                                                    index: index,
+                                                    showgift: true,
+                                                  );
+                                                }
+                                                return StoryAddWidget(
+                                                    index: index);
+                                              },
+                                            ),
+                                          ),
+                                        if (data.spot.isNotEmpty &&
+                                            data.spot[0].isNotEmpty)
+                                          SizedBox(
+                                            height: 340.h,
+                                            child: ListView.builder(
+                                              clipBehavior: Clip.antiAlias,
+                                              padding: const EdgeInsets.all(3),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: data.spot[0].length,
+                                              itemBuilder: (context, index) {
+                                                GlobalModel prod =
+                                                    data.spot[0][index];
+                                                return InkWell(
+                                                  onTap: () {},
+                                                  child: ProductDetailWidget(
+                                                    vendorname: prod.title,
+                                                    discounttedPrice: '0',
+                                                    Vimage:
+                                                        prod.user.first.photo,
+                                                    price: prod.price,
+                                                    title: prod.title,
+                                                    productImage: prod.imageUrl,
+                                                    similarproductCount: prod
+                                                        .similarproductCount,
+                                                    membershipColor: prod
+                                                        .user.first.memberColor,
+                                                    membershipTitle: prod.user
+                                                        .first.membershipTitle,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                const Center(
-                                    child: Text("Phone Number Content")),
-                                const Center(
-                                    child: Text("Other Option Content")),
-                              ],
-                            ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text("Error: $error");
+                            },
+                            loading: () => const CircularProgressIndicator(),
                           ),
                           SizedBox(
                             height: 10.h,
                           ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
+
+                          buyorwin.when(
+                            data: (data) {
+                              return SizedBox(
+                                height: 340.h,
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.all(3),
+                                  clipBehavior: Clip.antiAlias,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: data.home.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    Home1GlobalModel prefs = data.home[index];
+                                    return ProductDetailWidget(
+                                      price: prefs.price,
+                                      productImage: prefs.image,
+                                      title: prefs.title,
+                                      vendorname: prefs.userDetails!.name,
+                                      Vimage: prefs.userDetails!.photo,
+                                      similarproductCount:
+                                          prefs.similarProductCount,
+                                      membershipColor:
+                                          prefs.userDetails!.memberColor,
+                                      membershipTitle:
+                                          prefs.userDetails!.membershipTitle,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text("error $error");
+                            },
+                            loading: () {
+                              return const CircularProgressIndicator();
+                            },
                           ),
                           SizedBox(
                             height: 10.h,
@@ -558,18 +972,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             ),
                           ),
                           SizedBox(
-                            height: 300.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return const buyorwin_widget();
-                              },
-                            ),
+                            height: 10.h,
+                          ),
+                          buyorwin.when(
+                            data: (data) {
+                              // print("binod ${data.buynow.first.}");
+                              return SizedBox(
+                                height: 280.h,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: data.buynow.length,
+                                  itemBuilder: (context, index) {
+                                    Buynowmodel resp = data.buynow[index];
+                                    return buyorwin_widget(
+                                        vendorname: resp.name,
+                                        winners: resp.winners.toString(),
+                                        proctimage: resp.image);
+                                  },
+                                ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text("error $error");
+                            },
+                            loading: () {
+                              return const CircularProgressIndicator();
+                            },
                           ),
                           SizedBox(
-                            height: 5.h,
+                            height: 10.h,
                           ),
                           Center(
                             child: Column(
@@ -596,600 +1028,305 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         borderRadius: BorderRadius.circular(5)),
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                getSponsored.when(
+                                  data: (data) {
+                                    return SizedBox(
+                                      height: 340.h,
+                                      child: ListView.builder(
+                                        padding: const EdgeInsets.all(3),
+                                        clipBehavior: Clip.antiAlias,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: data.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          SponsoredProduct prefs = data[index];
+
+                                          return ProductDetailWidget(
+                                            price: prefs.price,
+                                            productImage: prefs.image,
+                                            title: prefs.title,
+                                            vendorname: prefs.userdetails!.name,
+                                            Vimage: prefs.userdetails!.photo,
+                                            similarproductCount:
+                                                prefs.similarProductCount,
+                                            membershipColor:
+                                                prefs.userdetails!.memberColor,
+                                            membershipTitle: prefs
+                                                .userdetails!.membershipTitle,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    // SizedBox(
+                                    //   height: 360.h,
+                                    //   width: double.infinity,
+                                    //   child: ListView.builder(
+                                    //     padding: EdgeInsets.zero,
+                                    //     clipBehavior: Clip.antiAlias,
+                                    //     scrollDirection: Axis.horizontal,
+                                    //     itemCount: data.length,
+                                    //     shrinkWrap: true,
+                                    //     itemBuilder: (context, index) {
+                                    //       SponsoredProduct resp = data[index];
+                                    //       return ProductDetailWidget(
+                                    //         Vimage: resp.userdetails!.photo,
+                                    //         price: resp.price,
+                                    //         productImage: resp.image,
+                                    //         title: resp.title,
+                                    //         vendorname: resp.userdetails!.name,
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // );
+                                  },
+                                  error: (error, stackTrace) {
+                                    return Text("error $error");
+                                  },
+                                  loading: () =>
+                                      const CircularProgressIndicator(),
+                                )
                               ],
                             ),
                           ),
                           SizedBox(
-                            height: 10.h,
-                          ),
-
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
                             height: 5.h,
                           ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 10.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "All Products",
+                                  textAlign: TextAlign.left,
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                      color: ColorConstant.blackColor),
+                                ),
+                                const SizedBox()
+                              ],
                             ),
                           ),
 
                           SizedBox(
                             height: 5.h,
                           ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
+                          sliders.when(
+                            data: (data) {
+                              return GridView.builder(
+                                physics:
+                                    const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                shrinkWrap: true, // Adjust to fit content
+                                itemCount: data.allProducts.length,
 
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 430,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.2,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.9,
+                                ),
+                                itemBuilder: (context, index) {
+                                  // VProduct res = data.allProducts[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 5.h),
+                                    child: ProductDetailWidget(
+                                      productImage:
+                                          data.allProducts[index].image,
+                                      Vimage:
+                                          data.allProducts[index].user.photo,
+                                      vendorname:
+                                          data.allProducts[index].user.name,
+                                      title: data.allProducts[index].title,
+                                      price: data.allProducts[index].price,
+                                      similarproductCount: data
+                                          .allProducts[index]
+                                          .similarProductCount,
+                                      membershipColor: data.allProducts[index]
+                                          .userDetail.memberColor,
+                                      membershipTitle: data.allProducts[index]
+                                          .userDetail.membershipTitle,
+                                    ),
+                                  );
+                                },
+                              );
+                              // SizedBox(
+                              //   height: 360.h,
+                              //   width: double.infinity,
+                              //   child: ListView.builder(
+                              //     padding: EdgeInsets.zero,
+                              //     clipBehavior: Clip.antiAlias,
+                              //     scrollDirection: Axis.horizontal,
+                              //     itemCount: data.allProducts.length,
+                              //     shrinkWrap: true,
+                              //     itemBuilder: (context, index) {
+                              //       // print(
+                              //       //     "ram ${}");
+                              //       return ProductDetailWidget(
+                              //         // productImage: data.allProducts[index].image,
+                              //         Vimage:
+                              //             data.allProducts[index].user.photo,
 
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                            height: 360.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              clipBehavior: Clip.antiAlias,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return const ProductDetailWidget();
-                              },
-                            ),
+                              //         vendorname:
+                              //             data.allProducts[index].user.name,
+                              //         title: data.allProducts[index].title,
+                              //         price: data.allProducts[index].price,
+                              //       );
+                              //     },
+                              //   ),
+                              // );
+                            },
+                            error: (error, stackTrace) {
+                              return Text('error is $error');
+                            },
+                            loading: () {
+                              return const CircularProgressIndicator();
+                            },
                           ),
                         ],
                       ),
                     ),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _showSideBar,
-                      builder: (context, value, child) {
-                        return Positioned(
-                            top: _isSectionsVisible ? 200 : 200,
-                            right: 0,
-                            child: InkWell(
-                              onTap: () {
-                                _showSideBar.value = !value;
-                              },
-                              child: value
-                                  ? const CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage:
-                                          AssetImage('assets/images/smart.png'),
-                                    )
-                                  : Container(
-                                      width: 60.w,
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 5.h,
-                                      ),
-                                      // Explicit height set
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xffE2DAE5)
-                                              .withOpacity(0.9),
-                                          borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10))),
-                                      child: Center(
-                                          child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 6.h,
-                                          ),
-                                          Image.asset(
-                                              'assets/images/smart.png'),
-                                          SizedBox(
-                                            height: 6.h,
-                                          ),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: Column(
-                                                children: [
-                                                  Image.asset(
-                                                    'assets/images/scanner.png',
-                                                    height: 15,
-                                                    color:
-                                                        const Color(0xff918994),
-                                                  ),
-                                                  Text(
-                                                    "Connect",
-                                                    style: headerstyle.copyWith(
-                                                        fontSize: 9,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: const Color(
-                                                            0xff918994)),
-                                                  )
-                                                ],
-                                              )),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: Column(
-                                                children: [
-                                                  const Icon(
-                                                    Icons
-                                                        .shopping_cart_outlined,
-                                                    size: 15,
-                                                    color: Color(0xff918994),
-                                                  ),
-                                                  Text(
-                                                    "cart",
-                                                    style: headerstyle.copyWith(
-                                                        fontSize: 9,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: const Color(
-                                                            0xff918994)),
-                                                  )
-                                                ],
-                                              )),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: Column(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.add,
-                                                    size: 15,
-                                                    color: Color(0xff918994),
-                                                  ),
-                                                  Text(
-                                                    "add",
-                                                    style: headerstyle.copyWith(
-                                                        fontSize: 9,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: const Color(
-                                                            0xff918994)),
-                                                  )
-                                                ],
-                                              )),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: Column(
-                                                children: [
-                                                  Image.asset(
-                                                      'assets/images/tennis.png'),
-                                                  Text(
-                                                    "Orders",
-                                                    style: headerstyle.copyWith(
-                                                        fontSize: 9,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: const Color(
-                                                            0xff918994)),
-                                                  )
-                                                ],
-                                              )),
-                                        ],
-                                      )),
-                                    ),
-                            ));
-                      },
-                    ),
-                    // Positioned(
-                    //     top: _isSectionsVisible ? 200 : 50,
-                    //     right: 0,
-                    //     child: Container(
-                    //       width: 60.w,
-                    //       padding: EdgeInsets.symmetric(
-                    //         vertical: 5.h,
-                    //       ),
-                    //       // Explicit height set
-                    //       decoration: BoxDecoration(
-                    //           color: const Color(0xffE2DAE5).withOpacity(0.9),
-                    //           borderRadius: const BorderRadius.only(
-                    //               topLeft: Radius.circular(10),
-                    //               bottomLeft: Radius.circular(10))),
-                    //       child: Center(
-                    //           child: Column(
-                    //         children: [
-                    //           SizedBox(
-                    //             height: 6.h,
-                    //           ),
-                    //           Image.asset('assets/images/smart.png'),
-                    //           SizedBox(
-                    //             height: 6.h,
-                    //           ),
-                    //           IconButton(
-                    //               onPressed: () {},
-                    //               icon: Column(
-                    //                 children: [
-                    //                   Image.asset(
-                    //                     'assets/images/scanner.png',
-                    //                     height: 15,
-                    //                     color: const Color(0xff918994),
-                    //                   ),
-                    //                   Text(
-                    //                     "Connect",
-                    //                     style: headerstyle.copyWith(
-                    //                         fontSize: 9,
-                    //                         fontWeight: FontWeight.w700,
-                    //                         color: const Color(0xff918994)),
-                    //                   )
-                    //                 ],
-                    //               )),
-                    //           IconButton(
-                    //               onPressed: () {},
-                    //               icon: Column(
-                    //                 children: [
-                    //                   const Icon(
-                    //                     Icons.shopping_cart_outlined,
-                    //                     size: 15,
-                    //                     color: Color(0xff918994),
-                    //                   ),
-                    //                   Text(
-                    //                     "cart",
-                    //                     style: headerstyle.copyWith(
-                    //                         fontSize: 9,
-                    //                         fontWeight: FontWeight.w700,
-                    //                         color: const Color(0xff918994)),
-                    //                   )
-                    //                 ],
-                    //               )),
-                    //           IconButton(
-                    //               onPressed: () {},
-                    //               icon: Column(
-                    //                 children: [
-                    //                   const Icon(
-                    //                     Icons.add,
-                    //                     size: 15,
-                    //                     color: Color(0xff918994),
-                    //                   ),
-                    //                   Text(
-                    //                     "add",
-                    //                     style: headerstyle.copyWith(
-                    //                         fontSize: 9,
-                    //                         fontWeight: FontWeight.w700,
-                    //                         color: const Color(0xff918994)),
-                    //                   )
-                    //                 ],
-                    //               )),
-                    //           IconButton(
-                    //               onPressed: () {},
-                    //               icon: Column(
-                    //                 children: [
-                    //                   Image.asset('assets/images/tennis.png'),
-                    //                   Text(
-                    //                     "Orders",
-                    //                     style: headerstyle.copyWith(
-                    //                         fontSize: 9,
-                    //                         fontWeight: FontWeight.w700,
-                    //                         color: const Color(0xff918994)),
-                    //                   )
-                    //                 ],
-                    //               )),
-                    //         ],
-                    //       )),
-                    //     ),
-                    //     ),
-
-                    //
-                  ]))
+                  ]),
+            ),
+          ),
+          ValueListenableBuilder<bool>(
+            valueListenable: _showSideBar,
+            builder: (context, value, child) {
+              return Positioned(
+                  top: _isSectionsVisible ? 300 : 300,
+                  right: 0,
+                  child: InkWell(
+                    onTap: () {
+                      _showSideBar.value = !value;
+                    },
+                    child: value
+                        ? const CircleAvatar(
+                            radius: 25,
+                            backgroundImage:
+                                AssetImage('assets/images/smart.png'),
+                          )
+                        : Container(
+                            width: 60.w,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5.h,
+                            ),
+                            // Explicit height set
+                            decoration: BoxDecoration(
+                                color: const Color(0xffE2DAE5).withOpacity(0.9),
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10))),
+                            child: Center(
+                                child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 6.h,
+                                ),
+                                Image.asset('assets/images/smart.png'),
+                                SizedBox(
+                                  height: 6.h,
+                                ),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: Column(
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/scanner.png',
+                                          height: 15,
+                                          color: const Color(0xff918994),
+                                        ),
+                                        Text(
+                                          "Connect",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994)),
+                                        )
+                                      ],
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PendingApprovalScreen(),
+                                          ));
+                                    },
+                                    icon: Column(
+                                      children: [
+                                        const Icon(
+                                          Icons.shopping_cart_outlined,
+                                          size: 15,
+                                          color: Color(0xff918994),
+                                        ),
+                                        Text(
+                                          "cart",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994)),
+                                        )
+                                      ],
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ));
+                                    },
+                                    icon: Column(
+                                      children: [
+                                        const Icon(
+                                          Icons.add,
+                                          size: 15,
+                                          color: Color(0xff918994),
+                                        ),
+                                        Text(
+                                          "add",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994)),
+                                        )
+                                      ],
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ));
+                                    },
+                                    icon: Column(
+                                      children: [
+                                        Image.asset('assets/images/tennis.png'),
+                                        Text(
+                                          "Orders",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994)),
+                                        )
+                                      ],
+                                    )),
+                              ],
+                            )),
+                          ),
+                  ));
+            },
+          ),
         ]));
   }
 }
@@ -1241,12 +1378,12 @@ class ProductSlider extends StatelessWidget {
                     return ProductCard(
                       product: product,
                       onTap: (product) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetailScreen(productId: product.id),
-                            ));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           ProductDetailScreen(productId: product.id),
+                        //     ));
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
@@ -1286,8 +1423,7 @@ class ProductSliderSkeleton extends StatelessWidget {
       price: '0',
       image: '',
       visits: '0',
-      contact_name: '',
-      pickup: '',
+      // pickup: '',
     ),
   );
 

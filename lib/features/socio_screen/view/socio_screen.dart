@@ -44,7 +44,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     {'label': 'Seasonal offer', 'id': 3},
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
-     {'label': 'Festival sale', 'id': 5},
   ];
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -267,7 +266,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 setState(() {
                                   selectedIndex = index;
                                 });
-                            
+                                _pageController.animateToPage(
+                                  2,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
                               },
                               child: AnimatedContainer(
                                 padding: EdgeInsets.zero,
@@ -821,7 +824,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                       height: 359.h,
+                       height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -857,7 +860,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 ),
 
                 // SizedBox(
-                //      height: 359.h,
+                //      height: 340.h,
                 //     width: double.infinity,
                 //     child: ListView.builder(
                 //       padding: EdgeInsets.zero,
@@ -892,7 +895,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             height: 5.h,
                           ),
                           SizedBox(
-                             height: 359.h,
+                             height: 340.h,
                             width: double.infinity,
                             child: ListView.builder(
                               padding: const EdgeInsets.all(3),
@@ -952,7 +955,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             height: 5.h,
                           ),
                           SizedBox(
-                             height: 359.h,
+                             height: 340.h,
                             width: double.infinity,
                             child: ListView.builder(
                               padding: const EdgeInsets.all(3),
@@ -994,7 +997,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           Row(
                             children: [
                               Text(
-                                data.cat[2].slug.toUpperCase(),
+                                data.cat[2].slug,
                                 style: headerstyle.copyWith(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17,
@@ -1003,7 +1006,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             ],
                           ),
                           SizedBox(
-                             height: 359.h,
+                             height: 340.h,
                             width: double.infinity,
                             child: ListView.builder(
                               padding: const EdgeInsets.all(3),
@@ -1056,7 +1059,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             height: 5.h,
                           ),
                           SizedBox(
-                             height: 359.h,
+                             height: 340.h,
                             width: double.infinity,
                             child: ListView.builder(
                               padding: const EdgeInsets.all(3),
@@ -1106,7 +1109,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             ],
                           ),
                           SizedBox(
-                             height: 359.h,
+                             height: 340.h,
                             width: double.infinity,
                             child: ListView.builder(
                               padding: const EdgeInsets.all(3),
@@ -1197,7 +1200,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1261,7 +1264,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1326,7 +1329,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1371,7 +1374,43 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-             
+                SizedBox(
+                  height: 5.h,
+                ),
+
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                       height: 340.h,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(3),
+                        clipBehavior: Clip.antiAlias,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.product.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          VProduct ref = data.product[index];
+                          return ProductDetailWidget(
+                              lefttile: "Socio-Shop",
+                            productImage: ref.image,
+                            price: ref.price,
+                            Vimage: ref.user.photo,
+                            title: ref.title,
+                            vendorname: ref.user.name,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
+
                 Center(
                   child: Column(
                     children: [
@@ -1464,127 +1503,144 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   height: 10.h,
                 ),
                 SizedBox(
-  width: double.infinity,
-  child: ValueListenableBuilder<int>(
-    valueListenable: selectedIndexNotifier,
-    builder: (context, selectedIndex, child) {
-      // Map category labels to their respective product lists
-      List<String> categories =
-          _services.map((e) => e['label'] as String).toList();
+                  width: double.infinity,
+                  height: 420.h,
+                  child: ValueListenableBuilder<int>(
+                    valueListenable: selectedIndexNotifier,
+                    builder: (context, selectedIndex, child) {
+                      // Map category labels to their respective product lists
+                      List<String> categories =
+                          _services.map((e) => e['label'] as String).toList();
 
-      return Column(
-        children: [
-          // Category Selector Row
-          SizedBox(
-            width: double.infinity,
-            height: 50.h,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                bool isSelected = index == selectedIndex;
-                return GestureDetector(
-                  onTap: () {
-                    // Update the selected index
-                    selectedIndexNotifier.value = index;
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(5),
-                    width: 150.w,
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xFF681b4e)
-                          : const Color(0xffA5A5A5),
-                    ),
-                    child: Text(
-                      categories[index],
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white, // Use color directly or define in constants
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
-          // Spacer
-          SizedBox(height: 5.h),
-
-          // Display Products for the selected category
-          asyncbajarValue.when(
-            data: (data) {
-              // Define the products list corresponding to each category
-              List<List<VProduct>> productsList = [
-                data.low_price_guarantee, // Corresponds to SHOPZONE
-                data.Launch_offer, // Corresponds to HOB
-                data.seasonal, // Corresponds to SERVICES
-                data.promotional, // Corresponds to TRADEHUB
-                data.clearance_sale, // Corresponds to USED
-                data.Launch_festival_offer, // Corresponds to USED
-              ];
-
-              // Ensure the index is valid
-              if (selectedIndex < 0 || selectedIndex >= productsList.length) {
-                selectedIndex =
-                    0; // Default to the first category if index is out of bounds
-              }
-
-              List<VProduct> products = productsList[selectedIndex];
-
-              // Calculate height dynamically
-              double calculatedHeight = products.isNotEmpty ? 359.h : 100.h;
-
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: calculatedHeight,
-                child: products.isEmpty
-                    ? const Center(
-                        child: Text(
-                          "No products found",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      )
-                    : ListView.builder(
-                        clipBehavior: Clip.antiAlias,
-                        padding: const EdgeInsets.all(3),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: products.length,
-                        itemBuilder: (context, index) {
-                          VProduct prod = products[index];
-
-                          return InkWell(
-                            onTap: () {}, // Handle onTap if needed
-                            child: ProductDetailWidget(
-                              lefttile: "Socio-Shop",
-                              vendorname: prod.user.name,
-                              discounttedPrice: "0",
-                              Vimage: prod.user.photo,
-                              price: prod.price,
-                              title: prod.title,
-                              productImage: prod.image,
+                      return Column(
+                        children: [
+                          // Category Selector Row
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: categories.length,
+                              itemBuilder: (context, index) {
+                                bool isSelected = index == selectedIndex;
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Update the selected index
+                                    selectedIndexNotifier.value = index;
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.all(5),
+                                    width: 150.w,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? const Color(0xFF681b4e)
+                                          : const Color(0xffA5A5A5),
+                                    ),
+                                    child: Text(
+                                      categories[index],
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorConstant.whiteColor,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-              );
-            },
-            error: (error, stackTrace) => const Center(
-              child: Text("Error loading data"),
-            ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        ],
-      );
-    },
-  ),
-),
+                          ),
 
+                          // Spacer
+                          SizedBox(height: 5.h),
+
+                          // Display Products for the selected category
+                          asyncbajarValue.when(
+                            data: (data) {
+                              // Define the products list corresponding to each category
+                              List<List<VProduct>> productsList = [
+                                data.low_price_guarantee, // Corresponds to SHOPZONE
+                                data.Launch_offer, // Corresponds to HOB
+
+                                data.seasonal, // Corresponds to SERVICES
+
+                                data.promotional, // Corresponds to TRADEHUB
+                                data.Launch_festival_offer, // Corresponds to USED
+                              ];
+
+                              // Ensure the index is valid
+                              if (selectedIndex < 0 ||
+                                  selectedIndex >= productsList.length) {
+                                selectedIndex =
+                                    0; // Default to the first category if index is out of bounds
+                              }
+
+                              List<VProduct> products =
+                                  productsList[selectedIndex];
+
+                              return SizedBox(
+                                height: 340.h,
+                                child: data.insidearr.isEmpty
+                                    ? const Padding(
+                                        padding:
+                                            EdgeInsets.only(top: 100),
+                                        child: SizedBox(
+                                          child: Text("No data available"),
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        clipBehavior: Clip.antiAlias,
+                                        padding: const EdgeInsets.all(3),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: products.length,
+                                        itemBuilder: (context, index) {
+                                          VProduct prod = products[index];
+
+                                          return InkWell(
+                                            onTap: () {},
+                                            child: ProductDetailWidget(
+                                                lefttile: "Socio-Shop",
+                                              vendorname: prod.user.name,
+                                              discounttedPrice: "0",
+                                              Vimage: prod.user.photo,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                              );
+
+                              // SizedBox(
+                              //    height: 340.h,
+                              //   child: ListView.builder(
+                              //     scrollDirection: Axis.horizontal,
+                              //     itemCount: products.length,
+                              //     itemBuilder: (context, index) {
+                              //       return InkWell(
+                              //         onTap: () {}, // Handle onTap if needed
+                              //         child: ProductDetailWidget(
+                              //           vendorname: prod.user.name,
+                              //           discounttedPrice: "0",
+                              //           Vimage: prod.user.photo,
+                              //           price: prod.price,
+                              //           title: prod.title,
+                              //           productImage: prod.image,
+                              //         ), // Replace with your actual product widget
+                              //       );
+                              //     },
+                              //   ),
+                              // );
+                            },
+                            error: (error, stackTrace) => Text("Error: $error"),
+                            loading: () => const CircularProgressIndicator(),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -1637,7 +1693,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     );
 
                     // SizedBox(
-                    //    height: 359.h,
+                    //    height: 340.h,
                     //   width: double.infinity,
                     //   child: ListView.builder(
                     //     padding: EdgeInsets.zero,

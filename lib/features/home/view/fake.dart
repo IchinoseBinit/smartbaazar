@@ -74,7 +74,7 @@
 //               // Ensure the index is valid
 //               List<CategoryProduct> products = productsList[selectedIndex];
 //               return SizedBox(
-//                 height: 359.h,
+//                 height: 340.h,
 //                 child: ListView.builder(
 //                   clipBehavior: Clip.antiAlias,
 //                   padding: EdgeInsets.all(3),

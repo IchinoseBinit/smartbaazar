@@ -14,22 +14,28 @@ class VProduct {
   final String description;
   final VendorUser user;
   final String image;
+  final int? similarProductCount;
+  final VendorUserDetail userDetail;
 
   VProduct(
       {required this.id,
       required this.title,
       required this.description,
+      required this.similarProductCount,
       required this.user,
       required this.image,
-      required this.price});
+      required this.price,
+      required this.userDetail});
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
-      image: json['image']?? '',
+      image: json['image'] ?? '',
       price: json['price'] ?? '',
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
+      similarProductCount: json['similarProductCount'] ?? '',
+      userDetail: VendorUserDetail.fromJson(json['userDetail']?? {}),
       user: VendorUser.fromJson(
           json['user'] ?? {}), // Parsing user within each product
     );

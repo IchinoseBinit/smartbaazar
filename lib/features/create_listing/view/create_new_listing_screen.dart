@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -1585,7 +1584,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       SizedBox(
                         height: 15.h,
                       ),
-                      bulk_discount_widget()
+                      const bulk_discount_widget()
                     ],
                   ),
                 )
@@ -1746,7 +1745,7 @@ class bulk_discount_widget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 15.h),
       decoration: BoxDecoration(
-        color: Color(0xffFDFDFE),
+        color: const Color(0xffFDFDFE),
         borderRadius: BorderRadius.circular(10),
        border: Border.all(
     

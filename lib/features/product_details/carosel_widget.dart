@@ -78,7 +78,7 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
           ),
         ),
          Positioned(
-          left: 50.w,
+          left: 20.w,
 
           bottom: 5,
           child: Row(

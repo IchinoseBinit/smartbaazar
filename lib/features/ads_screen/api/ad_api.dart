@@ -6,8 +6,9 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'ad_api.g.dart';
 
+
 @riverpod
-Future<List<LoadingAd>> getAds(GetAdsRef ref) async {
+Future<List<LoadingAd>> fetchAds(FetchAdsRef ref) async {
   final SmartClinet client = SmartClinet();
 
   try {
@@ -17,15 +18,16 @@ Future<List<LoadingAd>> getAds(GetAdsRef ref) async {
     );
 
     if (response.statusCode == 200) {
-      final data = response.data['ads'] as List;
-      // Only map the `image` field from the response
-      final ads = data.map((item) => LoadingAd(image: item['image'])).toList();
-      return ads;
+      final data = response.data['ads'];
+      if (data is! List) {
+        throw Exception('Unexpected response format');
+      }
+
+      return data.map((item) => LoadingAd.fromJson(item)).toList();
     } else {
-      throw Exception('Failed to load ads');
+      throw Exception('Failed to load ads: ${response.statusCode} - ${response.statusMessage}');
     }
   } catch (e) {
-    print('Error fetching ads: $e');
     throw Exception('Failed to load ads: $e');
   }
 }
