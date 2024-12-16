@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           // textTheme: GoogleFonts.quicksandTextTheme(
           //   Theme.of(context).textTheme,
           // ),
-          fontFamily: GoogleFonts.quicksand().fontFamily,
+          // fontFamily: GoogleFonts.quicksand().fontFamily,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),

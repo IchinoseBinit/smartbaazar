@@ -14,12 +14,13 @@ Future<SplashModel> getSplashApi(GetSplashApiRef ref) async {
       requestType: RequestType.get,
       url: ApiConstants.logoUrl,
     );
-    print('API Response: ${response.data}');
+    print('bibash Response: ${response.data}');
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
 
       return SplashModel.fromJson(jsonResponse);
     } else {
+      
       throw Exception('Failed to fetch logo data');
     }
   } catch (e) {
