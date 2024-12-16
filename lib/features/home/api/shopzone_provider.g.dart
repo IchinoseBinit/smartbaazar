@@ -1,0 +1,25 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'shopzone_provider.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$homeCategoryHash() => r'75f31c1e37872e8d35c13053799d8510011459ae';
+
+/// See also [homeCategory].
+@ProviderFor(homeCategory)
+final homeCategoryProvider =
+    AutoDisposeFutureProvider<HomeProductType>.internal(
+  homeCategory,
+  name: r'homeCategoryProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$homeCategoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef HomeCategoryRef = AutoDisposeFutureProviderRef<HomeProductType>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
