@@ -825,7 +825,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 359.h,
+                      height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -864,7 +864,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 ),
 
                 // SizedBox(
-                //      height: 359.h,
+                //      height: 340.h,
                 //     width: double.infinity,
                 //     child: ListView.builder(
                 //       padding: EdgeInsets.zero,
@@ -902,7 +902,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 data.insidearr[0].isEmpty
                                     ? const SizedBox()
                                     : SizedBox(
-                                        height: 359.h,
+                                        height: 340.h,
                                         width: double.infinity,
                                         child: ListView.builder(
                                           padding: const EdgeInsets.all(3),
@@ -973,7 +973,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 data.insidearr[1].isEmpty
                                     ? const SizedBox()
                                     : SizedBox(
-                                        height: 359.h,
+                                        height: 340.h,
                                         width: double.infinity,
                                         child: ListView.builder(
                                           padding: const EdgeInsets.all(3),
@@ -1035,7 +1035,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 data.insidearr[1].isEmpty
                                     ? const SizedBox()
                                     : SizedBox(
-                                        height: 359.h,
+                                        height: 340.h,
                                         width: double.infinity,
                                         child: ListView.builder(
                                           padding: const EdgeInsets.all(3),
@@ -1097,7 +1097,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 data.insidearr[2].isEmpty
                                     ? const SizedBox()
                                     : SizedBox(
-                                        height: 359.h,
+                                        height: 340.h,
                                         width: double.infinity,
                                         child: ListView.builder(
                                           padding: const EdgeInsets.all(3),
@@ -1196,7 +1196,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1266,7 +1266,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1331,7 +1331,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1383,7 +1383,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 359.h,
+                      height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1584,7 +1584,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   productsList[selectedIndex];
 
                               return SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? const Padding(
                                         padding: EdgeInsets.only(top: 100),
@@ -1623,7 +1623,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               );
 
                               // SizedBox(
-                              //    height: 359.h,
+                              //    height: 340.h,
                               //   child: ListView.builder(
                               //     scrollDirection: Axis.horizontal,
                               //     itemCount: products.length,
@@ -1709,7 +1709,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     );
 
                     // SizedBox(
-                    //    height: 359.h,
+                    //    height: 340.h,
                     //   width: double.infinity,
                     //   child: ListView.builder(
                     //     padding: EdgeInsets.zero,

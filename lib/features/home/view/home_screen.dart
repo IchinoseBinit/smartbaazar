@@ -588,7 +588,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     List<CategoryProduct> products =
                                         productsList[selectedIndex];
                                     return SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -707,7 +707,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         if (data.insidearr.isNotEmpty &&
                                             data.insidearr[0].isNotEmpty)
                                           SizedBox(
-                                            height: 359.h,
+                                            height: 340.h,
                                             child: ListView.builder(
                                               clipBehavior: Clip.antiAlias,
                                               padding: const EdgeInsets.all(3),
@@ -772,7 +772,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             ),
                                           ),
                                         SizedBox(
-                                          height: 359.h,
+                                          height: 340.h,
                                           child: data.doma[0].isEmpty
                                               ? const Padding(
                                                   padding:
@@ -858,7 +858,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         if (data.spot.isNotEmpty &&
                                             data.spot[0].isNotEmpty)
                                           SizedBox(
-                                            height: 359.h,
+                                            height: 340.h,
                                             child: ListView.builder(
                                               clipBehavior: Clip.antiAlias,
                                               padding: const EdgeInsets.all(3),
@@ -906,7 +906,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           buyorwin.when(
                             data: (data) {
                               return SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: ListView.builder(
                                   padding: const EdgeInsets.all(3),
                                   clipBehavior: Clip.antiAlias,
@@ -978,7 +978,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             data: (data) {
                               // print("binod ${data.buynow.first.}");
                               return SizedBox(
-                                height: 300.h,
+                                height: 280.h,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
@@ -1034,7 +1034,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 getSponsored.when(
                                   data: (data) {
                                     return SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         padding: const EdgeInsets.all(3),
                                         clipBehavior: Clip.antiAlias,

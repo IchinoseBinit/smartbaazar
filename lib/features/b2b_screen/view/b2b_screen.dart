@@ -824,7 +824,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 359.h,
+                      height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -863,7 +863,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 ),
 
                 // SizedBox(
-                //      height: 359.h,
+                //      height: 340.h,
                 //     width: double.infinity,
                 //     child: ListView.builder(
                 //       padding: EdgeInsets.zero,
@@ -900,7 +900,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 ),
                                 data.cat.isNotEmpty
                                     ? SizedBox(
-                                        height: 359.h,
+                                        height: 340.h,
                                         width: double.infinity,
                                         child: ListView.builder(
                                           padding: const EdgeInsets.all(3),
@@ -969,7 +969,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   height: 5.h,
                                 ),
                                 SizedBox(
-                                  height: 359.h,
+                                  height: 340.h,
                                   width: double.infinity,
                                   child: ListView.builder(
                                     padding: const EdgeInsets.all(3),
@@ -1026,7 +1026,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 359.h,
+                                  height: 340.h,
                                   width: double.infinity,
                                   child: ListView.builder(
                                     padding: const EdgeInsets.all(3),
@@ -1083,7 +1083,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 359.h,
+                                  height: 340.h,
                                   width: double.infinity,
                                   child: ListView.builder(
                                     padding: const EdgeInsets.all(3),
@@ -1179,7 +1179,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1249,7 +1249,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1319,7 +1319,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1376,7 +1376,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 359.h,
+                      height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1577,7 +1577,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   productsList[selectedIndex];
 
                               return SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? const Padding(
                                         padding: EdgeInsets.only(top: 100),
@@ -1615,7 +1615,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               );
 
                               // SizedBox(
-                              //    height: 359.h,
+                              //    height: 340.h,
                               //   child: ListView.builder(
                               //     scrollDirection: Axis.horizontal,
                               //     itemCount: products.length,
@@ -1700,7 +1700,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     );
 
                     // SizedBox(
-                    //    height: 359.h,
+                    //    height: 340.h,
                     //   width: double.infinity,
                     //   child: ListView.builder(
                     //     padding: EdgeInsets.zero,

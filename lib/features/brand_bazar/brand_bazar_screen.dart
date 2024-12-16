@@ -1113,7 +1113,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1180,7 +1180,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1247,7 +1247,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     }),
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? Padding(
                                         padding: EdgeInsets.only(
@@ -1502,7 +1502,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                   productsList[selectedIndex];
 
                               return SizedBox(
-                                height: 359.h,
+                                height: 340.h,
                                 child: data.insidearr.isEmpty
                                     ? const Padding(
                                         padding:

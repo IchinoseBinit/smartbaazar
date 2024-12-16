@@ -824,7 +824,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: data.hotProducts.isEmpty ? 5.h : 359.h,
+                      height: data.hotProducts.isEmpty ? 5.h : 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1288,7 +1288,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height:359.h,
+                      height:340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1502,7 +1502,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                 }
 
                                 return SizedBox(
-                                  height: 359.h,
+                                  height: 340.h,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     padding: const EdgeInsets.all(3),

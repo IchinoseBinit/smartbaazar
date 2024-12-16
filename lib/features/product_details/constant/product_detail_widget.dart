@@ -42,7 +42,7 @@ class ProductDetailWidget extends StatelessWidget {
     print("ramkbaba $Vimage");
     print("Membership colorrrrrrrrrrrrrrrrrrrrrrr$membershipColor");
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       child: Card(
         shadowColor: const Color(0xff3D215F),
         elevation: 9,
@@ -221,32 +221,34 @@ class ProductDetailWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          price!,
+                          'Rs ${price!}',
                           style: headerstyle.copyWith(
                               color: ColorConstant.blackColor,
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w800),
                         ),
-                        SizedBox(
-                          width: 10.w,
+                        // SizedBox(
+                        //   width: 10.w,
+                        // ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.track_changes_sharp,
+                              color: Color(0xff901B41),
+                              size: 15,
+                            ),
+                            Text(
+                              "Best Price",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xff901B41),
+                                  fontSize: 8.sp),
+                            ),
+                          ],
                         ),
-                        const Icon(
-                          Icons.track_changes_sharp,
-                          color: Color(0xff901B41),
-                          size: 15,
-                        ),
+                        
                         Text(
-                          "Best Price",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xff901B41),
-                              fontSize: 8.sp),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Text(
-                          'Rs ${discounttedPrice ?? '0'} ',
+                          'Rs${discounttedPrice ??'0'} ',
                           style: headerstyle.copyWith(
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w600,
@@ -365,7 +367,7 @@ class ProductDetailWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
                 decoration: const BoxDecoration(color: Colors.grey),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -460,19 +462,19 @@ class ProductDetailWidget extends StatelessWidget {
                             Row(
                               children: [
                                 SizedBox(
-                                  width: 4.w,
+                                  width: 2.w,
                                 ),
                                 Image.asset(
                                   "assets/images/nepalFlag.png",
                                   height: 9.h,
                                 ),
                                 SizedBox(
-                                  width: 4.w,
+                                  width: 1.w,
                                 ),
                                 Text(
                                   membershipTitle ?? "Domestic Brand",
                                   style: headerstyle.copyWith(
-                                      fontSize: 5.sp,
+                                      fontSize: 9.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
                               ],
@@ -493,9 +495,12 @@ class ProductDetailWidget extends StatelessWidget {
                             Text(
                               "2.5 km",
                               style: headerstyle.copyWith(
-                                  fontSize: 12, fontWeight: FontWeight.w700),
+                                  fontSize: 8.sp, fontWeight: FontWeight.w700),
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 3.h,
                         ),
                         Row(
                           children: [
@@ -503,7 +508,7 @@ class ProductDetailWidget extends StatelessWidget {
                             Text(
                               "SPONSERED",
                               style: headerstyle.copyWith(
-                                  fontSize: 6.sp, fontWeight: FontWeight.w700),
+                                  fontSize: 7.sp, fontWeight: FontWeight.w700),
                             ),
                           ],
                         ),
