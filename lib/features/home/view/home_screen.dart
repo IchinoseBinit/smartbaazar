@@ -6,7 +6,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
@@ -15,7 +14,6 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/shopzone_provider.dart';
-import 'package:smartbazar/features/home/controller/sponsored_controller.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
@@ -23,10 +21,8 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -670,264 +666,310 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   controller: tabController,
                                   children: [
                                     // First Tab
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (data.global.isNotEmpty)
-                                          SizedBox(
-                                            height: 130.h,
-                                            child: ListView.builder(
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: data.global.length,
-                                              itemBuilder: (context, index) {
-                                                sizedboxval =
-                                                    data.insidearr[0].isEmpty
-                                                        ? 150
-                                                        : 500;
-                                                LogoData res =
-                                                    data.global[index];
-                                                if (index == 0) {
-                                                  return StoryAddWidget(
-                                                      index: index,
-                                                      brandname: res.brandName);
-                                                } else if (index >= 1 &&
-                                                    index <= 2) {
-                                                  return StoryAddWidget(
-                                                      index: index,
-                                                      showgift: true);
-                                                }
-                                                return StoryAddWidget(
-                                                    index: index);
-                                              },
-                                            ),
-                                          ),
-                                        SizedBox(
-                                          height: data.insidearr.isNotEmpty &&
-                                                  data.insidearr[0].isNotEmpty
-                                              ? 340.h
-                                              : 200,
-                                          child: data.insidearr.isNotEmpty &&
-                                                  data.insidearr[0].isNotEmpty
-                                              ? ListView.builder(
-                                                  clipBehavior: Clip.antiAlias,
-                                                  padding:
-                                                      const EdgeInsets.all(3),
+                                    SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (data.global.isEmpty &&
+                                              data.insidearr.isEmpty)
+                                            const Center(
+                                              child: Text("No Data Available"),
+                                            )
+                                          else ...[
+                                            if (data.global.isNotEmpty)
+                                              SizedBox(
+                                                height: 130.h,
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
                                                   scrollDirection:
                                                       Axis.horizontal,
-                                                  itemCount:
-                                                      data.insidearr[0].length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    GlobalModel prod = data
-                                                        .insidearr[0][index];
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        
-                                                      },
-                                                      child:
-                                                          ProductDetailWidget(
-                                                            sponsored: prod.user[0].sponsored!,
-                                                        vendorname:
-                                                            prod.contactName,
-                                                        discounttedPrice:
-                                                            prod.discont,
-                                                        Vimage: prod.title,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage:
-                                                            prod.imageUrl,
-                                                        similarproductCount: prod
-                                                            .similarproductCount,
-                                                        membershipColor: prod
-                                                            .user
-                                                            .first
-                                                            .memberColor,
-                                                        membershipTitle: prod
-                                                            .user
-                                                            .first
-                                                            .membershipTitle,
-                                                      ),
-                                                    );
+                                                  itemCount: data.global.length,
+                                                  itemBuilder: (context, index) {
+                                                    sizedboxval =
+                                                        data.insidearr[0].isEmpty
+                                                            ? 150
+                                                            : 500;
+                                                    LogoData res =
+                                                        data.global[index];
+                                                    if (index == 0) {
+                                                      return StoryAddWidget(
+                                                          index: index,
+                                                          brandname:
+                                                              res.brandName);
+                                                    } else if (index >= 1 &&
+                                                        index <= 2) {
+                                                      return StoryAddWidget(
+                                                          index: index,
+                                                          showgift: true);
+                                                    }
+                                                    return StoryAddWidget(
+                                                        index: index);
                                                   },
-                                                )
-                                              : null,
-                                        ),
-                                      ],
+                                                ),
+                                              ),
+                                            SizedBox(
+                                              height: data.insidearr.isNotEmpty &&
+                                                      data.insidearr[0].isNotEmpty
+                                                  ? 340.h
+                                                  : 200,
+                                              child: data.insidearr.isNotEmpty &&
+                                                      data.insidearr[0].isNotEmpty
+                                                  ? ListView.builder(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      padding:
+                                                          const EdgeInsets.all(3),
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      itemCount: data
+                                                          .insidearr[0].length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        GlobalModel prod = data
+                                                            .insidearr[0][index];
+                                                        return InkWell(
+                                                          onTap: () {},
+                                                          child:
+                                                              ProductDetailWidget(
+                                                            sponsored: prod
+                                                                .user[0]
+                                                                .sponsored!,
+                                                            vendorname:
+                                                                prod.contactName,
+                                                            discounttedPrice:
+                                                                prod.discont,
+                                                            Vimage: prod.title,
+                                                            price: prod.price,
+                                                            title: prod.title,
+                                                            productImage:
+                                                                prod.imageUrl,
+                                                            similarproductCount: prod
+                                                                .similarproductCount,
+                                                            membershipColor: prod
+                                                                .user
+                                                                .first
+                                                                .memberColor,
+                                                            membershipTitle: prod
+                                                                .user
+                                                                .first
+                                                                .membershipTitle,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                          "No Data Available"),
+                                                    ),
+                                            ),
+                                          ]
+                                        ],
+                                      ),
                                     ),
 
                                     // Second Tab
-                                    Column(
-                                      children: [
-                                        if (data.domestic.isNotEmpty)
-                                          SizedBox(
-                                            height: 130.h,
-                                            child: ListView.builder(
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: data.domestic.length,
-                                              itemBuilder: (context, index) {
-                                                sizedboxval =
-                                                    data.doma[0].isEmpty
-                                                        ? 150
-                                                        : 500;
-                                                LogoData res =
-                                                    data.domestic[index];
-                                                if (index == 0) {
-                                                  return StoryAddWidget(
-                                                      index: index,
-                                                      brandname: res.brandName);
-                                                } else if (index >= 1 &&
-                                                    index <= 2) {
-                                                  return StoryAddWidget(
-                                                      index: index,
-                                                      showgift: true);
-                                                }
-                                                return StoryAddWidget(
-                                                    index: index);
-                                              },
-                                            ),
-                                          ),
-                                        SizedBox(
-                                          height: data.doma.isNotEmpty &&
-                                                  data.doma[0].isNotEmpty
-                                              ? 340.h
-                                              : 150,
-                                          child: data.doma.isNotEmpty &&
-                                                  data.doma[0].isNotEmpty
-                                              ? ListView.builder(
-                                                  clipBehavior: Clip.antiAlias,
-                                                  padding:
-                                                      const EdgeInsets.all(3),
+                                    SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          if (data.domestic.isEmpty &&
+                                              data.doma.isEmpty)
+                                            const Center(
+                                              child: Text("No Data Available"),
+                                            )
+                                          else ...[
+                                            if (data.domestic.isNotEmpty)
+                                              SizedBox(
+                                                height: 130.h,
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
                                                   scrollDirection:
                                                       Axis.horizontal,
-                                                  itemCount:
-                                                      data.doma[0].length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    GlobalModel prod =
-                                                        data.doma[0][index];
-                                                    return InkWell(
-                                                      onTap: () {},
-                                                      child:
-                                                          ProductDetailWidget(
-                                                        vendorname: prod.title,
-                                                        discounttedPrice:
-                                                            prod.discont,
-                                                        Vimage:
-                                                            prod.contactName,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage:
-                                                            prod.imageUrl,
-                                                        similarproductCount: prod
-                                                            .similarproductCount,
-                                                        membershipColor: prod
-                                                            .user
-                                                            .first
-                                                            .memberColor,
-                                                        membershipTitle: prod
-                                                            .user
-                                                            .first
-                                                            .membershipTitle,
-                                                      ),
-                                                    );
+                                                  itemCount: data.domestic.length,
+                                                  itemBuilder: (context, index) {
+                                                    sizedboxval =
+                                                        data.doma[0].isEmpty
+                                                            ? 150
+                                                            : 500;
+                                                    LogoData res =
+                                                        data.domestic[index];
+                                                    if (index == 0) {
+                                                      return StoryAddWidget(
+                                                          index: index,
+                                                          brandname:
+                                                              res.brandName);
+                                                    } else if (index >= 1 &&
+                                                        index <= 2) {
+                                                      return StoryAddWidget(
+                                                          index: index,
+                                                          showgift: true);
+                                                    }
+                                                    return StoryAddWidget(
+                                                        index: index);
                                                   },
-                                                )
-                                              : null,
-                                        ),
-                                      ],
+                                                ),
+                                              ),
+                                            SizedBox(
+                                              height: data.doma.isNotEmpty &&
+                                                      data.doma[0].isNotEmpty
+                                                  ? 340.h
+                                                  : 150,
+                                              child: data.doma.isNotEmpty &&
+                                                      data.doma[0].isNotEmpty
+                                                  ? ListView.builder(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      padding:
+                                                          const EdgeInsets.all(3),
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      itemCount:
+                                                          data.doma[0].length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        GlobalModel prod =
+                                                            data.doma[0][index];
+                                                        return InkWell(
+                                                          onTap: () {},
+                                                          child:
+                                                              ProductDetailWidget(
+                                                            vendorname:
+                                                                prod.title,
+                                                            discounttedPrice:
+                                                                prod.discont,
+                                                            Vimage:
+                                                                prod.contactName,
+                                                            price: prod.price,
+                                                            title: prod.title,
+                                                            productImage:
+                                                                prod.imageUrl,
+                                                            similarproductCount: prod
+                                                                .similarproductCount,
+                                                            membershipColor: prod
+                                                                .user
+                                                                .first
+                                                                .memberColor,
+                                                            membershipTitle: prod
+                                                                .user
+                                                                .first
+                                                                .membershipTitle,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                          "No Data Available"),
+                                                    ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
                                     ),
 
                                     // Third Tab
-                                    Column(
-                                      children: [
-                                        if (data.spot.isNotEmpty &&
-                                            data.spot[0].isNotEmpty)
-                                          SizedBox(
-                                            height: 130.h,
-                                            child: ListView.builder(
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: data.spot[0].length,
-                                              itemBuilder: (context, index) {
-                                                sizedboxval =
-                                                    data.spot[0].isEmpty
-                                                        ? 100
-                                                        : 500;
-                                                GlobalModel res =
-                                                    data.spot[0][index];
-                                                if (index == 0) {
-                                                  return StoryAddWidget(
-                                                      index: index,
-                                                      brandname:
-                                                          res.contactName);
-                                                } else if (index >= 1 &&
-                                                    index <= 2) {
-                                                  return StoryAddWidget(
-                                                      index: index,
-                                                      showgift: true);
-                                                }
-                                                return StoryAddWidget(
-                                                    index: index);
-                                              },
-                                            ),
-                                          ),
-                                        SizedBox(
-                                          height: data.spot.isNotEmpty &&
-                                                  data.spot[0].isNotEmpty
-                                              ? 340.h
-                                              : 180,
-                                          child: data.spot.isNotEmpty &&
-                                                  data.spot[0].isNotEmpty
-                                              ? ListView.builder(
-                                                  clipBehavior: Clip.antiAlias,
-                                                  padding:
-                                                      const EdgeInsets.all(3),
+                                    SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          if (data.spot[0].isEmpty &&
+                                              data.spot.isEmpty)
+                                            const Center(
+                                              child: Text("No Data Available"),
+                                            )
+                                          else ...[
+                                            if (data.spot.isNotEmpty &&
+                                                data.spot[0].isNotEmpty)
+                                              SizedBox(
+                                                height: 130.h,
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
                                                   scrollDirection:
                                                       Axis.horizontal,
-                                                  itemCount:
-                                                      data.spot[0].length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    GlobalModel prod =
+                                                  itemCount: data.spot[0].length,
+                                                  itemBuilder: (context, index) {
+                                                    sizedboxval =
+                                                        data.spot[0].isEmpty
+                                                            ? 100
+                                                            : 500;
+                                                    GlobalModel res =
                                                         data.spot[0][index];
-                                                    return InkWell(
-                                                      onTap: () {},
-                                                      child:
-                                                          ProductDetailWidget(
-                                                        vendorname: prod.title,
-                                                        discounttedPrice:
-                                                            prod.discont,
-                                                        Vimage: prod
-                                                            .user.first.photo,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage:
-                                                            prod.imageUrl,
-                                                        similarproductCount: prod
-                                                            .similarproductCount,
-                                                        membershipColor: prod
-                                                            .user
-                                                            .first
-                                                            .memberColor,
-                                                        membershipTitle: prod
-                                                            .user
-                                                            .first
-                                                            .membershipTitle,
-                                                      ),
-                                                    );
+                                                    if (index == 0) {
+                                                      return StoryAddWidget(
+                                                          index: index,
+                                                          brandname:
+                                                              res.contactName);
+                                                    } else if (index >= 1 &&
+                                                        index <= 2) {
+                                                      return StoryAddWidget(
+                                                          index: index,
+                                                          showgift: true);
+                                                    }
+                                                    return StoryAddWidget(
+                                                        index: index);
                                                   },
-                                                )
-                                              : null,
-                                        ),
-                                      ],
+                                                ),
+                                              ),
+                                            SizedBox(
+                                              height: data.spot.isNotEmpty &&
+                                                      data.spot[0].isNotEmpty
+                                                  ? 340.h
+                                                  : 180,
+                                              child: data.spot.isNotEmpty &&
+                                                      data.spot[0].isNotEmpty
+                                                  ? ListView.builder(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      padding:
+                                                          const EdgeInsets.all(3),
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      itemCount:
+                                                          data.spot[0].length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        GlobalModel prod =
+                                                            data.spot[0][index];
+                                                        return InkWell(
+                                                          onTap: () {},
+                                                          child:
+                                                              ProductDetailWidget(
+                                                            vendorname:
+                                                                prod.title,
+                                                            discounttedPrice:
+                                                                prod.discont,
+                                                            Vimage: prod
+                                                                .user.first.photo,
+                                                            price: prod.price,
+                                                            title: prod.title,
+                                                            productImage:
+                                                                prod.imageUrl,
+                                                            similarproductCount: prod
+                                                                .similarproductCount,
+                                                            membershipColor: prod
+                                                                .user
+                                                                .first
+                                                                .memberColor,
+                                                            membershipTitle: prod
+                                                                .user
+                                                                .first
+                                                                .membershipTitle,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                          "No Data Available"),
+                                                    ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -1018,7 +1060,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             data: (data) {
                               // print("binod ${data.buynow.first.}");
                               return SizedBox(
-                                height: 280.h,
+                                height: 310.h,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,

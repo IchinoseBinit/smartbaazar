@@ -39,7 +39,7 @@ class ProductDetailWidget extends StatelessWidget {
   String? Vimage, productImage, lefttile;
   String? membershipColor;
   String? membershipTitle;
-  bool sponsored;
+  bool? sponsored;
 
   @override
   Widget build(BuildContext context) {
@@ -515,7 +515,7 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             Image.asset("assets/images/mike.png"),
                             Text(
-                              sponsored ? 'Sponsored' : 'sponsored',
+                              sponsored! ? 'Sponsored' : 'sponsored',
                               style: headerstyle.copyWith(
                                   fontSize: 7.sp, fontWeight: FontWeight.w700),
                             ),
