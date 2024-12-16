@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
-import 'package:smartbazar/features/grocessary_screen/api/grocery_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
@@ -45,7 +44,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     {'label': 'Seasonal offer', 'id': 3},
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
-    {'label': 'Festival sale', 'id': 6},
   ];
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -76,7 +74,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
       _pageController.animateToPage(
         _currentPage,
-        duration: const Duration(seconds: 350),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeIn,
       );
     });
@@ -155,7 +153,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
 
-    final asyncbajarValue = ref.watch(getGrocertResponseProvider);
+    final asyncbajarValue = ref.watch(getjobsResponseProvider);
 
     // asyncbajarValue.when(data: (data) {
 
@@ -261,13 +259,18 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             Map<String, dynamic> data = items[index];
 
                             // Highlight only when index == 0 (TradeHub)
-                            bool isActive = index == 6;
+                            bool isActive = index == 7;
 
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
                                   selectedIndex = index;
                                 });
+                                _pageController.animateToPage(
+                                  2,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
                               },
                               child: AnimatedContainer(
                                 padding: EdgeInsets.zero,
@@ -447,42 +450,39 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //   error: (error, stackTrace) {
                 //     return Text(error.toString());
                 //   },
-                //   loading: () => Center(child: const CircularProgressIndicator()),
+                //   loading: () => const CircularProgressIndicator(),
                 // ),
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return data.sliders!.isEmpty
-                        ? const SizedBox()
-                        : SizedBox(
+                    return SizedBox(
+                      height: 150.h,
+                      width: double.infinity,
+                      child: PageView.builder(
+                        reverse: true,
+                        allowImplicitScrolling: true,
+                        itemCount: data.sliders!.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            data.sliders![index].image!,
                             height: 150.h,
                             width: double.infinity,
-                            child: PageView.builder(
-                              reverse: true,
-                              allowImplicitScrolling: true,
-                              itemCount: data.sliders!.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return Image.network(
-                                  data.sliders![index].image!,
-                                  height: 150.h,
-                                  width: double.infinity,
-                                  fit: BoxFit.fill,
-                                );
-                                // Image.asset(
-                                //     height: 150.h,
-                                //     width: double.infinity,
-                                //     fit: BoxFit.fill,
-                                //     );
-                              },
-                            ),
+                            fit: BoxFit.fill,
                           );
+                          // Image.asset(
+                          //     height: 150.h,
+                          //     width: double.infinity,
+                          //     fit: BoxFit.fill,
+                          //     );
+                        },
+                      ),
+                    );
                   },
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -515,7 +515,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text("SERVICES",
+                              Text("Grocary",
                                   style: headerstyle.copyWith(
                                       color: ColorConstant.blackColor,
                                       fontSize: 15,
@@ -642,8 +642,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           return Text("error $error");
                         },
                         loading: () {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const CircularProgressIndicator();
                         },
                       ),
 
@@ -825,10 +824,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: data.hotProducts.isEmpty ? 5.h : 359.h,
+                      height: data.hotProducts.isEmpty ? 5.h : 360.h,
                       width: double.infinity,
                       child: ListView.builder(
-                        padding: const EdgeInsets.all(3),
+                        padding: EdgeInsets.zero,
                         clipBehavior: Clip.antiAlias,
                         scrollDirection: Axis.horizontal,
                         itemCount: data.hotProducts.length,
@@ -836,12 +835,15 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
-                            lefttile: "Grocary",
+                            lefttile: "Grocary-screen",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
                             price: hot.price,
                             title: hot.title,
                             vendorname: hot.user.name,
+                            similarproductCount: hot.similarProductCount,
+                            membershipColor: hot.user.membercolor,
+                            membershipTitle: hot.user.membershipTitle,
                           );
                         },
                       ),
@@ -850,8 +852,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 // Expanded(
@@ -1190,8 +1191,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               return Text(error.toString());
                             },
                             loading: () {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const CircularProgressIndicator();
                             },
                           ),
                         ],
@@ -1233,8 +1233,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               return Text(error.toString());
                             },
                             loading: () {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const CircularProgressIndicator();
                             },
                           ),
                         ],
@@ -1276,8 +1275,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               return Text(error.toString());
                             },
                             loading: () {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const CircularProgressIndicator();
                             },
                           ),
                         ],
@@ -1290,38 +1288,41 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   height: 5.h,
                 ),
 
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height:359.h,
-                //       width: double.infinity,
-                //       child: ListView.builder(
-                //         padding: const EdgeInsets.all(3),
-                //         clipBehavior: Clip.antiAlias,
-                //         scrollDirection: Axis.horizontal,
-                //         itemCount: data.product.length,
-                //         shrinkWrap: true,
-                //         itemBuilder: (context, index) {
-                //           VProduct ref = data.product[index];
-                //           return ProductDetailWidget(
-                //             lefttile: "Jobs",
-                //             productImage: ref.image,
-                //             price: ref.price,
-                //             Vimage: ref.user.photo,
-                //             title: ref.title,
-                //             vendorname: ref.user.name,
-                //           );
-                //         },
-                //       ),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () {
-                //     return Center(child: const CircularProgressIndicator());
-                //   },
-                // ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 360.h,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(3),
+                        clipBehavior: Clip.antiAlias,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.product.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          VProduct ref = data.product[index];
+                          return ProductDetailWidget(
+                            lefttile: "Grocary-screen",
+                            productImage: ref.image,
+                            price: ref.price,
+                            Vimage: ref.user.photo,
+                            title: ref.title,
+                            vendorname: ref.user.name,
+                            similarproductCount: ref.similarProductCount,
+                            membershipColor: ref.user.membercolor,
+                            membershipTitle: ref.user.membershipTitle,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
 
                 Center(
                   child: Column(
@@ -1361,6 +1362,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
+                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorname: resp.name,
@@ -1374,7 +1376,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     return Text("error $error");
                   },
                   loading: () {
-                    return const Center(child: CircularProgressIndicator());
+                    return const CircularProgressIndicator();
                   },
                 ),
 
@@ -1408,145 +1410,150 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ValueListenableBuilder<int>(
-                    valueListenable: selectedIndexNotifier,
-                    builder: (context, selectedIndex, child) {
-                      // Map category labels to their respective product lists
-                      List<String> categories =
-                          _services.map((e) => e['label'] as String).toList();
+                asyncbajarValue.when(
+                  data: (data) {
+                    List<List<VProduct>> productsList = [
+                      data.low_price_guarantee, // Corresponds to SHOPZONE
+                      data.Launch_offer, // Corresponds to HOB
+                      data.seasonal, // Corresponds to SERVICES
+                      data.promotional, // Corresponds to TRADEHUB
+                      data.Launch_festival_offer, // Corresponds to USED
+                    ];
 
-                      return Column(
-                        children: [
-                          // Category Selector Row
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: categories.length,
-                              itemBuilder: (context, index) {
-                                bool isSelected = index == selectedIndex;
-                                return GestureDetector(
-                                  onTap: () {
-                                    // Update the selected index
-                                    selectedIndexNotifier.value = index;
+                    return SizedBox(
+                      width: double.infinity,
+                      height: productsList.every((list) => list.isEmpty)
+                          ? 150.h
+                          : 420.h,
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: selectedIndexNotifier,
+                        builder: (context, selectedIndex, child) {
+                          // Map category labels to their respective product lists
+                          List<String> categories = _services
+                              .map((e) => e['label'] as String)
+                              .toList();
+
+                          return Column(
+                            children: [
+                              // Category Selector Row
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50.h,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: categories.length,
+                                  itemBuilder: (context, index) {
+                                    bool isSelected = index == selectedIndex;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // Update the selected index
+                                        selectedIndexNotifier.value = index;
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.all(5),
+                                        width: 100.w,
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? const Color(0xFF681b4e)
+                                              : const Color(0xffA5A5A5),
+                                        ),
+                                        child: Text(
+                                          categories[index],
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: ColorConstant.whiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.all(5),
-                                    width: 150.w,
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? const Color(0xFF681b4e)
-                                          : const Color(0xffA5A5A5),
-                                    ),
-                                    child: Text(
-                                      categories[index],
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors
-                                            .white, // Use color directly or define in constants
+                                ),
+                              ),
+
+                              // Spacer
+                              SizedBox(height: 5.h),
+
+                              // Display Products for the selected category
+                              Builder(builder: (context) {
+                                // Ensure the index is valid
+                                if (selectedIndex < 0 ||
+                                    selectedIndex >= productsList.length) {
+                                  selectedIndex =
+                                      0; // Default to the first category
+                                }
+
+                                List<VProduct> products =
+                                    productsList[selectedIndex];
+
+                                if (products.isEmpty) {
+                                  return SizedBox(
+                                    height: 50.h,
+                                    child: Center(
+                                      child: Text(
+                                        "No Data Available",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                     ),
+                                  );
+                                }
+
+                                return SizedBox(
+                                  height: 360.h,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: products.length,
+                                    itemBuilder: (context, index) {
+                                      VProduct prod = products[index];
+                                      return InkWell(
+                                        onTap: () {}, // Handle onTap if needed
+                                        child: ProductDetailWidget(
+                                          lefttile: "Grocary-screen",
+                                          vendorname: prod.user.name,
+                                          discounttedPrice: "0",
+                                          Vimage: prod.user.photo,
+                                          price: prod.price,
+                                          title: prod.title,
+                                          productImage: prod.image,
+                                          similarproductCount:
+                                              prod.similarProductCount,
+                                          membershipColor:
+                                              prod.user.membercolor,
+                                          membershipTitle:
+                                              prod.user.membershipTitle,
+                                        ), // Replace with your actual product widget
+                                      );
+                                    },
                                   ),
                                 );
-                              },
-                            ),
-                          ),
-
-                          // Spacer
-                          SizedBox(height: 5.h),
-
-                          // Display Products for the selected category
-                          asyncbajarValue.when(
-                            data: (data) {
-                              // Define the products list corresponding to each category
-                              List<List<VProduct>> productsList = [
-                                data.low_price_guarantee, // Corresponds to SHOPZONE
-                                data.Launch_offer, // Corresponds to HOB
-                                data.seasonal, // Corresponds to SERVICES
-                                data.promotional, // Corresponds to TRADEHUB
-                                data.clearance_sale, // Corresponds to USED
-                                data.Launch_festival_offer, // Corresponds to USED
-                              ];
-
-                              // Ensure the index is valid
-                              if (selectedIndex < 0 ||
-                                  selectedIndex >= productsList.length) {
-                                selectedIndex =
-                                    0; // Default to the first category if index is out of bounds
-                              }
-
-                              List<VProduct> products =
-                                  productsList[selectedIndex];
-
-                              // Calculate height dynamically
-                              double calculatedHeight =
-                                  products.isNotEmpty ? 359.h : 100.h;
-
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                height: calculatedHeight,
-                                child: products.isEmpty
-                                    ? const Center(
-                                        child: Text(
-                                          "No products found",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      )
-                                    : ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: products.length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod = products[index];
-
-                                          return InkWell(
-                                            onTap:
-                                                () {}, // Handle onTap if needed
-                                            child: ProductDetailWidget(
-                                              lefttile: "jobs",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice: "0",
-                                              Vimage: prod.user.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                              );
-                            },
-                            error: (error, stackTrace) => const Center(
-                              child: Text("Error loading data"),
-                            ),
-                            loading: () => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                              }),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) => Text("Error: $error"),
+                  loading: () => const CircularProgressIndicator(),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'All Grocary',
+                        'All products',
                         style: headerstyle.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
@@ -1566,6 +1573,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           const NeverScrollableScrollPhysics(), // Disable grid scrolling
                       shrinkWrap: true, // Adjust to fit content
                       itemCount: data.product.length,
+                      padding: EdgeInsets.zero,
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -1576,16 +1584,18 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         childAspectRatio: 0.5,
                       ),
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: ProductDetailWidget(
-                            lefttile: 'Jobs',
-                            productImage: data.product[index].image,
-                            Vimage: data.product[index].user.photo,
-                            vendorname: data.product[index].user.name,
-                            title: data.product[index].title,
-                            price: data.product[index].price,
-                          ),
+                        return ProductDetailWidget(
+                          lefttile: "Grocary-screen",
+                          productImage: data.product[index].image,
+                          Vimage: data.product[index].user.photo,
+                          vendorname: data.product[index].user.name,
+                          title: data.product[index].title,
+                          price: data.product[index].price,
+                          similarproductCount:
+                              data.product[index].similarProductCount,
+                          membershipColor: data.product[index].user.membercolor,
+                          membershipTitle:
+                              data.product[index].user.membershipTitle,
                         );
                       },
                     );
@@ -1619,7 +1629,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     return Text('error is $error');
                   },
                   loading: () {
-                    return const Center(child: CircularProgressIndicator());
+                    return const CircularProgressIndicator();
                   },
                 ),
 

@@ -44,7 +44,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     {'label': 'Seasonal offer', 'id': 3},
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
-    {'label': 'Festival sale', 'id': 6},
   ];
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -75,7 +74,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
       _pageController.animateToPage(
         _currentPage,
-        duration: const Duration(seconds: 300),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeIn,
       );
     });
@@ -267,6 +266,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                 setState(() {
                                   selectedIndex = index;
                                 });
+                                _pageController.animateToPage(
+                                  2,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
                               },
                               child: AnimatedContainer(
                                 padding: EdgeInsets.zero,
@@ -446,7 +450,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 //   error: (error, stackTrace) {
                 //     return Text(error.toString());
                 //   },
-                //   loading: () => Center(child: const CircularProgressIndicator()),
+                //   loading: () => const CircularProgressIndicator(),
                 // ),
 
                 asyncbajarValue.when(
@@ -478,8 +482,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -639,8 +642,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           return Text("error $error");
                         },
                         loading: () {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const CircularProgressIndicator();
                         },
                       ),
 
@@ -822,7 +824,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: data.hotProducts.isEmpty ? 5.h : 359.h,
+                      height: data.hotProducts.isEmpty ? 5.h : 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -847,8 +849,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 // Expanded(
@@ -1187,8 +1188,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               return Text(error.toString());
                             },
                             loading: () {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const CircularProgressIndicator();
                             },
                           ),
                         ],
@@ -1230,8 +1230,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               return Text(error.toString());
                             },
                             loading: () {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const CircularProgressIndicator();
                             },
                           ),
                         ],
@@ -1273,8 +1272,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               return Text(error.toString());
                             },
                             loading: () {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const CircularProgressIndicator();
                             },
                           ),
                         ],
@@ -1287,38 +1285,38 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   height: 5.h,
                 ),
 
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height:359.h,
-                //       width: double.infinity,
-                //       child: ListView.builder(
-                //         padding: const EdgeInsets.all(3),
-                //         clipBehavior: Clip.antiAlias,
-                //         scrollDirection: Axis.horizontal,
-                //         itemCount: data.product.length,
-                //         shrinkWrap: true,
-                //         itemBuilder: (context, index) {
-                //           VProduct ref = data.product[index];
-                //           return ProductDetailWidget(
-                //             lefttile: "Jobs",
-                //             productImage: ref.image,
-                //             price: ref.price,
-                //             Vimage: ref.user.photo,
-                //             title: ref.title,
-                //             vendorname: ref.user.name,
-                //           );
-                //         },
-                //       ),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () {
-                //     return Center(child: const CircularProgressIndicator());
-                //   },
-                // ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height:340.h,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(3),
+                        clipBehavior: Clip.antiAlias,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.product.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          VProduct ref = data.product[index];
+                          return ProductDetailWidget(
+                            lefttile: "Jobs",
+                            productImage: ref.image,
+                            price: ref.price,
+                            Vimage: ref.user.photo,
+                            title: ref.title,
+                            vendorname: ref.user.name,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
 
                 Center(
                   child: Column(
@@ -1371,7 +1369,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     return Text("error $error");
                   },
                   loading: () {
-                    return const Center(child: CircularProgressIndicator());
+                    return const CircularProgressIndicator();
                   },
                 ),
 
@@ -1405,138 +1403,138 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ValueListenableBuilder<int>(
-                    valueListenable: selectedIndexNotifier,
-                    builder: (context, selectedIndex, child) {
-                      // Map category labels to their respective product lists
-                      List<String> categories =
-                          _services.map((e) => e['label'] as String).toList();
+                asyncbajarValue.when(
+                  data: (data) {
+                    List<List<VProduct>> productsList = [
+                      data.low_price_guarantee, // Corresponds to SHOPZONE
+                      data.Launch_offer, // Corresponds to HOB
+                      data.seasonal, // Corresponds to SERVICES
+                      data.promotional, // Corresponds to TRADEHUB
+                      data.Launch_festival_offer, // Corresponds to USED
+                    ];
 
-                      return Column(
-                        children: [
-                          // Category Selector Row
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: categories.length,
-                              itemBuilder: (context, index) {
-                                bool isSelected = index == selectedIndex;
-                                return GestureDetector(
-                                  onTap: () {
-                                    // Update the selected index
-                                    selectedIndexNotifier.value = index;
+                    return SizedBox(
+                      width: double.infinity,
+                      height: productsList.every((list) => list.isEmpty)
+                          ? 150.h
+                          : 420.h,
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: selectedIndexNotifier,
+                        builder: (context, selectedIndex, child) {
+                          // Map category labels to their respective product lists
+                          List<String> categories = _services
+                              .map((e) => e['label'] as String)
+                              .toList();
+
+                          return Column(
+                            children: [
+                              // Category Selector Row
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50.h,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: categories.length,
+                                  itemBuilder: (context, index) {
+                                    bool isSelected = index == selectedIndex;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // Update the selected index
+                                        selectedIndexNotifier.value = index;
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.all(5),
+                                        width: 100.w,
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? const Color(0xFF681b4e)
+                                              : const Color(0xffA5A5A5),
+                                        ),
+                                        child: Text(
+                                          categories[index],
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: ColorConstant.whiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.all(5),
-                                    width: 150.w,
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? const Color(0xFF681b4e)
-                                          : const Color(0xffA5A5A5),
-                                    ),
-                                    child: Text(
-                                      categories[index],
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors
-                                            .white, // Use color directly or define in constants
+                                ),
+                              ),
+
+                              // Spacer
+                              SizedBox(height: 5.h),
+
+                              // Display Products for the selected category
+                              Builder(builder: (context) {
+                                // Ensure the index is valid
+                                if (selectedIndex < 0 ||
+                                    selectedIndex >= productsList.length) {
+                                  selectedIndex =
+                                      0; // Default to the first category
+                                }
+
+                                List<VProduct> products =
+                                    productsList[selectedIndex];
+
+                                if (products.isEmpty) {
+                                  return SizedBox(
+                                    height: 50.h,
+                                    child: Center(
+                                      child: Text(
+                                        "No Data Available",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                     ),
+                                  );
+                                }
+
+                                return SizedBox(
+                                  height: 340.h,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.all(3),
+                                    itemCount: products.length,
+                                    itemBuilder: (context, index) {
+                                      VProduct prod = products[index];
+                                      return InkWell(
+                                        onTap: () {}, // Handle onTap if needed
+                                        child: ProductDetailWidget(
+                                          lefttile: "Jobs",
+                                          vendorname: prod.user.name,
+                                          discounttedPrice: "0",
+                                          Vimage: prod.user.photo,
+                                          price: prod.price,
+                                          title: prod.title,
+                                          productImage: prod.image,
+                                        ), // Replace with your actual product widget
+                                      );
+                                    },
                                   ),
                                 );
-                              },
-                            ),
-                          ),
-
-                          // Spacer
-                          SizedBox(height: 5.h),
-
-                          // Display Products for the selected category
-                          asyncbajarValue.when(
-                            data: (data) {
-                              // Define the products list corresponding to each category
-                              List<List<VProduct>> productsList = [
-                                data.low_price_guarantee, // Corresponds to SHOPZONE
-                                data.Launch_offer, // Corresponds to HOB
-                                data.seasonal, // Corresponds to SERVICES
-                                data.promotional, // Corresponds to TRADEHUB
-                                data.clearance_sale, // Corresponds to USED
-                                data.Launch_festival_offer, // Corresponds to USED
-                              ];
-
-                              // Ensure the index is valid
-                              if (selectedIndex < 0 ||
-                                  selectedIndex >= productsList.length) {
-                                selectedIndex =
-                                    0; // Default to the first category if index is out of bounds
-                              }
-
-                              List<VProduct> products =
-                                  productsList[selectedIndex];
-
-                              // Calculate height dynamically
-                              double calculatedHeight =
-                                  products.isNotEmpty ? 359.h : 100.h;
-
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                height: calculatedHeight,
-                                child: products.isEmpty
-                                    ? const Center(
-                                        child: Text(
-                                          "No products found",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      )
-                                    : ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: products.length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod = products[index];
-
-                                          return InkWell(
-                                            onTap:
-                                                () {}, // Handle onTap if needed
-                                            child: ProductDetailWidget(
-                                              lefttile: "jobs",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice: "0",
-                                              Vimage: prod.user.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                              );
-                            },
-                            error: (error, stackTrace) => const Center(
-                              child: Text("Error loading data"),
-                            ),
-                            loading: () => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                              }),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) => Text("Error: $error"),
+                  loading: () => const CircularProgressIndicator(),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -1564,17 +1562,17 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       shrinkWrap: true, // Adjust to fit content
                       itemCount: data.product.length,
 
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 370,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0.6,
-                        mainAxisSpacing: 0.2,
-                        childAspectRatio: 0.5,
-                      ),
+                         gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 370,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.6,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.5,
+                                ),
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
+                          padding:  EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
                             lefttile: 'Jobs',
                             productImage: data.product[index].image,
@@ -1616,7 +1614,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     return Text('error is $error');
                   },
                   loading: () {
-                    return const Center(child: CircularProgressIndicator());
+                    return const CircularProgressIndicator();
                   },
                 ),
 

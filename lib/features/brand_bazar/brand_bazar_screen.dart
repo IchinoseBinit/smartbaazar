@@ -16,6 +16,7 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
+import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
 
 class BrandBazarScreen extends ConsumerStatefulWidget {
   const BrandBazarScreen({super.key});
@@ -44,7 +45,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     {'label': 'Seasonal offer', 'id': 3},
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
-    {'label': 'Festive sale', 'id': 5},
   ];
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -75,7 +75,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
       _pageController.animateToPage(
         _currentPage,
-        duration: const Duration(seconds: 350),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeIn,
       );
     });
@@ -267,6 +267,11 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                 setState(() {
                                   selectedIndex = index;
                                 });
+                                _pageController.animateToPage(
+                                  2,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
                               },
                               child: AnimatedContainer(
                                 padding: EdgeInsets.zero,
@@ -831,12 +836,15 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
-                            lefttile: "Brand bajar",
+                            lefttile: "Socio-Shop",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
                             price: hot.price,
                             title: hot.title,
                             vendorname: hot.user.name,
+                            similarproductCount: hot.similarProductCount,
+                            membershipColor: hot.user.membercolor,
+                             membershipTitle: hot.user.membershipTitle,
                           );
                         },
                       ),
@@ -845,8 +853,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 // Expanded(
@@ -873,51 +880,53 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return data.cat.isEmpty
-                        ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      data.cat[0].slug.toUpperCase(),
-                                      style: headerstyle.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                SizedBox(
-                                  height: 360.h,
-                                  width: double.infinity,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    clipBehavior: Clip.antiAlias,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.insidearr[0].length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      VProduct pro = data.insidearr[0][index];
-                                      return ProductDetailWidget(
-                                        lefttile: "Brand bajar",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
+
+                    return  data.cat.isEmpty? const SizedBox(): Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                data.cat[0].slug.toUpperCase(),
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          SizedBox(
+                            height: 360.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: data.insidearr[0].length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                VProduct pro = data.insidearr[0][index];
+                                return ProductDetailWidget(
+                                    lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                   similarproductCount: pro.similarProductCount,
+                            membershipColor: pro.user.membercolor,
+                             membershipTitle: pro.user.membershipTitle,
+                                );
+                              },
                             ),
-                          );
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   error: (error, stackTrace) {
                     return Text("error $error");
@@ -935,51 +944,52 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return data.cat.isEmpty
-                        ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      data.cat[1].slug.toUpperCase(),
-                                      style: headerstyle.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                SizedBox(
-                                  height: 360.h,
-                                  width: double.infinity,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    clipBehavior: Clip.antiAlias,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.insidearr[1].length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      VProduct pro = data.insidearr[1][index];
-                                      return ProductDetailWidget(
-                                        lefttile: "Brand bajar",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
+                    return data.cat.isEmpty? const SizedBox():Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                data.cat[1].slug.toUpperCase(),
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          SizedBox(
+                            height: 360.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: data.insidearr[1].length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                VProduct pro = data.insidearr[1][index];
+                                return ProductDetailWidget(
+                                    lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                   similarproductCount: pro.similarProductCount,
+                            membershipColor: pro.user.membercolor,
+                             membershipTitle: pro.user.membershipTitle,
+                                );
+                              },
                             ),
-                          );
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   error: (error, stackTrace) {
                     return Text("error $error");
@@ -991,48 +1001,49 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return data.cat.isEmpty
-                        ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      data.cat[2].slug,
-                                      style: headerstyle.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 360.h,
-                                  width: double.infinity,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    clipBehavior: Clip.antiAlias,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.insidearr[2].length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      VProduct pro = data.insidearr[2][index];
-                                      return ProductDetailWidget(
-                                        lefttile: "Brand bajar",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
+                    return data.cat.isEmpty? const SizedBox():Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                data.cat[2].slug,
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 360.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              clipBehavior: Clip.antiAlias,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: data.insidearr[2].length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                VProduct pro = data.insidearr[2][index];
+                                return ProductDetailWidget(
+                                    lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                  similarproductCount: pro.similarProductCount,
+                            membershipColor: pro.user.membercolor,
+                             membershipTitle: pro.user.membershipTitle,
+                                );
+                              },
                             ),
-                          );
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   error: (error, stackTrace) {
                     return Text("error $error");
@@ -1041,7 +1052,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-
+               
+              
                 SizedBox(
                   height: 50,
                   width: double.infinity,
@@ -1062,7 +1074,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 200.h,
+                      height: 500.h,
                       width: double.infinity,
                       // Use Expanded for better layout management
                       child: TabBarView(
@@ -1101,7 +1113,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
-                                      height: 359.h,
+                                      height: 340.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1113,21 +1125,24 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              lefttile: "B2b-Shop",
+                                               lefttile: "Socio-Shop",
                                               vendorname: prod.user.name,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice: '0',
                                               Vimage: prod.title,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
+                                                similarproductCount: prod.similarProductCount,
+                            membershipColor: prod.user.membercolor,
+                                               membershipTitle: prod.user.membershipTitle,
                                             ),
                                           );
                                         },
                                       ),
                                     )
                                   : Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 10, left: 100.w),
+                                      padding: EdgeInsets.only(
+                                          top: 100, left: 100.w),
                                       child: const SizedBox(
                                         child: Text("No data available"),
                                       ),
@@ -1164,53 +1179,41 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       return StoryAddWidget(index: index);
                                     }),
                               ),
-                              data.insidearr.isNotEmpty &&
-                                      data.insidearr[1].isNotEmpty
-                                  ? SizedBox(
-                                      height: 359.h,
-                                      child: data.insidearr.isEmpty
-                                          ? Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 100, left: 100.w),
-                                              child: const SizedBox(
-                                                child:
-                                                    Text("No data available"),
-                                              ),
-                                            )
-                                          : ListView.builder(
-                                              clipBehavior: Clip.antiAlias,
-                                              padding: const EdgeInsets.all(3),
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount:
-                                                  data.insidearr[1].length,
-                                              itemBuilder: (context, index) {
-                                                VProduct prod =
-                                                    data.insidearr[1][index];
-                                                return InkWell(
-                                                  onTap: () {},
-                                                  child: ProductDetailWidget(
-                                                    lefttile: "B2b-Shop",
-                                                    vendorname: prod.title,
-                                                    discounttedPrice:
-                                                        prod.discounted_price,
-                                                    Vimage: prod.user.photo,
-                                                    price: prod.price,
-                                                    title: prod.title,
-                                                    productImage: prod.image,
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                    )
-                                  : SizedBox(
-                                      child: Padding(
+                              SizedBox(
+                                height: 340.h,
+                                child: data.insidearr.isEmpty
+                                    ? Padding(
                                         padding: EdgeInsets.only(
-                                            top: 10, left: 100.w),
+                                            top: 100, left: 100.w),
                                         child: const SizedBox(
                                           child: Text("No data available"),
                                         ),
+                                      )
+                                    : ListView.builder(
+                                        clipBehavior: Clip.antiAlias,
+                                        padding: const EdgeInsets.all(3),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: data.insidearr[1].length,
+                                        itemBuilder: (context, index) {
+                                          VProduct prod =
+                                              data.insidearr[1][index];
+                                          return InkWell(
+                                            onTap: () {},
+                                            child: ProductDetailWidget(
+                                                lefttile: "Socio-Shop",
+                                              vendorname: prod.title,
+                                              discounttedPrice: '0',
+                                              Vimage: prod.user.photo,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                              similarproductCount: prod.similarProductCount,
+                            membershipColor: prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    ),
+                              ),
                             ],
                           ),
                           Column(
@@ -1243,51 +1246,41 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       return StoryAddWidget(index: index);
                                     }),
                               ),
-                              data.insidearr.isNotEmpty &&
-                                      data.insidearr[0].isNotEmpty
-                                  ? SizedBox(
-                                      height: 359.h,
-                                      child: data.insidearr.isEmpty
-                                          ? Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 100, left: 100.w),
-                                              child: const SizedBox(
-                                                child:
-                                                    Text("No data available"),
-                                              ),
-                                            )
-                                          : ListView.builder(
-                                              clipBehavior: Clip.antiAlias,
-                                              padding: const EdgeInsets.all(3),
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount:
-                                                  data.insidearr[2].length,
-                                              itemBuilder: (context, index) {
-                                                VProduct prod =
-                                                    data.insidearr[2][index];
-                                                return InkWell(
-                                                  onTap: () {},
-                                                  child: ProductDetailWidget(
-                                                    lefttile: "B2b-Shop",
-                                                    vendorname: prod.title,
-                                                    discounttedPrice:
-                                                        prod.discounted_price,
-                                                    Vimage: prod.user.photo,
-                                                    price: prod.price,
-                                                    title: prod.title,
-                                                    productImage: prod.image,
-                                                  ),
-                                                );
-                                              },
+                              SizedBox(
+                                height: 340.h,
+                                child: data.insidearr.isEmpty
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 100, left: 100.w),
+                                        child: const SizedBox(
+                                          child: Text("No data available"),
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        clipBehavior: Clip.antiAlias,
+                                        padding: const EdgeInsets.all(3),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: data.insidearr[2].length,
+                                        itemBuilder: (context, index) {
+                                          VProduct prod =
+                                              data.insidearr[2][index];
+                                          return InkWell(
+                                            onTap: () {},
+                                            child: ProductDetailWidget(
+                                               lefttile: "Socio-Shop",
+                                              vendorname: prod.title,
+                                              discounttedPrice: '0',
+                                              Vimage: prod.user.photo,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                              similarproductCount: prod.similarProductCount,
+                            membershipColor: prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
                                             ),
-                                    )
-                                  : Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 10, left: 100.w),
-                                      child: const SizedBox(
-                                        child: Text("No data available"),
+                                          );
+                                        },
                                       ),
-                                    ),
+                              ),
                             ],
                           ),
                         ],
@@ -1301,13 +1294,49 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
+                SizedBox(
+                  height: 5.h,
+                ),
+
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 360.h,
+                      width: double.infinity,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        clipBehavior: Clip.antiAlias,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.product.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          VProduct ref = data.product[index];
+                          return ProductDetailWidget(
+                              lefttile: "Socio-Shop",
+                            productImage: ref.image,
+                            price: ref.price,
+                            Vimage: ref.user.photo,
+                            title: ref.title,
+                            vendorname: ref.user.name,
+                            similarproductCount: ref.similarProductCount,
+                            membershipColor: ref.user.membercolor, membershipTitle: ref.user.membershipTitle,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
 
                 Center(
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 5.h,
-                      ),
+                       SizedBox(height: 5.h,),
                       Text(
                         "BuyOrWin",
                         textAlign: TextAlign.center,
@@ -1398,6 +1427,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                 ),
                 SizedBox(
                   width: double.infinity,
+                  height: 420.h,
                   child: ValueListenableBuilder<int>(
                     valueListenable: selectedIndexNotifier,
                     builder: (context, selectedIndex, child) {
@@ -1435,8 +1465,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors
-                                            .white, // Use color directly or define in constants
+                                        color: ColorConstant.whiteColor,
                                       ),
                                     ),
                                   ),
@@ -1455,9 +1484,10 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               List<List<VProduct>> productsList = [
                                 data.low_price_guarantee, // Corresponds to SHOPZONE
                                 data.Launch_offer, // Corresponds to HOB
+
                                 data.seasonal, // Corresponds to SERVICES
+
                                 data.promotional, // Corresponds to TRADEHUB
-                                data.clearance_sale, // Corresponds to USED
                                 data.Launch_festival_offer, // Corresponds to USED
                               ];
 
@@ -1471,18 +1501,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               List<VProduct> products =
                                   productsList[selectedIndex];
 
-                              // Calculate height dynamically
-                              double calculatedHeight =
-                                  products.isNotEmpty ? 359.h : 100.h;
-
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                height: calculatedHeight,
-                                child: products.isEmpty
-                                    ? const Center(
-                                        child: Text(
-                                          "No products found",
-                                          style: TextStyle(fontSize: 16),
+                              return SizedBox(
+                                height: 340.h,
+                                child: data.insidearr.isEmpty
+                                    ? const Padding(
+                                        padding:
+                                            EdgeInsets.only(top: 100),
+                                        child: SizedBox(
+                                          child: Text("No data available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1494,28 +1520,46 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           VProduct prod = products[index];
 
                                           return InkWell(
-                                            onTap:
-                                                () {}, // Handle onTap if needed
+                                            onTap: () {},
                                             child: ProductDetailWidget(
-                                              lefttile: "Brand bajar",
+                                                lefttile: "Socio-Shop",
                                               vendorname: prod.user.name,
                                               discounttedPrice: "0",
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
+                                              similarproductCount: prod.similarProductCount,
+                            membershipColor: prod.user.membercolor, membershipTitle: prod.user.membershipTitle,
                                             ),
                                           );
                                         },
                                       ),
                               );
+
+                              // SizedBox(
+                              //   height: 360.h,
+                              //   child: ListView.builder(
+                              //     scrollDirection: Axis.horizontal,
+                              //     itemCount: products.length,
+                              //     itemBuilder: (context, index) {
+                              //       return InkWell(
+                              //         onTap: () {}, // Handle onTap if needed
+                              //         child: ProductDetailWidget(
+                              //           vendorname: prod.user.name,
+                              //           discounttedPrice: "0",
+                              //           Vimage: prod.user.photo,
+                              //           price: prod.price,
+                              //           title: prod.title,
+                              //           productImage: prod.image,
+                              //         ), // Replace with your actual product widget
+                              //       );
+                              //     },
+                              //   ),
+                              // );
                             },
-                            error: (error, stackTrace) => const Center(
-                              child: Text("Error loading data"),
-                            ),
-                            loading: () => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
+                            error: (error, stackTrace) => Text("Error: $error"),
+                            loading: () => const CircularProgressIndicator(),
                           ),
                         ],
                       );
@@ -1528,7 +1572,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'All Products',
+                        'All Services',
                         style: headerstyle.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
@@ -1562,12 +1606,15 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-                            lefttile: "Brand bajar",
+                              lefttile: "Socio-Shop",
                             productImage: data.product[index].image,
                             Vimage: data.product[index].user.photo,
                             vendorname: data.product[index].user.name,
                             title: data.product[index].title,
                             price: data.product[index].price,
+                            similarproductCount: data.product[index].similarProductCount,
+                            membershipColor: data.product[index].user.membercolor,
+                            membershipTitle: data.product[index].user.membershipTitle,
                           ),
                         );
                       },

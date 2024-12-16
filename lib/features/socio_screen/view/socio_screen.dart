@@ -1588,7 +1588,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     },
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(

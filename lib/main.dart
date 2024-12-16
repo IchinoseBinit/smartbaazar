@@ -12,11 +12,10 @@ import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 
-void main() {
-  const FlutterErrorDetails(exception: PrintHandler);
-  runApp(const ProviderScope(child: MyApp()));
-}
 
 class MyApp extends StatefulWidget {
   static GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();

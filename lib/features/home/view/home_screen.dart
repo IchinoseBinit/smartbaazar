@@ -731,7 +731,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       },
                                                       child:
                                                           ProductDetailWidget(
-                                                            sponsored: prod.user[0].sponsored?? false,
+                                                            sponsored: prod.user[0].sponsored!,
                                                         vendorname:
                                                             prod.contactName,
                                                         discounttedPrice:

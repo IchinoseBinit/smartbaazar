@@ -8,6 +8,7 @@ class StoryAddWidget extends StatelessWidget {
   final bool? addSearch;
   final String? brandname;
   final String? vImage;
+  final int? storyCount;
 
   const StoryAddWidget({
     super.key,
@@ -16,6 +17,7 @@ class StoryAddWidget extends StatelessWidget {
     this.addSearch = false,
     this.brandname,
     this.vImage,
+    this.storyCount,
   });
 
   @override
@@ -23,98 +25,101 @@ class StoryAddWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Stack(
-          clipBehavior: Clip.none, // Prevents clipping of child widgets
-          children: [
-            Positioned(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 5.w), // Make margin responsive
-                padding: EdgeInsets.all(40.r), // Padding made responsive
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => StoryScreen(author: 'Author ${index + 1}'),
+              ),
+            );
+          },
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                width: 95.r,
+                height: 95.r,
                 decoration: BoxDecoration(
-                  border: Border.all(width: 4.w, color: const Color(0xffEACACB)),
+                  border:
+                      Border.all(width: 3.w, color: const Color(0xffEACACB)),
                   shape: BoxShape.circle,
                 ),
               ),
-            ),
-            Positioned(
-              left: -1.w,
-              bottom: 3.5.w,
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => StoryScreen(author: 'Author ${index + 1}'),
-                        ),
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 40.r, // Responsive radius
-                      backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
-                      child: CircleAvatar(
-                        radius: 38.r, // Responsive radius
-                        backgroundImage: NetworkImage(vImage ??
-                            'https://smartbazaar.jianjun-rnd.com.np/storage/files/np/947/11ce743037dbc695f81557faf3d959de.png'),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h), // Responsive spacing
-                  SizedBox(
-                    width: 100.w, // Responsive width
-                    child: Text(
-                      brandname ?? '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11.sp, // Responsive font size
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.w, color: Colors.black),
+                  shape: BoxShape.circle,
+                ),
+                child: CircleAvatar(
+                  radius: 38.r,
+                  backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
+                  backgroundImage: NetworkImage(vImage ??
+                      'https://smartbazaar.jianjun-rnd.com.np/storage/files/np/947/11ce743037dbc695f81557faf3d959de.png'),
+                ),
               ),
-            ),
-            addSearch!
-                ? Positioned(
-                    bottom: 15.h, // Responsive bottom position
-                    right: 0,
-                    left: 0,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: EdgeInsets.all(2.r), // Responsive padding
-                      child:  Icon(
-                        Icons.search,
-                        color: const Color(0xffAA0018),
-                        size: 24.r, // Responsive icon size
-                      ),
-                    ),
-                  )
-                : showgift!
-                    ? Positioned(
-                        bottom: 15.h, // Responsive bottom position
-                        right: 0,
-                        left: 0,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: EdgeInsets.all(2.r), // Responsive padding
-                          child:  Icon(
-                            Icons.card_giftcard,
-                            color: Colors.amber,
-                            size: 24.r, // Responsive icon size
-                          ),
+              Positioned(
+                bottom: -25.h,
+                child: Column(
+                  children: [
+                    SizedBox(height: 10.h),
+                    SizedBox(
+                      width: 100.w,
+                      child: Text(
+                        brandname ?? '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11.sp,
                         ),
-                      )
-                    : const SizedBox(),
-          ],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              addSearch!
+                  ? Positioned(
+                      bottom: -5.h,
+                      right: 0,
+                      left: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: EdgeInsets.all(2.r),
+                        child: Icon(
+                          Icons.search,
+                          color: const Color(0xffAA0018),
+                          size: 24.r,
+                        ),
+                      ),
+                    )
+                  : showgift!
+                      ? Positioned(
+                          bottom: -5.h,
+                          right: 0,
+                          left: 0,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            padding: EdgeInsets.all(2.r),
+                            child: Icon(
+                              Icons.card_giftcard,
+                              color: Colors.amber,
+                              size: 24.r,
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+            ],
+          ),
         ),
       ],
     );
