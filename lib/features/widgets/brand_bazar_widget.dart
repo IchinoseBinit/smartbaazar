@@ -123,7 +123,7 @@ class _BrandBazarWidgetState extends ConsumerState<BrandBazarWidget> {
                   ),
                 );
               },
-              loading: () => const CircularProgressIndicator(),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Text('Error: $error'),
             ),
             SizedBox(height: 11.h),
@@ -171,7 +171,7 @@ class _BrandBazarWidgetState extends ConsumerState<BrandBazarWidget> {
                   ),
                 );
               },
-              loading: () => const CircularProgressIndicator(),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Text('Error: $error'),
             ),
           ],

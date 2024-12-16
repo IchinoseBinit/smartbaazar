@@ -1,8 +1,6 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
@@ -16,9 +14,9 @@ class BannerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    final value = homePostsData.valueOrNull?.advertisements;
+    // final value = homePostsData.valueOrNull?.advertisements;
     return Skeletonizer(
-      enabled: homePostsData.isLoading || value == null,
+      // enabled: homePostsData.isLoading || value == null,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -27,19 +25,19 @@ class BannerWidget extends ConsumerWidget {
                 builder: (context) =>  const CreateNewListinScreen(),
               ));
         },
-        child: Container(
-          height: 72.h,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: value == null
-                ? null
-                : DecorationImage(
-                    image: NetworkImage(
-                      value[Random().nextInt(value.length)].image,
-                    ),
-                  ),
-          ),
-        ),
+        // child: Container(
+        //   height: 72.h,
+        //   width: MediaQuery.of(context).size.width,
+        //   decoration: BoxDecoration(
+        //     image: value == null
+        //         ? null
+        //         : DecorationImage(
+        //             image: NetworkImage(
+        //               value[Random().nextInt(value.length)].image,
+        //             ),
+        //           ),
+        //   ),
+        // ),
       ),
     );
   }

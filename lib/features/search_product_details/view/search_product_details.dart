@@ -235,7 +235,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Widget buildTabContent(String category, String order) {
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
 
     // Use ref.watch to get search results based on category
     final searchResults = ref.watch(

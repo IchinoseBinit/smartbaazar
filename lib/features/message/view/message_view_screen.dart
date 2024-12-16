@@ -107,8 +107,9 @@ class MessageViewScreen extends ConsumerWidget {
                                                 'No messages yet',
                                           );
                                         },
-                                        loading: () =>
-                                            const CircularProgressIndicator(),
+                                        loading: () => const Center(
+                                            child:
+                                                CircularProgressIndicator()),
                                         error: (error, stack) =>
                                             Text('Error: $error'),
                                       );
@@ -370,11 +371,11 @@ class ListOfMessages extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (_) => ChatScreen(
-                threadId: threadId,
-                username: subject,
-                postId: postId,
+              threadId: threadId,
+              username: subject,
+              postId: postId,
               //  isImportant: isImportant,
-                ),
+            ),
           ),
         );
       },

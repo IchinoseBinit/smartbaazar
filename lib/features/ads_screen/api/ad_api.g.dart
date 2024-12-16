@@ -6,19 +6,19 @@ part of 'ad_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getAdsHash() => r'9501af1641e8c07860143cc58183b6548d31a997';
+String _$fetchAdsHash() => r'18866b1873385e8f7ac9c1736386f222aa249f73';
 
-/// See also [getAds].
-@ProviderFor(getAds)
-final getAdsProvider = AutoDisposeFutureProvider<List<LoadingAd>>.internal(
-  getAds,
-  name: r'getAdsProvider',
+/// See also [fetchAds].
+@ProviderFor(fetchAds)
+final fetchAdsProvider = AutoDisposeFutureProvider<List<LoadingAd>>.internal(
+  fetchAds,
+  name: r'fetchAdsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$getAdsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$fetchAdsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GetAdsRef = AutoDisposeFutureProviderRef<List<LoadingAd>>;
+typedef FetchAdsRef = AutoDisposeFutureProviderRef<List<LoadingAd>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

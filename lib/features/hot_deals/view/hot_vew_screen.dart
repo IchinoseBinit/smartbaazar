@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
@@ -447,7 +446,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return const ProductDetailWidget();
+                      return  ProductDetailWidget();
                     },
                   ),
                 )

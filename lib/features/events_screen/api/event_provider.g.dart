@@ -6,11 +6,12 @@ part of 'event_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geteventResponseHash() => r'f10ebe60e83e00336eb23907be60e1f49a7d06d8';
+String _$geteventResponseHash() => r'2dfa13ea647bb0243b8d0f61eb8ab601ee80c494';
 
 /// See also [geteventResponse].
 @ProviderFor(geteventResponse)
-final geteventResponseProvider = AutoDisposeFutureProvider<UsedModel>.internal(
+final geteventResponseProvider =
+    AutoDisposeFutureProvider<PostTypeFetch>.internal(
   geteventResponse,
   name: r'geteventResponseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,6 +21,6 @@ final geteventResponseProvider = AutoDisposeFutureProvider<UsedModel>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GeteventResponseRef = AutoDisposeFutureProviderRef<UsedModel>;
+typedef GeteventResponseRef = AutoDisposeFutureProviderRef<PostTypeFetch>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

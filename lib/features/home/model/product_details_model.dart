@@ -48,9 +48,9 @@ class Category with _$Category {
 @freezed
 class VendorUser with _$VendorUser {
   const factory VendorUser({
-    int? id,
+    String? id,
     String? name,
-    String? username,
+    String? photo,
   }) = _VendorUser;
 
   factory VendorUser.fromJson(Map<String, dynamic> json) =>

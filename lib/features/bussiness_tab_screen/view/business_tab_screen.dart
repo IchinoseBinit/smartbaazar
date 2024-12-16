@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
@@ -150,7 +149,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                             });
                             _pageController.animateToPage(
                               index,
-                              duration: const Duration(milliseconds: 300),
+                              duration: const Duration(seconds: 300),
                               curve: Curves.easeInOut,
                             );
                           },
@@ -500,7 +499,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
               shadowColor: Colors.transparent.withOpacity(0.4),
               margin: const EdgeInsets.all(2),
               elevation: 1,
-              child: const ProductDetailWidget(),
+              child:  ProductDetailWidget(),
             );
           },
         ),
@@ -519,7 +518,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
               shadowColor: Colors.transparent.withOpacity(0.4),
               margin: const EdgeInsets.all(2),
               elevation: 1,
-              child: const ProductDetailWidget(),
+              child:  ProductDetailWidget(),
             );
           },
         ),
@@ -538,7 +537,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
               shadowColor: Colors.transparent.withOpacity(0.4),
               margin: const EdgeInsets.all(2),
               elevation: 1,
-              child: const ProductDetailWidget(),
+              child:  ProductDetailWidget(),
             );
           },
         ),

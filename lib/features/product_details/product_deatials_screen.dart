@@ -49,7 +49,7 @@ class ProductDetailScreen extends ConsumerWidget {
 
   void _scrolltoo(double position) {
     _scrollController.animateTo(position,
-        duration: Duration(seconds: 1), curve: Curves.easeInOut);
+        duration: const Duration(seconds: 1), curve: Curves.easeInOut);
   }
 
   int currentIndex = 0;
@@ -58,7 +58,7 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double sch = MediaQuery.of(context).size.height;
     // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
     // final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
@@ -107,7 +107,7 @@ class ProductDetailScreen extends ConsumerWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => OrderDetailsScreen(
+                              builder: (context) => const OrderDetailsScreen(
                                 selectedProductIds: [],
                                 selectedVendorIds: [],
                               ),
@@ -129,7 +129,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddToCartScreen(),
+                        builder: (context) => const AddToCartScreen(),
                       ));
                 },
                 child: const CircleAvatar(
@@ -772,7 +772,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     itemCount: 5,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
-                                      return const ProductDetailWidget();
+                                      return ProductDetailWidget();
                                     },
                                   ),
                                 ),
@@ -786,7 +786,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     itemCount: 5,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
-                                      return const ProductDetailWidget();
+                                      return ProductDetailWidget();
                                     },
                                   ),
                                 ),
@@ -800,7 +800,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     itemCount: 5,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
-                                      return const ProductDetailWidget();
+                                      return ProductDetailWidget();
                                     },
                                   ),
                                 ),
@@ -814,7 +814,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     itemCount: 5,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
-                                      return const ProductDetailWidget();
+                                      return ProductDetailWidget();
                                     },
                                   ),
                                 ),
