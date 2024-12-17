@@ -14,12 +14,10 @@ class ProductDetailWidget extends StatelessWidget {
       {super.key,
       // this.membership_title,
       this.offer = '',
-      this.title = "a",
+      this.title = "Trade",
       this.discounttedPrice = '0',
-      this.views = 1,
-      this.comment = 2,
+      this.comment = '0',
       this.price = '1',
-      this.share = 9,
       this.vendorname = 'John',
       this.distance = 2,
       this.Vimage = '',
@@ -27,13 +25,14 @@ class ProductDetailWidget extends StatelessWidget {
       this.lefttile = 'TradeHub',
       this.similarproductCount,
       this.membershipColor,
+      this.wow,
       this.issponsored = false,
       this.membershipTitle});
   String? title;
   String? price;
   String? discounttedPrice;
   int? similarproductCount;
-  int? views, comment, share;
+  String? views, comment, share;
   String? vendorname;
   // String? membership_title;
   double? distance;
@@ -41,10 +40,12 @@ class ProductDetailWidget extends StatelessWidget {
   String? membershipColor;
   String? membershipTitle;
   bool issponsored;
-  String? offer;
+  String? offer,wow;
 
   @override
   Widget build(BuildContext context) {
+    String showRs = "Rs";
+    showRs = discounttedPrice == '0' ? '' : '';
     print("ramkbaba $Vimage");
     print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
     return Padding(
@@ -269,17 +270,17 @@ class ProductDetailWidget extends StatelessWidget {
                                 ],
                               )
                             : SizedBox(),
-                        discounttedPrice != '0'
-                            ? Text(
-                                'Rs${discounttedPrice} ',
-                                style: headerstyle.copyWith(
-                                    fontSize: 8.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationColor: Colors.grey),
-                              )
-                            : SizedBox(),
+                        if (discounttedPrice != '0')
+                          Text(
+                            "${showRs}$discounttedPrice",
+                            style: headerstyle.copyWith(
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Colors.grey,
+                            ),
+                          ),
                       ],
                     ),
                   ],
@@ -361,7 +362,13 @@ class ProductDetailWidget extends StatelessWidget {
                         Row(
                           children: [
                             Image.asset('assets/icon/Rectangle.png'),
-                            const Text("78")
+                             Text("${wow}",
+                             style: headerstyle.copyWith(
+                              fontSize: 10,
+                              color: Color(0xff807C7C),
+                              fontWeight: FontWeight.w700
+                             ),
+                             )
                           ],
                         )
                       ],
@@ -371,7 +378,13 @@ class ProductDetailWidget extends StatelessWidget {
                         Row(
                           children: [
                             Image.asset("assets/icon/Vector.png"),
-                            const Text("3.2K")
+                             Text("${comment}",
+                             style: headerstyle.copyWith(
+                              fontSize: 10,
+                              color: Color(0xff807C7C),
+                              fontWeight: FontWeight.w700
+                             ),
+                             )
                           ],
                         )
                       ],
@@ -384,7 +397,13 @@ class ProductDetailWidget extends StatelessWidget {
                               "assets/icon/solar.png",
                               color: Colors.grey,
                             ),
-                            Text(similarproductCount?.toString() ?? '0')
+                            Text(similarproductCount?.toString() ?? '0',
+                            style: headerstyle.copyWith(
+                              fontSize: 10,
+                              color: Color(0xff807C7C),
+                              fontWeight: FontWeight.w700
+                             ),
+                            )
                           ],
                         )
                       ],
@@ -538,18 +557,18 @@ class ProductDetailWidget extends StatelessWidget {
                               height: 3.h,
                             ),
                             issponsored
-                                    ?  SizedBox():Row(
-                              children: [
-                                Image.asset("assets/images/mike.png"),
-                               
-                                    Text(
+                                ? SizedBox()
+                                : Row(
+                                    children: [
+                                      Image.asset("assets/images/mike.png"),
+                                      Text(
                                         "Sponsore",
                                         style: headerstyle.copyWith(
                                             fontSize: 10.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
-                              ],
-                            ),
+                                    ],
+                                  ),
                           ],
                         ),
                       ],

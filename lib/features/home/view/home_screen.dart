@@ -9,6 +9,7 @@ import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
@@ -52,6 +53,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
+  double _currentHeight = 500; // Default height for first tab
 
   void _onPageChanged(int index) {
     setState(() {
@@ -62,6 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   void initState() {
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
 
     // Default selected index to 3 (HomeScreen)
     selectedIndex = 3;
@@ -71,20 +74,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       viewportFraction: 0.3,
       initialPage: selectedIndex,
     );
+    tabController.addListener(_handleTabChange);
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _pageController.jumpToPage(selectedIndex);
     });
 
-    tabController = TabController(length: 3, vsync: this);
-
     // Set up debounce for search functionality
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
     });
 
-    _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+    _debouncer.debounceTime(const Duration(milliseconds: 100)).listen((query) {
       debugPrint("Search query: $query");
       ref.refresh(searchProvider(query));
       setState(() {
@@ -93,6 +95,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     });
 
     _scrollController.addListener(_handleScroll);
+  }
+
+  void _handleTabChange() {
+    setState(() {
+      switch (tabController.index) {
+        case 0:
+          _currentHeight = 500; // Tab 1 Height
+          break;
+        case 1:
+          _currentHeight = 150; // Tab 2 (no content)
+          break;
+        case 2:
+          _currentHeight = 500; // Tab 3 Height
+          break;
+      }
+    });
   }
 
   void _handleScroll() {
@@ -129,11 +147,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   }
 
   @override
+  @override
   void dispose() {
+    tabController.dispose();
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   void _onSearchFocusChanged(bool hasFocus) {
@@ -157,7 +178,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
-    int dynSize = 500;
 
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
@@ -271,7 +291,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   });
                                   _pageController.animateToPage(
                                     index,
-                                    duration: const Duration(milliseconds: 300),
+                                    duration: const Duration(milliseconds: 50),
                                     curve: Curves.easeInOut,
                                   );
                                 },
@@ -659,356 +679,316 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
-                              return Builder(
-                                builder: (context) {
-                                    double dynamicHeight = data.global.isNotEmpty ? 500.h : 150.h;
-                                  return SizedBox(
-                                    height: data.insidearr.isEmpty
-                                        ? 10.h
-                                        : dynamicHeight.h, // Adjust height based on data
-                                    width: double.infinity,
-                                    child: TabBarView(
-                                      controller: tabController,
+                              return AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                height:
+                                    _currentHeight, // Adjust height based on data
+                                width: double.infinity,
+                                child: TabBarView(
+                                  controller: tabController,
+                                  children: [
+                                    // First Tab
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        // First Tab
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (data.global.isNotEmpty)
-                                              SizedBox(
-                                                height: 130.h,
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: data.global.length,
-                                                  itemBuilder: (context, index) {
-                                                    LogoData dat =
-                                                        data.global[index];
-                                                    return Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5.w, top: 5.w),
-                                                      child: Column(
-                                                        children: [
-                                                          CircleAvatar(
-                                                            backgroundColor:
-                                                                Colors.grey,
-                                                            radius: 27,
-                                                            child: CircleAvatar(
-                                                              radius: 26,
-                                                              backgroundImage:
-                                                                  NetworkImage(dat
-                                                                      .brandLogo!),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            dat.brandName!,
-                                                            style: headerstyle.copyWith(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight.w500,
-                                                                color: ColorConstant
-                                                                    .blackColor),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    );
-                                                    // dynSize =
-                                                    //     data.insidearr[0].isEmpty
-                                                    //         ? 150
-                                                    //         : 500;
-                                                    // LogoData res =
-                                                    //     data.global[index];
-                                                    // if (index == 0) {
-                                                    //   return StoryAddWidget(
-                                                    //       index: index,
-                                                    //       brandname: res.brandName);
-                                                    // } else if (index >= 1 &&
-                                                    //     index <= 2) {
-                                                    //   return StoryAddWidget(
-                                                    //       index: index,
-                                                    //       showgift: true);
-                                                    // }
-                                                    // return StoryAddWidget(
-                                                    //     index: index);
-                                                  },
-                                                ),
-                                              ),
-                                            SizedBox(
-                                              height: data.insidearr.isNotEmpty &&
-                                                      data.insidearr[0].isNotEmpty
-                                                  ? 340.h
-                                                  : 200,
-                                              child: data.insidearr.isNotEmpty &&
-                                                      data.insidearr[0].isNotEmpty
-                                                  ? ListView.builder(
-                                                      clipBehavior: Clip.antiAlias,
-                                                      padding:
-                                                          const EdgeInsets.all(3),
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          data.insidearr[0].length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        GlobalModel prod = data
-                                                            .insidearr[0][index];
-                                                        return InkWell(
-                                                          onTap: () {},
-                                                          child:
-                                                              ProductDetailWidget(
-                                                            issponsored: prod
-                                                                .user[0].sponsored!,
-                                                            vendorname:
-                                                                prod.contactName,
-                                                            discounttedPrice:
-                                                                prod.discont,
-                                                            Vimage: prod.title,
-                                                            price: prod.price,
-                                                            title: prod.title,
-                                                            productImage:
-                                                                prod.imageUrl,
-                                                            similarproductCount: prod
-                                                                .similarproductCount,
-                                                            membershipColor: prod
-                                                                .user
-                                                                .first
-                                                                .memberColor,
-                                                            membershipTitle: prod
-                                                                .user
-                                                                .first
-                                                                .membershipTitle,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )
-                                                  : null,
+                                        if (data.global.isNotEmpty)
+                                          SizedBox(
+                                            height: 130.h,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: data.global.length,
+                                              itemBuilder: (context, index) {
+                                                LogoData dat =
+                                                    data.global[index];
+                                                if (index == 0) {
+                                                  return NotStoryWidget(
+                                                      index: index,
+                                                      brandname: dat.brandName
+
+                                                      // showgift: false,
+                                                      );
+                                                } else if (index >= 1 &&
+                                                    index <= 2) {
+                                                  return NotStoryWidget(
+                                                    index: index,
+                                                    showgift: true,
+                                                  );
+                                                }
+                                                return NotStoryWidget(
+                                                    index: index);
+                                                // dynSize =
+                                                //     data.insidearr[0].isEmpty
+                                                //         ? 150
+                                                //         : 500;
+                                                // LogoData res =
+                                                //     data.global[index];
+                                                // if (index == 0) {
+                                                //   return StoryAddWidget(
+                                                //       index: index,
+                                                //       brandname: res.brandName);
+                                                // } else if (index >= 1 &&
+                                                //     index <= 2) {
+                                                //   return StoryAddWidget(
+                                                //       index: index,
+                                                //       showgift: true);
+                                                // }
+                                                // return StoryAddWidget(
+                                                //     index: index);
+                                              },
                                             ),
-                                          ],
-                                        ),
-                                  
-                                        // Second Tab
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (data.domestic.isNotEmpty)
-                                              SizedBox(
-                                                height: 130.h,
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: data.domestic.length,
-                                                  itemBuilder: (context, index) {
-                                                  
-                                                    dynamicHeight = data.doma[0].length == 0
-                                                        ? 150
-                                                        : 500;
-                                  
-                                                    LogoData res =
-                                                        data.domestic[index];
-                                                    return Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5.w, top: 5.w),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          CircleAvatar(
-                                                            backgroundColor:
-                                                                Colors.grey,
-                                                            radius: 27,
-                                                            child: CircleAvatar(
-                                                              radius: 26,
-                                                              backgroundImage:
-                                                                  NetworkImage(res
-                                                                      .brandLogo!),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            res.brandName!,
-                                                            style: headerstyle.copyWith(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight.w500,
-                                                                color: ColorConstant
-                                                                    .blackColor),
-                                                          )
-                                                        ],
+                                          ),
+                                        SizedBox(
+                                          height: data.insidearr.isNotEmpty &&
+                                                  data.insidearr[0].isNotEmpty
+                                              ? 340.h
+                                              : 200,
+                                          child: data.insidearr.isNotEmpty &&
+                                                  data.insidearr[0].isNotEmpty
+                                              ? ListView.builder(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.insidearr[0].length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    GlobalModel prod = data
+                                                        .insidearr[0][index];
+                                                    return InkWell(
+                                                      onTap: () {},
+                                                      child:
+                                                          ProductDetailWidget(
+                                                            comment: prod.commentnum,
+                                                            
+                                                            wow: prod.wow,
+
+                                                            
+                                                        issponsored: prod
+                                                            .user[0].sponsored!,
+                                                        vendorname:
+                                                            prod.contactName,
+                                                        discounttedPrice:
+                                                            prod.discont,
+                                                        Vimage: prod.title,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.imageUrl,
+                                                        similarproductCount: prod
+                                                            .similarproductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .first
+                                                            .memberColor,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membershipTitle,
                                                       ),
                                                     );
                                                   },
-                                                ),
-                                              ),
-                                            SizedBox(
-                                              height: data.doma.isNotEmpty &&
-                                                      data.doma[0].isNotEmpty
-                                                  ? 340.h
-                                                  : 150,
-                                              child: data.doma.isNotEmpty &&
-                                                      data.doma[0].isNotEmpty
-                                                  ? ListView.builder(
-                                                      clipBehavior: Clip.antiAlias,
-                                                      padding:
-                                                          const EdgeInsets.all(3),
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          data.doma[0].length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        GlobalModel prod =
-                                                            data.doma[0][index];
-                                                        return InkWell(
-                                                          onTap: () {},
-                                                          child:
-                                                              ProductDetailWidget(
-                                                            vendorname: prod.title,
-                                                            discounttedPrice:
-                                                                prod.discont,
-                                                            Vimage:
-                                                                prod.contactName,
-                                                            price: prod.price,
-                                                            title: prod.title,
-                                                            productImage:
-                                                                prod.imageUrl,
-                                                            similarproductCount: prod
-                                                                .similarproductCount,
-                                                            membershipColor: prod
-                                                                .user
-                                                                .first
-                                                                .memberColor,
-                                                            membershipTitle: prod
-                                                                .user
-                                                                .first
-                                                                .membershipTitle,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )
-                                                  : null,
-                                            ),
-                                          ],
-                                        ),
-                                  
-                                        // Third Tab
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (data.spotlight.isNotEmpty)
-                                              SizedBox(
-                                                  height: 130.h,
-                                                  child: ListView.builder(
-                                                      padding: EdgeInsets.zero,
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          data.spotlight.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        dynamicHeight =
-                                                            data.spotlight.isEmpty
-                                                                ? 100
-                                                                : 500;
-                                                        LogoData res =
-                                                            data.spotlight[index];
-                                                        return Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 5.w, top: 5.w),
-                                                          child: Column(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors.grey,
-                                                                radius: 27,
-                                                                child: CircleAvatar(
-                                                                  radius: 26,
-                                                                  backgroundImage:
-                                                                      NetworkImage(res
-                                                                          .brandLogo!),
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                res.brandName!,
-                                                                style: headerstyle.copyWith(
-                                                                    fontSize: 12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: ColorConstant
-                                                                        .blackColor),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        );
-                                                      })),
-                                            SizedBox(
-                                              height: data.spot.isNotEmpty &&
-                                                      data.spot[0].isNotEmpty
-                                                  ? 340.h
-                                                  : 180,
-                                              child: data.spot.isNotEmpty &&
-                                                      data.spot[0].isNotEmpty
-                                                  ? ListView.builder(
-                                                      clipBehavior: Clip.antiAlias,
-                                                      padding:
-                                                          const EdgeInsets.all(3),
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          data.spot[0].length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        GlobalModel prod =
-                                                            data.spot[0][index];
-                                                        return InkWell(
-                                                          onTap: () {},
-                                                          child:
-                                                              ProductDetailWidget(
-                                                            vendorname: prod.title,
-                                                            discounttedPrice:
-                                                                prod.discont,
-                                                            Vimage: prod
-                                                                .user.first.photo,
-                                                            price: prod.price,
-                                                            title: prod.title,
-                                                            productImage:
-                                                                prod.imageUrl,
-                                                            similarproductCount: prod
-                                                                .similarproductCount,
-                                                            membershipColor: prod
-                                                                .user
-                                                                .first
-                                                                .memberColor,
-                                                            membershipTitle: prod
-                                                                .user
-                                                                .first
-                                                                .membershipTitle,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )
-                                                  : null,
-                                            ),
-                                          ],
+                                                )
+                                              : null,
                                         ),
                                       ],
                                     ),
-                                  );
-                                }
+
+                                    // Second Tab
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (data.domestic.isNotEmpty)
+                                          SizedBox(
+                                            height: 130.h,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: data.domestic.length,
+                                              itemBuilder: (context, index) {
+                                                _currentHeight =
+                                                    data.doma[0].length == 0
+                                                        ? 150
+                                                        : 500;
+
+                                                LogoData res =
+                                                    data.domestic[index];
+                                                if (index == 0) {
+                                                  return NotStoryWidget(
+                                                      index: index,
+                                                      brandname: res.brandName
+
+                                                      // showgift: false,
+                                                      );
+                                                } else if (index >= 1 &&
+                                                    index <= 2) {
+                                                  return NotStoryWidget(
+                                                    index: index,
+                                                    showgift: true,
+                                                  );
+                                                }
+                                                return NotStoryWidget(
+                                                    index: index);
+                                                ;
+                                              },
+                                            ),
+                                          ),
+                                        // SizedBox(
+                                        //   height: data.doma.isNotEmpty &&
+                                        //           data.doma[0].isNotEmpty
+                                        //       ? 340.h
+                                        //       : 150,
+                                        //   child: data.doma.isNotEmpty &&
+                                        //           data.doma[0].isNotEmpty
+                                        //       ? ListView.builder(
+                                        //           clipBehavior: Clip.antiAlias,
+                                        //           padding:
+                                        //               const EdgeInsets.all(3),
+                                        //           scrollDirection:
+                                        //               Axis.horizontal,
+                                        //           itemCount:
+                                        //               data.doma[0].length,
+                                        //           itemBuilder:
+                                        //               (context, index) {
+                                        //             GlobalModel prod =
+                                        //                 data.doma[0][index];
+                                        //             return InkWell(
+                                        //               onTap: () {},
+                                        //               child:
+                                        //                   ProductDetailWidget(
+                                        //                 vendorname: prod.title,
+                                        //                 discounttedPrice:
+                                        //                     prod.discont,
+                                        //                 Vimage:
+                                        //                     prod.contactName,
+                                        //                 price: prod.price,
+                                        //                 title: prod.title,
+                                        //                 productImage:
+                                        //                     prod.imageUrl,
+                                        //                 similarproductCount: prod
+                                        //                     .similarproductCount,
+                                        //                 membershipColor: prod
+                                        //                     .user
+                                        //                     .first
+                                        //                     .memberColor,
+                                        //                 membershipTitle: prod
+                                        //                     .user
+                                        //                     .first
+                                        //                     .membershipTitle,
+                                        //               ),
+                                        //             );
+                                        //           },
+                                        //         )
+                                        //       : null,
+                                        // ),
+                                      ],
+                                    ),
+
+                                    // Third Tab
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (data.spotlight.isNotEmpty)
+                                          SizedBox(
+                                              height: 130.h,
+                                              child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.spotlight.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    _currentHeight =
+                                                        data.spotlight.isEmpty
+                                                            ? 100
+                                                            : 500;
+                                                    LogoData res =
+                                                        data.spotlight[index];
+                                                    if (index == 0) {
+                                                      return NotStoryWidget(
+                                                          index: index,
+                                                          brandname:
+                                                              res.brandName
+
+                                                          // showgift: false,
+                                                          );
+                                                    } else if (index >= 1 &&
+                                                        index <= 2) {
+                                                      return NotStoryWidget(
+                                                        index: index,
+                                                        showgift: true,
+                                                      );
+                                                    }
+                                                    return NotStoryWidget(
+                                                        index: index);
+                                                  })),
+                                        SizedBox(
+                                          height: data.spot.isNotEmpty &&
+                                                  data.spot[0].isNotEmpty
+                                              ? 340.h
+                                              : 180,
+                                          child: data.spot.isNotEmpty &&
+                                                  data.spot[0].isNotEmpty
+                                              ? ListView.builder(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.spot[0].length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    GlobalModel prod =
+                                                        data.spot[0][index];
+                                                    return InkWell(
+                                                      onTap: () {},
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        vendorname: prod.title,
+                                                        discounttedPrice:
+                                                            prod.discont,
+                                                        Vimage: prod
+                                                            .user.first.photo,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.imageUrl,
+                                                        similarproductCount: prod
+                                                            .similarproductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .first
+                                                            .memberColor,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membershipTitle,
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                              : null,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               );
                             },
                             error: (error, stackTrace) {

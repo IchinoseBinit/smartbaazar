@@ -230,10 +230,18 @@ class GlobalModel {
   final String discont;
   final List<UserDetails> user;
   final String contactName;
+    final String wow;
+    final String commentnum;
+    final String stock;
+
+
   final int? similarproductCount;
 
   GlobalModel(
-      {required this.id,
+
+      {
+        required this.commentnum,required this.wow,required this.stock,
+        required this.id,
       required this.title,
       required this.description,
       required this.price,
@@ -246,6 +254,9 @@ class GlobalModel {
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
+      commentnum:json['stock'] ?? '0', 
+      stock:json['discounted_price'] ?? '0', 
+      wow: json['wow'] ?? '0',
       discont: json['discounted_price'] ?? '0',
       id: json['id'] ?? '',
       title: json['title'] ?? '',

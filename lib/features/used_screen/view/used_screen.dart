@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -434,18 +435,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                 //           itemBuilder: (context, index) {
                 //             Story ref = data.stories[index];
                 //             if (index == 0) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: false,
                 //                 brandname: ref.vendorName,
                 //               );
                 //             } else if (index >= 1 && index <= 3) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: true,
                 //               );
                 //             }
-                //             return StoryAddWidget(index: index);
+                //             return NotStoryWidget(index: index);
                 //           }),
                 //     );
                 //   },
@@ -837,6 +838,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
+
+
+                             comment: hot.commentcount.toString(),
+                             wow: hot.wow,
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
                             lefttile: "Used",
@@ -916,6 +921,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             VProduct pro =
                                                 data.insidearr[0][index];
                                             return ProductDetailWidget(
+
+
+                                              comment: pro.commentcount.toString(),
+                                             wow: pro.wow,
                                               discounttedPrice:
                                                   pro.discounted_price,
                                               issponsored: pro.user.sponsored,
@@ -988,6 +997,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[1][index];
                                       return ProductDetailWidget(
+
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
+
                                         issponsored: pro.user.sponsored,
                                         discounttedPrice: pro.discounted_price,
                                         lefttile: "Used",
@@ -1048,6 +1061,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
                                       return ProductDetailWidget(
+                                          comment: pro.commentcount.toString(),
+                                         wow: pro.wow,
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Used",
@@ -1108,6 +1123,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[4][index];
                                       return ProductDetailWidget(
+                                        wow: pro.wow,
+
+                                          comment: pro.commentcount.toString(),
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Used",
@@ -1179,19 +1197,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           data.insidearr.isEmpty ? 100 : 500;
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               ),
                               data.insidearr.isNotEmpty &&
@@ -1209,6 +1227,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+                                                   wow: prod.wow,
+                                        
+                                          comment: prod.commentcount.toString(),
                                               lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1249,19 +1270,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               ),
                               data.insidearr.isEmpty
@@ -1284,11 +1305,13 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              share: int.tryParse(prod.stock!),
+                                              wow: prod.wow,
+                                              comment: prod.commentcount.toString(),
+
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Used",
                                               vendorname: prod.title,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1321,19 +1344,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               ),
                               data.insidearr.isEmpty
@@ -1351,10 +1374,13 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+
+                                                wow: prod.wow,
+                                                    comment: prod.commentcount.toString(),
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Used",
                                               vendorname: prod.title,
-                                              discounttedPrice: '0',
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1577,6 +1603,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               return InkWell(
                                                 onTap: () {},
                                                 child: ProductDetailWidget(
+                                                  comment: prod.commentcount.toString(),
+                                                  wow: prod.wow,
+
                                                   lefttile: "Used",
                                                   vendorname: prod.user.name,
                                                   issponsored:
@@ -1675,6 +1704,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
+                            
+                             wow: data.product[index].wow,
+
+                             comment: data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

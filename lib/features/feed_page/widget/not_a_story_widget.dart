@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/feed_page/widget/story_screen.dart';
 
-class StoryAddWidget extends StatelessWidget {
+class NotStoryWidget extends StatelessWidget {
   final int index;
   final bool? showgift;
   final bool? addSearch;
@@ -10,7 +10,7 @@ class StoryAddWidget extends StatelessWidget {
   final String? vImage;
   final int? storyCount;
 
-  const StoryAddWidget({
+  const NotStoryWidget({
     super.key,
     required this.index,
     this.showgift = false,
@@ -27,12 +27,12 @@ class StoryAddWidget extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => StoryScreen(author: 'Author ${index + 1}'),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (_) => StoryScreen(author: 'Author ${index + 1}'),
+            //   ),
+            // );
           },
           child: Stack(
             clipBehavior: Clip.none,

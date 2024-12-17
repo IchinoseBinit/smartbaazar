@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -426,18 +427,18 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //           itemBuilder: (context, index) {
                 //             Story ref = data.stories[index];
                 //             if (index == 0) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: false,
                 //                 brandname: ref.vendorName,
                 //               );
                 //             } else if (index >= 1 && index <= 3) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: true,
                 //               );
                 //             }
-                //             return StoryAddWidget(index: index);
+                //             return NotStoryWidget(index: index);
                 //           }),
                 //     );
                 //   },
@@ -829,7 +830,13 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
-                            lefttile: "Grocary-screen",
+                            wow: hot.wow,
+
+
+                            comment: hot.commentcount.toString(),
+                            discounttedPrice: hot.discounted_price,
+                            issponsored: hot.user.sponsored,
+                            lefttile: "B2b-Shop",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
                             price: hot.price,
@@ -1165,19 +1172,19 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       LogoData res = data.global[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1207,19 +1214,19 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1249,19 +1256,19 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1296,15 +1303,21 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         itemBuilder: (context, index) {
                           VProduct ref = data.product[index];
                           return ProductDetailWidget(
-                            lefttile: "Grocary-screen",
+                            comment: ref.commentcount.toString(),
+                            discounttedPrice: ref.discounted_price,
+                            issponsored: ref.user.sponsored,
+                            membershipColor: ref.user.membercolor,
+                            membershipTitle: ref.user.membershipTitle,
+                            similarproductCount: ref.similarProductCount,
+                            wow: ref.wow,
+
+
+                            lefttile: "Grocary",
                             productImage: ref.image,
                             price: ref.price,
                             Vimage: ref.user.photo,
                             title: ref.title,
                             vendorname: ref.user.name,
-                            similarproductCount: ref.similarProductCount,
-                            membershipColor: ref.user.membercolor,
-                            membershipTitle: ref.user.membershipTitle,
                           );
                         },
                       ),
@@ -1359,7 +1372,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           print("binod ${resp.image}");
 
                           return buyorwin_widget(
-                            vendorImage: resp.vendorImage,
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1513,10 +1526,14 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       return InkWell(
                                         onTap: () {}, // Handle onTap if needed
                                         child: ProductDetailWidget(
-                                          lefttile: "Grocary-screen",
+                                          wow: prod.wow,
+                                          comment: prod.commentcount.toString(),
+                                          lefttile: "Grocary",
                                           vendorname: prod.user.name,
-                                          discounttedPrice: "0",
-                                          Vimage: prod.user.photo,
+                                          discounttedPrice:
+                                              prod.discounted_price,
+                                          Vimage: prod.title,
+                                          issponsored: prod.user.sponsored,
                                           price: prod.price,
                                           title: prod.title,
                                           productImage: prod.image,
@@ -1554,7 +1571,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             fontSize: 17,
                             color: Colors.black),
                       ),
-                    
                     ],
                   ),
                 ),
@@ -1578,7 +1594,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       ),
                       itemBuilder: (context, index) {
                         return ProductDetailWidget(
-                          lefttile: "Grocary-screen",
+                          wow: data.product[index].wow,
+                          comment: data.product[index].commentcount.toString(),
+                          issponsored: data.product[index].user.sponsored,
+                          discounttedPrice:
+                              data.product[index].discounted_price,
+                          lefttile: "B2b-Shop",
                           productImage: data.product[index].image,
                           Vimage: data.product[index].user.photo,
                           vendorname: data.product[index].user.name,

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -432,18 +433,18 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 //           itemBuilder: (context, index) {
                 //             Story ref = data.stories[index];
                 //             if (index == 0) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: false,
                 //                 brandname: ref.vendorName,
                 //               );
                 //             } else if (index >= 1 && index <= 3) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: true,
                 //               );
                 //             }
-                //             return StoryAddWidget(index: index);
+                //             return NotStoryWidget(index: index);
                 //           }),
                 //     );
                 //   },
@@ -835,12 +836,21 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
-                            lefttile: "Job",
+                            wow: hot.wow,
+
+
+                            comment: hot.commentcount.toString(),
+                            discounttedPrice: hot.discounted_price,
+                            issponsored: hot.user.sponsored,
+                            lefttile: "Jobs",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
                             price: hot.price,
                             title: hot.title,
                             vendorname: hot.user.name,
+                            similarproductCount: hot.similarProductCount,
+                            membershipColor: hot.user.membercolor,
+                            membershipTitle: hot.user.membershipTitle,
                           );
                         },
                       ),
@@ -1168,19 +1178,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       LogoData res = data.global[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1210,19 +1220,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1252,19 +1262,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1299,6 +1309,15 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         itemBuilder: (context, index) {
                           VProduct ref = data.product[index];
                           return ProductDetailWidget(
+                            comment: ref.commentcount.toString(),
+                            discounttedPrice: ref.discounted_price,
+                            issponsored: ref.user.sponsored,
+                            membershipColor: ref.user.membercolor,
+                            membershipTitle: ref.user.membershipTitle,
+                            similarproductCount: ref.similarProductCount,
+                            wow: ref.wow,
+
+
                             lefttile: "Jobs",
                             productImage: ref.image,
                             price: ref.price,
@@ -1514,14 +1533,26 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       return InkWell(
                                         onTap: () {}, // Handle onTap if needed
                                         child: ProductDetailWidget(
-                                          lefttile: "Jobs",
-                                          vendorname: prod.user.name,
-                                          discounttedPrice: "0",
-                                          Vimage: prod.user.photo,
-                                          price: prod.price,
-                                          title: prod.title,
-                                          productImage: prod.image,
-                                        ), // Replace with your actual product widget
+                                                 wow: prod.wow,
+                                                    comment: prod.commentcount.toString(),
+
+                                              
+                                              lefttile: "B2b",
+                                              vendorname: prod.user.name,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
+                                              Vimage: prod.title,
+                                              issponsored: prod.user.sponsored,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
+                                            ),// Replace with your actual product widget
                                       );
                                     },
                                   ),
@@ -1576,12 +1607,24 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         return Padding(
                           padding:  EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-                            lefttile: 'Jobs',
+
+                            wow: data.product[index].wow,
+                            comment: data.product[index].commentcount.toString(),
+                            issponsored: data.product[index].user.sponsored,
+                            discounttedPrice:
+                                data.product[index].discounted_price,
+                            lefttile: "Jobs",
                             productImage: data.product[index].image,
                             Vimage: data.product[index].user.photo,
                             vendorname: data.product[index].user.name,
                             title: data.product[index].title,
                             price: data.product[index].price,
+                            similarproductCount:
+                                data.product[index].similarProductCount,
+                            membershipColor:
+                                data.product[index].user.membercolor,
+                            membershipTitle:
+                                data.product[index].user.membershipTitle,
                           ),
                         );
                       },

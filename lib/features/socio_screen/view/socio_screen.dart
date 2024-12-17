@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -421,18 +422,18 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 //           itemBuilder: (context, index) {
                 //             Story ref = data.stories[index];
                 //             if (index == 0) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: false,
                 //                 brandname: ref.vendorName,
                 //               );
                 //             } else if (index >= 1 && index <= 3) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: true,
                 //               );
                 //             }
-                //             return StoryAddWidget(index: index);
+                //             return NotStoryWidget(index: index);
                 //           }),
                 //     );
                 //   },
@@ -900,13 +901,27 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[0][index];
                                 return ProductDetailWidget(
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                );
+                                              offer: pro.discounted_price,
+                                              wow: pro.wow,
+                                              comment: pro.commentcount.toString(),
+
+
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              issponsored: pro.user.sponsored,
+                                              lefttile: "Socio-Shop",
+                                              Vimage: pro.user.photo,
+                                              price: pro.price,
+                                              title: pro.title,
+                                              vendorname: pro.user.name,
+                                              productImage: pro.image,
+                                              similarproductCount:
+                                                  pro.similarProductCount,
+                                              membershipColor:
+                                                  pro.user.membercolor,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
+                                            );
                               },
                             ),
                           ),
@@ -959,14 +974,28 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[1][index];
-                                return ProductDetailWidget(
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                );
+                             ProductDetailWidget(
+                                              offer: pro.discounted_price,
+                                              wow: pro.wow,
+                                              comment: pro.commentcount.toString(),
+
+
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              issponsored: pro.user.sponsored,
+                                              lefttile: "Socio-Shop",
+                                              Vimage: pro.user.photo,
+                                              price: pro.price,
+                                              title: pro.title,
+                                              vendorname: pro.user.name,
+                                              productImage: pro.image,
+                                              similarproductCount:
+                                                  pro.similarProductCount,
+                                              membershipColor:
+                                                  pro.user.membercolor,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
+                                            );
                               },
                             ),
                           ),
@@ -1010,14 +1039,28 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[2][index];
-                                return ProductDetailWidget(
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                );
+                               ProductDetailWidget(
+                                              offer: pro.discounted_price,
+                                              wow: pro.wow,
+                                              comment: pro.commentcount.toString(),
+
+
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              issponsored: pro.user.sponsored,
+                                              lefttile: "Socio-Shop",
+                                              Vimage: pro.user.photo,
+                                              price: pro.price,
+                                              title: pro.title,
+                                              vendorname: pro.user.name,
+                                              productImage: pro.image,
+                                              similarproductCount:
+                                                  pro.similarProductCount,
+                                              membershipColor:
+                                                  pro.user.membercolor,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
+                                            );
                               },
                             ),
                           ),
@@ -1063,14 +1106,28 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[3][index];
-                                return ProductDetailWidget(
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                );
+                              ProductDetailWidget(
+                                              offer: pro.discounted_price,
+                                              wow: pro.wow,
+                                              comment: pro.commentcount.toString(),
+
+
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              issponsored: pro.user.sponsored,
+                                              lefttile: "Socio-Shop",
+                                              Vimage: pro.user.photo,
+                                              price: pro.price,
+                                              title: pro.title,
+                                              vendorname: pro.user.name,
+                                              productImage: pro.image,
+                                              similarproductCount:
+                                                  pro.similarProductCount,
+                                              membershipColor:
+                                                  pro.user.membercolor,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
+                                            );
                               },
                             ),
                           ),
@@ -1113,14 +1170,28 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[4][index];
-                                return ProductDetailWidget(
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                );
+                               ProductDetailWidget(
+                                              offer: pro.discounted_price,
+                                              wow: pro.wow,
+                                              comment: pro.commentcount.toString(),
+
+
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              issponsored: pro.user.sponsored,
+                                              lefttile: "Socio-Shop",
+                                              Vimage: pro.user.photo,
+                                              price: pro.price,
+                                              title: pro.title,
+                                              vendorname: pro.user.name,
+                                              productImage: pro.image,
+                                              similarproductCount:
+                                                  pro.similarProductCount,
+                                              membershipColor:
+                                                  pro.user.membercolor,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
+                                            );
                               },
                             ),
                           ),
@@ -1176,19 +1247,19 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       LogoData res = data.global[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               ),
                               data.insidearr.isNotEmpty &&
@@ -1206,14 +1277,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+                                              
+                                            comment: prod.commentcount.toString(),
+                                            wow: prod.wow,
+                                            
+                                              issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.title,
+                                              vendorname: prod.title,
+                                              discounttedPrice: prod.discounted_price,
+                                              Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1243,19 +1324,19 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               ),
                               SizedBox(
@@ -1279,14 +1360,25 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+
+
+                                               comment: prod.commentcount.toString(),
+                                            wow: prod.wow,
+                                            
+                                              issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1309,19 +1401,19 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               ),
                               SizedBox(
@@ -1345,14 +1437,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+
+                                             comment: prod.commentcount.toString(),
+                                            wow: prod.wow,
+                                            
+                                              issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1565,14 +1667,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             onTap:
                                                 () {}, // Handle onTap if needed
                                             child: ProductDetailWidget(
-                                              offer: prod.offers,
+
+                                               comment: prod.commentcount.toString(),
+                                            wow: prod.wow,
+                                            
+                                              issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice: "0",
+                                              vendorname: prod.title,
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
                                             ),
                                           );
                                         },
@@ -1628,12 +1740,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
+                            
+                            wow: data.product[index].wow,
+                            comment: data.product[index].commentcount.toString(),
+                            issponsored: data.product[index].user.sponsored,
+                            discounttedPrice:
+                                data.product[index].discounted_price,
                             lefttile: "Socio-Shop",
                             productImage: data.product[index].image,
                             Vimage: data.product[index].user.photo,
                             vendorname: data.product[index].user.name,
                             title: data.product[index].title,
                             price: data.product[index].price,
+                            similarproductCount:
+                                data.product[index].similarProductCount,
+                            membershipColor:
+                                data.product[index].user.membercolor,
+                            membershipTitle:
+                                data.product[index].user.membershipTitle,
                           ),
                         );
                       },
