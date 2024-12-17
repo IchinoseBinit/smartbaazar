@@ -39,12 +39,12 @@ class NotStoryWidget extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                width: 95.r,
-                height: 95.r,
+                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                width: 85.r,
+                height: 85.r,
                 decoration: BoxDecoration(
                   border:
-                      Border.all(width: 3.w, color: const Color(0xffEACACB)),
+                      Border.all(width: 19.w, color: const Color(0xff8c8c8c)),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -54,14 +54,15 @@ class NotStoryWidget extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
-                  radius: 38.r,
+                  radius: 37.r,
                   backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
                   backgroundImage: NetworkImage(vImage ??
                       'https://smartbazaar.jianjun-rnd.com.np/storage/files/np/947/11ce743037dbc695f81557faf3d959de.png'),
                 ),
               ),
               Positioned(
-                bottom: -25.h,
+                left: 5.w,
+                bottom: -20.h,
                 child: Column(
                   children: [
                     SizedBox(height: 10.h),

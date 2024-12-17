@@ -901,27 +901,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[0][index];
                                 return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                  offer: pro.discounted_price,
+                                  wow: pro.wow,
+                                  comment: pro.commentcount.toString(),
+                                  discounttedPrice: pro.discounted_price,
+                                  issponsored: pro.user.sponsored,
+                                  lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                  similarproductCount: pro.similarProductCount,
+                                  membershipColor: pro.user.membercolor,
+                                  membershipTitle: pro.user.membershipTitle,
+                                );
                               },
                             ),
                           ),
@@ -974,28 +968,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[1][index];
-                             ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
+                                print("kolo ${pro.id}");
 
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                ProductDetailWidget(
+                                  offer: pro.discounted_price,
+                                  wow: pro.wow,
+                                  comment: pro.commentcount.toString(),
+                                  discounttedPrice: pro.discounted_price,
+                                  issponsored: pro.user.sponsored,
+                                  lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                  similarproductCount: pro.similarProductCount,
+                                  membershipColor: pro.user.membercolor,
+                                  membershipTitle: pro.user.membershipTitle,
+                                );
                               },
                             ),
                           ),
@@ -1039,28 +1029,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[2][index];
-                               ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                ProductDetailWidget(
+                                  offer: pro.discounted_price,
+                                  wow: pro.wow,
+                                  comment: pro.commentcount.toString(),
+                                  discounttedPrice: pro.discounted_price,
+                                  issponsored: pro.user.sponsored,
+                                  lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                  similarproductCount: pro.similarProductCount,
+                                  membershipColor: pro.user.membercolor,
+                                  membershipTitle: pro.user.membershipTitle,
+                                );
                               },
                             ),
                           ),
@@ -1106,28 +1090,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[3][index];
-                              ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                ProductDetailWidget(
+                                  offer: pro.discounted_price,
+                                  wow: pro.wow,
+                                  comment: pro.commentcount.toString(),
+                                  discounttedPrice: pro.discounted_price,
+                                  issponsored: pro.user.sponsored,
+                                  lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                  similarproductCount: pro.similarProductCount,
+                                  membershipColor: pro.user.membercolor,
+                                  membershipTitle: pro.user.membershipTitle,
+                                );
                               },
                             ),
                           ),
@@ -1170,28 +1148,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[4][index];
-                               ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                ProductDetailWidget(
+                                  offer: pro.discounted_price,
+                                  wow: pro.wow,
+                                  comment: pro.commentcount.toString(),
+                                  discounttedPrice: pro.discounted_price,
+                                  issponsored: pro.user.sponsored,
+                                  lefttile: "Socio-Shop",
+                                  Vimage: pro.user.photo,
+                                  price: pro.price,
+                                  title: pro.title,
+                                  vendorname: pro.user.name,
+                                  productImage: pro.image,
+                                  similarproductCount: pro.similarProductCount,
+                                  membershipColor: pro.user.membercolor,
+                                  membershipTitle: pro.user.membershipTitle,
+                                );
                               },
                             ),
                           ),
@@ -1277,14 +1249,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              
-                                            comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1360,15 +1332,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-
-
-                                               comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1437,14 +1408,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-
-                                             comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1667,14 +1638,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             onTap:
                                                 () {}, // Handle onTap if needed
                                             child: ProductDetailWidget(
-
-                                               comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Socio-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1740,9 +1711,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-                            
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

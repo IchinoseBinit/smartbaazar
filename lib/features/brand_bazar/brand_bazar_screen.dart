@@ -1487,7 +1487,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       data.seasonal, // Corresponds to SERVICES
 
                       data.promotional, // Corresponds to TRADEHUB
-                      data.Launch_festival_offer, // Corresponds to USED
+                      data.clearance_sale, // Corresponds to USED
+                      data.Launch_festival_offer
+
                     ];
 
                     return SizedBox(

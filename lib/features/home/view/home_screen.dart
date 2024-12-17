@@ -26,6 +26,15 @@ import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_s
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -56,6 +65,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       selectedIndex = index;
     });
   }
+
+  final List<Map<String, dynamic>> _items = [
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+    {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
 
   @override
   void initState() {
@@ -142,16 +199,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     _initialDragPosition = details.globalPosition;
   }
 
-  @override
-  @override
-  void dispose() {
-    tabController.dispose();
-    _debouncer.close();
-    _searchController.dispose();
-    super.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   tabController.dispose();
+  //   _debouncer.close();
+  //   _searchController.dispose();
+  //   super.dispose();
+  //   _scrollController.dispose();
+  //   super.dispose();
+  // }
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
@@ -279,7 +335,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(items.length, (index) {
+                            children: List.generate(_items.length, (index) {
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -308,12 +364,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 80.h,
                             child: PageView.builder(
-                              itemCount: items.length,
+                              itemCount: _items.length,
                               padEnds: false,
                               controller: _pageController,
                               onPageChanged: _onPageChanged,
                               itemBuilder: (context, index) {
-                                Map<String, dynamic> data = items[index];
+                                Map<String, dynamic> data = _items[index];
 
                                 // Highlight only when index == 4
                                 bool isActive = index == 1;
@@ -761,11 +817,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       onTap: () {},
                                                       child:
                                                           ProductDetailWidget(
-                                                            comment: prod.commentnum,
-                                                            
-                                                            wow: prod.wow,
-
-                                                            
+                                                        comment:
+                                                            prod.commentnum,
+                                                        wow: prod.wow,
                                                         issponsored: prod
                                                             .user[0].sponsored!,
                                                         vendorname:
