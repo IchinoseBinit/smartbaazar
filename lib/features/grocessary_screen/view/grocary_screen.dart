@@ -249,7 +249,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -831,8 +831,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -1310,8 +1308,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             membershipTitle: ref.user.membershipTitle,
                             similarproductCount: ref.similarProductCount,
                             wow: ref.wow,
-
-
                             lefttile: "Grocary",
                             productImage: ref.image,
                             price: ref.price,

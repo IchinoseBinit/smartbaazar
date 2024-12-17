@@ -170,7 +170,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                       height: 80.h,
                       child: PageView.builder(
                         controller: _pageController,
-                        onPageChanged: _onPageChanged,
+                        // onPageChanged: _onPageChanged,
                         itemCount: items.length,
                         itemBuilder: (context, index) {
                           Map<String, dynamic> data = items[index];

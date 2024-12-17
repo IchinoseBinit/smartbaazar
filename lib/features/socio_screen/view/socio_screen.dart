@@ -249,7 +249,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 

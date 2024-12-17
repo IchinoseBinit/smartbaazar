@@ -255,7 +255,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -837,8 +837,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -1298,7 +1296,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height:340.h,
+                      height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1316,8 +1314,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             membershipTitle: ref.user.membershipTitle,
                             similarproductCount: ref.similarProductCount,
                             wow: ref.wow,
-
-
                             lefttile: "Jobs",
                             productImage: ref.image,
                             price: ref.price,
@@ -1377,8 +1373,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                                      vendorImage: resp.vendorImage,
-
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1533,26 +1528,24 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       return InkWell(
                                         onTap: () {}, // Handle onTap if needed
                                         child: ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
-                                              lefttile: "B2b",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.title,
-                                              issponsored: prod.user.sponsored,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membercolor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),// Replace with your actual product widget
+                                          wow: prod.wow,
+                                          comment: prod.commentcount.toString(),
+                                          lefttile: "B2b",
+                                          vendorname: prod.user.name,
+                                          discounttedPrice:
+                                              prod.discounted_price,
+                                          Vimage: prod.title,
+                                          issponsored: prod.user.sponsored,
+                                          price: prod.price,
+                                          title: prod.title,
+                                          productImage: prod.image,
+                                          similarproductCount:
+                                              prod.similarProductCount,
+                                          membershipColor:
+                                              prod.user.membercolor,
+                                          membershipTitle:
+                                              prod.user.membershipTitle,
+                                        ), // Replace with your actual product widget
                                       );
                                     },
                                   ),
@@ -1595,21 +1588,21 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       shrinkWrap: true, // Adjust to fit content
                       itemCount: data.product.length,
 
-                         gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 370,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.6,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.5,
-                                ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 370,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0.6,
+                        mainAxisSpacing: 0.2,
+                        childAspectRatio: 0.5,
+                      ),
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding:  EdgeInsets.only(bottom: 5.h),
+                          padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

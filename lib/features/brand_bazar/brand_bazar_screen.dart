@@ -250,7 +250,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -832,7 +832,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -1281,13 +1280,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                            comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1350,13 +1350,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              comment: prod.commentcount.toString(),
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               wow: prod.wow,
-                                               
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1489,7 +1490,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       data.promotional, // Corresponds to TRADEHUB
                       data.clearance_sale, // Corresponds to USED
                       data.Launch_festival_offer
-
                     ];
 
                     return SizedBox(
@@ -1581,9 +1581,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                               return InkWell(
                                                 onTap: () {},
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentcount.toString(),
+                                                  comment: prod.commentcount
+                                                      .toString(),
                                                   wow: prod.wow,
-
                                                   lefttile: "B2b-Shop",
                                                   vendorname: prod.user.name,
                                                   issponsored:
@@ -1682,9 +1682,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-                            
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

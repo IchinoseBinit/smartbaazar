@@ -257,7 +257,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -838,10 +838,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
-
-
-                             comment: hot.commentcount.toString(),
-                             wow: hot.wow,
+                            comment: hot.commentcount.toString(),
+                            wow: hot.wow,
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
                             lefttile: "Used",
@@ -921,10 +919,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             VProduct pro =
                                                 data.insidearr[0][index];
                                             return ProductDetailWidget(
-
-
-                                              comment: pro.commentcount.toString(),
-                                             wow: pro.wow,
+                                              comment:
+                                                  pro.commentcount.toString(),
+                                              wow: pro.wow,
                                               discounttedPrice:
                                                   pro.discounted_price,
                                               issponsored: pro.user.sponsored,
@@ -997,10 +994,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[1][index];
                                       return ProductDetailWidget(
-
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
-
                                         issponsored: pro.user.sponsored,
                                         discounttedPrice: pro.discounted_price,
                                         lefttile: "Used",
@@ -1061,8 +1056,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
                                       return ProductDetailWidget(
-                                          comment: pro.commentcount.toString(),
-                                         wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
+                                        wow: pro.wow,
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Used",
@@ -1124,8 +1119,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       VProduct pro = data.insidearr[4][index];
                                       return ProductDetailWidget(
                                         wow: pro.wow,
-
-                                          comment: pro.commentcount.toString(),
+                                        comment: pro.commentcount.toString(),
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Used",
@@ -1227,9 +1221,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                                   wow: prod.wow,
-                                        
-                                          comment: prod.commentcount.toString(),
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1306,12 +1300,13 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             onTap: () {},
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
-                                              comment: prod.commentcount.toString(),
-
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Used",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1374,13 +1369,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-
-                                                wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               issponsored: prod.user.sponsored,
                                               lefttile: "Used",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1603,9 +1599,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               return InkWell(
                                                 onTap: () {},
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentcount.toString(),
+                                                  comment: prod.commentcount
+                                                      .toString(),
                                                   wow: prod.wow,
-
                                                   lefttile: "Used",
                                                   vendorname: prod.user.name,
                                                   issponsored:
@@ -1704,10 +1700,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-                            
-                             wow: data.product[index].wow,
-
-                             comment: data.product[index].commentcount.toString(),
+                            wow: data.product[index].wow,
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

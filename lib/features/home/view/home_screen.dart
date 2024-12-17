@@ -367,7 +367,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               itemCount: _items.length,
                               padEnds: false,
                               controller: _pageController,
-                              onPageChanged: _onPageChanged,
+                              //  // onPageChanged: _onPageChanged,
                               itemBuilder: (context, index) {
                                 Map<String, dynamic> data = _items[index];
 
@@ -817,6 +817,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       onTap: () {},
                                                       child:
                                                           ProductDetailWidget(
+                                                            
                                                         comment:
                                                             prod.commentnum,
                                                         wow: prod.wow,
