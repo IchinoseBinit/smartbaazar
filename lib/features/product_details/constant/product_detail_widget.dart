@@ -244,7 +244,7 @@ class ProductDetailWidget extends StatelessWidget {
                                     size: 15,
                                   ),
                                   Text(
-                                    offer!,
+                                    offer??'',
                                     style: headerstyle.copyWith(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff901B41),

@@ -6,7 +6,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -16,7 +15,6 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/shopzone_provider.dart';
-import 'package:smartbazar/features/home/controller/sponsored_controller.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
@@ -24,10 +22,8 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -1069,7 +1065,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             data: (data) {
                               // print("binod ${data.buynow.first.}");
                               return SizedBox(
-                                height: 280.h,
+                                height: 310.h,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
