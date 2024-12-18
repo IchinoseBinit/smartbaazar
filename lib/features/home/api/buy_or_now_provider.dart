@@ -166,7 +166,7 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-    print("mango ${global.first.brandLogo}");
+
     final locald = (data['domestic_brandbazarLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
@@ -175,10 +175,8 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-    print("ronal ${data['brandbazar_global']}");
     final rawBrandbazarGlobal =
         data['brandbazar_global'] as List<dynamic>? ?? [];
-    print('Raw brandbazar_global: $rawBrandbazarGlobal');
 
     final insid = rawBrandbazarGlobal.map((innerList) {
       if (innerList is List<dynamic>) {
@@ -207,6 +205,8 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
+    print("mango ${global.first.userId}");
+
     return HotWithBuy(
         doma: domas,
         spot: spotl,
@@ -234,6 +234,8 @@ class GlobalModel {
   final String wow;
   final String commentnum;
   final String stock;
+    final String offers;
+
   final int avg_rating;
   final double? shortestDistance;
 
@@ -244,6 +246,7 @@ class GlobalModel {
       required this.wow,
       required this.stock,
       required this.id,
+      required this.offers,
       required this.title,
       required this.description,
       required this.price,
@@ -258,6 +261,8 @@ class GlobalModel {
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
+      offers: json['offers']?? '',
+      
       shortestDistance: json['shortestDistance'] ?? 0.0,
       avg_rating: json['avg_rating'] ?? 0,
       commentnum: json['stock'] ?? '0',

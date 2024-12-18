@@ -1,7 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/model/business_model.dart';
-import 'package:smartbazar/features/saved_search/model/saved_search_response_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 import 'package:dio/dio.dart'; // For better error handling with Dio
@@ -12,7 +10,7 @@ part 'search_result_provider.g.dart';
 
 @riverpod
 Future<BusinessResponse> getSearchResponse(
-    GetSearchResponseRef ref, String query) async {
+    GetSearchResponseRef ref, String query, ) async {
   final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
@@ -28,7 +26,6 @@ Future<BusinessResponse> getSearchResponse(
         // parameter: {'query': query},
         
         );
-    print("ramu ${response.data['data']['brand_new']}");
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data['data'];

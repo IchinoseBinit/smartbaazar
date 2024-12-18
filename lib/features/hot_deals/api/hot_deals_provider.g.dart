@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'search_result_provider.dart';
+part of 'hot_deals_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchResponseHash() => r'bc466211fc850cedf8028c8300426c34fae60047';
+String _$getHotDealsHash() => r'c0c62921eec01b5e3b65e4f8f982e08f7cb47ec5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [getSearchResponse].
-@ProviderFor(getSearchResponse)
-const getSearchResponseProvider = GetSearchResponseFamily();
+/// See also [getHotDeals].
+@ProviderFor(getHotDeals)
+const getHotDealsProvider = GetHotDealsFamily();
 
-/// See also [getSearchResponse].
-class GetSearchResponseFamily extends Family<AsyncValue<BusinessResponse>> {
-  /// See also [getSearchResponse].
-  const GetSearchResponseFamily();
+/// See also [getHotDeals].
+class GetHotDealsFamily extends Family<AsyncValue<List<GlobalModel>>> {
+  /// See also [getHotDeals].
+  const GetHotDealsFamily();
 
-  /// See also [getSearchResponse].
-  GetSearchResponseProvider call(
-    String query,
+  /// See also [getHotDeals].
+  GetHotDealsProvider call(
+    String header,
   ) {
-    return GetSearchResponseProvider(
-      query,
+    return GetHotDealsProvider(
+      header,
     );
   }
 
   @override
-  GetSearchResponseProvider getProviderOverride(
-    covariant GetSearchResponseProvider provider,
+  GetHotDealsProvider getProviderOverride(
+    covariant GetHotDealsProvider provider,
   ) {
     return call(
-      provider.query,
+      provider.header,
     );
   }
 
@@ -68,93 +68,92 @@ class GetSearchResponseFamily extends Family<AsyncValue<BusinessResponse>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getSearchResponseProvider';
+  String? get name => r'getHotDealsProvider';
 }
 
-/// See also [getSearchResponse].
-class GetSearchResponseProvider
-    extends AutoDisposeFutureProvider<BusinessResponse> {
-  /// See also [getSearchResponse].
-  GetSearchResponseProvider(
-    String query,
+/// See also [getHotDeals].
+class GetHotDealsProvider extends AutoDisposeFutureProvider<List<GlobalModel>> {
+  /// See also [getHotDeals].
+  GetHotDealsProvider(
+    String header,
   ) : this._internal(
-          (ref) => getSearchResponse(
-            ref as GetSearchResponseRef,
-            query,
+          (ref) => getHotDeals(
+            ref as GetHotDealsRef,
+            header,
           ),
-          from: getSearchResponseProvider,
-          name: r'getSearchResponseProvider',
+          from: getHotDealsProvider,
+          name: r'getHotDealsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getSearchResponseHash,
-          dependencies: GetSearchResponseFamily._dependencies,
+                  : _$getHotDealsHash,
+          dependencies: GetHotDealsFamily._dependencies,
           allTransitiveDependencies:
-              GetSearchResponseFamily._allTransitiveDependencies,
-          query: query,
+              GetHotDealsFamily._allTransitiveDependencies,
+          header: header,
         );
 
-  GetSearchResponseProvider._internal(
+  GetHotDealsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.query,
+    required this.header,
   }) : super.internal();
 
-  final String query;
+  final String header;
 
   @override
   Override overrideWith(
-    FutureOr<BusinessResponse> Function(GetSearchResponseRef provider) create,
+    FutureOr<List<GlobalModel>> Function(GetHotDealsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetSearchResponseProvider._internal(
-        (ref) => create(ref as GetSearchResponseRef),
+      override: GetHotDealsProvider._internal(
+        (ref) => create(ref as GetHotDealsRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        query: query,
+        header: header,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<BusinessResponse> createElement() {
-    return _GetSearchResponseProviderElement(this);
+  AutoDisposeFutureProviderElement<List<GlobalModel>> createElement() {
+    return _GetHotDealsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetSearchResponseProvider && other.query == query;
+    return other is GetHotDealsProvider && other.header == header;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, header.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin GetSearchResponseRef on AutoDisposeFutureProviderRef<BusinessResponse> {
-  /// The parameter `query` of this provider.
-  String get query;
+mixin GetHotDealsRef on AutoDisposeFutureProviderRef<List<GlobalModel>> {
+  /// The parameter `header` of this provider.
+  String get header;
 }
 
-class _GetSearchResponseProviderElement
-    extends AutoDisposeFutureProviderElement<BusinessResponse>
-    with GetSearchResponseRef {
-  _GetSearchResponseProviderElement(super.provider);
+class _GetHotDealsProviderElement
+    extends AutoDisposeFutureProviderElement<List<GlobalModel>>
+    with GetHotDealsRef {
+  _GetHotDealsProviderElement(super.provider);
 
   @override
-  String get query => (origin as GetSearchResponseProvider).query;
+  String get header => (origin as GetHotDealsProvider).header;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

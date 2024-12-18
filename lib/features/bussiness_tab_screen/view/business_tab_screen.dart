@@ -44,6 +44,13 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
   //   'USED',
   //   'HOB'
   // ];
+  Map<String, String> sortOptions = {
+    'price: Low to High': 'price-low-to-high',
+    'price: High to Low': 'price-high-to-low',
+    'Relevance': 'relevance',
+    'Date': 'date',
+  };
+    String dropdownValue = 'sort-type';
   bool _showSearchProductModels = false;
 
   void _onPageChanged(int index) {
@@ -646,9 +653,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   ],
                                 ),
-                                Expanded(
+                                SizedBox(
+                                   height:   MediaQuery.of(context).size.height*1.6, 
                                   child: TabBarView(children: [
-                                     data.brandNew!.isEmpty? Text("no listing found"): LayoutBuilder(
+                                     data.brandNew!.isEmpty? Center(child: Text("No listing found")): LayoutBuilder(
                                         builder: (context, constraints) {
                                   
                                       return GridView.builder(
@@ -689,29 +697,30 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         },
                                       );
                                     }),
-                                    Expanded(
-                                      child: Column(
-                                        
-                                        children: data.business!.map((e) {
-                                          return BigContainer(
-                                            Cnumber:e.contact! ,
-                                            deals_circle: e.dealsCircle!,
-                                            location: '0',
-                                            total_connections: e.totalConnections!,
-                                            total_prize_worth: e.totalPrizeWorth!,
-                                            
-                                            title: e.vendorName!,
-                                            contact: e.contact!,
-                                            logo: e.logo!,
-                                            membershipTitle: e.membershipTitle!,
-                                            storyCount: e.storyCount!,
-                                            hasSpo: e.hasSponsoredGifts!,
-                                  
-                                          );
-                                        },).toList(),
-                                      ),
+                                    Column(
+                                      
+                                      children: data.business!.map((e) {
+                                        return BigContainer(
+                                          lat: double.tryParse(e.latitude?? '0')?? 0,
+                                          long: double.tryParse(e.longitude?? '0')?? 0,
+
+                                          Cnumber:e.contact! ,
+                                          deals_circle: e.dealsCircle!,
+                                          location: e.location?? 'Nepal',
+                                          total_connections: e.totalConnections!,
+                                          total_prize_worth: e.totalPrizeWorth!,
+                                          
+                                          title: e.vendorName!,
+                                          contact: e.contact!,
+                                          logo: e.logo!,
+                                          membershipTitle: e.membershipTitle!,
+                                          storyCount: e.storyCount!,
+                                          hasSpo: e.hasSponsoredGifts!,
+                                                                      
+                                        );
+                                      },).toList(),
                                     ),
-                                   data.used!.isEmpty? Text("No listing found"):
+                                   data.used!.isEmpty? Center(child: Text("No listing found")):
                                     LayoutBuilder(
                                         builder: (context, constraints) {
                                   
@@ -754,7 +763,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       );
                                     }),
                                   
-                                     data.services!.isEmpty? Text("No listing found"):
+                                     data.services!.isEmpty? Center(child: Text("No listing found")):
                                     LayoutBuilder(
                                         builder: (context, constraints) {
                                   
@@ -806,7 +815,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   error: (error, stackTrace) {
                     return Text("error is $error");
                   },
-                  loading: () => CircularProgressIndicator(),
+                  loading: () => Center(child: CircularProgressIndicator()),
                 ),
               ],
             ),

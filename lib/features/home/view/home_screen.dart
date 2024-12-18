@@ -826,7 +826,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
-                              print("mangoz ${data.global.first.brandLogo}");
+                              print("mangoz ${data.global.length}");
                               return AnimatedContainer(
                                 duration: Duration(milliseconds: 300),
                                 height:

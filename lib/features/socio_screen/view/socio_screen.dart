@@ -11,6 +11,7 @@ import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
+import 'package:smartbazar/features/home/view/circle_story_count.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
@@ -602,7 +603,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     break;
                                 }
                               },
-                              child: DashedBorder(
+                              child: CircleBorderBorder(
                                 dashCount: 2,
                                 child: SizedBox(
                                   width: 100.w,

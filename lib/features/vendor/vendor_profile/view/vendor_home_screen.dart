@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
@@ -15,16 +16,17 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
   final int vid;
   // final String connection,
-      // contact,
-      // total_connections,
-      // membership_title,
-      // has_sponsored_gifts,
-      // story_count;
+  // contact,
+  // total_connections,
+  // membership_title,
+  // has_sponsored_gifts,
+  // story_count;
   const VendorHomeScreen({
     super.key,
     required this.vendorName,
@@ -48,6 +50,27 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   late TabController _tabController;
   late TabController _firstTabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
+  Future<void> _openGoogleMap(BuildContext context) async {
+    // Get current location
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    double latitude = position.latitude;
+    double longitude = position.longitude;
+
+    // Create the Google Maps URL
+    String googleMapsUrl =
+        'https://www.google.com/maps/search/?q=$latitude,$longitude';
+
+    // Open Google Maps using the URL
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not open Google Maps')),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -750,11 +773,17 @@ class BigContainer extends StatelessWidget {
   final String storyCount;
   final String membershipTitle;
   final bool hasSpo;
-  final String deals_circle,total_prize_worth,total_connections,location,Cnumber;
-  
+  final String deals_circle,
+      total_prize_worth,
+      total_connections,
+      location,
+      Cnumber;
+  final double long, lat;
 
   // Constructor
   const BigContainer({
+    required this.lat,
+    required this.long,
     super.key,
     required this.title,
     required this.logo,
@@ -763,15 +792,22 @@ class BigContainer extends StatelessWidget {
     required this.membershipTitle,
     this.hasSpo = false, // Default value
     required this.deals_circle,
-     required this.total_connections,
-      required this.total_prize_worth,
-            required this.location,
-                        required this.Cnumber,
-
-
-
+    required this.total_connections,
+    required this.total_prize_worth,
+    required this.location,
+    required this.Cnumber,
   });
+ Future<void> _openGoogleMap(double latitude, double longitude) async {
+    // Create the Google Maps URL with the provided latitude and longitude
+    String googleMapsUrl = 'https://www.google.com/maps/search/?q=$latitude,$longitude';
 
+    // Open Google Maps using the URL
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      print("Could not open Google Maps");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -891,18 +927,27 @@ class BigContainer extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          Icons.location_on,
-                          color: const Color(0xFF370C6B),
-                          size: 15.w,
-                        ),
-                        Text(
-                          "Open",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            color: const Color(0xFF370C6B),
+                        InkWell(
+                          onTap: ()=>()=>_openGoogleMap(lat, long),
+                          child: Row(
+                            children: [
+                              Icon(
+                              Icons.location_on,
+                              color: const Color(0xFF370C6B),
+                              size: 15.w,
+                            ),
+                             Text(
+                            "Open",
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                              color: const Color(0xFF370C6B),
+                            ),
+                          ),
+                            ],
                           ),
                         ),
+                      
+                       
                         SizedBox(width: 5.w),
                         Icon(
                           Icons.directions,

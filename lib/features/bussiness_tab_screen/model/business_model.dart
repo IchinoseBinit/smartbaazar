@@ -65,6 +65,9 @@ class Business {
   final bool? hasSponsoredGifts;
   final String? membershipId;
   final String? membershipTitle;
+    final String? longitude;
+  final String? latitude;
+
 
   Business({
     this.vendorId,
@@ -80,10 +83,14 @@ class Business {
     this.hasSponsoredGifts,
     this.membershipId,
     this.membershipTitle,
+    this.latitude,
+    this.longitude
   });
 
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
+       latitude: json['latitude'],
+       longitude: json['longitude'],
       vendorId: json['vendor_id'],
       vendorName: json['vendor_name'],
       vendorUsername: json['vendor_username'],
