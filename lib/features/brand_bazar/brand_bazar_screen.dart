@@ -208,6 +208,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 250.h,
                               child: NewSearchWidget(
                                 onchnage: (p0) {},
                               )),

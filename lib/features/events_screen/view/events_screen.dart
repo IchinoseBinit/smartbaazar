@@ -209,6 +209,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 250.h,
                               child: NewSearchWidget(
                                 onchnage: (p0) {},
                               )),

@@ -215,6 +215,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 250.h,
                               child: NewSearchWidget(
                                 onchnage: (p0) {},
                               )),

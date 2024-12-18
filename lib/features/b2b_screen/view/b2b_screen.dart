@@ -208,6 +208,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 250.h,
                               child: NewSearchWidget(
                                 onchnage: (p0) {},
                               )),

@@ -207,6 +207,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 250.h,
                               child: NewSearchWidget(
                                 onchnage: (p0) {},
                               )),

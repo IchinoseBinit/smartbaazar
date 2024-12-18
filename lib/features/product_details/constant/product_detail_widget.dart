@@ -471,107 +471,110 @@ class ProductDetailWidget extends StatelessWidget {
                         bottomRight: Radius.circular(13),
                       ),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(Vimage!),
-                              radius: 14.sp,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    Text(
-                                      vendorname != null &&
-                                              vendorname!.length > 19
-                                          ? '${vendorname!.substring(0, 15)}...'
-                                          : vendorname ?? '',
-                                      style: headerstyle.copyWith(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                      size: 12,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/nepalFlag.png",
-                                      height: 9.h,
-                                    ),
-                                    SizedBox(
-                                      width: 1.w,
-                                    ),
-                                    Text(
-                                      membershipTitle ?? "Domestic Brand",
-                                      style: headerstyle.copyWith(
-                                          fontSize: 8.sp,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 12,
-                                ),
-                                Text(
-                                  "2.5 km",
-                                  style: headerstyle.copyWith(
-                                      fontSize: 8.sp,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            issponsored
-                                ? SizedBox()
-                                : Row(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(Vimage!),
+                                radius: 14.sp,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      Image.asset("assets/images/mike.png"),
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
                                       Text(
-                                        "Sponsore",
+                                        vendorname != null &&
+                                                vendorname!.length > 19
+                                            ? '${vendorname!.substring(0, 15)}...'
+                                            : vendorname ?? '',
                                         style: headerstyle.copyWith(
-                                            fontSize: 10.sp,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
+                                      const Icon(
+                                        Icons.logout,
+                                        color: Colors.white,
+                                        size: 12,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Image.asset(
+                                        "assets/images/nepalFlag.png",
+                                        height: 9.h,
+                                      ),
+                                      SizedBox(
+                                        width: 1.w,
+                                      ),
+                                      Text(
+                                        membershipTitle ?? "Domestic Brand",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 8.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
                                     ],
                                   ),
-                          ],
-                        ),
-                      ],
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                  Text(
+                                    "2.5 km",
+                                    style: headerstyle.copyWith(
+                                        fontSize: 8.sp,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 3.h,
+                              ),
+                              issponsored
+                                  ? SizedBox()
+                                  : Row(
+                                      children: [
+                                        Image.asset("assets/images/mike.png"),
+                                        Text(
+                                          "Sponsored",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],

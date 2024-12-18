@@ -207,6 +207,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 250.h,
                               child: NewSearchWidget(
                                 onchnage: (p0) {},
                               )),
