@@ -48,11 +48,16 @@ class FeedScreen extends ConsumerWidget {
                         const SizedBox(
                           width: 30,
                         ),
-                        SizedBox(height: 50, child: NewSearchWidget(
-                          onchnage: (p0) {
-                            
-                          },
-                        )),
+                        SizedBox(height: 50, child:  NewSearchWidget(
+                                searchController: TextEditingController(),
+                                onSearchFocusChanged: (p0) {
+                                  
+                                },
+                                ontapped: () {
+                                  
+                                },
+                                onchnage: (p0) {},
+                              ),)
                       ],
                     ),
                     SizedBox(

@@ -37,7 +37,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -91,7 +91,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -138,7 +138,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      // _showSearchProductModels = hasFocus;
     });
   }
 
@@ -158,7 +158,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -207,10 +207,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -1438,7 +1442,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
-                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorImage: resp.vendorImage,
@@ -1577,7 +1580,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       ? const Padding(
                                           padding: EdgeInsets.only(top: 10),
                                           child: SizedBox(
-                                            child: Text("No data available"),
+                                            child: Text("No listing available"),
                                           ),
                                         )
                                       : SizedBox(

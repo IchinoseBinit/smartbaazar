@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
@@ -23,6 +24,7 @@ import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
+import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
@@ -51,7 +53,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
   late TabController tabController;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
@@ -128,7 +130,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       initialPage: selectedIndex,
     );
     tabController.addListener(_handleTabChange);
-
+    _searchController.addListener(() {
+      _debouncer.add(_searchController.text);
+    });
+    _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+      debugPrint("Search query: $query");
+      ref.refresh(searchProvider(query));
+      setState(() {
+        _showSearchProductModels = query.isNotEmpty;
+      });
+    });
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _pageController.jumpToPage(selectedIndex);
@@ -143,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       debugPrint("Search query: $query");
       ref.refresh(searchProvider(query));
       setState(() {
-        _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
 
@@ -211,7 +222,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
@@ -265,8 +276,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     // ));
     // final brandbajarAsyncValue = ref.watch(getBrandBazaarResponseProvider);
 
-    final searchResults = ref.watch(searchProvider(_searchController.text));
-    debugPrint('Search Results: ${searchResults.asData?.value}');
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
+    debugPrint('Search Results: ${SearchProductModels.asData?.value}');
     return Scaffold(
         extendBody: true,
         key: _key,
@@ -319,17 +331,100 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               SizedBox(
                                   height: 50,
                                   child: NewSearchWidget(
-                                    onchnage: (p0) {
+                                    onSearchFocusChanged: _onSearchFocusChanged,
+                                    searchController: _searchController,
+                                    ontapped: () {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const BusinessTabScreen(),
+                                                BusinessTabScreen(
+                                              query: _searchController.text,
+                                            ),
                                           ));
+                                    },
+                                    onchnage: (p0) {
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           const BusinessTabScreen(),
+                                      //     ));
                                     },
                                   )),
                             ],
                           ),
+                          if (_showSearchProductModels)
+                            Positioned(
+                              top: 0.h, // Position just below the search bar
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                width: double.infinity,
+                                color: Colors.white,
+                                child:
+                                    SearchProductModels.when(data: (results) {
+                                  if (results.isEmpty) {
+                                    return const SizedBox(
+                                      child: Text('No result found'),
+                                    ); // No results
+                                  }
+                                  return Card(
+                                    elevation: 8,
+                                    child: ListView.separated(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      primary: false,
+                                      itemCount: results.length,
+                                      itemBuilder: (context, index) {
+                                        final product = results[index];
+                                        return ListTile(
+                                          title: Text(product.title),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BusinessTabScreen(
+                                                    query:
+                                                        _searchController.text,
+                                                  ),
+                                                ));
+
+                                            setState(() {
+                                              _showSearchProductModels = false;
+
+                                              FocusScope.of(context).unfocus();
+                                            });
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         ProductDetailsScreen(
+                                            //       productId: product.id,
+                                            //     ),
+                                            //   ),
+                                            // );
+                                          },
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) =>
+                                          const Divider(),
+                                    ),
+                                  );
+                                }, loading: () {
+                                  // return SizedBox(
+                                  //     width: 10.w,
+                                  //     height: 10.h,
+                                  //     child: CircularProgressIndicator());
+                                }, error: (error, stack) {
+                                  // return SizedBox(
+                                  //     width: 10.w,
+                                  //     height: 10.h,
+                                  //     child: CircularProgressIndicator());
+                                }),
+                              ),
+                            ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -731,6 +826,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
+                              print("mangoz ${data.global.first.brandLogo}");
                               return AnimatedContainer(
                                 duration: Duration(milliseconds: 300),
                                 height:
@@ -817,7 +913,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       onTap: () {},
                                                       child:
                                                           ProductDetailWidget(
-                                                            
                                                         comment:
                                                             prod.commentnum,
                                                         wow: prod.wow,

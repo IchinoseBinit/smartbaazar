@@ -166,6 +166,7 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
+    print("mango ${global.first.brandLogo}");
     final locald = (data['domestic_brandbazarLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
@@ -234,7 +235,7 @@ class GlobalModel {
   final String commentnum;
   final String stock;
   final int avg_rating;
-  final List<double> shortestDistance;
+  final double? shortestDistance;
 
   final int? similarproductCount;
 
@@ -257,7 +258,7 @@ class GlobalModel {
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
-      shortestDistance: json['shortestDistance']?? 0.0,
+      shortestDistance: json['shortestDistance'] ?? 0.0,
       avg_rating: json['avg_rating'] ?? 0,
       commentnum: json['stock'] ?? '0',
       stock: json['discounted_price'] ?? '0',

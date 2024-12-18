@@ -37,7 +37,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
   final List<Map<String, dynamic>> _services = [
     {'label': 'Low Price Guarantee', 'id': 1},
@@ -96,7 +96,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -143,7 +143,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      // _showSearchProductModels = hasFocus;
     });
   }
 
@@ -163,7 +163,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -212,10 +212,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -1506,7 +1510,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     height: 50.h,
                                     child: Center(
                                       child: Text(
-                                        "No Data Available",
+                                        "No listing available",
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,

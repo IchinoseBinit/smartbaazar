@@ -70,7 +70,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -227,10 +227,14 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(
