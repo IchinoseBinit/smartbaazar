@@ -11,6 +11,7 @@ import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
+import 'package:smartbazar/features/home/view/circle_story_count.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
@@ -37,7 +38,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -90,7 +91,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -137,7 +138,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      // _showSearchProductModels = hasFocus;
     });
   }
 
@@ -157,7 +158,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -206,11 +207,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              width: 250.h,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -250,7 +254,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -599,7 +603,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     break;
                                 }
                               },
-                              child: DashedBorder(
+                              child: CircleBorderBorder(
                                 dashCount: 2,
                                 child: SizedBox(
                                   width: 100.w,
@@ -971,7 +975,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 VProduct pro = data.insidearr[1][index];
                                 print("kolo ${pro.id}");
 
-                                ProductDetailWidget(
+                                return ProductDetailWidget(
                                   offer: pro.discounted_price,
                                   wow: pro.wow,
                                   comment: pro.commentcount.toString(),
@@ -1030,7 +1034,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[2][index];
-                                ProductDetailWidget(
+                                return ProductDetailWidget(
                                   offer: pro.discounted_price,
                                   wow: pro.wow,
                                   comment: pro.commentcount.toString(),
@@ -1091,7 +1095,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[3][index];
-                                ProductDetailWidget(
+                                print("lamo ${pro.id}");
+                                return ProductDetailWidget(
                                   offer: pro.discounted_price,
                                   wow: pro.wow,
                                   comment: pro.commentcount.toString(),
@@ -1149,7 +1154,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[4][index];
-                                ProductDetailWidget(
+                                return ProductDetailWidget(
                                   offer: pro.discounted_price,
                                   wow: pro.wow,
                                   comment: pro.commentcount.toString(),
@@ -1277,7 +1282,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding: EdgeInsets.only(
                                           top: 100, left: 100.w),
                                       child: const SizedBox(
-                                        child: Text("No data available"),
+                                        child: Text("No listing available"),
                                       ),
                                     ),
                             ],
@@ -1319,7 +1324,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         padding: EdgeInsets.only(
                                             top: 100, left: 100.w),
                                         child: const SizedBox(
-                                          child: Text("No data available"),
+                                          child: Text("No listing available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1395,7 +1400,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         padding: EdgeInsets.only(
                                             top: 100, left: 100.w),
                                         child: const SizedBox(
-                                          child: Text("No data available"),
+                                          child: Text("No listing available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1484,7 +1489,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
-                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorImage: resp.vendorImage,

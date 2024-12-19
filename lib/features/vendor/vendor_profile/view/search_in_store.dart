@@ -15,7 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //    final GlobalKey<ScaffoldState> _key = GlobalKey();
 //   final TextEditingController _searchController = TextEditingController();
 //   final _debouncer = BehaviorSubject<String>();
-//   bool _showSearchResults = false;
+//   bool _showSearchProductModels = false;
 //   late TabController _tabController;
 
 //   @override
@@ -30,7 +30,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //       debugPrint("Search query: $query");
 //       ref.refresh(searchProvider(query));
 //       setState(() {
-//         _showSearchResults = query.isNotEmpty;
+//         _showSearchProductModels = query.isNotEmpty;
 //       });
 //     });
 //         _tabController = TabController(length: 3, vsync: this);
@@ -47,7 +47,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //   void _onSearchFocusChanged(bool hasFocus) {
 //     setState(() {
-//       _showSearchResults = hasFocus;
+//       _showSearchProductModels = hasFocus;
 //     });
 //   }
 
@@ -82,9 +82,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //         body: GestureDetector(
 //           behavior: HitTestBehavior.opaque,
 //           onTap: () {
-//             if (_showSearchResults) {
+//             if (_showSearchProductModels) {
 //               setState(() {
-//                 _showSearchResults = false;
+//                 _showSearchProductModels = false;
 //                 FocusScope.of(context).unfocus();
 //               });
 //             }
@@ -245,7 +245,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // }
 
 class SearchInStore extends StatelessWidget {
-  SearchInStore({super.key, required this.onsubmit,required this.searchController});
+  SearchInStore(
+      {super.key, required this.onsubmit, required this.searchController});
   Function(String)? onsubmit;
   TextEditingController searchController;
 

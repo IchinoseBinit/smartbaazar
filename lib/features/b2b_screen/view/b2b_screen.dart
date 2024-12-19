@@ -37,7 +37,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -91,7 +91,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -138,7 +138,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      // _showSearchProductModels = hasFocus;
     });
   }
 
@@ -158,7 +158,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -207,11 +207,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              width: 250.h,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -251,7 +254,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -833,8 +836,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -917,9 +918,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             return ProductDetailWidget(
                                               offer: pro.discounted_price,
                                               wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
+                                              comment:
+                                                  pro.commentcount.toString(),
                                               discounttedPrice:
                                                   pro.discounted_price,
                                               issponsored: pro.user.sponsored,
@@ -994,7 +994,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       return ProductDetailWidget(
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
-
                                         issponsored: pro.user.sponsored,
                                         discounttedPrice: pro.discounted_price,
                                         lefttile: "B2b-Shop",
@@ -1055,9 +1054,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
                                       return ProductDetailWidget(
-                                         wow: pro.wow,
-
-                                          comment: pro.commentcount.toString(),
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "B2b-Shop",
@@ -1118,10 +1116,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[4][index];
                                       return ProductDetailWidget(
-                                         wow: pro.wow,
-
-                                         comment: pro.commentcount.toString(),
-
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "B2b-Shop",
@@ -1223,10 +1219,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1302,14 +1297,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-
-                                            comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1372,13 +1367,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              comment: prod.commentcount.toString(),
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               wow: prod.wow,
-                                               
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1446,7 +1442,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
-                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorImage: resp.vendorImage,
@@ -1585,7 +1580,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       ? const Padding(
                                           padding: EdgeInsets.only(top: 10),
                                           child: SizedBox(
-                                            child: Text("No data available"),
+                                            child: Text("No listing available"),
                                           ),
                                         )
                                       : SizedBox(
@@ -1601,9 +1596,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               return InkWell(
                                                 onTap: () {},
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentcount.toString(),
+                                                  comment: prod.commentcount
+                                                      .toString(),
                                                   wow: prod.wow,
-
                                                   lefttile: "B2b-Shop",
                                                   vendorname: prod.user.name,
                                                   issponsored:
@@ -1702,9 +1697,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

@@ -30,9 +30,9 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
   double offsetX = 0.0; // Horizontal swipe offset
   int currentIndex = 0; // Current card index
   List<Widget> cards = [
-    const big_container(),
-    const big_container(),
-    const big_container(),
+    // const BigContainer(),
+    // const big_container(),
+    // const big_container(),
   ];
 
   void handleSwipe() {

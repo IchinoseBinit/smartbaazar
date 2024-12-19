@@ -34,7 +34,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     'Date': 'date',
   };
   String dropdownValue = 'sort-type';
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
   final _debouncer = BehaviorSubject<String>();
 
   @override
@@ -51,22 +51,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       debugPrint("Search query: $query");
       ref.refresh(searchProvider(query));
       setState(() {
-        _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
   int selectedTabIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final searchResults = ref.watch(searchProvider(_searchController.text));
-    debugPrint('Search Results: ${searchResults.asData?.value}');
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
+    debugPrint('Search Results: ${SearchProductModels.asData?.value}');
     return GenericSafeArea(
       child: DefaultTabController(
         length: 4,
@@ -84,9 +85,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ));
             },
             onsubmit: (value) {
-              if (_showSearchResults) {
+              if (_showSearchProductModels) {
                 setState(() {
-                  _showSearchResults = false;
+                  _showSearchProductModels = false;
                   FocusScope.of(context).unfocus();
                 });
               }
@@ -110,14 +111,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (_showSearchResults)
+              if (_showSearchProductModels)
                 Positioned(
                   top: 0.h, // Position just below the search bar
                   left: 0,
                   right: 0,
                   child: Container(
                     color: Colors.white,
-                    child: searchResults.when(
+                    child: SearchProductModels.when(
                       data: (results) {
                         if (results.isEmpty) {
                           return const SizedBox(
@@ -134,7 +135,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             itemBuilder: (context, index) {
                               final product = results[index];
                               return ListTile(
-                                title: Text(product.title),
+                                title: Text(''),
                                 onTap: () {
                                   Navigator.push(
                                       context,
@@ -145,7 +146,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       ));
 
                                   setState(() {
-                                    _showSearchResults = false;
+                                    _showSearchProductModels = false;
 
                                     FocusScope.of(context).unfocus();
                                   });
@@ -238,10 +239,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final adsList = ref.watch(fetchAdsProvider);
 
     // Use ref.watch to get search results based on category
-    final searchResults = ref.watch(
+    final SearchProductModels = ref.watch(
         GetSearchDetailsProvider(_query, category: category, orderby: order));
 
-    return searchResults.when(
+    return SearchProductModels.when(
       loading: () {
         // Check if ads are loading and display loading indicator
         if (adsList.isLoading) {

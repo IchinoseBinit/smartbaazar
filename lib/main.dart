@@ -7,9 +7,11 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -46,9 +48,16 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home:  HomeScreen()
+          home: HotViewScreen(header: 'sponsored',),
+          // home: BusinessTabScreen(
+          //   query: 'acer',
+            
+          // )
           // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
           ),
     );
   }
 }
+
+
+

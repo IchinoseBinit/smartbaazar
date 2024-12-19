@@ -9,6 +9,8 @@ class ApiConstants {
   static String logoUrl = '$baseUrl/app_logo_loader';
   static String logoutUrl = '$baseUrl/auth/logout/';
   static String getcontactSellerUrl = '$baseUrl/threads';
+    static String getHotDealScreen = '$baseUrl/homeSections';
+
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';

@@ -37,7 +37,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
   final List<Map<String, dynamic>> _services = [
     {'label': 'Low Price Guarantee', 'id': 1},
@@ -96,7 +96,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -143,7 +143,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      // _showSearchProductModels = hasFocus;
     });
   }
 
@@ -163,7 +163,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -212,11 +212,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              width: 250.h,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -256,7 +259,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -838,8 +841,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -1299,7 +1300,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height:340.h,
+                      height: 340.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1317,8 +1318,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             membershipTitle: ref.user.membershipTitle,
                             similarproductCount: ref.similarProductCount,
                             wow: ref.wow,
-
-
                             lefttile: "Jobs",
                             productImage: ref.image,
                             price: ref.price,
@@ -1378,8 +1377,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                                      vendorImage: resp.vendorImage,
-
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1512,7 +1510,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     height: 50.h,
                                     child: Center(
                                       child: Text(
-                                        "No Data Available",
+                                        "No listing available",
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
@@ -1534,26 +1532,24 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       return InkWell(
                                         onTap: () {}, // Handle onTap if needed
                                         child: ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
-                                              lefttile: "B2b",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.title,
-                                              issponsored: prod.user.sponsored,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membercolor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),// Replace with your actual product widget
+                                          wow: prod.wow,
+                                          comment: prod.commentcount.toString(),
+                                          lefttile: "B2b",
+                                          vendorname: prod.user.name,
+                                          discounttedPrice:
+                                              prod.discounted_price,
+                                          Vimage: prod.title,
+                                          issponsored: prod.user.sponsored,
+                                          price: prod.price,
+                                          title: prod.title,
+                                          productImage: prod.image,
+                                          similarproductCount:
+                                              prod.similarProductCount,
+                                          membershipColor:
+                                              prod.user.membercolor,
+                                          membershipTitle:
+                                              prod.user.membershipTitle,
+                                        ), // Replace with your actual product widget
                                       );
                                     },
                                   ),
@@ -1596,21 +1592,21 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       shrinkWrap: true, // Adjust to fit content
                       itemCount: data.product.length,
 
-                         gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 370,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.6,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.5,
-                                ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 370,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0.6,
+                        mainAxisSpacing: 0.2,
+                        childAspectRatio: 0.5,
+                      ),
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding:  EdgeInsets.only(bottom: 5.h),
+                          padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

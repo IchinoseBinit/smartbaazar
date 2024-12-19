@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
@@ -15,12 +16,22 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
   final int vid;
-  const VendorHomeScreen(
-      {super.key, required this.vendorName, required this.vid});
+  // final String connection,
+  // contact,
+  // total_connections,
+  // membership_title,
+  // has_sponsored_gifts,
+  // story_count;
+  const VendorHomeScreen({
+    super.key,
+    required this.vendorName,
+    required this.vid,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -34,11 +45,32 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   final TextEditingController _vendorsearchController = TextEditingController();
 
   final _debouncer = BehaviorSubject<String>();
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
   bool _vendorsearchResullts = false;
   late TabController _tabController;
   late TabController _firstTabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
+  Future<void> _openGoogleMap(BuildContext context) async {
+    // Get current location
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    double latitude = position.latitude;
+    double longitude = position.longitude;
+
+    // Create the Google Maps URL
+    String googleMapsUrl =
+        'https://www.google.com/maps/search/?q=$latitude,$longitude';
+
+    // Open Google Maps using the URL
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not open Google Maps')),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -78,14 +110,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       debugPrint("Search query: $query");
       ref.refresh(searchProvider(query));
       setState(() {
-        _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
@@ -103,8 +135,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   Widget build(BuildContext context) {
     // final adsList = ref.watch(fetchAdsProvider);
 
-    // final searchResults = ref.watch(searchProvider(_searchController.text));
-    // final vendorsearchResults = ref
+    // final SearchProductModels = ref.watch(searchProvider(_searchController.text));
+    // final vendorSearchProductModels = ref
     //     .watch(VendorSearchProvider(_vendorsearchController.text, widget.vid));
 
     final vendorProfileModelDataAsyncValue = ref.watch(
@@ -125,14 +157,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   child: Column(
                     children: [
                       const VendorSearchContainer(),
-                      if (_showSearchResults)
+                      if (_showSearchProductModels)
                         // Positioned(
                         //   top: 0.h,
                         //   left: 0,
                         //   right: 0,
                         //   child: Container(
                         //     color: Colors.white,
-                        //     child: searchResults.when(
+                        //     child: SearchProductModels.when(
                         //       data: (results) {
                         //         if (results.isEmpty) {
                         //           return const SizedBox(
@@ -161,7 +193,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         //                     ),
                         //                   );
                         //                   setState(() {
-                        //                     _showSearchResults = false;
+                        //                     _showSearchProductModels = false;
                         //                     FocusScope.of(context).unfocus();
                         //                   });
                         //                 },
@@ -381,12 +413,12 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     final adsList = ref.watch(fetchAdsProvider);
 
     // Use ref.watch to get search results based on category
-    final searchResults = ref.watch(getVendorProfileDataProvider(
+    final SearchProductModels = ref.watch(getVendorProfileDataProvider(
       widget.vendorName.replaceAll(" ", ''),
       category: category,
     ));
 
-    return searchResults.when(
+    return SearchProductModels.when(
       loading: () {
         // Check if ads are loading and display loading indicator
         if (adsList.isLoading) {
@@ -649,7 +681,7 @@ class VendorFirstTabBarSection extends StatelessWidget {
         SizedBox(
           height: 540.h,
           child: TabBarView(controller: tabController, children: [
-            const big_container(),
+            // const BigContainer(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -734,11 +766,48 @@ class VendorFirstTabBarSection extends StatelessWidget {
   }
 }
 
-class big_container extends StatelessWidget {
-  const big_container({
-    super.key,
-  });
+class BigContainer extends StatelessWidget {
+  final String title;
+  final String logo;
+  final String contact;
+  final String storyCount;
+  final String membershipTitle;
+  final bool hasSpo;
+  final String deals_circle,
+      total_prize_worth,
+      total_connections,
+      location,
+      Cnumber;
+  final double long, lat;
 
+  // Constructor
+  const BigContainer({
+    required this.lat,
+    required this.long,
+    super.key,
+    required this.title,
+    required this.logo,
+    required this.contact,
+    required this.storyCount,
+    required this.membershipTitle,
+    this.hasSpo = false, // Default value
+    required this.deals_circle,
+    required this.total_connections,
+    required this.total_prize_worth,
+    required this.location,
+    required this.Cnumber,
+  });
+ Future<void> _openGoogleMap(double latitude, double longitude) async {
+    // Create the Google Maps URL with the provided latitude and longitude
+    String googleMapsUrl = 'https://www.google.com/maps/search/?q=$latitude,$longitude';
+
+    // Open Google Maps using the URL
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      print("Could not open Google Maps");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -787,13 +856,16 @@ class big_container extends StatelessWidget {
                   color: Colors.black,
                   strokeWidth: 2,
                   borderType: BorderType.Circle,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
+                  child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: CircleAvatar(
+                        radius: 40,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(logo),
+                          radius: 60,
+                          backgroundColor: Colors.white,
+                        ),
+                      )),
                 ),
                 Column(
                   children: [
@@ -826,7 +898,7 @@ class big_container extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    "My Power",
+                    title,
                     style: TextStyle(
                         fontSize: 24.sp,
                         color: Colors.black,
@@ -835,7 +907,7 @@ class big_container extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    "Keeps You On",
+                    title,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: Colors.black,
@@ -855,18 +927,27 @@ class big_container extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          Icons.location_on,
-                          color: const Color(0xFF370C6B),
-                          size: 15.w,
-                        ),
-                        Text(
-                          "Open",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            color: const Color(0xFF370C6B),
+                        InkWell(
+                          onTap: ()=>()=>_openGoogleMap(lat, long),
+                          child: Row(
+                            children: [
+                              Icon(
+                              Icons.location_on,
+                              color: const Color(0xFF370C6B),
+                              size: 15.w,
+                            ),
+                             Text(
+                            "Open",
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                              color: const Color(0xFF370C6B),
+                            ),
+                          ),
+                            ],
                           ),
                         ),
+                      
+                       
                         SizedBox(width: 5.w),
                         Icon(
                           Icons.directions,
@@ -883,7 +964,7 @@ class big_container extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "New Road,Kathmandu",
+                      location,
                       style: TextStyle(
                         fontSize: 9.sp,
                         color: const Color(0xFF370C6B),
@@ -911,7 +992,7 @@ class big_container extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "9851280275",
+                      Cnumber,
                       style: TextStyle(
                         fontSize: 9.sp,
                         color: const Color(0xFF370C6B),
@@ -922,6 +1003,7 @@ class big_container extends StatelessWidget {
               ],
             ),
             Container(
+                margin: EdgeInsets.only(top: 5.h),
                 width: MediaQuery.sizeOf(context).width,
                 color: const Color(0xFF4B004B),
                 child: Padding(
@@ -932,7 +1014,7 @@ class big_container extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            "4.5k",
+                            total_connections,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13.sp,
@@ -949,7 +1031,7 @@ class big_container extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            "343",
+                            deals_circle,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13.sp,
@@ -966,7 +1048,7 @@ class big_container extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            "Rs.41K",
+                            "Rs.${total_prize_worth}",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13.sp,
@@ -988,10 +1070,10 @@ class big_container extends StatelessWidget {
                 Container(
                   color: const Color(0xFF4B004B),
                   width: MediaQuery.sizeOf(context).width,
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 18.0),
                     child: Text(
-                      "smartbazaar.com.np/MyPower",
+                      "smartbazaar.com.np/${title}",
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -1011,7 +1093,7 @@ class big_container extends StatelessWidget {
                         color: Colors.white,
                       ),
                       child: Image.asset(
-                        'assets/images/appLogo.png',
+                        'assets/images/zoomlogo.png',
                         fit: BoxFit.cover,
                         width: 140,
                         height: 140,
@@ -1021,13 +1103,29 @@ class big_container extends StatelessWidget {
                 ),
               ],
             ),
-            Text("Connect",
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  color: const Color(0xFF4B004B),
+            SizedBox(
+              height: 5.h,
+            ),
+            SizedBox(height: 40.h),
+            Padding(
+              padding: EdgeInsets.only(left: 4.h, bottom: 5.h),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Connect",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: const Color(0xff370C6B),
+                        ),
+                        textAlign: TextAlign.center),
+                  ],
                 ),
-                textAlign: TextAlign.center),
-            SizedBox(height: 20.h),
+              ),
+            ),
             SizedBox(
               height: 30.h,
               child: Row(
@@ -1084,8 +1182,12 @@ class big_container extends StatelessWidget {
                           fontSize: 8.sp,
                           fontWeight: FontWeight.w600),
                     ),
+                    Image.asset('assets/images/arrow_down.png')
                   ]),
             ),
+            SizedBox(
+              height: 5.h,
+            )
           ],
         ),
       ),

@@ -39,7 +39,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -92,7 +92,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -139,7 +139,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      // _showSearchProductModels = hasFocus;
     });
   }
 
@@ -159,7 +159,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -208,11 +208,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             width: 20,
                           ),
                           SizedBox(
-                              height: 50,
-                              width: 250.h,
-                              child: NewSearchWidget(
-                                onchnage: (p0) {},
-                              )),
+                            height: 50,
+                            child: NewSearchWidget(
+                              searchController: TextEditingController(),
+                              onSearchFocusChanged: (p0) {},
+                              ontapped: () {},
+                              onchnage: (p0) {},
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -252,7 +255,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -834,8 +837,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -915,12 +916,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           itemBuilder: (context, index) {
                                             VProduct pro =
                                                 data.insidearr[0][index];
-                                            return  ProductDetailWidget(
+                                            return ProductDetailWidget(
                                               offer: pro.discounted_price,
                                               wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
+                                              comment:
+                                                  pro.commentcount.toString(),
                                               discounttedPrice:
                                                   pro.discounted_price,
                                               issponsored: pro.user.sponsored,
@@ -993,27 +993,23 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[1][index];
                                       return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "B2b-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                        offer: pro.discounted_price,
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
+                                        discounttedPrice: pro.discounted_price,
+                                        issponsored: pro.user.sponsored,
+                                        lefttile: "B2b-Shop",
+                                        Vimage: pro.user.photo,
+                                        price: pro.price,
+                                        title: pro.title,
+                                        vendorname: pro.user.name,
+                                        productImage: pro.image,
+                                        similarproductCount:
+                                            pro.similarProductCount,
+                                        membershipColor: pro.user.membercolor,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
+                                      );
                                     },
                                   ),
                                 ),
@@ -1060,27 +1056,23 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
                                       return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "B2b-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                        offer: pro.discounted_price,
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
+                                        discounttedPrice: pro.discounted_price,
+                                        issponsored: pro.user.sponsored,
+                                        lefttile: "B2b-Shop",
+                                        Vimage: pro.user.photo,
+                                        price: pro.price,
+                                        title: pro.title,
+                                        vendorname: pro.user.name,
+                                        productImage: pro.image,
+                                        similarproductCount:
+                                            pro.similarProductCount,
+                                        membershipColor: pro.user.membercolor,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
+                                      );
                                     },
                                   ),
                                 ),
@@ -1127,27 +1119,23 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[4][index];
                                       return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment: pro.commentcount.toString(),
-
-
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "B2b-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
-                                            );
+                                        offer: pro.discounted_price,
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
+                                        discounttedPrice: pro.discounted_price,
+                                        issponsored: pro.user.sponsored,
+                                        lefttile: "B2b-Shop",
+                                        Vimage: pro.user.photo,
+                                        price: pro.price,
+                                        title: pro.title,
+                                        vendorname: pro.user.name,
+                                        productImage: pro.image,
+                                        similarproductCount:
+                                            pro.similarProductCount,
+                                        membershipColor: pro.user.membercolor,
+                                        membershipTitle:
+                                            pro.user.membershipTitle,
+                                      );
                                     },
                                   ),
                                 ),
@@ -1234,10 +1222,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2B",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1262,7 +1249,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       padding: EdgeInsets.only(
                                           top: 100, left: 100.w),
                                       child: const SizedBox(
-                                        child: Text("No data available"),
+                                        child: Text("No listing available"),
                                       ),
                                     ),
                             ],
@@ -1304,7 +1291,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         padding: EdgeInsets.only(
                                             top: 100, left: 100.w),
                                         child: const SizedBox(
-                                          child: Text("No data available"),
+                                          child: Text("No listing available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1318,10 +1305,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2B",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1381,7 +1367,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         padding: EdgeInsets.only(
                                             top: 100, left: 100.w),
                                         child: const SizedBox(
-                                          child: Text("No data available"),
+                                          child: Text("No listing available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1395,10 +1381,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2B",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1510,7 +1495,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
-                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorImage: resp.vendorImage,
@@ -1646,7 +1630,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     ? const Padding(
                                         padding: EdgeInsets.only(top: 100),
                                         child: SizedBox(
-                                          child: Text("No data available"),
+                                          child: Text("No listing available"),
                                         ),
                                       )
                                     : ListView.builder(
@@ -1659,11 +1643,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                                           return InkWell(
                                             onTap: () {},
-                                            child:ProductDetailWidget(
-                                                 wow: prod.wow,
-                                                    comment: prod.commentcount.toString(),
-
-                                              
+                                            child: ProductDetailWidget(
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2B",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1726,7 +1709,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             fontSize: 17,
                             color: Colors.black),
                       ),
-                    
                     ],
                   ),
                 ),
@@ -1752,9 +1734,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,
