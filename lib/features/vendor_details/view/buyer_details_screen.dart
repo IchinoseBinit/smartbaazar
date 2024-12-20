@@ -7,6 +7,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/background_image_description_widgt.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -127,18 +128,12 @@ class _BuyerAccountDetailsWidgetState
     extends ConsumerState<BuyerAccountDetailsWidget> {
   final _formKey = GlobalKey<FormState>();
 
-  String? fullName,
-      phoneNumber,
-      email,
-      userName,
-      genderID,
-      //  dob,
-      openingHours,
-      description;
+  String? fullName, phoneNumber, email, userName, genderID;
+
   String? userId; // Updated to nullable type since we are loading it
   bool isLoading = false;
 
-  List<TextEditingController> branchControllers = [TextEditingController()];
+  TextEditingController branchControllers = TextEditingController();
 
   @override
   void initState() {
@@ -174,18 +169,19 @@ class _BuyerAccountDetailsWidgetState
       isLoading = true;
     });
     try {
-      // final updateUserDetail = await ref.read(updateUserDetailsProvider(
-      //   fullName!,
-      //   phoneNumber!,
-      //   userName!,
-      //   email!,
-      //   userId!,
-      //   genderID!,
-      //   // branchControllers,
-      //   // openingHours,
-      //   // description,
-      //   //  dob!,
-      // ).future);
+      final updateBuyerUserDetail =
+          await ref.read(updateBuyerUserDetailsProvider(
+        fullName!,
+        phoneNumber!,
+        userName!,
+        email!,
+        userId!,
+        genderID!,
+        branchControllers.text,
+        // openingHours,
+        // description,
+        //  dob!,
+      ).future);
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -397,7 +393,7 @@ class _BuyerAccountDetailsWidgetState
                     icon: Icons.location_on,
                     textInputType: TextInputAction.next,
                     hintText: "Your Location",
-                    onChanged: (value) => openingHours = value,
+                    onChanged: (value) => branchControllers.text = value,
                     iconColor: Colors.red,
                     validator: (value) {
                       if (value == null || value.isEmpty) {

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/feed_page/model/get_feed_of_following_model.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PromoCard extends StatefulWidget {
   const PromoCard({
     Key? key,
-    required this.offers,
-    required this.feedItem,
+    required this.products,
+    required this.captionTitle,
+    required this.caption,
+    required this.offerText,
   }) : super(key: key);
 
-  final Offers offers;
-  final FeedItem feedItem;
+  final List<Map<String, String>> products;
+  final String captionTitle;
+  final String caption;
+  final String offerText;
 
   @override
   State<PromoCard> createState() => _PromoCardState();
@@ -27,7 +31,7 @@ class _PromoCardState extends State<PromoCard> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color(0xFFD0D1CF),
+            color: Color.fromARGB(255, 243, 244, 242),
             // boxShadow: [#8183804A
             //   BoxShadow(
             //     color: Colors.grey.shade300,
@@ -47,8 +51,7 @@ class _PromoCardState extends State<PromoCard> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
                         color: Colors.red.shade100,
                         borderRadius: BorderRadius.circular(8),
@@ -70,18 +73,21 @@ class _PromoCardState extends State<PromoCard> {
                         ],
                       ),
                     ),
-                    ...widget.offers.products!.map((product) {
+                    ...widget.products.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      Map<String, String> product = entry.value;
+
                       return _productItem(
-                        imagePath: product.image ??
-                            "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
-                        price: product.price ?? "N/A",
+                        imagePath: product["imagePath"]!,
+                        price: product["price"]!,
+                        showHotIcon: index == 0,
                       );
                     }).toList(),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 15),
+              // const SizedBox(height: 15),
 
               // Description Section
               Container(
@@ -105,7 +111,7 @@ class _PromoCardState extends State<PromoCard> {
                             ),
                             SizedBox(width: 10.w),
                             Text(
-                              widget.offers.offers ?? "Special Offer!",
+                              widget.offerText ?? "Special Offer!",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11.sp,
@@ -139,8 +145,7 @@ class _PromoCardState extends State<PromoCard> {
                         children: [
                           Expanded(
                             child: Text(
-                              '${widget.feedItem.captionTitle}\n${widget.feedItem.caption}' ??
-                                  '',
+                              widget.captionTitle,
                               //"Subscribe to Adidas Official BizSpace to SHOP our Dashain Deals above & win AMAZING PRIZES by simply Subscribing to our Smartbazar",
                               style: const TextStyle(
                                 fontSize: 12,
@@ -176,24 +181,25 @@ class _PromoCardState extends State<PromoCard> {
   }
 
   // Widget for Product Item
-  Widget _productItem({required String imagePath, required String price}) {
+  Widget _productItem({
+    required String imagePath,
+    required String price,
+    bool showHotIcon = false, // New parameter to control the icon display
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Product Image
           Container(
-            width: 140.w,
-            height: 105.h,
+            width: 145.w,
+            height: 120.h,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-              // image: DecorationImage(
-              //   image: imagePath.startsWith("http")
-              //       ? NetworkImage(imagePath)
-              //       : AssetImage(imagePath) as ImageProvider,
-              //   fit: BoxFit.contain,
-              // ),
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
             ),
             child: Image.network(
               imagePath,
@@ -201,6 +207,8 @@ class _PromoCardState extends State<PromoCard> {
               width: double.infinity,
             ),
           ),
+
+          // Product Price with Optional Icon
           Container(
             width: 140.w,
             decoration: const BoxDecoration(
@@ -208,13 +216,28 @@ class _PromoCardState extends State<PromoCard> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Text(
-                price,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Rs $price',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                  if (showHotIcon)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5.0),
+                      child: Image.asset(
+                        'assets/icon/flame.png',
+                        width: 20.w,
+                        height: 20.h,
+                        color: Colors.white,
+                      ),
+                    ),
+                ],
               ),
             ),
           ),

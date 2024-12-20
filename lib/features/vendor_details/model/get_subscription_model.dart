@@ -8,7 +8,7 @@ part 'get_subscription_model.g.dart';
 @freezed
 class GetSubscriptionModel with _$GetSubscriptionModel {
   const factory GetSubscriptionModel({
-     List<Subscription>? subscriptions,
+    List<Subscription>? subscriptions,
   }) = _GetSubscriptionModel;
 
   factory GetSubscriptionModel.fromJson(Map<String, dynamic> json) =>
@@ -18,12 +18,12 @@ class GetSubscriptionModel with _$GetSubscriptionModel {
 @freezed
 class Subscription with _$Subscription {
   const factory Subscription({
-     String? id,
-     String? userId,
-     String? vendorId,
+    String? id,
+    String? userId,
+    String? vendorId,
     @JsonKey(name: 'followed_date') required String? followedDate,
-     String? status,
-     Vendor? vendor,
+    String? status,
+    Vendor? vendor,
   }) = _Subscription;
 
   factory Subscription.fromJson(Map<String, dynamic> json) =>

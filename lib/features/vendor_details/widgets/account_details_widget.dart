@@ -16,20 +16,33 @@ class AccountDetailsWidget extends ConsumerStatefulWidget {
 
 class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   final _formKey = GlobalKey<FormState>();
-
+  String weekDayName = '';
   String? fullName,
       phoneNumber,
       email,
       userName,
       genderID,
+
       //  dob,
-      openingHours,
+      // openingHours,
       description;
   String? userId; // Updated to nullable type since we are loading it
   bool isLoading = false;
+  // List<String>? day;
+  List<String?> from = [];
+  List<String?> to = [];
+  List<bool> closed = [];
 
   List<TextEditingController> branchControllers = [TextEditingController()];
-
+  final Map<String, Map<String, dynamic>> openingHours = {
+    'Sun': {'from': null, 'to': null, 'closed': false},
+    'Mon': {'from': null, 'to': null, 'closed': false},
+    'Tues': {'from': null, 'to': null, 'closed': false},
+    'Wed': {'from': null, 'to': null, 'closed': false},
+    'Thurs': {'from': null, 'to': null, 'closed': false},
+    'Fri': {'from': null, 'to': null, 'closed': false},
+    'Sat': {'from': null, 'to': null, 'closed': false},
+  };
   @override
   void initState() {
     super.initState();
@@ -78,13 +91,24 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     try {
       List<String> branchLocations =
           branchControllers.map((controller) => controller.text).toList();
-      Map<String, Map<String, dynamic>> openingHours = {};
-      final openingHoursWidget =
-          context.findAncestorStateOfType<_OpeningHoursWidgetState>();
-      if (openingHoursWidget != null) {
-        openingHours = openingHoursWidget.openingHours;
-      }
 
+      List<String> dayNames = openingHours.keys.toList();
+      List<String> from = [];
+      List<String> to = [];
+      List<bool> closed = [];
+
+      for (int i = 0; i < dayNames.length; i++) {
+        from.add(openingHours[dayNames[i]]!['from'] ?? '');
+        to.add(openingHours[dayNames[i]]!['to'] ?? '');
+        closed.add(openingHours[dayNames[i]]!['closed']);
+      }
+      // Map<String, Map<String, dynamic>> openingHours = {};
+      // final openingHoursWidget =
+      //     context.findAncestorStateOfType<_OpeningHoursWidgetState>();
+      // if (openingHoursWidget != null) {
+      //   openingHours = openingHoursWidget.openingHours;
+      // }
+    
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         fullName!,
         phoneNumber!,
@@ -93,7 +117,12 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         userId!,
         genderID!,
         branchLocations,
-        openingHours,
+        description!,
+        dayNames ?? [],
+        from,
+        to,
+        closed,
+
         // description,
         //  dob!,
       ).future);
@@ -107,9 +136,13 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         phoneNumber = '';
         email = '';
         userName = '';
-        genderID = null; 
+        genderID = null;
         branchControllers.clear();
-        openingHours = {};
+        description = '';
+        dayNames = [];
+        from = [];
+        to = [];
+        closed = [];
       });
       _formKey.currentState?.reset();
     } catch (error) {
@@ -408,7 +441,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                   SizedBox(height: 10.2.h),
                   SizedBox(
                     height: 350.h,
-                    child: const OpeningHoursWidget(),
+                    child: OpeningHoursWidget(openingHours: openingHours),
                   ),
                   // CustomTextFieldWidget(
                   //   fill: true,
@@ -474,7 +507,8 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 }
 
 class OpeningHoursWidget extends StatefulWidget {
-  const OpeningHoursWidget({super.key});
+  const OpeningHoursWidget({super.key, required this.openingHours});
+  final Map<String, Map<String, dynamic>> openingHours;
   @override
   State<OpeningHoursWidget> createState() => _OpeningHoursWidgetState();
 }
@@ -485,18 +519,9 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
       (index) =>
           '${(index ~/ 4).toString().padLeft(2, '0')}:${(index % 4) * 15} ${index < 48 ? 'AM' : 'PM'}');
 
-  final Map<String, Map<String, dynamic>> openingHours = {
-    'Sun': {'from': null, 'to': null, 'closed': false},
-    'Mon': {'from': null, 'to': null, 'closed': false},
-    'Tues': {'from': null, 'to': null, 'closed': false},
-    'Wed': {'from': null, 'to': null, 'closed': false},
-    'Thurs': {'from': null, 'to': null, 'closed': false},
-    'Fri': {'from': null, 'to': null, 'closed': false},
-    'Sat': {'from': null, 'to': null, 'closed': false},
-  };
-
   @override
   Widget build(BuildContext context) {
+    // print(openingHours.keys);
     return Column(
       children: [
         Row(
@@ -552,9 +577,9 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
         // ListView Section
         Expanded(
           child: ListView.builder(
-            itemCount: openingHours.keys.length,
+            itemCount: widget.openingHours.keys.length,
             itemBuilder: (context, index) {
-              String day = openingHours.keys.elementAt(index);
+              String day = widget.openingHours.keys.elementAt(index);
               return Row(
                 children: [
                   Expanded(
@@ -563,7 +588,7 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                     style:
                         TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
                   )),
-                  if (!openingHours[day]!['closed'])
+                  if (!widget.openingHours[day]!['closed'])
                     Expanded(
                       child: Container(
                         height: 20.h,
@@ -578,14 +603,14 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                           child: DropdownButton<String>(
                             isExpanded: false,
                             alignment: AlignmentDirectional.centerEnd,
-                            value: openingHours[day]!['from'],
+                            value: widget.openingHours[day]!['from'],
                             // hint: Text(
                             //   'From',
                             //   style: TextStyle(fontSize: 12.sp),
                             // ),
                             onChanged: (value) {
                               setState(() {
-                                openingHours[day]!['from'] = value;
+                                widget.openingHours[day]!['from'] = value;
                               });
                             },
                             items: timeSlots
@@ -606,11 +631,11 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                         ),
                       ),
                     ),
-                  if (!openingHours[day]!['closed'])
+                  if (!widget.openingHours[day]!['closed'])
                     SizedBox(
                       width: 10.w,
                     ),
-                  if (!openingHours[day]!['closed'])
+                  if (!widget.openingHours[day]!['closed'])
                     Expanded(
                       child: Container(
                         height: 20.h,
@@ -623,14 +648,14 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                                 Border.all(width: 1, color: Colors.black12)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: openingHours[day]!['to'],
+                            value: widget.openingHours[day]!['to'],
                             // hint: Text(
                             //   'To',
                             //   style: TextStyle(fontSize: 12.sp),
                             // ),
                             onChanged: (value) {
                               setState(() {
-                                openingHours[day]!['to'] = value;
+                                widget.openingHours[day]!['to'] = value;
                               });
                             },
                             items: timeSlots
@@ -652,13 +677,13 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                       ),
                     ),
                   Checkbox(
-                    value: openingHours[day]!['closed'],
+                    value: widget.openingHours[day]!['closed'],
                     onChanged: (value) {
                       setState(() {
-                        openingHours[day]!['closed'] = value!;
+                        widget.openingHours[day]!['closed'] = value!;
                         if (value) {
-                          openingHours[day]!['from'] = null;
-                          openingHours[day]!['to'] = null;
+                          widget.openingHours[day]!['from'] = null;
+                          widget.openingHours[day]!['to'] = null;
                         }
                       });
                     },

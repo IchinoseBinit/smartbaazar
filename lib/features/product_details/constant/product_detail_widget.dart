@@ -465,7 +465,7 @@ class ProductDetailWidget extends StatelessWidget {
                                   width: 2.w,
                                 ),
                                 Image.asset(
-                                  "assets/images/nepalFlag.png",
+                                  "assets/icon/domestic_brand.png",
                                   height: 9.h,
                                 ),
                                 SizedBox(

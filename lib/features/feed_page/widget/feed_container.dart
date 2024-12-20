@@ -16,6 +16,8 @@ class FeedContainer extends StatelessWidget {
     required this.engagement,
     required this.views,
     required this.feedDetailImage,
+    required this.membershipTitle,
+    required this.membershipId,
   });
   final String? vendorImage;
   final String? vendorName;
@@ -27,6 +29,8 @@ class FeedContainer extends StatelessWidget {
   final String? engagement;
   final String? views;
   final String? feedDetailImage;
+  final String? membershipTitle;
+  final String? membershipId;
 
   // final UserDetail? userDetails;
   // final Interested? interested;
@@ -55,35 +59,40 @@ class FeedContainer extends StatelessWidget {
               ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 2,
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundColor:
+                          const Color(0x7F7F7F73).withOpacity(0.45),
+                      child: ClipOval(
+                          child: vendorImage != null && vendorImage!.isNotEmpty
+                              ? Image.network(
+                                  vendorImage!,
+                                  fit: BoxFit.cover,
+                                  width: 36,
+                                  height: 36,
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  size: 24.sp,
+                                )),
                     ),
                   ),
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
-                    child: ClipOval(
-                        child: vendorImage != null && vendorImage!.isNotEmpty
-                            ? Image.network(
-                                vendorImage!,
-                                fit: BoxFit.cover,
-                                width: 36,
-                                height: 36,
-                              )
-                            : Icon(
-                                Icons.person,
-                                size: 24.sp,
-                              )),
-                  ),
                 ),
-                SizedBox(width: 10.w),
+                // SizedBox(width: 10.w),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -98,44 +107,51 @@ class FeedContainer extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 10.sp),
+                                  fontSize: 16.sp),
                             ),
                             SizedBox(width: 5.w),
-                            ShaderMask(
-                              shaderCallback: (Rect bounds) {
-                                return const LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  colors: [
-                                    Color(0xFF41246e), // Dark purple
-                                    Color(0xFF721844), // Dark red
-                                  ],
-                                ).createShader(bounds);
-                              },
-                              blendMode: BlendMode.srcIn,
-                              child: const Icon(
-                                Icons.login,
-                                size: 22,
-                                color: Colors.white,
-                              ),
+                            Image.asset(
+                              "assets/images/back.png",
+                              height: 16.h,
                             ),
+                            // ShaderMask(
+                            //   shaderCallback: (Rect bounds) {
+                            //     return const LinearGradient(
+                            //       begin: Alignment.topRight,
+                            //       end: Alignment.bottomLeft,
+                            //       colors: [
+                            //         Color(0xFF41246e), // Dark purple
+                            //         Color(0xFF721844), // Dark red
+                            //       ],
+                            //     ).createShader(bounds);
+                            //   },
+                            //   blendMode: BlendMode.srcIn,
+                            //   child: Icon(
+                            //     Icons.login,
+                            //     size: 34.sp,
+                            //     // color: Colors.white,
+                            //   ),
+                            // ),
                           ],
                         ),
                         //i cant put spacer here why?
-                        SizedBox(
-                          width: 70.w,
-                        ),
+                        SizedBox(width: 70.h),
                         Row(
                           children: [
-                            const Icon(Icons.public),
+                            Image.asset(
+                              _getMembershipImage(membershipId),
+                              width: 16.w,
+                              height: 16.h,
+                              color: Colors.black45,
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "GLOBAL BRAND",
+                                membershipTitle ?? '',
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 8.sp),
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 10.sp),
                               ),
                             ),
                           ],
@@ -189,7 +205,7 @@ class FeedContainer extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(width: 15.w),
+                        SizedBox(width: 10.w),
                         Column(
                           children: [
                             Icon(
@@ -198,7 +214,7 @@ class FeedContainer extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h),
                             Text(
-                              distance ?? '0',
+                              '${distance ?? '0'} m', // Assuming the unit is kilometers
                               style: TextStyle(fontSize: 8.sp),
                             ),
                           ],
@@ -414,6 +430,22 @@ class FeedContainer extends StatelessWidget {
         )
       ],
     );
+  }
+
+  // Function to get membership image
+  String _getMembershipImage(String? membershipId) {
+    switch (membershipId) {
+      case '1':
+        return 'assets/icon/basic_seller.png';
+      case '2':
+        return 'assets/icon/spotlight_seller.png';
+      case '3':
+        return 'assets/icon/domestic_brand.png';
+      case '25':
+        return 'assets/icon/global_brand.png';
+      default:
+        return 'assets/icon/global_brand.png'; // Default image
+    }
   }
 }
 

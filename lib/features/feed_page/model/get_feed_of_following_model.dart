@@ -10,17 +10,20 @@ class GetFeedOfFollowingModel with _$GetFeedOfFollowingModel {
     @JsonKey(name: 'msg') String? msg,
   }) = _GetFeedOfFollowingModel;
 
-  factory GetFeedOfFollowingModel.fromJson(Map<String, dynamic> json) => _$GetFeedOfFollowingModelFromJson(json);
+  factory GetFeedOfFollowingModel.fromJson(Map<String, dynamic> json) =>
+      _$GetFeedOfFollowingModelFromJson(json);
 }
 
 @freezed
 class DataModel with _$DataModel {
   factory DataModel({
+    // @JsonKey(name: '0') Map<String, List<FeedItem>>? feedItems,
     @JsonKey(name: '0') List<FeedItem>? feedItems,
-    @JsonKey(name: 'story') Map<String, Story>? story,
+    // @JsonKey(name: 'story')  Map<String, Story>? story,
   }) = _DataModel;
 
-  factory DataModel.fromJson(Map<String, dynamic> json) => _$DataModelFromJson(json);
+  factory DataModel.fromJson(Map<String, dynamic> json) =>
+      _$DataModelFromJson(json);
 }
 
 @freezed
@@ -40,7 +43,8 @@ class FeedItem with _$FeedItem {
     @JsonKey(name: 'userdetail') UserDetail? userDetail,
   }) = _FeedItem;
 
-  factory FeedItem.fromJson(Map<String, dynamic> json) => _$FeedItemFromJson(json);
+  factory FeedItem.fromJson(Map<String, dynamic> json) =>
+      _$FeedItemFromJson(json);
 }
 
 @freezed
@@ -62,7 +66,8 @@ class Product with _$Product {
     @JsonKey(name: 'image') String? image,
   }) = _Product;
 
-  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 }
 
 @freezed
@@ -73,7 +78,8 @@ class FeedDetail with _$FeedDetail {
     @JsonKey(name: 'image') String? image,
   }) = _FeedDetail;
 
-  factory FeedDetail.fromJson(Map<String, dynamic> json) => _$FeedDetailFromJson(json);
+  factory FeedDetail.fromJson(Map<String, dynamic> json) =>
+      _$FeedDetailFromJson(json);
 }
 
 @freezed
@@ -84,7 +90,8 @@ class Interested with _$Interested {
     @JsonKey(name: 'views') String? views,
   }) = _Interested;
 
-  factory Interested.fromJson(Map<String, dynamic> json) => _$InterestedFromJson(json);
+  factory Interested.fromJson(Map<String, dynamic> json) =>
+      _$InterestedFromJson(json);
 }
 
 @freezed
@@ -103,34 +110,35 @@ class UserDetail with _$UserDetail {
     @JsonKey(name: 'membership_color') String? membershipColor,
   }) = _UserDetail;
 
-  factory UserDetail.fromJson(Map<String, dynamic> json) => _$UserDetailFromJson(json);
+  factory UserDetail.fromJson(Map<String, dynamic> json) =>
+      _$UserDetailFromJson(json);
 }
 
-@freezed
-class Story with _$Story {
-  factory Story({
-    @JsonKey(name: 'vendor_name') String? vendorName,
-    @JsonKey(name: 'vendor_image') String? vendorImage,
-    @JsonKey(name: 'story_count') int? storyCount,
-    @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
-    @JsonKey(name: 'posts') List<Post>? posts,
-  }) = _Story;
+// @freezed
+// class Story with _$Story {
+//   factory Story({
+//     @JsonKey(name: 'vendor_name') String? vendorName,
+//     @JsonKey(name: 'vendor_image') String? vendorImage,
+//     @JsonKey(name: 'story_count') int? storyCount,
+//     @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+//     @JsonKey(name: 'posts') List<Post>? posts,
+//   }) = _Story;
 
-  factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
-}
+//   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
+// }
 
-@freezed
-class Post with _$Post {
-  factory Post({
-    @JsonKey(name: 'id') String? id,
-    @JsonKey(name: 'title') String? title,
-    @JsonKey(name: 'image') String? image,
-    @JsonKey(name: 'similarproductcount') int? similarProductCount,
-    @JsonKey(name: 'comment_count') String? commentCount,
-    @JsonKey(name: 'average_rating') double? averageRating,
-    @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
-    @JsonKey(name: 'wow') dynamic wow,
-  }) = _Post;
+// @freezed
+// class Post with _$Post {
+//   factory Post({
+//     @JsonKey(name: 'id') String? id,
+//     @JsonKey(name: 'title') String? title,
+//     @JsonKey(name: 'image') String? image,
+//     @JsonKey(name: 'similarproductcount') int? similarProductCount,
+//     @JsonKey(name: 'comment_count') String? commentCount,
+//     @JsonKey(name: 'average_rating') double? averageRating,
+//     @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
+//     @JsonKey(name: 'wow') dynamic wow,
+//   }) = _Post;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-}
+//   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+// }

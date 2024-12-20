@@ -51,9 +51,11 @@ class FeedScreen extends ConsumerWidget {
                           color: Colors.white,
                         ),
                         SizedBox(width: 10.w),
-                        SizedBox(height: 50, child: NewSearchWidget(onchnage: (p0) {
-                          
-                        },)),
+                        SizedBox(
+                            height: 50,
+                            child: NewSearchWidget(
+                              onchnage: (p0) {},
+                            )),
                       ],
                     ),
                     SizedBox(height: 30.h),
@@ -71,8 +73,8 @@ class FeedScreen extends ConsumerWidget {
                 ),
               ),
               // Tab Bar Section
-              TabBar(
-                indicatorColor: const Color(0xFF392574),
+              const TabBar(
+                indicatorColor: Color(0xFF392574),
                 labelColor: Colors.black,
                 unselectedLabelColor: Colors.grey,
                 tabs: [
@@ -134,21 +136,54 @@ class FeedScreen extends ConsumerWidget {
             child: Row(
               children: [
                 Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
                   children: [
                     Positioned(
-                      child: Image.asset(
-                        fit: BoxFit.cover,
-                        height: 120,
-                        "assets/images/subscribe.png",
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                            width: 95.r,
+                            height: 95.r,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 3.w, color: const Color(0xffEACACB)),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(width: 1.w, color: Colors.black),
+                              shape: BoxShape.circle,
+                            ),
+                            child: CircleAvatar(
+                              radius: 38.r,
+                              backgroundColor:
+                                  const Color(0x7F7F7F73).withOpacity(0.45),
+                              backgroundImage: NetworkImage(
+                                'https://smartbazaar.jianjun-rnd.com.np/storage/files/np/947/11ce743037dbc695f81557faf3d959de.png',
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                      // child: Image.asset(
+                      //   fit: BoxFit.cover,
+                      //   height: 120,
+                      //   "assets/images/subscribe.png",
+                      // ),
                     ),
                     Positioned(
-                      bottom: 12,
+                      bottom: -7,
                       right: 1,
                       left: 1,
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.grey,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.add),
@@ -163,7 +198,10 @@ class FeedScreen extends ConsumerWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: 2,
                     itemBuilder: (context, index) {
-                      return StoryAddWidget(index: index);
+                      return StoryAddWidget(
+                        index: index,
+                        showgift: true,
+                      );
                     },
                   ),
                 ),
@@ -188,7 +226,9 @@ class FeedScreen extends ConsumerWidget {
                     // return _buildFeedItem(feedItems[index]);
                     return Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16),
+                        vertical: 8.0,
+                        horizontal: 16,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -198,18 +238,34 @@ class FeedScreen extends ConsumerWidget {
                             vendorName: userDetails.vendorName!,
                             vendorImage: userDetails.vendorImage!,
                             livePrize: userDetails.livePrize.toString(),
-                            distance: userDetails.distance?.toString(),
+                            distance: userDetails.distance?.toStringAsFixed(0),
                             interested: interested?.interested?.toString(),
                             engagement: interested?.engagement?.toString(),
                             views: interested?.views,
                             feedDetailImage: feedDetail!.image!,
+                            membershipTitle: userDetails.membershipTitle ?? '',
+                            membershipId: userDetails.membershipId ?? '',
                             //feedDetail: feedItem.feedDetail,
                           ),
-                          // SizedBox(height: 18.h),
                           PromoCard(
-                            offers: feedItem.offers!,
-                            feedItem: feedItem,
+                            products: feedItem.offers!.products!
+                                .map((product) => {
+                                      "imagePath": product.image ??
+                                          "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
+                                      "price": product.price! ?? "N/A",
+                                    })
+                                .toList(),
+                            captionTitle:
+                                '${feedItem.captionTitle}\n${feedItem.caption}',
+                            caption: feedItem.caption ?? '',
+                            offerText:
+                                feedItem.offers!.offers ?? 'Special Offer!',
                           ),
+                          // SizedBox(height: 18.h),
+                          // PromoCard(
+                          //   offers: feedItem.offers!,
+                          //   feedItem: feedItem,
+                          // ),
                           // _buildUserDetails(feedItem.userDetail),
                           // SizedBox(height: 8.h),
                           // _buildFeedContent(feedItem),
@@ -309,23 +365,30 @@ class FeedScreen extends ConsumerWidget {
                             vendorName: userDetails.vendorName!,
                             vendorImage: userDetails.vendorImage!,
                             livePrize: userDetails.livePrize.toString(),
-                            distance: userDetails.distance?.toString(),
+                            distance: userDetails.distance?.toStringAsFixed(0),
                             interested: interested?.interested?.toString(),
                             engagement: interested?.engagement?.toString(),
                             views: interested?.views,
                             feedDetailImage: feedDetail!.image!,
+                            membershipTitle: userDetails.membershipTitle,
+                            membershipId: userDetails.membershipId ?? '',
                             //feedDetail: feedItem.feedDetail,
                           ),
-                          // SizedBox(height: 18.h),
+
                           // PromoCard(
-                          //   offers: feedItem.offers!,
-                          //   feedItem: feedItem,
+                          //   products: feedItem.offers!.products!
+                          //       .map((product) => {
+                          //             "imagePath": product.image ??
+                          //                 "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
+                          //             "price": product.price ?? "N/A",
+                          //           })
+                          //       .toList(),
+                          //   captionTitle:
+                          //       '${feedItem.captionTitle}\n${feedItem.caption}',
+                          //   caption: feedItem.caption ?? '',
+                          //   offerText:
+                          //       feedItem.offers!.offers ?? 'Special Offer!',
                           // ),
-                          // _buildUserDetails(feedItem.userDetail),
-                          // SizedBox(height: 8.h),
-                          // _buildFeedContent(feedItem),
-                          // SizedBox(height: 8.h),
-                          // _buildEngagementSection(feedItem),
                         ],
                       ),
                     );

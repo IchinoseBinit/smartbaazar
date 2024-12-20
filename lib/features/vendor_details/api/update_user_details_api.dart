@@ -16,7 +16,13 @@ Future<UpdateUserDetail> updateUserDetails(
   String userId,
   String genderID,
   List<String> branchLocations,
-  Map<String, Map<String, dynamic>> openingHours,
+  // Map<String, Map<String, dynamic>> openingHours,
+  String bio,
+  List<String> day,
+  List<String?> fromList,
+  List<String?> toList,
+  List<bool> closed,
+  
 
   // String dob,
 ) async {
@@ -37,17 +43,78 @@ Future<UpdateUserDetail> updateUserDetails(
       'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
-      'branch_location[]': branchLocations,
-      'opening_hours[]': openingHours.entries.map((entry) {
-        return {
-          'day': entry.key,
-          'from': entry.value['from'],
-          'to': entry.value['to'],
-          'closed': entry.value['closed']
-        };
-      }).toList()
+      'bio': bio,
+      'location[]': branchLocations,
+      'day[]': day ,
+      'from[]': fromList ,
+      'to[]': toList ,
+      'closed[]': closed ,
+      // 'opening_hours[]': openingHours.entries.map((entry) {
+      //   return {
+      //     'day[]': entry.key,
+      //     'from[]': entry.value['from'],
+      //     'to[]': entry.value['to'],
+      //     'closed[]': entry.value['closed']
+      //   };
+      // }).toList()
 
       //    'dob': dob,
+    };
+
+    final response = await client.request(
+      requestType: RequestType.putWithTokenEncoded,
+      url: "${ApiConstants.updateUserDetailsUrl}/$userId",
+      parameter: formData,
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = response.data;
+      final userDetails = UpdateUserDetail.fromJson(jsonResponse);
+      return userDetails;
+    } else {
+      throw Exception('Failed to update user details');
+    }
+  } catch (e) {
+    print('Error updating user details: $e');
+    rethrow; // Re-throw the exception to propagate it up the call stack
+  }
+}
+@riverpod
+Future<UpdateUserDetail> updateBuyerUserDetails(
+  UpdateBuyerUserDetailsRef ref,
+  String fullName,
+  String phoneNumber,
+  String userName,
+  String email,
+  String userId,
+  String genderID,
+  String branchLocations,
+ 
+  
+
+  // String dob,
+) async {
+  final SmartClinet client = SmartClinet();
+
+  try {
+    Map<String, dynamic> formData = {
+      'country_code': 'NP',
+      'language_code': 'en',
+      'gender_id': genderID,
+      'name': fullName,
+      'remove_photo': 0,
+      'auth_field': 'phone',
+      'email': email,
+      'phone': phoneNumber,
+      'phone_country': 'NP',
+      'username': userName,
+      'ip_addr': '127.0.0.1',
+      'accept_terms': 1,
+      'accept_marketing_offers': 1,
+    
+      'user_location': branchLocations,
+
+
     };
 
     final response = await client.request(

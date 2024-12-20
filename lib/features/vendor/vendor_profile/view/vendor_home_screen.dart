@@ -798,7 +798,7 @@ class big_container extends StatelessWidget {
                 Column(
                   children: [
                     Image.asset(
-                      "assets/images/nepalFlag.png",
+                      "assets/icon/domestic_brand.png",
                       width: 50,
                       height: 50,
                       color: Colors.grey,
