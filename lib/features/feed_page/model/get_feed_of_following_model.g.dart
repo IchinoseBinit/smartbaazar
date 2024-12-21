@@ -11,7 +11,7 @@ _$GetFeedOfFollowingModelImpl _$$GetFeedOfFollowingModelImplFromJson(
     _$GetFeedOfFollowingModelImpl(
       data: json['data'] == null
           ? null
-          : DataModel.fromJson(json['data'] as Map<String, dynamic>),
+          : Data.fromJson(json['data'] as Map<String, dynamic>),
       msg: json['msg'] as String?,
     );
 
@@ -22,20 +22,23 @@ Map<String, dynamic> _$$GetFeedOfFollowingModelImplToJson(
       'msg': instance.msg,
     };
 
-_$DataModelImpl _$$DataModelImplFromJson(Map<String, dynamic> json) =>
-    _$DataModelImpl(
-      feedItems: (json['0'] as List<dynamic>?)
-          ?.map((e) => FeedItem.fromJson(e as Map<String, dynamic>))
+_$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
+      feedPost: (json['feed_post'] as List<dynamic>?)
+          ?.map((e) => FeedPost.fromJson(e as Map<String, dynamic>))
           .toList(),
+      story: json['story'] == null
+          ? null
+          : Story.fromJson(json['story'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$DataModelImplToJson(_$DataModelImpl instance) =>
+Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
     <String, dynamic>{
-      '0': instance.feedItems,
+      'feed_post': instance.feedPost,
+      'story': instance.story,
     };
 
-_$FeedItemImpl _$$FeedItemImplFromJson(Map<String, dynamic> json) =>
-    _$FeedItemImpl(
+_$FeedPostImpl _$$FeedPostImplFromJson(Map<String, dynamic> json) =>
+    _$FeedPostImpl(
       id: json['id'] as String?,
       image: json['image'] as String?,
       caption: json['caption'] as String?,
@@ -43,10 +46,10 @@ _$FeedItemImpl _$$FeedItemImplFromJson(Map<String, dynamic> json) =>
       views: json['views'] as String?,
       wow: json['wow'],
       userId: json['user_id'] as String?,
-      offers: json['offers'] == null
-          ? null
-          : Offers.fromJson(json['offers'] as Map<String, dynamic>),
-      products: json['products'] as String?,
+      offers: json['offers'] as String?,
+      products: (json['products'] as List<dynamic>?)
+          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .toList(),
       feedDetail: json['feed_detail'] == null
           ? null
           : FeedDetail.fromJson(json['feed_detail'] as Map<String, dynamic>),
@@ -58,7 +61,7 @@ _$FeedItemImpl _$$FeedItemImplFromJson(Map<String, dynamic> json) =>
           : UserDetail.fromJson(json['userdetail'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$FeedItemImplToJson(_$FeedItemImpl instance) =>
+Map<String, dynamic> _$$FeedPostImplToJson(_$FeedPostImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'image': instance.image,
@@ -72,19 +75,6 @@ Map<String, dynamic> _$$FeedItemImplToJson(_$FeedItemImpl instance) =>
       'feed_detail': instance.feedDetail,
       'interested': instance.interested,
       'userdetail': instance.userDetail,
-    };
-
-_$OffersImpl _$$OffersImplFromJson(Map<String, dynamic> json) => _$OffersImpl(
-      offers: json['offers'] as String?,
-      products: (json['products'] as List<dynamic>?)
-          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$OffersImplToJson(_$OffersImpl instance) =>
-    <String, dynamic>{
-      'offers': instance.offers,
-      'products': instance.products,
     };
 
 _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
@@ -105,15 +95,15 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
 
 _$FeedDetailImpl _$$FeedDetailImplFromJson(Map<String, dynamic> json) =>
     _$FeedDetailImpl(
-      captionTitle: json['cation_title'] as String?,
-      caption: json['cation'] as String?,
+      captionTitle: json['caption_title'] as String?,
+      caption: json['caption'] as String?,
       image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$FeedDetailImplToJson(_$FeedDetailImpl instance) =>
     <String, dynamic>{
-      'cation_title': instance.captionTitle,
-      'cation': instance.caption,
+      'caption_title': instance.captionTitle,
+      'caption': instance.caption,
       'image': instance.image,
     };
 
@@ -159,4 +149,60 @@ Map<String, dynamic> _$$UserDetailImplToJson(_$UserDetailImpl instance) =>
       'membership_id': instance.membershipId,
       'membership_title': instance.membershipTitle,
       'membership_color': instance.membershipColor,
+    };
+
+_$StoryImpl _$$StoryImplFromJson(Map<String, dynamic> json) => _$StoryImpl(
+      feedStory: (json['feed_story'] as List<dynamic>?)
+          ?.map((e) => FeedStory.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
+    <String, dynamic>{
+      'feed_story': instance.feedStory,
+    };
+
+_$FeedStoryImpl _$$FeedStoryImplFromJson(Map<String, dynamic> json) =>
+    _$FeedStoryImpl(
+      id: json['id'] as String?,
+      vendorName: json['vendor_name'] as String?,
+      vendorImage: json['vendor_image'] as String?,
+      storyCount: (json['story_count'] as num?)?.toInt(),
+      hasSponsoredGifts: json['has_sponsored_gifts'] as bool?,
+      posts: (json['posts'] as List<dynamic>?)
+          ?.map((e) => Post.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$FeedStoryImplToJson(_$FeedStoryImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'vendor_name': instance.vendorName,
+      'vendor_image': instance.vendorImage,
+      'story_count': instance.storyCount,
+      'has_sponsored_gifts': instance.hasSponsoredGifts,
+      'posts': instance.posts,
+    };
+
+_$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
+      id: json['id'] as String?,
+      title: json['title'] as String?,
+      image: json['image'] as String?,
+      similarProductCount: (json['similarproductcount'] as num?)?.toInt(),
+      commentCount: json['comment_count'] as String?,
+      averageRating: json['average_rating'],
+      discountPercentage: json['discount_percentage'],
+      wow: json['wow'],
+    );
+
+Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'image': instance.image,
+      'similarproductcount': instance.similarProductCount,
+      'comment_count': instance.commentCount,
+      'average_rating': instance.averageRating,
+      'discount_percentage': instance.discountPercentage,
+      'wow': instance.wow,
     };

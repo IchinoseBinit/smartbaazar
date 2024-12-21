@@ -93,136 +93,129 @@ class FeedContainer extends StatelessWidget {
                   ),
                 ),
                 // SizedBox(width: 10.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              vendorName ?? 'N/A',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16.sp),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    vendorName ?? 'N/A',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16.sp,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true,
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                                Image.asset(
+                                  "assets/images/back.png",
+                                  height: 16.h,
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 5.w),
-                            Image.asset(
-                              "assets/images/back.png",
-                              height: 16.h,
-                            ),
-                            // ShaderMask(
-                            //   shaderCallback: (Rect bounds) {
-                            //     return const LinearGradient(
-                            //       begin: Alignment.topRight,
-                            //       end: Alignment.bottomLeft,
-                            //       colors: [
-                            //         Color(0xFF41246e), // Dark purple
-                            //         Color(0xFF721844), // Dark red
-                            //       ],
-                            //     ).createShader(bounds);
-                            //   },
-                            //   blendMode: BlendMode.srcIn,
-                            //   child: Icon(
-                            //     Icons.login,
-                            //     size: 34.sp,
-                            //     // color: Colors.white,
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                        //i cant put spacer here why?
-                        SizedBox(width: 70.h),
-                        Row(
-                          children: [
-                            Image.asset(
-                              _getMembershipImage(membershipId),
-                              width: 16.w,
-                              height: 16.h,
-                              color: Colors.black45,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                membershipTitle ?? '',
-                                style: TextStyle(
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                _getMembershipImage(membershipId),
+                                width: 16.w,
+                                height: 16.h,
+                                color: Colors.black45,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  membershipTitle ?? '',
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 10.sp),
+                                    fontSize: 10.sp,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              suscribers ?? '0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 11.sp),
-                            ),
-                            Text(
-                              "SUBSCRIBERS",
-                              style: TextStyle(fontSize: 10.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 15.w),
-                        Column(
-                          children: [
-                            Text(
-                              productCount ?? '0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 11.sp),
-                            ),
-                            Text(
-                              "PRODUCTS",
-                              style: TextStyle(fontSize: 8.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 15.w),
-                        Column(
-                          children: [
-                            Text(
-                              livePrize ?? '0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 11.sp),
-                            ),
-                            Text(
-                              "LIVE PRIZES",
-                              style: TextStyle(fontSize: 8.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 10.w),
-                        Column(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              size: 12.h,
-                            ),
-                            SizedBox(height: 5.h),
-                            Text(
-                              '${distance ?? '0'} m', // Assuming the unit is kilometers
-                              style: TextStyle(fontSize: 8.sp),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                )
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                suscribers ?? '0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11.sp),
+                              ),
+                              Text(
+                                "SUBSCRIBERS",
+                                style: TextStyle(fontSize: 10.sp),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 15.w),
+                          Column(
+                            children: [
+                              Text(
+                                productCount ?? '0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11.sp),
+                              ),
+                              Text(
+                                "PRODUCTS",
+                                style: TextStyle(fontSize: 8.sp),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 15.w),
+                          Column(
+                            children: [
+                              Text(
+                                livePrize ?? '0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11.sp),
+                              ),
+                              Text(
+                                "LIVE PRIZES",
+                                style: TextStyle(fontSize: 8.sp),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 10.w),
+                          Column(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                size: 12.h,
+                              ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                '${distance ?? '0'} km',
+                                style: TextStyle(fontSize: 8.sp),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 5.w,)
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

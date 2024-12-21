@@ -253,6 +253,56 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       return null;
                     },
                   ),
+                  Container(
+                    height: 160.h,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/flameIcon.png",
+                              width: 50.w,
+                              height: 50.h,
+                            ),
+                            Text(
+                              'Discount On Bulk Orders !',
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xff000000)),
+                            ),
+                          ],
+                        ),
+                        if (checkoutDetails.data?.items?.isNotEmpty ?? false)
+                          Expanded(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: checkoutDetails.data!.items![0]
+                                      .discountOnBulks?.length ??
+                                  0,
+                              itemBuilder: (context, index) {
+                                final bulkDiscount = checkoutDetails
+                                    .data!.items![0].discountOnBulks![index];
+                                return Row(
+                                  children: [
+                                    DiscountOnBulkContainer(
+                                      pieceFrom: bulkDiscount.pieceFrom,
+                                      pieceTo: bulkDiscount.pieceTo,
+                                      rate: bulkDiscount.rate,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+
                   SizedBox(
                     height: 20.h,
                   ),
@@ -850,6 +900,62 @@ class _StreetAddressFieldWidgetState
             error: (error, stackTrace) => Text('Error: $error'),
           ),
       ],
+    );
+  }
+}
+
+class DiscountOnBulkContainer extends StatelessWidget {
+  const DiscountOnBulkContainer({
+    super.key,
+    required this.pieceFrom,
+    required this.pieceTo,
+    required this.rate,
+  });
+  final String? pieceFrom;
+  final String? pieceTo;
+  final String? rate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration:
+          BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
+      width: MediaQuery.sizeOf(context).width * 0.35,
+      height: 85.h,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("$pieceFrom-$pieceTo pieces",
+                style: TextStyle(
+                  fontSize: 13.sp,
+                )),
+            Text("Rs $rate",
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 15.w),
+                Icon(
+                  Icons.arrow_downward_rounded,
+                  color: Color(0xFF4B004B),
+                  size: 24.sp,
+                ),
+                Text("30%",
+                    style: TextStyle(
+                        color: Color(0xFF4B004B),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w900)),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

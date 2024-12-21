@@ -6,8 +6,8 @@ part 'get_for_you_feed_model.g.dart';
 @freezed
 class GetForYouFeedModel with _$GetForYouFeedModel {
   const factory GetForYouFeedModel({
-    @JsonKey(name: 'data') FeedData? data,
-    @JsonKey(name: 'msg') String? message,
+    @JsonKey(name: 'data') GetForYouFeedData? data,
+    String? msg,
   }) = _GetForYouFeedModel;
 
   factory GetForYouFeedModel.fromJson(Map<String, dynamic> json) =>
@@ -15,30 +15,30 @@ class GetForYouFeedModel with _$GetForYouFeedModel {
 }
 
 @freezed
-class FeedData with _$FeedData {
-  const factory FeedData({
+class GetForYouFeedData with _$GetForYouFeedData {
+  const factory GetForYouFeedData({
     @JsonKey(name: 'feed_post') List<FeedPost>? feedPost,
-    // @JsonKey(name: 'story') Map<String, Story>? story,
-  }) = _FeedData;
+    Story? story,
+  }) = _GetForYouFeedData;
 
-  factory FeedData.fromJson(Map<String, dynamic> json) =>
-      _$FeedDataFromJson(json);
+  factory GetForYouFeedData.fromJson(Map<String, dynamic> json) =>
+      _$GetForYouFeedDataFromJson(json);
 }
 
 @freezed
 class FeedPost with _$FeedPost {
   const factory FeedPost({
-    @JsonKey(name: 'id') String? id,
+    String? id,
     @JsonKey(name: 'user_id') String? userId,
-    @JsonKey(name: 'image') String? image,
-    @JsonKey(name: 'caption') String? caption,
-    @JsonKey(name: 'like') dynamic like,
-    @JsonKey(name: 'approved') String? approved,
-    @JsonKey(name: 'offers') Offers? offers,
+    String? image,
+    String? caption,
+    String? like,
+    String? approved,
+    String? offers,
     @JsonKey(name: 'caption_title') String? captionTitle,
-    @JsonKey(name: 'products') String? products,
-    @JsonKey(name: 'wow') dynamic wow,
-    @JsonKey(name: 'views') String? views,
+    List<Product>? products,
+    String? wow,
+    String? views,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
     @JsonKey(name: 'interested') Interested? interested,
@@ -50,34 +50,23 @@ class FeedPost with _$FeedPost {
 }
 
 @freezed
-class Offers with _$Offers {
-  const factory Offers({
-    @JsonKey(name: 'offers') dynamic offers,
-    @JsonKey(name: 'products') List<Product>? products,
-  }) = _Offers;
+class Product with _$Product {
+  const factory Product({
+    String? id,
+    String? title,
+    String? price,
+    String? image,
+  }) = _Product;
 
-  factory Offers.fromJson(Map<String, dynamic> json) => _$OffersFromJson(json);
-
-  // Add this method to handle both String and Map cases
-  static Offers fromDynamic(dynamic json) {
-    if (json is String) {
-      return Offers(
-        offers: json,
-        products: null,
-      );
-    } else if (json is Map<String, dynamic>) {
-      return Offers.fromJson(json);
-    }
-    throw Exception('Invalid Offers data');
-  }
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 }
-
 
 @freezed
 class FeedDetail with _$FeedDetail {
   const factory FeedDetail({
-    @JsonKey(name: 'cation_title') String? captionTitle,
-    @JsonKey(name: 'cation') String? caption,
+    @JsonKey(name: 'caption_title') String? captionTitle,
+    @JsonKey(name: 'caption') String? caption,
     @JsonKey(name: 'image') String? image,
   }) = _FeedDetail;
 
@@ -88,7 +77,7 @@ class FeedDetail with _$FeedDetail {
 @freezed
 class Interested with _$Interested {
   const factory Interested({
-    @JsonKey(name: 'interested') dynamic interested,
+    @JsonKey(name: 'interested') String? interested,
     @JsonKey(name: 'engagement') int? engagement,
     @JsonKey(name: 'views') String? views,
   }) = _Interested;
@@ -106,7 +95,7 @@ class UserDetail with _$UserDetail {
     @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
     @JsonKey(name: 'storyCount') int? storyCount,
     @JsonKey(name: 'live_prize') int? livePrize,
-    @JsonKey(name: 'distance') double? distance,
+    double? distance,
     @JsonKey(name: 'vendor_image') String? vendorImage,
     @JsonKey(name: 'membership_id') String? membershipId,
     @JsonKey(name: 'membership_title') String? membershipTitle,
@@ -118,44 +107,42 @@ class UserDetail with _$UserDetail {
 }
 
 @freezed
-class Product with _$Product {
-  factory Product({
-    @JsonKey(name: 'id') String? id,
-    @JsonKey(name: 'title') String? title,
-    @JsonKey(name: 'price') String? price,
-    @JsonKey(name: 'image') String? image,
-  }) = _Product;
+class Story with _$Story {
+  const factory Story({
+    @JsonKey(name: 'feed_story') List<FeedStory>? feedStory,
+  }) = _Story;
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
 }
 
-// @freezed
-// class Story with _$Story {
-//   const factory Story({
-//     @JsonKey(name: 'vendor_name') String? vendorName,
-//     @JsonKey(name: 'vendor_image') String? vendorImage,
-//     @JsonKey(name: 'story_count') int? storyCount,
-//     @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
-//     @JsonKey(name: 'posts') List<StoryPost>? posts,
-//   }) = _Story;
+@freezed
+class FeedStory with _$FeedStory {
+  const factory FeedStory({
+    @JsonKey(name: 'id') String? id,
+    @JsonKey(name: 'vendor_name') String? vendorName,
+    @JsonKey(name: 'vendor_image') String? vendorImage,
+    @JsonKey(name: 'story_count') int? storyCount,
+    @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+    @JsonKey(name: 'posts') List<Post>? posts,
+  }) = _FeedStory;
 
-//   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
-// }
+  factory FeedStory.fromJson(Map<String, dynamic> json) =>
+      _$FeedStoryFromJson(json);
+}
 
-// @freezed
-// class StoryPost with _$StoryPost {
-//   const factory StoryPost({
-//     @JsonKey(name: 'id') String? id,
-//     @JsonKey(name: 'title') String? title,
-//     @JsonKey(name: 'image') String? image,
-//     @JsonKey(name: 'similarproductcount') int? similarProductCount,
-//     @JsonKey(name: 'comment_count') String? commentCount,
-//     @JsonKey(name: 'average_rating') int? averageRating,
-//     @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
-//     @JsonKey(name: 'wow') dynamic wow,
-//   }) = _StoryPost;
+@freezed
+class Post with _$Post {
+  const factory Post({
+    @JsonKey(name: 'id') String? id,
+    @JsonKey(name: 'title') String? title,
+    @JsonKey(name: 'image') String? image,
+    @JsonKey(name: 'similarproductcount') int? similarProductCount,
+    @JsonKey(name: 'comment_count') String? commentCount,
+    @JsonKey(name: 'average_rating') dynamic averageRating,
+    @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
+    @JsonKey(name: 'wow') dynamic wow,
+  }) = _Post;
 
-//   factory StoryPost.fromJson(Map<String, dynamic> json) =>
-//       _$StoryPostFromJson(json);
-// }
+    factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+
+}

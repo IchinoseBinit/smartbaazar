@@ -6,6 +6,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/api/get_feed_of_following_api.dart';
 import 'package:smartbazar/features/feed_page/api/get_for_you_feed_api.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/promo_card.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
@@ -191,19 +192,39 @@ class FeedScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return StoryAddWidget(
-                        index: index,
-                        showgift: true,
+                asyncFollowingFeedContent.when(
+                  data: (feedData) {
+                    if (feedData.data != null && feedData.data!.story != null) {
+                      final feedStoryItems = feedData.data!.story!;
+                      return Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: feedStoryItems.feedStory!.length,
+                          itemBuilder: (context, index) {
+                            return FeedStoryAddWidget(
+                              index: index,
+                              vendorName:
+                                  feedStoryItems.feedStory![index].vendorName,
+                              vendorImage:
+                                  feedStoryItems.feedStory![index].vendorImage,
+                              storyCount:
+                                  feedStoryItems.feedStory![index].storyCount,
+                              showgift: feedStoryItems
+                                  .feedStory![index].hasSponsoredGifts,
+                              postList: feedStoryItems.feedStory![index].posts!,
+                            );
+                          },
+                        ),
                       );
-                    },
-                  ),
+                    } else {
+                      return const Center(child: Text('No story available'));
+                    }
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
               ],
             ),
@@ -211,8 +232,8 @@ class FeedScreen extends ConsumerWidget {
           SizedBox(height: 20.h),
           asyncFollowingFeedContent.when(
             data: (feedData) {
-              if (feedData.data != null && feedData.data!.feedItems != null) {
-                final feedItems = feedData.data!.feedItems!;
+              if (feedData.data != null && feedData.data!.feedPost != null) {
+                final feedItems = feedData.data!.feedPost!;
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -248,7 +269,7 @@ class FeedScreen extends ConsumerWidget {
                             //feedDetail: feedItem.feedDetail,
                           ),
                           PromoCard(
-                            products: feedItem.offers!.products!
+                            products: feedItem.products!
                                 .map((product) => {
                                       "imagePath": product.image ??
                                           "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
@@ -258,8 +279,7 @@ class FeedScreen extends ConsumerWidget {
                             captionTitle:
                                 '${feedItem.captionTitle}\n${feedItem.caption}',
                             caption: feedItem.caption ?? '',
-                            offerText:
-                                feedItem.offers!.offers ?? 'Special Offer!',
+                            offerText: feedItem.offers ?? 'Special Offer!',
                           ),
                           // SizedBox(height: 18.h),
                           // PromoCard(
@@ -323,6 +343,38 @@ class FeedScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+                // asyncForYouFeedContent.when(
+                //   data: (feedData) {
+                //     if (feedData.data != null && feedData.data!.story != null) {
+                //       final feedStoryItems = feedData.data!.story!;
+                //       return Expanded(
+                //         child: ListView.builder(
+                //           padding: EdgeInsets.zero,
+                //           shrinkWrap: true,
+                //           scrollDirection: Axis.horizontal,
+                //           itemCount: feedStoryItems.feedStory!.length,
+                //           itemBuilder: (context, index) {
+                //             return FeedStoryAddWidget(
+                //               index: index,
+                //               vendorName:
+                //                   feedStoryItems.feedStory!.first.vendorName,
+                //               vendorImage:
+                //                   feedStoryItems.feedStory!.first.vendorImage,
+                //                   storyCount: feedStoryItems.feedStory!.first.storyCount,
+                //                   showgift: feedStoryItems.feedStory!.first.hasSponsoredGifts,
+
+                //             );
+                //           },
+                //         ),
+                //       );
+                //     } else {
+                //       return const Center(child: Text('No story available'));
+                //     }
+                //   },
+                //   loading: () =>
+                //       const Center(child: CircularProgressIndicator()),
+                //   error: (error, stack) => Center(child: Text('Error: $error')),
+                // )
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
@@ -330,10 +382,13 @@ class FeedScreen extends ConsumerWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: 2,
                     itemBuilder: (context, index) {
-                      return StoryAddWidget(index: index);
+                      return StoryAddWidget(
+                        index: index,
+                        showgift: true,
+                      );
                     },
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -374,21 +429,19 @@ class FeedScreen extends ConsumerWidget {
                             membershipId: userDetails.membershipId ?? '',
                             //feedDetail: feedItem.feedDetail,
                           ),
-
-                          // PromoCard(
-                          //   products: feedItem.offers!.products!
-                          //       .map((product) => {
-                          //             "imagePath": product.image ??
-                          //                 "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
-                          //             "price": product.price ?? "N/A",
-                          //           })
-                          //       .toList(),
-                          //   captionTitle:
-                          //       '${feedItem.captionTitle}\n${feedItem.caption}',
-                          //   caption: feedItem.caption ?? '',
-                          //   offerText:
-                          //       feedItem.offers!.offers ?? 'Special Offer!',
-                          // ),
+                          PromoCard(
+                            products: feedItem.products!
+                                .map((product) => {
+                                      "imagePath": product.image ??
+                                          "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
+                                      "price": product.price ?? "N/A",
+                                    })
+                                .toList(),
+                            captionTitle:
+                                '${feedItem.captionTitle}\n${feedItem.caption}',
+                            caption: feedItem.caption ?? '',
+                            offerText: feedItem.offers ?? 'Special Offer!',
+                          ),
                         ],
                       ),
                     );
