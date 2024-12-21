@@ -7,45 +7,76 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class FeedStoryScreen extends StatefulWidget {
   final String author;
+  final int storyCount;
   final List<Post> posts;
-  const FeedStoryScreen({super.key, required this.author, required this.posts});
+  final List<FeedPost> feedPost;
+  final List<FeedStory> feedStory;
+  const FeedStoryScreen(
+      {super.key,
+      required this.author,
+      required this.posts,
+      required this.storyCount,
+      required this.feedPost,
+      required this.feedStory});
 
   @override
   State<FeedStoryScreen> createState() => _FeedStoryScreenState();
 }
 
 class _FeedStoryScreenState extends State<FeedStoryScreen>
-    with SingleTickerProviderStateMixin {
-  late List<Post> stories;
-  late List<String> authors;
-  late List<Post> authorStories;
+    with TickerProviderStateMixin {
+  late List<FeedPost> stories;
+  late List<String> vendors;
+  late List<List<String?>> vendorStories;
+  // late List<String> storyImage;
   late PageController _pageController;
   late AnimationController _animationController;
 
   final duration = const Duration(seconds: 4);
   bool _isPaused = false;
-  int _currentStoryIndex = 0;
-  late String _currentAuthor;
+  int _currentVendorIndex = 0;
+  late int _currentStoryIndex;
 
   @override
   void initState() {
     super.initState();
-    stories = widget.posts;
-    authors = stories.map((story) => story.title ?? '').toSet().toList();
-    _currentAuthor = widget.author;
-    print('Current author: $_currentAuthor');
-    print('Number of authors: ${authors.length}');
-    // print('Current author: ${story.title}');
-    authorStories = stories.where((story) => story.image != null).toList();
+    stories = widget.feedPost;
+    // vendorStories = widget.feedStory;
+    vendors =
+        stories.map((story) => story.userDetail!.vendorName!).toSet().toList();
+    // storyImage = vendorStories
+    //     .expand((story) => story.posts!.map((post) => post.image!))
+    //     .toSet()
+    //     .toList();
+    vendorStories = vendors.map((vendor) {
+      // Filter stories for each vendor and ensure posts are not null
+      return widget.feedStory
+          .where((story) => story.vendorName == vendor && story.posts != null)
+          .expand((story) {
+        // Expand each story's posts to fetch images
+        return story.posts!
+            .where((post) => post.image != null) // Ensure images are not null
+            .map((post) => post.image!); // Map to post images only
+      }).toList();
+    }).toList();
 
-    _pageController = PageController(initialPage: _currentStoryIndex);
+    // vendorStories = vendors.map((vendor) {
+    //   return widget.feedStory
+    //       .where((story) => story.vendorName == vendor && story.posts != null)
+    //       .map((story) => story.posts!)
+    //       .expand((post) => post.map((p) => p.image)) // Only map images
+    //       .toList();
+    // }).toList();
+
+    _pageController = PageController(initialPage: 0);
     _animationController = AnimationController(vsync: this, duration: duration);
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && !_isPaused) {
         //  _nextStory();
-        _moveToNextAuthor();
+        _moveToNextVendor();
       }
     });
+    _currentVendorIndex = 0;
     _currentStoryIndex = 0;
     _startAutoScroll();
   }
@@ -57,77 +88,86 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }
   }
 
-  void _moveToNextAuthor() {
-     final currentIndex = authors.indexOf(_currentAuthor);
-    if (currentIndex < authorStories.length - 1) {
-      setState(() {
-        _currentAuthor = authors[currentIndex + 1];
-        authorStories = stories
-            .where(
-                (story) => story.image != null )
-            .toList();
-        _currentStoryIndex ++;
-      });
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-      _animationController.reset();
-      _startAutoScroll();
-    } else {
-        final nextAuthor = _getNextAuthor();
-     if (nextAuthor != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => FeedStoryScreen(
-              author: nextAuthor,
-              posts: widget.posts,
-            ),
-          ),
-        );
+  void _moveToNextVendor() {
+    setState(() {
+      // Move to the next story within the current vendor
+      if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
+        _currentStoryIndex++;
       } else {
-        Navigator.pop(
-            context); // Exit the screen after the last author's stories
+        // Move to the next vendor
+        if (_currentVendorIndex < vendors.length - 1) {
+          _currentVendorIndex++;
+          _currentStoryIndex = 0; // Reset story index for new vendor
+        } else {
+          // End of all stories
+          final nextAuthor = _getNextAuthor();
+          if (nextAuthor != null) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FeedStoryScreen(
+                  author: nextAuthor,
+                  posts: widget.posts,
+                  storyCount: widget.storyCount,
+                  feedPost: widget.feedPost,
+                  feedStory: widget.feedStory,
+                ),
+              ),
+            );
+          } else {
+            Navigator.pop(context); // End of stories
+          }
+          return; // Exit early
+        }
       }
-    }
+    });
+
+    // Update UI
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
+    _animationController.reset();
+    _startAutoScroll();
   }
 
-  void _nextStory() {
-    if (_currentStoryIndex < authorStories.length - 1) {
-      setState(() {
-        _currentStoryIndex++;
-      });
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-      _animationController.reset();
-      _startAutoScroll();
-    } else {
-      // Transition to the next author
-      final nextAuthor = _getNextAuthor();
-      if (nextAuthor != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => FeedStoryScreen(
-              author: nextAuthor,
-              posts: widget.posts,
-            ),
-          ),
-        );
-      } else {
-        Navigator.pop(
-            context); // Exit the screen after the last author's stories
-      }
-    }
-  }
+  // void _moveToNextAuthor() {
+  //   final currentIndex = authors.indexOf(_currentAuthor);
+  //   if (currentIndex < authorStories.length - 1) {
+  //     setState(() {
+  //       _currentAuthor = authors[currentIndex + 1];
+  //       authorStories = stories.where((story) => story.image != null).toList();
+  //       _currentStoryIndex++;
+  //     });
+  //     _pageController.nextPage(
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeIn,
+  //     );
+  //     _animationController.reset();
+  //     _startAutoScroll();
+  //   } else {
+  //     final nextAuthor = _getNextAuthor();
+  //     if (nextAuthor != null) {
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (_) => FeedStoryScreen(
+  //             author: nextAuthor,
+  //             posts: widget.posts,
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       Navigator.pop(
+  //           context); // Exit the screen after the last author's stories
+  //     }
+  //   }
+  // }
 
   void _previousStory() {
-    if (_currentStoryIndex > 0) {
+    if (_currentVendorIndex > 0) {
       setState(() {
-        _currentStoryIndex--;
+        _currentVendorIndex--;
       });
       _pageController.previousPage(
         duration: const Duration(milliseconds: 300),
@@ -139,16 +179,16 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   }
 
   String? _getNextAuthor() {
-    final currentIndex = authors.indexOf(widget.author);
-    if (currentIndex < authors.length - 1) {
-      return authors[currentIndex + 1];
+    final currentIndex = vendors.indexOf(widget.author);
+    if (currentIndex < vendors.length - 1) {
+      return vendors[currentIndex + 1];
     }
     return null; // No next author
   }
 
   void _onTap(bool forward) {
     if (forward) {
-      _moveToNextAuthor();
+      _moveToNextVendor();
       // _nextStory();
     } else {
       _previousStory();
@@ -196,9 +236,9 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
               PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: authorStories.length,
+                itemCount: widget.feedStory.length,
                 itemBuilder: (context, index) {
-                  final post = authorStories[index];
+                  final post = widget.feedStory[index];
                   return Stack(
                     children: [
                       // Image
@@ -206,7 +246,9 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                         width: double.infinity,
                         height: double.infinity,
                         child: Image.network(
-                          post.image ?? '',
+                          vendorStories[_currentVendorIndex]
+                                  [_currentStoryIndex] ??
+                              '',
                           fit: BoxFit.contain,
                           alignment: Alignment.center,
                           errorBuilder: (context, object, stackTrace) {
@@ -271,7 +313,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                 right: 10,
                 child: Row(
                   children: List.generate(
-                    authorStories.length,
+                    widget.feedStory.length,
                     (index) => Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -279,9 +321,9 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           animation: _animationController,
                           builder: (context, child) {
                             double progressValue = 0.0;
-                            if (index < _currentStoryIndex) {
+                            if (index < _currentVendorIndex) {
                               progressValue = 1.0; // Completed stories
-                            } else if (index == _currentStoryIndex) {
+                            } else if (index == _currentVendorIndex) {
                               progressValue =
                                   _animationController.value; // Flowing story
                             } else {

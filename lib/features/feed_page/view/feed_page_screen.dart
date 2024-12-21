@@ -214,6 +214,8 @@ class FeedScreen extends ConsumerWidget {
                               showgift: feedStoryItems
                                   .feedStory![index].hasSponsoredGifts,
                               postList: feedStoryItems.feedStory![index].posts!,
+                              feedPost: feedData.data!.feedPost,
+                              feedStory: feedData.data!.story!.feedStory,
                             );
                           },
                         ),

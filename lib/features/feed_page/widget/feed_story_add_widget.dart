@@ -11,17 +11,20 @@ class FeedStoryAddWidget extends StatelessWidget {
   final String? vendorImage;
   final int? storyCount;
   final List<Post>? postList;
- 
+  final List<FeedPost>? feedPost;
+  final List<FeedStory>? feedStory;
 
   const FeedStoryAddWidget({
     super.key,
     required this.index,
     this.showgift,
-    this.addSearch =false,
+    this.addSearch = false,
     this.vendorName,
     this.vendorImage,
     this.storyCount,
     this.postList,
+    this.feedPost,
+    this.feedStory,
   });
 
   @override
@@ -34,7 +37,13 @@ class FeedStoryAddWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => FeedStoryScreen(author: vendorName ?? '',posts: postList ?? []),
+                builder: (_) => FeedStoryScreen(
+                  author: vendorName ?? '',
+                  posts: postList ?? [],
+                  storyCount: storyCount!,
+                  feedPost: feedPost!,
+                  feedStory: feedStory!,
+                ),
               ),
             );
           },
