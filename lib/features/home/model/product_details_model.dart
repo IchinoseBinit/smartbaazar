@@ -271,6 +271,7 @@ class Picture with _$Picture {
     required int? id,
     required String? postId,
     required String? filename,
+    required String? image_url,
     required String? mimeType,
     required String? position,
     required String? active,

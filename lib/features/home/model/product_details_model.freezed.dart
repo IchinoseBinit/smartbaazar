@@ -4428,6 +4428,7 @@ mixin _$Picture {
   int? get id => throw _privateConstructorUsedError;
   String? get postId => throw _privateConstructorUsedError;
   String? get filename => throw _privateConstructorUsedError;
+  String? get image_url => throw _privateConstructorUsedError;
   String? get mimeType => throw _privateConstructorUsedError;
   String? get position => throw _privateConstructorUsedError;
   String? get active => throw _privateConstructorUsedError;
@@ -4446,6 +4447,7 @@ abstract class $PictureCopyWith<$Res> {
       {int? id,
       String? postId,
       String? filename,
+      String? image_url,
       String? mimeType,
       String? position,
       String? active});
@@ -4467,6 +4469,7 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
     Object? id = freezed,
     Object? postId = freezed,
     Object? filename = freezed,
+    Object? image_url = freezed,
     Object? mimeType = freezed,
     Object? position = freezed,
     Object? active = freezed,
@@ -4483,6 +4486,10 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
       filename: freezed == filename
           ? _value.filename
           : filename // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image_url: freezed == image_url
+          ? _value.image_url
+          : image_url // ignore: cast_nullable_to_non_nullable
               as String?,
       mimeType: freezed == mimeType
           ? _value.mimeType
@@ -4511,6 +4518,7 @@ abstract class _$$PictureImplCopyWith<$Res> implements $PictureCopyWith<$Res> {
       {int? id,
       String? postId,
       String? filename,
+      String? image_url,
       String? mimeType,
       String? position,
       String? active});
@@ -4530,6 +4538,7 @@ class __$$PictureImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? postId = freezed,
     Object? filename = freezed,
+    Object? image_url = freezed,
     Object? mimeType = freezed,
     Object? position = freezed,
     Object? active = freezed,
@@ -4546,6 +4555,10 @@ class __$$PictureImplCopyWithImpl<$Res>
       filename: freezed == filename
           ? _value.filename
           : filename // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image_url: freezed == image_url
+          ? _value.image_url
+          : image_url // ignore: cast_nullable_to_non_nullable
               as String?,
       mimeType: freezed == mimeType
           ? _value.mimeType
@@ -4570,6 +4583,7 @@ class _$PictureImpl implements _Picture {
       {required this.id,
       required this.postId,
       required this.filename,
+      required this.image_url,
       required this.mimeType,
       required this.position,
       required this.active});
@@ -4584,6 +4598,8 @@ class _$PictureImpl implements _Picture {
   @override
   final String? filename;
   @override
+  final String? image_url;
+  @override
   final String? mimeType;
   @override
   final String? position;
@@ -4592,7 +4608,7 @@ class _$PictureImpl implements _Picture {
 
   @override
   String toString() {
-    return 'Picture(id: $id, postId: $postId, filename: $filename, mimeType: $mimeType, position: $position, active: $active)';
+    return 'Picture(id: $id, postId: $postId, filename: $filename, image_url: $image_url, mimeType: $mimeType, position: $position, active: $active)';
   }
 
   @override
@@ -4604,6 +4620,8 @@ class _$PictureImpl implements _Picture {
             (identical(other.postId, postId) || other.postId == postId) &&
             (identical(other.filename, filename) ||
                 other.filename == filename) &&
+            (identical(other.image_url, image_url) ||
+                other.image_url == image_url) &&
             (identical(other.mimeType, mimeType) ||
                 other.mimeType == mimeType) &&
             (identical(other.position, position) ||
@@ -4614,7 +4632,7 @@ class _$PictureImpl implements _Picture {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, postId, filename, mimeType, position, active);
+      runtimeType, id, postId, filename, image_url, mimeType, position, active);
 
   @JsonKey(ignore: true)
   @override
@@ -4635,6 +4653,7 @@ abstract class _Picture implements Picture {
       {required final int? id,
       required final String? postId,
       required final String? filename,
+      required final String? image_url,
       required final String? mimeType,
       required final String? position,
       required final String? active}) = _$PictureImpl;
@@ -4647,6 +4666,8 @@ abstract class _Picture implements Picture {
   String? get postId;
   @override
   String? get filename;
+  @override
+  String? get image_url;
   @override
   String? get mimeType;
   @override

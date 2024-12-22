@@ -16,6 +16,7 @@ class HotWithBuy {
   final List<List<GlobalModel>> insidearr;
   final List<List<GlobalModel>> spot;
   final List<List<GlobalModel>> doma;
+  
 
   HotWithBuy({
     required this.home,

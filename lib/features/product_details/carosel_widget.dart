@@ -49,7 +49,7 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
               return SizedBox(
                 width: double.infinity,
                 child: Image.network(
-                  item.filename!,
+                  item.image_url!,
                   fit: BoxFit.fill,
                 ),
               );
@@ -111,7 +111,7 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                       width: 7.w,
                     ),
                     Text(
-                      widget.wow,
+                      widget.wow == 'null' ? "1" : widget.wow,
                       style: headerstyle.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -169,10 +169,11 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => 
-                            const MessageViewScreen(),
-                        ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MessageViewScreen(),
+                            ));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

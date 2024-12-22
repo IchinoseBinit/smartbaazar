@@ -26,6 +26,9 @@ class StarWidget extends StatelessWidget {
           alignment: Alignment.center,
           transform: Matrix4.identity()..scale(-1.0, 1.0), // Flip horizontally
           child: RatingBar.builder(
+                ignoreGestures: true, // Disable user interaction
+
+           tapOnlyMode: true,
             initialRating: star.toDouble(), // Highlight stars from right
             minRating: 0, // Minimum rating is 0
             direction: Axis.horizontal,

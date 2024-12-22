@@ -4,8 +4,12 @@ import 'package:smartbazar/constant/color_constant.dart';
 
 
 class HeaderBannerWidget extends StatelessWidget {
-  const HeaderBannerWidget({
+  final String title,img;
+
+   HeaderBannerWidget({
     super.key,
+    required this.title,
+    required this.img,
   });
 
   @override
@@ -20,7 +24,7 @@ class HeaderBannerWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image.asset("assets/images/product_logo.png"),
+              Image.network(img,height: 50,width: 50,),
               SizedBox(
                 width: 5.w,
               ),
@@ -30,7 +34,7 @@ class HeaderBannerWidget extends StatelessWidget {
                     width: 5.w,
                   ),
                   Text(
-                    "NIC Asia Capital",
+                    title?? "Trade-hub",
                     style: headerstyle.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 15,

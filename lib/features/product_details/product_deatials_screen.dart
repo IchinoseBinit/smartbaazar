@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,15 +90,29 @@ class ProductDetailScreen extends ConsumerWidget {
               shape: const StadiumBorder(),
               label: Row(
                 children: [
-                  //  CircleAvatar(
-                  //   radius: 25,
-                  //   backgroundImage:NetworkImage(data.result!.user_photo_url)
-                        
-                  // ),
-                  // SizedBox(
-                  //   width: 10.w,
-                  // ),
-
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage:
+                        null, // Set to null since CachedNetworkImage handles the image
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: data.result!.user_photo_url,
+                        placeholder: (context, url) =>
+                            SizedBox(
+                              height: 30.h,
+                              width: 50.w,
+                              child: Center(child: CircularProgressIndicator())), // Placeholder widget
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.error), // Error widget
+                        fit: BoxFit.cover, // Adjust image fit
+                        width: 50, // Match the CircleAvatar diameter
+                        height: 50,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
                   Container(
                     margin: const EdgeInsets.only(left: 5),
                     padding:
@@ -271,7 +286,11 @@ class ProductDetailScreen extends ConsumerWidget {
                         ),
                       ),
 
-                      const HeaderBannerWidget(),
+                      HeaderBannerWidget(
+                        img: data.result!.user_photo_url,
+                        title:
+                            data.result!.feed_post!.first.name! ?? "Tradehub",
+                      ),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       //   children: [
@@ -473,38 +492,45 @@ class ProductDetailScreen extends ConsumerWidget {
                                     colors: [Colors.white, Color(0xFFf3f3f3)])),
                             child: Row(
                               children: [
-                                Row(
-                                  children: [
-                                    Image.asset('assets/images/box.png'),
-                                    SizedBox(
-                                      width: 3.w,
-                                    ),
-                                    // Text(
-                                    //   "${data.result?.stock!}IN STOCK",
-                                    //   style: headerstyle.copyWith(
-                                    //       fontSize: 12,
-                                    //       fontWeight: FontWeight.w600,
-                                    //       color: ColorConstant.blackColor),
-                                    // ),
-                                  ],
-                                ),
+                                if (data.result?.stock != null)
+                                  Row(
+                                    children: [
+                                      Image.asset('assets/images/box.png'),
+                                      SizedBox(
+                                        width: 3.w,
+                                      ),
+                                      Text(
+                                        "${data.result?.stock!} IN STOCK",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: ColorConstant.blackColor),
+                                      ),
+                                    ],
+                                  ),
                                 SizedBox(
                                   width: 15.w,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/images/weight.png'),
-                                    Text(
-                                      "${data.result?.weight}KG",
-                                      style: headerstyle.copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: ColorConstant.blackColor),
-                                    ),
-                                  ],
-                                ),
+                                data.result?.weight != null
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/weight.png'),
+                                          Text(
+                                            "${data.result?.weight}KG",
+                                            style: headerstyle.copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    ColorConstant.blackColor),
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
                           ),
@@ -654,7 +680,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                     value:
                                         0.2, // Adjust progress bar value as needed
                                     width: 100, // Progress bar width
-                                    numStar: 5,
+                                    numStar: data
+                                          .result!.ratings!.ratingCounts.five!,
                                   ),
                                   StarWidget(
                                       star: data.result!.ratings!.ratingCounts
@@ -930,7 +957,10 @@ class ProductDetailScreen extends ConsumerWidget {
         error: (error, stackTrace) {
           return Text("error $error");
         },
-        loading: () => const CircularProgressIndicator(),
+        loading: () =>   SizedBox(
+                              height: 30.h,
+                              width: 50.w,
+                              child: Center(child: CircularProgressIndicator())),
       ),
     );
   }
@@ -950,13 +980,12 @@ class SwapablePostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return post.isEmpty
-        ? const  Padding(
-                                        padding: EdgeInsets.all(40.0),
-                                        child: Center(
-                                          child:
-                                              Text("No Listing available....."),
-                                        ),
-        )
+        ? const Padding(
+            padding: EdgeInsets.all(40.0),
+            child: Center(
+              child: Text("No Listing available....."),
+            ),
+          )
         : ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: post.length,
