@@ -18,6 +18,8 @@ import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 
+import '../../product_details/constant/all_product_detail_widget.dart';
+
 class GrocarysScreen extends ConsumerStatefulWidget {
   const GrocarysScreen({super.key});
 
@@ -1592,7 +1594,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         childAspectRatio: 0.5,
                       ),
                       itemBuilder: (context, index) {
-                        return ProductDetailWidget(
+                        return AllProductDetailWidget(
                           wow: data.product[index].wow,
                           comment: data.product[index].commentcount.toString(),
                           issponsored: data.product[index].user.sponsored,

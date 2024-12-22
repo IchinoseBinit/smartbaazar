@@ -208,6 +208,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           ),
                           SizedBox(
                               height: 50,
+                              width: 340.w,
                               child: NewSearchWidget(
                                   searchController: TextEditingController(),
                                   onSearchFocusChanged: (p0) {},

@@ -236,7 +236,7 @@ class GlobalModel {
   final String stock;
     final String offers;
 
-  final int avg_rating;
+  final double? avg_rating;
   final double? shortestDistance;
 
   final int? similarproductCount;
@@ -264,7 +264,7 @@ class GlobalModel {
       offers: json['offers']?? '',
       
       shortestDistance: json['shortestDistance'] ?? 0.0,
-      avg_rating: json['avg_rating'] ?? 0,
+      avg_rating: json['average_rating'] ?? 0,
       commentnum: json['stock'] ?? '0',
       stock: json['discounted_price'] ?? '0',
       wow: json['wow'] ?? '0',

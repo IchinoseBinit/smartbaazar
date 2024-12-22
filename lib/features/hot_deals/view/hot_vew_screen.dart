@@ -462,12 +462,10 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                           },
                         ),
                       ),
-
                       const Divider(
                         height: 0.1,
                         color: ColorConstant.grayColor,
                       ),
-
                       if (_isSectionsVisible)
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -622,7 +620,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                               child: ProductDetailWidget(
                                 
                                   offer: res.offers,
-                                  avg_rating: res.avg_rating,
+                                  // avg_rating: res.avg_rating,
                                   comment: res.commentnum,
                                   discounttedPrice: res.discont,
                                   distance: res.shortestDistance,

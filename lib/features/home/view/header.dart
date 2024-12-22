@@ -71,7 +71,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
 
           // Search TextField Container
           Container(
-            width: 200.w,
+            width: 180.w,
             height: 45.h,
             padding: const EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),

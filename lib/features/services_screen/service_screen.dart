@@ -19,6 +19,8 @@ import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
 import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 
+import '../product_details/constant/all_product_detail_widget.dart';
+
 class ServicesScreen extends ConsumerStatefulWidget {
   const ServicesScreen({super.key});
 
@@ -1791,7 +1793,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         // VProduct res = data.allProducts[index];
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
-                          child: ProductDetailWidget(
+                          child: AllProductDetailWidget(
                             wow: data.product[index].wow,
                             comment:
                                 data.product[index].commentcount.toString(),

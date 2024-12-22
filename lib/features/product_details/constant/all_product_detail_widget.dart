@@ -9,29 +9,28 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
-class ProductDetailWidget extends StatelessWidget {
-  ProductDetailWidget(
+class AllProductDetailWidget extends StatelessWidget {
+  AllProductDetailWidget(
       {super.key,
-      // this.membership_title,
+        // this.membership_title,
 
-      this.offer = '',
-      this.title = "Trade",
-      this.discounttedPrice = '0',
-      this.comment = '0',
-      this.price = '1',
-      this.vendorname = 'John',
-      this.distance = 2,
-      this.Vimage = '',
-      this.productImage = '',
-      this.lefttile = 'TradeHub',
-      this.similarproductCount,
-      this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
-      this.membershipTitle,
-      this.avg_rating = 0,
-      });
+        this.offer = '',
+        this.title = "Trade",
+        this.discounttedPrice = '0',
+        this.comment = '0',
+        this.price = '1',
+        this.vendorname = 'John',
+        this.distance = 2,
+        this.Vimage = '',
+        this.productImage = '',
+        this.lefttile = 'TradeHub',
+        this.similarproductCount,
+        this.membershipColor,
+        this.wow,
+        this.issponsored = false,
+        this.shortestDistance,
+        this.membershipTitle,
+        this.avg_rating});
   String? title;
   String? price;
   String? discounttedPrice;
@@ -45,7 +44,7 @@ class ProductDetailWidget extends StatelessWidget {
   String? membershipTitle;
   bool issponsored;
   String? offer, wow;
-  double? avg_rating;
+  double? avg_rating = 0;
   double? shortestDistance;
 
   @override
@@ -93,7 +92,7 @@ class ProductDetailWidget extends StatelessWidget {
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
                       constraints:
-                          const BoxConstraints.expand(width: 150, height: 150),
+                      const BoxConstraints.expand(width: 150, height: 150),
                       // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
                       color: const Color(0xff766c7a).withOpacity(0.9),
@@ -109,7 +108,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 "Share",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                      GoogleFonts.quicksand().fontFamily,
+                                  GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 9,
                                 ),
@@ -121,7 +120,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 "Save",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                      GoogleFonts.quicksand().fontFamily,
+                                  GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -134,14 +133,14 @@ class ProductDetailWidget extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const VendorProfileScreen(),
+                                      const VendorProfileScreen(),
                                     ));
                               },
                               child: Text(
                                 "Conatct Seller",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                      GoogleFonts.quicksand().fontFamily,
+                                  GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -153,7 +152,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 "Get Seller Directives",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                      GoogleFonts.quicksand().fontFamily,
+                                  GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -166,16 +165,16 @@ class ProductDetailWidget extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const ReportComplainScreen(
-                                              productId: "167",
-                                              productName: "techstore"),
+                                      const ReportComplainScreen(
+                                          productId: "167",
+                                          productName: "techstore"),
                                     ));
                               },
                               child: Text(
                                 "Report",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                      GoogleFonts.quicksand().fontFamily,
+                                  GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -188,30 +187,30 @@ class ProductDetailWidget extends StatelessWidget {
               ),
               productImage == 'null'
                   ? Image.asset(
-                      'assets/images/shoppingimages.png',
-                      height: 130.h,
-                      width: 200.2,
-                      fit: BoxFit.fill,
-                    )
+                'assets/images/shoppingimages.png',
+                height: 130.h,
+                width: 200.2,
+                fit: BoxFit.fill,
+              )
                   : Image.network(
-                      productImage ?? '', // Ensure Vimage is not null or empty
-                      height: 130.h, // Adjust size accordingly
-                      width: 200.w,
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; // If no loading, show the image
-                        } else {
-                          return const Center(
-                              child:
-                                  CircularProgressIndicator()); // Show loading indicator
-                        }
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons
-                            .error); // Show error icon if image fails to load
-                      },
-                    ),
+                productImage ?? '', // Ensure Vimage is not null or empty
+                height: 130.h, // Adjust size accordingly
+                width: 200.w,
+                fit: BoxFit.fill,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; // If no loading, show the image
+                  } else {
+                    return const Center(
+                        child:
+                        CircularProgressIndicator()); // Show loading indicator
+                  }
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons
+                      .error); // Show error icon if image fails to load
+                },
+              ),
               SizedBox(
                 height: 5.h,
               ),
@@ -243,38 +242,38 @@ class ProductDetailWidget extends StatelessWidget {
                         offer == ''
                             ? SizedBox()
                             : Row(
-                                children: [
-                                  const Icon(
-                                    Icons.track_changes_sharp,
-                                    color: Color(0xff901B41),
-                                    size: 15,
-                                  ),
-                                  Text(
-                                    offer ?? '',
-                                    style: headerstyle.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff901B41),
-                                        fontSize: 8.sp),
-                                  ),
-                                ],
-                              ),
+                          children: [
+                            const Icon(
+                              Icons.track_changes_sharp,
+                              color: Color(0xff901B41),
+                              size: 15,
+                            ),
+                            Text(
+                              offer ?? '',
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xff901B41),
+                                  fontSize: 8.sp),
+                            ),
+                          ],
+                        ),
                         discounttedPrice != "0"
                             ? Row(
-                                children: [
-                                  const Icon(
-                                    Icons.track_changes_sharp,
-                                    color: Color(0xff901B41),
-                                    size: 15,
-                                  ),
-                                  Text(
-                                    "Best Price",
-                                    style: headerstyle.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff901B41),
-                                        fontSize: 8.sp),
-                                  ),
-                                ],
-                              )
+                          children: [
+                            const Icon(
+                              Icons.track_changes_sharp,
+                              color: Color(0xff901B41),
+                              size: 15,
+                            ),
+                            Text(
+                              "Best Price",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xff901B41),
+                                  fontSize: 8.sp),
+                            ),
+                          ],
+                        )
                             : SizedBox(),
                         if (discounttedPrice != '0')
                           Text(
@@ -303,7 +302,8 @@ class ProductDetailWidget extends StatelessWidget {
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
                           child: Text(
-                            avg_rating.toString() ?? '0',
+                            // avg_rating.toString() ?? '0',
+                            (avg_rating ?? 0).toString(),
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
@@ -318,10 +318,11 @@ class ProductDetailWidget extends StatelessWidget {
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: avg_rating?.round() ?? 0,
+                            // itemCount: avg_rating?.round() ?? 0,
+                            itemCount: (avg_rating ?? 0).round(),
                             itemSize: 12,
                             itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Color(0xff901B41),
@@ -334,27 +335,27 @@ class ProductDetailWidget extends StatelessWidget {
                     discounttedPrice == '0'
                         ? SizedBox()
                         : Row(
-                            children: [
-                              Image.asset(
-                                "assets/images/flameIcon.png",
-                                height: 10,
-                                width: 10,
-                                color: const Color(0xff901B41),
-                              ),
-                              Text(
-                                "30%",
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff901B41),
-                                    fontSize: 10),
-                              ),
-                              const Icon(
-                                Icons.arrow_downward_rounded,
-                                size: 15,
-                                color: Color(0xff901B41),
-                              )
-                            ],
-                          ),
+                      children: [
+                        Image.asset(
+                          "assets/images/flameIcon.png",
+                          height: 10,
+                          width: 10,
+                          color: const Color(0xff901B41),
+                        ),
+                        Text(
+                          "30%",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff901B41),
+                              fontSize: 10),
+                        ),
+                        const Icon(
+                          Icons.arrow_downward_rounded,
+                          size: 15,
+                          color: Color(0xff901B41),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -421,44 +422,44 @@ class ProductDetailWidget extends StatelessWidget {
                 children: [
                   Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
                     decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
                           "ENQUIRE",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
-                              fontSize: 13,
+                              fontSize: 11,
                               color: ColorConstant.blackColor),
                         ),
                         Text(
                           '|',
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
-                              fontSize: 13,
+                              fontSize: 11,
                               color: ColorConstant.blackColor),
                         ),
                         Text(
                           "WIN",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
-                              fontSize: 13,
+                              fontSize: 11,
                               color: ColorConstant.blackColor),
                         ),
                         Text(
                           '|',
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
-                              fontSize: 13,
+                              fontSize: 11,
                               color: ColorConstant.blackColor),
                         ),
                         Text(
                           "BUY",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
-                              fontSize: 13,
+                              fontSize: 11,
                               color: ColorConstant.blackColor),
                         ),
                       ],
@@ -470,7 +471,7 @@ class ProductDetailWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: membershipColor != null
                           ? Color(int.parse(
-                              membershipColor!.replaceFirst('#', '0xFF')))
+                          membershipColor!.replaceFirst('#', '0xFF')))
                           : const Color(0xff3D215F), // Default color
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(13),
@@ -485,7 +486,7 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundImage: NetworkImage(Vimage!),
-                              radius: 14.sp,
+                              radius: 13.sp,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -494,17 +495,24 @@ class ProductDetailWidget extends StatelessWidget {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 4.w,
+                                      width: 3.5.w,
                                     ),
                                     Text(
                                       vendorname != null &&
-                                              vendorname!.length > 19
-                                          ? '${vendorname!.substring(0, 15)}...'
+                                          vendorname!.length > 15
+                                          ? '${vendorname!.substring(0, 12)}...'
                                           : vendorname ?? '',
                                       style: headerstyle.copyWith(
-                                        fontSize: 12.sp,
+                                        // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
+                                        fontSize: (vendorname != null && vendorname!.length > 10)
+                                            ? 8.sp
+                                            : (vendorname != null && vendorname!.length > 12)
+                                            ? 7.5.sp
+                                            : 11.5.sp, // Default font size
                                         fontWeight: FontWeight.w700,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
                                     ),
                                     SizedBox(
                                       width: 4.w,
@@ -513,6 +521,29 @@ class ProductDetailWidget extends StatelessWidget {
                                       Icons.logout,
                                       color: Colors.white,
                                       size: 12,
+                                    ),
+                                    Row(
+                                      children: [
+                                        shortestDistance != null
+                                            ? Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            Text(
+                                              "${shortestDistance} km",
+                                              style: headerstyle.copyWith(
+                                                  fontSize: 8.sp,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )
+                                            : SizedBox(
+                                          height: 5.h,
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),
@@ -533,52 +564,30 @@ class ProductDetailWidget extends StatelessWidget {
                                     Text(
                                       membershipTitle ?? "Domestic Brand",
                                       style: headerstyle.copyWith(
-                                          fontSize: 8.sp,
-                                          fontWeight: FontWeight.w700),
+                                        fontSize: (membershipTitle != null && membershipTitle!.length > 15)
+                                            ? 8.sp
+                                            : 10.sp, // Adjust font size based on length
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(width: 7.w,),
+                                    issponsored
+                                        ? SizedBox()
+                                        : Row(
+                                      children: [
+                                        Image.asset("assets/images/mike.png"),
+                                        Text(
+                                          "SPONSORED",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            shortestDistance != null
-                                ? Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                      Text(
-                                        "${shortestDistance} km",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 8.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  )
-                                : SizedBox(
-                                    height: 5.h,
-                                  ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            issponsored
-                                ? SizedBox()
-                                : Row(
-                                    children: [
-                                      Image.asset("assets/images/mike.png"),
-                                      Text(
-                                        "SPONSORED",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
                           ],
                         ),
                       ],

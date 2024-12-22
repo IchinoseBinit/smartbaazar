@@ -88,7 +88,7 @@ class buyorwin_widget extends StatelessWidget {
                         radius: 75.sp,
                         backgroundImage: NetworkImage(proctimage))),
                 Positioned(
-                  top: 45.h,
+                  top: 65.h,
                   left: 125.h,
                   child: CircleAvatar(
                       radius: 28.5.sp,
