@@ -34,6 +34,17 @@ class NewListingRepository {
     }
   }
 
+  Future<OffersResponse> fetchOffers() async {
+    final response = await client.request(
+      requestType: RequestType.getWithToken,
+      url: ApiConstants.getoffers,
+    );
+
+    // Parse the JSON response to OffersResponse
+    print("babu ${OffersResponse.fromJson(response.data)}");
+    return OffersResponse.fromJson(response.data);
+  }
+
   Future<List<Category>> fetchSubCategoryList(int parentId) async {
     // Fetch subcategories based on parentId
     final response = await client.request(
@@ -43,7 +54,7 @@ class NewListingRepository {
     );
 
     if (response.statusCode == 200) {
-            print("binod $response");
+      print("binod $response");
 
       List<dynamic> data = response.data['result']['data'];
       return data.map((item) => Category.fromJson(item)).toList();

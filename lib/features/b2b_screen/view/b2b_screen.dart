@@ -1657,7 +1657,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return Text("$error");
                   },
                   loading: () {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                 ),
                 Padding(

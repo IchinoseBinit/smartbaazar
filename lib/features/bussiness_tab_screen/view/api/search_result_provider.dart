@@ -6,30 +6,26 @@ import 'package:dio/dio.dart'; // For better error handling with Dio
 
 part 'search_result_provider.g.dart';
 
-
-
 @riverpod
 Future<BusinessResponse> getSearchResponse(
-    GetSearchResponseRef ref, String query, ) async {
+  GetSearchResponseRef ref,
+  String query,
+) async {
   final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
-        requestType: RequestType.post,
-        headers: {
-          'X-AppApiToken': 'Yala@Techies_Nepal'
-        },
-        url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections/search',
-        queryParameters: {
-          'query':query
-        },
-        
-        // parameter: {'query': query},
-        
-        );
+      requestType: RequestType.post,
+      headers: {'X-AppApiToken': 'Yala@Techies_Nepal'},
+      url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections/search',
+      queryParameters: {'query': query},
+
+      // parameter: {'query': query},
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data['data'];
-
+      // print(
+      //     "bibash ${BusinessResponse.fromJson(jsonResponse).brandNew!}");
       return BusinessResponse.fromJson(jsonResponse);
     } else {
       throw Exception(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class SubscriptionTrendingScreen extends StatefulWidget {

@@ -60,7 +60,7 @@ class SplashContent extends StatelessWidget {
   final AsyncValue<SplashModel> splashApiResponse;
   final WidgetRef ref;
 
-  const SplashContent({required this.splashApiResponse, required this.ref});
+  const SplashContent({super.key, required this.splashApiResponse, required this.ref});
 
   @override
   Widget build(BuildContext context) {

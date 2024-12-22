@@ -1,84 +1,121 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 
+class LocationWidget extends StatefulWidget {
+  final double longitute;
+  final double latititute;
 
-class LocationWidget extends StatelessWidget {
   const LocationWidget({
     super.key,
+    required this.latititute,
+    required this.longitute,
   });
+
+  @override
+  _LocationWidgetState createState() => _LocationWidgetState();
+}
+
+class _LocationWidgetState extends State<LocationWidget> {
+  String _address = "Fetching location...";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAddress();
+  }
+
+  Future<void> _fetchAddress() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        widget.latititute,
+        widget.longitute,
+      );
+      Placemark place = placemarks.first;
+      setState(() {
+        _address = "${place.locality}, ${place.administrativeArea}";
+      });
+    } catch (e) {
+      setState(() {
+        _address = "Location not found";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:  EdgeInsets.symmetric(horizontal: 10.w),
+      margin: EdgeInsets.symmetric(horizontal: 10.w),
       padding: const EdgeInsets.all(5),
       width: double.infinity,
       decoration: const BoxDecoration(
-        borderRadius:BorderRadius.all(Radius.circular(10)),
-          gradient: LinearGradient(colors: [
-        Colors.white,
-        Color(0xFFf3f3f3)
-      ])),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        gradient: LinearGradient(colors: [Colors.white, Color(0xFFf3f3f3)]),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Deliver to",
-                  style: headerstyle.copyWith(
-                    color: Colors.black87,
-                    fontSize: 15
+                  Text(
+                    "Deliver to",
+                    style: headerstyle.copyWith(
+                      color: Colors.black87,
+                      fontSize: 15,
+                    ),
                   ),
+                  SizedBox(
+                    height: 3.h,
                   ),
-                  SizedBox(height: 3.h,),
                   Container(
                     width: 300.w,
-                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            color: const Color(0xffD9D9D9))),
-                    child:  Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                      border: Border.all(color: const Color(0xffD9D9D9)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       const Row(
-                        children: [
-                           Icon(Icons.location_on),
-                        SizedBox(width: 10,),
-                        Text("Durbarmarg,Kathmandu"),
-                        ],
-                       ),
-                         const SizedBox(width: 10,),
-                        
-                        Image.asset("assets/images/point.png")
+                        Row(
+                          children: [
+                            const Icon(Icons.location_on),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(_address),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Image.asset("assets/images/point.png"),
                       ],
                     ),
                   ),
                 ],
               ),
-              Image.asset("assets/images/pathao.png")
+              Image.asset("assets/images/pathao.png"),
             ],
           ),
-            SizedBox(
-      height: 10.h,
-    ),
+          SizedBox(
+            height: 10.h,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
                 width: 10.w,
               ),
-                                         const Icon(Icons.location_on),
-
+              const Icon(Icons.location_on),
               SizedBox(
                 width: 10.w,
               ),
@@ -86,16 +123,18 @@ class LocationWidget extends StatelessWidget {
               SizedBox(
                 width: 10.w,
               ),
-             Image.asset('assets/images/clock.png'),
-             SizedBox(width: 5.w,),
+              Image.asset('assets/images/clock.png'),
+              SizedBox(
+                width: 5.w,
+              ),
               const Text("24 to 48 hours"),
               const Spacer(),
-              Image.asset("assets/images/upaye.png")
+              Image.asset("assets/images/upaye.png"),
             ],
           ),
-            SizedBox(
-      height: 10.h,
-    ),
+          SizedBox(
+            height: 10.h,
+          ),
         ],
       ),
     );

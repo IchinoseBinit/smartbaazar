@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -12,7 +14,7 @@ class SponsoredProduct {
   final String price;
   final String image;
   final int? similarProductCount;
-  final UserDetails? userdetails;
+  final UserDetailsModel? userdetails;
 
   SponsoredProduct({
     required this.id,
@@ -33,37 +35,13 @@ class SponsoredProduct {
       image: json['image'] as String,
       similarProductCount : json['similarProductCount'] as int,
       userdetails: json['userdetails'] != null
-          ? UserDetails.fromJson(json['userdetails'])
+          ? UserDetailsModel.fromJson(json['userdetails'])
           : null,
     );
   }
 }
 
-class UserDetails {
-  final String userId;
-  final String membershipTitle;
-  final String name;
-  final String photo;
-  final String? memberColor;
 
-  UserDetails({
-    required this.userId,
-    required this.membershipTitle,
-    required this.name,
-    required this.photo,
-    required this.memberColor,
-  });
-
-  factory UserDetails.fromJson(Map<String, dynamic> json) {
-    return UserDetails(
-      userId: json['user_id'] as String,
-      memberColor: json['membership_color'] as String,
-      membershipTitle: json['membership_title'] as String,
-      name: json['name'] as String,
-      photo: json['photo'] as String,
-    );
-  }
-}
 
 @riverpod
 Future<List<SponsoredProduct>> fetchSponsored(FetchSponsoredRef ref) async {

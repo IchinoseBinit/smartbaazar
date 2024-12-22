@@ -247,7 +247,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
     final sliders = ref.watch(fetchAdvertisementsProvider);
     final category = ref.watch(homeCategoryProvider);
-    ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
 
@@ -413,11 +412,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     ),
                                   );
                                 }, loading: () {
+                                  return null;
+                                
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
                                   //     child: CircularProgressIndicator());
                                 }, error: (error, stack) {
+                                  return null;
+                                
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
@@ -826,9 +829,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
-                              print("mangoz ${data.global.length}");
                               return AnimatedContainer(
-                                duration: Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 300),
                                 height:
                                     _currentHeight, // Adjust height based on data
                                 width: double.infinity,
@@ -851,6 +853,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               scrollDirection: Axis.horizontal,
                                               itemCount: data.global.length,
                                               itemBuilder: (context, index) {
+                                              
                                                 LogoData dat =
                                                     data.global[index];
                                                 if (index == 0) {
@@ -932,11 +935,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         membershipColor: prod
                                                             .user
                                                             .first
-                                                            .memberColor,
+                                                            .membership_color,
                                                         membershipTitle: prod
                                                             .user
                                                             .first
-                                                            .membershipTitle,
+                                                            .membership_title,
                                                       ),
                                                     );
                                                   },
@@ -963,7 +966,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               itemCount: data.domestic.length,
                                               itemBuilder: (context, index) {
                                                 _currentHeight =
-                                                    data.doma[0].length == 0
+                                                    data.doma[0].isEmpty
                                                         ? 150
                                                         : 500;
 
@@ -985,7 +988,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 }
                                                 return NotStoryWidget(
                                                     index: index);
-                                                ;
                                               },
                                             ),
                                           ),
@@ -1051,91 +1053,295 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           SizedBox(
                                               height: 130.h,
                                               child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount:
-                                                      data.spotlight.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    _currentHeight =
-                                                        data.spotlight.isEmpty
-                                                            ? 100
-                                                            : 500;
-                                                    LogoData res =
-                                                        data.spotlight[index];
-                                                    if (index == 0) {
-                                                      return NotStoryWidget(
-                                                          index: index,
-                                                          brandname:
-                                                              res.brandName
-
-                                                          // showgift: false,
-                                                          );
-                                                    } else if (index >= 1 &&
-                                                        index <= 2) {
-                                                      return NotStoryWidget(
-                                                        index: index,
-                                                        showgift: true,
-                                                      );
-                                                    }
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: data.spotlight.length,
+                                                itemBuilder: (context, index) {
+                                                  LogoData dat =
+                                                      data.global[index];
+                                                  if (index == 0) {
                                                     return NotStoryWidget(
-                                                        index: index);
-                                                  })),
-                                        SizedBox(
-                                          height: data.spot.isNotEmpty &&
-                                                  data.spot[0].isNotEmpty
-                                              ? 340.h
-                                              : 180,
-                                          child: data.spot.isNotEmpty &&
-                                                  data.spot[0].isNotEmpty
-                                              ? ListView.builder(
-                                                  clipBehavior: Clip.antiAlias,
-                                                  padding:
-                                                      const EdgeInsets.all(3),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount:
-                                                      data.spot[0].length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    GlobalModel prod =
-                                                        data.spot[0][index];
-                                                    return InkWell(
-                                                      onTap: () {},
-                                                      child:
-                                                          ProductDetailWidget(
-                                                        vendorname: prod.title,
-                                                        discounttedPrice:
-                                                            prod.discont,
-                                                        Vimage: prod
-                                                            .user.first.photo,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage:
-                                                            prod.imageUrl,
-                                                        similarproductCount: prod
-                                                            .similarproductCount,
-                                                        membershipColor: prod
-                                                            .user
-                                                            .first
-                                                            .memberColor,
-                                                        membershipTitle: prod
-                                                            .user
-                                                            .first
-                                                            .membershipTitle,
-                                                      ),
+                                                        index: index,
+                                                        brandname: dat.brandName
+
+                                                        // showgift: false,
+                                                        );
+                                                  } else if (index >= 1 &&
+                                                      index <= 2) {
+                                                    return NotStoryWidget(
+                                                      index: index,
+                                                      showgift: true,
                                                     );
-                                                  },
-                                                )
-                                              : null,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
+                                                  }
+                                                  return NotStoryWidget(
+                                                      index: index);
+                                                  // dynSize =
+                                                  //     data.insidearr[0].isEmpty
+                                                  //         ? 150
+                                                  //         : 500;
+                                                  // LogoData res =
+                                                  //     data.global[index];
+                                                  // if (index == 0) {
+                                                  //   return StoryAddWidget(
+                                                  //       index: index,
+                                                  //       brandname: res.brandName);
+                                                  // } else if (index >= 1 &&
+                                                  //     index <= 2) {
+                                                  //   return StoryAddWidget(
+                                                  //       index: index,
+                                                  //       showgift: true);
+                                                  // }
+                                                  // return StoryAddWidget(
+                                                  //     index: index);
+                                                },
+                                              ),
+                                            ),
+                                          SizedBox(
+                                            height: data.insidearr.isNotEmpty &&
+                                                    data.insidearr[0].isNotEmpty
+                                                ? 340.h
+                                                : 200,
+                                            child: data.insidearr.isNotEmpty &&
+                                                    data.insidearr[0].isNotEmpty
+                                                ? ListView.builder(
+                                                    clipBehavior: Clip.antiAlias,
+                                                    padding:
+                                                        const EdgeInsets.all(3),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount:
+                                                        data.insidearr[0].length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      GlobalModel prod = data
+                                                          .insidearr[0][index];
+                                                      return InkWell(
+                                                        onTap: () {},
+                                                        child:
+                                                            ProductDetailWidget(
+                                                          comment:
+                                                              prod.commentnum,
+                                                          wow: prod.wow,
+                                                          issponsored: prod
+                                                              .user[0].sponsored!,
+                                                          vendorname:
+                                                              prod.contactName,
+                                                          discounttedPrice:
+                                                              prod.discont,
+                                                          Vimage: prod.title,
+                                                          price: prod.price,
+                                                          title: prod.title,
+                                                          productImage:
+                                                              prod.imageUrl,
+                                                          similarproductCount: prod
+                                                              .similarproductCount,
+                                                          membershipColor: prod
+                                                              .user
+                                                              .first
+                                                              .membership_color,
+                                                          membershipTitle: prod
+                                                              .user
+                                                              .first
+                                                              .membership_title,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                : null,
+                                          ),
+                                        ],
+                                      ),
+
+                                      // Second Tab
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (data.domestic.isNotEmpty)
+                                            SizedBox(
+                                              height: 130.h,
+                                              child: ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: data.domestic.length,
+                                                itemBuilder: (context, index) {
+                                                  _currentHeight =
+                                                      data.doma[0].isEmpty
+                                                          ? 150
+                                                          : 500;
+
+                                                  LogoData res =
+                                                      data.domestic[index];
+                                                  if (index == 0) {
+                                                    return NotStoryWidget(
+                                                        index: index,
+                                                        brandname: res.brandName
+
+                                                        // showgift: false,
+                                                        );
+                                                  } else if (index >= 1 &&
+                                                      index <= 2) {
+                                                    return NotStoryWidget(
+                                                      index: index,
+                                                      showgift: true,
+                                                    );
+                                                  }
+                                                  return NotStoryWidget(
+                                                      index: index);
+                                                },
+                                              ),
+                                            ),
+                                          // SizedBox(
+                                          //   height: data.doma.isNotEmpty &&
+                                          //           data.doma[0].isNotEmpty
+                                          //       ? 340.h
+                                          //       : 150,
+                                          //   child: data.doma.isNotEmpty &&
+                                          //           data.doma[0].isNotEmpty
+                                          //       ? ListView.builder(
+                                          //           clipBehavior: Clip.antiAlias,
+                                          //           padding:
+                                          //               const EdgeInsets.all(3),
+                                          //           scrollDirection:
+                                          //               Axis.horizontal,
+                                          //           itemCount:
+                                          //               data.doma[0].length,
+                                          //           itemBuilder:
+                                          //               (context, index) {
+                                          //             GlobalModel prod =
+                                          //                 data.doma[0][index];
+                                          //             return InkWell(
+                                          //               onTap: () {},
+                                          //               child:
+                                          //                   ProductDetailWidget(
+                                          //                 vendorname: prod.title,
+                                          //                 discounttedPrice:
+                                          //                     prod.discont,
+                                          //                 Vimage:
+                                          //                     prod.contactName,
+                                          //                 price: prod.price,
+                                          //                 title: prod.title,
+                                          //                 productImage:
+                                          //                     prod.imageUrl,
+                                          //                 similarproductCount: prod
+                                          //                     .similarproductCount,
+                                          //                 membershipColor: prod
+                                          //                     .user
+                                          //                     .first
+                                          //                     .memberColor,
+                                          //                 membershipTitle: prod
+                                          //                     .user
+                                          //                     .first
+                                          //                     .membershipTitle,
+                                          //               ),
+                                          //             );
+                                          //           },
+                                          //         )
+                                          //       : null,
+                                          // ),
+                                        ],
+                                      ),
+
+                                      // Third Tab
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (data.spotlight.isNotEmpty)
+                                            SizedBox(
+                                                height: 130.h,
+                                                child: ListView.builder(
+                                                    padding: EdgeInsets.zero,
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount:
+                                                        data.spotlight.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      _currentHeight =
+                                                          data.spotlight.isEmpty
+                                                              ? 100
+                                                              : 500;
+                                                      LogoData res =
+                                                          data.spotlight[index];
+                                                      if (index == 0) {
+                                                        return NotStoryWidget(
+                                                            index: index,
+                                                            brandname:
+                                                                res.brandName
+
+                                                            // showgift: false,
+                                                            );
+                                                      } else if (index >= 1 &&
+                                                          index <= 2) {
+                                                        return NotStoryWidget(
+                                                          index: index,
+                                                          showgift: true,
+                                                        );
+                                                      }
+                                                      return NotStoryWidget(
+                                                          index: index);
+                                                    })),
+                                          SizedBox(
+                                            height: data.spot.isNotEmpty &&
+                                                    data.spot[0].isNotEmpty
+                                                ? 340.h
+                                                : 180,
+                                            child: data.spot.isNotEmpty &&
+                                                    data.spot[0].isNotEmpty
+                                                ? ListView.builder(
+                                                    clipBehavior: Clip.antiAlias,
+                                                    padding:
+                                                        const EdgeInsets.all(3),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount:
+                                                        data.spot[0].length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      GlobalModel prod =
+                                                          data.spot[0][index];
+                                                      return InkWell(
+                                                        onTap: () {},
+                                                        child:
+                                                            ProductDetailWidget(
+                                                          vendorname: prod.title,
+                                                          discounttedPrice:
+                                                              prod.discont,
+                                                          Vimage: prod
+                                                              .user.first.photo,
+                                                          price: prod.price,
+                                                          title: prod.title,
+                                                          productImage:
+                                                              prod.imageUrl,
+                                                          similarproductCount: prod
+                                                              .similarproductCount,
+                                                          membershipColor: prod
+                                                              .user
+                                                              .first
+                                                              .membership_color,
+                                                          membershipTitle: prod
+                                                              .user
+                                                              .first
+                                                              .membership_title,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                : null,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                                              );
                             },
                             error: (error, stackTrace) {
                               return Text("Error: $error");
@@ -1291,9 +1497,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             similarproductCount:
                                                 prefs.similarProductCount,
                                             membershipColor:
-                                                prefs.userdetails!.memberColor,
+                                                prefs.userdetails!.membership_color,
                                             membershipTitle: prefs
-                                                .userdetails!.membershipTitle,
+                                                .userdetails!.membership_title,
                                           );
                                         },
                                       ),

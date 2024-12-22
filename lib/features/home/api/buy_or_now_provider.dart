@@ -1,4 +1,6 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -80,7 +82,7 @@ class Home1GlobalModel {
   final String price;
   final String image;
   final int? similarProductCount;
-  final UserDetails? userDetails;
+  final UserDetailsModel? userDetails;
 
   Home1GlobalModel({
     required this.id,
@@ -101,40 +103,45 @@ class Home1GlobalModel {
       image: json['image'] as String,
       similarProductCount: json['similarProductCount'] as int,
       userDetails: json['userdetails'] != null
-          ? UserDetails.fromJson(json['userdetails'])
+          ? UserDetailsModel.fromJson(json['userdetails'])
           : null,
     );
   }
 }
 
-class UserDetails {
-  final String userId;
-  final String? name;
-  final String? photo;
-  final String? memberColor;
-  final String? membershipTitle;
-  final bool? sponsored;
+// @freezed
+// class UserDetails with _$UserDetails {
+//   const factory UserDetails({
+//     @JsonKey(name: 'user_id') required String userId,
+//     @JsonKey(name: 'name') String? name,
+//     @JsonKey(name: 'photo') String? photo,
+//     @JsonKey(name: 'membership_color') String? membershipColor,
+//     @JsonKey(name: 'membership_title') String? membershipTitle,
+//     @JsonKey(name: 'sponsored') bool? sponsored,
+//     @JsonKey(name: 'shortestDistance') double? shortestDistance,
+//     @JsonKey(name: 'livePrizes') int? livePrizes,
+//     @JsonKey(name: 'storyCount') int? storyCount,
+//     @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+//     // Uncomment below for nearestBranch if needed
+//     // @JsonKey(name: 'nearestBranch') NearestBranch? nearestBranch,
+//   }) = _UserDetails;
 
-  UserDetails({
-    required this.userId,
-    this.name,
-    this.photo,
-    this.memberColor,
-    this.membershipTitle,
-    this.sponsored,
-  });
+//   factory UserDetails.fromJson(Map<String, dynamic> json) =>
+//       _$UserDetailsFromJson(json);
+// }
 
-  factory UserDetails.fromJson(Map<String, dynamic> json) {
-    return UserDetails(
-      sponsored: json['sponsored'] as bool?,
-      userId: json['user_id'] as String,
-      name: json['name'] as String?,
-      photo: json['photo'] as String?,
-      memberColor: json['membership_color'] as String?,
-      membershipTitle: json['membership_title'] as String?,
-    );
-  }
-}
+// Uncomment this part for nearestBranch if required
+// @freezed
+// class NearestBranch with _$NearestBranch {
+//   const factory NearestBranch({
+//     @JsonKey(name: 'location') String? location,
+//     @JsonKey(name: 'longitude') String? longitude,
+//     @JsonKey(name: 'latitude') String? latitude,
+//   }) = _NearestBranch;
+
+//   factory NearestBranch.fromJson(Map<String, dynamic> json) =>
+//       _$NearestBranchFromJson(json);
+// }
 
 // Riverpod Provider
 @riverpod
@@ -229,12 +236,12 @@ class GlobalModel {
   final String price;
   final String imageUrl;
   final String discont;
-  final List<UserDetails> user;
+  final List<UserDetailsModel> user;
   final String contactName;
   final String wow;
   final String commentnum;
   final String stock;
-    final String offers;
+  final String offers;
 
   final int avg_rating;
   final double? shortestDistance;
@@ -261,8 +268,7 @@ class GlobalModel {
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
-      offers: json['offers']?? '',
-      
+      offers: json['offers'] ?? '',
       shortestDistance: json['shortestDistance'] ?? 0.0,
       avg_rating: json['avg_rating'] ?? 0,
       commentnum: json['stock'] ?? '0',
@@ -278,10 +284,10 @@ class GlobalModel {
       contactName: json['contact_name'] ?? '',
       user: (json['userdetails'] is List)
           ? (json['userdetails'] as List)
-              .map((userJson) => UserDetails.fromJson(userJson))
+              .map((userJson) => UserDetailsModel.fromJson(userJson))
               .toList()
           : json['userdetails'] != null
-              ? [UserDetails.fromJson(json['userdetails'])]
+              ? [UserDetailsModel.fromJson(json['userdetails'])]
               : [],
     );
   }

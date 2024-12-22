@@ -76,14 +76,14 @@ class buyorwin_widget extends StatelessWidget {
                 ),
                 Positioned(
                     left: 60.h,
-                    bottom: 120.h,
+                    bottom: 100.h,
                     child: CircleAvatar(
                       radius: 75.sp,
-                      backgroundColor: Color(0xffA50157),
+                      backgroundColor: const Color(0xffA50157),
                     )),
                 Positioned(
                     left: 55.h,
-                    bottom: 120.h,
+                    bottom: 100.h,
                     child: CircleAvatar(
                         radius: 75.sp,
                         backgroundImage: NetworkImage(proctimage))),
@@ -91,7 +91,7 @@ class buyorwin_widget extends StatelessWidget {
                   top: 45.h,
                   left: 125.h,
                   child: CircleAvatar(
-                      radius: 25.sp,
+                      radius: 28.5.sp,
                       backgroundColor: Colors.black,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

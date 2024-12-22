@@ -334,11 +334,15 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -635,16 +639,16 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                   title: res.title,
                                   price: res.price,
                                   similarproductCount: res.similarproductCount,
-                                  membershipColor: res.user[0].memberColor,
-                                  membershipTitle: res.user[0].membershipTitle),
+                                  membershipColor: res.user[0].membership_color,
+                                  membershipTitle: res.user[0].membership_title),
                             );
                           },
                         );
                       },
                       error: (error, stackTrace) {
-                        return Text("data");
+                        return const Text("data");
                       },
-                      loading: () => CircularProgressIndicator(),
+                      loading: () => const CircularProgressIndicator(),
                     ),
                   ],
                 ),

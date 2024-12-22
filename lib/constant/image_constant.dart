@@ -68,17 +68,11 @@ final List<Map<String, dynamic>> items = [
       'label': 'Events',
       'screen': const EventsScreen()
     },
-   
-   
-   
-  
-    
   ];
 
 
 
 const String baseAsset = "assets/icon";
-
 const String drawerIcon = "$baseAsset/drawerIcon.svg";
 const String openCart = "$baseAsset/openCartIcon.svg";
 const String logoIcon = "$baseAsset/logo.svg";

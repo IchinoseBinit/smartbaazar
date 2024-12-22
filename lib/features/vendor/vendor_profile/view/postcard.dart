@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  final String photo, image, subscribers, caption, name;
+  bool? isLive;
+  PostCard(
+      {super.key,
+      required this.image,
+      required this.photo,
+      required this.caption,
+      required this.name,
+      this.isLive = false,
+      required this.subscribers});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 10.h,
+      // height: 10.h,
       padding: const EdgeInsets.all(5),
       margin: EdgeInsets.only(left: 5.w),
-      width: MediaQuery.sizeOf(context).width*0.75,
+      width: MediaQuery.sizeOf(context).width * 0.65,
       decoration: BoxDecoration(
-          color: Colors.white30, borderRadius: BorderRadius.circular(20)),
+          color: ColorConstant.whiteColor,
+          borderRadius: BorderRadius.circular(20)),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -29,26 +40,19 @@ class PostCard extends StatelessWidget {
                 children: [
                   // Avatar
                   Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade300,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Tech store",
-                        style: TextStyle(fontSize: 10, color: Colors.black),
-                        textAlign: TextAlign.center,
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
                       ),
-                    ),
-                  ),
+                      child: Image.network(photo)),
                   const SizedBox(width: 10),
                   // Title and Info
-                  const Column(
+                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Tech Store",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 14),
@@ -56,28 +60,25 @@ class PostCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "5.5K Subscribers",
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.grey),
+                            "$subscribers Subscribers",
+                            style: const TextStyle(fontSize: 10, color: Colors.grey),
                           ),
-                          SizedBox(width: 5),
-                          Text(
+                          const SizedBox(width: 5),
+                          const Text(
                             "•",
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.grey),
+                            style: TextStyle(fontSize: 10, color: Colors.grey),
                           ),
-                          SizedBox(width: 5),
-                          Text(
+                          const SizedBox(width: 5),
+                          const Text(
                             "20h",
-                            style:
-                                TextStyle(fontSize: 12, color: Colors.grey),
+                            style: TextStyle(fontSize: 10, color: Colors.grey),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const Spacer(),
-                  const Icon(Icons.more_vert, color: Colors.grey),
+                  // const Spacer(),
+                  // const Icon(Icons.more_vert, color: Colors.grey),
                 ],
               ),
             ),
@@ -87,16 +88,16 @@ class PostCard extends StatelessWidget {
                 top: Radius.circular(0),
                 bottom: Radius.circular(0),
               ),
-              child: Image.asset(
-                'assets/images/forest.png',
-                height: 180,
+              child: Image.network(
+                image,
+                height: 70,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
             // Description Section
             const Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(5.0),
               child: Text.rich(
                 TextSpan(
                   text:
@@ -114,25 +115,47 @@ class PostCard extends StatelessWidget {
               ),
             ),
             // Action Section (like, comment, share)
-            Padding(
+           isLive!? 
+           Container(
+            child: Row(
+              children: [
+                Text("leadingText",
+                style: headerstyle.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+
+                ),
+                ),
+                 Text("nonoon",
+                style: headerstyle.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+
+                ),
+                ),
+              ],
+            ),
+           ):
+           
+           
+           
+             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon:
-                        const Icon(Icons.favorite_border, color: Colors.grey),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.comment_outlined,
-                        color: Colors.grey),
+                    icon: const Icon(Icons.favorite_border, color: Colors.grey),
                   ),
                   IconButton(
                     onPressed: () {},
                     icon:
-                        const Icon(Icons.share_outlined, color: Colors.grey),
+                        const Icon(Icons.comment_outlined, color: Colors.grey),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.share_outlined, color: Colors.grey),
                   ),
                 ],
               ),

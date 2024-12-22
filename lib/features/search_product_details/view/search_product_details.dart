@@ -135,7 +135,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             itemBuilder: (context, index) {
                               final product = results[index];
                               return ListTile(
-                                title: Text(''),
+                                title: const Text(''),
                                 onTap: () {
                                   Navigator.push(
                                       context,

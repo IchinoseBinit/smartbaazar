@@ -23,7 +23,7 @@ class LoginApi {
         url: ApiConstants.loginUrl,
         parameter: loginBody,
       );
-      print("ram ${response}");
+      print("ram $response");
 
       // Check for successful response
       if (response.statusCode != null &&

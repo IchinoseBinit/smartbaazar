@@ -42,12 +42,17 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   ShippingCitiesModel? selectedpickup;
   // bool _isChecked = false;
   bool _acceptterms = false;
+  bool _trending = false;
+
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
   List<Category> subcategoryList = [];
   Category? subcatagory;
   CityList? selectedCity;
   List<CityList>? citylistsitems = [];
+  List<Offer>? offerresponse = [];
+  Offer? selectedOffer;
+
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -77,6 +82,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     super.initState();
     _fetchTypeList();
     _fetchcities();
+    _fetchOffers();
     _fetchProductTypeList();
   }
 
@@ -92,6 +98,19 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       List<CityList> fetchedTypes = await repository.fetchCities(1);
       setState(() {
         citylistsitems = fetchedTypes;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
+  }
+
+  Future<void> _fetchOffers() async {
+    try {
+      OffersResponse fetchedTypes = await repository.fetchOffers();
+      print("binod ${fetchedTypes.data.first.offers}");
+      setState(() {
+        offerresponse = fetchedTypes.data;
       });
     } catch (e) {
       // Handle error, maybe show a message to the user
@@ -839,8 +858,12 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                     const Spacer(),
                     Checkbox(
-                      value: false,
-                      onChanged: (value) {},
+                      value: _trending,
+                      onChanged: (value) {
+                        setState(() {
+                          _trending = value!;
+                        });
+                      },
                     ),
                   ],
                 )),
@@ -1015,15 +1038,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
+                        child: CustomDropdownButton<Offer>(
+                          items: offerresponse!,
+                          dropdownValue: selectedOffer,
                           onChanged: (newValue) {
                             setState(() {
-                              selectedCity = newValue;
+                              selectedOffer = newValue;
                             });
                           },
-                          getItemLabel: (CityList item) => item.name,
+                          getItemLabel: (Offer item) => item.offers,
                         ),
                       ),
                     ],
@@ -1559,27 +1582,23 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   decoration: BoxDecoration(
-                    color: ColorConstant.whiteColor,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      
-                      color: ColorConstant.grayColor,
-                      width: 2
-                    )
-                  ),
+                      color: ColorConstant.whiteColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border:
+                          Border.all(color: ColorConstant.grayColor, width: 2)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text("Discount on Bulk Order !",
-                      style: headerstyle.copyWith(
-                        color: ColorConstant.blackColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14
-
-                      ),
+                      Text(
+                        "Discount on Bulk Order !",
+                        style: headerstyle.copyWith(
+                            color: ColorConstant.blackColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
                       ),
                       SizedBox(
                         height: 15.h,
@@ -1743,29 +1762,23 @@ class bulk_discount_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
       decoration: BoxDecoration(
-        color: const Color(0xffFDFDFE),
-        borderRadius: BorderRadius.circular(10),
-       border: Border.all(
-    
-    color: ColorConstant.grayColor,
-    width: 1
-                        
-        )
-      ),
+          color: const Color(0xffFDFDFE),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: ColorConstant.grayColor, width: 1)),
       child: Row(
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text("Pieces",
-              style: headerstyle.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                color: ColorConstant.blackColor
-              ),
+              Text(
+                "Pieces",
+                style: headerstyle.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    color: ColorConstant.blackColor),
               ),
               SizedBox(
                 height: 15.h,
@@ -1776,14 +1789,12 @@ class bulk_discount_widget extends StatelessWidget {
                 children: [
                   Material(
                     elevation: 2,
-                   borderRadius:
-                              BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 2),
                       decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6),
                           color: const Color(0xffFDFDFE)),
                       child: Text(
                         "2",
@@ -1809,14 +1820,12 @@ class bulk_discount_widget extends StatelessWidget {
                   ),
                   Material(
                     elevation: 2,
-                     borderRadius:
-                              BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 2),
                       decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6),
                           color: const Color(0xffFDFDFE)),
                       child: Text(
                         "5",
@@ -1838,14 +1847,12 @@ class bulk_discount_widget extends StatelessWidget {
                 children: [
                   Material(
                     elevation: 2,
-                     borderRadius:
-                              BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 2),
                       decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6),
                           color: const Color(0xffFDFDFE)),
                       child: Text(
                         "6",
@@ -1871,14 +1878,12 @@ class bulk_discount_widget extends StatelessWidget {
                   ),
                   Material(
                     elevation: 2,
-                     borderRadius:
-                              BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 2),
                       decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(6),
                           color: const Color(0xffFDFDFE)),
                       child: Text(
                         "10",
@@ -1899,21 +1904,19 @@ class bulk_discount_widget extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              
-               Text("Rate/piece",
-                 style: headerstyle.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                color: ColorConstant.blackColor
-              ),
+              Text(
+                "Rate/piece",
+                style: headerstyle.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    color: ColorConstant.blackColor),
               ),
               SizedBox(
                 height: 15.h,
               ),
               Material(
                 elevation: 2,
-                 borderRadius:
-                              BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(6),
                 child: Container(
                   padding: const EdgeInsets.only(
                       left: 10, right: 50, top: 5, bottom: 2),
@@ -1934,8 +1937,7 @@ class bulk_discount_widget extends StatelessWidget {
               ),
               Material(
                 elevation: 2,
-                 borderRadius:
-                              BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(6),
                 child: Container(
                   margin: EdgeInsets.only(top: 5.h),
                   padding: const EdgeInsets.only(
@@ -1969,10 +1971,9 @@ class bulk_discount_widget extends StatelessWidget {
                   decoration: BoxDecoration(
                     // shape: BoxShape.circle,
                     borderRadius: BorderRadius.circular(5),
-    
-                    border: Border.all(
-                        color: ColorConstant.grayColor),
-    
+
+                    border: Border.all(color: ColorConstant.grayColor),
+
                     // borderRadius: BorderRadius.circular(6),
                   ),
                   child: const CircleAvatar(
@@ -1989,16 +1990,14 @@ class bulk_discount_widget extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.only(left: 5.w,right: 15.w),
+                      margin: EdgeInsets.only(left: 5.w, right: 15.w),
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         // shape: BoxShape.circle,
-                        borderRadius:
-                            BorderRadius.circular(5),
-    
-                        border: Border.all(
-                            color: ColorConstant.grayColor),
-    
+                        borderRadius: BorderRadius.circular(5),
+
+                        border: Border.all(color: ColorConstant.grayColor),
+
                         // borderRadius: BorderRadius.circular(6),
                       ),
                       child: const CircleAvatar(
@@ -2013,12 +2012,10 @@ class bulk_discount_widget extends StatelessWidget {
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         // shape: BoxShape.circle,
-                        borderRadius:
-                            BorderRadius.circular(5),
-    
-                        border: Border.all(
-                            color: ColorConstant.grayColor),
-    
+                        borderRadius: BorderRadius.circular(5),
+
+                        border: Border.all(color: ColorConstant.grayColor),
+
                         // borderRadius: BorderRadius.circular(6),
                       ),
                       child: const CircleAvatar(
@@ -2029,7 +2026,9 @@ class bulk_discount_widget extends StatelessWidget {
                           color: ColorConstant.whiteColor,
                         ),
                       )),
-                      SizedBox(height: 10.h,),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                 ],
               )
             ],
@@ -2162,7 +2161,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-          CreateListingCardWidget(
+        CreateListingCardWidget(
             child: Row(
           children: [
             Text(
@@ -2187,7 +2186,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-         CreateListingCardWidget(
+        CreateListingCardWidget(
             child: Row(
           children: [
             SizedBox(
@@ -2299,9 +2298,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
         //     ),
         //   ],
         // )),
-      
-       
-       
+
         SizedBox(
           height: 15.h,
         ),
@@ -2783,8 +2780,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            SizedBox(height: 10.h,),
-              Text(
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
               'Who do you want\nto sell',
               style: TextStyle(
                   fontSize: 14.sp,
@@ -2799,7 +2798,6 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            
               Row(
                 children: [
                   CustomCheckbox(
@@ -2828,7 +2826,7 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
               SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -2853,10 +2851,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   )
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -2881,10 +2879,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   )
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -2909,10 +2907,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   )
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,

@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 

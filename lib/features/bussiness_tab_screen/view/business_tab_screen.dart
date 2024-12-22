@@ -17,7 +17,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_sc
 
 class BusinessTabScreen extends ConsumerStatefulWidget {
   final String query;
-  BusinessTabScreen({Key? key, required this.query}) : super(key: key);
+  const BusinessTabScreen({Key? key, required this.query}) : super(key: key);
 
   @override
   ConsumerState<BusinessTabScreen> createState() => _BusinessTabScreenState();
@@ -251,11 +251,15 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -656,7 +660,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                 SizedBox(
                                    height:   MediaQuery.of(context).size.height*1.6, 
                                   child: TabBarView(children: [
-                                     data.brandNew!.isEmpty? Center(child: Text("No listing found")): LayoutBuilder(
+                                     data.brandNew!.isEmpty? const Center(child: Text("No listing found")): LayoutBuilder(
                                         builder: (context, constraints) {
                                   
                                       return GridView.builder(
@@ -667,7 +671,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         itemCount: data.brandNew?.length,
                                   
                                         gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
                                           // mainAxisExtent:
                                           //     constraints.maxWidth > 430
                                           //         ? 4
@@ -691,9 +695,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                               similarproductCount:
                                                   res.similarproductCount,
                                               membershipColor:
-                                                  res.user[0].memberColor!,
+                                                  res.user[0].membership_color!,
                                               membershipTitle:
-                                                  res.user[0].membershipTitle!);
+                                                  res.user[0].membership_title!);
                                         },
                                       );
                                     }),
@@ -720,7 +724,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         );
                                       },).toList(),
                                     ),
-                                   data.used!.isEmpty? Center(child: Text("No listing found")):
+                                   data.used!.isEmpty? const Center(child: Text("No listing found")):
                                     LayoutBuilder(
                                         builder: (context, constraints) {
                                   
@@ -732,7 +736,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         itemCount: data.used?.length,
                                   
                                         gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
                                           // mainAxisExtent:
                                           //     constraints.maxWidth > 430
                                           //         ? 4
@@ -756,14 +760,14 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                               similarproductCount:
                                                   res.similarproductCount,
                                               membershipColor:
-                                                  res.user[0].memberColor!,
+                                                  res.user[0].membership_color!,
                                               membershipTitle:
-                                                  res.user[0].membershipTitle!);
+                                                  res.user[0].membership_title!);
                                         },
                                       );
                                     }),
                                   
-                                     data.services!.isEmpty? Center(child: Text("No listing found")):
+                                     data.services!.isEmpty? const Center(child: Text("No listing found")):
                                     LayoutBuilder(
                                         builder: (context, constraints) {
                                   
@@ -775,7 +779,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         itemCount: data.services?.length,
                                   
                                         gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
                                           // mainAxisExtent:
                                           //     constraints.maxWidth > 430
                                           //         ? 4
@@ -799,9 +803,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                               similarproductCount:
                                                   res.similarproductCount,
                                               membershipColor:
-                                                  res.user[0].memberColor!,
+                                                  res.user[0].membership_color!,
                                               membershipTitle:
-                                                  res.user[0].membershipTitle!);
+                                                  res.user[0].membership_title!);
                                         },
                                       );
                                     }),
@@ -815,7 +819,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   error: (error, stackTrace) {
                     return Text("error is $error");
                   },
-                  loading: () => Center(child: CircularProgressIndicator()),
+                  loading: () => const Center(child: CircularProgressIndicator()),
                 ),
               ],
             ),

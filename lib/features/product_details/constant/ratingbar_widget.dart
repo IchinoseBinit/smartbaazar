@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class star_widget extends StatelessWidget {
-  double star;
-  double value;
-  double width;
-  int numstar;
+class StarWidget extends StatelessWidget {
+  final int star;
+  final double value;
+  final double width;
+  final int numStar;
 
-  star_widget(
-      {super.key,
-      required this.star,
-      required this.value,
-      required this.width,
-      required this.numstar});
+  const StarWidget({
+    super.key,
+    required this.star,
+    required this.value,
+    required this.width,
+    this.numStar = 5, // Default number of stars is 5
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +22,21 @@ class star_widget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        RatingBar.builder(
-          initialRating: star,
-          minRating: 1,
-          direction: Axis.horizontal,
-          allowHalfRating: true,
-          itemCount: numstar,
-          itemSize: 25,
-          itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-          itemBuilder: (context, _) =>
-              const Icon(Icons.star, color: Color(0xFFffa500)),
-          onRatingUpdate: (rating) {},
+        Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.identity()..scale(-1.0, 1.0), // Flip horizontally
+          child: RatingBar.builder(
+            initialRating: star.toDouble(), // Highlight stars from right
+            minRating: 0, // Minimum rating is 0
+            direction: Axis.horizontal,
+            allowHalfRating: false,
+            itemCount: 5, // Total stars to display
+            itemSize: 25,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+            itemBuilder: (context, _) =>
+                const Icon(Icons.star, color: Color(0xFFffa500)),
+            onRatingUpdate: (rating) {},
+          ),
         ),
         SizedBox(
           width: 2.w,
@@ -49,8 +54,10 @@ class star_widget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 10.w,),
-        Text(numstar.toString())
+        SizedBox(
+          width: 10.w,
+        ),
+        Text(numStar.toString())
       ],
     );
   }

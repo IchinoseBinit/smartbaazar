@@ -64,7 +64,7 @@ class CircleBorderBorderPainter extends CustomPainter {
     final double circumference = 2 * pi * radius;
 
     // Calculate the length of each dash plus gap
-    final double dashLength = dashWidth + dashGap;
+    const double dashLength = dashWidth + dashGap;
 
     // Calculate the angle of each segment
     final double anglePerSegment = 2 * pi / dashCount;

@@ -1,141 +1,84 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
-import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
-import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
-import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+// import 'package:flutter/material.dart';
+// import 'package:textfield_tags/textfield_tags.dart';
 
-class CategoryField extends StatefulWidget {
-  final Function(Category?) onCategorySelected;
+// class TagsExample extends StatefulWidget {
+//   const TagsExample({Key? key}) : super(key: key);
 
-  const CategoryField({
-    super.key,
-    required this.onCategorySelected,
-  });
+//   @override
+//   _TagsExampleState createState() => _TagsExampleState();
+// }
 
-  @override
-  State<CategoryField> createState() => _CategoryFieldState();
-}
+// class _TagsExampleState extends State<TagsExample> {
+//   late TextfieldTagsController _controller;
+//   List<String> somethingHere = [];
 
-class _CategoryFieldState extends State<CategoryField> {
-  List<Category> categoryListItems = [];
-  List<Category> subCategoryListItems = [];
-  Category? selectedCategory;
-  Category? selectedSubCategory;
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = TextfieldTagsController();
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchCategoryList();
-  }
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
 
-  Future<void> _fetchCategoryList() async {
-    try {
-      NewListingRepository repository = NewListingRepository();
-      List<Category> fetchedCategories = await repository.fetchCategoryList();
-      setState(() {
-        categoryListItems = fetchedCategories;
-      });
-    } catch (e) {
-      print('Failed to load categories: $e');
-    }
-  }
+//   void onDelete(int index) {
+//     setState(() {
+//       somethingHere.removeAt(index);
+//     });
+//   }
 
-  Future<void> _fetchSubCategoryList(Category category) async {
-    try {
-      NewListingRepository repository = NewListingRepository();
-      List<Category> fetchedSubCategories = await repository.fetchSubCategoryList(category.id);
-      setState(() {
-        subCategoryListItems = fetchedSubCategories;
-        selectedSubCategory = null; // Reset selected subcategory when category changes
-      });
-    } catch (e) {
-      print('Failed to load subcategories: $e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CreateListingCardWidget(
-          child: Row(
-            children: [
-              Text(
-                'Category',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                ' *',
-                style: TextStyle(
-                  color: const Color(0xffD33636),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                ),
-              ),
-              Expanded(
-                child: CustomDropdownButton<Category>(
-                  items: categoryListItems,
-                  dropdownValue: selectedCategory,
-                  onChanged: (Category? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedCategory = newValue;
-                        widget.onCategorySelected(newValue);
-                      });
-                      _fetchSubCategoryList(newValue); // Fetch subcategories for the selected category
-                    }
-                    print("Category selected: ${selectedCategory?.id}");
-                  },
-                  getItemLabel: (Category item) => item.name,
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (subCategoryListItems.isNotEmpty)
-          CreateListingCardWidget(
-            child: Row(
-              children: [
-                Text(
-                  'Subcategory',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  ' *',
-                  style: TextStyle(
-                    color: const Color(0xffD33636),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                  ),
-                ),
-                Expanded(
-                  child: CustomDropdownButton<Category>(
-                    items: subCategoryListItems,
-                    dropdownValue: selectedSubCategory,
-                    onChanged: (Category? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedSubCategory = newValue;
-                        });
-                      }
-                    },
-                    getItemLabel: (Category item) => item.name,
-                  ),
-                ),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Simple Textfield Tags Example'),
+//         centerTitle: true,
+//       ),
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.all(14.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: <Widget>[
+//               const SizedBox(height: 12.0),
+//               const Text(
+//                 'In just a few words, what are 3 positive things about dogs? (optional)',
+//                 style: TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: 16.0,
+//                 ),
+//               ),
+//               Padding(
+//                   padding: const EdgeInsets.only(top: 16.0),
+//                   child: TextFieldTags(
+//                     textfieldTagsController: _controller,
+                    
+//                     inputFieldBuilder: (context, textFieldTagValues) {
+//                       return Container(
+                        
+//                       );
+//                     },
+//                   )),
+//               Wrap(
+//                 spacing: 6.0,
+//                 children: somethingHere.map((tag) {
+//                   return Chip(
+//                     label: Text(tag),
+//                     onDeleted: () {
+//                       setState(() {
+//                         somethingHere.remove(tag);
+//                       });
+//                     },
+//                   );
+//                 }).toList(),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

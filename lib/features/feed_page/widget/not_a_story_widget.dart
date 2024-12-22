@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/feed_page/widget/story_screen.dart';
 
 class NotStoryWidget extends StatelessWidget {
   final int index;

@@ -1786,6 +1786,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
               ],
             ),
           ),
+          
           ValueListenableBuilder<bool>(
             valueListenable: _showSideBar,
             builder: (context, value, child) {

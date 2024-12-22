@@ -127,7 +127,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                       itemBuilder: (context, index) {
                                         final product = results[index];
                                         return ListTile(
-                                          title: Text('product.'),
+                                          title: const Text('product.'),
                                           onTap: () {
                                             Navigator.push(
                                               context,

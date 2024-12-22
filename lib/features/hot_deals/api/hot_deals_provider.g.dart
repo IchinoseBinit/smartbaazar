@@ -6,7 +6,7 @@ part of 'hot_deals_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getHotDealsHash() => r'c0c62921eec01b5e3b65e4f8f982e08f7cb47ec5';
+String _$getHotDealsHash() => r'9fcb12e6d800df3dc75df808649ca6423f429c02';
 
 /// Copied from Dart SDK
 class _SystemHash {

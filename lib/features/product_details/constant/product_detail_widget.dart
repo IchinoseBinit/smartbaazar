@@ -30,7 +30,7 @@ class ProductDetailWidget extends StatelessWidget {
       this.issponsored = false,
       this.shortestDistance,
       this.membershipTitle,
-      this.avg_rating});
+      this.avg_rating=1});
   String? title;
   String? price;
   String? discounttedPrice;
@@ -51,8 +51,7 @@ class ProductDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String showRs = "Rs";
     showRs = discounttedPrice == '0' ? '' : '';
-    print("ramkbaba $Vimage");
-    print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
+  
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       child: Card(
@@ -233,17 +232,17 @@ class ProductDetailWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Rs ${price!}',
+                          'Rs ${price?? "0"}',
                           style: headerstyle.copyWith(
                               color: ColorConstant.blackColor,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w800),
                         ),
                         offer == ''
-                            ? SizedBox()
+                            ? const SizedBox()
                             : Row(
                                 children: [
-                                  const Icon(
+                                   offer!=''? const SizedBox(): const Icon(
                                     Icons.track_changes_sharp,
                                     color: Color(0xff901B41),
                                     size: 15,
@@ -260,24 +259,24 @@ class ProductDetailWidget extends StatelessWidget {
                         discounttedPrice != "0"
                             ? Row(
                                 children: [
-                                  const Icon(
+                                    offer!=''? const Icon(
                                     Icons.track_changes_sharp,
                                     color: Color(0xff901B41),
                                     size: 15,
-                                  ),
-                                  Text(
-                                    "Best Price",
+                                  ): const SizedBox(),
+                              offer==''?      Text(
+                                    "$offer",
                                     style: headerstyle.copyWith(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff901B41),
                                         fontSize: 8.sp),
-                                  ),
+                                  ): const SizedBox(),
                                 ],
                               )
-                            : SizedBox(),
+                            : const SizedBox(),
                         if (discounttedPrice != '0')
                           Text(
-                            "${showRs}$discounttedPrice",
+                            "$showRs$discounttedPrice",
                             style: headerstyle.copyWith(
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w600,
@@ -302,7 +301,7 @@ class ProductDetailWidget extends StatelessWidget {
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
                           child: Text(
-                            avg_rating.toString() ?? '0',
+                            avg_rating.toString() ?? '1',
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
@@ -317,7 +316,7 @@ class ProductDetailWidget extends StatelessWidget {
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: avg_rating ?? 0,
+                            itemCount: avg_rating ?? 1,
                             itemSize: 12,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
@@ -330,11 +329,10 @@ class ProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    discounttedPrice == '0'
-                        ? SizedBox()
+                    discounttedPrice!=null?   const SizedBox()
                         : Row(
                             children: [
-                              Image.asset(
+                         discounttedPrice!=null?   const SizedBox():     Image.asset(
                                 "assets/images/flameIcon.png",
                                 height: 10,
                                 width: 10,
@@ -368,10 +366,10 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             Image.asset('assets/icon/Rectangle.png'),
                             Text(
-                              "${wow ?? '0'}",
+                              wow ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -384,10 +382,10 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             Image.asset("assets/icon/Vector.png"),
                             Text(
-                              "${comment ?? '0'}",
+                              comment ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -406,7 +404,7 @@ class ProductDetailWidget extends StatelessWidget {
                               similarproductCount?.toString() ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -471,116 +469,115 @@ class ProductDetailWidget extends StatelessWidget {
                           ? Color(int.parse(
                               membershipColor!.replaceFirst('#', '0xFF')))
                           : const Color(0xff3D215F), // Default color
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(13),
                         bottomRight: Radius.circular(13),
                       ),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(Vimage!),
-                              radius: 14.sp,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    Text(
-                                      vendorname != null &&
-                                              vendorname!.length > 19
-                                          ? '${vendorname!.substring(0, 15)}...'
-                                          : vendorname ?? '',
-                                      style: headerstyle.copyWith(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                      size: 12,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/nepalFlag.png",
-                                      height: 9.h,
-                                    ),
-                                    SizedBox(
-                                      width: 1.w,
-                                    ),
-                                    Text(
-                                      membershipTitle ?? "Domestic Brand",
-                                      style: headerstyle.copyWith(
-                                          fontSize: 8.sp,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            shortestDistance != null
-                                ? Row(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(Vimage!),
+                                radius: 14.sp,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      const Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 12,
+                                      SizedBox(
+                                        width: 4.w,
                                       ),
                                       Text(
-                                        "${shortestDistance} km",
+                                        vendorname != null &&
+                                                vendorname!.length > 19
+                                            ? '${vendorname!.substring(0, 15)}...'
+                                            : vendorname ?? '',
+                                        style: headerstyle.copyWith(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
+                                      const Icon(
+                                        Icons.logout,
+                                        color: Colors.white,
+                                        size: 12,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Image.asset(
+                                        "assets/images/nepalFlag.png",
+                                        height: 9.h,
+                                      ),
+                                      SizedBox(
+                                        width: 1.w,
+                                      ),
+                                      Text(
+                                        membershipTitle ?? "Domestic Brand",
                                         style: headerstyle.copyWith(
                                             fontSize: 8.sp,
                                             fontWeight: FontWeight.w700),
                                       ),
                                     ],
-                                  )
-                                : SizedBox(
-                                    height: 5.h,
                                   ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            issponsored
-                                ? SizedBox()
-                                : Row(
-                                    children: [
-                                      Image.asset("assets/images/mike.png"),
-                                      Text(
-                                        "SPONSORED",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Colors.white,
+                                    size: 12,
                                   ),
-                          ],
-                        ),
-                      ],
+                                  Text(
+                                    "2.5 km",
+                                    style: headerstyle.copyWith(
+                                        fontSize: 8.sp,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 3.h,
+                              ),
+                              issponsored
+                                  ? const SizedBox()
+                                  : Row(
+                                      children: [
+                                        Image.asset("assets/images/mike.png"),
+                                        Text(
+                                          "Sponsored",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],

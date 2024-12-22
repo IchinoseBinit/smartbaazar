@@ -1645,7 +1645,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     return Text("$error");
                   },
                   loading: () {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                 ),
                 Padding(

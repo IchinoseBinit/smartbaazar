@@ -1664,7 +1664,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     return Text("$error");
                   },
                   loading: () {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   },
                 ),
                 Padding(

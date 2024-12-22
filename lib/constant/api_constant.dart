@@ -51,6 +51,8 @@ class ApiConstants {
   static String fetchProductType = '$baseUrl/packages';
   static String fetchCities = '$baseUrl/countries/NP/cities';
   static String postlisting = '$baseUrl/posts';
+    static String getoffers = '$reportComplainUrl/getoffers';
+
 
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
