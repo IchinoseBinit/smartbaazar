@@ -8,6 +8,7 @@ part 'buy_or_now_provider.g.dart';
 
 // Models
 class HotWithBuy {
+  final Map<String, VendorModel>  homestory;
   final List<Home1GlobalModel> home;
   final List<Buynowmodel> buynow;
   final List<LogoData> global;
@@ -16,9 +17,9 @@ class HotWithBuy {
   final List<List<GlobalModel>> insidearr;
   final List<List<GlobalModel>> spot;
   final List<List<GlobalModel>> doma;
-  
 
   HotWithBuy({
+    required this.homestory,
     required this.home,
     required this.buynow,
     required this.global,
@@ -28,6 +29,75 @@ class HotWithBuy {
     required this.spot,
     required this.doma,
   });
+}
+
+
+
+class VendorModel {
+  final String vendorName;
+  final String vendorImage;
+  final int storyCount;
+  final bool hasSponsoredGifts;
+  final List<PostModel> posts;
+
+  VendorModel({
+    required this.vendorName,
+    required this.vendorImage,
+    required this.storyCount,
+    required this.hasSponsoredGifts,
+    required this.posts,
+  });
+
+  factory VendorModel.fromJson(Map<String, dynamic> json) {
+    final posts = (json['posts'] as List<dynamic>)
+        .map((post) => PostModel.fromJson(post))
+        .toList();
+
+    return VendorModel(
+      vendorName: json['vendor_name'] as String,
+      vendorImage: json['vendor_image'] as String,
+      storyCount: json['story_count'] as int,
+      hasSponsoredGifts: json['has_sponsored_gifts'] as bool,
+      posts: posts,
+    );
+  }
+}
+
+class PostModel {
+  final String id;
+  final String title;
+  final String image;
+  final int similarProductCount;
+  final String commentCount;
+  // final int? averageRating;
+  final double? discountPercentage;
+  final String? wow;
+
+  PostModel({
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.similarProductCount,
+    required this.commentCount,
+    // required this.averageRating,
+    this.discountPercentage,
+    this.wow,
+  });
+
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    return PostModel(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      image: json['image'] as String,
+      similarProductCount: json['similarproductcount'] as int,
+      commentCount: json['comment_count'] as String,
+      // averageRating: json['average_rating'] as int,
+      discountPercentage: json['discount_percentage'] != null
+          ? (json['discount_percentage'] as num).toDouble()
+          : null,
+      wow: json['wow'] as String?,
+    );
+  }
 }
 
 class LogoData {
@@ -213,9 +283,15 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
-    print("mango ${global.first.userId}");
+final Map<String, VendorModel> homestory = (data['home_story'] as Map<String, dynamic>?)
+    ?.map((key, value) => MapEntry(key, VendorModel.fromJson(value as Map<String, dynamic>))) ?? {};
+
+
+
+
 
     return HotWithBuy(
+      homestory: homestory,
         doma: domas,
         spot: spotl,
         home: newProducts,
@@ -244,7 +320,7 @@ class GlobalModel {
   final String stock;
   final String offers;
 
-  final int avg_rating;
+  final double? avg_rating;
   final double? shortestDistance;
 
   final int? similarproductCount;
@@ -271,7 +347,7 @@ class GlobalModel {
     return GlobalModel(
       offers: json['offers'] ?? '',
       shortestDistance: json['shortestDistance'] ?? 0.0,
-      avg_rating: json['avg_rating'] ?? 0,
+      avg_rating: json['average_rating'] ?? 0,
       commentnum: json['stock'] ?? '0',
       stock: json['discounted_price'] ?? '0',
       wow: json['wow'] ?? '0',

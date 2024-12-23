@@ -17,6 +17,8 @@ import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 
+import '../../product_details/constant/all_product_detail_widget.dart';
+
 class JobssScreen extends ConsumerStatefulWidget {
   const JobssScreen({super.key});
 
@@ -1602,7 +1604,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
-                          child: ProductDetailWidget(
+                          child: AllProductDetailWidget(
                             wow: data.product[index].wow,
                             comment:
                                 data.product[index].commentcount.toString(),

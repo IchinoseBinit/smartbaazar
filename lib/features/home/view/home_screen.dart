@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +17,7 @@ import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_scree
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
+import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -41,6 +47,9 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+import '../../../general_widget/story_search_bar.dart';
+import '../../product_details/constant/all_product_detail_widget.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -52,8 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   bool _isPopupVisible = false;
   int currentPageIndex = 0;
-  int selectedIndex = 0;
-
+  int selectedIndex = 0; // State variable for selected index
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
@@ -67,11 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   PageController _pageController = PageController(viewportFraction: 0.3);
   double _currentHeight = 500; // Default height for first tab
 
-  void _onPageChanged(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -84,7 +88,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-  
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
@@ -127,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     //   },
     // );
     // Default selected index to 3 (HomeScreen)
-    selectedIndex = 3;
+    // selectedIndex = 3;
 
     // Initialize the PageController with the selected page
     _pageController = PageController(
@@ -146,9 +154,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       });
     });
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _pageController.jumpToPage(selectedIndex);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pageController.jumpToPage(selectedIndex);
+    });
 
     // Set up debounce for search functionality
     _searchController.addListener(() {
@@ -255,7 +263,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     // ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
-    final getStory = ref.watch(fetchStoryHomeProvider);
+    final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+    int currentPageIndex = 0;
 
     // category.when(
     //   data: (data) {
@@ -463,81 +472,95 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             }),
                           ),
-             SizedBox(
-  height: 80.h,
-  child: SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: _items.asMap().entries.map((entry) {
-        int index = entry.key;
-        Map<String, dynamic> data = entry.value;
+                          SizedBox(
+                            height: 80.h,
+                            child: PageView.builder(
+                              itemCount: _items.length,
+                              padEnds: false,
+                              controller: _pageController,
+                              //  // onPageChanged: _onPageChanged,
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data = _items[index];
 
-        // Highlight only when index == 1
-        bool isActive = index == 1;
-
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedIndex = index;
-            });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => data['screen'],
-              ),
-            );
-          },
-          child: AnimatedContainer(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            duration: const Duration(milliseconds: 300),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (data['icon'].toString().endsWith('.svg'))
-                  SvgPicture.asset(
-                    data['icon'],
-                    alignment: Alignment.center,
-                    fit: BoxFit.contain,
-                    theme: const SvgTheme(
-                      currentColor: Color(0xffdd9d9d9),
-                    ),
-                    color: isActive
-                        ? Colors.amber
-                        : const Color(0xffD9D9D9).withOpacity(0.5),
-                    width: 20,
-                    height: 20,
-                  )
-                else
-                  Image.asset(
-                    data['icon'],
-                    color: isActive
-                        ? Colors.amber
-                        : const Color(0xffD9D9D9).withOpacity(0.5),
-                    width: 20,
-                    height: 20,
-                  ),
-                const SizedBox(height: 8),
-                Text(
-                  data['label'],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: isActive
-                        ? Colors.amber
-                        : const Color(0xffD9D9D9).withOpacity(0.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    ),
-  ),
-),
-
+                                // Highlight only when index == 4
+                                bool isActive = index == 1;
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                    _pageController.animateToPage(
+                                      2,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
+                                    duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  data['screen']),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          if (data['icon']
+                                              .toString()
+                                              .endsWith('.svg'))
+                                            SvgPicture.asset(
+                                              data['icon'],
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                              theme: const SvgTheme(
+                                                  currentColor:
+                                                      Color(0xffdd9d9d9)),
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                      .withOpacity(0.5),
+                                              width: 20,
+                                              height: 20,
+                                            )
+                                          else
+                                            Image.asset(
+                                              data['icon'],
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                      .withOpacity(0.5),
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            data['label'],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                      .withOpacity(0.5),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
 
                           const Divider(
                             height: 0.1,
@@ -623,44 +646,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       height: 5.h,
                     ),
                     if (_isPopupVisible)
-                      // Center(
-                      //   child: StorySearchBar(
-                      //     onClose: () {
-                      //       setState(() {
-                      //         _isPopupVisible = false; // Close the popup
-                      //       });
-                      //     },
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 130.h,
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return StoryAddWidget(
-                                index: index,
-                                addSearch: true,
-                                showgift: false,
-                                // onTap: () {
-                                //   setState(() {
-                                //     _isPopupVisible = true; // Open the popup
-                                //   });
-                                // },
-                              );
-                            } else if (index >= 1 && index <= 3) {
-                              return StoryAddWidget(
-                                index: index,
-                                showgift: true,
-                              );
-                            }
-                            return StoryAddWidget(index: index);
+                      Center(
+                        child: StorySearchBar(
+                          onClose: () {
+                            setState(() {
+                              _isPopupVisible = false; // Close the popup
+                            });
                           },
                         ),
                       ),
+                    buyorwin.when(
+                      data: (data) {
+                        return SizedBox(
+                          height: 130.h,
+                          child: Row(
+                            children: [
+                              StoryAddWidget(
+                                vImage: data.homestory['158']!.vendorImage,
+                                brandname: data.homestory!['158']!.vendorName,
+                                index: 0,
+                                addSearch: true,
+                                showgift:
+                                    data.homestory['158']!.hasSponsoredGifts,
+                                onTap: () {
+                                  setState(() {
+                                    _isPopupVisible = true; // Open the popup
+                                  });
+                                },
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 2,
+                                  itemBuilder: (context, index) {
+                                    // Define data keys based on index
+                                    final dataKey = index == 0 ? '196' : '9';
+                                    final storyData = data.homestory[dataKey]!;
+
+                                    return StoryAddWidget(
+                                      brandname: storyData.vendorName,
+                                      vImage: storyData.vendorImage,
+                                      index: index,
+                                      addSearch: true,
+                                      showgift: storyData.hasSponsoredGifts,
+                                      onTap: () {
+                                        setState(() {
+                                          _isPopupVisible =
+                                              true; // Open the popup
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () => CircularProgressIndicator(),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
@@ -698,66 +748,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           //   },
                           // ),
 
-                          getStory.when(
+                          homePostsData.when(
                             data: (data) {
-                              print("k cha ${data.data?.feedStory}");
-                              return SizedBox();
-                            },
-                            error: (error, stackTrace) {
-                              print("k cha $error");
-                              return SizedBox();
-                            },
-                            loading: () => CircularProgressIndicator(),
-                          ),
-                          sliders.when(
-                            data: (data) {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height: 60.h,
-                                    width: double.infinity,
-                                    child: PageView.builder(
-                                      allowImplicitScrolling: true,
-                                      itemCount: data.advertisements.length,
-                                      scrollDirection: Axis.horizontal,
-                                      onPageChanged: (index) {
-                                        setState(() {
-                                          currentPageIndex =
-                                              index; // Track the current page index
-                                        });
-                                      },
-                                      itemBuilder: (context, index) {
-                                        return Image.network(
-                                          data.advertisements[index].image!,
-                                          height: 60.h,
-                                          width: double.infinity,
-                                          fit: BoxFit.fill,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  // Add an indicator for the selected page
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                      data.advertisements.length,
-                                      (index) => Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        width: 10,
-                                        height: 10,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: currentPageIndex == index
-                                              ? Colors
-                                                  .amber // Active page color
-                                              : const Color(
-                                                  0xffD9D9D9), // Inactive page color
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              return SizedBox(
+                                height: 130.h,
+                                width: double.infinity,
+                                child: CarouselSlider(
+                                    items: data.sliders.map((banner) {
+                                      return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const B2bScreen(),
+                                                ));
+                                          },
+                                          child: CachedNetworkImage(
+                                            width: double.infinity,
+                                            fit: BoxFit.fill,
+                                            imageUrl: banner.image!,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ));
+                                      // Image.network(
+                                      //       width: double.infinity,
+                                      //       fit: BoxFit.fill,
+                                      //       ),
+                                    }).toList(),
+                                    options: CarouselOptions(
+                                      aspectRatio: 0.1,
+                                      reverse: true,
+                                      viewportFraction: 1,
+                                      autoPlay: true,
+                                      enlargeCenterPage: true,
+                                    )),
                               );
                             },
                             error: (error, stackTrace) {
@@ -767,10 +793,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               return const CircularProgressIndicator();
                             },
                           ),
-
                           SizedBox(
                             height: 5.h,
                           ),
+
                           SizedBox(
                             width: double.infinity,
                             height: 420.h,
@@ -874,6 +900,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   prod.similarproductCount,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
+                                              // avg_rating: prod.average_rating,
                                             ),
                                           );
                                         },
@@ -985,10 +1012,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ),
                                             ),
                                           SizedBox(
-                                            height: data.insidearr.isNotEmpty &&
-                                                    data.insidearr[0].isNotEmpty
-                                                ? 340.h
-                                                : 200,
+                                            // height: data.insidearr.isNotEmpty &&
+                                            //         data.insidearr[0].isNotEmpty
+                                            //     ? 340.h
+                                            //     : 200,
                                             child: data.insidearr.isNotEmpty &&
                                                     data.insidearr[0].isNotEmpty
                                                 ? ListView.builder(
@@ -1515,36 +1542,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
                                   return Padding(
-                                    padding: EdgeInsets.only(bottom: 5.h),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProductDetailScreen(
-                                                      productId: res.id),
-                                            ));
-                                      },
-                                      child: AllProductDetailWidget(
-                                        productImage:
-                                            data.allProducts[index].image,
-                                        Vimage:
-                                            data.allProducts[index].user.photo,
-                                        vendorname:
-                                            data.allProducts[index].user.name,
-                                        title: data.allProducts[index].title,
-                                        price: data.allProducts[index].price,
-                                        similarproductCount: data
-                                            .allProducts[index]
-                                            .similarProductCount,
-                                        membershipColor: data.allProducts[index]
-                                            .userDetail.memberColor,
-                                        membershipTitle: data.allProducts[index]
-                                            .userDetail.membershipTitle,
-                                      ),
-                                    ),
-                                  );
+                                      padding: EdgeInsets.only(bottom: 5.h),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailScreen(
+                                                        productId: res.id),
+                                              ));
+                                        },
+                                        child: AllProductDetailWidget(
+                                          productImage:
+                                              data.allProducts[index].image,
+                                          Vimage: data
+                                              .allProducts[index].user.photo,
+                                          vendorname:
+                                              data.allProducts[index].user.name,
+                                          title: data.allProducts[index].title,
+                                          price: data.allProducts[index].price,
+                                          similarproductCount: data
+                                              .allProducts[index]
+                                              .similarProductCount,
+                                          membershipColor: data
+                                              .allProducts[index]
+                                              .userDetail
+                                              .memberColor,
+                                          membershipTitle: data
+                                              .allProducts[index]
+                                              .userDetail
+                                              .membershipTitle,
+                                        ),
+                                      ));
                                 },
                               );
                               // SizedBox(
@@ -1599,8 +1629,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     child: value
                         ? const CircleAvatar(
                             radius: 25,
-                            backgroundImage:
-                                AssetImage('assets/images/smart.png'),
+                            backgroundImage: AssetImage(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
                           )
                         : Container(
                             width: 60.w,

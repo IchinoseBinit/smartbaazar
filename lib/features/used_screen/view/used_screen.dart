@@ -19,6 +19,8 @@ import 'package:smartbazar/features/product_details/constant/product_detail_widg
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 
+import '../../product_details/constant/all_product_detail_widget.dart';
+
 class UsedScreen extends ConsumerStatefulWidget {
   const UsedScreen({super.key});
 
@@ -1703,7 +1705,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         // VProduct res = data.allProducts[index];
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
-                          child: ProductDetailWidget(
+                          child: AllProductDetailWidget(
                             wow: data.product[index].wow,
                             comment:
                                 data.product[index].commentcount.toString(),

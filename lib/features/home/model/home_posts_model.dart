@@ -10,6 +10,8 @@ class HomePosts with _$HomePosts {
     // required List<HomeAdvertisement> advertisements,
     required List<Product> sponsored_posts,
     required List<Product> trending,
+        required List<SliderModel> sliders,
+
     // required List<Product> hot_products,
     // required List<Product> new_products,
     // required List<Product> jobs,
@@ -20,4 +22,20 @@ class HomePosts with _$HomePosts {
 
   factory HomePosts.fromJson(Map<String, dynamic> json) =>
       _$HomePostsFromJson(json);
+}
+
+@freezed
+class SliderModel with _$SliderModel {
+  const factory SliderModel({
+    required String id,
+    required String image,
+    required String description,
+    required String link,
+    required String page,
+    required String status,
+    @JsonKey(name: 'created_at') required String createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+  }) = _SliderModel;
+
+  factory SliderModel.fromJson(Map<String, dynamic> json) => _$SliderModelFromJson(json);
 }
