@@ -41,6 +41,9 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+import '../../../general_widget/story_search_bar.dart';
+import '../../product_details/constant/all_product_detail_widget.dart';
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -52,8 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   bool _isPopupVisible = false;
   int currentPageIndex = 0;
-  int selectedIndex = 0;
-
+  int selectedIndex = 0; // State variable for selected index
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
@@ -487,7 +489,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     _pageController.animateToPage(
                                       2,
                                       duration:
-                                          const Duration(milliseconds: 300),
+                                      const Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
                                     );
                                   },
@@ -501,12 +503,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  data['screen']),
+                                              data['screen']),
                                         );
                                       },
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           if (data['icon']
                                               .toString()
@@ -517,11 +519,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               fit: BoxFit.contain,
                                               theme: const SvgTheme(
                                                   currentColor:
-                                                      Color(0xffdd9d9d9)),
+                                                  Color(0xffdd9d9d9)),
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
-                                                      .withOpacity(0.5),
+                                                  .withOpacity(0.5),
                                               width: 20,
                                               height: 20,
                                             )
@@ -531,7 +533,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
-                                                      .withOpacity(0.5),
+                                                  .withOpacity(0.5),
                                               width: 20,
                                               height: 20,
                                             ),
@@ -545,7 +547,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
-                                                      .withOpacity(0.5),
+                                                  .withOpacity(0.5),
                                             ),
                                           ),
                                         ],
@@ -637,48 +639,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         ),
                       ),
                     ),
+
                     SizedBox(
                       height: 5.h,
                     ),
                     if (_isPopupVisible)
-                      // Center(
-                      //   child: StorySearchBar(
-                      //     onClose: () {
-                      //       setState(() {
-                      //         _isPopupVisible = false; // Close the popup
-                      //       });
-                      //     },
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 130.h,
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return StoryAddWidget(
-                                index: index,
-                                addSearch: true,
-                                showgift: false,
-                                // onTap: () {
-                                //   setState(() {
-                                //     _isPopupVisible = true; // Open the popup
-                                //   });
-                                // },
-                              );
-                            } else if (index >= 1 && index <= 3) {
-                              return StoryAddWidget(
-                                index: index,
-                                showgift: true,
-                              );
-                            }
-                            return StoryAddWidget(index: index);
+                      Center(
+                        child: StorySearchBar(
+                          onClose: () {
+                            setState(() {
+                              _isPopupVisible = false; // Close the popup
+                            });
                           },
                         ),
                       ),
+                    SizedBox(
+                      height: 130.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          if (index == 0)
+                              {
+                            return StoryAddWidget(
+
+                              index: index,
+                              addSearch: true,
+                              showgift: false,
+                              onTap: () {
+                                setState(() {
+                                  _isPopupVisible = true; // Open the popup
+                                });
+                              },
+                            );
+                          }
+                          else if (index >= 1 && index <= 3) {
+                            return StoryAddWidget(
+
+
+                              index: index,
+                              showgift: true,
+                            );
+                          }
+                          return StoryAddWidget(index: index);
+                        },
+                      ),
+                    ),
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
@@ -715,7 +723,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           //     return const CircularProgressIndicator();
                           //   },
                           // ),
-
                           getStory.when(
                             data: (data) {
                               print("k cha ${data.data?.feedStory}");
@@ -727,6 +734,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             },
                             loading: () => CircularProgressIndicator(),
                           ),
+
                           sliders.when(
                             data: (data) {
                               return Column(
@@ -740,8 +748,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       scrollDirection: Axis.horizontal,
                                       onPageChanged: (index) {
                                         setState(() {
-                                          currentPageIndex =
-                                              index; // Track the current page index
+                                          currentPageIndex = index; // Track the current page index
                                         });
                                       },
                                       itemBuilder: (context, index) {
@@ -759,18 +766,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: List.generate(
                                       data.advertisements.length,
-                                      (index) => Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 5),
+                                          (index) => Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 5),
                                         width: 10,
                                         height: 10,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: currentPageIndex == index
-                                              ? Colors
-                                                  .amber // Active page color
-                                              : const Color(
-                                                  0xffD9D9D9), // Inactive page color
+                                              ? Colors.amber // Active page color
+                                              : const Color(0xffD9D9D9), // Inactive page color
                                         ),
                                       ),
                                     ),
@@ -785,7 +789,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               return const CircularProgressIndicator();
                             },
                           ),
-
                           SizedBox(
                             height: 5.h,
                           ),
@@ -866,14 +869,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               products[index];
                                           return InkWell(
                                             onTap: () {
-                                              //  Navigator.push(
-                                              //                 context,
-                                              //                 MaterialPageRoute(
-                                              //                   builder: (context) =>
-                                              //                       ProductDetailScreen(
-                                              //                           productId:
-                                              //                               prod.id),
-                                              //                 ));
+                                               Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    ProductDetailScreen(
+                                                                        productId:
+                                                                            prod.id),
+                                                              ));
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
@@ -893,6 +896,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   prod.similarproductCount,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
+                                              // avg_rating: prod.average_rating,
                                             ),
                                           );
                                         },
@@ -937,6 +941,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
+                              print("mangoz ${data.global.length}");
                               return SizedBox(
                                 height: 480.h,
                                 child: AnimatedContainer(
@@ -1545,25 +1550,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       productId: res.id),
                                             ));
                                       },
-                                      child: AllProductDetailWidget(
-                                        productImage:
-                                            data.allProducts[index].image,
-                                        Vimage:
-                                            data.allProducts[index].user.photo,
-                                        vendorname:
-                                            data.allProducts[index].user.name,
-                                        title: data.allProducts[index].title,
-                                        price: data.allProducts[index].price,
-                                        similarproductCount: data
-                                            .allProducts[index]
-                                            .similarProductCount,
-                                        membershipColor: data.allProducts[index]
-                                            .userDetail.memberColor,
-                                        membershipTitle: data.allProducts[index]
-                                            .userDetail.membershipTitle,
-                                      ),
+                                    child: AllProductDetailWidget(
+                                      productImage:
+                                          data.allProducts[index].image,
+                                      Vimage:
+                                          data.allProducts[index].user.photo,
+                                      vendorname:
+                                          data.allProducts[index].user.name,
+                                      title: data.allProducts[index].title,
+                                      price: data.allProducts[index].price,
+                                      similarproductCount: data
+                                          .allProducts[index]
+                                          .similarProductCount,
+                                      membershipColor: data.allProducts[index]
+                                          .userDetail.memberColor,
+                                      membershipTitle: data.allProducts[index]
+                                          .userDetail.membershipTitle,
                                     ),
-                                  );
+                                  ));
                                 },
                               );
                               // SizedBox(
@@ -1617,9 +1621,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     },
                     child: value
                         ? const CircleAvatar(
-                            radius: 25,
+                            radius: 55,
                             backgroundImage:
-                                AssetImage('assets/images/smart.png'),
+                                AssetImage('assets/images/Smartbazaar-Icon-for-QR.png'),
                           )
                         : Container(
                             width: 60.w,

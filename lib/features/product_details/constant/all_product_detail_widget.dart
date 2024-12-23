@@ -564,20 +564,21 @@ class AllProductDetailWidget extends StatelessWidget {
                                     Text(
                                       membershipTitle ?? "Domestic Brand",
                                       style: headerstyle.copyWith(
-                                        fontSize: (membershipTitle != null && membershipTitle!.length > 15)
+                                        fontSize: (membershipTitle != null && membershipTitle!.length > 12)
                                             ? 8.sp
                                             : 10.sp, // Adjust font size based on length
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                    SizedBox(width: 7.w,),
+
+                                    SizedBox(width: 2.w,),
                                     issponsored
                                         ? SizedBox()
                                         : Row(
                                       children: [
                                         Image.asset("assets/images/mike.png"),
                                         Text(
-                                          "SPONSORED",
+                                          "SPD",
                                           style: headerstyle.copyWith(
                                               fontSize: 10.sp,
                                               fontWeight: FontWeight.w700),

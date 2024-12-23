@@ -37,7 +37,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchProductModels = false;
+  // bool _showSearchResults = false;
   late TabController tabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -91,7 +91,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchProductModels = query.isNotEmpty;
+        // _showSearchResults = query.isNotEmpty;
       });
     });
   }
@@ -138,7 +138,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchProductModels = hasFocus;
+      // _showSearchResults = hasFocus;
     });
   }
 
@@ -158,7 +158,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final SearchProductModels = ref.watch(searchProvider(
+    // final searchResults = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -207,14 +207,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                             width: 20,
                           ),
                           SizedBox(
-                            height: 50,
-                            child: NewSearchWidget(
-                              searchController: TextEditingController(),
-                              onSearchFocusChanged: (p0) {},
-                              ontapped: () {},
-                              onchnage: (p0) {},
-                            ),
-                          )
+                              height: 50,
+                              width: 340.w,
+                              child: NewSearchWidget(
+                                  searchController: TextEditingController(),
+                                  onSearchFocusChanged: (p0) {},
+                                  ontapped: () {},
+                                  onchnage: (p0) {},
+                              )),
                         ],
                       ),
                       SizedBox(
@@ -254,7 +254,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           itemCount: items.length,
                           padEnds: false,
                           controller: _pageController,
-                          // onPageChanged: _onPageChanged,
+                          onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
@@ -836,6 +836,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
+
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -1284,14 +1285,13 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              wow: prod.wow,
+                                            comment: prod.commentcount.toString(),
+                                            wow: prod.wow,
+                                            
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1354,14 +1354,13 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              comment:
-                                                  prod.commentcount.toString(),
+                                              comment: prod.commentcount.toString(),
                                               wow: prod.wow,
+                                               
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
+                                              discounttedPrice: prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1429,6 +1428,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
+                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorImage: resp.vendorImage,
@@ -1493,6 +1493,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       data.promotional, // Corresponds to TRADEHUB
                       data.clearance_sale, // Corresponds to USED
                       data.Launch_festival_offer
+
                     ];
 
                     return SizedBox(
@@ -1568,7 +1569,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       ? const Padding(
                                           padding: EdgeInsets.only(top: 10),
                                           child: SizedBox(
-                                            child: Text("No listing available"),
+                                            child: Text("No data available"),
                                           ),
                                         )
                                       : SizedBox(
@@ -1584,9 +1585,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                               return InkWell(
                                                 onTap: () {},
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentcount
-                                                      .toString(),
+                                                  comment: prod.commentcount.toString(),
                                                   wow: prod.wow,
+
                                                   lefttile: "B2b-Shop",
                                                   vendorname: prod.user.name,
                                                   issponsored:
@@ -1685,9 +1686,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
+                            
                             wow: data.product[index].wow,
-                            comment:
-                                data.product[index].commentcount.toString(),
+                            comment: data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,

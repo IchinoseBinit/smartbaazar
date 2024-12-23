@@ -88,7 +88,7 @@ class buyorwin_widget extends StatelessWidget {
                         radius: 75.sp,
                         backgroundImage: NetworkImage(proctimage))),
                 Positioned(
-                  top: 45.h,
+                  top: 65.h,
                   left: 125.h,
                   child: CircleAvatar(
                       radius: 28.5.sp,
@@ -122,10 +122,24 @@ class buyorwin_widget extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(vendorImage),
+                              // CircleAvatar(
+                              //   backgroundImage: NetworkImage(vendorImage),
+                              //   radius: 20.0,
+                              // ),
+                              Container(
+                                padding: EdgeInsets.all(2), // Thickness of the border
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.grey, // Border color
+                                    width: 2.0,         // Border width
+                                  ),
+                                ),
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(vendorImage),
+                                  radius: 18.0, // Adjust radius based on padding
+                                ),
                               ),
-                              
                               SizedBox(
                                 width: 10.w,
                               ),
