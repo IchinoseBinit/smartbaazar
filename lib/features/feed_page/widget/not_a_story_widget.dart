@@ -44,21 +44,15 @@ class NotStoryWidget extends StatelessWidget {
                 height: 85.r,
                 decoration: BoxDecoration(
                   border:
-                      Border.all(width: 19.w, color: const Color(0xff8c8c8c)),
+                      Border.all(width: 0.1.w, color: const Color(0xff8c8c8c)),
                   shape: BoxShape.circle,
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1.w, color: Colors.black),
-                  shape: BoxShape.circle,
-                ),
-                child: CircleAvatar(
-                  radius: 37.r,
-                  backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
-                  backgroundImage: NetworkImage(vImage ??
-                      'https://smartbazaar.jianjun-rnd.com.np/storage/files/np/947/11ce743037dbc695f81557faf3d959de.png'),
-                ),
+              CircleAvatar(
+                radius: 37.r,
+                backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
+                backgroundImage: NetworkImage(vImage ??
+                    'https://smartbazaar.jianjun-rnd.com.np/storage/files/np/947/11ce743037dbc695f81557faf3d959de.png'),
               ),
               Positioned(
                 left: 5.w,

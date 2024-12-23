@@ -10,34 +10,36 @@ import 'package:smartbazar/features/report_complain/view/report_complain_screen.
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class ProductDetailWidget extends StatelessWidget {
-  ProductDetailWidget(
-      {super.key,
-      // this.membership_title,
+  ProductDetailWidget({
+    super.key,
+    // this.membership_title,
 
-      this.offer = '',
-      this.title = "Trade",
-      this.discounttedPrice = '0',
-      this.comment = '0',
-      this.price = '1',
-      this.vendorname = 'John',
-      this.distance = 2,
-      this.Vimage = '',
-      this.productImage = '',
-      this.lefttile = 'TradeHub',
-      this.similarproductCount,
-      this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
-      this.membershipTitle,
-      this.avg_rating = 0,
-      });
+    this.offer = '',
+    this.title = "Trade",
+    this.discounttedPrice = '0',
+    this.comment = '0',
+    this.price = '1',
+    this.vendorname = 'John',
+    this.distance = 2,
+    this.Vimage = '',
+    this.productImage = '',
+    this.lefttile = 'TradeHub',
+    this.similarproductCount,
+    this.membershipColor,
+    this.wow,
+    this.issponsored = false,
+    this.shortestDistance,
+    this.membershipTitle,
+    this.avg_rating = 0,
+  });
+
   String? title;
   String? price;
   String? discounttedPrice;
   int? similarproductCount;
   String? views, comment, share;
   String? vendorname;
+
   // String? membership_title;
   double? distance;
   String? Vimage, productImage, lefttile;
@@ -197,7 +199,8 @@ class ProductDetailWidget extends StatelessWidget {
                     )
                   : Image.network(
                       productImage ?? '', // Ensure Vimage is not null or empty
-                      height: 130.h, // Adjust size accordingly
+                      height: 130.h,
+                      // Adjust size accordingly
                       width: 200.w,
                       fit: BoxFit.fill,
                       loadingBuilder: (context, child, loadingProgress) {
@@ -306,23 +309,24 @@ class ProductDetailWidget extends StatelessWidget {
                             child: Text(
                               "${showRs}$discounttedPrice",
                               style:
-                              // headerstyle.copyWith(
-                              //   fontSize: 8.sp,
-                              //   fontWeight: FontWeight.w600,
-                              //   color: Colors.grey,
-                              //   decoration: TextDecoration.lineThrough,
-                              //   decorationThickness: 1.5, // Adjusts the thickness of the line
-                              //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
-                              // ),
-                               TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey,
-                              decoration: TextDecoration.lineThrough,
-                              decorationThickness: 1.5,
-                                 height: 1.0,
-                            ),
-                              textAlign: TextAlign.center, // Aligns text if necessary
+                                  // headerstyle.copyWith(
+                                  //   fontSize: 8.sp,
+                                  //   fontWeight: FontWeight.w600,
+                                  //   color: Colors.grey,
+                                  //   decoration: TextDecoration.lineThrough,
+                                  //   decorationThickness: 1.5, // Adjusts the thickness of the line
+                                  //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
+                                  // ),
+                                  TextStyle(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                                decorationThickness: 1.5,
+                                height: 1.0,
+                              ),
+                              textAlign:
+                                  TextAlign.center, // Aligns text if necessary
                             ),
                           ),
                       ],
@@ -515,7 +519,115 @@ class ProductDetailWidget extends StatelessWidget {
                         bottomRight: Radius.circular(13),
                       ),
                     ),
-                    child: Row(
+                    child:
+                        // Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Row(
+                        //       children: [
+                        //         CircleAvatar(
+                        //           backgroundImage: NetworkImage(Vimage!),
+                        //           radius: 14.sp,
+                        //         ),
+                        //         Column(
+                        //           mainAxisAlignment: MainAxisAlignment.start,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             Row(
+                        //               children: [
+                        //                 SizedBox(
+                        //                   width: 4.w,
+                        //                 ),
+                        //                 Text(
+                        //                   vendorname != null &&
+                        //                           vendorname!.length > 19
+                        //                       ? '${vendorname!.substring(0, 15)}...'
+                        //                       : vendorname ?? '',
+                        //                   style: headerstyle.copyWith(
+                        //                     fontSize: 12.sp,
+                        //                     fontWeight: FontWeight.w700,
+                        //                   ),
+                        //                 ),
+                        //                 SizedBox(
+                        //                   width: 4.w,
+                        //                 ),
+                        //                 const Icon(
+                        //                   Icons.logout,
+                        //                   color: Colors.white,
+                        //                   size: 12,
+                        //                 )
+                        //               ],
+                        //             ),
+                        //             Row(
+                        //               mainAxisAlignment: MainAxisAlignment.center,
+                        //               crossAxisAlignment: CrossAxisAlignment.center,
+                        //               children: [
+                        //                 SizedBox(
+                        //                   width: 2.w,
+                        //                 ),
+                        //                 Image.asset(
+                        //                   "assets/images/nepalFlag.png",
+                        //                   height: 9.h,
+                        //                 ),
+                        //                 SizedBox(
+                        //                   width: 1.w,
+                        //                 ),
+                        //                 Text(
+                        //                   membershipTitle ?? "Domestic Brand",
+                        //                   style: headerstyle.copyWith(
+                        //                       fontSize: 8.sp,
+                        //                       fontWeight: FontWeight.w700),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     Column(
+                        //       children: [
+                        //         shortestDistance != null
+                        //             ? Row(
+                        //                 children: [
+                        //                   const Icon(
+                        //                     Icons.location_on,
+                        //                     color: Colors.white,
+                        //                     size: 12,
+                        //                   ),
+                        //                   Text(
+                        //                     "${shortestDistance} km",
+                        //                     style: headerstyle.copyWith(
+                        //                         fontSize: 8.sp,
+                        //                         fontWeight: FontWeight.w700),
+                        //                   ),
+                        //                 ],
+                        //               )
+                        //             : SizedBox(
+                        //                 height: 5.h,
+                        //               ),
+                        //         SizedBox(
+                        //           height: 3.h,
+                        //         ),
+                        //         issponsored
+                        //             ? SizedBox()
+                        //             : Row(
+                        //                 children: [
+                        //                   Image.asset("assets/images/mike.png"),
+                        //                   Text(
+                        //                     "SPONSORED",
+                        //                     style: headerstyle.copyWith(
+                        //                         fontSize: 10.sp,
+                        //                         fontWeight: FontWeight.w700),
+                        //                   ),
+                        //                 ],
+                        //               ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // ),
+
+                        Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -523,7 +635,7 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               backgroundImage: NetworkImage(Vimage!),
-                              radius: 14.sp,
+                              radius: 15.sp,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -532,8 +644,26 @@ class ProductDetailWidget extends StatelessWidget {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 4.w,
+                                      width: 3.5.w,
                                     ),
+                                    // Text(
+                                    //   vendorname != null &&
+                                    //       vendorname!.length > 25
+                                    //       ? '${vendorname!.substring(0, 12)}...'
+                                    //       : vendorname ?? '',
+                                    //   style: headerstyle.copyWith(
+                                    //     // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
+                                    //     fontSize: (vendorname != null && vendorname!.length > 10)
+                                    //         ? 8.sp
+                                    //         : (vendorname != null && vendorname!.length > 12)
+                                    //         ? 7.5.sp
+                                    //         : 11.5.sp, // Default font size
+                                    //     fontWeight: FontWeight.w700,
+                                    //   ),
+                                    //   overflow: TextOverflow.ellipsis,
+                                    //   maxLines: 1,
+                                    // ),
+
                                     Text(
                                       vendorname != null &&
                                               vendorname!.length > 19
@@ -551,6 +681,30 @@ class ProductDetailWidget extends StatelessWidget {
                                       Icons.logout,
                                       color: Colors.white,
                                       size: 12,
+                                    ),
+                                    Row(
+                                      children: [
+                                        shortestDistance != null
+                                            ? Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.location_on,
+                                                    color: Colors.white,
+                                                    size: 12,
+                                                  ),
+                                                  Text(
+                                                    "${shortestDistance} km",
+                                                    style: headerstyle.copyWith(
+                                                        fontSize: 8.sp,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                ],
+                                              )
+                                            : SizedBox(
+                                                height: 5.h,
+                                              ),
+                                      ],
                                     )
                                   ],
                                 ),
@@ -571,52 +725,36 @@ class ProductDetailWidget extends StatelessWidget {
                                     Text(
                                       membershipTitle ?? "Domestic Brand",
                                       style: headerstyle.copyWith(
-                                          fontSize: 8.sp,
-                                          fontWeight: FontWeight.w700),
+                                        fontSize: (membershipTitle != null &&
+                                                membershipTitle!.length > 15)
+                                            ? 8.sp
+                                            : 10.sp,
+                                        // Adjust font size based on length
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
+                                    SizedBox(
+                                      width: 35.w,
+                                    ),
+                                    issponsored
+                                        ? SizedBox()
+                                        : Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/images/mike.png"),
+                                              Text(
+                                                "SPONSORED",
+                                                style: headerstyle.copyWith(
+                                                    fontSize: 10.sp,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ],
+                                          ),
                                   ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            shortestDistance != null
-                                ? Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                      Text(
-                                        "${shortestDistance} km",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 8.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  )
-                                : SizedBox(
-                                    height: 5.h,
-                                  ),
-                            SizedBox(
-                              height: 3.h,
-                            ),
-                            issponsored
-                                ? SizedBox()
-                                : Row(
-                                    children: [
-                                      Image.asset("assets/images/mike.png"),
-                                      Text(
-                                        "SPONSORED",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
                           ],
                         ),
                       ],
