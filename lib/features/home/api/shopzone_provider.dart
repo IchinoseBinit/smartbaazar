@@ -145,7 +145,7 @@ class VendorUser {
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
       photo: json['photo'] ?? '',
-      id: json['id'] ?? '',
+      id: json['user_id'] ?? '',
       name: json['name'] ?? '',
       membercolor: json['membership_color'] ?? '',
       membershipTitle: json['membership_title'] ?? '',

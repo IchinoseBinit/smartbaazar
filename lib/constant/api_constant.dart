@@ -10,6 +10,8 @@ class ApiConstants {
   static String logoutUrl = '$baseUrl/auth/logout/';
   static String getcontactSellerUrl = '$baseUrl/threads';
     static String getHotDealScreen = '$baseUrl/homeSections';
+        static String getStoryHome = '$baseUrl/users/getrandomstory';
+
 
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";

@@ -1,167 +1,107 @@
-// buyorwin.when(
-//   data: (data) {
-//     // Defer ValueNotifier updates
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       if (data.insidearr.isEmpty) {
-//         if (sizedboxval.value != 150.h) {
-//           sizedboxval.value = 150.h; // Example condition
-//         }
-//       } else {
-//         if (sizedboxval.value != 500.h) {
-//           sizedboxval.value = 500.h; // Default height
-//         }
-//       }
-//     });
+// class YourWidgetState extends State<YourWidget> {
+//   // Initialize selectedIndex to 0 to select SHOPZONE by default
+//   int selectedIndex = 0;
 
-//     return ValueListenableBuilder<double>(
-//       valueListenable: sizedboxval,
-//       builder: (context, height, child) {
-//         return SizedBox(
-//           height: height, // Use the listened value
-//           child: TabBarView(
-//             controller: tabController,
-//             children: [
-//               // First Tab
-//               Column(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   if (data.global.isNotEmpty)
-//                     SizedBox(
-//                       height: 130.h,
-//                       child: ListView.builder(
-//                         padding: EdgeInsets.zero,
-//                         shrinkWrap: true,
-//                         scrollDirection: Axis.horizontal,
-//                         itemCount: data.global.length,
-//                         itemBuilder: (context, index) {
-//                           LogoData dat = data.global[index];
-//                           return Padding(
-//                             padding: EdgeInsets.only(left: 5.w, top: 5.w),
-//                             child: Column(
-//                               children: [
-//                                 CircleAvatar(
-//                                   backgroundColor: Colors.grey,
-//                                   radius: 27,
-//                                   child: CircleAvatar(
-//                                     radius: 26,
-//                                     backgroundImage:
-//                                         NetworkImage(dat.brandLogo!),
-//                                   ),
-//                                 ),
-//                                 Text(
-//                                   dat.brandName!,
-//                                   style: headerstyle.copyWith(
-//                                     fontSize: 12,
-//                                     fontWeight: FontWeight.w500,
-//                                     color: ColorConstant.blackColor,
-//                                   ),
-//                                 )
-//                               ],
-//                             ),
-//                           );
-//                         },
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: double.infinity,
+//       height: 420.h,
+//       child: Column(
+//         children: [
+//           // Category Selector Row
+//           SizedBox(
+//             width: double.infinity,
+//             height: 50.h,
+//             child: ListView.builder(
+//               scrollDirection: Axis.horizontal,
+//               itemCount: categories.length,
+//               itemBuilder: (context, index) {
+//                 bool isSelected = index == selectedIndex;
+//                 return GestureDetector(
+//                   onTap: () {
+//                     setState(() {
+//                       selectedIndex = index; // Update selected index
+//                     });
+//                   },
+//                   child: Container(
+//                     alignment: Alignment.center,
+//                     margin: const EdgeInsets.all(5),
+//                     width: 100.w,
+//                     decoration: BoxDecoration(
+//                       color: isSelected
+//                           ? const Color(0xFF681b4e)
+//                           : const Color(0xffA5A5A5),
+//                       borderRadius: BorderRadius.circular(8),
+//                     ),
+//                     child: Text(
+//                       categories[index],
+//                       style: const TextStyle(
+//                         fontSize: 12,
+//                         fontWeight: FontWeight.w700,
+//                         color: Colors.white,
 //                       ),
 //                     ),
-//                   SizedBox(
-//                     height: data.insidearr.isNotEmpty &&
-//                             data.insidearr[0].isNotEmpty
-//                         ? 340.h
-//                         : 200,
-//                     child: data.insidearr.isNotEmpty &&
-//                             data.insidearr[0].isNotEmpty
-//                         ? ListView.builder(
-//                             clipBehavior: Clip.antiAlias,
-//                             padding: const EdgeInsets.all(3),
-//                             scrollDirection: Axis.horizontal,
-//                             itemCount: data.insidearr[0].length,
-//                             itemBuilder: (context, index) {
-//                               GlobalModel prod = data.insidearr[0][index];
-//                               return InkWell(
-//                                 onTap: () {},
-//                                 child: ProductDetailWidget(
-//                                   issponsored: prod.user[0].sponsored!,
-//                                   vendorname: prod.contactName,
-//                                   discounttedPrice: prod.discont,
-//                                   Vimage: prod.title,
-//                                   price: prod.price,
-//                                   title: prod.title,
-//                                   productImage: prod.imageUrl,
-//                                   similarproductCount:
-//                                       prod.similarproductCount,
-//                                   membershipColor:
-//                                       prod.user.first.memberColor,
-//                                   membershipTitle:
-//                                       prod.user.first.membershipTitle,
-//                                 ),
-//                               );
-//                             },
-//                           )
-//                         : null,
 //                   ),
-//                 ],
-//               ),
-
-//               // Second Tab
-//               Column(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   if (data.domestic.isNotEmpty)
-//                     SizedBox(
-//                       height: 130.h,
-//                       child: ListView.builder(
-//                         padding: EdgeInsets.zero,
-//                         shrinkWrap: true,
-//                         scrollDirection: Axis.horizontal,
-//                         itemCount: data.domestic.length,
-//                         itemBuilder: (context, index) {
-//                           WidgetsBinding.instance.addPostFrameCallback((_) {
-//                             if (data.doma.isEmpty) {
-//                               if (sizedboxval.value != 150) {
-//                                 sizedboxval.value = 150;
-//                               }
-//                             } else {
-//                               if (sizedboxval.value != 500) {
-//                                 sizedboxval.value = 500;
-//                               }
-//                             }
-//                           });
-
-//                           LogoData res = data.domestic[index];
-//                           return Padding(
-//                             padding: EdgeInsets.only(left: 5.w, top: 5.w),
-//                             child: Column(
-//                               children: [
-//                                 CircleAvatar(
-//                                   backgroundColor: Colors.grey,
-//                                   radius: 27,
-//                                   child: CircleAvatar(
-//                                     radius: 26,
-//                                     backgroundImage:
-//                                         NetworkImage(res.brandLogo!),
-//                                   ),
-//                                 ),
-//                                 Text(
-//                                   res.brandName!,
-//                                   style: headerstyle.copyWith(
-//                                     fontSize: 12,
-//                                     fontWeight: FontWeight.w500,
-//                                     color: ColorConstant.blackColor,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           );
-//                         },
-//                       ),
-//                     ),
-//                 ],
-//               ),
-//             ],
+//                 );
+//               },
+//             ),
 //           ),
-//         );
-//       },
+
+//           // Spacer
+//           SizedBox(height: 5.h),
+
+//           // Display Products for the selected category
+//           category.when(
+//             data: (data) {
+//               // Define the products list corresponding to each category
+//               List<List<CategoryProduct>> productsList = [
+//                 data.new_products, // SHOPZONE
+//                 data.b2b_products, // TRADEHUB
+//                 data.services, // SERVICES
+//                 data.used_products, // USED
+//                 data.jobs, // JOB
+//                 data.event, // EVENT
+//                 data.grocery, // GROCERY
+//               ];
+
+//               // Ensure selectedIndex is valid and get products
+//               List<CategoryProduct> products = productsList[selectedIndex];
+//               return SizedBox(
+//                 height: 340.h,
+//                 child: ListView.builder(
+//                   padding: const EdgeInsets.all(3),
+//                   scrollDirection: Axis.horizontal,
+//                   itemCount: products.length,
+//                   itemBuilder: (context, index) {
+//                     CategoryProduct prod = products[index];
+//                     return InkWell(
+//                       onTap: () {
+//                         // Handle product click if needed
+//                       },
+//                       child: ProductDetailWidget(
+//                         lefttile: categories[selectedIndex],
+//                         vendorname: prod.user.name,
+//                         discounttedPrice: prod.discounted_price,
+//                         Vimage: prod.user.photo,
+//                         price: prod.price,
+//                         title: prod.title,
+//                         productImage: prod.image,
+//                         membershipColor: prod.user.membercolor,
+//                         similarproductCount: prod.similarproductCount,
+//                         membershipTitle: prod.user.membershipTitle,
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               );
+//             },
+//             error: (error, stackTrace) =>
+//                 Center(child: Text("Error: $error")),
+//             loading: () => const Center(child: CircularProgressIndicator()),
+//           ),
+//         ],
+//       ),
 //     );
-//   },
-// );
+//   }
+// }

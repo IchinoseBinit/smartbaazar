@@ -43,12 +43,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   // bool _isChecked = false;
   bool _acceptterms = false;
   bool _trending = false;
+  final List<String> _tags = [];
+  String _inputText = "";
 
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
   List<Category> subcategoryList = [];
   Category? subcatagory;
   CityList? selectedCity;
+  int? warrentyselected;
   List<CityList>? citylistsitems = [];
   List<Offer>? offerresponse = [];
   Offer? selectedOffer;
@@ -61,7 +64,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
   TextEditingController discountcontroller = TextEditingController();
-
+  TextEditingController tagController = TextEditingController();
   TextEditingController weightcontroller = TextEditingController();
   TextEditingController widthcontroller = TextEditingController();
   TextEditingController lengthcontroller = TextEditingController();
@@ -103,6 +106,22 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       // Handle error, maybe show a message to the user
       print('Failed to load types: $e');
     }
+  }
+
+  void _addTag(String tag) {
+    if (tag.isNotEmpty && !_tags.contains(tag)) {
+      setState(() {
+        _tags.add(tag);
+      });
+      tagController.clear();
+    }
+  }
+
+  // Remove a tag from the list
+  void _removeTag(String tag) {
+    setState(() {
+      _tags.remove(tag);
+    });
   }
 
   Future<void> _fetchOffers() async {
@@ -697,15 +716,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
+                        child: CustomDropdownButton<int>(
+                          items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                          dropdownValue: warrentyselected,
                           onChanged: (newValue) {
                             setState(() {
-                              selectedCity = newValue;
+                              warrentyselected = newValue;
                             });
                           },
-                          getItemLabel: (CityList item) => item.name,
+                          getItemLabel: (int item) => item.toString(),
                         ),
                       ),
                     ],
@@ -1554,25 +1573,50 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         width: 10.w,
                       ),
                       Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: TextFieldTags<String>(
-                              textfieldTagsController: _stringTagController,
-                              initialTags: const ['python', 'java'],
-                              textSeparators: const [' ', ','],
-                              validator: (String tag) {
-                                if (tag == 'php') {
-                                  return 'Php not allowed';
-                                }
-                                return null;
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: Stack(
+                          children: [
+                            // TextField with the placeholder for typing
+                            TextField(
+                              controller: tagController,
+                              onChanged: (text) {
+                                setState(() {
+                                  _inputText = text;
+                                  tagController.text = _inputText;
+                                });
                               },
-                              inputFieldBuilder: (context, inputFieldValues) {
-                                return TextField(
-                                  // decoration: ,
-                                  controller:
-                                      inputFieldValues.textEditingController,
-                                  focusNode: inputFieldValues.focusNode,
-                                );
-                              })),
+                              onSubmitted: (value) {
+                                if (value.isNotEmpty) {
+                                  _addTag(value);
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  hintText: tagController.text.isEmpty ? '' : "Enter tags",
+                                  border: InputBorder.none
+                                  // border: OutlineInputBorder(),
+                                  // contentPadding: const EdgeInsets.all(8.0),
+                                  ),
+                            ),
+                            // Positioned tags that appear inside the TextField
+                            Positioned(
+                              left: 8.0,
+                              top: 1.0,
+                              bottom: 0,
+                              child: Wrap(
+                                spacing: 1,
+                                runSpacing: 2,
+                                children: _tags.map((tag) {
+                                  return Chip(
+                                    label: Text(tag),
+                                    deleteIcon: const Icon(Icons.clear),
+                                    onDeleted: () => _removeTag(tag),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1603,7 +1647,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       SizedBox(
                         height: 15.h,
                       ),
-                      const bulk_discount_widget()
+                      const BulkDiscountWidget()
                     ],
                   ),
                 )
@@ -1754,286 +1798,173 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   }
 }
 
-class bulk_discount_widget extends StatelessWidget {
-  const bulk_discount_widget({
-    super.key,
-  });
+class BulkDiscountWidget extends StatefulWidget {
+  const BulkDiscountWidget({super.key});
+
+  @override
+  _BulkDiscountWidgetState createState() => _BulkDiscountWidgetState();
+}
+
+class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
+  List<Map<String, dynamic>> discountRanges = [
+    {"from": 2, "to": 5, "rate": "Rs 50"}, // Initial discount range
+  ];
+
+  // Function to add a new range
+  void _addDiscountRange() {
+    setState(() {
+      // Add the next range to the list, for simplicity using incremental ranges
+      int nextFrom = discountRanges.length * 5 + 6;
+      int nextTo = nextFrom + 4;
+      discountRanges.add({
+        "from": nextFrom,
+        "to": nextTo,
+        "rate": "Rs ${50 - (discountRanges.length * 5)}"
+      });
+    });
+  }
+
+  // Function to delete a range
+  void _deleteDiscountRange(int index) {
+    setState(() {
+      discountRanges.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
-          color: const Color(0xffFDFDFE),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: ColorConstant.grayColor, width: 1)),
-      child: Row(
+        color: const Color(0xffFDFDFE),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey, width: 1),
+      ),
+      child: Column(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Pieces",
-                style: headerstyle.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: ColorConstant.blackColor),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "2",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
+          // For each discount range in the list
+          for (int i = 0; i < discountRanges.length; i++)
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Pieces",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: Colors.black),
                     ),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  Text(
-                    'to',
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.blackColor),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "5",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        _buildDiscountBox(discountRanges[i]["from"]),
+                        SizedBox(width: 6),
+                        Text('to',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black)),
+                        SizedBox(width: 6),
+                        _buildDiscountBox(discountRanges[i]["to"]),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "6",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text(
-                    'to',
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.blackColor),
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "10",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 40.w,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "Rate/piece",
-                style: headerstyle.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: ColorConstant.blackColor),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Material(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(6),
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 50, top: 5, bottom: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: const Color(0xffFDFDFE)),
-                  child: Text(
-                    "Rs 50",
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xffADADAD)),
-                  ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Material(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(6),
-                child: Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 50, top: 5, bottom: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: const Color(0xffFDFDFE)),
-                  child: Text(
-                    "Rs 45",
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xffADADAD)),
-                  ),
+                SizedBox(
+                  width: 40.w,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.end,
-            // crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top: 29.h),
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
-                    borderRadius: BorderRadius.circular(5),
-
-                    border: Border.all(color: ColorConstant.grayColor),
-
-                    // borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xff362677),
-                    radius: 12,
-                    child: Icon(
-                      Icons.add,
-                      color: ColorConstant.whiteColor,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Rate/piece",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: Colors.black),
                     ),
-                  )),
-              SizedBox(
-                height: 10.h,
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 5.w, right: 15.w),
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        borderRadius: BorderRadius.circular(5),
-
-                        border: Border.all(color: ColorConstant.grayColor),
-
-                        // borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const CircleAvatar(
-                        backgroundColor: Color(0xff362677),
-                        radius: 12,
-                        child: Icon(
-                          Icons.add,
-                          color: ColorConstant.whiteColor,
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        _buildDiscountBox(discountRanges[i]["rate"]),
+                        // SizedBox(width: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Plus button to add a new row
+                            GestureDetector(
+                              onTap: _addDiscountRange,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: const CircleAvatar(
+                                  backgroundColor: Color(0xff362677),
+                                  radius: 12,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // SizedBox(height: 10),
+                            // Delete button to remove a row
+                            if (i >
+                                0) // Don't show the delete button on the first row
+                              GestureDetector(
+                                onTap: () => _deleteDiscountRange(i),
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color(0xff362677),
+                                    radius: 12,
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
-                      )),
-                  Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        borderRadius: BorderRadius.circular(5),
-
-                        border: Border.all(color: ColorConstant.grayColor),
-
-                        // borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const CircleAvatar(
-                        backgroundColor: Color(0xff362677),
-                        radius: 12,
-                        child: Icon(
-                          Icons.delete,
-                          color: ColorConstant.whiteColor,
-                        ),
-                      )),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                ],
-              )
-            ],
-          )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
         ],
+      ),
+    );
+  }
+
+  // Widget to build discount boxes (pieces and rate)
+  Widget _buildDiscountBox(dynamic value) {
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: const Color(0xffFDFDFE),
+        ),
+        child: Text(
+          value.toString(),
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey),
+        ),
       ),
     );
   }

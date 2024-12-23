@@ -626,7 +626,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                               child: ProductDetailWidget(
                                 
                                   offer: res.offers,
-                                  avg_rating: res.avg_rating,
+                                  avg_rating: res.avg_rating.toDouble(),
                                   comment: res.commentnum,
                                   discounttedPrice: res.discont,
                                   distance: res.shortestDistance,

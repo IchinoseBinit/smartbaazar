@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/vendor_search.dart';
+import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
@@ -106,6 +108,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   late TabController _firstTabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
   // Future<void> _openGoogleMap(BuildContext context) async {
+
   //   // Get current location
   //   Position position = await Geolocator.getCurrentPosition(
   //       desiredAccuracy: LocationAccuracy.high);
@@ -142,9 +145,11 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         ref.refresh(getVendorProfileDataProvider(
           widget.vendorName.replaceAll(" ", ''),
           postType: _postType,
+          
         ));
       });
     });
+    
 
     _vendorsearchController.addListener(() {
       _debouncer.add(_vendorsearchController.text);
@@ -191,6 +196,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     _firstTabController.dispose();
     super.dispose();
   }
+
 
   List<BrandNewModel>? alldata;
 
@@ -642,7 +648,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                     prod.userdetails?.photo ??
                                                         "",
                                                 avg_rating:
-                                                    prod.avg_rating ?? 0,
+                                                    prod.avg_rating?.toDouble() ?? 0,
                                                 comment: prod.commentcount
                                                     .toString(),
                                                 discounttedPrice: prod
@@ -724,7 +730,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             ),
                             data.live_prizes == null
                                 ? const Padding(
-                                    padding: EdgeInsets.all(40.0),
+                                    padding: EdgeInsets.all(20.0),
                                     child: Center(
                                       child: Text("No Listing available....."),
                                     ),
@@ -749,18 +755,23 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             //   ),
                             // ),
                             Padding(
-                              padding: EdgeInsets.only(left: 18.w),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "ALL PRODUCTS",
-                                  style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold),
+                            padding: EdgeInsets.only(
+                                left: 10.w, right: 10.w, top: 10.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "All Products",
                                   textAlign: TextAlign.left,
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                      color: ColorConstant.blackColor),
                                 ),
-                              ),
+                                // SizedBox(height: 5.h,)
+                              ],
                             ),
+                          ),
                             data.all_products == null
                                 ? const Padding(
                                     padding: EdgeInsets.all(40.0),
@@ -777,22 +788,22 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                       itemCount: data.all_products?.length,
 
                                       gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        mainAxisExtent: 430,
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 0.2,
-                                        mainAxisSpacing: 0.2,
-                                        childAspectRatio: 0.9,
-                                      ),
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 430,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.2,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.9,
+                                ),
                                       itemBuilder: (context, index) {
                                         BrandNewModel res =
                                             data.all_products![index];
                                         return Padding(
                                           padding: EdgeInsets.only(bottom: 5.h),
-                                          child: ProductDetailWidget(
+                                          child: AllProductDetailWidget(
                                             productImage: res.image,
                                             Vimage: res.userdetails!.photo!,
-                                            avg_rating: res.avg_rating,
+                                            avg_rating: res.avg_rating?.toDouble(),
                                             comment:
                                                 res.commentcount.toString(),
                                             discounttedPrice:
@@ -1131,7 +1142,7 @@ class DottedContainer extends StatelessWidget {
         height: 210.h,
         child: Row(
           children: [
-            _buildFirstItem(),
+            _buildFirstItem(firstImage!),
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -1148,7 +1159,7 @@ class DottedContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildFirstItem() {
+  Widget _buildFirstItem(String firstImage) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: DottedBorder(
@@ -1187,7 +1198,7 @@ class DottedContainer extends StatelessWidget {
 
   Widget _buildDealItem(Deal data) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
+      // padding: EdgeInsets.symmetric(horizontal: 2.w),
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: DottedBorder(
         color: const Color(0xffD9D9D9),
@@ -1202,7 +1213,7 @@ class DottedContainer extends StatelessWidget {
               data.image ?? 'https://via.placeholder.com/110',
               height: 109.h,
               width: 110.w,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
             SizedBox(height: 20.h),
             SizedBox(
@@ -1237,15 +1248,44 @@ class DottedContainer extends StatelessWidget {
   }
 }
 
-class VendorFirstTabBarSection extends StatelessWidget {
+
+
+class VendorFirstTabBarSection extends StatefulWidget {
   final TabController tabController;
   final VendorCard data;
   final VendorAbout vabout;
-  const VendorFirstTabBarSection(
-      {super.key,
-      required this.tabController,
-      required this.data,
-      required this.vabout});
+
+  const VendorFirstTabBarSection({
+    Key? key,
+    required this.tabController,
+    required this.data,
+    required this.vabout,
+  }) : super(key: key);
+
+  @override
+  State<VendorFirstTabBarSection> createState() =>
+      _VendorFirstTabBarSectionState();
+}
+
+class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
+  double _containerHeight = 540.h;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add a listener to the tab controller
+    widget.tabController.addListener(() {
+      setState(() {
+        // Adjust the height dynamically based on the selected tab
+        if (widget.tabController.index == 0) {
+          _containerHeight = 540.h; // Height for the first tab
+        } else {
+          _containerHeight = 400.h; // Height for the second tab
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1254,133 +1294,143 @@ class VendorFirstTabBarSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TabBar(
-            controller: tabController,
-            indicator: const UnderlineTabIndicator(
-              borderSide: BorderSide(
-                width: 4,
-                color: Color(0xFF646464),
-              ),
+          controller: widget.tabController,
+          indicator: const UnderlineTabIndicator(
+            borderSide: BorderSide(
+              width: 4,
+              color: Color(0xFF646464),
             ),
-            isScrollable: true,
-            labelPadding: const EdgeInsets.only(left: 0, right: 30),
-            tabs: const [
-              Tab(
-                text: "Home",
-              ),
-              Tab(
-                text: "About",
-              )
-            ]),
-        SizedBox(
-          height: 540.h,
-          child: TabBarView(controller: tabController, children: [
-            BigContainer(
-              lat: 0,
-              long: 0,
-              title: data.name!,
-              logo: data.photo!,
-              contact: data.phone!,
-              storyCount: data.storycount!.toString(),
-              membershipTitle: data.membership_title!,
-              deals_circle: '0',
-              total_connections: "0",
-              total_prize_worth: '0',
-              location: data.nearestbranch.toString(),
-              Cnumber: data.phone!,
+          ),
+          isScrollable: true,
+          labelPadding: const EdgeInsets.only(left: 0, right: 30),
+          tabs: const [
+            Tab(
+              text: "Home",
             ),
-            // const BigContainer(
-            //   Cnumber: '',
-            //   contact: '',
-            //   deals_circle: '',
-            //   lat: 1,
-            //   location: '',
-            //   logo: '',
-            //   long: '',
-
-            // ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
+            Tab(
+              text: "About",
+            ),
+          ],
+        ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          height: _containerHeight,
+          child: TabBarView(
+            controller: widget.tabController,
+            children: [
+              BigContainer(
+                lat: 0,
+                long: 0,
+                title: widget.data.name!,
+                logo: widget.data.photo!,
+                contact: widget.data.phone!,
+                storyCount: widget.data.storycount!.toString(),
+                membershipTitle: widget.data.membership_title!,
+                deals_circle: '0',
+                total_connections: "0",
+                total_prize_worth: '0',
+                location: widget.data.nearestbranch.toString(),
+                Cnumber: widget.data.phone!,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
                     border: Border.all(
-                  color: Colors.black,
-                )),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 24.w, top: 32.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Opening hours : ${vabout.opening_hours}",
+                      color: Colors.black,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 24.w, top: 32.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Opening hours : ${widget.vabout.opening_hours}",
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 12.sp,
-                          )),
-                      SizedBox(height: 10.h),
-                      Row(
-                        children: [
-                          Icon(Icons.phone,
-                              color: const Color(0xFF8B6C6C), size: 14.h),
-                          SizedBox(
-                            width: 10.w,
                           ),
-                          Text(vabout.phone!,
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            Icon(Icons.phone,
+                                color: const Color(0xFF8B6C6C), size: 14.h),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              widget.vabout.phone!,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12.sp,
-                              )),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
-                      Row(
-                        children: [
-                          Icon(Icons.location_on,
-                              color: const Color(0xFF8B6C6C), size: 14.h),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                              vabout.nearestbranch ??
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            Icon(Icons.location_on,
+                                color: const Color(0xFF8B6C6C), size: 14.h),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              widget.vabout.nearestbranch ??
                                   'The Bio is not yet published stay tuned',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12.sp,
-                              )),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
-                      Row(
-                        children: [
-                          Icon(Icons.email,
-                              color: const Color(0xFF8B6C6C), size: 14.h),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(vabout.email!,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            Icon(Icons.email,
+                                color: const Color(0xFF8B6C6C), size: 14.h),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              widget.vabout.email!,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12.sp,
-                              )),
-                        ],
-                      ),
-                      SizedBox(height: 10.h),
-                      Text("Bio",
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "Bio",
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14.sp,
-                          )),
-                      SizedBox(height: 10.h),
-                      Text(vabout.bio!, style: TextStyle(fontSize: 12.sp)),
-                    ],
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Text(
+                          widget.vabout.bio!,
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            )
-          ]),
+            ],
+          ),
         ),
       ],
     );
   }
 }
+
 
 class BigContainer extends StatelessWidget {
   final String title;

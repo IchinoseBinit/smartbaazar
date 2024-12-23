@@ -90,26 +90,28 @@ class ProductDetailScreen extends ConsumerWidget {
               shape: const StadiumBorder(),
               label: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage:
-                        null, // Set to null since CachedNetworkImage handles the image
-                    child: ClipOval(
-                      child: CachedNetworkImage(
-                        imageUrl: data.result!.user_photo_url,
-                        placeholder: (context, url) =>
-                            SizedBox(
+                  if (data.result != null)
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundImage:
+                          null, // Set to null since CachedNetworkImage handles the image
+                      child: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: data.result!.user_photo_url,
+                          placeholder: (context, url) => SizedBox(
                               height: 30.h,
                               width: 50.w,
-                              child: Center(child: CircularProgressIndicator())), // Placeholder widget
-                        errorWidget: (context, url, error) =>
-                            Icon(Icons.error), // Error widget
-                        fit: BoxFit.cover, // Adjust image fit
-                        width: 50, // Match the CircleAvatar diameter
-                        height: 50,
+                              child: Center(
+                                  child:
+                                      CircularProgressIndicator())), // Placeholder widget
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error), // Error widget
+                          fit: BoxFit.cover, // Adjust image fit
+                          width: 50, // Match the CircleAvatar diameter
+                          height: 50,
+                        ),
                       ),
                     ),
-                  ),
                   SizedBox(
                     width: 10.w,
                   ),
@@ -286,11 +288,12 @@ class ProductDetailScreen extends ConsumerWidget {
                         ),
                       ),
 
-                      HeaderBannerWidget(
-                        img: data.result!.user_photo_url,
-                        title:
-                            data.result!.feed_post!.first.name! ?? "Tradehub",
-                      ),
+                      if (data.result != null)
+                        HeaderBannerWidget(
+                            img: data.result!.user_photo_url,
+                            title: data.result!.feed_post!.isEmpty
+                                ? "Trade-hub"
+                                : data.result!.feed_post!.first.name!),
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       //   children: [
@@ -681,7 +684,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                         0.2, // Adjust progress bar value as needed
                                     width: 100, // Progress bar width
                                     numStar: data
-                                          .result!.ratings!.ratingCounts.five!,
+                                        .result!.ratings!.ratingCounts.five!,
                                   ),
                                   StarWidget(
                                       star: data.result!.ratings!.ratingCounts
@@ -719,8 +722,12 @@ class ProductDetailScreen extends ConsumerWidget {
                               )
                             ],
                           ),
-                          PeopleReviewsWidget(
-                              rate: data.result!.rating_comment),
+                          data.result?.rating_comment == null ||
+                                  data.result!.rating_comment!.isEmpty
+                              ? SizedBox()
+                              : PeopleReviewsWidget(
+                                  rate: data.result!.rating_comment),
+
                           SizedBox(
                             height: 10.h,
                           ),
@@ -791,13 +798,20 @@ class ProductDetailScreen extends ConsumerWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: List.generate(tabs.length, (index) {
+                              // Read the selected index value
+                              final selectedIndex =
+                                  ref.watch(selectedIndexProvider);
+
+                              // Check if the current index is selected
+                              final isSelected = (index + 1) == selectedIndex;
+
                               return InkWell(
                                 onTap: () => ref
                                     .read(selectedIndexProvider.notifier)
                                     .state = index + 1,
                                 child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 2),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
@@ -805,16 +819,25 @@ class ProductDetailScreen extends ConsumerWidget {
                                     border: Border.all(
                                         width: 1,
                                         color: const Color(0xffD9D9D9)),
+                                    color: isSelected
+                                        ? const Color(0xffD9D9D9)
+                                            .withOpacity(0.9)
+                                        : Colors.white,
                                   ),
                                   child: Text(
                                     tabs[index],
-                                    style: const TextStyle(
-                                        fontSize: 13, color: Colors.black),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
                               );
                             }),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: SizedBox(
@@ -901,8 +924,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                         similarproductCount: 0,
                                         membershipColor: "#3D215F",
                                         membershipTitle: "",
-                                        avg_rating:
-                                            data.result!.ratings!.avg_rating!,
+                                        avg_rating: data
+                                            .result!.ratings!.avg_rating!
+                                            .toDouble(),
                                         comment: data.result!.commentCount!
                                             .toString(),
                                         discounttedPrice:
@@ -957,10 +981,10 @@ class ProductDetailScreen extends ConsumerWidget {
         error: (error, stackTrace) {
           return Text("error $error");
         },
-        loading: () =>   SizedBox(
-                              height: 30.h,
-                              width: 50.w,
-                              child: Center(child: CircularProgressIndicator())),
+        loading: () => SizedBox(
+            height: 30.h,
+            width: 50.w,
+            child: Center(child: CircularProgressIndicator())),
       ),
     );
   }
