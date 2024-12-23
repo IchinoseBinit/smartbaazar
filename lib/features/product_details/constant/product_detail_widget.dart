@@ -53,7 +53,7 @@ class ProductDetailWidget extends StatelessWidget {
     // String showRs = "Rs";
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
-    String showRs = discounttedPrice == '0' ? '' : 'Rs.';
+    String showRs = discounttedPrice == '0' ? '' : '';
     print("ramkbaba $Vimage");
     print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
     return Padding(
@@ -299,7 +299,7 @@ class ProductDetailWidget extends StatelessWidget {
                         //     ),
                         //   ),
 
-                        SizedBox(width: 25.w),
+                        SizedBox(width: 37.w),
                         if (discounttedPrice != '0')
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
