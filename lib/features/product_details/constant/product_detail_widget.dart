@@ -50,8 +50,10 @@ class ProductDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String showRs = "Rs";
-    showRs = discounttedPrice == '0' ? '' : '';
+    // String showRs = "Rs";
+    // showRs = discounttedPrice == '0' ? 'Rs.' : '';
+    // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
+    String showRs = discounttedPrice == '0' ? '' : 'Rs.';
     print("ramkbaba $Vimage");
     print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
     return Padding(
@@ -231,14 +233,18 @@ class ProductDetailWidget extends StatelessWidget {
                       maxLines: 1,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          'Rs ${price!}',
-                          style: headerstyle.copyWith(
-                              color: ColorConstant.blackColor,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w800),
+                        SizedBox(
+                          // height: 20.h,
+                          width: 100.w,
+                          child: Text(
+                            'Rs ${price!}',
+                            style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
                         offer == ''
                             ? SizedBox()
@@ -276,15 +282,47 @@ class ProductDetailWidget extends StatelessWidget {
                                 ],
                               )
                             : SizedBox(),
+
+                        // SizedBox(width: 30.w,),
+                        // if (discounttedPrice != '0')
+                        //   Padding(
+                        //     padding: const EdgeInsets.only(right: 8.0),
+                        //     child: Text(
+                        //       "Rs.${showRs}$discounttedPrice",
+                        //       style: headerstyle.copyWith(
+                        //         fontSize: 8.sp,
+                        //         fontWeight: FontWeight.w600,
+                        //         color: Colors.grey,
+                        //         decoration: TextDecoration.lineThrough,
+                        //         decorationColor: Colors.grey,
+                        //       ),
+                        //     ),
+                        //   ),
+
+                        SizedBox(width: 25.w),
                         if (discounttedPrice != '0')
-                          Text(
-                            "${showRs}$discounttedPrice",
-                            style: headerstyle.copyWith(
-                              fontSize: 8.sp,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text(
+                              "${showRs}$discounttedPrice",
+                              style:
+                              // headerstyle.copyWith(
+                              //   fontSize: 8.sp,
+                              //   fontWeight: FontWeight.w600,
+                              //   color: Colors.grey,
+                              //   decoration: TextDecoration.lineThrough,
+                              //   decorationThickness: 1.5, // Adjusts the thickness of the line
+                              //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
+                              // ),
+                               TextStyle(
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.grey,
                               decoration: TextDecoration.lineThrough,
-                              decorationColor: Colors.grey,
+                              decorationThickness: 1.5,
+                                 height: 1.0,
+                            ),
+                              textAlign: TextAlign.center, // Aligns text if necessary
                             ),
                           ),
                       ],

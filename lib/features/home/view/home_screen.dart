@@ -656,6 +656,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           if (index == 0)
                               {
                             return StoryAddWidget(
+
                               index: index,
                               addSearch: true,
                               showgift: false,
@@ -668,6 +669,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           }
                           else if (index >= 1 && index <= 3) {
                             return StoryAddWidget(
+
+
                               index: index,
                               showgift: true,
                             );
