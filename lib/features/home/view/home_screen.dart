@@ -84,11 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-    {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
+  
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
@@ -150,9 +146,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       });
     });
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(selectedIndex);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _pageController.jumpToPage(selectedIndex);
+    // });
 
     // Set up debounce for search functionality
     _searchController.addListener(() {
@@ -467,95 +463,81 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             }),
                           ),
-                          SizedBox(
-                            height: 80.h,
-                            child: PageView.builder(
-                              itemCount: _items.length,
-                              padEnds: false,
-                              controller: _pageController,
-                              //  // onPageChanged: _onPageChanged,
-                              itemBuilder: (context, index) {
-                                Map<String, dynamic> data = _items[index];
+             SizedBox(
+  height: 80.h,
+  child: SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: _items.asMap().entries.map((entry) {
+        int index = entry.key;
+        Map<String, dynamic> data = entry.value;
 
-                                // Highlight only when index == 4
-                                bool isActive = index == 1;
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedIndex = index;
-                                    });
-                                    _pageController.animateToPage(
-                                      2,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: AnimatedContainer(
-                                    padding: EdgeInsets.zero,
-                                    duration: const Duration(milliseconds: 300),
-                                    alignment: Alignment.center,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  data['screen']),
-                                        );
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          if (data['icon']
-                                              .toString()
-                                              .endsWith('.svg'))
-                                            SvgPicture.asset(
-                                              data['icon'],
-                                              alignment: Alignment.center,
-                                              fit: BoxFit.contain,
-                                              theme: const SvgTheme(
-                                                  currentColor:
-                                                      Color(0xffdd9d9d9)),
-                                              color: isActive
-                                                  ? Colors.amber
-                                                  : const Color(0xffD9D9D9)
-                                                      .withOpacity(0.5),
-                                              width: 20,
-                                              height: 20,
-                                            )
-                                          else
-                                            Image.asset(
-                                              data['icon'],
-                                              color: isActive
-                                                  ? Colors.amber
-                                                  : const Color(0xffD9D9D9)
-                                                      .withOpacity(0.5),
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            data['label'],
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: isActive
-                                                  ? Colors.amber
-                                                  : const Color(0xffD9D9D9)
-                                                      .withOpacity(0.5),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+        // Highlight only when index == 1
+        bool isActive = index == 1;
+
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              selectedIndex = index;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => data['screen'],
+              ),
+            );
+          },
+          child: AnimatedContainer(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            duration: const Duration(milliseconds: 300),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (data['icon'].toString().endsWith('.svg'))
+                  SvgPicture.asset(
+                    data['icon'],
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
+                    theme: const SvgTheme(
+                      currentColor: Color(0xffdd9d9d9),
+                    ),
+                    color: isActive
+                        ? Colors.amber
+                        : const Color(0xffD9D9D9).withOpacity(0.5),
+                    width: 20,
+                    height: 20,
+                  )
+                else
+                  Image.asset(
+                    data['icon'],
+                    color: isActive
+                        ? Colors.amber
+                        : const Color(0xffD9D9D9).withOpacity(0.5),
+                    width: 20,
+                    height: 20,
+                  ),
+                const SizedBox(height: 8),
+                Text(
+                  data['label'],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: isActive
+                        ? Colors.amber
+                        : const Color(0xffD9D9D9).withOpacity(0.5),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    ),
+  ),
+),
+
 
                           const Divider(
                             height: 0.1,
@@ -866,14 +848,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               products[index];
                                           return InkWell(
                                             onTap: () {
-                                              //  Navigator.push(
-                                              //                 context,
-                                              //                 MaterialPageRoute(
-                                              //                   builder: (context) =>
-                                              //                       ProductDetailScreen(
-                                              //                           productId:
-                                              //                               prod.id),
-                                              //                 ));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(

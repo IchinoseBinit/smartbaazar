@@ -51,7 +51,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   List<Category> subcategoryList = [];
   Category? subcatagory;
   CityList? selectedCity;
+  List<String>? selectedColors;
+  String? selectedProductTYpe;
   int? warrentyselected;
+    String? selectedmodel;
+
+    // String? sel;e;
+
   List<CityList>? citylistsitems = [];
   List<Offer>? offerresponse = [];
   Offer? selectedOffer;
@@ -141,12 +147,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     try {
       var allItems = await repository.fetchTypeList();
       setState(() {
-        typeListItems = isUserVerified == '1'
-            ? allItems
-            : allItems
-                .where((item) =>
-                    ["Used", "Jobs", "Events"].contains(item.typeName))
-                .toList();
+        typeListItems = allItems;
       });
 
       // var subcategory = await repository.fetchCategoryList(parentId: typeListItems.);
@@ -353,6 +354,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   },
                   onSubCategorySelected: (Category? value) {
                     categoryId = selectedcategory!.id;
+                    print("bibash ${categoryId}");
                   },
                 ),
                 SizedBox(
@@ -445,46 +447,47 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Whats in the box',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: InputDecoration.collapsed(
-                          hintText: "Mention what's included",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp,
-                              color: const Color(0xffADADAD))),
-                    ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-                  ],
-                )),
+                if (categoryId != 1)
+                  CreateListingCardWidget(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Whats in the box',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      TextField(
+                        controller: descriptionController,
+                        decoration: InputDecoration.collapsed(
+                            hintText: "Mention what's included",
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                      // SizedBox(
+                      //   height: 10.h,
+                      // ),
+                    ],
+                  )),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -555,15 +558,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
+                        child: CustomDropdownButton<String>(
+                          items: ['Non-Branded', 'Original/Branded'],
+                          dropdownValue: selectedProductTYpe,
                           onChanged: (newValue) {
                             setState(() {
-                              selectedCity = newValue;
+                              selectedProductTYpe = newValue;
                             });
                           },
-                          getItemLabel: (CityList item) => item.name,
+                          getItemLabel: (String item) => item,
                         ),
                       ),
                     ],
@@ -667,16 +670,60 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         width: 10.w,
                       ),
                       Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
-                          },
-                          getItemLabel: (CityList item) => item.name,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            hint: Text(
+                              selectedColors == null || selectedColors!.isEmpty
+                                  ? "Select Colors"
+                                  : selectedColors!.join(", "),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            items: [
+                              'Black',
+                              'Red',
+                              'Green',
+                              'Blue',
+                              'Pink',
+                              'Grey'
+                            ].map((color) {
+                              return DropdownMenuItem<String>(
+                                value: color,
+                                child: Row(
+                                  children: [
+                                    // Checkbox to show whether the color is selected
+                                    StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return Checkbox(
+                                          value: selectedColors != null &&
+                                              selectedColors!.contains(color),
+                                          onChanged: (bool? isChecked) {
+                                            setState(() {
+                                              if (selectedColors == null) {
+                                                selectedColors =
+                                                    []; // Initialize if null
+                                              }
+                                              if (isChecked == true) {
+                                                selectedColors!.add(
+                                                    color); // Add to selectedColors if checked
+                                              } else {
+                                                selectedColors!.remove(
+                                                    color); // Remove from selectedColors if unchecked
+                                              }
+                                            });
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    Text(color),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (_) {}, // Keeps the dropdown open
+                            icon:
+                                Icon(Icons.arrow_drop_down, color: Colors.grey),
+                          ),
                         ),
                       ),
                     ],
@@ -685,6 +732,56 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Automobile Model',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<String>(
+                          items: [
+                            'Zil',
+                            'Geely',
+                            'Toyota',
+                            'Honda',
+                            'BMW',
+                            'Ford'
+                          ],
+                          dropdownValue: selectedmodel,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedmodel = newValue;
+                            });
+                          },
+                          getItemLabel: (String item) => item.toString(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
                 SizedBox(
                   height: 10.h,
                 ),
@@ -1591,7 +1688,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 }
                               },
                               decoration: InputDecoration(
-                                  hintText: tagController.text.isEmpty ? '' : "Enter tags",
+                                  hintText: tagController.text.isEmpty
+                                      ? ''
+                                      : "Enter tags",
                                   border: InputBorder.none
                                   // border: OutlineInputBorder(),
                                   // contentPadding: const EdgeInsets.all(8.0),

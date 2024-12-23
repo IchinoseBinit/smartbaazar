@@ -2185,6 +2185,8 @@ VendorCard _$VendorCardFromJson(Map<String, dynamic> json) {
 mixin _$VendorCard {
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get profile_url => throw _privateConstructorUsedError;
   int? get storycount => throw _privateConstructorUsedError;
@@ -2211,6 +2213,8 @@ abstract class $VendorCardCopyWith<$Res> {
   $Res call(
       {String? name,
       String? photo,
+      String? longitude,
+      String? latitude,
       String? phone,
       String? profile_url,
       int? storycount,
@@ -2238,6 +2242,8 @@ class _$VendorCardCopyWithImpl<$Res, $Val extends VendorCard>
   $Res call({
     Object? name = freezed,
     Object? photo = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
     Object? phone = freezed,
     Object? profile_url = freezed,
     Object? storycount = freezed,
@@ -2257,6 +2263,14 @@ class _$VendorCardCopyWithImpl<$Res, $Val extends VendorCard>
       photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
       phone: freezed == phone
           ? _value.phone
@@ -2313,6 +2327,8 @@ abstract class _$$VendorCardImplCopyWith<$Res>
   $Res call(
       {String? name,
       String? photo,
+      String? longitude,
+      String? latitude,
       String? phone,
       String? profile_url,
       int? storycount,
@@ -2338,6 +2354,8 @@ class __$$VendorCardImplCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? photo = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
     Object? phone = freezed,
     Object? profile_url = freezed,
     Object? storycount = freezed,
@@ -2357,6 +2375,14 @@ class __$$VendorCardImplCopyWithImpl<$Res>
       photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
       phone: freezed == phone
           ? _value.phone
@@ -2408,6 +2434,8 @@ class _$VendorCardImpl implements _VendorCard {
   const _$VendorCardImpl(
       {this.name,
       this.photo,
+      this.longitude,
+      this.latitude,
       this.phone,
       this.profile_url,
       this.storycount,
@@ -2426,6 +2454,10 @@ class _$VendorCardImpl implements _VendorCard {
   final String? name;
   @override
   final String? photo;
+  @override
+  final String? longitude;
+  @override
+  final String? latitude;
   @override
   final String? phone;
   @override
@@ -2449,7 +2481,7 @@ class _$VendorCardImpl implements _VendorCard {
 
   @override
   String toString() {
-    return 'VendorCard(name: $name, photo: $photo, phone: $phone, profile_url: $profile_url, storycount: $storycount, subscribers: $subscribers, prize_worth: $prize_worth, has_sponsored_gifts: $has_sponsored_gifts, nearestbranch: $nearestbranch, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color)';
+    return 'VendorCard(name: $name, photo: $photo, longitude: $longitude, latitude: $latitude, phone: $phone, profile_url: $profile_url, storycount: $storycount, subscribers: $subscribers, prize_worth: $prize_worth, has_sponsored_gifts: $has_sponsored_gifts, nearestbranch: $nearestbranch, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color)';
   }
 
   @override
@@ -2459,6 +2491,10 @@ class _$VendorCardImpl implements _VendorCard {
             other is _$VendorCardImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.profile_url, profile_url) ||
                 other.profile_url == profile_url) &&
@@ -2486,6 +2522,8 @@ class _$VendorCardImpl implements _VendorCard {
       runtimeType,
       name,
       photo,
+      longitude,
+      latitude,
       phone,
       profile_url,
       storycount,
@@ -2515,6 +2553,8 @@ abstract class _VendorCard implements VendorCard {
   const factory _VendorCard(
       {final String? name,
       final String? photo,
+      final String? longitude,
+      final String? latitude,
       final String? phone,
       final String? profile_url,
       final int? storycount,
@@ -2533,6 +2573,10 @@ abstract class _VendorCard implements VendorCard {
   String? get name;
   @override
   String? get photo;
+  @override
+  String? get longitude;
+  @override
+  String? get latitude;
   @override
   String? get phone;
   @override

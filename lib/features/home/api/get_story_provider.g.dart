@@ -6,7 +6,7 @@ part of 'get_story_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchStoryHomeHash() => r'20f6378b44770227938cc4c7c1fbcaa860cda3ee';
+String _$fetchStoryHomeHash() => r'eb5fc59933bf6515205f03120656458f9345d783';
 
 /// See also [fetchStoryHome].
 @ProviderFor(fetchStoryHome)

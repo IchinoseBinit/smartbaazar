@@ -152,10 +152,13 @@ class Vendor with _$Vendor {
 }
 
 @freezed
-class VendorCard with _$VendorCard {
+class   VendorCard with _$VendorCard {
   const factory VendorCard({
     String? name,
     String? photo,
+        String? longitude,
+    String? latitude,
+
     String? phone,
     String? profile_url,
     int? storycount,

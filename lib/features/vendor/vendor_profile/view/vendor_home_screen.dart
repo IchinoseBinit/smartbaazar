@@ -1320,8 +1320,8 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
             controller: widget.tabController,
             children: [
               BigContainer(
-                lat: 0,
-                long: 0,
+                lat: double.tryParse(widget.data.latitude!)?? 0.0,
+                long:double.tryParse(widget.data.latitude!)?? 0.0, 
                 title: widget.data.name!,
                 logo: widget.data.photo!,
                 contact: widget.data.phone!,
@@ -1851,9 +1851,7 @@ class BigContainer extends StatelessWidget {
                     Image.asset('assets/images/arrow_down.png')
                   ]),
             ),
-            SizedBox(
-              height: 5.h,
-            )
+          
           ],
         ),
       ),
