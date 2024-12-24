@@ -784,7 +784,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     break;
                                 }
                               },
-                              child: CircleBorderBorder(
+                              child: DashedBorder(
                                 dashCount: 2,
                                 child: SizedBox(
                                   width: 100.w,
@@ -1395,32 +1395,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.global.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.global[index];
+                                                              SizedBox(height: 5.h,),
 
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
-                                            );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
-                              ),
+                            SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: data.global.map((e) {
+                                      return NotStoryWidget(
+                                        vImage: e.brandLogo,
+                                        index: data.global.indexOf(e),
+                                        brandname: e.brandName,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                SizedBox(height: 20.h,),
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
@@ -1472,32 +1461,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.domestic.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.domestic[index];
+                                                              SizedBox(height: 5.h,),
 
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
+                            SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: data.domestic.map((e) {
+                                      return NotStoryWidget(
+                                        vImage: e.brandLogo,
+                                        index: data.domestic.indexOf(e),
+                                        brandname: e.brandName,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                                                SizedBox(height: 20.h,),
 
-                                            // showgift: false,
-                                            );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
-                              ),
                               SizedBox(
                                 height: 359.h,
                                 child: data.insidearr.isEmpty
@@ -1548,32 +1527,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.spotlight.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.domestic[index];
+                                                              SizedBox(height: 5.h,),
 
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
+                         SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: data.spotlight.map((e) {
+                                      return NotStoryWidget(
+                                        vImage: e.brandLogo,
+                                        index: data.spotlight.indexOf(e),
+                                        brandname: e.brandName,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                                                SizedBox(height: 20.h,),
 
-                                            // showgift: false,
-                                            );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
-                              ),
                               SizedBox(
                                 height: 359.h,
                                 child: data.insidearr.isEmpty

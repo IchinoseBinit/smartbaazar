@@ -12,6 +12,7 @@ import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_scree
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
+import 'package:smartbazar/features/grocessary_screen/api/grocery_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
@@ -214,7 +215,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
 
-    final asyncbajarValue = ref.watch(getjobsResponseProvider);
+    final asyncbajarValue = ref.watch(getGrocertResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
 
@@ -632,6 +633,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
+                    print("makal ${data.sliders}");
                     return SizedBox(
                       height: 150.h,
                       width: double.infinity,
@@ -1334,7 +1336,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     double dynamicHeight;
-                    print("binodl ${data.insidearr.isEmpty}");
+                    print("manish ${data.insidearr.first}");
 
                     if (dynamictabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
@@ -1376,7 +1378,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
-                                if (data.insidearr.isNotEmpty )
+                                if (data.insidearr.first.isNotEmpty &&
+                                    data.insidearr.isNotEmpty)
                                   SizedBox(
                                     height: 340.h,
                                     child: ListView.builder(
@@ -1419,7 +1422,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                               SingleChildScrollView(
+                                SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
                                     children: data.domestic.map((e) {
@@ -1431,10 +1434,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     }).toList(),
                                   ),
                                 ),
-                                 if (data.insidearr.isNotEmpty)
+                                if (data.insidearr.isNotEmpty)
                                   SizedBox(
                                     height: 340.h,
-                                    child: data.insidearr.isEmpty
+                                    child: data.insidearr.first.isEmpty
                                         ? const SizedBox(
                                             child: Text("No listing available"),
                                           )
@@ -1473,10 +1476,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             },
                                           ),
                                   ),
-                                    if (data.insidearr.isNotEmpty)
+                                if (data.insidearr.first.isEmpty)
                                   SizedBox(
                                     height: 340.h,
-                                    child: data.insidearr.isEmpty
+                                    child: data.insidearr.first.isEmpty
                                         ? const SizedBox(
                                             child: Text("No listing available"),
                                           )
@@ -1521,7 +1524,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                   SingleChildScrollView(
+                                SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
                                     children: data.spotlight.map((e) {
@@ -1533,8 +1536,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     }).toList(),
                                   ),
                                 ),
-                           
-                                    
                               ],
                             ),
                           ],
@@ -1835,22 +1836,21 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                     if (data.product.isEmpty) {
-      return SizedBox(
-        height: 50.h,
-        child: Center(
-          child: Text(
-            "No listing available",
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      );
-    }
-                       
+                    if (data.product.isEmpty) {
+                      return SizedBox(
+                        height: 50.h,
+                        child: Center(
+                          child: Text(
+                            "No listing available",
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
 
                     return GridView.builder(
                       physics:
@@ -1932,7 +1932,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //   ),
                 //   child: Image.asset('assets/icon/home.png'),
                 // ),
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
               ],
             ),
           ),

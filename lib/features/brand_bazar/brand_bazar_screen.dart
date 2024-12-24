@@ -22,6 +22,7 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
@@ -50,7 +51,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
-  late TabController tabController;
+  late TabController dynamictabController;
   bool _showSearchProductModels = false;
   int headerIndex = 0;
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -72,16 +73,17 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       'label': 'Everything',
       'screen': const HomeScreen()
     },
+       {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'TradeHub',
       'screen': const BrandBazarScreen()
     },
-    {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
+ 
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
@@ -117,6 +119,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
   @override
   void initState() {
+    dynamictabController = TabController(length: 3, vsync: this);
+
     _pageController = PageController(
       viewportFraction: 0.3,
       initialPage: headerIndex,
@@ -127,6 +131,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       } else {
         _currentPage = 0;
       }
+      dynamictabController.addListener(() {
+        setState(() {});
+      });
 
       // _pageController.animateToPage(
       //   _currentPage,
@@ -140,7 +147,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       _pageController.jumpToPage(headerIndex);
     });
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -197,7 +203,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
   @override
   void dispose() {
-    // dynamictabController.dispose();
+    dynamictabController.dispose();
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
@@ -1323,7 +1329,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   height: 50,
                   width: double.infinity,
                   child: TabBar(
-                    controller: tabController,
+                    controller: dynamictabController,
                     tabs: const [
                       Tab(
                         text: ' Global\n Brands',
@@ -1338,233 +1344,213 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                 ),
                 asyncbajarValue.when(
                   data: (data) {
+                    double dynamicHeight;
+
+                    if (dynamictabController.index == 0) {
+                      dynamicHeight = data.insidearr.isEmpty ||
+                              data.insidearr[0].length == 0
+                          ? 100
+                          : 500;
+                    } else if (dynamictabController.index == 1) {
+                      // Ensure data.doma[0] is valid and has length
+                      dynamicHeight = data.insidearr.isEmpty ||
+                              data.insidearr[1].length == 0
+                          ? 150
+                          : 500;
+                    } else if (dynamictabController.index == 2)
+                      dynamicHeight = data.insidearr.isEmpty ||
+                              data.insidearr[2].length == 0
+                          ? 150
+                          : 500;
+                    else
+                      dynamicHeight = 300;
+
                     return SizedBox(
-                      height: data.insidearr.isEmpty ? 150.h : dynamicsize!.h,
                       // Use Expanded for better layout management
-                      child: TabBarView(
-                        controller: tabController,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.global.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.global[index];
-                                      dynamicsize =
-                                          data.insidearr.isEmpty ? 100 : 500;
-
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        height: dynamicHeight,
+                        width: double.infinity,
+                        child: TabBarView(
+                          controller: dynamictabController,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (data.global.isNotEmpty)
+                                  ...data.global.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e
+                                          .brandLogo, // Use the correct variable name
+                                      index: data.global
+                                          .indexOf(e), // Get the index
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
+                                data.insidearr.isNotEmpty &&
+                                        data.insidearr[0].isNotEmpty
+                                    ? SizedBox(
+                                        height: 340.h,
+                                        child: ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: data.insidearr[0].length,
+                                          itemBuilder: (context, index) {
+                                            VProduct prod =
+                                                data.insidearr[0][index];
+                                            return InkWell(
+                                              onTap: () {},
+                                              child: ProductDetailWidget(
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                lefttile: "B2b",
+                                                vendorname: prod.user.name,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.title,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membercolor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
                                             );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
-                              ),
-                              data.insidearr.isNotEmpty &&
-                                      data.insidearr[0].isNotEmpty
-                                  ? SizedBox(
-                                      height: 340.h,
-                                      child: ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: data.insidearr[0].length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod =
-                                              data.insidearr[0][index];
-                                          return InkWell(
-                                            onTap: () {},
-                                            child: ProductDetailWidget(
-                                              wow: prod.wow,
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              lefttile: "B2b",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.title,
-                                              issponsored: prod.user.sponsored,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membercolor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.domestic.length,
-                                    itemBuilder: (context, index) {
-                                      dynamicsize =
-                                          data.insidearr.isEmpty ? 100 : 500;
-                                      LogoData res = data.domestic[index];
+                                          },
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: data.domestic.map((e) {
+                                      return NotStoryWidget(
+                                        vImage: e.brandLogo,
+                                        index: data.domestic.indexOf(e),
+                                        brandname: e.brandName,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                data.insidearr.isEmpty
+                                    ? const SizedBox()
+                                    : SizedBox(
+                                        height: 340.h,
+                                        child: ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: data.insidearr[1].length,
+                                          itemBuilder: (context, index) {
+                                            dynamicsize =
+                                                data.insidearr[1].isEmpty
+                                                    ? 100
+                                                    : 500;
+                                            VProduct prod =
+                                                data.insidearr[1][index];
 
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
+                                            return InkWell(
+                                              onTap: () {},
+                                              child: ProductDetailWidget(
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                wow: prod.wow,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "B2b-Shop",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membercolor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
                                             );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
-                              ),
-                              data.insidearr.isEmpty
-                                  ? const SizedBox()
-                                  : SizedBox(
-                                      height: 340.h,
-                                      child: ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: data.insidearr[1].length,
-                                        itemBuilder: (context, index) {
-                                          dynamicsize =
-                                              data.insidearr[1].isEmpty
-                                                  ? 100
-                                                  : 500;
-                                          VProduct prod =
-                                              data.insidearr[1][index];
-
-                                          return InkWell(
-                                            onTap: () {},
-                                            child: ProductDetailWidget(
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              wow: prod.wow,
-                                              issponsored: prod.user.sponsored,
-                                              lefttile: "B2b-Shop",
-                                              vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.user.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membercolor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),
-                                          );
-                                        },
+                                          },
+                                        ),
                                       ),
-                                    ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.spotlight.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.domestic[index];
-
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: data.spotlight.map((e) {
+                                      return NotStoryWidget(
+                                        vImage: e.brandLogo,
+                                        index: data.spotlight.indexOf(e),
+                                        brandname: e.brandName,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                data.insidearr.isEmpty
+                                    ? const SizedBox()
+                                    : SizedBox(
+                                        height: 340.h,
+                                        child: ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: data.insidearr[2].length,
+                                          itemBuilder: (context, index) {
+                                            VProduct prod =
+                                                data.insidearr[2][index];
+                                            return InkWell(
+                                              onTap: () {},
+                                              child: ProductDetailWidget(
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                wow: prod.wow,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "B2b-Shop",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membercolor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
                                             );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
-                              ),
-                              data.insidearr.isEmpty
-                                  ? const SizedBox()
-                                  : SizedBox(
-                                      height: 340.h,
-                                      child: ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: data.insidearr[2].length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod =
-                                              data.insidearr[2][index];
-                                          return InkWell(
-                                            onTap: () {},
-                                            child: ProductDetailWidget(
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              wow: prod.wow,
-                                              issponsored: prod.user.sponsored,
-                                              lefttile: "B2b-Shop",
-                                              vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.user.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membercolor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),
-                                          );
-                                        },
+                                          },
+                                        ),
                                       ),
-                                    ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -1676,6 +1662,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       data.seasonal, // Corresponds to SERVICES
 
                       data.promotional, // Corresponds to TRADEHUB
+                      data.clearance_sale,
                       data.Launch_festival_offer, // Corresponds to USED
                     ];
 
@@ -1833,7 +1820,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding:  EdgeInsets.only(left: 15.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -1857,18 +1844,18 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       itemCount: data.product.length,
 
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 370,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0.6,
-                        mainAxisSpacing: 0.2,
-                        childAspectRatio: 0.5,
-                      ),
+                       const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 400,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.2,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.2,
+                                ),
                       itemBuilder: (context, index) {
                         // VProduct res = data.allProducts[index];
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
-                          child: ProductDetailWidget(
+                          child: AllProductDetailWidget(
                             wow: data.product[index].wow,
                             comment:
                                 data.product[index].commentcount.toString(),
