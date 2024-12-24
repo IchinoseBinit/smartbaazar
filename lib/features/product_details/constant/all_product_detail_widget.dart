@@ -63,7 +63,7 @@ class AllProductDetailWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: SizedBox(
-          width: 250.w,
+          // width: 360.w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -565,20 +565,20 @@ class AllProductDetailWidget extends StatelessWidget {
                                       membershipTitle ?? "Domestic Brand",
                                       style: headerstyle.copyWith(
                                         fontSize: (membershipTitle != null && membershipTitle!.length > 12)
-                                            ? 8.sp
+                                            ? 7.sp
                                             : 10.sp, // Adjust font size based on length
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
 
-                                    SizedBox(width: 2.w,),
+                                    SizedBox(width: 5.w,),
                                     issponsored
                                         ? SizedBox()
                                         : Row(
                                       children: [
                                         Image.asset("assets/images/mike.png"),
                                         Text(
-                                          "SPD",
+                                          "SPONSORED",
                                           style: headerstyle.copyWith(
                                               fontSize: 10.sp,
                                               fontWeight: FontWeight.w700),

@@ -1621,7 +1621,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     },
                     child: value
                         ? const CircleAvatar(
-                            radius: 55,
+                            radius: 25,
                             backgroundImage:
                                 AssetImage('assets/images/Smartbazaar-Icon-for-QR.png'),
                           )
