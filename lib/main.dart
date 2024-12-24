@@ -50,8 +50,10 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: HomeScreen()
+          home: B2bScreen()
+           // redirect to splashscreen
           // HomeScreen()
+
 
           // home: BusinessTabScreen(
           //   query: 'acer',
