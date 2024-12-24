@@ -8,7 +8,7 @@ part 'buy_or_now_provider.g.dart';
 
 // Models
 class HotWithBuy {
-  final Map<String, VendorModel>  homestory;
+  final Map<String, VendorModel> homestory;
   final List<Home1GlobalModel> home;
   final List<Buynowmodel> buynow;
   final List<LogoData> global;
@@ -30,8 +30,6 @@ class HotWithBuy {
     required this.doma,
   });
 }
-
-
 
 class VendorModel {
   final String vendorName;
@@ -240,19 +238,26 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
             ?.map((winJson) => Buynowmodel.fromJson(winJson))
             .toList() ??
         [];
-    final global = (data['global_brandbazarLogos'] as List<dynamic>?)
-            ?.map((winJson) => LogoData.fromJson(winJson))
-            .toList() ??
-        [];
+    final global =
+        (data['global_brandbazarLogos'] as List<dynamic>?)?.map((winJson) {
+              return LogoData.fromJson(winJson);
+            }).toList() ??
+            [];
+                          print("Mapping JSON: ${global.length}"); // Debug each item
+
 
     final locald = (data['domestic_brandbazarLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
+                                          print("Mapping doma: ${locald.length}"); // Debug each item
+
     final spotd = (data['spotlightLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
+                                  print("Mapping spot: ${spotd.length}"); // Debug each item
+
     final rawBrandbazarGlobal =
         data['brandbazar_global'] as List<dynamic>? ?? [];
 
@@ -283,15 +288,16 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
-final Map<String, VendorModel> homestory = (data['home_story'] as Map<String, dynamic>?)
-    ?.map((key, value) => MapEntry(key, VendorModel.fromJson(value as Map<String, dynamic>))) ?? {};
+                                      print("Mapping spot: ${spotd.length}"); // Debug each item
 
-
-
-
+    final Map<String, VendorModel> homestory = (data['home_story']
+                as Map<String, dynamic>?)
+            ?.map((key, value) => MapEntry(
+                key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
+        {};
 
     return HotWithBuy(
-      homestory: homestory,
+        homestory: homestory,
         doma: domas,
         spot: spotl,
         home: newProducts,

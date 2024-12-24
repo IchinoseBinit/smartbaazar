@@ -96,7 +96,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     "JOBS",
     "Grocery"
   ];
-  
+
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _vendorsearchController = TextEditingController();
@@ -145,20 +145,18 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         ref.refresh(getVendorProfileDataProvider(
           widget.vendorName.replaceAll(" ", ''),
           postType: _postType,
-          
         ));
       });
     });
-    
 
     _vendorsearchController.addListener(() {
       _debouncer.add(_vendorsearchController.text);
     });
-      void onSearchFocusChanged(bool hasFocus) {
-    setState(() {
-      _showSearchProductModels = hasFocus;
-    });
-  }
+    void onSearchFocusChanged(bool hasFocus) {
+      setState(() {
+        _showSearchProductModels = hasFocus;
+      });
+    }
 
     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
       debugPrint("Search query: $query");
@@ -172,7 +170,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       _debouncer.add(_searchController.text);
     });
 
-      _debouncer.debounceTime(const Duration(milliseconds: 100)).listen((query) {
+    _debouncer.debounceTime(const Duration(milliseconds: 100)).listen((query) {
       debugPrint("Search query: $query");
       ref.refresh(searchProvider(query));
       setState(() {
@@ -197,15 +195,12 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     super.dispose();
   }
 
-
   List<BrandNewModel>? alldata;
 
   bool _isSearchFieldVisible = false;
-  
 
   @override
   Widget build(BuildContext context) {
-
     // final adsList = ref.watch(fetchAdsProvider);
 
     // final SearchProductModels = ref.watch(searchProvider(_searchController.text));
@@ -243,91 +238,97 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                       SliverToBoxAdapter(
                         child: Column(
                           children: [
-                             VendorSearchContainer(
+                            Stack(
+                              children: [
+                                Positioned(child:   VendorSearchContainer(
                               controller: _searchController,
                               onSearchFocusChanged: _onSearchFocusChanged,
-                              MYonchnage: (p0) {
-                                
-                              },
-                             ),
-                           if (_showSearchProductModels)
-                            Positioned(
-                              top: 0.h, // Position just below the search bar
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                width: double.infinity,
-                                color: Colors.white,
-                                child:
-                                    SearchProductModels.when(data: (results) {
-                                  if (results.isEmpty) {
-                                    return const SizedBox(
-                                      child: Text('No result found'),
-                                    ); // No results
-                                  }
-                                  return Card(
-                                    elevation: 8,
-                                    child: ListView.separated(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      itemCount: results.length,
-                                      itemBuilder: (context, index) {
-                                        final product = results[index];
-                                        return ListTile(
-                                          title: Text(product.title),
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BusinessTabScreen(
-                                                    query:
-                                                        _searchController.text,
-                                                  ),
-                                                ));
+                              MYonchnage: (p0) {},
+                            ),),
+                              // if (_showSearchProductModels)
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  child:
+                                      SearchProductModels.when(data: (results) {
+                                    if (results.isEmpty) {
+                                      return const SizedBox(
+                                        child: Text('No result found'),
+                                      ); // No results
+                                    }
+                                    return Card(
+                                      elevation: 8,
+                                      child: ListView.separated(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount: results.length,
+                                        itemBuilder: (context, index) {
+                                          final product = results[index];
+                                          return ListTile(
+                                            title: Text(product.title),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BusinessTabScreen(
+                                                      query: _searchController
+                                                          .text,
+                                                    ),
+                                                  ));
 
-                                            setState(() {
-                                              _showSearchProductModels = false;
+                                              setState(() {
+                                                _showSearchProductModels =
+                                                    false;
 
-                                              FocusScope.of(context).unfocus();
-                                            });
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         ProductDetailsScreen(
-                                            //       productId: product.id,
-                                            //     ),
-                                            //   ),
-                                            // );
-                                          },
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) =>
-                                          const Divider(),
-                                    ),
-                                  );
-                                }, loading: () {
-                                  return null;
-                                
-                                  // return SizedBox(
-                                  //     width: 10.w,
-                                  //     height: 10.h,
-                                  //     child: CircularProgressIndicator());
-                                }, error: (error, stack) {
-                                  return null;
-                                
-                                  // return SizedBox(
-                                  //     width: 10.w,
-                                  //     height: 10.h,
-                                  //     child: CircularProgressIndicator());
-                                }),
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              });
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         ProductDetailsScreen(
+                                              //       productId: product.id,
+                                              //     ),
+                                              //   ),
+                                              // );
+                                            },
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) =>
+                                            const Divider(),
+                                      ),
+                                    );
+                                  }, loading: () {
+                                    return null;
+
+                                    // return SizedBox(
+                                    //     width: 10.w,
+                                    //     height: 10.h,
+                                    //     child: CircularProgressIndicator());
+                                  }, error: (error, stack) {
+                                    return null;
+
+                                    // return SizedBox(
+                                    //     width: 10.w,
+                                    //     height: 10.h,
+                                    //     child: CircularProgressIndicator());
+                                  }),
+                                ),
                               ),
+                              ],
                             ),
-                              // SizedBox(
-                              //   height: 210.h,
-                              // ),
+                          
+                          
+                            // SizedBox(
+                            //   height: 210.h,
+                            // ),
                             data.deals == null
                                 ? const SizedBox()
                                 : DottedContainer(
@@ -647,8 +648,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 Vimage:
                                                     prod.userdetails?.photo ??
                                                         "",
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble() ?? 0,
+                                                avg_rating: prod.avg_rating
+                                                        ?.toDouble() ??
+                                                    0,
                                                 comment: prod.commentcount
                                                     .toString(),
                                                 discounttedPrice: prod
@@ -690,7 +692,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             ),
 
                             Padding(
-                              padding: EdgeInsets.only(left: 18.w),
+                              padding: EdgeInsets.only(
+                                  left: 18.w, bottom: 10, top: 10),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
@@ -710,13 +713,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     ),
                                   )
                                 : SizedBox(
-                                    height: 260,
+                                    height: 295.h,
                                     width: double.infinity,
                                     child: SwapablePostCard(
                                         post: data.feedPosts!)),
 
                             Padding(
-                              padding: EdgeInsets.only(left: 18.w),
+                              padding: EdgeInsets.only(left: 18.w,top: 10.h),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
@@ -755,23 +758,24 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             //   ),
                             // ),
                             Padding(
-                            padding: EdgeInsets.only(
-                                left: 10.w, right: 10.w, top: 10.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "All Products",
-                                  textAlign: TextAlign.left,
-                                  style: headerstyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 15,
-                                      color: ColorConstant.blackColor),
-                                ),
-                                // SizedBox(height: 5.h,)
-                              ],
+                              padding: EdgeInsets.only(
+                                  left: 10.w, right: 10.w, top: 10.h),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "All Products",
+                                    textAlign: TextAlign.left,
+                                    style: headerstyle.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15,
+                                        color: ColorConstant.blackColor),
+                                  ),
+                                  // SizedBox(height: 5.h,)
+                                ],
+                              ),
                             ),
-                          ),
                             data.all_products == null
                                 ? const Padding(
                                     padding: EdgeInsets.all(40.0),
@@ -788,13 +792,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                       itemCount: data.all_products?.length,
 
                                       gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 430,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.2,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.9,
-                                ),
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: 430,
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 0.2,
+                                        mainAxisSpacing: 0.2,
+                                        childAspectRatio: 0.9,
+                                      ),
                                       itemBuilder: (context, index) {
                                         BrandNewModel res =
                                             data.all_products![index];
@@ -803,7 +807,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           child: AllProductDetailWidget(
                                             productImage: res.image,
                                             Vimage: res.userdetails!.photo!,
-                                            avg_rating: res.avg_rating?.toDouble(),
+                                            avg_rating:
+                                                res.avg_rating?.toDouble(),
                                             comment:
                                                 res.commentcount.toString(),
                                             discounttedPrice:
@@ -1248,8 +1253,6 @@ class DottedContainer extends StatelessWidget {
   }
 }
 
-
-
 class VendorFirstTabBarSection extends StatefulWidget {
   final TabController tabController;
   final VendorCard data;
@@ -1320,18 +1323,18 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
             controller: widget.tabController,
             children: [
               BigContainer(
-                lat: double.tryParse(widget.data.latitude!)?? 0.0,
-                long:double.tryParse(widget.data.latitude!)?? 0.0, 
+                lat: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
+                long: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
                 title: widget.data.name!,
                 logo: widget.data.photo!,
-                contact: widget.data.phone!,
+                contact: widget.data.phone ?? '9812457859',
                 storyCount: widget.data.storycount!.toString(),
                 membershipTitle: widget.data.membership_title!,
                 deals_circle: '0',
                 total_connections: "0",
                 total_prize_worth: '0',
                 location: widget.data.nearestbranch.toString(),
-                Cnumber: widget.data.phone!,
+                Cnumber: widget.data.phone ?? '9845612345',
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -1362,7 +1365,7 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
                               width: 10.w,
                             ),
                             Text(
-                              widget.vabout.phone!,
+                              widget.vabout.phone ?? '',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12.sp,
@@ -1430,7 +1433,6 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
     );
   }
 }
-
 
 class BigContainer extends StatelessWidget {
   final String title;
@@ -1851,7 +1853,6 @@ class BigContainer extends StatelessWidget {
                     Image.asset('assets/images/arrow_down.png')
                   ]),
             ),
-          
           ],
         ),
       ),
@@ -1860,11 +1861,15 @@ class BigContainer extends StatelessWidget {
 }
 
 class VendorSearchContainer extends StatelessWidget {
-    Function(String)? MYonchnage;
-    TextEditingController controller;
-     final Function(bool)? onSearchFocusChanged;
+  Function(String)? MYonchnage;
+  TextEditingController controller;
+  final Function(bool)? onSearchFocusChanged;
 
-   VendorSearchContainer({super.key,required this.MYonchnage,required this.controller,required this.onSearchFocusChanged});
+  VendorSearchContainer(
+      {super.key,
+      required this.MYonchnage,
+      required this.controller,
+      required this.onSearchFocusChanged});
 
   @override
   Widget build(BuildContext context) {

@@ -67,15 +67,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
   bool _showSearchProductModels = false;
-  late TabController tabController;
+  late TabController dynamictabController;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
   double _currentHeight = 500; // Default height for first tab
-
-
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -128,7 +126,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    dynamictabController = TabController(length: 3, vsync: this);
     // fetchStoryHome().then(
     //   (value) {
     //     print("lala");
@@ -136,13 +134,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     // );
     // Default selected index to 3 (HomeScreen)
     // selectedIndex = 3;
+    dynamictabController.addListener(() {
+      setState(() {});
+    });
 
     // Initialize the PageController with the selected page
     _pageController = PageController(
       viewportFraction: 0.3,
       initialPage: selectedIndex,
     );
-    tabController.addListener(_handleTabChange);
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
     });
@@ -172,22 +172,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     });
 
     _scrollController.addListener(_handleScroll);
-  }
-
-  void _handleTabChange() {
-    setState(() {
-      switch (tabController.index) {
-        case 0:
-          _currentHeight = 500; // Tab 1 Height
-          break;
-        case 1:
-          _currentHeight = 150; // Tab 2 (no content)
-          break;
-        case 2:
-          _currentHeight = 500; // Tab 3 Height
-          break;
-      }
-    });
   }
 
   void _handleScroll() {
@@ -223,16 +207,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     _initialDragPosition = details.globalPosition;
   }
 
-  // @override
-  // void dispose() {
-  //   tabController.dispose();
-  //   _debouncer.close();
-  //   _searchController.dispose();
-  //   super.dispose();
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
-
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
       _showSearchProductModels = hasFocus;
@@ -249,6 +223,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     {'label': 'Event', 'id': 6},
     {'label': 'Grocery', 'id': 7},
   ];
+  @override
+  void dispose() {
+    dynamictabController.dispose();
+    _debouncer.close();
+    _searchController.dispose();
+    super.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -927,7 +910,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 50,
                             width: double.infinity,
                             child: TabBar(
-                              controller: tabController,
+                              controller: dynamictabController,
                               tabs: const [
                                 Tab(
                                   text: ' Global\n Brands',
@@ -945,15 +928,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
+                              print(
+                                  "kale data ${data.spot[0].first.user} and story ${data.spotlight[0].brandLogo}");
+                              double dynamicHeight;
+
+                              if (dynamictabController.index == 0) {
+                                dynamicHeight =
+                                    data.insidearr[0].length == 0 ? 200 : 500;
+                              } else if (dynamictabController.index == 1) {
+                                // Ensure data.doma[0] is valid and has length
+                                dynamicHeight = (data.doma.isNotEmpty &&
+                                        data.doma[0].isNotEmpty)
+                                    ? 450
+                                    : 200;
+                              } else if (dynamictabController.index == 2)
+                                dynamicHeight = (data.spotlight.isNotEmpty &&
+                                        data.spot[0].isNotEmpty)
+                                    ? 550
+                                    : 500;
+                              else
+                                dynamicHeight = 300;
+
                               return SizedBox(
-                                height: 480.h,
                                 child: AnimatedContainer(
-                                  duration: Duration(milliseconds: 300),
-                                  height:
-                                      _currentHeight, // Adjust height based on data
+                                  duration: const Duration(milliseconds: 300),
+                                  height: dynamicHeight, // Main dynamic height
                                   width: double.infinity,
                                   child: TabBarView(
-                                    controller: tabController,
+                                    controller: dynamictabController,
                                     children: [
                                       // First Tab
                                       Column(
@@ -963,125 +965,74 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           if (data.global.isNotEmpty)
+                                            ...data.global.map((e) {
+                                              return NotStoryWidget(
+                                                vImage: e
+                                                    .brandLogo, // Use the correct variable name
+                                                index: data.global.indexOf(
+                                                    e), // Get the index
+                                                brandname: e.brandName,
+                                              );
+                                            }).toList(),
+                                          if (data.insidearr[0].length > 0)
                                             SizedBox(
-                                              height: 130.h,
+                                              height: 340.h,
                                               child: ListView.builder(
-                                                padding: EdgeInsets.zero,
-                                                shrinkWrap: true,
+                                                clipBehavior: Clip.antiAlias,
+                                                padding:
+                                                    const EdgeInsets.all(3),
                                                 scrollDirection:
                                                     Axis.horizontal,
-                                                itemCount: data.global.length,
+                                                itemCount:
+                                                    data.insidearr[0].length,
                                                 itemBuilder: (context, index) {
-                                                  LogoData dat =
-                                                      data.global[index];
-                                                  if (index == 0) {
-                                                    return NotStoryWidget(
-                                                        index: index,
-                                                        brandname: dat.brandName
-
-                                                        // showgift: false,
-                                                        );
-                                                  } else if (index >= 1 &&
-                                                      index <= 2) {
-                                                    return NotStoryWidget(
-                                                      index: index,
-                                                      showgift: true,
-                                                    );
-                                                  }
-                                                  return NotStoryWidget(
-                                                      index: index);
-                                                  // dynSize =
-                                                  //     data.insidearr[0].isEmpty
-                                                  //         ? 150
-                                                  //         : 500;
-                                                  // LogoData res =
-                                                  //     data.global[index];
-                                                  // if (index == 0) {
-                                                  //   return StoryAddWidget(
-                                                  //       index: index,
-                                                  //       brandname: res.brandName);
-                                                  // } else if (index >= 1 &&
-                                                  //     index <= 2) {
-                                                  //   return StoryAddWidget(
-                                                  //       index: index,
-                                                  //       showgift: true);
-                                                  // }
-                                                  // return StoryAddWidget(
-                                                  //     index: index);
-                                                },
-                                              ),
-                                            ),
-                                          SizedBox(
-                                            // height: data.insidearr.isNotEmpty &&
-                                            //         data.insidearr[0].isNotEmpty
-                                            //     ? 340.h
-                                            //     : 200,
-                                            child: data.insidearr.isNotEmpty &&
-                                                    data.insidearr[0].isNotEmpty
-                                                ? ListView.builder(
-                                                    clipBehavior:
-                                                        Clip.antiAlias,
-                                                    padding:
-                                                        const EdgeInsets.all(3),
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    itemCount: data
-                                                        .insidearr[0].length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      GlobalModel prod = data
-                                                          .insidearr[0][index];
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ProductDetailScreen(
-                                                                        productId:
-                                                                            prod.id),
-                                                              ));
-                                                        },
-                                                        child:
-                                                            ProductDetailWidget(
-                                                          id: int.tryParse(prod
-                                                              .user
-                                                              .first
-                                                              .user_id),
-                                                          comment:
-                                                              prod.commentnum,
-                                                          wow: prod.wow,
-                                                          issponsored: prod
-                                                              .user[0]
-                                                              .sponsored!,
-                                                          vendorname:
-                                                              prod.contactName,
-                                                          discounttedPrice:
-                                                              prod.discont,
-                                                          Vimage: prod.title,
-                                                          price: prod.price,
-                                                          title: prod.title,
-                                                          productImage:
-                                                              prod.imageUrl,
-                                                          similarproductCount: prod
-                                                              .similarproductCount,
-                                                          membershipColor: prod
-                                                              .user
-                                                              .first
-                                                              .membership_color,
-                                                          membershipTitle: prod
-                                                              .user
-                                                              .first
-                                                              .membership_title,
+                                                  GlobalModel prod =
+                                                      data.insidearr[0][index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProductDetailScreen(
+                                                                  productId:
+                                                                      prod.id),
                                                         ),
                                                       );
                                                     },
-                                                  )
-                                                : null,
-                                          ),
+                                                    child: ProductDetailWidget(
+                                                      id: int.tryParse(prod
+                                                          .user.first.user_id),
+                                                      comment: prod.commentnum,
+                                                      wow: prod.wow,
+                                                      issponsored: prod
+                                                          .user[0].sponsored!,
+                                                      vendorname:
+                                                          prod.contactName,
+                                                      discounttedPrice:
+                                                          prod.discont,
+                                                      Vimage: prod.title,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage:
+                                                          prod.imageUrl,
+                                                      similarproductCount: prod
+                                                          .similarproductCount,
+                                                      membershipColor: prod
+                                                          .user
+                                                          .first
+                                                          .membership_color,
+                                                      membershipTitle: prod
+                                                          .user
+                                                          .first
+                                                          .membership_title,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
                                         ],
                                       ),
-
                                       // Second Tab
                                       Column(
                                         mainAxisAlignment:
@@ -1090,199 +1041,164 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           if (data.domestic.isNotEmpty)
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    data.domestic.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e.brandLogo,
+                                                    index: data.domestic
+                                                        .indexOf(e),
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          SizedBox(
+                                            height: 15.h,
+                                          ),
+                                          if (data.domestic.isNotEmpty)
                                             SizedBox(
-                                              height: 130.h,
+                                              height: 340
+                                                  .h, // Adjust to your dynamic height as needed
                                               child: ListView.builder(
-                                                padding: EdgeInsets.zero,
-                                                shrinkWrap: true,
+                                                clipBehavior: Clip.antiAlias,
+                                                padding:
+                                                    const EdgeInsets.all(3),
                                                 scrollDirection:
                                                     Axis.horizontal,
-                                                itemCount: data.domestic.length,
+                                                itemCount: data.doma[0].length,
                                                 itemBuilder: (context, index) {
-                                                  _currentHeight =
-                                                      data.doma[0].length == 0
-                                                          ? 150
-                                                          : 500;
-
-                                                  LogoData res =
-                                                      data.domestic[index];
-                                                  if (index == 0) {
-                                                    return NotStoryWidget(
-                                                        index: index,
-                                                        brandname: res.brandName
-
-                                                        // showgift: false,
-                                                        );
-                                                  } else if (index >= 1 &&
-                                                      index <= 2) {
-                                                    return NotStoryWidget(
-                                                      index: index,
-                                                      showgift: true,
-                                                    );
-                                                  }
-                                                  return NotStoryWidget(
-                                                      index: index);
-                                                  ;
+                                                  GlobalModel prod =
+                                                      data.doma[0][index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProductDetailScreen(
+                                                                  productId:
+                                                                      prod.id),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: ProductDetailWidget(
+                                                      id: int.tryParse(prod
+                                                          .user.first.user_id),
+                                                      comment: prod.commentnum,
+                                                      wow: prod.wow,
+                                                      issponsored: prod
+                                                          .user[0].sponsored!,
+                                                      vendorname:
+                                                          prod.contactName,
+                                                      discounttedPrice:
+                                                          prod.discont,
+                                                      Vimage: prod.title,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage:
+                                                          prod.imageUrl,
+                                                      similarproductCount: prod
+                                                          .similarproductCount,
+                                                      membershipColor: prod
+                                                          .user
+                                                          .first
+                                                          .membership_color,
+                                                      membershipTitle: prod
+                                                          .user
+                                                          .first
+                                                          .membership_title,
+                                                    ),
+                                                  );
                                                 },
                                               ),
                                             ),
-                                          // SizedBox(
-                                          //   height: data.doma.isNotEmpty &&
-                                          //           data.doma[0].isNotEmpty
-                                          //       ? 340.h
-                                          //       : 150,
-                                          //   child: data.doma.isNotEmpty &&
-                                          //           data.doma[0].isNotEmpty
-                                          //       ? ListView.builder(
-                                          //           clipBehavior: Clip.antiAlias,
-                                          //           padding:
-                                          //               const EdgeInsets.all(3),
-                                          //           scrollDirection:
-                                          //               Axis.horizontal,
-                                          //           itemCount:
-                                          //               data.doma[0].length,
-                                          //           itemBuilder:
-                                          //               (context, index) {
-                                          //             GlobalModel prod =
-                                          //                 data.doma[0][index];
-                                          //             return InkWell(
-                                          //               onTap: () {},
-                                          //               child:
-                                          //                   ProductDetailWidget(
-                                          //                 vendorname: prod.title,
-                                          //                 discounttedPrice:
-                                          //                     prod.discont,
-                                          //                 Vimage:
-                                          //                     prod.contactName,
-                                          //                 price: prod.price,
-                                          //                 title: prod.title,
-                                          //                 productImage:
-                                          //                     prod.imageUrl,
-                                          //                 similarproductCount: prod
-                                          //                     .similarproductCount,
-                                          //                 membershipColor: prod
-                                          //                     .user
-                                          //                     .first
-                                          //                     .memberColor,
-                                          //                 membershipTitle: prod
-                                          //                     .user
-                                          //                     .first
-                                          //                     .membershipTitle,
-                                          //               ),
-                                          //             );
-                                          //           },
-                                          //         )
-                                          //       : null,
-                                          // ),
                                         ],
                                       ),
-
-                                      // Third Tab
+                                      //third tab
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.spotlight.isNotEmpty)
-                                            SizedBox(
-                                                height: 130.h,
-                                                child: ListView.builder(
-                                                    padding: EdgeInsets.zero,
-                                                    shrinkWrap: true,
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    itemCount:
-                                                        data.spotlight.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      _currentHeight =
-                                                          data.spotlight.isEmpty
-                                                              ? 100
-                                                              : 500;
-                                                      LogoData res =
-                                                          data.spotlight[index];
-                                                      if (index == 0) {
-                                                        return NotStoryWidget(
-                                                            index: index,
-                                                            brandname:
-                                                                res.brandName
-
-                                                            // showgift: false,
-                                                            );
-                                                      } else if (index >= 1 &&
-                                                          index <= 2) {
-                                                        return NotStoryWidget(
-                                                          index: index,
-                                                          showgift: true,
-                                                        );
-                                                      }
-                                                      return NotStoryWidget(
-                                                          index: index);
-                                                    })),
+                                          if (data.domestic.isNotEmpty)
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    data.spotlight.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e.brandLogo,
+                                                    index: data.spotlight
+                                                        .indexOf(e),
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
                                           SizedBox(
-                                            height: data.spot.isNotEmpty &&
-                                                    data.spot[0].isNotEmpty
-                                                ? 340.h
-                                                : 180,
-                                            child: data.spot.isNotEmpty &&
-                                                    data.spot[0].isNotEmpty
-                                                ? ListView.builder(
-                                                    clipBehavior:
-                                                        Clip.antiAlias,
-                                                    padding:
-                                                        const EdgeInsets.all(3),
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    itemCount:
-                                                        data.spot[0].length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      GlobalModel prod =
-                                                          data.spot[0][index];
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ProductDetailScreen(
-                                                                        productId:
-                                                                            prod.id),
-                                                              ));
-                                                        },
-                                                        child:
-                                                            ProductDetailWidget(
-                                                          id: int.tryParse(prod
-                                                              .user
-                                                              .first
-                                                              .user_id),
-                                                          vendorname:
-                                                              prod.title,
-                                                          discounttedPrice:
-                                                              prod.discont,
-                                                          Vimage: prod
-                                                              .user.first.photo,
-                                                          price: prod.price,
-                                                          title: prod.title,
-                                                          productImage:
-                                                              prod.imageUrl,
-                                                          similarproductCount: prod
-                                                              .similarproductCount,
-                                                          membershipColor: prod
-                                                              .user
-                                                              .first
-                                                              .membership_color,
-                                                          membershipTitle: prod
-                                                              .user
-                                                              .first
-                                                              .membership_title,
+                                            height: 15.h,
+                                          ),
+                                          if (data.spot[0].isNotEmpty)
+                                            SizedBox(
+                                              height: 440
+                                                  .h, // Adjust to your dynamic height as needed
+                                              child: ListView.builder(
+                                                clipBehavior: Clip.antiAlias,
+                                                padding:
+                                                    const EdgeInsets.all(3),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: data.spot[0].length,
+                                                itemBuilder: (context, index) {
+                                                  GlobalModel prod =
+                                                      data.spot[0][index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProductDetailScreen(
+                                                                  productId:
+                                                                      prod.id),
                                                         ),
                                                       );
                                                     },
-                                                  )
-                                                : null,
-                                          ),
+                                                    child: ProductDetailWidget(
+                                                      id: int.tryParse(prod
+                                                          .user.first.user_id),
+                                                      comment: prod.commentnum,
+                                                      wow: prod.wow,
+                                                      issponsored: prod
+                                                          .user[0].sponsored!,
+                                                      vendorname:
+                                                          prod.contactName,
+                                                      discounttedPrice:
+                                                          prod.discont,
+                                                      Vimage: prod.title,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage:
+                                                          prod.imageUrl,
+                                                      similarproductCount: prod
+                                                          .similarproductCount,
+                                                      membershipColor: prod
+                                                          .user
+                                                          .first
+                                                          .membership_color,
+                                                      membershipTitle: prod
+                                                          .user
+                                                          .first
+                                                          .membership_title,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
                                         ],
                                       ),
                                     ],
@@ -1332,7 +1248,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           //     return const CircularProgressIndicator();
                           //   },
                           // ),
-
+                          SizedBox(
+                            height: 5.h,
+                          ),
                           Center(
                             child: Column(
                               children: [

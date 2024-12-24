@@ -45,10 +45,10 @@ class _MyAppState extends State<MyApp> {
           ),
           home: HomeScreen()
           // HomeScreen()
-          
+
           // home: BusinessTabScreen(
           //   query: 'acer',
-            // apple ois a bababaa
+          // apple ois a bababaa
           // )
           // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
           ),
@@ -56,70 +56,83 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// class TagInput extends StatefulWidget {
-//   const TagInput({Key? key}) : super(key: key);
 
+// class YourWidget extends StatefulWidget {
 //   @override
-//   _TagInputState createState() => _TagInputState();
+//   _YourWidgetState createState() => _YourWidgetState();
 // }
 
-// class _TagInputState extends State<TagInput> {
-//   final TextEditingController _controller = TextEditingController();
-//   final List<String> _tags = [];
-//   String _inputText = "";
+// class _YourWidgetState extends State<YourWidget>
+//     with SingleTickerProviderStateMixin {
+//   late TabController dynamictabController;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     dynamictabController = TabController(length: 3, vsync: this);
+
+//     // Add a listener to rebuild the widget on tab change
+//     dynamictabController.addListener(() {
+//       setState(() {});
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     dynamictabController.dispose();
+//     super.dispose();
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Stack(
-//           children: [
-//             // TextField with the placeholder for typing
-//             TextField(
-//               controller: _controller,
-//               onChanged: (text) {
-//                 setState(() {
-//                   _inputText = text;
-//                 });
-//               },
-//               onSubmitted: (value) {
-//                 if (value.isNotEmpty) {
-//                   _addTag(value);
-//                 }
-//               },
-//               decoration: InputDecoration(
-//                 hintText: "Enter tags",
-//                 border: OutlineInputBorder(),
-//                 contentPadding: const EdgeInsets.all(8.0),
-//               ),
-//             ),
-//             // Positioned tags that appear inside the TextField
-//             Positioned(
-//               left: 8.0,
-//               top: 1.0,
-//               bottom: 0,
-//               child: Wrap(
-                
-//                 spacing: 1,
-//                 runSpacing: 2,
-//                 children: _tags.map((tag) {
-//                   return Chip(
-//                     label: Text(tag),
-//                     deleteIcon: const Icon(Icons.clear),
-//                     onDeleted: () => _removeTag(tag),
-//                   );
-//                 }).toList(),
-//               ),
-//             ),
+//     // Calculate dynamic height based on the current tab
+//     double dynamicHeight;
+//     if (dynamictabController.index == 1) {
+//       dynamicHeight = 400; // Height for second tab
+//     } else if (dynamictabController.index == 2) {
+//       dynamicHeight = 500; // Height for third tab
+//     } else {
+//       dynamicHeight = 100; // Default height for first tab
+//     }
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Dynamic Height Test'),
+//         bottom: TabBar(
+//           controller: dynamictabController,
+//           tabs: const [
+//             Tab(text: "First Tab"),
+//             Tab(text: "Second Tab"),
+//             Tab(text: "Third Tab"),
 //           ],
 //         ),
-//         const SizedBox(height: 16),
-        
-//       ],
+//       ),
+//       body: Column(
+//         children: [
+//           AnimatedContainer(
+//             duration: const Duration(milliseconds: 300),
+//             height: dynamicHeight, // Use dynamic height
+//             width: double.infinity,
+//             color: Colors.blueGrey[100], // Visual aid to see height
+//             child: TabBarView(
+//               controller: dynamictabController,
+//               children: [
+//                 Center(child: Text("Content for First Tab")),
+//                 Center(child: Text("Content for Second Tab")),
+//                 Center(child: Text("Content for Third Tab")),
+//               ],
+//             ),
+//           ),
+//           Expanded(
+//             child: Center(
+//               child: Text(
+//                 "This space is outside the AnimatedContainer.",
+//                 textAlign: TextAlign.center,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
 //     );
 //   }
-
-//   // Add a tag to the list
-
 // }
