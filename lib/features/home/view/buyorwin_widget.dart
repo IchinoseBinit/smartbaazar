@@ -11,10 +11,9 @@ class buyorwin_widget extends StatelessWidget {
     required this.winners,
     required this.proctimage,
     required this.vendorImage,
-    
-
   });
-  final String vendorname, winners, proctimage,vendorImage;
+
+  final String vendorname, winners, proctimage, vendorImage;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +113,6 @@ class buyorwin_widget extends StatelessWidget {
                       )),
                 ),
                 Positioned(
-                  
                   bottom: 0,
                   child: Column(
                     children: [
@@ -127,23 +125,60 @@ class buyorwin_widget extends StatelessWidget {
                               //   radius: 20.0,
                               // ),
                               Container(
-                                padding: EdgeInsets.all(2), // Thickness of the border
+                                padding: EdgeInsets.all(2),
+                                // Thickness of the border
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.grey, // Border color
-                                    width: 2.0,         // Border width
+                                    width: 2.0, // Border width
                                   ),
                                 ),
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(vendorImage),
-                                  radius: 18.0, // Adjust radius based on padding
+                                  radius:
+                                      18.0, // Adjust radius based on padding
                                 ),
                               ),
                               SizedBox(
                                 width: 10.w,
                               ),
-                              Text("by $vendorname"),
+                              // Text("by $vendorname"),
+
+                              // Text(
+                              //   "by $vendorname",
+                              //   style: headerstyle.copyWith(
+                              //     fontSize: 12.sp, // Adjust font size if needed
+                              //   ),
+                              //   textAlign: TextAlign.center, // Centers the text
+                              //   overflow: TextOverflow.ellipsis, // Truncates text with ellipsis
+                              //   maxLines: 1, // Ensures a single line with ellipsis if overflowed
+                              //   softWrap: false, // Prevents wrapping to a new line
+                              // ),
+
+                              // SizedBox(
+                              //   width: 200.w, // Fixed width for the text box
+                              //   child: Text(
+                              //     "by ${vendorname.length > 12 ? vendorname.substring(0, 12) + '...' : vendorname}",
+                              //     style: headerstyle.copyWith(
+                              //       fontSize: 12.sp, // Adjust font size if needed
+                              //     ),
+                              //     textAlign: TextAlign.center, // Centers the text
+                              //     overflow: TextOverflow.ellipsis, // Truncates text with ellipsis
+                              //     maxLines: 1, // Keeps the text on a single line
+                              //   ),
+                              // ),
+
+                              Text(
+                                "by ${vendorname.length > 15 ? vendorname.substring(0, 12) + '...' : vendorname}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  // Use a fixed font size for debugging
+                                  color: Colors.black, // Ensure visible text
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
                             ],
                           ),
                         ],
