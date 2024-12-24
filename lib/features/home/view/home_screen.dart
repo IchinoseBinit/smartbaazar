@@ -1462,6 +1462,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   mainAxisSpacing: 0.2,
                                   childAspectRatio: 0.9,
                                 ),
+
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
                                   return Padding(
