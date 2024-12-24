@@ -24,13 +24,12 @@ _$LoginDataResultImpl _$$LoginDataResultImplFromJson(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       username: json['username'] as String,
-      photo_url: json['photo_url'] as String,
-      gender_id: json['gender_id'] as String,
-      photo: json['photo'] as String,
-      phone: json['phone'] as String,
-      email: json['email'] as String,
-      dob: json['dob'] as String,
-      gender: json['gender'] as String,
+      photo_url: json['photo_url'] as String?,
+      gender_id: json['gender_id'] as String?,
+      photo: json['photo'] as String?,
+      phone: json['phone'] as String?,
+      email: json['email'] as String?,
+      dob: json['dob'] as String?,
     );
 
 Map<String, dynamic> _$$LoginDataResultImplToJson(
@@ -45,16 +44,17 @@ Map<String, dynamic> _$$LoginDataResultImplToJson(
       'phone': instance.phone,
       'email': instance.email,
       'dob': instance.dob,
-      'gender': instance.gender,
     };
 
 _$LoginDataExtraImpl _$$LoginDataExtraImplFromJson(Map<String, dynamic> json) =>
     _$LoginDataExtraImpl(
       authToken: json['authToken'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
 
 Map<String, dynamic> _$$LoginDataExtraImplToJson(
         _$LoginDataExtraImpl instance) =>
     <String, dynamic>{
       'authToken': instance.authToken,
+      'refreshToken': instance.refreshToken,
     };

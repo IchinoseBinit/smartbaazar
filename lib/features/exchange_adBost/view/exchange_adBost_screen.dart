@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
-import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class ExchangeAdBostScreen extends StatelessWidget {
@@ -36,14 +35,14 @@ class ExchangeAdBostScreen extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.w700),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Text(
                       'Go back',
                       style: TextStyle(
                           fontSize: 14.sp,
-                          color: Color(0xff888888),
+                          color: const Color(0xff888888),
                           fontWeight: FontWeight.w700),
                     ),
                   )
@@ -54,7 +53,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
               ),
               Divider(
                 thickness: 2.w,
-                color: Color(0xffD9D9D9),
+                color: const Color(0xffD9D9D9),
               ),
             ],
           ),
@@ -74,7 +73,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'Advertise Without Paying Cash. Offer Your Products, Services or Deals Instead of Cash to Advertise!',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -84,14 +83,14 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'How does it work?',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
                   'Advertise in Smartbazaar by offering your products, services or deals instead of paying cash that will go in as ‘Smartbazaar Subscribe & Win’ prize for customers.',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -101,7 +100,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'What do I have to pay?',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -111,7 +110,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'You simply sponsor your business’s products, services or deals as prize for ‘Smartbazaar Subscribe & Win’ customers through Smartbazaar website! A 2% processing fee applies.',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -121,7 +120,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'What Mileage do I Get?',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -131,7 +130,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'Get as many customer reach as your prize worth. Example: if you offer prize worth Rs.10,000, your ad reach will be 10,000 customers plus potential increase in ‘Smartbazaar Subscribers’ as customers get prize incentives on Subscribing your ‘Virtual Store’',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -141,7 +140,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'Benfits- Why Adertise in Smartbazar?',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -151,7 +150,7 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   'Find Manufacturers | Importers | Exporters | Dealers | Distributors | Wholesellers | Retailers',
                   style: TextStyle(
                       fontSize: 12.sp,
-                      color: Color(0xff36383C),
+                      color: const Color(0xff36383C),
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -161,10 +160,10 @@ class ExchangeAdBostScreen extends StatelessWidget {
                   marginH: 0,
                   title: 'Contact Us',
                   fgColor: Colors.white,
-                  bgColor: Color(0xff362677),
+                  bgColor: const Color(0xff362677),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => ContactUsScreen()));
+                        MaterialPageRoute(builder: (_) => const ContactUsScreen()));
                   },
                 ),
                 SizedBox(

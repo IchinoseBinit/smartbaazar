@@ -1,5 +1,78 @@
-const String baseAsset = "assets/icon";
+ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+
+  final List<Map<String, dynamic>> services = [
+    {'label': 'Low Price Guarantee', 'id': 1},
+    {'label': 'Launch Offer', 'id': 2},
+    {'label': 'Seasonal offer', 'id': 3},
+    {'label': 'Promotional', 'id': 4},
+    {'label': 'Clearance sale', 'id': 5},
+    {'label': 'Festival sale', 'id': 5},
+  ];
+
+
+final List<Map<String, dynamic>> items = [
+   {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+     {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+     {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+      {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+  
+     {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+     {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+  
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
+
+
+
+const String baseAsset = "assets/icon";
 const String drawerIcon = "$baseAsset/drawerIcon.svg";
 const String openCart = "$baseAsset/openCartIcon.svg";
 const String logoIcon = "$baseAsset/logo.svg";
@@ -51,4 +124,6 @@ class ImageConstant {
   static String appleImage = '$basePath/appleImage.png';
   static String adBoostImage = '$basePath/adBoostImage.png';
   static String pageNotFound = '$basePath/pageNotFoundImage.png';
+  static String facebookShareImage = '$basePath/facebookShare.png';
+  static String subscribeImage = '$basePath/subscribe.png';
 }

@@ -1,4 +1,3 @@
-import 'package:smartbazar/utils/custom_exception.dart';
 
 abstract class GenericState {}
 
@@ -22,6 +21,6 @@ class LoadedState<T> extends GenericState {
 }
 
 class ErrorState extends GenericState {
-  final CustomException exception;
-  ErrorState(this.exception);
+ final String errorMessage;
+  ErrorState(this.errorMessage);
 }

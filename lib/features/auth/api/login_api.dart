@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
@@ -10,35 +9,72 @@ import 'package:smartbazar/utils/request_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApi {
-  final SmartClinet _client = SmartClinet();
+  final SmartClinet _client = SmartClinet(); // Ensure consistent naming
 
-  login(String email, String password) async {
+  Future<LoginData?> login(String email, String password) async {
     final loginBody = {
       'login': email,
       'password': password,
     };
+
     try {
       final response = await _client.request(
         requestType: RequestType.post,
         url: ApiConstants.loginUrl,
         parameter: loginBody,
       );
-      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+      print("ram $response");
+
+      // Check for successful response
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
         if (response.data != null) {
+          // Parse user data from response
           final user = LoginData.fromJson(response.data);
+          // final name = user.result.name;
+          // Update tokens
           SmartClinet.token = user.extra.authToken;
-          final pref = await SharedPreferences.getInstance();
-          await pref.setString("session", json.encode(user.toJson()));
+          SmartClinet.refresh = user.extra.refreshToken;
+
+          // Store session and tokens in SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString("session", json.encode(user.toJson()));
+          await prefs.setString("accessToken", SmartClinet.token);
+          await prefs.setString("refreshToken", SmartClinet.refresh);
+          await prefs.setString('userName', user.result.username);
+          await prefs.setString('name', user.result.name);
+          await prefs.setString('userId', user.result.id.toString());
+          await prefs.setString("email", user.result.email!);
+          await prefs.setString('userEmail', user.result.id.toString());
+          await prefs.setString('phone', user.result.phone!);
+
           if (kDebugMode) {
-            print(response);
+            print("Login successful: $response");
           }
-          return user;
+          return user; // Return logged-in user
         } else {
-          throw Exception("Failed to login");
+          throw Exception("No user data found in response");
         }
+      } else {
+        if (response.data is Map<String, dynamic> &&
+            response.data.containsKey('message')) {
+          throw Exception(response.data['message']);
+        }
+        throw Exception("Login failed. Status code: ${response.statusCode}");
       }
+    } on DioException catch (e) {
+      String errorMessage = 'An unexpected error occurred.';
+      if (e.response != null) {
+        errorMessage = e.response?.data['message'] ?? 'Unknown server error';
+      } else if (e.type == DioExceptionType.connectionTimeout) {
+        errorMessage = 'Connection timeout. Please try again.';
+      } else {
+        errorMessage = 'Something went wrong. Please check your connection.';
+      }
+      throw Exception(e.response?.data['message'] ?? errorMessage);
     } catch (e) {
-      rethrow;
+      throw Exception(' $e');
     }
   }
 }

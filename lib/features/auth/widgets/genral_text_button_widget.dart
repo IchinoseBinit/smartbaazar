@@ -21,27 +21,29 @@ class GeneralTextButton extends StatelessWidget {
   final double? width;
 
   final double? marginH;
+  bool? showbtn;
 
-  const GeneralTextButton({
-    Key? key,
-    this.isSmallText = false,
-    this.isSvg = false,
-    required this.title,
-    this.borderSize,
-    this.borderColor,
-    this.bgColor,
-    this.fgColor,
-    this.onPressed,
-    this.borderRadius,
-    this.textPadding,
-    this.height,
-    this.marginH,
-    this.prefixImage,
-    this.prefixColor,
-    this.imageH,
-    this.prefixIcon,
-    this.width,
-  }) : super(key: key);
+   GeneralTextButton(
+      {Key? key,
+      this.isSmallText = false,
+      this.isSvg = false,
+      required this.title,
+      this.borderSize,
+      this.borderColor,
+      this.bgColor,
+      this.fgColor,
+      this.onPressed,
+      this.borderRadius,
+      this.textPadding,
+      this.height,
+      this.marginH,
+      this.prefixImage,
+      this.prefixColor,
+      this.imageH,
+      this.prefixIcon,
+      this.width,
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,16 +55,16 @@ class GeneralTextButton extends StatelessWidget {
       child: OutlinedButton(
         style: ButtonStyle(
           splashFactory: NoSplash.splashFactory,
-          padding: MaterialStateProperty.all(textPadding),
+          padding: WidgetStateProperty.all(textPadding),
           backgroundColor:
-              MaterialStateProperty.all(bgColor ?? Colors.transparent),
-          side: MaterialStateProperty.all<BorderSide>(
+              WidgetStateProperty.all(bgColor ?? Colors.transparent),
+          side: WidgetStateProperty.all<BorderSide>(
             BorderSide(
               color: borderColor ?? const Color(0xff362677),
               width: borderSize ?? 1,
             ),
           ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius ?? 10.r),
             ),
@@ -76,37 +78,48 @@ class GeneralTextButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (prefixIcon != null)
-              Icon(
-                prefixIcon,
-                color: prefixColor,
-                size: imageH ?? 24,
+              Expanded(
+                child: Icon(
+                  prefixIcon,
+                  color: prefixColor,
+                  size: imageH ?? 24,
+                ),
               ),
             if (prefixImage != null)
               if (isSvg)
-                SvgPicture.asset(
-                  prefixImage!,
-                  height: imageH ?? 24,
-                  color: prefixColor,
+                Expanded(
+                  child: SvgPicture.asset(
+                    prefixImage!,
+                    height: imageH ?? 24,
+                    // color: prefixColor,
+                  ),
                 )
               else
-                Image.asset(
-                  prefixImage!,
-                  height: imageH ?? 24,
-                  color: prefixColor,
+                Expanded(
+                  child: Image.asset(
+                    prefixImage!,
+                    height: imageH ?? 24,
+                    color: prefixColor,
+                  ),
                 ),
             if (prefixImage != null || prefixIcon != null)
               const SizedBox(
                 width: 5,
               ),
-            Text(
-              title,
-              style: isSmallText
-                  ? Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: fgColor ?? Color(0xff362677),
-                      fontWeight: FontWeight.w700)
-                  : Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: fgColor ?? Color(0xff362677),
-                      fontWeight: FontWeight.w700),
+            Expanded(
+              child: Center(
+                child: Text(
+                  title,
+                  style: isSmallText
+                      ? Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: fgColor ?? const Color(0xff362677),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12.sp)
+                      : Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: fgColor ?? const Color(0xff362677),
+                          fontWeight: FontWeight.w700),
+                ),
+              ),
             ),
           ],
         ),

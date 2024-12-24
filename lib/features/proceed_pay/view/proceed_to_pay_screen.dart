@@ -136,37 +136,58 @@ class PayementDetailsWidget extends StatelessWidget {
   final TextStyle? textStyle;
   final String title;
   final String description;
-  const PayementDetailsWidget(
-      {super.key,
-      required this.title,
-      required this.description,
-      this.textStyle});
+
+  const PayementDetailsWidget({
+    super.key,
+    required this.title,
+    required this.description,
+    this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 16.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start, // Align at the start for multiline text
         children: [
-          Text(
-            title,
-            style: textStyle ??
-                TextStyle(
+          Expanded(
+            flex: 2,
+            child: Text(
+              title,
+              style: textStyle ??
+                  TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
-                    color: const Color(0xff36383C)),
+                    color: const Color(0xff36383C),
+                  ),
+            ),
           ),
-          Text(
-            description,
-            style: textStyle ??
-                TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xff36383C)),
-          )
+          SizedBox(width: 10.w), // Add some spacing between title and description
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end, // Align description to the end
+              children: [
+                Text(
+                  description,
+                  style: textStyle ??
+                      TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff36383C),
+                      ),
+                  softWrap: true, // Allow text to wrap
+                  overflow: TextOverflow.visible, // Display text in multiple lines if needed
+                  textAlign: TextAlign.end, // Ensure the text is aligned to the end
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
+
