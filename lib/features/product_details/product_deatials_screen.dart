@@ -1016,6 +1016,7 @@ class SwapablePostCard extends StatelessWidget {
             itemBuilder: (context, index) {
               FeedPost data = post[index];
               return PostCard(
+                // subscribers: data.subscribers.toString(),
                 isLive: show,
                 image: data.image!,
                 name: data.name!,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/scratch_win/model/subscribe_and_win_model.dart';
 
 class PostCard extends StatelessWidget {
   final String photo, image, subscribers, caption, name;
@@ -18,150 +19,115 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // height: 10.h,
-      padding: const EdgeInsets.all(5),
+      // padding: const EdgeInsets.all(2),
       margin: EdgeInsets.only(left: 5.w),
       width: MediaQuery.sizeOf(context).width * 0.65,
       decoration: BoxDecoration(
+          border: Border.all(width: 3, color: Color(0xfD9D9D9)),
           color: ColorConstant.whiteColor,
-          borderRadius: BorderRadius.circular(20)),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Top Section with Avatar and Info
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+          borderRadius: BorderRadius.circular(6)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                height: 40.h,
+                width: 40.h,
+                padding: EdgeInsets.all(1),
+                margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: NetworkImage(photo)),
+                  border: Border.all(color: Color(0xffBDB6B6)),
+                  borderRadius: BorderRadius.circular(3),
+                  color: Colors.grey.shade300,
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Avatar
-                  Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.shade300,
-                      ),
-                      child: Image.network(photo)),
-                  const SizedBox(width: 10),
-                  // Title and Info
-                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Text(name ?? 'name',
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          color: ColorConstant.blackColor)),
+                  Row(
                     children: [
+                      Text("$subscribers subscribers",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10,
+                              color: Color(0xff808080))),
+                      const SizedBox(width: 15),
                       const Text(
-                        "Tech Store",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                        "•",
+                        style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "$subscribers Subscribers",
-                            style: const TextStyle(fontSize: 10, color: Colors.grey),
-                          ),
-                          const SizedBox(width: 5),
-                          const Text(
-                            "•",
-                            style: TextStyle(fontSize: 10, color: Colors.grey),
-                          ),
-                          const SizedBox(width: 5),
-                          const Text(
-                            "20h",
-                            style: TextStyle(fontSize: 10, color: Colors.grey),
-                          ),
-                        ],
+                      const SizedBox(width: 5),
+                      Text(
+                        "${subscribers}h",
+                        style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),
                     ],
                   ),
-                  // const Spacer(),
-                  // const Icon(Icons.more_vert, color: Colors.grey),
                 ],
               ),
+            ],
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Image.network(
+            image,
+            height: 150,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text.rich(
+            textDirection: TextDirection.ltr,
+            TextSpan(
+              text: caption,
+              style: TextStyle(fontSize: 12),
             ),
-            // Image Section
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(0),
-                bottom: Radius.circular(0),
-              ),
-              child: Image.network(
-                image,
-                height: 70,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5),
+            child: Divider(
+              height: 0.3,
+              color: Color(0xff808080),
             ),
-            // Description Section
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Text.rich(
-                TextSpan(
-                  text:
-                      "The company's product portfolio includes footwear, apparel accessories such as ad bags, sunglasses ",
-                  style: TextStyle(fontSize: 12),
-                  children: [
-                    TextSpan(
-                      text: "More",
-                      style: TextStyle(color: Colors.blue, fontSize: 12),
-                    ),
-                  ],
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            // Action Section (like, comment, share)
-           isLive!? 
-           Container(
+          ),
+          SizedBox(
+            height: 50.h,
+            width: MediaQuery.sizeOf(context).width * 0.65,
             child: Row(
               children: [
-                Text("leadingText",
-                style: headerstyle.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
-
+                SizedBox(
+                  width: 9.w,
                 ),
+                Icon(Icons.favorite_border,
+                    color: ColorConstant.blackColor.withOpacity(0.7)),
+                SizedBox(
+                  width: 9.w,
                 ),
-                 Text("nonoon",
-                style: headerstyle.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
-
+                Icon(Icons.comment_outlined,
+                    color: ColorConstant.blackColor.withOpacity(0.7)),
+                SizedBox(
+                  width: 9.w,
                 ),
-                ),
+                Icon(Icons.share_outlined,
+                    color: ColorConstant.blackColor.withOpacity(0.7)),
               ],
             ),
-           ):
-           
-           
-           
-             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite_border, color: Colors.grey),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon:
-                        const Icon(Icons.comment_outlined, color: Colors.grey),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.share_outlined, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

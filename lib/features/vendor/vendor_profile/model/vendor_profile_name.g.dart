@@ -202,6 +202,8 @@ _$VendorCardImpl _$$VendorCardImplFromJson(Map<String, dynamic> json) =>
     _$VendorCardImpl(
       name: json['name'] as String?,
       photo: json['photo'] as String?,
+      longitude: json['longitude'] as String?,
+      latitude: json['latitude'] as String?,
       phone: json['phone'] as String?,
       profile_url: json['profile_url'] as String?,
       storycount: (json['storycount'] as num?)?.toInt(),
@@ -218,6 +220,8 @@ Map<String, dynamic> _$$VendorCardImplToJson(_$VendorCardImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'photo': instance.photo,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
       'phone': instance.phone,
       'profile_url': instance.profile_url,
       'storycount': instance.storycount,
