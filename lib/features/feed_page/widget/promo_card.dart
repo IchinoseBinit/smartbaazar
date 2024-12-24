@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:readmore/readmore.dart';
 
 class PromoCard extends StatefulWidget {
   const PromoCard({
@@ -22,6 +22,11 @@ class PromoCard extends StatefulWidget {
 
 class _PromoCardState extends State<PromoCard> {
   bool isExpanded = false;
+  bool isOverflowing = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,35 +59,53 @@ class _PromoCardState extends State<PromoCard> {
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
                         color: Colors.red.shade100,
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           RotatedBox(
                             quarterTurns: 3,
-                            child: Text(
-                              "PROMO",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 8.sp,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                widget.offerText,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 8.sp,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    ...widget.products.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      Map<String, String> product = entry.value;
-
+                    if (widget.products.length > 0)
+                      _productFirstItem(
+                        imagePath: widget.products[0]["imagePath"]!,
+                        price: widget.products[0]["price"]!,
+                        showHotIcon: true,
+                        postType: widget.products[0]["id"],
+                      ),
+                    ...widget.products.skip(1).map((product) {
                       return _productItem(
                         imagePath: product["imagePath"]!,
                         price: product["price"]!,
-                        showHotIcon: index == 0,
+                        showHotIcon: true,
+                        postType: product["id"]!,
                       );
                     }).toList(),
+                    // ...widget.products.asMap().entries.map((entry) {
+                    //   int index = entry.key;
+                    //   Map<String, String> product = entry.value;
+
+                    //   return _productItem(
+                    //     imagePath: product["imagePath"]!,
+                    //     price: product["price"]!,
+                    //     showHotIcon: index == 0,
+                    //   );
+                    // }).toList(),
                   ],
                 ),
               ),
@@ -111,7 +134,7 @@ class _PromoCardState extends State<PromoCard> {
                             ),
                             SizedBox(width: 10.w),
                             Text(
-                              widget.offerText ?? "Special Offer!",
+                              widget.captionTitle ?? "Special Offer!",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11.sp,
@@ -144,28 +167,21 @@ class _PromoCardState extends State<PromoCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: Text(
-                              widget.captionTitle,
-                              //"Subscribe to Adidas Official BizSpace to SHOP our Dashain Deals above & win AMAZING PRIZES by simply Subscribing to our Smartbazar",
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.black87,
-                              ),
-                              maxLines: isExpanded ? null : 2,
-                              overflow: isExpanded
-                                  ? TextOverflow.visible
-                                  : TextOverflow.ellipsis,
+                            child: ReadMoreText(
+                              widget.caption,
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: Colors.black87),
+                              trimLines: 2,
+                              colorClickableText: Colors.blue,
+                              trimMode: TrimMode.Line, // Trims by lines
+                              trimCollapsedText: ' More',
+                              trimExpandedText: ' Less',
+
+                              // maxLines: isExpanded ? null : 2,
+                              // overflow: isExpanded
+                              //     ? TextOverflow.visible
+                              //     : TextOverflow.ellipsis,
                             ),
-                          ),
-                          SizedBox(width: 5.w),
-                          TextButton(
-                            onPressed: () {
-                              // Toggle the expanded state
-                              setState(() {
-                                isExpanded = !isExpanded;
-                              });
-                            },
-                            child: Text(isExpanded ? "Less" : "More"),
                           ),
                         ],
                       ),
@@ -180,11 +196,11 @@ class _PromoCardState extends State<PromoCard> {
     );
   }
 
-  // Widget for Product Item
-  Widget _productItem({
+  Widget _productFirstItem({
     required String imagePath,
     required String price,
-    bool showHotIcon = false, // New parameter to control the icon display
+    bool showHotIcon = false,
+    String? postType,
   }) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -193,7 +209,7 @@ class _PromoCardState extends State<PromoCard> {
         children: [
           // Product Image
           Container(
-            width: 145.w,
+            width: 155.w,
             height: 120.h,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
@@ -210,7 +226,78 @@ class _PromoCardState extends State<PromoCard> {
 
           // Product Price with Optional Icon
           Container(
-            width: 140.w,
+            width: 155.w,
+            decoration: const BoxDecoration(
+              color: Color(0xFF70646B),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // if (showHotIcon)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: Icon(Icons.check_box, color: Colors.white),
+                    // child: Image.asset(
+                    //   'assets/icon/flame.png',
+                    //   width: 20.w,
+                    //   height: 20.h,
+                    //   color: Colors.white,
+                    // ),
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Text(
+                    postType == '3' ? 'BOOK' : 'BUY',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Widget for Product Item
+  Widget _productItem({
+    required String imagePath,
+    required String price,
+    bool showHotIcon = false,
+    required String postType,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Product Image
+          Container(
+            width: 155.w,
+            height: 120.h,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: Image.network(
+              imagePath,
+              fit: BoxFit.fill,
+              width: double.infinity,
+            ),
+          ),
+
+          // Product Price with Optional Icon
+          Container(
+            width: 155.w,
             decoration: const BoxDecoration(
               color: Colors.black87,
             ),

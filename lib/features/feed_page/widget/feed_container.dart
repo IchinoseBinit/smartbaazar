@@ -45,7 +45,7 @@ class FeedContainer extends StatelessWidget {
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 90.h, // Set your desired height
+            height: 100.h, // Set your desired height
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -97,56 +97,59 @@ class FeedContainer extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      vendorName ?? 'N/A',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14.sp,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Image.asset(
+                                    "assets/images/back.png",
+                                    height: 16.h,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
                               children: [
-                                Flexible(
+                                Image.asset(
+                                  _getMembershipImage(membershipId),
+                                  width: 16.w,
+                                  height: 16.h,
+                                  color: Colors.black45,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    vendorName ?? 'N/A',
+                                    membershipTitle ?? '',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 10.sp,
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
                                   ),
-                                ),
-                                SizedBox(width: 5.w),
-                                Image.asset(
-                                  "assets/images/back.png",
-                                  height: 16.h,
                                 ),
                               ],
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                _getMembershipImage(membershipId),
-                                width: 16.w,
-                                height: 16.h,
-                                color: Colors.black45,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  membershipTitle ?? '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 10.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20.h),
                       Row(
@@ -210,7 +213,9 @@ class FeedContainer extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(width: 5.w,)
+                          SizedBox(
+                            width: 5.w,
+                          )
                         ],
                       ),
                     ],
@@ -451,7 +456,8 @@ class FullscreenImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      extendBody: true,
+      backgroundColor: Colors.transparent,
       body: GestureDetector(
         onVerticalDragEnd: (details) {
           // Check if the drag was downward

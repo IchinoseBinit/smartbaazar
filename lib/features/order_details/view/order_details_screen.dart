@@ -253,30 +253,28 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       return null;
                     },
                   ),
-                  Container(
-                    height: 160.h,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset(
-                              "assets/images/flameIcon.png",
-                              width: 50.w,
-                              height: 50.h,
-                            ),
-                            Text(
-                              'Discount On Bulk Orders !',
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xff000000)),
-                            ),
-                          ],
-                        ),
-                        if (checkoutDetails.data?.items?.isNotEmpty ?? false)
+                  if (checkoutDetails.data?.items?.isNotEmpty ?? false)
+                    Container(
+                      height: 160.h,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20.h),
+                          Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/flameIcon.png",
+                                width: 50.w,
+                                height: 50.h,
+                              ),
+                              Text(
+                                'Discount On Bulk Orders !',
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xff000000)),
+                              ),
+                            ],
+                          ),
                           Expanded(
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -299,9 +297,9 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                               },
                             ),
                           ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
                   SizedBox(
                     height: 20.h,

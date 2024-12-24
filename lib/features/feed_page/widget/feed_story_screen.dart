@@ -2,22 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/feed_page/model/get_feed_of_following_model.dart';
+import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class FeedStoryScreen extends StatefulWidget {
   final String author;
   final int storyCount;
-  final List<Post> posts;
-  final List<FeedPost> feedPost;
-  final List<FeedStory> feedStory;
+  final FeedStory? feedStory;
+
   const FeedStoryScreen(
       {super.key,
       required this.author,
-      required this.posts,
       required this.storyCount,
-      required this.feedPost,
-      required this.feedStory});
+      this.feedStory});
 
   @override
   State<FeedStoryScreen> createState() => _FeedStoryScreenState();
@@ -25,10 +22,10 @@ class FeedStoryScreen extends StatefulWidget {
 
 class _FeedStoryScreenState extends State<FeedStoryScreen>
     with TickerProviderStateMixin {
-  late List<FeedPost> stories;
+  late List<Post> stories;
   late List<String> vendors;
+  late List<String> vendorImage;
   late List<List<String?>> vendorStories;
-  // late List<String> storyImage;
   late PageController _pageController;
   late AnimationController _animationController;
 
@@ -36,35 +33,41 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   bool _isPaused = false;
   int _currentVendorIndex = 0;
   late int _currentStoryIndex;
+  late Map<String, List<Post>> groupedStories;
+
+  Map<String, List<Post>> groupBy(
+      List<Post> posts, Function(Post) keyExtractor) {
+    return posts.fold(
+      <String, List<Post>>{},
+      (Map<String, List<Post>> map, Post post) {
+        String key = keyExtractor(post);
+        map.update(key, (value) => [...(value ?? []), post],
+            ifAbsent: () => [post]);
+        return map;
+      },
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    stories = widget.feedPost;
-    // vendorStories = widget.feedStory;
-    vendors =
-        stories.map((story) => story.userDetail!.vendorName!).toSet().toList();
-    // storyImage = vendorStories
-    //     .expand((story) => story.posts!.map((post) => post.image!))
-    //     .toSet()
-    //     .toList();
-    vendorStories = vendors.map((vendor) {
-      // Filter stories for each vendor and ensure posts are not null
-      return widget.feedStory
-          .where((story) => story.vendorName == vendor && story.posts != null)
-          .expand((story) {
-        // Expand each story's posts to fetch images
-        return story.posts!
-            .where((post) => post.image != null) // Ensure images are not null
-            .map((post) => post.image!); // Map to post images only
-      }).toList();
+    groupedStories =
+        groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
+    stories = widget.feedStory?.posts! ?? [];
+    // stories = widget.feedStory;
+    // Identify unique vendors
+    vendors = stories.map((story) => story.vendorName!).toSet().toList();
+    vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
+    // Filter vendor stories: Get images for each vendor
+    vendorStories = groupedStories.entries.map((entry) {
+      return entry.value.map((post) => post.image!).toList();
     }).toList();
-
     // vendorStories = vendors.map((vendor) {
     //   return widget.feedStory
     //       .where((story) => story.vendorName == vendor && story.posts != null)
-    //       .map((story) => story.posts!)
-    //       .expand((post) => post.map((p) => p.image)) // Only map images
+    //       .expand((story) => story.posts!)
+    //       .where((post) => post.image != null)
+    //       .map((post) => post.image!)
     //       .toList();
     // }).toList();
 
@@ -72,10 +75,10 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     _animationController = AnimationController(vsync: this, duration: duration);
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && !_isPaused) {
-        //  _nextStory();
         _moveToNextVendor();
       }
     });
+
     _currentVendorIndex = 0;
     _currentStoryIndex = 0;
     _startAutoScroll();
@@ -88,100 +91,104 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }
   }
 
-  void _moveToNextVendor() {
+  void _selectVendor(int vendorIndex) {
     setState(() {
-      // Move to the next story within the current vendor
-      if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
-        _currentStoryIndex++;
-      } else {
-        // Move to the next vendor
-        if (_currentVendorIndex < vendors.length - 1) {
-          _currentVendorIndex++;
-          _currentStoryIndex = 0; // Reset story index for new vendor
-        } else {
-          // End of all stories
-          final nextAuthor = _getNextAuthor();
-          if (nextAuthor != null) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => FeedStoryScreen(
-                  author: nextAuthor,
-                  posts: widget.posts,
-                  storyCount: widget.storyCount,
-                  feedPost: widget.feedPost,
-                  feedStory: widget.feedStory,
-                ),
-              ),
-            );
-          } else {
-            Navigator.pop(context); // End of stories
-          }
-          return; // Exit early
-        }
-      }
+      _currentVendorIndex = vendorIndex;
+      _currentStoryIndex = 0; // Reset story index
+      _displayedStoryIndices
+          .clear(); // Clear displayed story indices for this vendor
     });
-
-    // Update UI
-    _pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeIn,
-    );
+    _pageController.jumpToPage(0); // Reset PageView to the first story
     _animationController.reset();
     _startAutoScroll();
   }
 
-  // void _moveToNextAuthor() {
-  //   final currentIndex = authors.indexOf(_currentAuthor);
-  //   if (currentIndex < authorStories.length - 1) {
-  //     setState(() {
-  //       _currentAuthor = authors[currentIndex + 1];
-  //       authorStories = stories.where((story) => story.image != null).toList();
-  //       _currentStoryIndex++;
-  //     });
-  //     _pageController.nextPage(
-  //       duration: const Duration(milliseconds: 300),
-  //       curve: Curves.easeIn,
-  //     );
-  //     _animationController.reset();
-  //     _startAutoScroll();
-  //   } else {
-  //     final nextAuthor = _getNextAuthor();
-  //     if (nextAuthor != null) {
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (_) => FeedStoryScreen(
-  //             author: nextAuthor,
-  //             posts: widget.posts,
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       Navigator.pop(
-  //           context); // Exit the screen after the last author's stories
-  //     }
-  //   }
-  // }
+  void _moveToNextVendor() {
+    setState(() {
+      if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
+        _currentStoryIndex++;
+      } else if (_currentVendorIndex < vendorStories.length - 1) {
+        _currentVendorIndex++;
+        _currentStoryIndex = 0;
+        _displayedStoryIndices.clear();
+      } else {
+        Navigator.pop(context);
+        // All stories have been shown for all vendors, move to next author
+        // final nextAuthor = _getNextAuthor();
+        // if (nextAuthor != null) {
+        //   var updatedFeedStory = FeedStory(
+        //     posts: _getUpdatedPosts(nextAuthor),
+        //     // ... other properties remain the same
+        //   );
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (_) => FeedStoryScreen(
+        //         author: nextAuthor,
+        //         storyCount: widget.storyCount,
+        //         feedStory: updatedFeedStory,
+        //       ),
+        //     ),
+        //   ).then((_) {
+        //     setState(() {
+        //       _currentVendorIndex = 0;
+        //       _displayedStoryIndices.clear();
+        //     });
+        //   });
+        // } else {
+        //   Navigator.pop(context);
+        // }
+      }
+    });
 
-  void _previousStory() {
-    if (_currentVendorIndex > 0) {
-      setState(() {
-        _currentVendorIndex--;
-      });
-      _pageController.previousPage(
+    if (_currentStoryIndex < vendorStories[_currentVendorIndex].length) {
+      _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
       );
       _animationController.reset();
       _startAutoScroll();
+    } else {
+      _stopAutoScroll();
     }
   }
 
-  String? _getNextAuthor() {
+  Set<int> _displayedStoryIndices = {};
+
+  int _findNextUnseenStory(int currentVendorIndex) {
+    for (int i = _currentStoryIndex + 1;
+        i < vendorStories[currentVendorIndex].length;
+        i++) {
+      if (!_displayedStoryIndices.contains(i)) {
+        return i;
+      }
+    }
+    return -1; // No unseen stories found
+  }
+
+  List<Post> _getUpdatedPosts(String nextAuthor) {
+    return widget.feedStory!.posts!
+        .where((post) => post.vendorName == nextAuthor)
+        .toList();
+  }
+
+  void _stopAutoScroll() {
+    _isPaused = true;
+    _animationController.stop();
+  }
+
+  // String? _getNextAuthor() {
+  //   final currentIndex = vendors.indexOf(widget.author);
+  //   if (currentIndex < vendors.length - 1) {
+  //     return vendors[currentIndex + 1];
+  //   }
+  //   return null; // No next author
+  // }
+
+  String? _getPreviousAuthor() {
     final currentIndex = vendors.indexOf(widget.author);
     if (currentIndex < vendors.length - 1) {
-      return vendors[currentIndex + 1];
+      return vendors[currentIndex - 1];
     }
     return null; // No next author
   }
@@ -189,7 +196,6 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   void _onTap(bool forward) {
     if (forward) {
       _moveToNextVendor();
-      // _nextStory();
     } else {
       _previousStory();
     }
@@ -206,6 +212,25 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }
   }
 
+  void _previousStory() {
+    if (_currentVendorIndex > 0 || _currentStoryIndex > 0) {
+      setState(() {
+        if (_currentStoryIndex > 0) {
+          _currentStoryIndex--;
+        } else if (_currentVendorIndex > 0) {
+          _currentVendorIndex--;
+          _currentStoryIndex = vendorStories[_currentVendorIndex].length - 1;
+        }
+      });
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+      _animationController.reset();
+      _startAutoScroll();
+    }
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -217,6 +242,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   Widget build(BuildContext context) {
     return GenericSafeArea(
       child: Scaffold(
+        extendBody: true,
         backgroundColor: Colors.transparent,
         body: GestureDetector(
           onTapUp: (details) {
@@ -236,9 +262,8 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
               PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.feedStory.length,
+                itemCount: vendorStories[_currentVendorIndex].length,
                 itemBuilder: (context, index) {
-                  final post = widget.feedStory[index];
                   return Stack(
                     children: [
                       // Image
@@ -264,13 +289,21 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                         left: 20,
                         child: Row(
                           children: [
-                            const CircleAvatar(
-                              radius: 28,
-                              backgroundColor: Colors.black,
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black),
+                                shape: BoxShape.circle,
+                              ),
+                              child: CircleAvatar(
+                                radius: 28.r,
+                                backgroundColor: Colors.black,
+                                backgroundImage: NetworkImage(
+                                    vendorImage[_currentVendorIndex]),
+                              ),
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              widget.author ?? '',
+                              vendors[_currentVendorIndex],
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.sp,
@@ -313,7 +346,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                 right: 10,
                 child: Row(
                   children: List.generate(
-                    widget.feedStory.length,
+                    vendorStories[_currentVendorIndex].length,
                     (index) => Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -321,13 +354,17 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           animation: _animationController,
                           builder: (context, child) {
                             double progressValue = 0.0;
-                            if (index < _currentVendorIndex) {
-                              progressValue = 1.0; // Completed stories
-                            } else if (index == _currentVendorIndex) {
-                              progressValue =
-                                  _animationController.value; // Flowing story
-                            } else {
-                              progressValue = 0.0; // Upcoming stories
+                            // Fully progress bars for completed stories
+                            if (index < _currentStoryIndex) {
+                              progressValue = 1.0;
+                            }
+                            // Animate the current story's progress
+                            else if (index == _currentStoryIndex) {
+                              progressValue = _animationController.value;
+                            }
+                            // No progress for future stories
+                            else {
+                              progressValue = 0.0;
                             }
                             return Stack(
                               children: [
@@ -335,7 +372,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                                 Container(
                                   height: 4.0,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.3),
+                                    color: Colors.grey.withOpacity(0.3),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
@@ -345,7 +382,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                                   child: Container(
                                     height: 4.0,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: Colors.blue,
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                   ),
@@ -361,7 +398,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
               ),
               Positioned(
                 top: MediaQuery.of(context).size.height * 0.2,
-                right: 10,
+                right: 3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -371,7 +408,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       },
                       icon: Icon(
                         Icons.search,
-                        color: Colors.white,
+                        color: Colors.grey,
                         size: 22.h,
                       ),
                     ),
@@ -380,57 +417,57 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       onTap: () {},
                       child: Image.asset(
                         "assets/icon/solar.png",
-                        color: Colors.white,
+                        color: Colors.grey,
                       ),
                     ),
                     Text(
                       "345",
-                      style: TextStyle(fontSize: 7.sp, color: Colors.white),
+                      style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 30.h),
                     GestureDetector(
                       onTap: () {},
                       child: Image.asset(
                         "assets/icon/Vector.png",
-                        color: Colors.white,
+                        color: Colors.grey,
                       ),
                     ),
                     Text(
                       "10.4k",
-                      style: TextStyle(fontSize: 7.sp, color: Colors.white),
+                      style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
                     GestureDetector(
                       onTap: () {},
                       child: Image.asset("assets/icon/Rectangle.png",
-                          color: Colors.white),
+                          color: Colors.grey),
                     ),
                     Text(
                       "1.4k",
-                      style: TextStyle(fontSize: 7.sp, color: Colors.white),
+                      style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
                     GestureDetector(
                       onTap: () {},
                       child: Image.asset("assets/icon/starIcon.png",
-                          color: Colors.white),
+                          color: Colors.grey),
                     ),
                     Text(
                       "1.4k",
-                      style: TextStyle(fontSize: 7.sp, color: Colors.white),
+                      style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
                     GestureDetector(
                       onTap: () {},
                       child: Image.asset("assets/images/share_icon.png",
-                          color: Colors.white),
+                          color: Colors.grey),
                     ),
                     SizedBox(height: 110.h),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.grey,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Padding(
@@ -457,58 +494,61 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
               ),
               Positioned(
                   bottom: 100,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.sizeOf(context).width * 0.8,
-                        color: Colors.black.withOpacity(0.3),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.whatshot,
-                                size: 50,
-                                color: Colors.orange,
-                              ),
-                              CountdownTimer(
-                                targetDate: DateTime.now().add(const Duration(
-                                    days: 3,
-                                    hours: 12,
-                                    minutes: 12,
-                                    seconds: 12)),
-                              ),
-                            ],
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.sizeOf(context).width * 0.8,
+                          color: Colors.black.withOpacity(0.3),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.whatshot,
+                                  size: 50,
+                                  color: Colors.orange,
+                                ),
+                                CountdownTimer(
+                                  targetDate: DateTime.now().add(const Duration(
+                                      days: 3,
+                                      hours: 12,
+                                      minutes: 12,
+                                      seconds: 12)),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: MediaQuery.sizeOf(context).width * 0.2,
-                        color: Colors.orange,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Ending Soon",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 10.sp),
-                              ),
-                              SizedBox(height: 10.h),
-                              const Row(
-                                children: [
-                                  Icon(
-                                    Icons.check_box_outlined,
-                                    color: Colors.black,
-                                  ),
-                                  Text("Buy"),
-                                ],
-                              )
-                            ],
+                        Container(
+                          width: MediaQuery.sizeOf(context).width * 0.2,
+                          color: Colors.orange,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Ending Soon",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 10.sp),
+                                ),
+                                SizedBox(height: 10.h),
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check_box_outlined,
+                                      color: Colors.black,
+                                    ),
+                                    Text("Buy"),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ))
             ],
           ),

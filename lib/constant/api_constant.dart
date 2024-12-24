@@ -118,4 +118,6 @@ class ApiConstants {
   //feed screen
   static String getFeedScreenFollowingUrl = '$baseUrl/users/getfeed';
   static String getForYouFeedUrl = '$baseUrl/users/getrandomfeed';
+  static String getFollowingFeedStory = '$baseUrl/users/getstory';
+  static String getForYouFeedStory = '$baseUrl/users/getrandomstory';
 }
