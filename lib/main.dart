@@ -51,7 +51,9 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
           ),
           home: SplashScreen()
+           // redirect to splashscreen
           // HomeScreen()
+
 
           // home: BusinessTabScreen(
           //   query: 'acer',

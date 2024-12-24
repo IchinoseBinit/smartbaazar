@@ -649,22 +649,35 @@ class ProductDetailWidget extends StatelessWidget {
                                     SizedBox(
                                       width: 1.w,
                                     ),
+                                    // SizedBox(
+                                    //   width: 75.w,
+                                    //   child: Text(
+                                    //     membershipTitle ?? "Domestic Brand",
+                                    //     style: headerstyle.copyWith(
+                                    //       fontSize: (membershipTitle != null &&
+                                    //               membershipTitle!.length > 15)
+                                    //           ? 8.sp
+                                    //           : 10.sp,
+                                    //       // Adjust font size based on length
+                                    //       fontWeight: FontWeight.w700,
+                                    //     ),
+                                    //   ),
+                                    // ),
+
                                     SizedBox(
-                                      width: 75.w,
+                                      width: 80.w,
                                       child: Text(
                                         membershipTitle ?? "Domestic Brand",
                                         style: headerstyle.copyWith(
-                                          fontSize: (membershipTitle != null &&
-                                                  membershipTitle!.length > 15)
-                                              ? 8.sp
-                                              : 10.sp,
-                                          // Adjust font size based on length
+                                          fontSize: 10.sp, // Adjust font size based on length
                                           fontWeight: FontWeight.w700,
                                         ),
+                                        overflow: TextOverflow.ellipsis, // Apply ellipsis for overflow
+                                        maxLines: 1, // Restrict to a single line
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 35.w,
+                                      width: 40.w,
                                     ),
                                     issponsored
                                         ? SizedBox()

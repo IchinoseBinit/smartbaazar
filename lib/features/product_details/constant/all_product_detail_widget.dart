@@ -505,11 +505,12 @@ class AllProductDetailWidget extends StatelessWidget {
                                           : vendorname ?? '',
                                       style: headerstyle.copyWith(
                                         // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
-                                        fontSize: (vendorname != null && vendorname!.length > 10)
-                                            ? 8.sp
-                                            : (vendorname != null && vendorname!.length > 12)
-                                            ? 7.5.sp
-                                            : 11.5.sp, // Default font size
+                                        fontSize: 12.sp,
+                                        // (vendorname != null && vendorname!.length > 10)
+                                        //     ? 8.sp
+                                        //     : (vendorname != null && vendorname!.length > 12)
+                                        //     ? 7.5.sp
+                                        //     : 11.5.sp, // Default font size
                                         fontWeight: FontWeight.w700,
                                       ),
                                       overflow: TextOverflow.ellipsis,
@@ -562,6 +563,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                     SizedBox(
                                       width: 1.w,
                                     ),
+
                                     SizedBox(
                                       width: 60.w,
                                       child: Text(
