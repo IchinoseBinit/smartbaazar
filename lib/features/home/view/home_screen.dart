@@ -328,7 +328,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 width: 2.w,
                               ),
                               SizedBox(
-                                  height: 50,
+                                  height: 40,
                                   child: NewSearchWidget(
                                     onSearchFocusChanged: _onSearchFocusChanged,
                                     searchController: _searchController,
@@ -425,11 +425,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               ),
                             ),
                           SizedBox(
-                            height: 10.h,
+                            height: 20.h,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(_items.length, (index) {
+                            children: List.generate(4, (index) {
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -461,7 +461,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               itemCount: _items.length,
                               padEnds: false,
                               controller: _pageController,
-                              //  // onPageChanged: _onPageChanged,
+                              onPageChanged: (value) {
+                                setState(() {
+                                  selectedIndex =
+                                      value; // Update selectedIndex based on page change
+                                });
+                              },
                               itemBuilder: (context, index) {
                                 Map<String, dynamic> data = _items[index];
 
@@ -545,9 +550,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             ),
                           ),
 
-                          const Divider(
-                            height: 0.1,
-                            color: ColorConstant.grayColor,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: const Divider(
+                              thickness: 0.4,
+                              height: 1,
+                              color: ColorConstant.grayColor,
+                            ),
                           ),
 
                           if (_isSectionsVisible)
@@ -1551,7 +1560,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 'assets/images/Smartbazaar-Icon-for-QR.png'),
                           )
                         : Container(
-                            width: 60.w,
+                            width: 70.w,
                             padding: EdgeInsets.symmetric(
                               vertical: 5.h,
                             ),
