@@ -4,11 +4,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 
 class NewSearchWidget extends StatefulWidget {
-  NewSearchWidget({super.key, required this.onchnage, required this.ontapped,required this.searchController,required this.onSearchFocusChanged});
+  NewSearchWidget(
+      {super.key,
+      required this.onchnage,
+      required this.ontapped,
+      this.index=0,
+      required this.searchController,
+      required this.onSearchFocusChanged});
   Function(String)? onchnage;
   GestureTapCallback ontapped;
   TextEditingController searchController;
-   final Function(bool) onSearchFocusChanged;
+  
+  int index;
+  final Function(bool) onSearchFocusChanged;
 
   @override
   State<NewSearchWidget> createState() => _NewSearchWidgetState();
@@ -67,7 +75,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Dropdown Button Container
-          _buildDropdownButton(),
+          _buildDropdownButton(widget.index),
 
           // Search TextField Container
           Container(
@@ -78,7 +86,8 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
             child: TextField(
               controller: widget.searchController,
               onTap: () {
-               widget.onSearchFocusChanged(widget.searchController.text.isNotEmpty);
+                widget.onSearchFocusChanged(
+                    widget.searchController.text.isNotEmpty);
               },
               onChanged: widget.onchnage,
               decoration: InputDecoration(
@@ -134,7 +143,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
     );
   }
 
-  Widget _buildDropdownButton() {
+  Widget _buildDropdownButton(int index) {
     return Container(
       height: 45.h,
       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -147,7 +156,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, dynamic>>(
-        value: dropdownValue ?? items[0],
+        value: dropdownValue ?? items[index ?? 0],
         onChanged: (newValue) {
           setState(() {
             dropdownValue = newValue!;

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,16 +8,27 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class BrandBazarScreen extends ConsumerStatefulWidget {
   const BrandBazarScreen({super.key});
@@ -37,29 +49,77 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
-
+  bool _showSearchProductModels = false;
+  int headerIndex = 0;
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
   final PageController _adscontroller = PageController(
     initialPage: 0,
   );
 
-  void _onPageChanged(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+  // void _onPageChanged(int index) {
+  //   setState(() {
+  //     selectedIndex = index;
+  //   });
+  // }
 
   int? dynamicsize;
+  final List<Map<String, dynamic>> __items = [
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+    {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
   int _currentPage = 0;
 
   @override
   void initState() {
     _pageController = PageController(
       viewportFraction: 0.3,
-      initialPage: selectedIndex!,
+      initialPage: headerIndex,
     );
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
@@ -68,16 +128,16 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
         _currentPage = 0;
       }
 
-      _pageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeIn,
-      );
+      // _pageController.animateToPage(
+      //   _currentPage,
+      //   duration: const Duration(milliseconds: 350),
+      //   curve: Curves.easeIn,
+      // );
     });
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(selectedIndex!);
+      _pageController.jumpToPage(headerIndex);
     });
     super.initState();
     tabController = TabController(length: 3, vsync: this);
@@ -88,10 +148,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
       debugPrint("Search query: $query");
-      ref.refresh(
-          searchProvider(query)); // Ensure this provider works as expected
+      ref.refresh(searchProvider(query));
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -129,20 +188,22 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     _initialDragPosition = details.globalPosition;
   }
 
-  @override
-  void dispose() {
-    _debouncer.close();
-    _searchController.dispose();
-    super.dispose();
-  }
-
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
+  @override
+  void dispose() {
+    // dynamictabController.dispose();
+    _debouncer.close();
+    _searchController.dispose();
+    super.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +211,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     //     final adsList = ref.watch(fetchAdsProvider);
 
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
-
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
     // }, error: (error, stackTrace) {
@@ -158,7 +220,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -198,39 +260,131 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         height: 40,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset('assets/images/group.png'),
-                          const SizedBox(
-                            width: 20,
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VendorProfileScreen(),
+                                    ));
+                              },
+                              child: Image.asset('assets/images/group.png')),
+                          SizedBox(
+                            width: 2.w,
                           ),
                           SizedBox(
-                              height: 50,
-                              width: 340.w,
+                              height: 40,
                               child: NewSearchWidget(
-                                  searchController: TextEditingController(),
-                                  onSearchFocusChanged: (p0) {},
-                                  ontapped: () {},
-                                  onchnage: (p0) {},
+                                index: 5,
+                                onSearchFocusChanged: _onSearchFocusChanged,
+                                searchController: _searchController,
+                                ontapped: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BusinessTabScreen(
+                                          query: _searchController.text,
+                                        ),
+                                      ));
+                                },
+                                onchnage: (value) {
+                                  // print("babuk ${value}");
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           const BusinessTabScreen(),
+                                  //     ));
+                                },
                               )),
                         ],
                       ),
+                      if (_showSearchProductModels)
+                        Positioned(
+                          top: 0.h, // Position just below the search bar
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            child: SearchProductModels.when(data: (results) {
+                              if (results.isEmpty) {
+                                return const SizedBox(
+                                  child: Text('No result found'),
+                                ); // No results
+                              }
+                              return Card(
+                                elevation: 8,
+                                child: ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: results.length,
+                                  itemBuilder: (context, index) {
+                                    final product = results[index];
+                                    return ListTile(
+                                      title: Text(product.title),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BusinessTabScreen(
+                                                query: _searchController.text,
+                                              ),
+                                            ));
+
+                                        setState(() {
+                                          _showSearchProductModels = false;
+
+                                          FocusScope.of(context).unfocus();
+                                        });
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //         ProductDetailsScreen(
+                                        //       productId: product.id,
+                                        //     ),
+                                        //   ),
+                                        // );
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                ),
+                              );
+                            }, loading: () {
+                              // return SizedBox(
+                              //     width: 10.w,
+                              //     height: 10.h,
+                              //     child: CircularProgressIndicator());
+                            }, error: (error, stack) {
+                              // return SizedBox(
+                              //     width: 10.w,
+                              //     height: 10.h,
+                              //     child: CircularProgressIndicator());
+                            }),
+                          ),
+                        ),
                       SizedBox(
-                        height: 30.h,
+                        height: 20.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(items.length, (index) {
+                        children: List.generate(4, (index) {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                selectedIndex = index;
+                                headerIndex = index;
                               });
                               _pageController.animateToPage(
                                 index,
-                                duration: const Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 50),
                                 curve: Curves.easeInOut,
                               );
                             },
@@ -239,7 +393,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               width: 5.w,
                               margin: EdgeInsets.symmetric(horizontal: 5.w),
                               decoration: BoxDecoration(
-                                color: selectedIndex == index
+                                color: headerIndex == index
                                     ? Colors.amber
                                     : Colors.grey,
                                 shape: BoxShape.circle,
@@ -253,14 +407,20 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         child: PageView.builder(
                           itemCount: items.length,
                           padEnds: false,
+                          reverse: true,
+                          scrollDirection: Axis.horizontal,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          onPageChanged: (value) {
+                            setState(() {
+                              headerIndex =
+                                  value; // Update selectedIndex based on page change
+                            });
+                          },
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> data = items[index];
+                            Map<String, dynamic> data = __items[index];
 
-                            // Highlight only when index == 0 (TradeHub)
-                            bool isActive = index == 0;
-
+                            // Highlight only when index == 4
+                            bool isActive = index == 1;
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -334,10 +494,16 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           },
                         ),
                       ),
-                      const Divider(
-                        height: 0.1,
-                        color: ColorConstant.grayColor,
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: const Divider(
+                          thickness: 0.4,
+                          height: 1,
+                          color: ColorConstant.grayColor,
+                        ),
                       ),
+
                       if (_isSectionsVisible)
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -345,41 +511,47 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              const Text(
-                                "Brandbazar",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.w500,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BrandBazarScreen(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "Brandbazaar",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFD9D9D9),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "REDISCOVER SERVICES!",
-                                    style: headerstyle.copyWith(
-                                        color: const Color(0xffF9BB00),
-                                        fontSize: 10),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SubscribeAndWinEveryDay(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "BuyOrWin",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFD9D9D9),
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  Text(
-                                    "Connect,Save,Win & Beyond.",
-                                    style: headerstyle.copyWith(
-                                        color: const Color(0xffD9D9D9),
-                                        fontSize: 10),
-                                  )
-                                ],
-                              ),
-                              const Text(
-                                "BuyOrWin",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -836,7 +1008,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
                             wow: hot.wow,
-
                             comment: hot.commentcount.toString(),
                             discounttedPrice: hot.discounted_price,
                             issponsored: hot.user.sponsored,
@@ -917,6 +1088,10 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                             VProduct pro =
                                                 data.insidearr[0][index];
                                             return ProductDetailWidget(
+                                              offer: pro.discounted_price,
+                                              wow: pro.wow,
+                                              comment:
+                                                  pro.commentcount.toString(),
                                               discounttedPrice:
                                                   pro.discounted_price,
                                               issponsored: pro.user.sponsored,
@@ -989,6 +1164,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[1][index];
                                       return ProductDetailWidget(
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
                                         issponsored: pro.user.sponsored,
                                         discounttedPrice: pro.discounted_price,
                                         lefttile: "B2b-Shop",
@@ -1049,6 +1226,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
                                       return ProductDetailWidget(
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "B2b-Shop",
@@ -1109,6 +1288,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[4][index];
                                       return ProductDetailWidget(
+                                        wow: pro.wow,
+                                        comment: pro.commentcount.toString(),
                                         discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "B2b-Shop",
@@ -1210,6 +1391,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
@@ -1285,13 +1469,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                            comment: prod.commentcount.toString(),
-                                            wow: prod.wow,
-                                            
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              wow: prod.wow,
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1354,13 +1539,14 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           return InkWell(
                                             onTap: () {},
                                             child: ProductDetailWidget(
-                                              comment: prod.commentcount.toString(),
+                                              comment:
+                                                  prod.commentcount.toString(),
                                               wow: prod.wow,
-                                               
                                               issponsored: prod.user.sponsored,
                                               lefttile: "B2b-Shop",
                                               vendorname: prod.title,
-                                              discounttedPrice: prod.discounted_price,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
                                               Vimage: prod.user.photo,
                                               price: prod.price,
                                               title: prod.title,
@@ -1428,7 +1614,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
-                          print("binod ${resp.image}");
 
                           return buyorwin_widget(
                               vendorImage: resp.vendorImage,
@@ -1491,9 +1676,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       data.seasonal, // Corresponds to SERVICES
 
                       data.promotional, // Corresponds to TRADEHUB
-                      data.clearance_sale, // Corresponds to USED
-                      data.Launch_festival_offer
-
+                      data.Launch_festival_offer, // Corresponds to USED
                     ];
 
                     return SizedBox(
@@ -1569,7 +1752,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       ? const Padding(
                                           padding: EdgeInsets.only(top: 10),
                                           child: SizedBox(
-                                            child: Text("No data available"),
+                                            child: Text("No listing available"),
                                           ),
                                         )
                                       : SizedBox(
@@ -1585,9 +1768,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                               return InkWell(
                                                 onTap: () {},
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentcount.toString(),
+                                                  comment: prod.commentcount
+                                                      .toString(),
                                                   wow: prod.wow,
-
                                                   lefttile: "B2b-Shop",
                                                   vendorname: prod.user.name,
                                                   issponsored:
@@ -1686,9 +1869,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: ProductDetailWidget(
-                            
                             wow: data.product[index].wow,
-                            comment: data.product[index].commentcount.toString(),
+                            comment:
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
                                 data.product[index].discounted_price,
