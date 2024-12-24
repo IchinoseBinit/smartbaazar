@@ -33,22 +33,18 @@ import 'package:smartbazar/features/product_details/constant/all_product_detail_
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
-import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 import '../../../general_widget/story_search_bar.dart';
-import '../../product_details/constant/all_product_detail_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -681,7 +677,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       brandname: storyData.vendorName,
                                       vImage: storyData.vendorImage,
                                       index: index,
-                                      addSearch: true,
+                                      addSearch: false,
                                       showgift: storyData.hasSponsoredGifts,
                                       onTap: () {
                                         setState(() {
