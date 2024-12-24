@@ -11,6 +11,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget_list_search.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
@@ -658,40 +659,44 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   ],
                                 ),
                                 SizedBox(
-                                   height:   MediaQuery.of(context).size.height*1.6, 
+                                   height:   MediaQuery.of(context).size.height*10,
                                   child: TabBarView(children: [
                                      data.brandNew!.isEmpty? const Center(child: Text("No listing found")): LayoutBuilder(
                                         builder: (context, constraints) {
-                                  
                                       return GridView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(), // Disable grid scrolling
                                         shrinkWrap:
                                             true, // Adjust to fit content
                                         itemCount: data.brandNew?.length,
-                                  
+
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                           // mainAxisExtent:
                                           //     constraints.maxWidth > 430
                                           //         ? 4
                                           //         : 2,
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 0.2,
-                                          mainAxisSpacing: 0.2,
-                                          childAspectRatio: 0.9,
+                                          // crossAxisCount: 2,
+                                          // crossAxisSpacing: 0.2,
+                                          // mainAxisSpacing: 0.2,
+                                          // childAspectRatio: 0.9,
+                                              mainAxisExtent: 400,
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 0.2,
+                                              mainAxisSpacing: 0.2,
+                                              childAspectRatio: 0.9,
                                         ),
                                         itemBuilder: (context, index) {
                                           GlobalModel res =
                                               data.brandNew![index];
-                                          return ProductDetailWidget(
+                                          return ProductDetailWidgetListSearch(
                                               issponsored:
                                                   res.user[0].sponsored!,
                                               productImage: res.imageUrl,
                                               Vimage: res.user[0].photo!,
                                               vendorname: res.user[0].name!,
                                               title: res.title,
-                                              price: res.title,
+                                              price: res.price,
                                               similarproductCount:
                                                   res.similarproductCount,
                                               membershipColor:
@@ -702,7 +707,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       );
                                     }),
                                     Column(
-                                      
+
                                       children: data.business!.map((e) {
                                         return BigContainer(
                                           lat: double.tryParse(e.latitude?? '0')?? 0,
@@ -713,28 +718,28 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                           location: e.location?? 'Nepal',
                                           total_connections: e.totalConnections!,
                                           total_prize_worth: e.totalPrizeWorth!,
-                                          
+
                                           title: e.vendorName!,
                                           contact: e.contact!,
                                           logo: e.logo!,
                                           membershipTitle: e.membershipTitle!,
                                           storyCount: e.storyCount!,
                                           hasSpo: e.hasSponsoredGifts!,
-                                                                      
+
                                         );
                                       },).toList(),
                                     ),
                                    data.used!.isEmpty? const Center(child: Text("No listing found")):
                                     LayoutBuilder(
                                         builder: (context, constraints) {
-                                  
+
                                       return GridView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(), // Disable grid scrolling
                                         shrinkWrap:
                                             true, // Adjust to fit content
                                         itemCount: data.used?.length,
-                                  
+
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                           // mainAxisExtent:
@@ -766,18 +771,18 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         },
                                       );
                                     }),
-                                  
+
                                      data.services!.isEmpty? const Center(child: Text("No listing found")):
                                     LayoutBuilder(
                                         builder: (context, constraints) {
-                                  
+
                                       return GridView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(), // Disable grid scrolling
                                         shrinkWrap:
                                             true, // Adjust to fit content
                                         itemCount: data.services?.length,
-                                  
+
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                           // mainAxisExtent:

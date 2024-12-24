@@ -649,15 +649,18 @@ class ProductDetailWidget extends StatelessWidget {
                                     SizedBox(
                                       width: 1.w,
                                     ),
-                                    Text(
-                                      membershipTitle ?? "Domestic Brand",
-                                      style: headerstyle.copyWith(
-                                        fontSize: (membershipTitle != null &&
-                                                membershipTitle!.length > 15)
-                                            ? 8.sp
-                                            : 10.sp,
-                                        // Adjust font size based on length
-                                        fontWeight: FontWeight.w700,
+                                    SizedBox(
+                                      width: 75.w,
+                                      child: Text(
+                                        membershipTitle ?? "Domestic Brand",
+                                        style: headerstyle.copyWith(
+                                          fontSize: (membershipTitle != null &&
+                                                  membershipTitle!.length > 15)
+                                              ? 8.sp
+                                              : 10.sp,
+                                          // Adjust font size based on length
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
