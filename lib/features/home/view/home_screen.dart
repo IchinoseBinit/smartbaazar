@@ -1633,7 +1633,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                           SizedBox(
                             height: 6.h,
                           ),
-                          Image.asset('assets/images/smart.png'),
+                          Image.asset('assets/images/Smartbazaar-Icon-for-QR.png', height: 35.h, width: 35.w,),
                           SizedBox(
                             height: 6.h,
                           ),
@@ -1672,7 +1672,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                     color: Color(0xff918994),
                                   ),
                                   Text(
-                                    "cart",
+                                    "Cart",
                                     style: headerstyle.copyWith(
                                         fontSize: 9,
                                         fontWeight: FontWeight.w700,
@@ -1697,7 +1697,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                     color: Color(0xff918994),
                                   ),
                                   Text(
-                                    "add",
+                                    "Sell",
                                     style: headerstyle.copyWith(
                                         fontSize: 9,
                                         fontWeight: FontWeight.w700,

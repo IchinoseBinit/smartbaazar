@@ -303,12 +303,12 @@ class AllProductDetailWidget extends StatelessWidget {
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
                           child: Text(
-                            // avg_rating.toString() ?? '0',
-                            (avg_rating ?? 0).toString(),
+                            (avg_rating ?? 1.0).toStringAsFixed(1),
+                            // Provide fallback value of 0 when null
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
-                         Container(
+                        Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(5),
@@ -316,19 +316,22 @@ class AllProductDetailWidget extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating: (avg_rating ?? 1),  // Use fallback value of 1 when null or 0
+                            initialRating: (avg_rating ?? 1),
+                            // Use fallback value of 1 when null or 0
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: 5,  // Always display 5 stars
+                            itemCount: 5,
+                            // Always display 5 stars
                             itemSize: 12,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, index) {
                               // If avg_rating is null or 0, color the first star
                               if (avg_rating == null || avg_rating == 0) {
                                 return const Icon(
                                   Icons.star,
-                                  color: Color(0xff901B41),  // First star color
+                                  color: Color(0xff901B41), // First star color
                                 );
                               } else {
                                 // Color logic based on avg_rating
@@ -338,7 +341,9 @@ class AllProductDetailWidget extends StatelessWidget {
                                     Icons.star,
                                     color: Color(0xff901B41),
                                   );
-                                } else if (index == avg_rating!.floor() && (avg_rating! - avg_rating!.floor()) >= 0.5) {
+                                } else if (index == avg_rating!.floor() &&
+                                    (avg_rating! - avg_rating!.floor()) >=
+                                        0.5) {
                                   // Fill half a star if the decimal part of avg_rating is >= 0.5
                                   return const Icon(
                                     Icons.star_half,

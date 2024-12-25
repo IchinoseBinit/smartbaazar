@@ -55,7 +55,6 @@ class ProductDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // String showRs = "Rs";
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
@@ -299,7 +298,7 @@ class ProductDetailWidget extends StatelessWidget {
                         //     ),
                         //   ),
 
-                        SizedBox(width: 37.w),
+                        SizedBox(width: 26.w),
                         if (discounttedPrice != '0')
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -336,67 +335,72 @@ class ProductDetailWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                   Row(
-  children: [
-    CircleAvatar(
-      radius: 10,
-      backgroundColor: const Color(0xff901B41),
-      child: Text(
-        (avg_rating ?? 0).toStringAsFixed(1),  // Provide fallback value of 0 when null
-        style: headerstyle.copyWith(fontSize: 8.sp),
-      ),
-    ),
-    Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(5),
-            bottomRight: Radius.circular(5)),
-        border: Border.all(color: Colors.grey),
-      ),
-      child: RatingBar.builder(
-        initialRating: (avg_rating ?? 1),  // Use fallback value of 1 when null or 0
-        minRating: 1,
-        direction: Axis.horizontal,
-        allowHalfRating: true,
-        itemCount: 5,  // Always display 5 stars
-        itemSize: 12,
-        itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-        itemBuilder: (context, index) {
-          // If avg_rating is null or 0, color the first star
-          if (avg_rating == null || avg_rating == 0) {
-            return const Icon(
-              Icons.star,
-              color: Color(0xff901B41),  // First star color
-            );
-          } else {
-            // Color logic based on avg_rating
-            if (index < avg_rating!.floor()) {
-              // Fill the full star if it's less than the floor value of avg_rating
-              return const Icon(
-                Icons.star,
-                color: Color(0xff901B41),
-              );
-            } else if (index == avg_rating!.floor() && (avg_rating! - avg_rating!.floor()) >= 0.5) {
-              // Fill half a star if the decimal part of avg_rating is >= 0.5
-              return const Icon(
-                Icons.star_half,
-                color: Color(0xff901B41),
-              );
-            } else {
-              // Default grey star if it's beyond the avg_rating
-              return const Icon(
-                Icons.star,
-                color: Colors.grey,
-              );
-            }
-          }
-        },
-        onRatingUpdate: (rating) {},
-      ),
-    ),
-  ],
-),
-
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 10,
+                          backgroundColor: const Color(0xff901B41),
+                          child: Text(
+                            (avg_rating ?? 0).toStringAsFixed(1),
+                            // Provide fallback value of 0 when null
+                            style: headerstyle.copyWith(fontSize: 8.sp),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(5),
+                                bottomRight: Radius.circular(5)),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: RatingBar.builder(
+                            initialRating: (avg_rating ?? 1),
+                            // Use fallback value of 1 when null or 0
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            // Always display 5 stars
+                            itemSize: 12,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemBuilder: (context, index) {
+                              // If avg_rating is null or 0, color the first star
+                              if (avg_rating == null || avg_rating == 0) {
+                                return const Icon(
+                                  Icons.star,
+                                  color: Color(0xff901B41), // First star color
+                                );
+                              } else {
+                                // Color logic based on avg_rating
+                                if (index < avg_rating!.floor()) {
+                                  // Fill the full star if it's less than the floor value of avg_rating
+                                  return const Icon(
+                                    Icons.star,
+                                    color: Color(0xff901B41),
+                                  );
+                                } else if (index == avg_rating!.floor() &&
+                                    (avg_rating! - avg_rating!.floor()) >=
+                                        0.5) {
+                                  // Fill half a star if the decimal part of avg_rating is >= 0.5
+                                  return const Icon(
+                                    Icons.star_half,
+                                    color: Color(0xff901B41),
+                                  );
+                                } else {
+                                  // Default grey star if it's beyond the avg_rating
+                                  return const Icon(
+                                    Icons.star,
+                                    color: Colors.grey,
+                                  );
+                                }
+                              }
+                            },
+                            onRatingUpdate: (rating) {},
+                          ),
+                        ),
+                      ],
+                    ),
                     discounttedPrice == '0'
                         ? SizedBox()
                         : Row(
@@ -552,157 +556,162 @@ class ProductDetailWidget extends StatelessWidget {
                           bottomRight: Radius.circular(13),
                         ),
                       ),
-                    // ),
-                    child:
-                        Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(Vimage!),
-                              radius: 15.sp,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 3.5.w,
-                                    ),
-                                    // Text(
-                                    //   vendorname != null &&
-                                    //       vendorname!.length > 25
-                                    //       ? '${vendorname!.substring(0, 12)}...'
-                                    //       : vendorname ?? '',
-                                    //   style: headerstyle.copyWith(
-                                    //     // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
-                                    //     fontSize: (vendorname != null && vendorname!.length > 10)
-                                    //         ? 8.sp
-                                    //         : (vendorname != null && vendorname!.length > 12)
-                                    //         ? 7.5.sp
-                                    //         : 11.5.sp, // Default font size
-                                    //     fontWeight: FontWeight.w700,
-                                    //   ),
-                                    //   overflow: TextOverflow.ellipsis,
-                                    //   maxLines: 1,
-                                    // ),
-
-                                    Text(
-                                      vendorname != null &&
-                                              vendorname!.length > 19
-                                          ? '${vendorname!.substring(0, 15)}...'
-                                          : vendorname ?? '',
-                                      style: headerstyle.copyWith(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w700,
+                      // ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(Vimage!),
+                                radius: 15.sp,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 3.5.w,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                      size: 12,
-                                    ),
-                                    Row(
-                                      children: [
-                                        shortestDistance != null
-                                            ? Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.location_on,
-                                                    color: Colors.white,
-                                                    size: 12,
-                                                  ),
-                                                  Text(
-                                                    "${shortestDistance} km",
-                                                    style: headerstyle.copyWith(
-                                                        fontSize: 8.sp,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ],
-                                              )
-                                            : SizedBox(
-                                                height: 5.h,
-                                              ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/nepalFlag.png",
-                                      height: 9.h,
-                                    ),
-                                    SizedBox(
-                                      width: 1.w,
-                                    ),
-                                    // SizedBox(
-                                    //   width: 75.w,
-                                    //   child: Text(
-                                    //     membershipTitle ?? "Domestic Brand",
-                                    //     style: headerstyle.copyWith(
-                                    //       fontSize: (membershipTitle != null &&
-                                    //               membershipTitle!.length > 15)
-                                    //           ? 8.sp
-                                    //           : 10.sp,
-                                    //       // Adjust font size based on length
-                                    //       fontWeight: FontWeight.w700,
-                                    //     ),
-                                    //   ),
-                                    // ),
+                                      // Text(
+                                      //   vendorname != null &&
+                                      //       vendorname!.length > 25
+                                      //       ? '${vendorname!.substring(0, 12)}...'
+                                      //       : vendorname ?? '',
+                                      //   style: headerstyle.copyWith(
+                                      //     // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
+                                      //     fontSize: (vendorname != null && vendorname!.length > 10)
+                                      //         ? 8.sp
+                                      //         : (vendorname != null && vendorname!.length > 12)
+                                      //         ? 7.5.sp
+                                      //         : 11.5.sp, // Default font size
+                                      //     fontWeight: FontWeight.w700,
+                                      //   ),
+                                      //   overflow: TextOverflow.ellipsis,
+                                      //   maxLines: 1,
+                                      // ),
 
-                                    SizedBox(
-                                      width: 80.w,
-                                      child: Text(
-                                        membershipTitle ?? "Domestic Brand",
+                                      Text(
+                                        vendorname != null &&
+                                                vendorname!.length > 19
+                                            ? '${vendorname!.substring(0, 15)}...'
+                                            : vendorname ?? '',
                                         style: headerstyle.copyWith(
-                                          fontSize: 10.sp, // Adjust font size based on length
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        overflow: TextOverflow.ellipsis, // Apply ellipsis for overflow
-                                        maxLines: 1, // Restrict to a single line
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 40.w,
-                                    ),
-                                    issponsored
-                                        ? SizedBox()
-                                        : Row(
-                                            children: [
-                                              Image.asset(
-                                                  "assets/images/mike.png"),
-                                              Text(
-                                                "SPONSORED",
-                                                style: headerstyle.copyWith(
-                                                    fontSize: 10.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ],
+                                      SizedBox(
+                                        width: 4.w,
+                                      ),
+                                      const Icon(
+                                        Icons.logout,
+                                        color: Colors.white,
+                                        size: 12,
+                                      ),
+                                      Row(
+                                        children: [
+                                          shortestDistance != null
+                                              ? Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.location_on,
+                                                      color: Colors.white,
+                                                      size: 12,
+                                                    ),
+                                                    Text(
+                                                      "${shortestDistance} km",
+                                                      style:
+                                                          headerstyle.copyWith(
+                                                              fontSize: 8.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                    ),
+                                                  ],
+                                                )
+                                              : SizedBox(
+                                                  height: 5.h,
+                                                ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Image.asset(
+                                        "assets/images/nepalFlag.png",
+                                        height: 9.h,
+                                      ),
+                                      SizedBox(
+                                        width: 1.w,
+                                      ),
+                                      // SizedBox(
+                                      //   width: 75.w,
+                                      //   child: Text(
+                                      //     membershipTitle ?? "Domestic Brand",
+                                      //     style: headerstyle.copyWith(
+                                      //       fontSize: (membershipTitle != null &&
+                                      //               membershipTitle!.length > 15)
+                                      //           ? 8.sp
+                                      //           : 10.sp,
+                                      //       // Adjust font size based on length
+                                      //       fontWeight: FontWeight.w700,
+                                      //     ),
+                                      //   ),
+                                      // ),
+
+                                      SizedBox(
+                                        width: 80.w,
+                                        child: Text(
+                                          membershipTitle ?? "Domestic Brand",
+                                          style: headerstyle.copyWith(
+                                            fontSize: 10.sp,
+                                            // Adjust font size based on length
+                                            fontWeight: FontWeight.w700,
                                           ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                                          overflow: TextOverflow.ellipsis,
+                                          // Apply ellipsis for overflow
+                                          maxLines:
+                                              1, // Restrict to a single line
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 40.w,
+                                      ),
+                                      issponsored
+                                          ? SizedBox()
+                                          : Row(
+                                              children: [
+                                                Image.asset(
+                                                    "assets/images/mike.png"),
+                                                Text(
+                                                  "SPONSORED",
+                                                  style: headerstyle.copyWith(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ],
+                                            ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   ),
                 ],
               ),
