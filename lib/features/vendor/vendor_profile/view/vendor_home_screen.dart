@@ -242,6 +242,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               children: [
                                 Positioned(
                                   child: VendorSearchContainer(
+                                    img: data.vendor_card!.photo!,
                                     controller: _searchController,
                                     onSearchFocusChanged: _onSearchFocusChanged,
                                     MYonchnage: (p0) {},
@@ -335,6 +336,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             data.deals == null
                                 ? const SizedBox()
                                 : DottedContainer(
+                                  vname: data.vendor_card!.name!,
                                     deals: data.deals!,
                                     firstImage: data.vendor!.photo,
                                   ),
@@ -1138,9 +1140,10 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 class DottedContainer extends StatelessWidget {
   final String? firstImage;
   final List<Deal>? deals;
+  final String vname;
 
   const DottedContainer(
-      {super.key, required this.firstImage, required this.deals});
+      {super.key, required this.firstImage, required this.deals,required this.vname});
 
   @override
   Widget build(BuildContext context) {
@@ -1150,7 +1153,7 @@ class DottedContainer extends StatelessWidget {
         height: 210.h,
         child: Row(
           children: [
-            _buildFirstItem(firstImage!),
+            _buildFirstItem(firstImage!,vname),
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -1167,7 +1170,7 @@ class DottedContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildFirstItem(String firstImage) {
+  Widget _buildFirstItem(String firstImage, String name) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: DottedBorder(
@@ -1190,7 +1193,7 @@ class DottedContainer extends StatelessWidget {
               left: 20.w,
               bottom: 10.h,
               child: Text(
-                "Tech Store",
+                name,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16.sp,
@@ -1484,7 +1487,6 @@ class BigContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("bibash ${long} and ${lat}");
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: DottedBorder(
@@ -1528,8 +1530,10 @@ class BigContainer extends StatelessWidget {
                   ],
                 ),
                 DottedBorder(
-                  color: Colors.black,
+                  color: Color(0xff6d1a49),
                   strokeWidth: 2,
+                  borderPadding: EdgeInsets.all(3),
+                  dashPattern: [9,5],
                   borderType: BorderType.Circle,
                   child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -1895,17 +1899,19 @@ class VendorSearchContainer extends StatelessWidget {
   Function(String)? MYonchnage;
   TextEditingController controller;
   final Function(bool)? onSearchFocusChanged;
+  final String img;
 
   VendorSearchContainer(
       {super.key,
       required this.MYonchnage,
       required this.controller,
+      required this.img,
       required this.onSearchFocusChanged});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
+      height: 140.h,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50)),
@@ -1949,7 +1955,7 @@ class VendorSearchContainer extends StatelessWidget {
                               horizontal: 5.w, vertical: 5.h),
                           decoration: BoxDecoration(
                             color: const Color(0xFF46236a),
-                            border: Border.all(color: Colors.white),
+                            border: Border.all(color: Color(0xff6d1a49)),
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15.r),
                               bottomLeft: Radius.circular(15.r),
@@ -1960,8 +1966,8 @@ class VendorSearchContainer extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               ClipOval(
-                                child: Image.asset(
-                                  "assets/images/vendorDealImage.png",
+                                child: Image.network(
+                                  img,
                                   width: 30.w,
                                   height: 20.h,
                                   fit: BoxFit.cover,

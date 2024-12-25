@@ -102,7 +102,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
-                hintText: "Search Services",
+                hintText: "Search Everything",
                 hintStyle:
                     TextStyle(fontSize: 13.sp, color: const Color(0xffD9D9D9)),
                 isCollapsed: true,
