@@ -120,4 +120,11 @@ class ApiConstants {
   static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
   //product import
   static String productimportapi = '$baseUrl/posts/product_import';
+
+  //feed screen
+  static String getFeedScreenFollowingUrl = '$baseUrl/users/getfeed';
+  static String getForYouFeedUrl = '$baseUrl/users/getrandomfeed';
+  static String getFollowingFeedStory = '$baseUrl/users/getstory';
+  static String getForYouFeedStory = '$baseUrl/users/getrandomstory';
+  static String getFeedGiftCardUrl = '$baseUrl/users/buyorwin/';
 }

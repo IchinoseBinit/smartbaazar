@@ -18,7 +18,6 @@ Future<CheckoutDetailsModel> postSelectedItemOfCart(
     FormData formData = FormData.fromMap({
       'vendor_id': vendorId,
       'selected[]': selectedProduct,
-     
     });
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
@@ -29,15 +28,15 @@ Future<CheckoutDetailsModel> postSelectedItemOfCart(
         response.data['msg'] != null &&
         response.data['msg'].contains('success')) {
       print('CheckoutDetails fetched successfully!');
-       final Map<String, dynamic> jsonResponse = response.data;
+      final Map<String, dynamic> jsonResponse = response.data;
       return CheckoutDetailsModel.fromJson(jsonResponse);
     } else {
       print('Error: ${response.data}');
-       throw Exception('Failed to load cart details');
+      throw Exception('Failed to load cart details');
     }
   } catch (e) {
     print('Error fetching request of checkout details: $e');
-     print('Error loading checkout details: $e');
+    print('Error loading checkout details: $e');
     throw Exception('Failed to load checkout details: $e');
   }
 }
