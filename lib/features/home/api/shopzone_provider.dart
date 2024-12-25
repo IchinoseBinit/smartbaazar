@@ -17,12 +17,12 @@ class HomeProductType {
 
   HomeProductType(
       {required this.new_products,
-        required this.used_products,
-        required this.services,
-        required this.jobs,
-        required this.b2b_products,
-        required this.event,
-        required this.grocarry});
+      required this.used_products,
+      required this.services,
+      required this.jobs,
+      required this.b2b_products,
+      required this.event,
+      required this.grocarry});
 }
 
 @riverpod
@@ -45,32 +45,32 @@ Future<HomeProductType> homeCategory(HomeCategoryRef ref) async {
       // Ensure we check if each list exists in the data to avoid errors
       return HomeProductType(
         event: (data['events'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
         grocarry: (data['grocery'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
         new_products: (data['new_products'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
         used_products: (data['used_products'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
         services: (data['services'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
         jobs: (data['jobs'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
         b2b_products: (data['b2b_products'] as List?)
-            ?.map((product) => CategoryProduct.fromJson(product))
-            .toList() ??
+                ?.map((product) => CategoryProduct.fromJson(product))
+                .toList() ??
             [],
       );
     } else {
@@ -97,24 +97,43 @@ class CategoryProduct {
   final String price;
   final String title;
   final String description;
-  final VendorUser user;
+  final VendorUser? user;
   final String image;
   final String? discounted_price;
   final int? similarproductCount;
+  final String? offers;
+  final String? wow;
+  final int? commentcount;
+
+  final int? avg_rating;
+  final double? shortestDistance;
+  final String? nearestBranch;
 
   CategoryProduct({
+    required this.commentcount,
+    required this.wow,
+    required this.nearestBranch,
+    required this.shortestDistance,
     required this.id,
     required this.title,
     required this.description,
     required this.user,
     required this.image,
     required this.price,
+    required this.offers,
+    required this.avg_rating,
     required this.discounted_price,
     required this.similarproductCount,
   });
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) {
     return CategoryProduct(
+      commentcount: json['commentcount'],
+      wow: json['wow'],
+      nearestBranch: json['nearestBranch'],
+      shortestDistance: json['shortestDistance'],
+      avg_rating: json['avg_rating'],
+      offers: json['offers'] ?? '',
       discounted_price: json['discounted_price'] ?? '',
       image: json['image'] ?? '',
       price: json['price'] ?? '',
@@ -133,17 +152,21 @@ class VendorUser {
   final String name;
   final String photo;
   final String? membercolor;
+
+  final bool? sponsored;
   final String? membershipTitle;
 
   VendorUser(
       {required this.id,
-        required this.name,
-        required this.photo,
-        required this.membershipTitle,
-        required this.membercolor});
+      required this.name,
+      required this.sponsored,
+      required this.photo,
+      required this.membershipTitle,
+      required this.membercolor});
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
+      sponsored: json['sponsored'],
       photo: json['photo'] ?? '',
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',

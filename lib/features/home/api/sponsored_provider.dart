@@ -12,36 +12,53 @@ class SponsoredProduct {
   final String title;
   final String description;
   final String price;
-  final String image;
+   double? shortestDistance;
+  final String? image;
+   String? wow;
+  final int? commentcount;
   final int? similarProductCount;
   final UserDetailsModel? userdetails;
+  final String? offers;
+  final int? avg_rating;
+  final String? discounted_price;
 
   SponsoredProduct({
+     this.wow,
+    required this.shortestDistance,
+    required this.discounted_price,
     required this.id,
     required this.title,
     required this.description,
     required this.price,
     required this.image,
+    required this.commentcount,
     required this.similarProductCount,
     this.userdetails,
+    this.offers,
+    this.avg_rating,
   });
 
   factory SponsoredProduct.fromJson(Map<String, dynamic> json) {
+    print("lama ${json['wow']}");
     return SponsoredProduct(
+      wow: json['wow'] ?? '0',
+      shortestDistance: json['shortestDistance'] ?? 0.0,
+      commentcount: json['commentcount'] as int,
+      avg_rating: json['avg_rating'] as int,
+      discounted_price: json['discounted_price']?? '',
+      offers: json['offers'] as String,
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
       price: json['price'] as String,
       image: json['image'] as String,
-      similarProductCount : json['similarProductCount'] as int,
+      similarProductCount: json['similarProductCount'] as int,
       userdetails: json['userdetails'] != null
           ? UserDetailsModel.fromJson(json['userdetails'])
           : null,
     );
   }
 }
-
-
 
 @riverpod
 Future<List<SponsoredProduct>> fetchSponsored(FetchSponsoredRef ref) async {

@@ -17,26 +17,44 @@ class VProduct {
   final String image;
   final int? similarProductCount;
   final VendorUserDetail userDetail;
+  final String? offers;
+  final String? discounted_price;
+  final int? avg_rating;
+  final int? commentcount;
+  final String? wow;
+  final double? shortestDistance;
 
   VProduct(
       {required this.id,
       required this.title,
+      required this.shortestDistance,
+      required this.avg_rating,
+      required this.commentcount,
+      required this.wow,
+      required this.discounted_price,
       required this.description,
       required this.similarProductCount,
       required this.user,
       required this.image,
       required this.price,
+      required this.offers,
       required this.userDetail});
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
+      shortestDistance: json['shortestDistance'],
+      wow: json['wow'],
+      discounted_price: json['discounted_price'],
+      commentcount: json['commentcount'],
+      avg_rating: json['avg_rating'],
+      offers: json['offers'] ?? '',
       image: json['image'] ?? '',
       price: json['price'] ?? '',
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       similarProductCount: json['similarProductCount'] ?? '',
-      userDetail: VendorUserDetail.fromJson(json['userDetail']?? {}),
+      userDetail: VendorUserDetail.fromJson(json['userDetail'] ?? {}),
       user: VendorUser.fromJson(
           json['user'] ?? {}), // Parsing user within each product
     );
