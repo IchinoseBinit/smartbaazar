@@ -13,6 +13,7 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget_list_search.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
@@ -698,21 +699,38 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                               itemBuilder: (context, index) {
                                                 GlobalModel res =
                                                     data.brandNew![index];
-                                                return ProductDetailWidgetListSearch(
-                                                    issponsored:
-                                                        res.user[0].sponsored!,
-                                                    productImage: res.imageUrl,
-                                                    Vimage: res.user[0].photo!,
-                                                    vendorname:
-                                                        res.user[0].name!,
-                                                    title: res.title,
-                                                    price: res.price,
-                                                    similarproductCount:
-                                                        res.similarproductCount,
-                                                    membershipColor: res.user[0]
-                                                        .membership_color!,
-                                                    membershipTitle: res.user[0]
-                                                        .membership_title!);
+                                                return InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    res.id),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: AllProductDetailWidget(
+                                                      issponsored: res
+                                                          .user[0].sponsored!,
+                                                      productImage:
+                                                          res.imageUrl,
+                                                      Vimage:
+                                                          res.user[0].photo!,
+                                                      vendorname:
+                                                          res.user[0].name!,
+                                                      title: res.title,
+                                                      price: res.price,
+                                                      similarproductCount: res
+                                                          .similarproductCount,
+                                                      membershipColor: res
+                                                          .user[0]
+                                                          .membership_color!,
+                                                      membershipTitle: res
+                                                          .user[0]
+                                                          .membership_title!),
+                                                );
                                               },
                                             );
                                           }),

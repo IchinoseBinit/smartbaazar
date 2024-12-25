@@ -297,12 +297,14 @@ Widget buildGridView(SearchDetails data) {
     itemBuilder: (context, index) {
       final post = data.posts[index];
       return InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(productId: post.id),
-          ),
-        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailScreen(productId: post.id),
+            ),
+          );
+        },
         child: Container(
           margin: const EdgeInsets.only(top: 2),
           padding: const EdgeInsets.all(2),

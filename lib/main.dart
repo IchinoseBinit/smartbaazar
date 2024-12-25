@@ -52,10 +52,9 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: EventsScreen()
-           // redirect to splashscreen
+          home: VendorHomeScreen(vendorName: 'techstore',vid: 9,)
+          // redirect to splashscreen
           // HomeScreen()
-
 
           // home: BusinessTabScreen(
           //   query: 'acer',
