@@ -4720,9 +4720,6 @@ mixin _$Picture {
   String? get postId => throw _privateConstructorUsedError;
   String? get filename => throw _privateConstructorUsedError;
   String? get image_url => throw _privateConstructorUsedError;
-  String? get mimeType => throw _privateConstructorUsedError;
-  String? get position => throw _privateConstructorUsedError;
-  String? get active => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -4734,14 +4731,7 @@ abstract class $PictureCopyWith<$Res> {
   factory $PictureCopyWith(Picture value, $Res Function(Picture) then) =
       _$PictureCopyWithImpl<$Res, Picture>;
   @useResult
-  $Res call(
-      {int? id,
-      String? postId,
-      String? filename,
-      String? image_url,
-      String? mimeType,
-      String? position,
-      String? active});
+  $Res call({int? id, String? postId, String? filename, String? image_url});
 }
 
 /// @nodoc
@@ -4761,9 +4751,6 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
     Object? postId = freezed,
     Object? filename = freezed,
     Object? image_url = freezed,
-    Object? mimeType = freezed,
-    Object? position = freezed,
-    Object? active = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -4782,18 +4769,6 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
           ? _value.image_url
           : image_url // ignore: cast_nullable_to_non_nullable
               as String?,
-      mimeType: freezed == mimeType
-          ? _value.mimeType
-          : mimeType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      position: freezed == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -4805,14 +4780,7 @@ abstract class _$$PictureImplCopyWith<$Res> implements $PictureCopyWith<$Res> {
       __$$PictureImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int? id,
-      String? postId,
-      String? filename,
-      String? image_url,
-      String? mimeType,
-      String? position,
-      String? active});
+  $Res call({int? id, String? postId, String? filename, String? image_url});
 }
 
 /// @nodoc
@@ -4830,9 +4798,6 @@ class __$$PictureImplCopyWithImpl<$Res>
     Object? postId = freezed,
     Object? filename = freezed,
     Object? image_url = freezed,
-    Object? mimeType = freezed,
-    Object? position = freezed,
-    Object? active = freezed,
   }) {
     return _then(_$PictureImpl(
       id: freezed == id
@@ -4851,18 +4816,6 @@ class __$$PictureImplCopyWithImpl<$Res>
           ? _value.image_url
           : image_url // ignore: cast_nullable_to_non_nullable
               as String?,
-      mimeType: freezed == mimeType
-          ? _value.mimeType
-          : mimeType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      position: freezed == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -4874,10 +4827,7 @@ class _$PictureImpl implements _Picture {
       {required this.id,
       required this.postId,
       required this.filename,
-      required this.image_url,
-      required this.mimeType,
-      required this.position,
-      required this.active});
+      required this.image_url});
 
   factory _$PictureImpl.fromJson(Map<String, dynamic> json) =>
       _$$PictureImplFromJson(json);
@@ -4890,16 +4840,10 @@ class _$PictureImpl implements _Picture {
   final String? filename;
   @override
   final String? image_url;
-  @override
-  final String? mimeType;
-  @override
-  final String? position;
-  @override
-  final String? active;
 
   @override
   String toString() {
-    return 'Picture(id: $id, postId: $postId, filename: $filename, image_url: $image_url, mimeType: $mimeType, position: $position, active: $active)';
+    return 'Picture(id: $id, postId: $postId, filename: $filename, image_url: $image_url)';
   }
 
   @override
@@ -4912,18 +4856,12 @@ class _$PictureImpl implements _Picture {
             (identical(other.filename, filename) ||
                 other.filename == filename) &&
             (identical(other.image_url, image_url) ||
-                other.image_url == image_url) &&
-            (identical(other.mimeType, mimeType) ||
-                other.mimeType == mimeType) &&
-            (identical(other.position, position) ||
-                other.position == position) &&
-            (identical(other.active, active) || other.active == active));
+                other.image_url == image_url));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, postId, filename, image_url, mimeType, position, active);
+  int get hashCode => Object.hash(runtimeType, id, postId, filename, image_url);
 
   @JsonKey(ignore: true)
   @override
@@ -4944,10 +4882,7 @@ abstract class _Picture implements Picture {
       {required final int? id,
       required final String? postId,
       required final String? filename,
-      required final String? image_url,
-      required final String? mimeType,
-      required final String? position,
-      required final String? active}) = _$PictureImpl;
+      required final String? image_url}) = _$PictureImpl;
 
   factory _Picture.fromJson(Map<String, dynamic> json) = _$PictureImpl.fromJson;
 
@@ -4959,12 +4894,6 @@ abstract class _Picture implements Picture {
   String? get filename;
   @override
   String? get image_url;
-  @override
-  String? get mimeType;
-  @override
-  String? get position;
-  @override
-  String? get active;
   @override
   @JsonKey(ignore: true)
   _$$PictureImplCopyWith<_$PictureImpl> get copyWith =>
@@ -6056,18 +5985,11 @@ AvailableColor _$AvailableColorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AvailableColor {
-  @JsonKey(name: 'belongs_to')
-  String get belongsTo => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  int? get max =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-  String get required => throw _privateConstructorUsedError;
-  @JsonKey(name: 'use_as_filter')
-  String get useAsFilter => throw _privateConstructorUsedError;
-  String? get help => throw _privateConstructorUsedError;
-  String get active => throw _privateConstructorUsedError;
-  List<Option> get options => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError; // int? max,
+// @JsonKey(name: 'default_value') DefaultValue? defaultValue,
+// required String active,
+  List<Option>? get options => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -6081,16 +6003,7 @@ abstract class $AvailableColorCopyWith<$Res> {
           AvailableColor value, $Res Function(AvailableColor) then) =
       _$AvailableColorCopyWithImpl<$Res, AvailableColor>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'belongs_to') String belongsTo,
-      String name,
-      String type,
-      int? max,
-      String required,
-      @JsonKey(name: 'use_as_filter') String useAsFilter,
-      String? help,
-      String active,
-      List<Option> options});
+  $Res call({String name, String type, List<Option>? options});
 }
 
 /// @nodoc
@@ -6106,21 +6019,11 @@ class _$AvailableColorCopyWithImpl<$Res, $Val extends AvailableColor>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? belongsTo = null,
     Object? name = null,
     Object? type = null,
-    Object? max = freezed,
-    Object? required = null,
-    Object? useAsFilter = null,
-    Object? help = freezed,
-    Object? active = null,
-    Object? options = null,
+    Object? options = freezed,
   }) {
     return _then(_value.copyWith(
-      belongsTo: null == belongsTo
-          ? _value.belongsTo
-          : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -6129,30 +6032,10 @@ class _$AvailableColorCopyWithImpl<$Res, $Val extends AvailableColor>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
-      required: null == required
-          ? _value.required
-          : required // ignore: cast_nullable_to_non_nullable
-              as String,
-      useAsFilter: null == useAsFilter
-          ? _value.useAsFilter
-          : useAsFilter // ignore: cast_nullable_to_non_nullable
-              as String,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String,
-      options: null == options
+      options: freezed == options
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<Option>,
+              as List<Option>?,
     ) as $Val);
   }
 }
@@ -6165,16 +6048,7 @@ abstract class _$$AvailableColorImplCopyWith<$Res>
       __$$AvailableColorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'belongs_to') String belongsTo,
-      String name,
-      String type,
-      int? max,
-      String required,
-      @JsonKey(name: 'use_as_filter') String useAsFilter,
-      String? help,
-      String active,
-      List<Option> options});
+  $Res call({String name, String type, List<Option>? options});
 }
 
 /// @nodoc
@@ -6188,21 +6062,11 @@ class __$$AvailableColorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? belongsTo = null,
     Object? name = null,
     Object? type = null,
-    Object? max = freezed,
-    Object? required = null,
-    Object? useAsFilter = null,
-    Object? help = freezed,
-    Object? active = null,
-    Object? options = null,
+    Object? options = freezed,
   }) {
     return _then(_$AvailableColorImpl(
-      belongsTo: null == belongsTo
-          ? _value.belongsTo
-          : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -6211,30 +6075,10 @@ class __$$AvailableColorImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
-      required: null == required
-          ? _value.required
-          : required // ignore: cast_nullable_to_non_nullable
-              as String,
-      useAsFilter: null == useAsFilter
-          ? _value.useAsFilter
-          : useAsFilter // ignore: cast_nullable_to_non_nullable
-              as String,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String,
-      options: null == options
+      options: freezed == options
           ? _value._options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<Option>,
+              as List<Option>?,
     ));
   }
 }
@@ -6243,50 +6087,35 @@ class __$$AvailableColorImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AvailableColorImpl implements _AvailableColor {
   const _$AvailableColorImpl(
-      {@JsonKey(name: 'belongs_to') required this.belongsTo,
-      required this.name,
-      required this.type,
-      this.max,
-      required this.required,
-      @JsonKey(name: 'use_as_filter') required this.useAsFilter,
-      this.help,
-      required this.active,
-      required final List<Option> options})
+      {required this.name, required this.type, final List<Option>? options})
       : _options = options;
 
   factory _$AvailableColorImpl.fromJson(Map<String, dynamic> json) =>
       _$$AvailableColorImplFromJson(json);
 
   @override
-  @JsonKey(name: 'belongs_to')
-  final String belongsTo;
-  @override
   final String name;
   @override
   final String type;
-  @override
-  final int? max;
+// int? max,
 // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
+// required String active,
+  final List<Option>? _options;
+// int? max,
+// @JsonKey(name: 'default_value') DefaultValue? defaultValue,
+// required String active,
   @override
-  final String required;
-  @override
-  @JsonKey(name: 'use_as_filter')
-  final String useAsFilter;
-  @override
-  final String? help;
-  @override
-  final String active;
-  final List<Option> _options;
-  @override
-  List<Option> get options {
+  List<Option>? get options {
+    final value = _options;
+    if (value == null) return null;
     if (_options is EqualUnmodifiableListView) return _options;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_options);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'AvailableColor(belongsTo: $belongsTo, name: $name, type: $type, max: $max, required: $required, useAsFilter: $useAsFilter, help: $help, active: $active, options: $options)';
+    return 'AvailableColor(name: $name, type: $type, options: $options)';
   }
 
   @override
@@ -6294,33 +6123,15 @@ class _$AvailableColorImpl implements _AvailableColor {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AvailableColorImpl &&
-            (identical(other.belongsTo, belongsTo) ||
-                other.belongsTo == belongsTo) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.max, max) || other.max == max) &&
-            (identical(other.required, required) ||
-                other.required == required) &&
-            (identical(other.useAsFilter, useAsFilter) ||
-                other.useAsFilter == useAsFilter) &&
-            (identical(other.help, help) || other.help == help) &&
-            (identical(other.active, active) || other.active == active) &&
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      belongsTo,
-      name,
-      type,
-      max,
-      required,
-      useAsFilter,
-      help,
-      active,
-      const DeepCollectionEquality().hash(_options));
+      runtimeType, name, type, const DeepCollectionEquality().hash(_options));
 
   @JsonKey(ignore: true)
   @override
@@ -6339,39 +6150,21 @@ class _$AvailableColorImpl implements _AvailableColor {
 
 abstract class _AvailableColor implements AvailableColor {
   const factory _AvailableColor(
-      {@JsonKey(name: 'belongs_to') required final String belongsTo,
-      required final String name,
+      {required final String name,
       required final String type,
-      final int? max,
-      required final String required,
-      @JsonKey(name: 'use_as_filter') required final String useAsFilter,
-      final String? help,
-      required final String active,
-      required final List<Option> options}) = _$AvailableColorImpl;
+      final List<Option>? options}) = _$AvailableColorImpl;
 
   factory _AvailableColor.fromJson(Map<String, dynamic> json) =
       _$AvailableColorImpl.fromJson;
 
   @override
-  @JsonKey(name: 'belongs_to')
-  String get belongsTo;
-  @override
   String get name;
   @override
   String get type;
-  @override
-  int? get max;
-  @override // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-  String get required;
-  @override
-  @JsonKey(name: 'use_as_filter')
-  String get useAsFilter;
-  @override
-  String? get help;
-  @override
-  String get active;
-  @override
-  List<Option> get options;
+  @override // int? max,
+// @JsonKey(name: 'default_value') DefaultValue? defaultValue,
+// required String active,
+  List<Option>? get options;
   @override
   @JsonKey(ignore: true)
   _$$AvailableColorImplCopyWith<_$AvailableColorImpl> get copyWith =>
@@ -6584,9 +6377,8 @@ Option _$OptionFromJson(Map<String, dynamic> json) {
 mixin _$Option {
   @JsonKey(name: 'field_id')
   String? get fieldId => throw _privateConstructorUsedError;
-  String? get value => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parent_id')
-  String? get parentId => throw _privateConstructorUsedError;
+  String? get value =>
+      throw _privateConstructorUsedError; // @JsonKey(name: 'parent_id') required String? parentId,
   String? get lft => throw _privateConstructorUsedError;
   String? get rgt => throw _privateConstructorUsedError;
   String? get depth => throw _privateConstructorUsedError;
@@ -6604,7 +6396,6 @@ abstract class $OptionCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'field_id') String? fieldId,
       String? value,
-      @JsonKey(name: 'parent_id') String? parentId,
       String? lft,
       String? rgt,
       String? depth});
@@ -6625,7 +6416,6 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
   $Res call({
     Object? fieldId = freezed,
     Object? value = freezed,
-    Object? parentId = freezed,
     Object? lft = freezed,
     Object? rgt = freezed,
     Object? depth = freezed,
@@ -6638,10 +6428,6 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
               as String?,
       lft: freezed == lft
           ? _value.lft
@@ -6669,7 +6455,6 @@ abstract class _$$OptionImplCopyWith<$Res> implements $OptionCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'field_id') String? fieldId,
       String? value,
-      @JsonKey(name: 'parent_id') String? parentId,
       String? lft,
       String? rgt,
       String? depth});
@@ -6688,7 +6473,6 @@ class __$$OptionImplCopyWithImpl<$Res>
   $Res call({
     Object? fieldId = freezed,
     Object? value = freezed,
-    Object? parentId = freezed,
     Object? lft = freezed,
     Object? rgt = freezed,
     Object? depth = freezed,
@@ -6701,10 +6485,6 @@ class __$$OptionImplCopyWithImpl<$Res>
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
               as String?,
       lft: freezed == lft
           ? _value.lft
@@ -6728,7 +6508,6 @@ class _$OptionImpl implements _Option {
   const _$OptionImpl(
       {@JsonKey(name: 'field_id') required this.fieldId,
       required this.value,
-      @JsonKey(name: 'parent_id') required this.parentId,
       required this.lft,
       required this.rgt,
       required this.depth});
@@ -6741,9 +6520,7 @@ class _$OptionImpl implements _Option {
   final String? fieldId;
   @override
   final String? value;
-  @override
-  @JsonKey(name: 'parent_id')
-  final String? parentId;
+// @JsonKey(name: 'parent_id') required String? parentId,
   @override
   final String? lft;
   @override
@@ -6753,7 +6530,7 @@ class _$OptionImpl implements _Option {
 
   @override
   String toString() {
-    return 'Option(fieldId: $fieldId, value: $value, parentId: $parentId, lft: $lft, rgt: $rgt, depth: $depth)';
+    return 'Option(fieldId: $fieldId, value: $value, lft: $lft, rgt: $rgt, depth: $depth)';
   }
 
   @override
@@ -6763,8 +6540,6 @@ class _$OptionImpl implements _Option {
             other is _$OptionImpl &&
             (identical(other.fieldId, fieldId) || other.fieldId == fieldId) &&
             (identical(other.value, value) || other.value == value) &&
-            (identical(other.parentId, parentId) ||
-                other.parentId == parentId) &&
             (identical(other.lft, lft) || other.lft == lft) &&
             (identical(other.rgt, rgt) || other.rgt == rgt) &&
             (identical(other.depth, depth) || other.depth == depth));
@@ -6772,8 +6547,7 @@ class _$OptionImpl implements _Option {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, fieldId, value, parentId, lft, rgt, depth);
+  int get hashCode => Object.hash(runtimeType, fieldId, value, lft, rgt, depth);
 
   @JsonKey(ignore: true)
   @override
@@ -6793,7 +6567,6 @@ abstract class _Option implements Option {
   const factory _Option(
       {@JsonKey(name: 'field_id') required final String? fieldId,
       required final String? value,
-      @JsonKey(name: 'parent_id') required final String? parentId,
       required final String? lft,
       required final String? rgt,
       required final String? depth}) = _$OptionImpl;
@@ -6805,10 +6578,7 @@ abstract class _Option implements Option {
   String? get fieldId;
   @override
   String? get value;
-  @override
-  @JsonKey(name: 'parent_id')
-  String? get parentId;
-  @override
+  @override // @JsonKey(name: 'parent_id') required String? parentId,
   String? get lft;
   @override
   String? get rgt;

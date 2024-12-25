@@ -1007,12 +1007,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           VProduct hot = data.hotProducts[index];
                           return InkWell(
                             onTap: () {
-                                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: hot.id),
-                                  ));
+                              // print("bibash ${hot.id}");
+                                           Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductDetailScreen(productId: hot.id),
+                              ));
                             },
                             child: ProductDetailWidget(
                               membershipColor: hot.user.membercolor,
@@ -1093,12 +1094,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 VProduct pro = data.insidearr[0][index];
                                 return InkWell(
                                   onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                                  productId: pro.id),
+                                        ));
                                   },
                                   child: ProductDetailWidget(
                                     offer: pro.discounted_price,
@@ -1112,7 +1114,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     title: pro.title,
                                     vendorname: pro.user.name,
                                     productImage: pro.image,
-                                    similarproductCount: pro.similarProductCount,
+                                    similarproductCount:
+                                        pro.similarProductCount,
                                     membershipColor: pro.user.membercolor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
@@ -1173,12 +1176,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                                 return InkWell(
                                   onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                                  productId: pro.id),
+                                        ));
                                   },
                                   child: ProductDetailWidget(
                                     offer: pro.discounted_price,
@@ -1192,7 +1196,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     title: pro.title,
                                     vendorname: pro.user.name,
                                     productImage: pro.image,
-                                    similarproductCount: pro.similarProductCount,
+                                    similarproductCount:
+                                        pro.similarProductCount,
                                     membershipColor: pro.user.membercolor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
@@ -1242,12 +1247,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 VProduct pro = data.insidearr[2][index];
                                 return InkWell(
                                   onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                                  productId: pro.id),
+                                        ));
                                   },
                                   child: ProductDetailWidget(
                                     offer: pro.discounted_price,
@@ -1261,7 +1267,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     title: pro.title,
                                     vendorname: pro.user.name,
                                     productImage: pro.image,
-                                    similarproductCount: pro.similarProductCount,
+                                    similarproductCount:
+                                        pro.similarProductCount,
                                     membershipColor: pro.user.membercolor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
@@ -1313,12 +1320,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 VProduct pro = data.insidearr[3][index];
                                 return InkWell(
                                   onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                                  productId: pro.id),
+                                        ));
                                   },
                                   child: ProductDetailWidget(
                                     offer: pro.discounted_price,
@@ -1332,7 +1340,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     title: pro.title,
                                     vendorname: pro.user.name,
                                     productImage: pro.image,
-                                    similarproductCount: pro.similarProductCount,
+                                    similarproductCount:
+                                        pro.similarProductCount,
                                     membershipColor: pro.user.membercolor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
@@ -1381,12 +1390,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 VProduct pro = data.insidearr[4][index];
                                 return InkWell(
                                   onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                                  productId: pro.id),
+                                        ));
                                   },
                                   child: ProductDetailWidget(
                                     offer: pro.discounted_price,
@@ -1400,7 +1410,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     title: pro.title,
                                     vendorname: pro.user.name,
                                     productImage: pro.image,
-                                    similarproductCount: pro.similarProductCount,
+                                    similarproductCount:
+                                        pro.similarProductCount,
                                     membershipColor: pro.user.membercolor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
@@ -1481,12 +1492,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                               data.insidearr[0][index];
                                           return InkWell(
                                             onTap: () {
-                                                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
                                             },
                                             child: ProductDetailWidget(
                                               comment:
@@ -1562,12 +1574,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           VProduct prod =
                                               data.insidearr[1][index];
                                           return InkWell(
-                                            onTap: () {                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));},
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
+                                            },
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1635,12 +1650,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           VProduct prod =
                                               data.insidearr[2][index];
                                           return InkWell(
-                                            onTap: () {                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));},
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
+                                            },
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1868,13 +1886,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           VProduct prod = products[index];
 
                                           return InkWell(
-                                            onTap:
-                                                () {                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));}, // Handle onTap if needed
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
+                                            }, // Handle onTap if needed
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1950,11 +1970,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: InkWell(
                             onTap: () {
-                                               Navigator.push(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: data.product[index].id),
+                                    builder: (context) => ProductDetailScreen(
+                                        productId: data.product[index].id),
                                   ));
                             },
                             child: AllProductDetailWidget(

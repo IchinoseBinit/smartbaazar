@@ -21,6 +21,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
@@ -1006,20 +1007,30 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
-                          return ProductDetailWidget(
-                            wow: hot.wow,
-                            comment: hot.commentcount.toString(),
-                            discounttedPrice: hot.discounted_price,
-                            issponsored: hot.user.sponsored,
-                            lefttile: "Jobs",
-                            productImage: hot.image,
-                            Vimage: hot.user.photo,
-                            price: hot.price,
-                            title: hot.title,
-                            vendorname: hot.user.name,
-                            similarproductCount: hot.similarProductCount,
-                            membershipColor: hot.user.membercolor,
-                            membershipTitle: hot.user.membershipTitle,
+                          return InkWell(
+                            onTap: () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: hot.id),
+                                  ));
+                            },
+                            child: ProductDetailWidget(
+                              wow: hot.wow,
+                              comment: hot.commentcount.toString(),
+                              discounttedPrice: hot.discounted_price,
+                              issponsored: hot.user.sponsored,
+                              lefttile: "Jobs",
+                              productImage: hot.image,
+                              Vimage: hot.user.photo,
+                              price: hot.price,
+                              title: hot.title,
+                              vendorname: hot.user.name,
+                              similarproductCount: hot.similarProductCount,
+                              membershipColor: hot.user.membercolor,
+                              membershipTitle: hot.user.membershipTitle,
+                            ),
                           );
                         },
                       ),
@@ -1382,7 +1393,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                             VProduct prod =
                                                 data.insidearr[0][index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                       Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id)));
+                                              },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
@@ -1441,7 +1458,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 data.insidearr[1][index];
 
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id)));
+                                              },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1498,7 +1521,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                             VProduct prod =
                                                 data.insidearr[2][index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id)));
+                                              },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1776,7 +1805,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     itemBuilder: (context, index) {
                                       VProduct prod = products[index];
                                       return InkWell(
-                                        onTap: () {}, // Handle onTap if needed
+                                        onTap: () {
+                                                             Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id)));
+                                        }, // Handle onTap if needed
                                         child: ProductDetailWidget(
                                           wow: prod.wow,
                                           comment: prod.commentcount.toString(),
@@ -1863,27 +1898,36 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         childAspectRatio: 0.5,
                       ),
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: AllProductDetailWidget(
-                            wow: data.product[index].wow,
-                            comment:
-                                data.product[index].commentcount.toString(),
-                            issponsored: data.product[index].user.sponsored,
-                            discounttedPrice:
-                                data.product[index].discounted_price,
-                            lefttile: "Jobs",
-                            productImage: data.product[index].image,
-                            Vimage: data.product[index].user.photo,
-                            vendorname: data.product[index].user.name,
-                            title: data.product[index].title,
-                            price: data.product[index].price,
-                            similarproductCount:
-                                data.product[index].similarProductCount,
-                            membershipColor:
-                                data.product[index].user.membercolor,
-                            membershipTitle:
-                                data.product[index].user.membershipTitle,
+                        return InkWell(
+                          onTap: () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: data.product[index].id)));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 5.h),
+                            child: AllProductDetailWidget(
+                              wow: data.product[index].wow,
+                              comment:
+                                  data.product[index].commentcount.toString(),
+                              issponsored: data.product[index].user.sponsored,
+                              discounttedPrice:
+                                  data.product[index].discounted_price,
+                              lefttile: "Jobs",
+                              productImage: data.product[index].image,
+                              Vimage: data.product[index].user.photo,
+                              vendorname: data.product[index].user.name,
+                              title: data.product[index].title,
+                              price: data.product[index].price,
+                              similarproductCount:
+                                  data.product[index].similarProductCount,
+                              membershipColor:
+                                  data.product[index].user.membercolor,
+                              membershipTitle:
+                                  data.product[index].user.membershipTitle,
+                            ),
                           ),
                         );
                       },
