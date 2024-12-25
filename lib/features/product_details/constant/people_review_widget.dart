@@ -17,7 +17,7 @@ class PeopleReviewsWidget extends StatelessWidget {
         itemCount: rate.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          RatingComment value=rate[index];
+          RatingComment value = rate[index];
           return Card(
             margin: EdgeInsets.symmetric(horizontal: 5.w),
             elevation: 4,
@@ -44,22 +44,25 @@ class PeopleReviewsWidget extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                           Text(value.name),
+                          Text(value.name),
                           SizedBox(
                             height: 5.h,
                           ),
                           RatingBar.builder(
-                            initialRating:double.tryParse(value.ratingStar)!,
+                            initialRating: double.tryParse(value.ratingStar) ??
+                                0, // Fallback to 0 if parsing fails
                             minRating: 1,
                             direction: Axis.horizontal,
-                            allowHalfRating: true,
+                            allowHalfRating:
+                                false, // Set to false if half ratings are not needed
                             itemCount: 5,
-                            itemSize: 15,
+                            itemSize: 15.w, // Responsive size
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, _) => const Icon(Icons.star,
                                 color: Color(0xFFffa500)),
-                            onRatingUpdate: (rating) {},
+                            onRatingUpdate:
+                                (rating) {}, // No action needed for updates in this case
                           ),
                         ],
                       ),
@@ -78,6 +81,3 @@ class PeopleReviewsWidget extends StatelessWidget {
     );
   }
 }
-
-
-

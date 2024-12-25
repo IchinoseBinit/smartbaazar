@@ -23,6 +23,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
@@ -30,9 +31,6 @@ import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
-import '../../add_to_cart/view/adde_to_card_screeen.dart';
-import '../../my_order/view/my_order_screen.dart';
-import '../../pending_approval/pending_approval.dart';
 import '../../product_details/constant/all_product_detail_widget.dart';
 
 class SocioShopScreen extends ConsumerStatefulWidget {
@@ -71,13 +69,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   }
 
   int _currentPage = 0;
-   final List<Map<String, dynamic>> __items = [
+  final List<Map<String, dynamic>> __items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-      {
+    {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
@@ -97,7 +95,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'label': 'Brandbazaar',
       'screen': const BrandBazarScreen()
     },
-  
     {
       'icon': 'assets/icon/box.svg',
       'label': 'ServiceHub',
@@ -119,8 +116,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'screen': const EventsScreen()
     },
   ];
-    bool _showSearchProductModels = false;
-
+  bool _showSearchProductModels = false;
 
   @override
   void initState() {
@@ -134,8 +130,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       } else {
         _currentPage = 0;
       }
-
-    
     });
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
@@ -192,8 +186,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     _initialDragPosition = details.globalPosition;
   }
 
-
-
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
       _showSearchProductModels = hasFocus;
@@ -202,7 +194,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
 
-    @override
+  @override
   void dispose() {
     // dynamictabController.dispose();
     _debouncer.close();
@@ -217,7 +209,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     //     final adsList = ref.watch(fetchAdsProvider);
 
     final asyncbajarValue = ref.watch(getSocioDataProvider);
- final SearchProductModels =
+    final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
 
@@ -702,7 +694,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           ),
                         ),
                       ),
-                      
+
                       // DottedBorder(
                       //     strokeWidth: 2,
 
@@ -787,7 +779,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     break;
                                 }
                               },
-                              child: CircleBorderBorder(
+                              child: DashedBorder(
                                 dashCount: 2,
                                 child: SizedBox(
                                   width: 100.w,
@@ -1013,18 +1005,28 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
-                          return ProductDetailWidget(
-                            membershipColor: hot.user.membercolor,
-                            membershipTitle: hot.user.membershipTitle,
-                            similarproductCount: hot.similarProductCount,
-                            issponsored: hot.user.sponsored,
-                            discounttedPrice: hot.discounted_price,
-                            lefttile: "Socio-Shop",
-                            productImage: hot.image,
-                            Vimage: hot.user.photo,
-                            price: hot.price,
-                            title: hot.title,
-                            vendorname: hot.user.name,
+                          return InkWell(
+                            onTap: () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: hot.id),
+                                  ));
+                            },
+                            child: ProductDetailWidget(
+                              membershipColor: hot.user.membercolor,
+                              membershipTitle: hot.user.membershipTitle,
+                              similarproductCount: hot.similarProductCount,
+                              issponsored: hot.user.sponsored,
+                              discounttedPrice: hot.discounted_price,
+                              lefttile: "Socio-Shop",
+                              productImage: hot.image,
+                              Vimage: hot.user.photo,
+                              price: hot.price,
+                              title: hot.title,
+                              vendorname: hot.user.name,
+                            ),
                           );
                         },
                       ),
@@ -1089,21 +1091,31 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[0][index];
-                                return ProductDetailWidget(
-                                  offer: pro.discounted_price,
-                                  wow: pro.wow,
-                                  comment: pro.commentcount.toString(),
-                                  discounttedPrice: pro.discounted_price,
-                                  issponsored: pro.user.sponsored,
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                  similarproductCount: pro.similarProductCount,
-                                  membershipColor: pro.user.membercolor,
-                                  membershipTitle: pro.user.membershipTitle,
+                                return InkWell(
+                                  onTap: () {
+                                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                  },
+                                  child: ProductDetailWidget(
+                                    offer: pro.discounted_price,
+                                    wow: pro.wow,
+                                    comment: pro.commentcount.toString(),
+                                    discounttedPrice: pro.discounted_price,
+                                    issponsored: pro.user.sponsored,
+                                    lefttile: "Socio-Shop",
+                                    Vimage: pro.user.photo,
+                                    price: pro.price,
+                                    title: pro.title,
+                                    vendorname: pro.user.name,
+                                    productImage: pro.image,
+                                    similarproductCount: pro.similarProductCount,
+                                    membershipColor: pro.user.membercolor,
+                                    membershipTitle: pro.user.membershipTitle,
+                                  ),
                                 );
                               },
                             ),
@@ -1159,21 +1171,31 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 VProduct pro = data.insidearr[1][index];
                                 print("kolo ${pro.id}");
 
-                                return ProductDetailWidget(
-                                  offer: pro.discounted_price,
-                                  wow: pro.wow,
-                                  comment: pro.commentcount.toString(),
-                                  discounttedPrice: pro.discounted_price,
-                                  issponsored: pro.user.sponsored,
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                  similarproductCount: pro.similarProductCount,
-                                  membershipColor: pro.user.membercolor,
-                                  membershipTitle: pro.user.membershipTitle,
+                                return InkWell(
+                                  onTap: () {
+                                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                  },
+                                  child: ProductDetailWidget(
+                                    offer: pro.discounted_price,
+                                    wow: pro.wow,
+                                    comment: pro.commentcount.toString(),
+                                    discounttedPrice: pro.discounted_price,
+                                    issponsored: pro.user.sponsored,
+                                    lefttile: "Socio-Shop",
+                                    Vimage: pro.user.photo,
+                                    price: pro.price,
+                                    title: pro.title,
+                                    vendorname: pro.user.name,
+                                    productImage: pro.image,
+                                    similarproductCount: pro.similarProductCount,
+                                    membershipColor: pro.user.membercolor,
+                                    membershipTitle: pro.user.membershipTitle,
+                                  ),
                                 );
                               },
                             ),
@@ -1218,21 +1240,31 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[2][index];
-                                return ProductDetailWidget(
-                                  offer: pro.discounted_price,
-                                  wow: pro.wow,
-                                  comment: pro.commentcount.toString(),
-                                  discounttedPrice: pro.discounted_price,
-                                  issponsored: pro.user.sponsored,
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                  similarproductCount: pro.similarProductCount,
-                                  membershipColor: pro.user.membercolor,
-                                  membershipTitle: pro.user.membershipTitle,
+                                return InkWell(
+                                  onTap: () {
+                                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                  },
+                                  child: ProductDetailWidget(
+                                    offer: pro.discounted_price,
+                                    wow: pro.wow,
+                                    comment: pro.commentcount.toString(),
+                                    discounttedPrice: pro.discounted_price,
+                                    issponsored: pro.user.sponsored,
+                                    lefttile: "Socio-Shop",
+                                    Vimage: pro.user.photo,
+                                    price: pro.price,
+                                    title: pro.title,
+                                    vendorname: pro.user.name,
+                                    productImage: pro.image,
+                                    similarproductCount: pro.similarProductCount,
+                                    membershipColor: pro.user.membercolor,
+                                    membershipTitle: pro.user.membershipTitle,
+                                  ),
                                 );
                               },
                             ),
@@ -1279,22 +1311,31 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[3][index];
-                                print("lamo ${pro.id}");
-                                return ProductDetailWidget(
-                                  offer: pro.discounted_price,
-                                  wow: pro.wow,
-                                  comment: pro.commentcount.toString(),
-                                  discounttedPrice: pro.discounted_price,
-                                  issponsored: pro.user.sponsored,
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                  similarproductCount: pro.similarProductCount,
-                                  membershipColor: pro.user.membercolor,
-                                  membershipTitle: pro.user.membershipTitle,
+                                return InkWell(
+                                  onTap: () {
+                                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                  },
+                                  child: ProductDetailWidget(
+                                    offer: pro.discounted_price,
+                                    wow: pro.wow,
+                                    comment: pro.commentcount.toString(),
+                                    discounttedPrice: pro.discounted_price,
+                                    issponsored: pro.user.sponsored,
+                                    lefttile: "Socio-Shop",
+                                    Vimage: pro.user.photo,
+                                    price: pro.price,
+                                    title: pro.title,
+                                    vendorname: pro.user.name,
+                                    productImage: pro.image,
+                                    similarproductCount: pro.similarProductCount,
+                                    membershipColor: pro.user.membercolor,
+                                    membershipTitle: pro.user.membershipTitle,
+                                  ),
                                 );
                               },
                             ),
@@ -1338,21 +1379,31 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[4][index];
-                                return ProductDetailWidget(
-                                  offer: pro.discounted_price,
-                                  wow: pro.wow,
-                                  comment: pro.commentcount.toString(),
-                                  discounttedPrice: pro.discounted_price,
-                                  issponsored: pro.user.sponsored,
-                                  lefttile: "Socio-Shop",
-                                  Vimage: pro.user.photo,
-                                  price: pro.price,
-                                  title: pro.title,
-                                  vendorname: pro.user.name,
-                                  productImage: pro.image,
-                                  similarproductCount: pro.similarProductCount,
-                                  membershipColor: pro.user.membercolor,
-                                  membershipTitle: pro.user.membershipTitle,
+                                return InkWell(
+                                  onTap: () {
+                                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                  },
+                                  child: ProductDetailWidget(
+                                    offer: pro.discounted_price,
+                                    wow: pro.wow,
+                                    comment: pro.commentcount.toString(),
+                                    discounttedPrice: pro.discounted_price,
+                                    issponsored: pro.user.sponsored,
+                                    lefttile: "Socio-Shop",
+                                    Vimage: pro.user.photo,
+                                    price: pro.price,
+                                    title: pro.title,
+                                    vendorname: pro.user.name,
+                                    productImage: pro.image,
+                                    similarproductCount: pro.similarProductCount,
+                                    membershipColor: pro.user.membercolor,
+                                    membershipTitle: pro.user.membershipTitle,
+                                  ),
                                 );
                               },
                             ),
@@ -1399,30 +1450,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.global.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.global[index];
-
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
-                                            );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.global.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.global.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
                               ),
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
@@ -1437,7 +1480,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           VProduct prod =
                                               data.insidearr[0][index];
                                           return InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                            },
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1476,30 +1526,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.domestic.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.domestic[index];
-
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
-                                            );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.domestic.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.domestic.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
                               ),
                               SizedBox(
                                 height: 359.h,
@@ -1520,7 +1562,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           VProduct prod =
                                               data.insidearr[1][index];
                                           return InkWell(
-                                            onTap: () {},
+                                            onTap: () {                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));},
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1552,30 +1599,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 130,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: data.spotlight.length,
-                                    itemBuilder: (context, index) {
-                                      LogoData res = data.domestic[index];
-
-                                      if (index == 0) {
-                                        return NotStoryWidget(
-                                            index: index,
-                                            brandname: res.brandName
-
-                                            // showgift: false,
-                                            );
-                                      } else if (index >= 1 && index <= 2) {
-                                        return NotStoryWidget(
-                                          index: index,
-                                          showgift: true,
-                                        );
-                                      }
-                                      return NotStoryWidget(index: index);
-                                    }),
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.spotlight.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.spotlight.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
                               ),
                               SizedBox(
                                 height: 359.h,
@@ -1596,7 +1635,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           VProduct prod =
                                               data.insidearr[2][index];
                                           return InkWell(
-                                            onTap: () {},
+                                            onTap: () {                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));},
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1825,7 +1869,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                                           return InkWell(
                                             onTap:
-                                                () {}, // Handle onTap if needed
+                                                () {                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));}, // Handle onTap if needed
                                             child: ProductDetailWidget(
                                               comment:
                                                   prod.commentcount.toString(),
@@ -1899,25 +1948,35 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         // VProduct res = data.allProducts[index];
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
-                          child: AllProductDetailWidget(
-                            wow: data.product[index].wow,
-                            comment:
-                                data.product[index].commentcount.toString(),
-                            issponsored: data.product[index].user.sponsored,
-                            discounttedPrice:
-                                data.product[index].discounted_price,
-                            lefttile: "Socio-Shop",
-                            productImage: data.product[index].image,
-                            Vimage: data.product[index].user.photo,
-                            vendorname: data.product[index].user.name,
-                            title: data.product[index].title,
-                            price: data.product[index].price,
-                            similarproductCount:
-                                data.product[index].similarProductCount,
-                            membershipColor:
-                                data.product[index].user.membercolor,
-                            membershipTitle:
-                                data.product[index].user.membershipTitle,
+                          child: InkWell(
+                            onTap: () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: data.product[index].id),
+                                  ));
+                            },
+                            child: AllProductDetailWidget(
+                              wow: data.product[index].wow,
+                              comment:
+                                  data.product[index].commentcount.toString(),
+                              issponsored: data.product[index].user.sponsored,
+                              discounttedPrice:
+                                  data.product[index].discounted_price,
+                              lefttile: "Socio-Shop",
+                              productImage: data.product[index].image,
+                              Vimage: data.product[index].user.photo,
+                              vendorname: data.product[index].user.name,
+                              title: data.product[index].title,
+                              price: data.product[index].price,
+                              similarproductCount:
+                                  data.product[index].similarProductCount,
+                              membershipColor:
+                                  data.product[index].user.membercolor,
+                              membershipTitle:
+                                  data.product[index].user.membershipTitle,
+                            ),
                           ),
                         );
                       },
@@ -1971,138 +2030,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
             ),
           ),
 
-          ValueListenableBuilder<bool>(
-            valueListenable: _showSideBar,
-            builder: (context, value, child) {
-              return Positioned(
-                  top: _isSectionsVisible ? 300 : 300,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () {
-                      _showSideBar.value = !value;
-                    },
-                    child: value
-                        ? const CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage(
-                          'assets/images/Smartbazaar-Icon-for-QR.png'),
-                    )
-                        : Container(
-                      width: 70.w,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 5.h,
-                      ),
-                      // Explicit height set
-                      decoration: BoxDecoration(
-                          color: const Color(0xffE2DAE5).withOpacity(0.9),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10))),
-                      child: Center(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 6.h,
-                              ),
-                              Image.asset('assets/images/smart.png'),
-                              SizedBox(
-                                height: 6.h,
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Column(
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/scanner.png',
-                                        height: 15,
-                                        color: const Color(0xff918994),
-                                      ),
-                                      Text(
-                                        "Connect",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xff918994)),
-                                      )
-                                    ],
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                          const PendingApprovalScreen(),
-                                        ));
-                                  },
-                                  icon: Column(
-                                    children: [
-                                      const Icon(
-                                        Icons.shopping_cart_outlined,
-                                        size: 15,
-                                        color: Color(0xff918994),
-                                      ),
-                                      Text(
-                                        "Cart",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xff918994)),
-                                      )
-                                    ],
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                          const AddToCartScreen(),
-                                        ));
-                                  },
-                                  icon: Column(
-                                    children: [
-                                      const Icon(
-                                        Icons.add,
-                                        size: 15,
-                                        color: Color(0xff918994),
-                                      ),
-                                      Text(
-                                        "Sell",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xff918994)),
-                                      )
-                                    ],
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                          const MyOrderScreen(),
-                                        ));
-                                  },
-                                  icon: Column(
-                                    children: [
-                                      Image.asset('assets/images/tennis.png'),
-                                      Text(
-                                        "Orders",
-                                        style: headerstyle.copyWith(
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xff918994)),
-                                      )
-                                    ],
-                                  )),
-                            ],
-                          )),
-                    ),
-                  ));
-            },
-          ),
+          valuenotifilersidebutton(
+              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+
           //
         ]));
   }

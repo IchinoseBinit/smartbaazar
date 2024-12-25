@@ -123,6 +123,9 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       ratings: json['ratings'] == null
           ? null
           : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
+      user: json['user'] == null
+          ? null
+          : usermodel.fromJson(json['user'] as Map<String, dynamic>),
       user_details: json['user_details'] == null
           ? null
           : UserDetailsProduct.fromJson(
@@ -215,6 +218,7 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'commentCount': instance.commentCount,
       'extra': instance.extra,
       'ratings': instance.ratings,
+      'user': instance.user,
       'user_details': instance.user_details,
       'pictures': instance.pictures,
       'postType': instance.postType,
@@ -365,6 +369,26 @@ Map<String, dynamic> _$$RatingCountsImplToJson(_$RatingCountsImpl instance) =>
       '3': instance.three,
       '2': instance.two,
       '1': instance.one,
+    };
+
+_$usermodelImpl _$$usermodelImplFromJson(Map<String, dynamic> json) =>
+    _$usermodelImpl(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+      username: json['username'] as String,
+      createdAtFormatted: json['created_at_formatted'] as String,
+      photoUrl: json['photo_url'] as String,
+      storyCount: (json['story_count'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$usermodelImplToJson(_$usermodelImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'username': instance.username,
+      'created_at_formatted': instance.createdAtFormatted,
+      'photo_url': instance.photoUrl,
+      'story_count': instance.storyCount,
     };
 
 _$UserDetailsProductImpl _$$UserDetailsProductImplFromJson(
