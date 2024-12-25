@@ -425,9 +425,6 @@ _$PictureImpl _$$PictureImplFromJson(Map<String, dynamic> json) =>
       postId: json['postId'] as String?,
       filename: json['filename'] as String?,
       image_url: json['image_url'] as String?,
-      mimeType: json['mimeType'] as String?,
-      position: json['position'] as String?,
-      active: json['active'] as String?,
     );
 
 Map<String, dynamic> _$$PictureImplToJson(_$PictureImpl instance) =>
@@ -436,9 +433,6 @@ Map<String, dynamic> _$$PictureImplToJson(_$PictureImpl instance) =>
       'postId': instance.postId,
       'filename': instance.filename,
       'image_url': instance.image_url,
-      'mimeType': instance.mimeType,
-      'position': instance.position,
-      'active': instance.active,
     };
 
 _$ExtraModelImpl _$$ExtraModelImplFromJson(Map<String, dynamic> json) =>
@@ -534,30 +528,18 @@ Map<String, dynamic> _$$ColorOptionImplToJson(_$ColorOptionImpl instance) =>
 
 _$AvailableColorImpl _$$AvailableColorImplFromJson(Map<String, dynamic> json) =>
     _$AvailableColorImpl(
-      belongsTo: json['belongs_to'] as String,
       name: json['name'] as String,
       type: json['type'] as String,
-      max: (json['max'] as num?)?.toInt(),
-      required: json['required'] as String,
-      useAsFilter: json['use_as_filter'] as String,
-      help: json['help'] as String?,
-      active: json['active'] as String,
-      options: (json['options'] as List<dynamic>)
-          .map((e) => Option.fromJson(e as Map<String, dynamic>))
+      options: (json['options'] as List<dynamic>?)
+          ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$$AvailableColorImplToJson(
         _$AvailableColorImpl instance) =>
     <String, dynamic>{
-      'belongs_to': instance.belongsTo,
       'name': instance.name,
       'type': instance.type,
-      'max': instance.max,
-      'required': instance.required,
-      'use_as_filter': instance.useAsFilter,
-      'help': instance.help,
-      'active': instance.active,
       'options': instance.options,
     };
 
@@ -582,7 +564,6 @@ Map<String, dynamic> _$$SimilarItemsImplToJson(_$SimilarItemsImpl instance) =>
 _$OptionImpl _$$OptionImplFromJson(Map<String, dynamic> json) => _$OptionImpl(
       fieldId: json['field_id'] as String?,
       value: json['value'] as String?,
-      parentId: json['parent_id'] as String?,
       lft: json['lft'] as String?,
       rgt: json['rgt'] as String?,
       depth: json['depth'] as String?,
@@ -592,7 +573,6 @@ Map<String, dynamic> _$$OptionImplToJson(_$OptionImpl instance) =>
     <String, dynamic>{
       'field_id': instance.fieldId,
       'value': instance.value,
-      'parent_id': instance.parentId,
       'lft': instance.lft,
       'rgt': instance.rgt,
       'depth': instance.depth,

@@ -669,8 +669,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       MediaQuery.of(context).size.height * 15.3,
                                   child: TabBarView(children: [
                                     data.brandNew!.isEmpty
-                                        ? const Center(
-                                            child: Text("No listing found"))
+                                        ? nolistingfound()
                                         : LayoutBuilder(
                                             builder: (context, constraints) {
                                             return GridView.builder(
@@ -746,26 +745,26 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       ).toList(),
                                     ),
                                     data.used!.isEmpty
-                                        ? const Center(
-                                            child: Text("No listing found"))
+                                        ? nolistingfound()
                                         : LayoutBuilder(
                                             builder: (context, constraints) {
                                             return GridView.builder(
-                                physics:
-                                    const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                shrinkWrap: true, // Adjust to fit content
-                                padding: EdgeInsets.zero,
-                                itemCount: data.used?.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 400,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.2,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.9,
-                                ),
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                              shrinkWrap:
+                                                  true, // Adjust to fit content
+                                              padding: EdgeInsets.zero,
+                                              itemCount: data.used?.length,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                mainAxisExtent: 400,
+                                                crossAxisCount: 2,
+                                                crossAxisSpacing: 0.2,
+                                                mainAxisSpacing: 0.2,
+                                                childAspectRatio: 0.9,
+                                              ),
 
-                                itemBuilder: (context, index) {
+                                              itemBuilder: (context, index) {
                                                 GlobalModel res =
                                                     data.used![index];
                                                 return AllProductDetailWidget(
@@ -787,8 +786,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             );
                                           }),
                                     data.services!.isEmpty
-                                        ? const Center(
-                                            child: Text("No listing found"))
+                                        ? nolistingfound()
                                         : GridView.builder(
                                             physics:
                                                 const NeverScrollableScrollPhysics(), // Disable grid scrolling

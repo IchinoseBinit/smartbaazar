@@ -1806,12 +1806,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       productsList[selectedIndex];
 
                                   return data.insidearr.isEmpty
-                                      ? const Padding(
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: SizedBox(
-                                            child: Text("No listing available"),
-                                          ),
-                                        )
+                                      ? nolistingfound()
                                       : SizedBox(
                                           height: 340.h,
                                           child: ListView.builder(

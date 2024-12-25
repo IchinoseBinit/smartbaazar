@@ -287,9 +287,9 @@ class Picture with _$Picture {
     required String? postId,
     required String? filename,
     required String? image_url,
-    required String? mimeType,
-    required String? position,
-    required String? active,
+    // required String? mimeType,
+    // required String? position,
+    // required String? active,
   }) = _Picture;
 
   factory Picture.fromJson(Map<String, dynamic> json) =>
@@ -360,16 +360,12 @@ class ColorOption with _$ColorOption {
 @freezed
 class AvailableColor with _$AvailableColor {
   const factory AvailableColor({
-    @JsonKey(name: 'belongs_to') required String belongsTo,
     required String name,
     required String type,
-    int? max,
+    // int? max,
     // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-    required String required,
-    @JsonKey(name: 'use_as_filter') required String useAsFilter,
-    String? help,
-    required String active,
-    required List<Option> options,
+    // required String active,
+     List<Option>? options,
   }) = _AvailableColor;
 
   factory AvailableColor.fromJson(Map<String, dynamic> json) =>
@@ -394,7 +390,7 @@ class Option with _$Option {
   const factory Option({
     @JsonKey(name: 'field_id') required String? fieldId,
     required String? value,
-    @JsonKey(name: 'parent_id') required String? parentId,
+    // @JsonKey(name: 'parent_id') required String? parentId,
     required String? lft,
     required String? rgt,
     required String? depth,

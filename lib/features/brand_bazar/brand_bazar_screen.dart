@@ -1735,12 +1735,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       productsList[selectedIndex];
 
                                   return data.insidearr.isEmpty
-                                      ? const Padding(
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: SizedBox(
-                                            child: Text("No listing available"),
-                                          ),
-                                        )
+                                      ? nolistingfound()
                                       : SizedBox(
                                           height: 340.h,
                                           child: ListView.builder(

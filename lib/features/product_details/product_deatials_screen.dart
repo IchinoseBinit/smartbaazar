@@ -32,7 +32,6 @@ import 'package:smartbazar/features/search_product_details/view/search_product_d
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -683,7 +682,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                           fontWeight: FontWeight.w700,
                                           color: Colors.black87),
                                     ),
-                                  Text(
+                               if(data.result?.ratings!=null)   Text(
                                     "${data.result!.ratings!.averageRating} ratings",
                                     style: headerstyle.copyWith(
                                         fontSize: 15,
@@ -692,7 +691,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                   )
                                 ],
                               ),
-                              Column(
+                          if(data.result?.ratings!=null)    Column(
                                 children: [
                                   StarWidget(
                                     star: data
@@ -855,7 +854,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             }),
                           ),
 
-                          Padding(
+                         if(data.result?.deals!=null) Padding(
                             padding: const EdgeInsets.all(10),
                             child: SizedBox(
                               height: 300,
