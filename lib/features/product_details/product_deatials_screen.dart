@@ -33,6 +33,7 @@ import 'package:smartbazar/features/product_details/api/product_details_provider
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/product_item_widget.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -91,24 +92,36 @@ class ProductDetailScreen extends ConsumerWidget {
               label: Row(
                 children: [
                   if (data.result != null)
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundImage:
-                          null, // Set to null since CachedNetworkImage handles the image
-                      child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: data.result!.user_photo_url,
-                          placeholder: (context, url) => SizedBox(
-                              height: 30.h,
-                              width: 50.w,
-                              child: Center(
-                                  child:
-                                      CircularProgressIndicator())), // Placeholder widget
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error), // Error widget
-                          fit: BoxFit.cover, // Adjust image fit
-                          width: 50, // Match the CircleAvatar diameter
-                          height: 50,
+                    InkWell(
+                      onTap: () {
+                        // print("bibash ${data.result!.user!.id}");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VendorHomeScreen(
+                                  vendorName: data.result!.user!.name,
+                                  vid: data.result!.user!.id),
+                            ));
+                      },
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage:
+                            null, // Set to null since CachedNetworkImage handles the image
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: data.result!.user_photo_url,
+                            placeholder: (context, url) => SizedBox(
+                                height: 30.h,
+                                width: 50.w,
+                                child: Center(
+                                    child:
+                                        CircularProgressIndicator())), // Placeholder widget
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error), // Error widget
+                            fit: BoxFit.cover, // Adjust image fit
+                            width: 50, // Match the CircleAvatar diameter
+                            height: 50,
+                          ),
                         ),
                       ),
                     ),
@@ -290,6 +303,8 @@ class ProductDetailScreen extends ConsumerWidget {
 
                       if (data.result != null)
                         HeaderBannerWidget(
+                          id: data.result!.user!.id,
+                          vname: data.result!.user!.name,
                             img: data.result!.user_photo_url,
                             title: data.result!.feed_post!.isEmpty
                                 ? "Trade-hub"
@@ -426,8 +441,8 @@ class ProductDetailScreen extends ConsumerWidget {
                           SizedBox(
                             height: 2.h,
                           ),
-                          const FeaturesBannerWidget(),
-                          if (data.result!.postTypeId == "7")
+                          if (data.result != null) const FeaturesBannerWidget(),
+                          if (data.result?.postTypeId == "7")
                             const DiscountBoxWidget(),
                           SizedBox(
                             height: 10.h,
@@ -615,10 +630,11 @@ class ProductDetailScreen extends ConsumerWidget {
                           //       .extra!.fields!.original!.result!.field4!.name,
                           //   title: "Brand",
                           // ),
-                          AdditonalDetailsWidget(
-                            desp: data.result!.postType!.name,
-                            title: "Product type",
-                          ),
+                          if (data.result != null)
+                            AdditonalDetailsWidget(
+                              desp: data.result!.postType!.name,
+                              title: "Product type",
+                            ),
                           const AdditonalDetailsWidget(
                             desp: "Other",
                             title: "Electric Brand",
@@ -658,14 +674,15 @@ class ProductDetailScreen extends ConsumerWidget {
                             children: [
                               Column(
                                 children: [
-                                  Text(
-                                    data.result!.ratings!.averageRating
-                                        .toString(),
-                                    style: headerstyle.copyWith(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black87),
-                                  ),
+                                  if (data.result?.ratings != null)
+                                    Text(
+                                      data.result!.ratings!.averageRating
+                                          .toString(),
+                                      style: headerstyle.copyWith(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black87),
+                                    ),
                                   Text(
                                     "${data.result!.ratings!.averageRating} ratings",
                                     style: headerstyle.copyWith(
@@ -841,7 +858,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: SizedBox(
-                              height: 260,
+                              height: 300,
                               child: selectedIndex == 1
                                   ? CardWidget(
                                       deal: data.result!.deals ??
@@ -882,7 +899,12 @@ class ProductDetailScreen extends ConsumerWidget {
                               )),
                           data.widgetSimilarPosts?.posts.data[0].userPhotoUrl ==
                                   null
-                              ? const SizedBox(child: Text("No listing found"))
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 40, left: 20),
+                                  child: const SizedBox(
+                                      child: Text("No listing found")),
+                                )
                               : GridView.builder(
                                   physics:
                                       const NeverScrollableScrollPhysics(), // Disable grid scrolling

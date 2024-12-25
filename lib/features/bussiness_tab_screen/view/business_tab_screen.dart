@@ -10,6 +10,7 @@ import 'package:smartbazar/features/bussiness_tab_screen/view/api/search_result_
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget_list_search.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
@@ -51,7 +52,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     'Relevance': 'relevance',
     'Date': 'date',
   };
-    String dropdownValue = 'sort-type';
+  String dropdownValue = 'sort-type';
   bool _showSearchProductModels = false;
 
   void _onPageChanged(int index) {
@@ -73,8 +74,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
   @override
   void initState() {
     _query = widget.query;
-    _searchController.text =
-        _searchController.text.isEmpty ? _query : _searchController.text;
+    // _searchController.text =
+    //     _searchController.text.isEmpty ? _query : _searchController.text;
     _pageController = PageController(
       viewportFraction: 0.3,
       initialPage: selectedIndex!,
@@ -127,14 +128,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     return Scaffold(
       // bottomNavigationBar: BottomNavigationScreen(),
       body: SingleChildScrollView(
-
         child: ConstrainedBox(
           constraints: BoxConstraints(
-      minHeight: MediaQuery.of(context).size.height,
-    ),
+            minHeight: MediaQuery.of(context).size.height,
+          ),
           child: IntrinsicHeight(
             child: Column(
-            
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -229,10 +228,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                 query: _searchController.text,
                                               ),
                                             ));
-            
+
                                         setState(() {
                                           _showSearchProductModels = false;
-            
+
                                           FocusScope.of(context).unfocus();
                                         });
                                         // Navigator.push(
@@ -253,14 +252,14 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                               );
                             }, loading: () {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -308,7 +307,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                           //  // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
-            
+
                             // Highlight only when index == 4
                             bool isActive = index == 1;
                             return GestureDetector(
@@ -384,12 +383,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                           },
                         ),
                       ),
-            
+
                       const Divider(
                         height: 0.1,
                         color: ColorConstant.grayColor,
                       ),
-            
+
                       if (_isSectionsVisible)
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -531,8 +530,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       selectedTabIndex = index;
                                     });
                                   },
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   tabs: [
                                     Tab(
                                       child: Row(
@@ -546,7 +545,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             style: headerstyle.copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 15,
-                                                color: ColorConstant.blackColor),
+                                                color:
+                                                    ColorConstant.blackColor),
                                           ),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
@@ -557,7 +557,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     BorderRadius.circular(5),
                                                 color: const Color(0xff781740)),
                                             child: Text(
-                                              data.brandNew?.length.toString() ??
+                                              data.brandNew?.length
+                                                      .toString() ??
                                                   '0',
                                               style: headerstyle,
                                             ),
@@ -577,7 +578,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             style: headerstyle.copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 15,
-                                                color: ColorConstant.blackColor),
+                                                color:
+                                                    ColorConstant.blackColor),
                                           ),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
@@ -588,7 +590,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     BorderRadius.circular(5),
                                                 color: const Color(0xff362677)),
                                             child: Text(
-                                              data.business?.length.toString() ??
+                                              data.business?.length
+                                                      .toString() ??
                                                   '0',
                                               style: headerstyle,
                                             ),
@@ -608,7 +611,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             style: headerstyle.copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 15,
-                                                color: ColorConstant.blackColor),
+                                                color:
+                                                    ColorConstant.blackColor),
                                           ),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
@@ -619,7 +623,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     BorderRadius.circular(5),
                                                 color: const Color(0xff362677)),
                                             child: Text(
-                                              data.used?.length.toString() ?? '0',
+                                              data.used?.length.toString() ??
+                                                  '0',
                                               style: headerstyle,
                                             ),
                                           )
@@ -638,7 +643,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             style: headerstyle.copyWith(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 15,
-                                                color: ColorConstant.blackColor),
+                                                color:
+                                                    ColorConstant.blackColor),
                                           ),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
@@ -659,163 +665,170 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   ],
                                 ),
                                 SizedBox(
-                                   height:   MediaQuery.of(context).size.height*10,
+                                  height:
+                                      MediaQuery.of(context).size.height * 15.3,
                                   child: TabBarView(children: [
-                                     data.brandNew!.isEmpty? const Center(child: Text("No listing found")): LayoutBuilder(
-                                        builder: (context, constraints) {
-                                      return GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                        shrinkWrap:
-                                            true, // Adjust to fit content
-                                        itemCount: data.brandNew?.length,
+                                    data.brandNew!.isEmpty
+                                        ? const Center(
+                                            child: Text("No listing found"))
+                                        : LayoutBuilder(
+                                            builder: (context, constraints) {
+                                            return GridView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                              shrinkWrap:
+                                                  true, // Adjust to fit content
+                                              itemCount: data.brandNew?.length,
 
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          // mainAxisExtent:
-                                          //     constraints.maxWidth > 430
-                                          //         ? 4
-                                          //         : 2,
-                                          // crossAxisCount: 2,
-                                          // crossAxisSpacing: 0.2,
-                                          // mainAxisSpacing: 0.2,
-                                          // childAspectRatio: 0.9,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                // mainAxisExtent:
+                                                //     constraints.maxWidth > 430
+                                                //         ? 4
+                                                //         : 2,
+                                                // crossAxisCount: 2,
+                                                // crossAxisSpacing: 0.2,
+                                                // mainAxisSpacing: 0.2,
+                                                // childAspectRatio: 0.9,
+                                                mainAxisExtent: 400,
+                                                crossAxisCount: 2,
+                                                crossAxisSpacing: 0.2,
+                                                mainAxisSpacing: 0.2,
+                                                childAspectRatio: 0.9,
+                                              ),
+                                              itemBuilder: (context, index) {
+                                                GlobalModel res =
+                                                    data.brandNew![index];
+                                                return ProductDetailWidgetListSearch(
+                                                    issponsored:
+                                                        res.user[0].sponsored!,
+                                                    productImage: res.imageUrl,
+                                                    Vimage: res.user[0].photo!,
+                                                    vendorname:
+                                                        res.user[0].name!,
+                                                    title: res.title,
+                                                    price: res.price,
+                                                    similarproductCount:
+                                                        res.similarproductCount,
+                                                    membershipColor: res.user[0]
+                                                        .membership_color!,
+                                                    membershipTitle: res.user[0]
+                                                        .membership_title!);
+                                              },
+                                            );
+                                          }),
+                                    Column(
+                                      children: data.business!.map(
+                                        (e) {
+                                          return BigContainer(
+                                            memebertitle: e.membershipTitle!,
+                                            lat: double.tryParse(
+                                                    e.latitude ?? '0') ??
+                                                0,
+                                            long: double.tryParse(
+                                                    e.longitude ?? '0') ??
+                                                0,
+                                            Cnumber: e.contact ?? '9887654867',
+                                            deals_circle: e.dealsCircle!,
+                                            location: e.location ?? 'Nepal',
+                                            total_connections:
+                                                e.totalConnections!,
+                                            total_prize_worth:
+                                                e.totalPrizeWorth!,
+                                            title: e.vendorName!,
+                                            contact: e.contact ?? '9845784578',
+                                            logo: e.logo!,
+                                            membershipTitle: e.membershipTitle!,
+                                            storyCount: e.storyCount!,
+                                            hasSpo: e.hasSponsoredGifts!,
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
+                                    data.used!.isEmpty
+                                        ? const Center(
+                                            child: Text("No listing found"))
+                                        : LayoutBuilder(
+                                            builder: (context, constraints) {
+                                            return GridView.builder(
+                                physics:
+                                    const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                shrinkWrap: true, // Adjust to fit content
+                                padding: EdgeInsets.zero,
+                                itemCount: data.used?.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 400,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.2,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.9,
+                                ),
+
+                                itemBuilder: (context, index) {
+                                                GlobalModel res =
+                                                    data.used![index];
+                                                return AllProductDetailWidget(
+                                                    issponsored:
+                                                        res.user[0].sponsored!,
+                                                    productImage: res.imageUrl,
+                                                    Vimage: res.user[0].photo!,
+                                                    vendorname:
+                                                        res.user[0].name!,
+                                                    title: res.title,
+                                                    price: res.price,
+                                                    similarproductCount:
+                                                        res.similarproductCount,
+                                                    membershipColor: res.user[0]
+                                                        .membership_color!,
+                                                    membershipTitle: res.user[0]
+                                                        .membership_title!);
+                                              },
+                                            );
+                                          }),
+                                    data.services!.isEmpty
+                                        ? const Center(
+                                            child: Text("No listing found"))
+                                        : GridView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                            shrinkWrap:
+                                                true, // Adjust to fit content
+                                            padding: EdgeInsets.zero,
+                                            itemCount: data.services?.length,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
                                               mainAxisExtent: 400,
                                               crossAxisCount: 2,
                                               crossAxisSpacing: 0.2,
                                               mainAxisSpacing: 0.2,
                                               childAspectRatio: 0.9,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          GlobalModel res =
-                                              data.brandNew![index];
-                                          return ProductDetailWidgetListSearch(
-                                              issponsored:
-                                                  res.user[0].sponsored!,
-                                              productImage: res.imageUrl,
-                                              Vimage: res.user[0].photo!,
-                                              vendorname: res.user[0].name!,
-                                              title: res.title,
-                                              price: res.price,
-                                              similarproductCount:
-                                                  res.similarproductCount,
-                                              membershipColor:
-                                                  res.user[0].membership_color!,
-                                              membershipTitle:
-                                                  res.user[0].membership_title!);
-                                        },
-                                      );
-                                    }),
-                                    Column(
+                                            ),
 
-                                      children: data.business!.map((e) {
-                                        return BigContainer(
-                                          lat: double.tryParse(e.latitude?? '0')?? 0,
-                                          long: double.tryParse(e.longitude?? '0')?? 0,
-
-                                          Cnumber:e.contact! ,
-                                          deals_circle: e.dealsCircle!,
-                                          location: e.location?? 'Nepal',
-                                          total_connections: e.totalConnections!,
-                                          total_prize_worth: e.totalPrizeWorth!,
-
-                                          title: e.vendorName!,
-                                          contact: e.contact!,
-                                          logo: e.logo!,
-                                          membershipTitle: e.membershipTitle!,
-                                          storyCount: e.storyCount!,
-                                          hasSpo: e.hasSponsoredGifts!,
-
-                                        );
-                                      },).toList(),
-                                    ),
-                                   data.used!.isEmpty? const Center(child: Text("No listing found")):
-                                    LayoutBuilder(
-                                        builder: (context, constraints) {
-
-                                      return GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                        shrinkWrap:
-                                            true, // Adjust to fit content
-                                        itemCount: data.used?.length,
-
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          // mainAxisExtent:
-                                          //     constraints.maxWidth > 430
-                                          //         ? 4
-                                          //         : 2,
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 0.2,
-                                          mainAxisSpacing: 0.2,
-                                          childAspectRatio: 0.9,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          GlobalModel res =
-                                              data.used![index];
-                                          return ProductDetailWidget(
-                                              issponsored:
-                                                  res.user[0].sponsored!,
-                                              productImage: res.imageUrl,
-                                              Vimage: res.user[0].photo!,
-                                              vendorname: res.user[0].name!,
-                                              title: res.title,
-                                              price: res.title,
-                                              similarproductCount:
-                                                  res.similarproductCount,
-                                              membershipColor:
-                                                  res.user[0].membership_color!,
-                                              membershipTitle:
-                                                  res.user[0].membership_title!);
-                                        },
-                                      );
-                                    }),
-
-                                     data.services!.isEmpty? const Center(child: Text("No listing found")):
-                                    LayoutBuilder(
-                                        builder: (context, constraints) {
-
-                                      return GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                        shrinkWrap:
-                                            true, // Adjust to fit content
-                                        itemCount: data.services?.length,
-
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          // mainAxisExtent:
-                                          //     constraints.maxWidth > 430
-                                          //         ? 4
-                                          //         : 2,
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 0.2,
-                                          mainAxisSpacing: 0.2,
-                                          childAspectRatio: 0.9,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          GlobalModel res =
-                                              data.services![index];
-                                          return ProductDetailWidget(
-                                              issponsored:
-                                                  res.user[0].sponsored!,
-                                              productImage: res.imageUrl,
-                                              Vimage: res.user[0].photo!,
-                                              vendorname: res.user[0].name!,
-                                              title: res.title,
-                                              price: res.title,
-                                              similarproductCount:
-                                                  res.similarproductCount,
-                                              membershipColor:
-                                                  res.user[0].membership_color!,
-                                              membershipTitle:
-                                                  res.user[0].membership_title!);
-                                        },
-                                      );
-                                    }),
+                                            itemBuilder: (context, index) {
+                                              GlobalModel res =
+                                                  data.services![index];
+                                              return AllProductDetailWidget(
+                                                  issponsored:
+                                                      res.user[0].sponsored!,
+                                                  productImage: res.imageUrl,
+                                                  Vimage: res.user[0].photo!,
+                                                  vendorname: res.user[0].name,
+                                                  title: res.title,
+                                                  price: res.price,
+                                                  similarproductCount:
+                                                      res.similarproductCount,
+                                                  membershipColor: res.user[0]
+                                                      .membership_color!,
+                                                  membershipTitle: res.user[0]
+                                                      .membership_title!);
+                                            },
+                                          ),
                                   ]),
-                                )
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
                               ],
                             )),
                       ],
@@ -824,7 +837,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   error: (error, stackTrace) {
                     return Text("error is $error");
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 ),
               ],
             ),

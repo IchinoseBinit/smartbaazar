@@ -669,6 +669,7 @@ mixin _$PostResult {
   int? get commentCount => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   Ratings? get ratings => throw _privateConstructorUsedError;
+  usermodel? get user => throw _privateConstructorUsedError;
   UserDetailsProduct? get user_details => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
@@ -750,6 +751,7 @@ abstract class $PostResultCopyWith<$Res> {
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      usermodel? user,
       UserDetailsProduct? user_details,
       List<Picture>? pictures,
       PostType? postType,
@@ -761,6 +763,7 @@ abstract class $PostResultCopyWith<$Res> {
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
+  $usermodelCopyWith<$Res>? get user;
   $UserDetailsProductCopyWith<$Res>? get user_details;
   $PostTypeCopyWith<$Res>? get postType;
 }
@@ -837,6 +840,7 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? user = freezed,
     Object? user_details = freezed,
     Object? pictures = freezed,
     Object? postType = freezed,
@@ -1083,6 +1087,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as usermodel?,
       user_details: freezed == user_details
           ? _value.user_details
           : user_details // ignore: cast_nullable_to_non_nullable
@@ -1139,6 +1147,18 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
 
     return $RatingsCopyWith<$Res>(_value.ratings!, (value) {
       return _then(_value.copyWith(ratings: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $usermodelCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $usermodelCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
     });
   }
 
@@ -1235,6 +1255,7 @@ abstract class _$$PostResultImplCopyWith<$Res>
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      usermodel? user,
       UserDetailsProduct? user_details,
       List<Picture>? pictures,
       PostType? postType,
@@ -1248,6 +1269,8 @@ abstract class _$$PostResultImplCopyWith<$Res>
   $ExtraModelCopyWith<$Res>? get extra;
   @override
   $RatingsCopyWith<$Res>? get ratings;
+  @override
+  $usermodelCopyWith<$Res>? get user;
   @override
   $UserDetailsProductCopyWith<$Res>? get user_details;
   @override
@@ -1324,6 +1347,7 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? user = freezed,
     Object? user_details = freezed,
     Object? pictures = freezed,
     Object? postType = freezed,
@@ -1570,6 +1594,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as usermodel?,
       user_details: freezed == user_details
           ? _value.user_details
           : user_details // ignore: cast_nullable_to_non_nullable
@@ -1669,6 +1697,7 @@ class _$PostResultImpl implements _PostResult {
       required this.commentCount,
       required this.extra,
       this.ratings,
+      this.user,
       required this.user_details,
       required final List<Picture>? pictures,
       this.postType,
@@ -1815,6 +1844,8 @@ class _$PostResultImpl implements _PostResult {
   @override
   final Ratings? ratings;
   @override
+  final usermodel? user;
+  @override
   final UserDetailsProduct? user_details;
   final List<Picture>? _pictures;
   @override
@@ -1880,7 +1911,7 @@ class _$PostResultImpl implements _PostResult {
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, user_photo_url: $user_photo_url, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offer: $offer, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, userPhotoUrl: $userPhotoUrl, commentCount: $commentCount, extra: $extra, ratings: $ratings, user_details: $user_details, pictures: $pictures, postType: $postType, rating_comment: $rating_comment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, user_photo_url: $user_photo_url, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offer: $offer, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, userPhotoUrl: $userPhotoUrl, commentCount: $commentCount, extra: $extra, ratings: $ratings, user: $user, user_details: $user_details, pictures: $pictures, postType: $postType, rating_comment: $rating_comment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
   }
 
   @override
@@ -1978,6 +2009,7 @@ class _$PostResultImpl implements _PostResult {
                 other.commentCount == commentCount) &&
             (identical(other.extra, extra) || other.extra == extra) &&
             (identical(other.ratings, ratings) || other.ratings == ratings) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.user_details, user_details) ||
                 other.user_details == user_details) &&
             const DeepCollectionEquality().equals(other._pictures, _pictures) &&
@@ -2056,6 +2088,7 @@ class _$PostResultImpl implements _PostResult {
         commentCount,
         extra,
         ratings,
+        user,
         user_details,
         const DeepCollectionEquality().hash(_pictures),
         postType,
@@ -2141,6 +2174,7 @@ abstract class _PostResult implements PostResult {
       required final int? commentCount,
       required final ExtraModel? extra,
       final Ratings? ratings,
+      final usermodel? user,
       required final UserDetailsProduct? user_details,
       required final List<Picture>? pictures,
       final PostType? postType,
@@ -2271,6 +2305,8 @@ abstract class _PostResult implements PostResult {
   ExtraModel? get extra;
   @override
   Ratings? get ratings;
+  @override
+  usermodel? get user;
   @override
   UserDetailsProduct? get user_details;
   @override
@@ -4091,6 +4127,261 @@ abstract class _RatingCounts implements RatingCounts {
   @override
   @JsonKey(ignore: true)
   _$$RatingCountsImplCopyWith<_$RatingCountsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+usermodel _$usermodelFromJson(Map<String, dynamic> json) {
+  return _usermodel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$usermodel {
+  int get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at_formatted')
+  String get createdAtFormatted => throw _privateConstructorUsedError;
+  @JsonKey(name: 'photo_url')
+  String get photoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'story_count')
+  int get storyCount => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $usermodelCopyWith<usermodel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $usermodelCopyWith<$Res> {
+  factory $usermodelCopyWith(usermodel value, $Res Function(usermodel) then) =
+      _$usermodelCopyWithImpl<$Res, usermodel>;
+  @useResult
+  $Res call(
+      {int id,
+      String name,
+      String username,
+      @JsonKey(name: 'created_at_formatted') String createdAtFormatted,
+      @JsonKey(name: 'photo_url') String photoUrl,
+      @JsonKey(name: 'story_count') int storyCount});
+}
+
+/// @nodoc
+class _$usermodelCopyWithImpl<$Res, $Val extends usermodel>
+    implements $usermodelCopyWith<$Res> {
+  _$usermodelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? username = null,
+    Object? createdAtFormatted = null,
+    Object? photoUrl = null,
+    Object? storyCount = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAtFormatted: null == createdAtFormatted
+          ? _value.createdAtFormatted
+          : createdAtFormatted // ignore: cast_nullable_to_non_nullable
+              as String,
+      photoUrl: null == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      storyCount: null == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$usermodelImplCopyWith<$Res>
+    implements $usermodelCopyWith<$Res> {
+  factory _$$usermodelImplCopyWith(
+          _$usermodelImpl value, $Res Function(_$usermodelImpl) then) =
+      __$$usermodelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      String name,
+      String username,
+      @JsonKey(name: 'created_at_formatted') String createdAtFormatted,
+      @JsonKey(name: 'photo_url') String photoUrl,
+      @JsonKey(name: 'story_count') int storyCount});
+}
+
+/// @nodoc
+class __$$usermodelImplCopyWithImpl<$Res>
+    extends _$usermodelCopyWithImpl<$Res, _$usermodelImpl>
+    implements _$$usermodelImplCopyWith<$Res> {
+  __$$usermodelImplCopyWithImpl(
+      _$usermodelImpl _value, $Res Function(_$usermodelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? username = null,
+    Object? createdAtFormatted = null,
+    Object? photoUrl = null,
+    Object? storyCount = null,
+  }) {
+    return _then(_$usermodelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAtFormatted: null == createdAtFormatted
+          ? _value.createdAtFormatted
+          : createdAtFormatted // ignore: cast_nullable_to_non_nullable
+              as String,
+      photoUrl: null == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      storyCount: null == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$usermodelImpl implements _usermodel {
+  const _$usermodelImpl(
+      {required this.id,
+      required this.name,
+      required this.username,
+      @JsonKey(name: 'created_at_formatted') required this.createdAtFormatted,
+      @JsonKey(name: 'photo_url') required this.photoUrl,
+      @JsonKey(name: 'story_count') required this.storyCount});
+
+  factory _$usermodelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$usermodelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String name;
+  @override
+  final String username;
+  @override
+  @JsonKey(name: 'created_at_formatted')
+  final String createdAtFormatted;
+  @override
+  @JsonKey(name: 'photo_url')
+  final String photoUrl;
+  @override
+  @JsonKey(name: 'story_count')
+  final int storyCount;
+
+  @override
+  String toString() {
+    return 'usermodel(id: $id, name: $name, username: $username, createdAtFormatted: $createdAtFormatted, photoUrl: $photoUrl, storyCount: $storyCount)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$usermodelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.createdAtFormatted, createdAtFormatted) ||
+                other.createdAtFormatted == createdAtFormatted) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, username,
+      createdAtFormatted, photoUrl, storyCount);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$usermodelImplCopyWith<_$usermodelImpl> get copyWith =>
+      __$$usermodelImplCopyWithImpl<_$usermodelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$usermodelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _usermodel implements usermodel {
+  const factory _usermodel(
+          {required final int id,
+          required final String name,
+          required final String username,
+          @JsonKey(name: 'created_at_formatted')
+          required final String createdAtFormatted,
+          @JsonKey(name: 'photo_url') required final String photoUrl,
+          @JsonKey(name: 'story_count') required final int storyCount}) =
+      _$usermodelImpl;
+
+  factory _usermodel.fromJson(Map<String, dynamic> json) =
+      _$usermodelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get name;
+  @override
+  String get username;
+  @override
+  @JsonKey(name: 'created_at_formatted')
+  String get createdAtFormatted;
+  @override
+  @JsonKey(name: 'photo_url')
+  String get photoUrl;
+  @override
+  @JsonKey(name: 'story_count')
+  int get storyCount;
+  @override
+  @JsonKey(ignore: true)
+  _$$usermodelImplCopyWith<_$usermodelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

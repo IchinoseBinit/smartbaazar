@@ -51,7 +51,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   int? selectedIndex = 3;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
-    int headerIndex = 0;
+  int headerIndex = 0;
 
   double _lastScrollOffset = 0;
   Offset _initialDragPosition = Offset.zero;
@@ -66,17 +66,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
     {'label': 'Festive sale', 'id': 5},
-    
   ];
-    bool _showSearchProductModels = false;
+  bool _showSearchProductModels = false;
 
-    final List<Map<String, dynamic>> __items = [
+  final List<Map<String, dynamic>> __items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-      {
+    {
       'icon': 'assets/icon/box.svg',
       'label': 'ServiceHub',
       'screen': const ServicesScreen()
@@ -101,7 +100,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
     },
-  
     {
       'icon': 'assets/icon/vectors.svg',
       'label': 'Job',
@@ -124,8 +122,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   final PageController _adscontroller = PageController(
     initialPage: 0,
   );
-    int? dynamicsize;
-
+  int? dynamicsize;
 
   void _onPageChanged(int index) {
     setState(() {
@@ -265,7 +262,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Container(
+                Container(
                   // height: 170,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -1414,7 +1411,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     labelColor: const Color(0xff909090),
                   ),
                 ),
-                  asyncbajarValue.when(
+                asyncbajarValue.when(
                   data: (data) {
                     double dynamicHeight;
 
@@ -1633,7 +1630,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-              
 
                 Center(
                   child: Column(
@@ -1866,7 +1862,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 ),
 
                 Padding(
-                  padding:  EdgeInsets.only(left: 10.w),
+                  padding: EdgeInsets.only(left: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -1972,117 +1968,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
               ],
             ),
           ),
-          ValueListenableBuilder<bool>(
-            valueListenable: _showSideBar,
-            builder: (context, value, child) {
-              return Positioned(
-                  top: _isSectionsVisible ? 200 : 200,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () {
-                      _showSideBar.value = !value;
-                    },
-                    child: value
-                        ? const CircleAvatar(
-                            radius: 25,
-                            backgroundImage:
-                                AssetImage('assets/images/smart.png'),
-                          )
-                        : Container(
-                            width: 60.w,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5.h,
-                            ),
-                            // Explicit height set
-                            decoration: BoxDecoration(
-                                color: const Color(0xffE2DAE5).withOpacity(0.9),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Center(
-                                child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Image.asset('assets/images/smart.png'),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/scanner.png',
-                                          height: 15,
-                                          color: const Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "Connect",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.shopping_cart_outlined,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "cart",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "add",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset('assets/images/tennis.png'),
-                                        Text(
-                                          "Orders",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                              ],
-                            )),
-                          ),
-                  ));
-            },
-          ),
+          valuenotifilersidebutton(
+              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+
           //
         ]));
   }

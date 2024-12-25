@@ -20,7 +20,6 @@ Future<PostModel> productDetails(ProductDetailsRef ref, String id) async {
 
 // print("bibash Details: ${response.data['result']['user_details']}");
     // // print("bibash ${PostModel.fromJson(response.data['result']['pictures'])}");
-    print("bibashk ${PostModel.fromJson(response.data).widgetSimilarPosts!.posts.data.first.id}");
     return PostModel.fromJson(response.data);
   } catch (e) {
     print("errork is $e");

@@ -240,92 +240,95 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           children: [
                             Stack(
                               children: [
-                                Positioned(child:   VendorSearchContainer(
-                              controller: _searchController,
-                              onSearchFocusChanged: _onSearchFocusChanged,
-                              MYonchnage: (p0) {},
-                            ),),
-                              // if (_showSearchProductModels)
-                              Positioned(
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child:
-                                      SearchProductModels.when(data: (results) {
-                                    if (results.isEmpty) {
-                                      return const SizedBox(
-                                        child: Text('No result found'),
-                                      ); // No results
-                                    }
-                                    return Card(
-                                      elevation: 8,
-                                      child: ListView.separated(
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap: true,
-                                        primary: false,
-                                        itemCount: results.length,
-                                        itemBuilder: (context, index) {
-                                          final product = results[index];
-                                          return ListTile(
-                                            title: Text(product.title),
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BusinessTabScreen(
-                                                      query: _searchController
-                                                          .text,
-                                                    ),
-                                                  ));
-
-                                              setState(() {
-                                                _showSearchProductModels =
-                                                    false;
-
-                                                FocusScope.of(context)
-                                                    .unfocus();
-                                              });
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) =>
-                                              //         ProductDetailsScreen(
-                                              //       productId: product.id,
-                                              //     ),
-                                              //   ),
-                                              // );
-                                            },
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) =>
-                                            const Divider(),
-                                      ),
-                                    );
-                                  }, loading: () {
-                                    return null;
-
-                                    // return SizedBox(
-                                    //     width: 10.w,
-                                    //     height: 10.h,
-                                    //     child: CircularProgressIndicator());
-                                  }, error: (error, stack) {
-                                    return null;
-
-                                    // return SizedBox(
-                                    //     width: 10.w,
-                                    //     height: 10.h,
-                                    //     child: CircularProgressIndicator());
-                                  }),
+                                Positioned(
+                                  child: VendorSearchContainer(
+                                    controller: _searchController,
+                                    onSearchFocusChanged: _onSearchFocusChanged,
+                                    MYonchnage: (p0) {},
+                                  ),
                                 ),
-                              ),
+                                if (_showSearchProductModels)
+                                  Positioned(
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      width: double.infinity,
+                                      color: Colors.white,
+                                      child: SearchProductModels.when(
+                                          data: (results) {
+                                        if (results.isEmpty) {
+                                          return const SizedBox(
+                                            child: Text('No result found'),
+                                          ); // No results
+                                        }
+                                        return Card(
+                                          elevation: 8,
+                                          child: ListView.separated(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            primary: false,
+                                            itemCount: results.length,
+                                            itemBuilder: (context, index) {
+                                              final product = results[index];
+                                              return ListTile(
+                                                title: Text(product.title),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BusinessTabScreen(
+                                                          query:
+                                                              _searchController
+                                                                  .text,
+                                                        ),
+                                                      ));
+
+                                                  setState(() {
+                                                    _showSearchProductModels =
+                                                        false;
+
+                                                    FocusScope.of(context)
+                                                        .unfocus();
+                                                  });
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //         ProductDetailsScreen(
+                                                  //       productId: product.id,
+                                                  //     ),
+                                                  //   ),
+                                                  // );
+                                                },
+                                              );
+                                            },
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const Divider(),
+                                          ),
+                                        );
+                                      }, loading: () {
+                                        return null;
+
+                                        // return SizedBox(
+                                        //     width: 10.w,
+                                        //     height: 10.h,
+                                        //     child: CircularProgressIndicator());
+                                      }, error: (error, stack) {
+                                        return null;
+
+                                        // return SizedBox(
+                                        //     width: 10.w,
+                                        //     height: 10.h,
+                                        //     child: CircularProgressIndicator());
+                                      }),
+                                    ),
+                                  ),
                               ],
                             ),
-                          
-                          
+
                             // SizedBox(
                             //   height: 210.h,
                             // ),
@@ -719,7 +722,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         post: data.feedPosts!)),
 
                             Padding(
-                              padding: EdgeInsets.only(left: 18.w,top: 10.h),
+                              padding: EdgeInsets.only(left: 18.w, top: 10.h),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
@@ -1323,6 +1326,7 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
             controller: widget.tabController,
             children: [
               BigContainer(
+                memebertitle: widget.data.membership_title!,
                 lat: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
                 long: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
                 title: widget.data.name!,
@@ -1447,32 +1451,32 @@ class BigContainer extends StatelessWidget {
       location,
       Cnumber;
   final double long, lat;
+  final String memebertitle;
 
   // Constructor
-  const BigContainer({
-    required this.lat,
-    required this.long,
-    super.key,
-    required this.title,
-    required this.logo,
-    required this.contact,
-    required this.storyCount,
-    required this.membershipTitle,
-    this.hasSpo = false, // Default value
-    required this.deals_circle,
-    required this.total_connections,
-    required this.total_prize_worth,
-    required this.location,
-    required this.Cnumber,
-  });
-  Future<void> _openGoogleMap(double latitude, double longitude) async {
-    // Create the Google Maps URL with the provided latitude and longitude
-    String googleMapsUrl =
-        'https://www.google.com/maps/search/?q=$latitude,$longitude';
+  const BigContainer(
+      {required this.lat,
+      required this.long,
+      super.key,
+      required this.title,
+      required this.logo,
+      required this.contact,
+      required this.storyCount,
+      required this.membershipTitle,
+      this.hasSpo = false, // Default value
+      required this.deals_circle,
+      required this.total_connections,
+      required this.total_prize_worth,
+      required this.location,
+      required this.Cnumber,
+      required this.memebertitle});
 
-    // Open Google Maps using the URL
-    if (await canLaunch(googleMapsUrl)) {
-      await launch(googleMapsUrl);
+  Future<void> _openGoogleMap(double latitude, double longitude) async {
+    final Uri googleMapsUrl =
+        Uri.parse('https://www.google.com/maps/search/?q=$latitude,$longitude');
+
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
     } else {
       print("Could not open Google Maps");
     }
@@ -1480,6 +1484,7 @@ class BigContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("bibash ${long} and ${lat}");
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: DottedBorder(
@@ -1546,17 +1551,17 @@ class BigContainer extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     Text(
-                      "Domestic",
+                      membershipTitle,
                       style: TextStyle(fontSize: 9.sp),
                     ),
-                    Text(
-                      "Exclusive",
-                      style: TextStyle(fontSize: 9.sp),
-                    ),
-                    Text(
-                      "Brand",
-                      style: TextStyle(fontSize: 9.sp),
-                    )
+                    // Text(
+                    //   "Exclusive",
+                    //   style: TextStyle(fontSize: 9.sp),
+                    // ),
+                    // Text(
+                    //   "Brand",
+                    //   style: TextStyle(fontSize: 9.sp),
+                    // )
                   ],
                 ),
               ],
@@ -1598,7 +1603,22 @@ class BigContainer extends StatelessWidget {
                     Row(
                       children: [
                         InkWell(
-                          onTap: () => () => _openGoogleMap(lat, long),
+                          onTap: () async {
+                            // Use Google Maps app-specific URL scheme
+                            final Uri mapsIntentUrl = Uri.parse(
+                                'https://www.google.com/maps/dir/?api=1&destination=$lat,$long');
+
+                            // Fallback check
+                            if (await canLaunchUrl(mapsIntentUrl)) {
+                              await launchUrl(
+                                mapsIntentUrl,
+                                mode: LaunchMode.externalApplication,
+                              );
+                            } else {
+                              print(
+                                  "Could not open Google Maps using intent URL");
+                            }
+                          },
                           child: Row(
                             children: [
                               Icon(
@@ -1775,22 +1795,33 @@ class BigContainer extends StatelessWidget {
               height: 5.h,
             ),
             SizedBox(height: 40.h),
-            Padding(
-              padding: EdgeInsets.only(left: 4.h, bottom: 5.h),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Connect",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
-                          color: const Color(0xff370C6B),
-                        ),
-                        textAlign: TextAlign.center),
-                  ],
+            InkWell(
+              onTap: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => ScratchWinContainer(
+                //         ontap: () {},
+                //       ),
+                //     ));
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 4.h, bottom: 5.h),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Connect",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.sp,
+                            color: const Color(0xff370C6B),
+                          ),
+                          textAlign: TextAlign.center),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -1893,9 +1924,14 @@ class VendorSearchContainer extends StatelessWidget {
               const SizedBox(
                 width: 10,
               ),
-              const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(
                 width: 30,
@@ -1959,23 +1995,33 @@ class VendorSearchContainer extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 7.h),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            color: const Color(0xFF46236a),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(15.r),
-                              bottomRight: Radius.circular(15.r),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      BusinessTabScreen(query: controller.text),
+                                ));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 7.h),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              color: const Color(0xFF46236a),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(15.r),
+                                bottomRight: Radius.circular(15.r),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(3.r),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                              size: 20.sp,
+                            child: Padding(
+                              padding: EdgeInsets.all(3.r),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.white,
+                                size: 20.sp,
+                              ),
                             ),
                           ),
                         ),

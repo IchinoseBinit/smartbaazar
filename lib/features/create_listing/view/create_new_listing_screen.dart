@@ -15,8 +15,10 @@ import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
+import 'package:smartbazar/features/create_listing/api/get_categories_provider.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
+import 'package:smartbazar/features/create_listing/model/fields_model.dart';
 import 'package:smartbazar/features/create_listing/widget/category_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
@@ -51,16 +53,30 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   List<Category> subcategoryList = [];
   Category? subcatagory;
   CityList? selectedCity;
-  List<String>? selectedColors;
-  String? selectedProductTYpe;
-  int? warrentyselected;
-    String? selectedmodel;
+  Option? selectedElecModel;
+  List<Option>? selectedColors;
+  List<Option>? selectedFeatures;
+  DateTime? selectedStartDate;
+    DateTime? deadlineDate;
 
-    // String? sel;e;
+
+  Option? selectedProductTYpe;
+  Option? fuelType;
+  int? warrentyselected;
+  Option? selectedmodel;
+  Option? selecetedWarrenty;
+  Option? selectedbuildingtype;
+
+  Option? selectedRoom;
+  Option? jobtype;
+
+  String? selectedmobilebrand;
+  // String? sel;e;
 
   List<CityList>? citylistsitems = [];
   List<Offer>? offerresponse = [];
   Offer? selectedOffer;
+  Option? selectedFurnished;
 
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
@@ -80,6 +96,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TextEditingController emailcontroller = TextEditingController();
   NewListingRepository repository = NewListingRepository();
   int? categoryId;
+  FieldsResponse? response;
+  FieldsResponse? phoneresp;
+
+  FieldsResponse? furnitureresresp;
+  FieldsResponse? laptoprep;
+  FieldsResponse? getRoad;
+
   @override
   void initState() {
     getSellerData();
@@ -175,6 +198,31 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   @override
   Widget build(BuildContext context) {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
+    final getCategories =
+        ref.watch(GetCategoryResponseProvider(categoryId ?? 1)); //car
+    final phone = ref.watch(GetCategoryResponseProvider(9)).whenData(
+      (value) {
+        phoneresp = value;
+      },
+    ); //phone
+    final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
+      (value) {
+        laptoprep = value;
+      },
+    ); //car
+    final furniture = ref.watch(GetCategoryResponseProvider(30)).whenData(
+      (value) {
+        furnitureresresp = value;
+      },
+    ); //car
+    final road = ref.watch(GetCategoryResponseProvider(37)); //car
+    getCategories.whenData(
+      (value) {
+        print("bibash  ${value.result}");
+        getRoad = value; //car
+      },
+    );
+
     citySuggestionsAsync.when(
       data: (data) {
         shippingcities = data;
@@ -354,7 +402,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   },
                   onSubCategorySelected: (Category? value) {
                     categoryId = selectedcategory!.id;
-                    print("bibash ${categoryId}");
+                    final getCategories =
+                        ref.watch(GetCategoryResponseProvider(categoryId!));
+                    getCategories.whenData(
+                      (value) {
+                        // print("bibash  ${value.result}");
+                        response = value;
+                      },
+                    );
+                    print("ramu ${categoryId}");
                   },
                 ),
                 SizedBox(
@@ -397,10 +453,84 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
+                if (categoryId == 73)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Experience',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: titlecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter experience',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 SizedBox(
                   height: 10.h,
                 ),
-
+                if (categoryId == 73)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Enter company name',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: titlecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText:
+                                  'Enter company name leav if not want to disclose',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 CreateListingCardWidget(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,7 +577,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (categoryId != 1)
+                if (categoryId == 1 || categoryId == 14)
                   CreateListingCardWidget(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -531,217 +661,610 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Product Type',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<String>(
-                          items: ['Non-Branded', 'Original/Branded'],
-                          dropdownValue: selectedProductTYpe,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedProductTYpe = newValue;
-                            });
-                          },
-                          getItemLabel: (String item) => item,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Return Policy',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "7 days Exchange & Return",
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          ),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: true,
-                                onChanged: (value) {},
-                              ),
-                              Text(
-                                "valid for change of mind",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: false,
-                                onChanged: (value) {},
-                              ),
-                              const Text(
-                                  "valid for defective,\nmissing or demaged items")
-                            ],
-                          ),
-                        ],
-                      )),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Available colors',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            hint: Text(
-                              selectedColors == null || selectedColors!.isEmpty
-                                  ? "Select Colors"
-                                  : selectedColors!.join(", "),
-                              overflow: TextOverflow.ellipsis,
+                // CreateListingCardWidget(
+                //   child: Row(
+                //     mainAxisSize: MainAxisSize.max,
+                //     children: [
+                //       Row(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             'Product Type',
+                //             style: TextStyle(
+                //                 fontSize: 14.sp,
+                //                 fontWeight: FontWeight.w500,
+                //                 color: Colors.black),
+                //           ),
+                //           Text(
+                //             ' *',
+                //             style: TextStyle(
+                //                 color: const Color(0xffD33636),
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 14.sp),
+                //           )
+                //         ],
+                //       ),
+                //       SizedBox(
+                //         width: 10.w,
+                //       ),
+                //       Expanded(
+                //         // Wrap the dropdown in Expanded to constrain its width
+                //         child: CustomDropdownButton<Option>(
+                //           items: response!.result['4']!.options,
+                //           dropdownValue: selectedProductTYpe,
+                //           onChanged: (newValue) {
+                //             setState(() {
+                //               selectedProductTYpe = newValue;
+                //             });
+                //           },
+                //           getItemLabel: (Option item) => item.value,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                if (categoryId == 37)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rooms',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
                             ),
-                            items: [
-                              'Black',
-                              'Red',
-                              'Green',
-                              'Blue',
-                              'Pink',
-                              'Grey'
-                            ].map((color) {
-                              return DropdownMenuItem<String>(
-                                value: color,
-                                child: Row(
-                                  children: [
-                                    // Checkbox to show whether the color is selected
-                                    StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return Checkbox(
-                                          value: selectedColors != null &&
-                                              selectedColors!.contains(color),
-                                          onChanged: (bool? isChecked) {
-                                            setState(() {
-                                              if (selectedColors == null) {
-                                                selectedColors =
-                                                    []; // Initialize if null
-                                              }
-                                              if (isChecked == true) {
-                                                selectedColors!.add(
-                                                    color); // Add to selectedColors if checked
-                                              } else {
-                                                selectedColors!.remove(
-                                                    color); // Remove from selectedColors if unchecked
-                                              }
-                                            });
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    Text(color),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (_) {}, // Keeps the dropdown open
-                            icon:
-                                Icon(Icons.arrow_drop_down, color: Colors.grey),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: getRoad!.result['4']!.options,
+                            dropdownValue: selectedRoom,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedRoom = newValue;
+                              });
+                            },
+                            getItemLabel: (Option item) => item.value,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                if (categoryId == 73)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Job Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        // Expanded(
+                        //   // Wrap the dropdown in Expanded to constrain its width
+                        //   child: CustomDropdownButton<Option>(
+                        //     items: getRoad!.result.w
+
+                        //     dropdownValue: jobtype,
+                        //     onChanged: (newValue) {
+                        //       setState(() {
+                        //         jobtype = newValue;
+                        //       });
+                        //     },
+                        //     getItemLabel: (Option item) => item.value,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+
+                if (categoryId != 30)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Return Policy',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "7 days Exchange & Return",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: true,
+                                  onChanged: (value) {},
+                                ),
+                                Text(
+                                  "valid for change of mind",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: false,
+                                  onChanged: (value) {},
+                                ),
+                                const Text(
+                                    "valid for defective,\nmissing or demaged items")
+                              ],
+                            ),
+                          ],
+                        )),
+                      ],
+                    ),
+                  ),
+                SizedBox(
+                  height: 10.h,
                 ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                if (categoryId == 1)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Available Features',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        if (categoryId == 1)
+                          Expanded(
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<Option>(
+                                isExpanded: true,
+                                hint: Text(
+                                  selectedFeatures == null ||
+                                          selectedFeatures!.isEmpty
+                                      ? "Select Features"
+                                      : selectedFeatures!.first.value,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                items: response!.result['17']!.options
+                                    .map((color) {
+                                  return DropdownMenuItem<Option>(
+                                    value: color,
+                                    child: Row(
+                                      children: [
+                                        // Checkbox to show whether the color is selected
+                                        StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Checkbox(
+                                              value: selectedFeatures != null &&
+                                                  selectedFeatures!
+                                                      .contains(color),
+                                              onChanged: (bool? isChecked) {
+                                                setState(() {
+                                                  if (selectedFeatures ==
+                                                      null) {
+                                                    selectedFeatures =
+                                                        []; // Initialize if null
+                                                  }
+                                                  if (isChecked == true) {
+                                                    selectedFeatures!.add(
+                                                        color); // Add to selectedColors if checked
+                                                  } else {
+                                                    selectedFeatures!.remove(
+                                                        color); // Remove from selectedColors if unchecked
+                                                  }
+                                                });
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        Text(color.value),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (_) {}, // Keeps the dropdown open
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 SizedBox(
                   height: 5.h,
                 ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
+                if (categoryId == 1 || categoryId == 9)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'select colors',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<Option>(
+                              isExpanded: true,
+                              hint: Text(
+                                selectedColors == null ||
+                                        selectedColors!.isEmpty
+                                    ? "Select colors"
+                                    : selectedColors!.first.value,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              items:
+                                  response!.result['8']!.options.map((color) {
+                                return DropdownMenuItem<Option>(
+                                  value: color,
+                                  child: Row(
+                                    children: [
+                                      // Checkbox to show whether the color is selected
+                                      StatefulBuilder(
+                                        builder: (context, setState) {
+                                          return Checkbox(
+                                            value: selectedColors != null &&
+                                                selectedColors!.contains(color),
+                                            onChanged: (bool? isChecked) {
+                                              setState(() {
+                                                if (selectedColors == null) {
+                                                  selectedColors =
+                                                      []; // Initialize if null
+                                                }
+                                                if (isChecked == true) {
+                                                  selectedColors!.add(
+                                                      color); // Add to selectedColors if checked
+                                                } else {
+                                                  selectedColors!.remove(
+                                                      color); // Remove from selectedColors if unchecked
+                                                }
+                                              });
+                                            },
+                                          );
+                                        },
+                                      ),
+                                      Text(color.value),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (_) {}, // Keeps the dropdown open
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (categoryId == 73) // Conditionally show the calendar
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Start date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  selectedStartDate =
+                                      pickedDate; // Save the selected date
+                                });
+                              }
+                            },
+                            child: Text(
+                              selectedStartDate != null
+                                  ? '${selectedStartDate!.toLocal()}'.split(
+                                      ' ')[0] // Display the selected date
+                                  : 'Select date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: selectedStartDate != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                    if (categoryId == 73) // Conditionally show the calendar
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Deadline',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  deadlineDate =
+                                      pickedDate; // Save the selected date
+                                });
+                              }
+                            },
+                            child: Text(
+                              deadlineDate != null
+                                  ? '${deadlineDate!.toLocal()}'.split(
+                                      ' ')[0] // Display the selected date
+                                  : 'Select date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: deadlineDate != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (categoryId == 9)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Mobile brand',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<String>(
+                            items: [
+                              'Apple',
+                              'Samsung',
+                              'OnePlus',
+                              'Google',
+                              'Xiaomi',
+                              'Oppo',
+                              'Vivo',
+                              'Sony',
+                              'Huawei',
+                              'Motorola'
+                            ],
+                            dropdownValue: selectedmobilebrand,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedmobilebrand = newValue;
+                              });
+                            },
+                            getItemLabel: (String item) => item.toString(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (categoryId == 1)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Automobile Brand',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: response!.result['10']!.options,
+                            dropdownValue: selectedmodel,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedmodel = newValue;
+                              });
+                            },
+                            getItemLabel: (Option item) =>
+                                item.value.toString(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (categoryId == 1)
+                  CreateListingCardWidget(
+                      child: Row(
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Automobile Brand',
+                            'Automobile Model',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -756,32 +1279,94 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                      const Spacer(),
                       Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<String>(
-                          items: [
-                            'Zil',
-                            'Geely',
-                            'Toyota',
-                            'Honda',
-                            'BMW',
-                            'Ford'
-                          ],
-                          dropdownValue: selectedmodel,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedmodel = newValue;
-                            });
-                          },
-                          getItemLabel: (String item) => item.toString(),
+                        child: TextField(
+                          controller: pricecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter model',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
                         ),
                       ),
                     ],
-                  ),
-                ),
+                  )),
+                if (categoryId == 37)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Road Size',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: pricecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Size of road in feet',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
+                if (categoryId == 30)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Size',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: pricecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Anna or ropani',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -789,7 +1374,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Automobile Model',
+                          'Automobile stock',
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
@@ -809,7 +1394,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       child: TextField(
                         controller: pricecontroller,
                         decoration: InputDecoration.collapsed(
-                            hintText: 'Enter model',
+                            hintText: 'Enter stock',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
@@ -822,42 +1407,208 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
+                if (categoryId == 1)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Year of Registration',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: pricecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter registration',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
+                if (categoryId == 1)
                   CreateListingCardWidget(
                     child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Year of ',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Kilometers',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
                         ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
+                        const Spacer(),
+                        Expanded(
+                          child: TextField(
+                            controller: pricecontroller,
+                            decoration: InputDecoration.collapsed(
+                                hintText: 'kilometers',
+                                hintStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp,
+                                    color: const Color(0xffADADAD))),
+                          ),
+                        ),
                       ],
                     ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: pricecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter model',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
+                  ),
+                if (categoryId == 14)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fuel Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                              items: response!.result['14']!.options,
+                              dropdownValue: fuelType,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  fuelType = newValue;
+                                });
+                              },
+                              getItemLabel: (Option item) => item.value),
+                        ),
+                      ],
                     ),
-                  ],
-                )),
+                  ),
+                if (categoryId == 1)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fuel Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        if (categoryId == 54)
+                          CreateListingCardWidget(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Size',
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                    Text(
+                                      ' *',
+                                      style: TextStyle(
+                                          color: const Color(0xffD33636),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14.sp),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Expanded(
+                                  // Wrap the dropdown in Expanded to constrain its width
+                                  child: CustomDropdownButton<Option>(
+                                    items: laptoprep!.result['12']!.options,
+                                    dropdownValue: selecetedWarrenty,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        selecetedWarrenty = newValue;
+                                      });
+                                    },
+                                    getItemLabel: (Option item) => item.value,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                              items: response!.result['14']!.options,
+                              dropdownValue: fuelType,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  fuelType = newValue;
+                                });
+                              },
+                              getItemLabel: (Option item) => item.value),
+                        ),
+                      ],
+                    ),
+                  ),
                 CreateListingCardWidget(
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -886,20 +1637,106 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<int>(
-                          items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                          dropdownValue: warrentyselected,
+                        child: CustomDropdownButton<Option>(
+                          items: laptoprep!.result['12']!.options,
+                          dropdownValue: selecetedWarrenty,
                           onChanged: (newValue) {
                             setState(() {
-                              warrentyselected = newValue;
+                              selecetedWarrenty = newValue;
                             });
                           },
-                          getItemLabel: (int item) => item.toString(),
+                          getItemLabel: (Option item) => item.value,
                         ),
                       ),
                     ],
                   ),
                 ),
+                if (categoryId == 37)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Building type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: getRoad!.result['6']!.options,
+                            dropdownValue: selectedbuildingtype,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedbuildingtype = newValue;
+                              });
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (categoryId == 9 || categoryId == 14)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Electronic Model',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: laptoprep!.result['10']!.options,
+                            dropdownValue: selectedElecModel,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedElecModel = newValue;
+                              });
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 SizedBox(
                   height: 5.h,
                 ),
@@ -952,6 +1789,43 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          'Youtube link',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter youtube link',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
                           'Model',
                           style: TextStyle(
                               fontSize: 14.sp,
@@ -984,6 +1858,44 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
+                if (categoryId == 1)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Mileage',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: pricecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Mileage',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
+
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -1095,6 +2007,43 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
+                if (categoryId == 9)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Storage in GB',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: pricecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'storage in gb',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -1157,9 +2106,103 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     )
                   ],
                 )),
+                if (categoryId == 9 || categoryId == 14)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Enter Screen Size (inches)',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: discountcontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter Screen Size (inches)',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 SizedBox(
                   height: 10.h,
                 ),
+                if (categoryId == 37)
+                  CreateListingCardWidget(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Furnished',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                            height: 10.h), // Add spacing before radio buttons
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: getRoad!.result['5']!.options.map((option) {
+                            return Row(
+                              children: [
+                                Radio<Option>(
+                                  value: option,
+                                  groupValue: selectedFurnished,
+                                  onChanged: (Option? newValue) {
+                                    setState(() {
+                                      selectedFurnished = newValue;
+                                    });
+                                  },
+                                ),
+                                Text(
+                                  option.value,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -1289,48 +2332,49 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Delivery Options',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
-                          },
-                          getItemLabel: (CityList item) => item.name,
+                if (categoryId == 14)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Delivery Options',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<CityList>(
+                            items: citylistsitems!,
+                            dropdownValue: selectedCity,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedCity = newValue;
+                              });
+                            },
+                            getItemLabel: (CityList item) => item.name,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
                 Row(
                   children: [
                     const Text("Packaged Product Dimensions"),
@@ -1411,81 +2455,82 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //   ],
                 // )),
 
-                // CreateListingCardWidget(
-                //     child: Row(
-                //   children: [
-                //     Row(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Text(
-                //           'Brand',
-                //           style: TextStyle(
-                //               fontSize: 14.sp,
-                //               fontWeight: FontWeight.w500,
-                //               color: Colors.black),
-                //         ),
-                //         Text(
-                //           ' *',
-                //           style: TextStyle(
-                //               color: const Color(0xffD33636),
-                //               fontWeight: FontWeight.w500,
-                //               fontSize: 14.sp),
-                //         )
-                //       ],
-                //     ),
-                //     const Spacer(),
-                //     Expanded(
-                //       child: TextField(
-                //         decoration: InputDecoration.collapsed(
-                //             hintText: 'Brand name',
-                //             hintStyle: TextStyle(
-                //                 fontWeight: FontWeight.w500,
-                //                 fontSize: 14.sp,
-                //                 color: const Color(0xffADADAD))),
-                //       ),
-                //     ),
-                //   ],
-                // )),
-                // SizedBox(
-                //   height: 10.h,
-                // ),
-                // CreateListingCardWidget(
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       Row(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Text(
-                //             'Product Type',
-                //             style: TextStyle(
-                //                 fontSize: 14.sp,
-                //                 fontWeight: FontWeight.w500,
-                //                 color: Colors.black),
-                //           ),
-                //           Text(
-                //             ' *',
-                //             style: TextStyle(
-                //                 color: const Color(0xffD33636),
-                //                 fontWeight: FontWeight.w500,
-                //                 fontSize: 14.sp),
-                //           )
-                //         ],
-                //       ),
-                //       const Spacer(),
-                //       // CustomDropdownButton<ProductType>(
-                //       //   items: productTypeListItems,
-                //       //   dropdownValue: selectedProductType,
-                //       //   onChanged: (ProductType? newValue) {
-                //       //     setState(() {
-                //       //       selectedProductType = newValue!;
-                //       //     });
-                //       //   },
-                //       //   getItemLabel: (ProductType item) => item.name,
-                //       // ),
-                //     ],
-                //   ),
-                // ),
+                if (categoryId == 9 || categoryId == 14 || categoryId == 30)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Brand',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Brand name',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Product Type',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      // CustomDropdownButton<ProductType>(
+                      //   items: productTypeListItems,
+                      //   dropdownValue: selectedProductType,
+                      //   onChanged: (ProductType? newValue) {
+                      //     setState(() {
+                      //       selectedProductType = newValue!;
+                      //     });
+                      //   },
+                      //   getItemLabel: (ProductType item) => item.name,
+                      // ),
+                    ],
+                  ),
+                ),
                 // const ReturnPolicyCardWidget(),
                 // SizedBox(
                 //   height: 10.h,

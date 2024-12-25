@@ -68,13 +68,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   }
 
   int _currentPage = 0;
-   final List<Map<String, dynamic>> __items = [
+  final List<Map<String, dynamic>> __items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-      {
+    {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
@@ -94,7 +94,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'label': 'Brandbazaar',
       'screen': const BrandBazarScreen()
     },
-  
     {
       'icon': 'assets/icon/box.svg',
       'label': 'ServiceHub',
@@ -116,8 +115,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'screen': const EventsScreen()
     },
   ];
-    bool _showSearchProductModels = false;
-
+  bool _showSearchProductModels = false;
 
   @override
   void initState() {
@@ -131,8 +129,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       } else {
         _currentPage = 0;
       }
-
-    
     });
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
@@ -189,8 +185,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     _initialDragPosition = details.globalPosition;
   }
 
-
-
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
       _showSearchProductModels = hasFocus;
@@ -199,7 +193,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
 
-    @override
+  @override
   void dispose() {
     // dynamictabController.dispose();
     _debouncer.close();
@@ -214,7 +208,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     //     final adsList = ref.watch(fetchAdsProvider);
 
     final asyncbajarValue = ref.watch(getSocioDataProvider);
- final SearchProductModels =
+    final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
 
@@ -699,7 +693,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           ),
                         ),
                       ),
-                      
+
                       // DottedBorder(
                       //     strokeWidth: 2,
 
@@ -1395,21 +1389,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                                                              SizedBox(height: 5.h,),
-
-                            SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.global.map((e) {
-                                      return NotStoryWidget(
-                                        vImage: e.brandLogo,
-                                        index: data.global.indexOf(e),
-                                        brandname: e.brandName,
-                                      );
-                                    }).toList(),
-                                  ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.global.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.global.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
                                 ),
-                                SizedBox(height: 20.h,),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
@@ -1461,22 +1458,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                                                              SizedBox(height: 5.h,),
-
-                            SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.domestic.map((e) {
-                                      return NotStoryWidget(
-                                        vImage: e.brandLogo,
-                                        index: data.domestic.indexOf(e),
-                                        brandname: e.brandName,
-                                      );
-                                    }).toList(),
-                                  ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.domestic.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.domestic.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
                                 ),
-                                                                SizedBox(height: 20.h,),
-
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
                               SizedBox(
                                 height: 359.h,
                                 child: data.insidearr.isEmpty
@@ -1527,22 +1526,24 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                                                              SizedBox(height: 5.h,),
-
-                         SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.spotlight.map((e) {
-                                      return NotStoryWidget(
-                                        vImage: e.brandLogo,
-                                        index: data.spotlight.indexOf(e),
-                                        brandname: e.brandName,
-                                      );
-                                    }).toList(),
-                                  ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.spotlight.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.spotlight.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
                                 ),
-                                                                SizedBox(height: 20.h,),
-
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
                               SizedBox(
                                 height: 359.h,
                                 child: data.insidearr.isEmpty
@@ -1936,118 +1937,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
               ],
             ),
           ),
-          
-          ValueListenableBuilder<bool>(
-            valueListenable: _showSideBar,
-            builder: (context, value, child) {
-              return Positioned(
-                  top: _isSectionsVisible ? 200 : 200,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () {
-                      _showSideBar.value = !value;
-                    },
-                    child: value
-                        ? const CircleAvatar(
-                            radius: 25,
-                            backgroundImage:
-                                AssetImage('assets/images/smart.png'),
-                          )
-                        : Container(
-                            width: 60.w,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5.h,
-                            ),
-                            // Explicit height set
-                            decoration: BoxDecoration(
-                                color: const Color(0xffE2DAE5).withOpacity(0.9),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Center(
-                                child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Image.asset('assets/images/smart.png'),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/scanner.png',
-                                          height: 15,
-                                          color: const Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "Connect",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.shopping_cart_outlined,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "cart",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "add",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset('assets/images/tennis.png'),
-                                        Text(
-                                          "Orders",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                              ],
-                            )),
-                          ),
-                  ));
-            },
-          ),
+
+          valuenotifilersidebutton(
+              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+
           //
         ]));
   }

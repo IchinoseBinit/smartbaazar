@@ -73,7 +73,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-       {
+    {
       'icon': 'assets/icon/brandBazarIcon.svg',
       'label': 'Brandbazaar',
       'screen': const BrandBazarScreen()
@@ -83,7 +83,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       'label': 'TradeHub',
       'screen': const BrandBazarScreen()
     },
- 
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
@@ -1820,7 +1819,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   },
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 15.w),
+                  padding: EdgeInsets.only(left: 15.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -1844,13 +1843,13 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       itemCount: data.product.length,
 
                       gridDelegate:
-                       const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 400,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.2,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.2,
-                                ),
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 400,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0.2,
+                        mainAxisSpacing: 0.2,
+                        childAspectRatio: 0.2,
+                      ),
                       itemBuilder: (context, index) {
                         // VProduct res = data.allProducts[index];
                         return Padding(
@@ -1926,117 +1925,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
               ],
             ),
           ),
-          ValueListenableBuilder<bool>(
-            valueListenable: _showSideBar,
-            builder: (context, value, child) {
-              return Positioned(
-                  top: _isSectionsVisible ? 200 : 200,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () {
-                      _showSideBar.value = !value;
-                    },
-                    child: value
-                        ? const CircleAvatar(
-                            radius: 25,
-                            backgroundImage:
-                                AssetImage('assets/images/smart.png'),
-                          )
-                        : Container(
-                            width: 60.w,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5.h,
-                            ),
-                            // Explicit height set
-                            decoration: BoxDecoration(
-                                color: const Color(0xffE2DAE5).withOpacity(0.9),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Center(
-                                child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Image.asset('assets/images/smart.png'),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/scanner.png',
-                                          height: 15,
-                                          color: const Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "Connect",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.shopping_cart_outlined,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "cart",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "add",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset('assets/images/tennis.png'),
-                                        Text(
-                                          "Orders",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                              ],
-                            )),
-                          ),
-                  ));
-            },
-          ),
+          valuenotifilersidebutton(
+              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+
           //
         ]));
   }

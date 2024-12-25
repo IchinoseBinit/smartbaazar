@@ -108,6 +108,7 @@ class PostResult with _$PostResult {
     required int? commentCount,
     required ExtraModel? extra,
     Ratings? ratings,
+    usermodel? user,
     required UserDetailsProduct? user_details,
     required List<Picture>? pictures,
      PostType? postType,
@@ -245,6 +246,20 @@ class RatingCounts with _$RatingCounts {
 
   factory RatingCounts.fromJson(Map<String, dynamic> json) =>
       _$RatingCountsFromJson(json);
+}
+@freezed
+class usermodel with _$usermodel {
+  const factory usermodel({
+    required int id,
+    required String name,
+    required String username,
+    @JsonKey(name: 'created_at_formatted') required String createdAtFormatted,
+    @JsonKey(name: 'photo_url') required String photoUrl,
+    @JsonKey(name: 'story_count') required int storyCount,
+  }) = _usermodel;
+
+  factory usermodel.fromJson(Map<String, dynamic> json) =>
+      _$usermodelFromJson(json);
 }
 
 @freezed
