@@ -28,6 +28,9 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
+import '../../add_to_cart/view/adde_to_card_screeen.dart';
+import '../../my_order/view/my_order_screen.dart';
+import '../../pending_approval/pending_approval.dart';
 import '../../product_details/constant/all_product_detail_widget.dart';
 
 class JobssScreen extends ConsumerStatefulWidget {
@@ -1849,7 +1852,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
             valueListenable: _showSideBar,
             builder: (context, value, child) {
               return Positioned(
-                  top: _isSectionsVisible ? 200 : 200,
+                  top: _isSectionsVisible ? 300 : 300,
                   right: 0,
                   child: InkWell(
                     onTap: () {
@@ -1857,102 +1860,123 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     },
                     child: value
                         ? const CircleAvatar(
-                            radius: 25,
-                            backgroundImage:
-                                AssetImage('assets/images/smart.png'),
-                          )
+                      radius: 25,
+                      backgroundImage: AssetImage(
+                          'assets/images/Smartbazaar-Icon-for-QR.png'),
+                    )
                         : Container(
-                            width: 60.w,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5.h,
-                            ),
-                            // Explicit height set
-                            decoration: BoxDecoration(
-                                color: const Color(0xffE2DAE5).withOpacity(0.9),
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10))),
-                            child: Center(
-                                child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Image.asset('assets/images/smart.png'),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/scanner.png',
-                                          height: 15,
-                                          color: const Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "Connect",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.shopping_cart_outlined,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "cart",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.add,
-                                          size: 15,
-                                          color: Color(0xff918994),
-                                        ),
-                                        Text(
-                                          "add",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Column(
-                                      children: [
-                                        Image.asset('assets/images/tennis.png'),
-                                        Text(
-                                          "Orders",
-                                          style: headerstyle.copyWith(
-                                              fontSize: 9,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xff918994)),
-                                        )
-                                      ],
-                                    )),
-                              ],
-                            )),
-                          ),
+                      width: 70.w,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                      ),
+                      // Explicit height set
+                      decoration: BoxDecoration(
+                          color: const Color(0xffE2DAE5).withOpacity(0.9),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10))),
+                      child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 6.h,
+                              ),
+                              Image.asset('assets/images/smart.png'),
+                              SizedBox(
+                                height: 6.h,
+                              ),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Column(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/scanner.png',
+                                        height: 15,
+                                        color: const Color(0xff918994),
+                                      ),
+                                      Text(
+                                        "Connect",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff918994)),
+                                      )
+                                    ],
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const PendingApprovalScreen(),
+                                        ));
+                                  },
+                                  icon: Column(
+                                    children: [
+                                      const Icon(
+                                        Icons.shopping_cart_outlined,
+                                        size: 15,
+                                        color: Color(0xff918994),
+                                      ),
+                                      Text(
+                                        "Cart",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff918994)),
+                                      )
+                                    ],
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const AddToCartScreen(),
+                                        ));
+                                  },
+                                  icon: Column(
+                                    children: [
+                                      const Icon(
+                                        Icons.add,
+                                        size: 15,
+                                        color: Color(0xff918994),
+                                      ),
+                                      Text(
+                                        "Sell",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff918994)),
+                                      )
+                                    ],
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const MyOrderScreen(),
+                                        ));
+                                  },
+                                  icon: Column(
+                                    children: [
+                                      Image.asset('assets/images/tennis.png'),
+                                      Text(
+                                        "Orders",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff918994)),
+                                      )
+                                    ],
+                                  )),
+                            ],
+                          )),
+                    ),
                   ));
             },
           ),

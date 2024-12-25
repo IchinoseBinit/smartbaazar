@@ -3492,7 +3492,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         color: Color(0xff918994),
                                       ),
                                       Text(
-                                        "cart",
+                                        "Cart",
                                         style: headerstyle.copyWith(
                                             fontSize: 9,
                                             fontWeight: FontWeight.w700,
@@ -3517,7 +3517,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         color: Color(0xff918994),
                                       ),
                                       Text(
-                                        "add",
+                                        "Sell",
                                         style: headerstyle.copyWith(
                                             fontSize: 9,
                                             fontWeight: FontWeight.w700,
