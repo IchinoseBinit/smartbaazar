@@ -24,6 +24,7 @@ import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
@@ -1011,20 +1012,30 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
-                          return ProductDetailWidget(
-                            wow: hot.wow,
-                            comment: hot.commentcount.toString(),
-                            discounttedPrice: hot.discounted_price,
-                            issponsored: hot.user.sponsored,
-                            lefttile: "B2b-Shop",
-                            productImage: hot.image,
-                            Vimage: hot.user.photo,
-                            price: hot.price,
-                            title: hot.title,
-                            vendorname: hot.user.name,
-                            similarproductCount: hot.similarProductCount,
-                            membershipColor: hot.user.membercolor,
-                            membershipTitle: hot.user.membershipTitle,
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: hot.id),
+                                  ));
+                            },
+                            child: ProductDetailWidget(
+                              wow: hot.wow,
+                              comment: hot.commentcount.toString(),
+                              discounttedPrice: hot.discounted_price,
+                              issponsored: hot.user.sponsored,
+                              lefttile: "B2b-Shop",
+                              productImage: hot.image,
+                              Vimage: hot.user.photo,
+                              price: hot.price,
+                              title: hot.title,
+                              vendorname: hot.user.name,
+                              similarproductCount: hot.similarProductCount,
+                              membershipColor: hot.user.membercolor,
+                              membershipTitle: hot.user.membershipTitle,
+                            ),
                           );
                         },
                       ),
@@ -1092,26 +1103,36 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           itemBuilder: (context, index) {
                                             VProduct pro =
                                                 data.insidearr[0][index];
-                                            return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment:
-                                                  pro.commentcount.toString(),
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "B2b-Shop",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
+                                            return InkWell(
+                                              onTap: () {
+                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                offer: pro.discounted_price,
+                                                wow: pro.wow,
+                                                comment:
+                                                    pro.commentcount.toString(),
+                                                discounttedPrice:
+                                                    pro.discounted_price,
+                                                issponsored: pro.user.sponsored,
+                                                lefttile: "B2b-Shop",
+                                                Vimage: pro.user.photo,
+                                                price: pro.price,
+                                                title: pro.title,
+                                                vendorname: pro.user.name,
+                                                productImage: pro.image,
+                                                similarproductCount:
+                                                    pro.similarProductCount,
+                                                membershipColor:
+                                                    pro.user.membercolor,
+                                                membershipTitle:
+                                                    pro.user.membershipTitle,
+                                              ),
                                             );
                                           },
                                         ),
@@ -1168,22 +1189,32 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[1][index];
-                                      return ProductDetailWidget(
-                                        wow: pro.wow,
-                                        comment: pro.commentcount.toString(),
-                                        issponsored: pro.user.sponsored,
-                                        discounttedPrice: pro.discounted_price,
-                                        lefttile: "B2b-Shop",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                        similarproductCount:
-                                            pro.similarProductCount,
-                                        membershipColor: pro.user.membercolor,
-                                        membershipTitle:
-                                            pro.user.membershipTitle,
+                                      return InkWell(
+                                        onTap: () {
+                                             Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                        },
+                                        child: ProductDetailWidget(
+                                          wow: pro.wow,
+                                          comment: pro.commentcount.toString(),
+                                          issponsored: pro.user.sponsored,
+                                          discounttedPrice: pro.discounted_price,
+                                          lefttile: "B2b-Shop",
+                                          Vimage: pro.user.photo,
+                                          price: pro.price,
+                                          title: pro.title,
+                                          vendorname: pro.user.name,
+                                          productImage: pro.image,
+                                          similarproductCount:
+                                              pro.similarProductCount,
+                                          membershipColor: pro.user.membercolor,
+                                          membershipTitle:
+                                              pro.user.membershipTitle,
+                                        ),
                                       );
                                     },
                                   ),
@@ -1230,22 +1261,31 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[2][index];
-                                      return ProductDetailWidget(
-                                        wow: pro.wow,
-                                        comment: pro.commentcount.toString(),
-                                        discounttedPrice: pro.discounted_price,
-                                        issponsored: pro.user.sponsored,
-                                        lefttile: "B2b-Shop",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                        similarproductCount:
-                                            pro.similarProductCount,
-                                        membershipColor: pro.user.membercolor,
-                                        membershipTitle:
-                                            pro.user.membershipTitle,
+                                      return InkWell(
+                                        onTap: () {
+   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));                                        },
+                                        child: ProductDetailWidget(
+                                          wow: pro.wow,
+                                          comment: pro.commentcount.toString(),
+                                          discounttedPrice: pro.discounted_price,
+                                          issponsored: pro.user.sponsored,
+                                          lefttile: "B2b-Shop",
+                                          Vimage: pro.user.photo,
+                                          price: pro.price,
+                                          title: pro.title,
+                                          vendorname: pro.user.name,
+                                          productImage: pro.image,
+                                          similarproductCount:
+                                              pro.similarProductCount,
+                                          membershipColor: pro.user.membercolor,
+                                          membershipTitle:
+                                              pro.user.membershipTitle,
+                                        ),
                                       );
                                     },
                                   ),
@@ -1292,22 +1332,32 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
                                       VProduct pro = data.insidearr[4][index];
-                                      return ProductDetailWidget(
-                                        wow: pro.wow,
-                                        comment: pro.commentcount.toString(),
-                                        discounttedPrice: pro.discounted_price,
-                                        issponsored: pro.user.sponsored,
-                                        lefttile: "B2b-Shop",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                        similarproductCount:
-                                            pro.similarProductCount,
-                                        membershipColor: pro.user.membercolor,
-                                        membershipTitle:
-                                            pro.user.membershipTitle,
+                                      return InkWell(
+                                        onTap: () {
+                                             Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                        },
+                                        child: ProductDetailWidget(
+                                          wow: pro.wow,
+                                          comment: pro.commentcount.toString(),
+                                          discounttedPrice: pro.discounted_price,
+                                          issponsored: pro.user.sponsored,
+                                          lefttile: "B2b-Shop",
+                                          Vimage: pro.user.photo,
+                                          price: pro.price,
+                                          title: pro.title,
+                                          vendorname: pro.user.name,
+                                          productImage: pro.image,
+                                          similarproductCount:
+                                              pro.similarProductCount,
+                                          membershipColor: pro.user.membercolor,
+                                          membershipTitle:
+                                              pro.user.membershipTitle,
+                                        ),
                                       );
                                     },
                                   ),
@@ -1400,7 +1450,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             VProduct prod =
                                                 data.insidearr[0][index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                              },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
@@ -1463,7 +1520,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 data.insidearr[1][index];
 
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                              },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1520,7 +1584,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             VProduct prod =
                                                 data.insidearr[2][index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                              },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1752,7 +1823,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               VProduct prod = products[index];
 
                                               return InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                                },
                                                 child: ProductDetailWidget(
                                                   comment: prod.commentcount
                                                       .toString(),
@@ -1852,27 +1930,37 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       ),
                       itemBuilder: (context, index) {
                         // VProduct res = data.allProducts[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: AllProductDetailWidget(
-                            wow: data.product[index].wow,
-                            comment:
-                                data.product[index].commentcount.toString(),
-                            issponsored: data.product[index].user.sponsored,
-                            discounttedPrice:
-                                data.product[index].discounted_price,
-                            lefttile: "B2b-Shop",
-                            productImage: data.product[index].image,
-                            Vimage: data.product[index].user.photo,
-                            vendorname: data.product[index].user.name,
-                            title: data.product[index].title,
-                            price: data.product[index].price,
-                            similarproductCount:
-                                data.product[index].similarProductCount,
-                            membershipColor:
-                                data.product[index].user.membercolor,
-                            membershipTitle:
-                                data.product[index].user.membershipTitle,
+                        return InkWell(
+                          onTap: () {
+                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: data.product[index].id),
+                                  ));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 5.h),
+                            child: AllProductDetailWidget(
+                              wow: data.product[index].wow,
+                              comment:
+                                  data.product[index].commentcount.toString(),
+                              issponsored: data.product[index].user.sponsored,
+                              discounttedPrice:
+                                  data.product[index].discounted_price,
+                              lefttile: "B2b-Shop",
+                              productImage: data.product[index].image,
+                              Vimage: data.product[index].user.photo,
+                              vendorname: data.product[index].user.name,
+                              title: data.product[index].title,
+                              price: data.product[index].price,
+                              similarproductCount:
+                                  data.product[index].similarProductCount,
+                              membershipColor:
+                                  data.product[index].user.membercolor,
+                              membershipTitle:
+                                  data.product[index].user.membershipTitle,
+                            ),
                           ),
                         );
                       },
@@ -1925,7 +2013,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
               ],
             ),
           ),
-          valuenotifilersidebutton(showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+          valuenotifilersidebutton(
+              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
           //
         ]));
   }

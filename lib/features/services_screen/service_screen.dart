@@ -19,6 +19,7 @@ import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -1027,20 +1028,30 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
-                          return ProductDetailWidget(
-                            wow: hot.wow,
-                            comment: hot.commentcount.toString(),
-                            discounttedPrice: hot.discounted_price,
-                            issponsored: hot.user.sponsored,
-                            lefttile: "Services",
-                            productImage: hot.image,
-                            Vimage: hot.user.photo,
-                            price: hot.price,
-                            title: hot.title,
-                            vendorname: hot.user.name,
-                            similarproductCount: hot.similarProductCount,
-                            membershipColor: hot.user.membercolor,
-                            membershipTitle: hot.user.membershipTitle,
+                          return InkWell(
+                            onTap: () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: hot.id),
+                                  ));
+                            },
+                            child: ProductDetailWidget(
+                              wow: hot.wow,
+                              comment: hot.commentcount.toString(),
+                              discounttedPrice: hot.discounted_price,
+                              issponsored: hot.user.sponsored,
+                              lefttile: "Services",
+                              productImage: hot.image,
+                              Vimage: hot.user.photo,
+                              price: hot.price,
+                              title: hot.title,
+                              vendorname: hot.user.name,
+                              similarproductCount: hot.similarProductCount,
+                              membershipColor: hot.user.membercolor,
+                              membershipTitle: hot.user.membershipTitle,
+                            ),
                           );
                         },
                       ),
@@ -1118,26 +1129,36 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           itemBuilder: (context, index) {
                                             VProduct pro =
                                                 data.insidearr[0][index];
-                                            return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment:
-                                                  pro.commentcount.toString(),
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Services",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
+                                            return InkWell(
+                                              onTap: () {
+                                                                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                offer: pro.discounted_price,
+                                                wow: pro.wow,
+                                                comment:
+                                                    pro.commentcount.toString(),
+                                                discounttedPrice:
+                                                    pro.discounted_price,
+                                                issponsored: pro.user.sponsored,
+                                                lefttile: "Services",
+                                                Vimage: pro.user.photo,
+                                                price: pro.price,
+                                                title: pro.title,
+                                                vendorname: pro.user.name,
+                                                productImage: pro.image,
+                                                similarproductCount:
+                                                    pro.similarProductCount,
+                                                membershipColor:
+                                                    pro.user.membercolor,
+                                                membershipTitle:
+                                                    pro.user.membershipTitle,
+                                              ),
                                             );
                                           },
                                         ),
@@ -1204,26 +1225,36 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           itemBuilder: (context, index) {
                                             VProduct pro =
                                                 data.insidearr[1][index];
-                                            return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment:
-                                                  pro.commentcount.toString(),
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Services",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
+                                            return InkWell(
+                                              onTap: () {
+                                                                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                offer: pro.discounted_price,
+                                                wow: pro.wow,
+                                                comment:
+                                                    pro.commentcount.toString(),
+                                                discounttedPrice:
+                                                    pro.discounted_price,
+                                                issponsored: pro.user.sponsored,
+                                                lefttile: "Services",
+                                                Vimage: pro.user.photo,
+                                                price: pro.price,
+                                                title: pro.title,
+                                                vendorname: pro.user.name,
+                                                productImage: pro.image,
+                                                similarproductCount:
+                                                    pro.similarProductCount,
+                                                membershipColor:
+                                                    pro.user.membercolor,
+                                                membershipTitle:
+                                                    pro.user.membershipTitle,
+                                              ),
                                             );
                                           },
                                         ),
@@ -1281,26 +1312,36 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           itemBuilder: (context, index) {
                                             VProduct pro =
                                                 data.insidearr[2][index];
-                                            return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment:
-                                                  pro.commentcount.toString(),
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Services",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
+                                            return InkWell(
+                                              onTap: () {
+                                                                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                offer: pro.discounted_price,
+                                                wow: pro.wow,
+                                                comment:
+                                                    pro.commentcount.toString(),
+                                                discounttedPrice:
+                                                    pro.discounted_price,
+                                                issponsored: pro.user.sponsored,
+                                                lefttile: "Services",
+                                                Vimage: pro.user.photo,
+                                                price: pro.price,
+                                                title: pro.title,
+                                                vendorname: pro.user.name,
+                                                productImage: pro.image,
+                                                similarproductCount:
+                                                    pro.similarProductCount,
+                                                membershipColor:
+                                                    pro.user.membercolor,
+                                                membershipTitle:
+                                                    pro.user.membershipTitle,
+                                              ),
                                             );
                                           },
                                         ),
@@ -1358,26 +1399,36 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           itemBuilder: (context, index) {
                                             VProduct pro =
                                                 data.insidearr[2][index];
-                                            return ProductDetailWidget(
-                                              offer: pro.discounted_price,
-                                              wow: pro.wow,
-                                              comment:
-                                                  pro.commentcount.toString(),
-                                              discounttedPrice:
-                                                  pro.discounted_price,
-                                              issponsored: pro.user.sponsored,
-                                              lefttile: "Services",
-                                              Vimage: pro.user.photo,
-                                              price: pro.price,
-                                              title: pro.title,
-                                              vendorname: pro.user.name,
-                                              productImage: pro.image,
-                                              similarproductCount:
-                                                  pro.similarProductCount,
-                                              membershipColor:
-                                                  pro.user.membercolor,
-                                              membershipTitle:
-                                                  pro.user.membershipTitle,
+                                            return InkWell(
+                                              onTap: () {
+                                                                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: pro.id),
+                                  ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                offer: pro.discounted_price,
+                                                wow: pro.wow,
+                                                comment:
+                                                    pro.commentcount.toString(),
+                                                discounttedPrice:
+                                                    pro.discounted_price,
+                                                issponsored: pro.user.sponsored,
+                                                lefttile: "Services",
+                                                Vimage: pro.user.photo,
+                                                price: pro.price,
+                                                title: pro.title,
+                                                vendorname: pro.user.name,
+                                                productImage: pro.image,
+                                                similarproductCount:
+                                                    pro.similarProductCount,
+                                                membershipColor:
+                                                    pro.user.membercolor,
+                                                membershipTitle:
+                                                    pro.user.membershipTitle,
+                                              ),
                                             );
                                           },
                                         ),
@@ -1470,7 +1521,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             VProduct prod =
                                                 data.insidearr[0][index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));},
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
@@ -1533,7 +1589,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[1][index];
 
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));},
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1590,7 +1651,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             VProduct prod =
                                                 data.insidearr[2][index];
                                             return InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                                 Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                              },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1822,7 +1890,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                                           return InkWell(
                                             onTap:
-                                                () {}, // Handle onTap if needed
+                                                () {
+                                                                   Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: prod.id),
+                                  ));
+                                                }, // Handle onTap if needed
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
                                               comment:
@@ -1897,25 +1972,35 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         // VProduct res = data.allProducts[index];
                         return Padding(
                           padding: EdgeInsets.only(bottom: 5.h),
-                          child: AllProductDetailWidget(
-                            wow: data.product[index].wow,
-                            comment:
-                                data.product[index].commentcount.toString(),
-                            issponsored: data.product[index].user.sponsored,
-                            discounttedPrice:
-                                data.product[index].discounted_price,
-                            lefttile: "Services",
-                            productImage: data.product[index].image,
-                            Vimage: data.product[index].user.photo,
-                            vendorname: data.product[index].user.name,
-                            title: data.product[index].title,
-                            price: data.product[index].price,
-                            similarproductCount:
-                                data.product[index].similarProductCount,
-                            membershipColor:
-                                data.product[index].user.membercolor,
-                            membershipTitle:
-                                data.product[index].user.membershipTitle,
+                          child: InkWell(
+                            onTap: () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: data.product[index].id),
+                                  ));
+                            },
+                            child: AllProductDetailWidget(
+                              wow: data.product[index].wow,
+                              comment:
+                                  data.product[index].commentcount.toString(),
+                              issponsored: data.product[index].user.sponsored,
+                              discounttedPrice:
+                                  data.product[index].discounted_price,
+                              lefttile: "Services",
+                              productImage: data.product[index].image,
+                              Vimage: data.product[index].user.photo,
+                              vendorname: data.product[index].user.name,
+                              title: data.product[index].title,
+                              price: data.product[index].price,
+                              similarproductCount:
+                                  data.product[index].similarProductCount,
+                              membershipColor:
+                                  data.product[index].user.membercolor,
+                              membershipTitle:
+                                  data.product[index].user.membershipTitle,
+                            ),
                           ),
                         );
                       },
