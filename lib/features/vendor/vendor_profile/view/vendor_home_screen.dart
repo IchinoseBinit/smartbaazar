@@ -1963,10 +1963,10 @@ class VendorSearchContainer extends StatelessWidget {
                                 child: Image.asset(
                                   "assets/images/vendorDealImage.png",
                                   width: 30.w,
-                                  height: 27.h,
+                                  height: 20.h,
                                   fit: BoxFit.cover,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
