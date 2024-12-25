@@ -917,7 +917,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
-                                              
+
 
                                               distance:prod.shortestDistance ,
                                               issponsored: prod.user!.sponsored?? false,
@@ -1374,6 +1374,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
+                                      worth: resp.worth!,
                                         productname: resp.name,
                                         vendorImage: resp.vendorImage,
                                         vendorname: resp.name,

@@ -1672,6 +1672,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            worth: resp.worth!,
                                                         productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
