@@ -59,6 +59,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
     vendors = stories.map((story) => story.vendorName!).toList();
     vendorImage = stories.map((story) => story.vendorImage!).toList();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +69,8 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
           context,
           MaterialPageRoute(
             builder: (_) => FeedStoryScreen(
+              selectedVendorIndex: widget.index,
+              initialIndex: widget.index,
               author: widget.vendorName ?? '',
               storyCount: widget.storyCount ?? 0,
               feedStory: widget.feedStoryContent!,

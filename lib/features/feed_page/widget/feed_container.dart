@@ -45,7 +45,7 @@ class FeedContainer extends StatelessWidget {
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 100.h, // Set your desired height
+            height: 90.h, // Set your desired height
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [

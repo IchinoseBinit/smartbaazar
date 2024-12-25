@@ -9,11 +9,15 @@ class FeedStoryScreen extends StatefulWidget {
   final String author;
   final int storyCount;
   final FeedStory? feedStory;
+  final int initialIndex;
+  final int selectedVendorIndex;
 
   const FeedStoryScreen(
       {super.key,
       required this.author,
       required this.storyCount,
+      required this.initialIndex,
+      required this.selectedVendorIndex,
       this.feedStory});
 
   @override
@@ -48,40 +52,98 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     );
   }
 
+  bool _initialized = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      _initialized = true;
+      _initializeData();
+    }
+  }
+
+  void _initializeData() {
     groupedStories =
         groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
     stories = widget.feedStory?.posts! ?? [];
-    // stories = widget.feedStory;
-    // Identify unique vendors
     vendors = stories.map((story) => story.vendorName!).toSet().toList();
     vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
-    // Filter vendor stories: Get images for each vendor
     vendorStories = groupedStories.entries.map((entry) {
       return entry.value.map((post) => post.image!).toList();
     }).toList();
-    // vendorStories = vendors.map((vendor) {
-    //   return widget.feedStory
-    //       .where((story) => story.vendorName == vendor && story.posts != null)
-    //       .expand((story) => story.posts!)
-    //       .where((post) => post.image != null)
-    //       .map((post) => post.image!)
-    //       .toList();
-    // }).toList();
 
-    _pageController = PageController(initialPage: 0);
+    _currentVendorIndex = widget.selectedVendorIndex;
+    _currentStoryIndex = 0;
+
+    int initialPage =
+        _calculatePageForVendor(_currentVendorIndex, _currentStoryIndex);
+
+    _pageController = PageController(initialPage: initialPage);
     _animationController = AnimationController(vsync: this, duration: duration);
+
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && !_isPaused) {
         _moveToNextVendor();
       }
     });
 
-    _currentVendorIndex = 0;
-    _currentStoryIndex = 0;
     _startAutoScroll();
+  }
+
+  int _calculatePageForVendor(int vendorIndex, int storyIndex) {
+    int storyOffset = 0;
+    for (int i = 0; i < vendorIndex; i++) {
+      storyOffset += vendorStories[i].length;
+    }
+    return storyOffset + storyIndex;
+  }
+
+  void _setupPageController() {
+    _pageController.addListener(_handlePageChange);
+  }
+
+  void _jumpToInitialPage() {
+    if (_pageController.hasClients) {
+      _pageController.jumpToPage(_pageController.initialPage);
+    }
+  }
+
+ void _handlePageChange() {
+  final currentPage = _pageController.page!.round();
+
+  int storyOffset = 0;
+  for (int i = 0; i < vendorStories.length; i++) {
+    final vendorStoryCount = vendorStories[i].length;
+    if (currentPage < storyOffset + vendorStoryCount) {
+      setState(() {
+        _currentVendorIndex = i;
+        _currentStoryIndex = currentPage - storyOffset;
+      });
+      debugPrint('Current Vendor: $_currentVendorIndex');
+      debugPrint('Current Story: $_currentStoryIndex');
+      return;
+    }
+    storyOffset += vendorStoryCount;
+  }
+}
+
+
+  void _updateCurrentVendorIndex() {
+    int currentPage = _pageController.page?.round() ?? 0;
+    int totalStories = 0;
+
+    for (int i = 0; i < vendorStories.length; i++) {
+      totalStories += vendorStories[i].length;
+      if (currentPage < totalStories) {
+        setState(() {
+          _currentVendorIndex = i;
+          _currentStoryIndex =
+              currentPage - (totalStories - vendorStories[i].length);
+        });
+        return;
+      }
+    }
   }
 
   void _startAutoScroll() {
@@ -91,18 +153,6 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }
   }
 
-  void _selectVendor(int vendorIndex) {
-    setState(() {
-      _currentVendorIndex = vendorIndex;
-      _currentStoryIndex = 0; // Reset story index
-      _displayedStoryIndices
-          .clear(); // Clear displayed story indices for this vendor
-    });
-    _pageController.jumpToPage(0); // Reset PageView to the first story
-    _animationController.reset();
-    _startAutoScroll();
-  }
-
   void _moveToNextVendor() {
     setState(() {
       if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
@@ -110,48 +160,136 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
       } else if (_currentVendorIndex < vendorStories.length - 1) {
         _currentVendorIndex++;
         _currentStoryIndex = 0;
-        _displayedStoryIndices.clear();
       } else {
-        Navigator.pop(context);
-        // All stories have been shown for all vendors, move to next author
-        // final nextAuthor = _getNextAuthor();
-        // if (nextAuthor != null) {
-        //   var updatedFeedStory = FeedStory(
-        //     posts: _getUpdatedPosts(nextAuthor),
-        //     // ... other properties remain the same
-        //   );
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (_) => FeedStoryScreen(
-        //         author: nextAuthor,
-        //         storyCount: widget.storyCount,
-        //         feedStory: updatedFeedStory,
-        //       ),
-        //     ),
-        //   ).then((_) {
-        //     setState(() {
-        //       _currentVendorIndex = 0;
-        //       _displayedStoryIndices.clear();
-        //     });
-        //   });
-        // } else {
-        //   Navigator.pop(context);
-        // }
+        Navigator.pop(context); // Exit if it's the last story
+        return;
       }
     });
 
-    if (_currentStoryIndex < vendorStories[_currentVendorIndex].length) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-      _animationController.reset();
-      _startAutoScroll();
-    } else {
-      _stopAutoScroll();
+    int totalStoriesBeforeCurrent = 0;
+    for (int i = 0; i < _currentVendorIndex; i++) {
+      totalStoriesBeforeCurrent += vendorStories[i].length;
     }
+
+    final newPage = totalStoriesBeforeCurrent + _currentStoryIndex;
+    _pageController.animateToPage(
+      newPage,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
+    _animationController.reset();
+    _startAutoScroll();
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   groupedStories =
+  //       groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
+  //   stories = widget.feedStory?.posts! ?? [];
+  //   // stories = widget.feedStory;
+  //   // Identify unique vendors
+  //   vendors = stories.map((story) => story.vendorName!).toSet().toList();
+  //   vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
+  //   // Filter vendor stories: Get images for each vendor
+  //   vendorStories = groupedStories.entries.map((entry) {
+  //     return entry.value.map((post) => post.image!).toList();
+  //   }).toList();
+  //   // vendorStories = vendors.map((vendor) {
+  //   //   return widget.feedStory
+  //   //       .where((story) => story.vendorName == vendor && story.posts != null)
+  //   //       .expand((story) => story.posts!)
+  //   //       .where((post) => post.image != null)
+  //   //       .map((post) => post.image!)
+  //   //       .toList();
+  //   // }).toList();
+
+  //   _pageController = PageController(initialPage: 0);
+  //   _animationController = AnimationController(vsync: this, duration: duration);
+  //   _animationController.addStatusListener((status) {
+  //     if (status == AnimationStatus.completed && !_isPaused) {
+  //       _moveToNextVendor();
+  //     }
+  //   });
+
+  //   // _currentVendorIndex = 0;
+  //   // _currentStoryIndex = 0;
+  //   // _startAutoScroll();
+  //   _currentVendorIndex = widget.selectedVendorIndex;
+  //   _currentStoryIndex = 0;
+  //   _displayedStoryIndices.clear();
+  //   int totalPreviousStories = 0;
+  //   for (int i = 0; i < _currentVendorIndex; i++) {
+  //     totalPreviousStories += vendorStories[i].length;
+  //   }
+  //   _pageController.jumpToPage(totalPreviousStories);
+
+  //   _startAutoScroll();
+  // }
+
+  void _selectVendor(int vendorIndex) {
+    setState(() {
+      _currentVendorIndex = vendorIndex;
+      _currentStoryIndex = 0;
+      _displayedStoryIndices.clear();
+    });
+
+    int totalStoriesBeforeSelected = vendorIndex > 0 ? vendorIndex - 1 : 0;
+
+    _pageController.jumpToPage(totalStoriesBeforeSelected);
+    _animationController.reset();
+    _startAutoScroll();
+  }
+
+  // void _moveToNextVendor() {
+  //   setState(() {
+  //     if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
+  //       _currentStoryIndex++;
+  //     } else if (_currentVendorIndex < vendorStories.length - 1) {
+  //       _currentVendorIndex++;
+  //       _currentStoryIndex = 0;
+  //       _displayedStoryIndices.clear();
+  //     } else {
+  //       Navigator.pop(context);
+  //       // All stories have been shown for all vendors, move to next author
+  //       // final nextAuthor = _getNextAuthor();
+  //       // if (nextAuthor != null) {
+  //       //   var updatedFeedStory = FeedStory(
+  //       //     posts: _getUpdatedPosts(nextAuthor),
+  //       //     // ... other properties remain the same
+  //       //   );
+  //       //   Navigator.push(
+  //       //     context,
+  //       //     MaterialPageRoute(
+  //       //       builder: (_) => FeedStoryScreen(
+  //       //         author: nextAuthor,
+  //       //         storyCount: widget.storyCount,
+  //       //         feedStory: updatedFeedStory,
+  //       //       ),
+  //       //     ),
+  //       //   ).then((_) {
+  //       //     setState(() {
+  //       //       _currentVendorIndex = 0;
+  //       //       _displayedStoryIndices.clear();
+  //       //     });
+  //       //   });
+  //       // } else {
+  //       //   Navigator.pop(context);
+  //       // }
+  //     }
+  //   });
+
+  //   if (_currentStoryIndex < vendorStories[_currentVendorIndex].length) {
+  //     _pageController.nextPage(
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeIn,
+  //     );
+  //     _animationController.reset();
+  //     _startAutoScroll();
+  //   } else {
+  //     _stopAutoScroll();
+  //   }
+  // }
 
   Set<int> _displayedStoryIndices = {};
 
@@ -172,11 +310,6 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
         .toList();
   }
 
-  void _stopAutoScroll() {
-    _isPaused = true;
-    _animationController.stop();
-  }
-
   // String? _getNextAuthor() {
   //   final currentIndex = vendors.indexOf(widget.author);
   //   if (currentIndex < vendors.length - 1) {
@@ -185,13 +318,13 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   //   return null; // No next author
   // }
 
-  String? _getPreviousAuthor() {
-    final currentIndex = vendors.indexOf(widget.author);
-    if (currentIndex < vendors.length - 1) {
-      return vendors[currentIndex - 1];
-    }
-    return null; // No next author
-  }
+  // String? _getPreviousAuthor() {
+  //   final currentIndex = vendors.indexOf(widget.author);
+  //   if (currentIndex < vendors.length - 1) {
+  //     return vendors[currentIndex - 1];
+  //   }
+  //   return null; // No next author
+  // }
 
   void _onTap(bool forward) {
     if (forward) {
@@ -264,6 +397,12 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: vendorStories[_currentVendorIndex].length,
                 itemBuilder: (context, index) {
+                  int vendorIndex = 0;
+                  int storyIndex = index;
+                  while (storyIndex >= vendorStories[vendorIndex].length) {
+                    storyIndex -= vendorStories[vendorIndex].length;
+                    vendorIndex++;
+                  }
                   return Stack(
                     children: [
                       // Image
@@ -274,6 +413,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           vendorStories[_currentVendorIndex]
                                   [_currentStoryIndex] ??
                               '',
+                          // vendorStories[vendorIndex][storyIndex] ?? '',
                           fit: BoxFit.contain,
                           alignment: Alignment.center,
                           errorBuilder: (context, object, stackTrace) {
