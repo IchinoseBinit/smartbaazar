@@ -11,6 +11,7 @@ import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
+import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -593,38 +594,50 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height: 130,
-                //       child: ListView.builder(
-                //           padding: EdgeInsets.zero,
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: data.sliders!.length,
-                //           itemBuilder: (context, index) {
-                //             Story ref = data.stories[index];
-                //             if (index == 0) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: false,
-                //                 brandname: ref.vendorName,
-                //               );
-                //             } else if (index >= 1 && index <= 3) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: true,
-                //               );
-                //             }
-                //             return NotStoryWidget(index: index);
-                //           }),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () => const CircularProgressIndicator(),
-                // ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130,
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.sliders!.length,
+                          itemBuilder: (context, index) {
+                            Story ref = data.stories[index];
+                            if (index == 0) {
+                              return StoryAddWidget(
+                                  vImage: ref.vendorImage,
+                                  brandname: ref.vendorName,
+                                  index: 0,
+                                  addSearch: true,
+                                  showgift: ref.hasSponsoredGifts,
+                                  onTap: () {
+                                    // setState(() {
+                                    //   _isPopupVisible = true; // Open the popup
+                                    // });
+                                  });
+                            } else if (index >= 1 && index <= 3) {
+                              return NotStoryWidget(
+                                brandname: ref.vendorName,
+                                vImage: ref.vendorImage,
+                                addSearch: false,
+                                index: index,
+                                showgift: ref.hasSponsoredGifts,
+                              );
+                            }
+                            return NotStoryWidget(index: index);
+                          }),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -716,6 +729,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
+                          if (data.cat.isEmpty) return SizedBox();
                           return GestureDetector(
                             onTap: () {
                               showMenu(
@@ -1009,7 +1023,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           VProduct hot = data.hotProducts[index];
                           return InkWell(
                             onTap: () {
-                                               Navigator.push(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
@@ -1347,12 +1361,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[1].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     } else if (tabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[2].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     else
                       dynamicHeight = 300;
@@ -1394,11 +1408,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 data.insidearr[0][index];
                                             return InkWell(
                                               onTap: () {
-                                                       Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    prod.id)));
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
@@ -1459,11 +1475,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
                                             return InkWell(
                                               onTap: () {
-                                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    prod.id)));
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
@@ -1522,11 +1540,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 data.insidearr[2][index];
                                             return InkWell(
                                               onTap: () {
-                                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    prod.id)));
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
@@ -1806,11 +1826,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       VProduct prod = products[index];
                                       return InkWell(
                                         onTap: () {
-                                                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailScreen(
+                                                          productId: prod.id)));
                                         }, // Handle onTap if needed
                                         child: ProductDetailWidget(
                                           wow: prod.wow,
@@ -1900,11 +1921,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: data.product[index].id)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductDetailScreen(
+                                        productId: data.product[index].id)));
                           },
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 5.h),

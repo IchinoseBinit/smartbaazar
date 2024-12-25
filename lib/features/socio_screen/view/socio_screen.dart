@@ -590,38 +590,51 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height: 130,
-                //       child: ListView.builder(
-                //           padding: EdgeInsets.zero,
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: data.sliders!.length,
-                //           itemBuilder: (context, index) {
-                //             Story ref = data.stories[index];
-                //             if (index == 0) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: false,
-                //                 brandname: ref.vendorName,
-                //               );
-                //             } else if (index >= 1 && index <= 3) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: true,
-                //               );
-                //             }
-                //             return NotStoryWidget(index: index);
-                //           }),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () => const CircularProgressIndicator(),
-                // ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130,
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.sliders!.length,
+                          itemBuilder: (context, index) {
+                            Story ref = data.stories[index];
+                            if (index == 0) {
+                              return StoryAddWidget(
+                                vImage: ref.vendorImage,
+                                brandname: ref.vendorName,
+                                index: 0,
+                                addSearch: true,
+                                showgift: ref.hasSponsoredGifts,
+                                onTap: () {
+                                  // setState(() {
+                                  //   _isPopupVisible = true; // Open the popup
+                                  // });
+                                
+                                }
+                                
+                              );
+                            } else if (index >= 1 && index <= 3) {
+                              return NotStoryWidget(
+                                brandname: ref.vendorName,
+                                vImage: ref.vendorImage,
+                                addSearch: false,
+                                index: index,
+                                showgift: ref.hasSponsoredGifts,
+                              );
+                            }
+                            return NotStoryWidget(index: index);
+                          }),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                ),
+SizedBox(height: 10.h,),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -714,6 +727,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
+                          if (data.cat.isEmpty) return SizedBox();
                           return GestureDetector(
                             onTap: () {
                               showMenu(
@@ -764,7 +778,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 ),
                               ],
                               onCanceled: () {
-                                print("You have canceled the menu selection.");
+                                // print("You have canceled the menu selection.");
                               },
                               onSelected: (value) {
                                 switch (value) {
@@ -789,11 +803,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Image.asset('assets/images/cloth.png'),
-                                      const Wrap(
+                                      // Image.asset('assets/images/cloth.png'),
+                                       Wrap(
                                         children: [
                                           Text(
-                                            "HEALTH,\nSPORTS",
+                                            data.cat[0].slug,
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,

@@ -612,38 +612,50 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height: 130,
-                //       child: ListView.builder(
-                //           padding: EdgeInsets.zero,
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: data.sliders!.length,
-                //           itemBuilder: (context, index) {
-                //             Story ref = data.stories[index];
-                //             if (index == 0) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: false,
-                //                 brandname: ref.vendorName,
-                //               );
-                //             } else if (index >= 1 && index <= 3) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: true,
-                //               );
-                //             }
-                //             return NotStoryWidget(index: index);
-                //           }),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () => Center(child: const CircularProgressIndicator()),
-                // ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130,
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.sliders!.length,
+                          itemBuilder: (context, index) {
+                            Story ref = data.stories[index];
+                            if (index == 0) {
+                              return StoryAddWidget(
+                                  vImage: ref.vendorImage,
+                                  brandname: ref.vendorName,
+                                  index: 0,
+                                  addSearch: true,
+                                  showgift: ref.hasSponsoredGifts,
+                                  onTap: () {
+                                    // setState(() {
+                                    //   _isPopupVisible = true; // Open the popup
+                                    // });
+                                  });
+                            } else if (index >= 1 && index <= 3) {
+                              return NotStoryWidget(
+                                brandname: ref.vendorName,
+                                vImage: ref.vendorImage,
+                                addSearch: false,
+                                index: index,
+                                showgift: ref.hasSponsoredGifts,
+                              );
+                            }
+                            return NotStoryWidget(index: index);
+                          }),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -736,6 +748,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
+                          if (data.cat.isEmpty) return SizedBox();
                           return GestureDetector(
                             onTap: () {
                               showMenu(
@@ -1030,7 +1043,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           VProduct hot = data.hotProducts[index];
                           return InkWell(
                             onTap: () {
-                                               Navigator.push(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
@@ -1112,9 +1125,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, left: 10.w),
-                                          child: const SizedBox(
-                                            child: Text("No listing available"),
-                                          ),
+                                          child: nolistingfound(),
                                         ),
                                       )
                                     : SizedBox(
@@ -1131,12 +1142,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[0][index];
                                             return InkWell(
                                               onTap: () {
-                                                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  pro.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 offer: pro.discounted_price,
@@ -1208,9 +1221,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, left: 10.w),
-                                          child: const SizedBox(
-                                            child: Text("No listing available"),
-                                          ),
+                                          child: nolistingfound(),
                                         ),
                                       )
                                     : SizedBox(
@@ -1227,12 +1238,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[1][index];
                                             return InkWell(
                                               onTap: () {
-                                                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  pro.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 offer: pro.discounted_price,
@@ -1295,9 +1308,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, left: 10.w),
-                                          child: const SizedBox(
-                                            child: Text("No listing available"),
-                                          ),
+                                          child: nolistingfound(),
                                         ),
                                       )
                                     : SizedBox(
@@ -1314,12 +1325,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[2][index];
                                             return InkWell(
                                               onTap: () {
-                                                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  pro.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 offer: pro.discounted_price,
@@ -1382,9 +1395,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, left: 10.w),
-                                          child: const SizedBox(
-                                            child: Text("No listing available"),
-                                          ),
+                                          child: nolistingfound(),
                                         ),
                                       )
                                     : SizedBox(
@@ -1401,12 +1412,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[2][index];
                                             return InkWell(
                                               onTap: () {
-                                                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  pro.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 offer: pro.discounted_price,
@@ -1475,12 +1488,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[1].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     } else if (tabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[2].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     else
                       dynamicHeight = 300;
@@ -1521,12 +1534,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             VProduct prod =
                                                 data.insidearr[0][index];
                                             return InkWell(
-                                              onTap: () {                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));},
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
+                                              },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
@@ -1589,12 +1606,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[1][index];
 
                                             return InkWell(
-                                              onTap: () {                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));},
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
+                                              },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1652,12 +1673,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 data.insidearr[2][index];
                                             return InkWell(
                                               onTap: () {
-                                                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
@@ -1889,15 +1912,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           VProduct prod = products[index];
 
                                           return InkWell(
-                                            onTap:
-                                                () {
-                                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
-                                                }, // Handle onTap if needed
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
+                                            }, // Handle onTap if needed
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
                                               comment:
@@ -1974,11 +1997,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           padding: EdgeInsets.only(bottom: 5.h),
                           child: InkWell(
                             onTap: () {
-                                               Navigator.push(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: data.product[index].id),
+                                    builder: (context) => ProductDetailScreen(
+                                        productId: data.product[index].id),
                                   ));
                             },
                             child: AllProductDetailWidget(

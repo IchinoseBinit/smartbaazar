@@ -208,7 +208,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     _searchController.dispose();
     super.dispose();
     _scrollController.dispose();
-    super.dispose();
+    // super.dispose();
   }
 
   @override
@@ -598,39 +598,50 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height: 130,
-                //       child: ListView.builder(
-                //           padding: EdgeInsets.zero,
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: data.sliders!.length,
-                //           itemBuilder: (context, index) {
-                //             Story ref = data.stories[index];
-                //             if (index == 0) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: false,
-                //                 brandname: ref.vendorName,
-                //               );
-                //             } else if (index >= 1 && index <= 3) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: true,
-                //               );
-                //             }
-                //             return NotStoryWidget(index: index);
-                //           }),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () => const CircularProgressIndicator(),
-                // ),
-
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130,
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.sliders!.length,
+                          itemBuilder: (context, index) {
+                            Story ref = data.stories[index];
+                            if (index == 0) {
+                              return StoryAddWidget(
+                                  vImage: ref.vendorImage,
+                                  brandname: ref.vendorName,
+                                  index: 0,
+                                  addSearch: true,
+                                  showgift: ref.hasSponsoredGifts,
+                                  onTap: () {
+                                    // setState(() {
+                                    //   _isPopupVisible = true; // Open the popup
+                                    // });
+                                  });
+                            } else if (index >= 1 && index <= 3) {
+                              return NotStoryWidget(
+                                brandname: ref.vendorName,
+                                vImage: ref.vendorImage,
+                                addSearch: false,
+                                index: index,
+                                showgift: ref.hasSponsoredGifts,
+                              );
+                            }
+                            return NotStoryWidget(index: index);
+                          }),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
@@ -721,100 +732,104 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          return GestureDetector(
-                            onTap: () {
-                              showMenu(
-                                context: context,
-                                position: const RelativeRect.fromLTRB(0, 0, 0,
-                                    0), // Base position; offset is handled by PopupMenuButton
-                                items: [
-                                  PopupMenuItem(
+                          if (data.cat.isNotEmpty)
+                            return GestureDetector(
+                              onTap: () {
+                                showMenu(
+                                  context: context,
+                                  position: const RelativeRect.fromLTRB(0, 0, 0,
+                                      0), // Base position; offset is handled by PopupMenuButton
+                                  items: [
+                                    PopupMenuItem(
+                                      value: 1,
+                                      child: ListTile(
+                                        title: const Text("View Story"),
+                                        leading: const Icon(Icons.book),
+                                        onTap: () {
+                                          Navigator.pop(
+                                              context); // Close the popup
+                                          // Handle "View Story" action here
+                                        },
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: 2,
+                                      child: ListTile(
+                                        title: const Text("View Product"),
+                                        leading: const Icon(Icons.shopping_bag),
+                                        onTap: () {
+                                          Navigator.pop(
+                                              context); // Close the popup
+                                          // Handle "View Product" action here
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                              child: PopupMenuButton<int>(
+                                offset: const Offset(0,
+                                    60), // The offset to position the menu above the widget
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem(
                                     value: 1,
-                                    child: ListTile(
-                                      title: const Text("View Story"),
-                                      leading: const Icon(Icons.book),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Story" action here
-                                      },
-                                    ),
+                                    child: Text("View Story",
+                                        style: TextStyle(fontSize: 16.0)),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 2,
-                                    child: ListTile(
-                                      title: const Text("View Product"),
-                                      leading: const Icon(Icons.shopping_bag),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Product" action here
-                                      },
-                                    ),
+                                    child: Text("View Product",
+                                        style: TextStyle(fontSize: 16.0)),
                                   ),
                                 ],
-                              );
-                            },
-                            child: PopupMenuButton<int>(
-                              offset: const Offset(0,
-                                  60), // The offset to position the menu above the widget
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 1,
-                                  child: Text("View Story",
-                                      style: TextStyle(fontSize: 16.0)),
-                                ),
-                                const PopupMenuItem(
-                                  value: 2,
-                                  child: Text("View Product",
-                                      style: TextStyle(fontSize: 16.0)),
-                                ),
-                              ],
-                              onCanceled: () {
-                                print("You have canceled the menu selection.");
-                              },
-                              onSelected: (value) {
-                                switch (value) {
-                                  case 1:
-                                    // Handle "View Story"
-                                    break;
-                                  case 2:
-                                    // Handle "View Product"
-                                    break;
-                                  default:
-                                    print("Invalid choice");
-                                    break;
-                                }
-                              },
-                              child: DashedBorder(
-                                dashCount: 2,
-                                child: SizedBox(
-                                  width: 100.w,
-                                  height: 100.h,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset('assets/images/cloth.png'),
-                                      const Wrap(
-                                        children: [
-                                          Text(
-                                            "HEALTH,\nSPORTS",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13,
+                                onCanceled: () {
+                                  print(
+                                      "You have canceled the menu selection.");
+                                },
+                                onSelected: (value) {
+                                  switch (value) {
+                                    case 1:
+                                      // Handle "View Story"
+                                      break;
+                                    case 2:
+                                      // Handle "View Product"
+                                      break;
+                                    default:
+                                      print("Invalid choice");
+                                      break;
+                                  }
+                                },
+                                child: DashedBorder(
+                                  dashCount: 2,
+                                  child: SizedBox(
+                                    width: 100.w,
+                                    height: 100.h,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset('assets/images/cloth.png'),
+                                        const Wrap(
+                                          children: [
+                                            Text(
+                                              "HEALTH,\nSPORTS",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 13,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
+                            );
+                          return SizedBox();
                         },
                         error: (error, stackTrace) {
                           return Text("error $error");
@@ -1105,12 +1120,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 data.insidearr[0][index];
                                             return InkWell(
                                               onTap: () {
-                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  pro.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 offer: pro.discounted_price,
@@ -1191,18 +1208,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       VProduct pro = data.insidearr[1][index];
                                       return InkWell(
                                         onTap: () {
-                                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailScreen(
+                                                        productId: pro.id),
+                                              ));
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
                                           comment: pro.commentcount.toString(),
                                           issponsored: pro.user.sponsored,
-                                          discounttedPrice: pro.discounted_price,
+                                          discounttedPrice:
+                                              pro.discounted_price,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
                                           price: pro.price,
@@ -1263,16 +1282,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       VProduct pro = data.insidearr[2][index];
                                       return InkWell(
                                         onTap: () {
-   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));                                        },
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailScreen(
+                                                        productId: pro.id),
+                                              ));
+                                        },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
                                           comment: pro.commentcount.toString(),
-                                          discounttedPrice: pro.discounted_price,
+                                          discounttedPrice:
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1334,17 +1356,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       VProduct pro = data.insidearr[4][index];
                                       return InkWell(
                                         onTap: () {
-                                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id),
-                                  ));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailScreen(
+                                                        productId: pro.id),
+                                              ));
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
                                           comment: pro.commentcount.toString(),
-                                          discounttedPrice: pro.discounted_price,
+                                          discounttedPrice:
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1404,12 +1428,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[1].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[2].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     else
                       dynamicHeight = 300;
@@ -1451,12 +1475,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 data.insidearr[0][index];
                                             return InkWell(
                                               onTap: () {
-                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
@@ -1521,12 +1547,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                                             return InkWell(
                                               onTap: () {
-                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
@@ -1585,12 +1613,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 data.insidearr[2][index];
                                             return InkWell(
                                               onTap: () {
-                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
@@ -1739,7 +1769,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return SizedBox(
                       width: double.infinity,
                       height:
-                          productsList[selectedIndex!].isEmpty ? 100 : 420.h,
+                          productsList[selectedIndex!].isEmpty ? 150 : 420.h,
                       child: ValueListenableBuilder<int>(
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {
@@ -1819,12 +1849,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                                               return InkWell(
                                                 onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id),
-                                  ));
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    prod.id),
+                                                      ));
                                                 },
                                                 child: ProductDetailWidget(
                                                   comment: prod.commentcount
@@ -1927,12 +1959,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         // VProduct res = data.allProducts[index];
                         return InkWell(
                           onTap: () {
-                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: data.product[index].id),
-                                  ));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetailScreen(
+                                      productId: data.product[index].id),
+                                ));
                           },
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 5.h),
