@@ -602,38 +602,50 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height: 130,
-                //       child: ListView.builder(
-                //           padding: EdgeInsets.zero,
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: data.sliders!.length,
-                //           itemBuilder: (context, index) {
-                //             Story ref = data.stories[index];
-                //             if (index == 0) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: false,
-                //                 brandname: ref.vendorName,
-                //               );
-                //             } else if (index >= 1 && index <= 3) {
-                //               return NotStoryWidget(
-                //                 index: index,
-                //                 showgift: true,
-                //               );
-                //             }
-                //             return NotStoryWidget(index: index);
-                //           }),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () => const CircularProgressIndicator(),
-                // ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130,
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.sliders!.length,
+                          itemBuilder: (context, index) {
+                            Story ref = data.stories[index];
+                            if (index == 0) {
+                              return StoryAddWidget(
+                                  vImage: ref.vendorImage,
+                                  brandname: ref.vendorName,
+                                  index: 0,
+                                  addSearch: true,
+                                  showgift: ref.hasSponsoredGifts,
+                                  onTap: () {
+                                    // setState(() {
+                                    //   _isPopupVisible = true; // Open the popup
+                                    // });
+                                  });
+                            } else if (index >= 1 && index <= 3) {
+                              return NotStoryWidget(
+                                brandname: ref.vendorName,
+                                vImage: ref.vendorImage,
+                                addSearch: false,
+                                index: index,
+                                showgift: ref.hasSponsoredGifts,
+                              );
+                            }
+                            return NotStoryWidget(index: index);
+                          }),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -669,310 +681,323 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  height: 100.h,
-                  width: double.infinity,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.only(left: 7.w),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: [
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [15, 15],
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "ALL",
-                                style: headerstyle.copyWith(
-                                    color: ColorConstant.blackColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text("SERVICES",
-                                  style: headerstyle.copyWith(
-                                      color: ColorConstant.blackColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          ),
-                        ),
-                      ),
-                      // DottedBorder(
-                      //     strokeWidth: 2,
-
-                      //     dashPattern: [15, 10],
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     stackFit: StackFit.loose,
-                      //     radius: const Radius.circular(70),
-                      //     padding: const EdgeInsets.all(27),
-                      //     color: Colors.black,
-                      //     child: Container(
-                      //       height: 100,
-                      //       width: 100,
-                      //       child: const Text("data"))
-                      //     ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      asyncbajarValue.when(
-                        data: (data) {
-                          return GestureDetector(
-                            onTap: () {
-                              showMenu(
-                                context: context,
-                                position: const RelativeRect.fromLTRB(0, 0, 0,
-                                    0), // Base position; offset is handled by PopupMenuButton
-                                items: [
-                                  PopupMenuItem(
-                                    value: 1,
-                                    child: ListTile(
-                                      title: const Text("View Story"),
-                                      leading: const Icon(Icons.book),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Story" action here
-                                      },
+                asyncbajarValue.when(
+                    data: (data) {
+                      return SizedBox(
+                        height: 100.h,
+                        width: double.infinity,
+                        child: ListView(
+                          physics: const BouncingScrollPhysics(),
+                          padding: EdgeInsets.only(left: 7.w),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          children: [
+                            DottedBorder(
+                              strokeWidth: 2,
+                              color: Colors.grey,
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(10),
+                              dashPattern: const [15, 15],
+                              child: SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "ALL",
+                                      style: headerstyle.copyWith(
+                                          color: ColorConstant.blackColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 2,
-                                    child: ListTile(
-                                      title: const Text("View Product"),
-                                      leading: const Icon(Icons.shopping_bag),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Product" action here
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                            child: PopupMenuButton<int>(
-                              offset: const Offset(0,
-                                  60), // The offset to position the menu above the widget
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 1,
-                                  child: Text("View Story",
-                                      style: TextStyle(fontSize: 16.0)),
-                                ),
-                                const PopupMenuItem(
-                                  value: 2,
-                                  child: Text("View Product",
-                                      style: TextStyle(fontSize: 16.0)),
-                                ),
-                              ],
-                              onCanceled: () {
-                                print("You have canceled the menu selection.");
-                              },
-                              onSelected: (value) {
-                                switch (value) {
-                                  case 1:
-                                    // Handle "View Story"
-                                    break;
-                                  case 2:
-                                    // Handle "View Product"
-                                    break;
-                                  default:
-                                    print("Invalid choice");
-                                    break;
-                                }
-                              },
-                              child: DashedBorder(
-                                dashCount: 2,
-                                child: SizedBox(
-                                  width: 100.w,
-                                  height: 100.h,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset('assets/images/cloth.png'),
-                                      const Wrap(
-                                        children: [
-                                          Text(
-                                            "HEALTH,\nSPORTS",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                    Text("SERVICES",
+                                        style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold))
+                                  ],
                                 ),
                               ),
                             ),
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          return Text("error $error");
-                        },
-                        loading: () {
-                          return const CircularProgressIndicator();
-                        },
-                      ),
+                            // DottedBorder(
+                            //     strokeWidth: 2,
 
-                      // DottedBorder(
-                      //   strokeWidth: 2,
-                      //   color: Colors.grey,
-                      //   borderType: BorderType.RRect,
-                      //   radius: const Radius.circular(10),
-                      //   dashPattern: const [10, 10],
-                      //   child: SizedBox(
-                      //       width: 100.w,
-                      //       height: 100.h,
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           Image.asset('assets/images/cloth.png'),
-                      //           Wrap(
-                      //             children: [
-                      //               Text(
-                      //                 "HEALTH,\nSPORTS",
-                      //                 style: headerstyle.copyWith(
-                      //                     color: Colors.black,
-                      //                     fontWeight: FontWeight.w500,
-                      //                     fontSize: 13),
-                      //               )
-                      //             ],
-                      //           ),
-                      //         ],
-                      //       )),
-                      // ),
+                            //     dashPattern: [15, 10],
+                            //     borderPadding: const EdgeInsets.only(left: 5),
+                            //     stackFit: StackFit.loose,
+                            //     radius: const Radius.circular(70),
+                            //     padding: const EdgeInsets.all(27),
+                            //     color: Colors.black,
+                            //     child: Container(
+                            //       height: 100,
+                            //       width: 100,
+                            //       child: const Text("data"))
+                            //     ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
 
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [10, 10],
-                        child: SizedBox(
-                            width: 100.w,
-                            height: 100.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/cloth.png',
-                                ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      "SPORTS,\nAND",
-                                      style: headerstyle.copyWith(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13),
-                                    )
+                            if (data.cat.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  showMenu(
+                                    context: context,
+                                    position: const RelativeRect.fromLTRB(
+                                        0,
+                                        0,
+                                        0,
+                                        0), // Base position; offset is handled by PopupMenuButton
+                                    items: [
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: ListTile(
+                                          title: const Text("View Story"),
+                                          leading: const Icon(Icons.book),
+                                          onTap: () {
+                                            Navigator.pop(
+                                                context); // Close the popup
+                                            // Handle "View Story" action here
+                                          },
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child: ListTile(
+                                          title: const Text("View Product"),
+                                          leading:
+                                              const Icon(Icons.shopping_bag),
+                                          onTap: () {
+                                            Navigator.pop(
+                                                context); // Close the popup
+                                            // Handle "View Product" action here
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                child: PopupMenuButton<int>(
+                                  offset: const Offset(0,
+                                      60), // The offset to position the menu above the widget
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(
+                                      value: 1,
+                                      child: Text("View Story",
+                                          style: TextStyle(fontSize: 16.0)),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 2,
+                                      child: Text("View Product",
+                                          style: TextStyle(fontSize: 16.0)),
+                                    ),
                                   ],
+                                  onCanceled: () {
+                                    print(
+                                        "You have canceled the menu selection.");
+                                  },
+                                  onSelected: (value) {
+                                    switch (value) {
+                                      case 1:
+                                        // Handle "View Story"
+                                        break;
+                                      case 2:
+                                        // Handle "View Product"
+                                        break;
+                                      default:
+                                        print("Invalid choice");
+                                        break;
+                                    }
+                                  },
+                                  child: DashedBorder(
+                                    dashCount: 2,
+                                    child: SizedBox(
+                                      width: 100.w,
+                                      height: 100.h,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/cloth.png'),
+                                          const Wrap(
+                                            children: [
+                                              Text(
+                                                "HEALTH,\nSPORTS",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ],
-                            )),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                              ),
 
-                      // DottedBorder(
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     radius: const Radius.circular(10),
-                      //     padding: const EdgeInsets.all(20),
-                      //     strokeWidth: 1,
-                      //     color: Colors.black,
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //           'assets/images/cloth.png',
-                      //         ),
-                      //         Wrap(
-                      //           children: [
-                      //             Text(
-                      //               "SPORTS,\nAND",
-                      //               style: headerstyle.copyWith(
-                      //                   color: Colors.black,
-                      //                   fontWeight: FontWeight.w500,
-                      //                   fontSize: 13),
-                      //             )
-                      //           ],
-                      //         ),
-                      //       ],
-                      //     )),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.flight,
-                            color: Color(0xff6E6E6E),
-                          ),
-                          Text(
-                            "TRAVELS,\nTOURS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.tv,
-                            color: Color(0xff6E6E6E),
-                          ),
-                          Text(
-                            "ELECTRONICS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          ),
-                          Text(
-                            "&",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      )
-                    ],
-                  ),
+                            // DottedBorder(
+                            //   strokeWidth: 2,
+                            //   color: Colors.grey,
+                            //   borderType: BorderType.RRect,
+                            //   radius: const Radius.circular(10),
+                            //   dashPattern: const [10, 10],
+                            //   child: SizedBox(
+                            //       width: 100.w,
+                            //       height: 100.h,
+                            //       child: Column(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment: CrossAxisAlignment.center,
+                            //         children: [
+                            //           Image.asset('assets/images/cloth.png'),
+                            //           Wrap(
+                            //             children: [
+                            //               Text(
+                            //                 "HEALTH,\nSPORTS",
+                            //                 style: headerstyle.copyWith(
+                            //                     color: Colors.black,
+                            //                     fontWeight: FontWeight.w500,
+                            //                     fontSize: 13),
+                            //               )
+                            //             ],
+                            //           ),
+                            //         ],
+                            //       )),
+                            // ),
+
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            if (data.cat.isNotEmpty)
+                              DottedBorder(
+                                strokeWidth: 2,
+                                color: Colors.grey,
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(10),
+                                dashPattern: const [10, 10],
+                                child: SizedBox(
+                                    width: 100.w,
+                                    height: 100.h,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/cloth.png',
+                                        ),
+                                        Wrap(
+                                          children: [
+                                            Text(
+                                              "SPORTS,\nAND",
+                                              style: headerstyle.copyWith(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 13),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+
+                            // DottedBorder(
+                            //     borderPadding: const EdgeInsets.only(left: 5),
+                            //     radius: const Radius.circular(10),
+                            //     padding: const EdgeInsets.all(20),
+                            //     strokeWidth: 1,
+                            //     color: Colors.black,
+                            //     child: Column(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         Image.asset(
+                            //           'assets/images/cloth.png',
+                            //         ),
+                            //         Wrap(
+                            //           children: [
+                            //             Text(
+                            //               "SPORTS,\nAND",
+                            //               style: headerstyle.copyWith(
+                            //                   color: Colors.black,
+                            //                   fontWeight: FontWeight.w500,
+                            //                   fontSize: 13),
+                            //             )
+                            //           ],
+                            //         ),
+                            //       ],
+                            //     )),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            if (data.cat.isNotEmpty)
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.flight,
+                                    color: Color(0xff6E6E6E),
+                                  ),
+                                  Text(
+                                    "TRAVELS,\nTOURS",
+                                    style: headerstyle.copyWith(
+                                        color: const Color(0xff6E6E6E),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13),
+                                  )
+                                ],
+                              ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            if (data.cat.isNotEmpty)
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.tv,
+                                    color: Color(0xff6E6E6E),
+                                  ),
+                                  Text(
+                                    "ELECTRONICS",
+                                    style: headerstyle.copyWith(
+                                        color: const Color(0xff6E6E6E),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13),
+                                  ),
+                                  Text(
+                                    "&",
+                                    style: headerstyle.copyWith(
+                                        color: const Color(0xff6E6E6E),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13),
+                                  )
+                                ],
+                              ),
+                            SizedBox(
+                              width: 10.w,
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    error: (error, stackTrace) => Text(error.toString()),
+                    loading: () => CircularProgressIndicator()),
+                SizedBox(
+                  height: 5.h,
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -1006,10 +1031,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return data.hotProducts.length == 0
-                        ? Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text("No listing available"),
-                          )
+                        ? nolistingfound()
                         : SizedBox(
                             height: 340.h,
                             width: double.infinity,
@@ -1023,11 +1045,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                 VProduct hot = data.hotProducts[index];
                                 return InkWell(
                                   onTap: () {
-                                                       Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: hot.id)));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductDetailScreen(
+                                                    productId: hot.id)));
                                   },
                                   child: ProductDetailWidget(
                                     wow: hot.wow,
@@ -1040,7 +1063,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     price: hot.price,
                                     title: hot.title,
                                     vendorname: hot.user.name,
-                                    similarproductCount: hot.similarProductCount,
+                                    similarproductCount:
+                                        hot.similarProductCount,
                                     membershipColor: hot.user.membercolor,
                                     membershipTitle: hot.user.membershipTitle,
                                   ),
@@ -1113,11 +1137,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 data.insidearr[0][index];
                                             return InkWell(
                                               onTap: () {
-                                                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id)));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    pro.id)));
                                               },
                                               child: ProductDetailWidget(
                                                 offer: pro.discounted_price,
@@ -1198,17 +1224,19 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       VProduct pro = data.insidearr[1][index];
                                       return InkWell(
                                         onTap: () {
-                                                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id)));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailScreen(
+                                                          productId: pro.id)));
                                         },
                                         child: ProductDetailWidget(
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
                                           comment: pro.commentcount.toString(),
-                                          discounttedPrice: pro.discounted_price,
+                                          discounttedPrice:
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1270,17 +1298,19 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       VProduct pro = data.insidearr[2][index];
                                       return InkWell(
                                         onTap: () {
-                                                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id)));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailScreen(
+                                                          productId: pro.id)));
                                         },
                                         child: ProductDetailWidget(
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
                                           comment: pro.commentcount.toString(),
-                                          discounttedPrice: pro.discounted_price,
+                                          discounttedPrice:
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1342,17 +1372,19 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       VProduct pro = data.insidearr[4][index];
                                       return InkWell(
                                         onTap: () {
-                                                             Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: pro.id)));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailScreen(
+                                                          productId: pro.id)));
                                         },
                                         child: ProductDetailWidget(
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
                                           comment: pro.commentcount.toString(),
-                                          discounttedPrice: pro.discounted_price,
+                                          discounttedPrice:
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1407,18 +1439,18 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[0].length == 0
-                          ? 100
+                          ? 200
                           : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[1].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
                               data.insidearr[2].length == 0
-                          ? 150
+                          ? 200
                           : 500;
                     else
                       dynamicHeight = 300;
@@ -1446,47 +1478,53 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
-                                if (data.insidearr.length > 0)
-                                  SizedBox(
-                                    height: 340.h,
-                                    child: ListView.builder(
-                                      clipBehavior: Clip.antiAlias,
-                                      padding: const EdgeInsets.all(3),
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: data.insidearr[0].length,
-                                      itemBuilder: (context, index) {
-                                        VProduct prod =
-                                            data.insidearr[0][index];
-                                        return InkWell(
-                                          onTap: () {                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));},
-                                          child: ProductDetailWidget(
-                                            wow: prod.wow,
-                                            comment:
-                                                prod.commentcount.toString(),
-                                            lefttile: "B2B",
-                                            vendorname: prod.user.name,
-                                            discounttedPrice:
-                                                prod.discounted_price,
-                                            Vimage: prod.title,
-                                            issponsored: prod.user.sponsored,
-                                            price: prod.price,
-                                            title: prod.title,
-                                            productImage: prod.image,
-                                            similarproductCount:
-                                                prod.similarProductCount,
-                                            membershipColor:
-                                                prod.user.membercolor,
-                                            membershipTitle:
-                                                prod.user.membershipTitle,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
+                                data.insidearr.length == 0
+                                    ? nolistingfound()
+                                    : SizedBox(
+                                        height: 340.h,
+                                        child: ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: data.insidearr[0].length,
+                                          itemBuilder: (context, index) {
+                                            VProduct prod =
+                                                data.insidearr[0][index];
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProductDetailScreen(
+                                                                productId:
+                                                                    prod.id)));
+                                              },
+                                              child: ProductDetailWidget(
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                lefttile: "B2B",
+                                                vendorname: prod.user.name,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.title,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membercolor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      )
                               ],
                             ),
                             Column(
@@ -1534,54 +1572,59 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                 //         return NotStoryWidget(index: index);
                                 //       }),
                                 // ),
-                                if (data.insidearr.isNotEmpty)
-                                  SizedBox(
-                                    height: 340.h,
-                                    child: data.insidearr.isEmpty
-                                        ? const SizedBox(
-                                            child: Text("No listing available"),
-                                          )
-                                        : ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[1].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[1][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                data.insidearr.isEmpty
+                                    ? nolistingfound()
+                                    : SizedBox(
+                                        height: 340.h,
+                                        child: data.insidearr.isEmpty
+                                            ? nolistingfound()
+                                            : ListView.builder(
+                                                clipBehavior: Clip.antiAlias,
+                                                padding:
+                                                    const EdgeInsets.all(3),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    data.insidearr[1].length,
+                                                itemBuilder: (context, index) {
+                                                  VProduct prod =
+                                                      data.insidearr[1][index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                      productId:
+                                                                          prod.id)));
+                                                    },
+                                                    child: ProductDetailWidget(
+                                                      wow: prod.wow,
+                                                      comment: prod.commentcount
+                                                          .toString(),
+                                                      lefttile: "B2B",
+                                                      vendorname:
+                                                          prod.user.name,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.title,
+                                                      issponsored:
+                                                          prod.user.sponsored,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipColor:
+                                                          prod.user.membercolor,
+                                                      membershipTitle: prod
+                                                          .user.membershipTitle,
+                                                    ),
+                                                  );
                                                 },
-                                                child: ProductDetailWidget(
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  lefttile: "B2B",
-                                                  vendorname: prod.user.name,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.title,
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membercolor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                  )
+                                              ),
+                                      )
                               ],
                             ),
                             Column(
@@ -1600,59 +1643,59 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     }).toList(),
                                   ),
                                 ),
-                                if (data.insidearr.isNotEmpty)
-                                  SizedBox(
-                                    height: 340.h,
-                                    child: data.insidearr.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 100, left: 100.w),
-                                            child: const SizedBox(
-                                              child:
-                                                  Text("No listing available"),
-                                            ),
-                                          )
-                                        : ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[2].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[2][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                data.insidearr.isEmpty
+                                    ? nolistingfound()
+                                    : SizedBox(
+                                        height: 340.h,
+                                        child: data.insidearr.isEmpty
+                                            ? nolistingfound()
+                                            : ListView.builder(
+                                                clipBehavior: Clip.antiAlias,
+                                                padding:
+                                                    const EdgeInsets.all(3),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    data.insidearr[2].length,
+                                                itemBuilder: (context, index) {
+                                                  VProduct prod =
+                                                      data.insidearr[2][index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                      productId:
+                                                                          prod.id)));
+                                                    },
+                                                    child: ProductDetailWidget(
+                                                      wow: prod.wow,
+                                                      comment: prod.commentcount
+                                                          .toString(),
+                                                      lefttile: "B2B",
+                                                      vendorname:
+                                                          prod.user.name,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.title,
+                                                      issponsored:
+                                                          prod.user.sponsored,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipColor:
+                                                          prod.user.membercolor,
+                                                      membershipTitle: prod
+                                                          .user.membershipTitle,
+                                                    ),
+                                                  );
                                                 },
-                                                child: ProductDetailWidget(
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  lefttile: "B2B",
-                                                  vendorname: prod.user.name,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.title,
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membercolor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                  ),
+                                              ),
+                                      ),
                               ],
                             ),
                           ],
@@ -1893,11 +1936,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                                           return InkWell(
                                             onTap: () {
-                                                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: prod.id)));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id)));
                                             },
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
@@ -1997,11 +2042,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               // VProduct res = data.allProducts[index];
                               return InkWell(
                                 onTap: () {
-                                                     Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: data.product[index].id)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                                  productId:
+                                                      data.product[index].id)));
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(bottom: 5.h),
@@ -2023,8 +2070,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         data.product[index].similarProductCount,
                                     membershipColor:
                                         data.product[index].user.membercolor,
-                                    membershipTitle:
-                                        data.product[index].user.membershipTitle,
+                                    membershipTitle: data
+                                        .product[index].user.membershipTitle,
                                   ),
                                 ),
                               );

@@ -228,7 +228,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     _searchController.dispose();
     super.dispose();
     _scrollController.dispose();
-    super.dispose();
+    // super.dispose();
   }
 
   @override
