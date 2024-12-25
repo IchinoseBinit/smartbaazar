@@ -597,43 +597,51 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //   ),
                 // ),
                 SizedBox(
+                  
                   height: 10.h,
                 ),
                 // asyncbajarValue.when(
                 //   data: (data) {
-                //     return SizedBox(
-                //       height: 130,
-                //       child: ListView.builder(
-                //           padding: EdgeInsets.zero,
-                //           shrinkWrap: true,
-                //           scrollDirection: Axis.horizontal,
-                //           itemCount: data.sliders!.length,
-                //           itemBuilder: (context, index) {
-                //             Story ref = data.stories[index];
-                //             if (index == 0) {
-                //               return StoryAddWidget(
-                //                   vImage: ref.vendorImage,
-                //                   brandname: ref.vendorName,
-                //                   index: 0,
-                //                   addSearch: true,
-                //                   showgift: ref.hasSponsoredGifts,
-                //                   onTap: () {
-                //                     // setState(() {
-                //                     //   _isPopupVisible = true; // Open the popup
-                //                     // });
-                //                   });
-                //             } else if (index >= 1 && index <= 3) {
-                //               return NotStoryWidget(
-                //                 brandname: ref.vendorName,
-                //                 vImage: ref.vendorImage,
-                //                 addSearch: false,
-                //                 index: index,
-                //                 showgift: ref.hasSponsoredGifts,
-                //               );
-                //             }
-                //             return NotStoryWidget(index: index);
-                //           }),
-                //     );
+                //     print("bibash ${data.stories}");
+                //     if (data.stories.isEmpty) {
+                //       return SizedBox();
+                //     }
+
+                //     return 
+                       
+                //          SizedBox(
+                //             height: 130,
+                //             child: ListView.builder(
+                //                 padding: EdgeInsets.zero,
+                //                 shrinkWrap: true,
+                //                 scrollDirection: Axis.horizontal,
+                //                 itemCount: data.sliders!.length,
+                //                 itemBuilder: (context, index) {
+                //                   Story ref = data.stories[index];
+                //                   if (index == 0) {
+                //                     return StoryAddWidget(
+                //                         vImage: ref.vendorImage,
+                //                         brandname: ref.vendorName,
+                //                         index: 0,
+                //                         addSearch: true,
+                //                         showgift: ref.hasSponsoredGifts,
+                //                         onTap: () {
+                //                           // setState(() {
+                //                           //   _isPopupVisible = true; // Open the popup
+                //                           // });
+                //                         });
+                //                   } else if (index >= 1 && index <= 3) {
+                //                     return NotStoryWidget(
+                //                       brandname: ref.vendorName,
+                //                       vImage: ref.vendorImage,
+                //                       addSearch: false,
+                //                       index: index,
+                //                       showgift: ref.hasSponsoredGifts,
+                //                     );
+                //                   }
+                //                   return NotStoryWidget(index: index);
+                //                 }),
+                //           );
                 //   },
                 //   error: (error, stackTrace) {
                 //     return Text(error.toString());
@@ -646,29 +654,31 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     print("makal ${data.sliders}");
-                    return SizedBox(
-                      height: 150.h,
-                      width: double.infinity,
-                      child: PageView.builder(
-                        reverse: true,
-                        allowImplicitScrolling: true,
-                        itemCount: data.sliders!.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            data.sliders![index].image!,
+                    return data.sliders!.isEmpty
+                        ? SizedBox()
+                        : SizedBox(
                             height: 150.h,
                             width: double.infinity,
-                            fit: BoxFit.fill,
+                            child: PageView.builder(
+                              reverse: true,
+                              allowImplicitScrolling: true,
+                              itemCount: data.sliders!.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Image.network(
+                                  data.sliders![index].image!,
+                                  height: 150.h,
+                                  width: double.infinity,
+                                  fit: BoxFit.fill,
+                                );
+                                // Image.asset(
+                                //     height: 150.h,
+                                //     width: double.infinity,
+                                //     fit: BoxFit.fill,
+                                //     );
+                              },
+                            ),
                           );
-                          // Image.asset(
-                          //     height: 150.h,
-                          //     width: double.infinity,
-                          //     fit: BoxFit.fill,
-                          //     );
-                        },
-                      ),
-                    );
                   },
                   error: (error, stackTrace) {
                     return Text(error.toString());
@@ -734,7 +744,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          return GestureDetector(
+                          return data.cat.isNotEmpty? SizedBox():  GestureDetector(
                             onTap: () {
                               showMenu(
                                 context: context,
@@ -1677,6 +1687,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),

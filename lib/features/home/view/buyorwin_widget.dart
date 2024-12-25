@@ -11,9 +11,11 @@ class buyorwin_widget extends StatelessWidget {
     required this.winners,
     required this.proctimage,
     required this.vendorImage,
+        required this.productname,
+
   });
 
-  final String vendorname, winners, proctimage, vendorImage;
+  final String vendorname, winners, proctimage, vendorImage,productname;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class buyorwin_widget extends StatelessWidget {
                             height: 10.h,
                           ),
                           Text(
-                            "Discount Coupon",
+                            productname,
                             style: headerstyle.copyWith(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),

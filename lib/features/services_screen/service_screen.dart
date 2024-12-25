@@ -1762,6 +1762,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                                                        productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
