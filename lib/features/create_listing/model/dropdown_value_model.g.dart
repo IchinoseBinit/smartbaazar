@@ -53,3 +53,33 @@ Map<String, dynamic> _$$CityListImplToJson(_$CityListImpl instance) =>
       'country_code': instance.countryCode,
       'name': instance.name,
     };
+
+_$OffersResponseImpl _$$OffersResponseImplFromJson(Map<String, dynamic> json) =>
+    _$OffersResponseImpl(
+      data: (json['data'] as List<dynamic>)
+          .map((e) => Offer.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      msg: json['msg'] as String,
+    );
+
+Map<String, dynamic> _$$OffersResponseImplToJson(
+        _$OffersResponseImpl instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+      'msg': instance.msg,
+    };
+
+_$OfferImpl _$$OfferImplFromJson(Map<String, dynamic> json) => _$OfferImpl(
+      id: json['id'] as String,
+      offers: json['offers'] as String,
+      createdAt: json['created_at'] as String,
+      updatedAt: json['updated_at'] as String,
+    );
+
+Map<String, dynamic> _$$OfferImplToJson(_$OfferImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'offers': instance.offers,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+    };

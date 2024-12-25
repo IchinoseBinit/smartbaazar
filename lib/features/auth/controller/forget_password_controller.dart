@@ -6,7 +6,6 @@ import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/forget_password_api.dart';
 import 'package:smartbazar/features/auth/model/forget_password_model.dart';
 import 'package:smartbazar/features/auth/view/otp_screen.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 
 final forgetPasswordProvider =
     Provider<ForgetPasswordApi>((ref) => ForgetPasswordApi());

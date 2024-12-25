@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'cart_item_api.g.dart';
@@ -40,7 +39,7 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
     }
   } catch (e) {
  //   final customException = getCustomException(e);
-    print('Error fetching cart items: ${e}');  // Log specific message
+    print('Error fetching cart items: $e');  // Log specific message
     throw e.toString(); // Rethrow with specific message
   }
 }

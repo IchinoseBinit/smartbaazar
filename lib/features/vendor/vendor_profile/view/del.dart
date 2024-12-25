@@ -41,7 +41,7 @@
 //   final TextEditingController _vendorsearchController = TextEditingController();
 
 //   final _debouncer = BehaviorSubject<String>();
-//   bool _showSearchResults = false;
+//   bool _showSearchProductModels = false;
 //   bool _vendorsearchResullts = false;
 //   late TabController _tabController;
 //   int _postType = 0; // Default to 'Home' tab with postType 0
@@ -83,14 +83,14 @@
 //       debugPrint("Search query: $query");
 //       ref.refresh(searchProvider(query));
 //       setState(() {
-//         _showSearchResults = query.isNotEmpty;
+//         _showSearchProductModels = query.isNotEmpty;
 //       });
 //     });
 //   }
 
 //   void _onSearchFocusChanged(bool hasFocus) {
 //     setState(() {
-//       _showSearchResults = hasFocus;
+//       _showSearchProductModels = hasFocus;
 //     });
 //   }
 
@@ -105,10 +105,10 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final adsList = ref.watch(getAdsProvider);
+//     final adsList = ref.watch(fetchAdsProvider);
 
-//     final searchResults = ref.watch(searchProvider(_searchController.text));
-//     final vendorsearchResults = ref
+//     final SearchProductModels = ref.watch(searchProvider(_searchController.text));
+//     final vendorSearchProductModels = ref
 //         .watch(VendorSearchProvider(_vendorsearchController.text, widget.vid));
 
 //     final vendorProfileModelDataAsyncValue = ref.watch(
@@ -129,9 +129,9 @@
 //                   ));
 //             },
 //           onsubmit: (value) {
-//             if (_showSearchResults) {
+//             if (_showSearchProductModels) {
 //               setState(() {
-//                 _showSearchResults = false;
+//                 _showSearchProductModels = false;
 //                 FocusScope.of(context).unfocus();
 //               });
 //             }
@@ -155,9 +155,9 @@
 //         body: GestureDetector(
 //           behavior: HitTestBehavior.opaque,
 //           onTap: () {
-//             // if (_showSearchResults) {
+//             // if (_showSearchProductModels) {
 //             //   setState(() {
-//             //     _showSearchResults = false;
+//             //     _showSearchProductModels = false;
 //             //     FocusScope.of(context).unfocus();
 //             //   });
 //             // }
@@ -167,14 +167,14 @@
 //             // Add SingleChildScrollView here
 //             child: Column(
 //               children: [
-//                 if (_showSearchResults)
+//                 if (_showSearchProductModels)
 //                   Positioned(
 //                     top: 0.h, // Position just below the search bar
 //                     left: 0,
 //                     right: 0,
 //                     child: Container(
 //                       color: Colors.white,
-//                       child: searchResults.when(
+//                       child: SearchProductModels.when(
 //                         data: (results) {
 //                           if (results.isEmpty) {
 //                             return const SizedBox(
@@ -202,7 +202,7 @@
 //                                         ));
 
 //                                     setState(() {
-//                                       _showSearchResults = false;
+//                                       _showSearchProductModels = false;
 
 //                                       FocusScope.of(context).unfocus();
 //                                     });
@@ -401,9 +401,9 @@
 //                               SearchInStore(
 //                                 searchController: _vendorsearchController,
 //                                 onsubmit: (value) {
-//                                   if (_showSearchResults) {
+//                                   if (_showSearchProductModels) {
 //                                     setState(() {
-//                                       _showSearchResults = false;
+//                                       _showSearchProductModels = false;
 //                                       FocusScope.of(context).unfocus();
 //                                     });
 //                                   }
@@ -412,7 +412,7 @@
 //                               if (_vendorsearchResullts)
 //                                 Container(
 //                                   color: Colors.white,
-//                                   child: vendorsearchResults.when(
+//                                   child: vendorSearchProductModels.when(
 //                                     data: (results) {
 //                                       if (results.isEmpty) {
 //                                         return const SizedBox(
@@ -529,15 +529,15 @@
 //   }
 
 //   Widget buildTabContent(String category, String name) {
-//     final adsList = ref.watch(getAdsProvider);
+//     final adsList = ref.watch(fetchAdsProvider);
 
 //     // Use ref.watch to get search results based on category
-//     final searchResults = ref.watch(getVendorProfileDataProvider(
+//     final SearchProductModels = ref.watch(getVendorProfileDataProvider(
 //       widget.vendorName.replaceAll(" ", ''),
 //       category: category,
 //     ));
 
-//     return searchResults.when(
+//     return SearchProductModels.when(
 //       loading: () {
 //         // Check if ads are loading and display loading indicator
 //         if (adsList.isLoading) {

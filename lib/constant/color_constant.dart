@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+TextStyle headerstyle = const TextStyle(fontSize: 10, color: ColorConstant.whiteColor);
 
 class ColorConstant {
   static const Color toastBackgroundColor = Color(0xffFEF3C7);

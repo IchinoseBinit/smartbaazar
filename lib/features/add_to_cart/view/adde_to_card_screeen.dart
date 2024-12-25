@@ -9,7 +9,6 @@ import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 
 class AddToCartScreen extends ConsumerStatefulWidget {
   const AddToCartScreen({super.key});
@@ -212,7 +211,8 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const BottomNavigationScreen(),
+                                builder: (context) =>
+                                    const BottomNavigationScreen(),
                               ));
                         },
                         child: Row(
@@ -401,14 +401,20 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                       },
                     );
                   },
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (err, stack) {
                     String errorMessage = 'Something went wrong';
                     if (err is Exception) {
-                    errorMessage = err.toString(); // Get the specific error message
-                  }
-                    return Center(child: Text(errorMessage, style: TextStyle(fontSize: 16.sp, color: Colors.red),));
-                  } ,
+                      errorMessage =
+                          err.toString(); // Get the specific error message
+                    }
+                    return Center(
+                        child: Text(
+                      errorMessage,
+                      style: TextStyle(fontSize: 16.sp, color: Colors.red),
+                    ));
+                  },
                 ),
                 SizedBox(height: 20.h),
                 Padding(

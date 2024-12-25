@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
+import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 import 'package:dio/dio.dart'; // For better error handling with Dio
@@ -8,26 +8,24 @@ import 'package:dio/dio.dart'; // For better error handling with Dio
 part 'b2b_provider.g.dart';
 
 @riverpod
-Future<B2bModel> getB2bResponse(GetB2bResponseRef ref) async {
+Future<PostTypeFetch> getB2bResponse(GetB2bResponseRef ref) async {
   final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,
-      url: "${ApiConstants.producttypeurl}/7", // Consider moving to a constant
+      url: "${ApiConstants.producttypeurl}/7", // API endpoint
     );
-
-    print("Response: $response");
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-      return B2bModel.fromJson(jsonResponse);
+
+      return PostTypeFetch.fromJson(jsonResponse);
     } else {
       throw Exception(
-          'Failed to load B2B section. Status code: ${response.statusCode}');
+          'Failed to load PostTypeFetch. Status code: ${response.statusCode}');
     }
   } catch (e, stackTrace) {
-    // Improved logging can be done here
-    print('Error loading B2B: $e');
-    throw Exception('Failed to load B2B section: $e\nStackTrace: $stackTrace');
+    print('Error fetching PostTypeFetch: $e\nStackTrace: $stackTrace');
+    throw Exception('Failed to fetch PostTypeFetch: $e');
   }
 }

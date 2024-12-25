@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_screen/view/product_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 
 class NewSearchWidget extends StatefulWidget {
-  const NewSearchWidget({super.key});
+  NewSearchWidget(
+      {super.key,
+      required this.onchnage,
+      required this.ontapped,
+      this.index=0,
+      required this.searchController,
+      required this.onSearchFocusChanged});
+  Function(String)? onchnage;
+  GestureTapCallback ontapped;
+  TextEditingController searchController;
+  
+  int index;
+  final Function(bool) onSearchFocusChanged;
 
   @override
   State<NewSearchWidget> createState() => _NewSearchWidgetState();
@@ -27,30 +31,37 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
     {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'Products',
+      'key': '1',
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
+      'key': '2',
     },
     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'Services',
+      'key': '3',
     },
     {
       'icon': 'assets/icon/eventIcon.svg',
       'label': 'Events',
+      'key': '5',
     },
     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'B2B',
+      'key': '7',
     },
     {
       'icon': 'assets/icon/Vector.svg',
       'label': 'Jobs',
+      'key': '4',
     },
     {
       'icon': 'assets/icon/box.svg',
       'label': 'Grocery',
+      'key': '8',
     }
   ];
 
@@ -64,21 +75,36 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Dropdown Button Container
-          _buildDropdownButton(),
+          _buildDropdownButton(widget.index),
 
           // Search TextField Container
           Container(
-            width: 200.w,
+            width: 180.w,
             height: 45.h,
             padding: const EdgeInsets.all(5),
             decoration: const BoxDecoration(color: Colors.white),
             child: TextField(
+              controller: widget.searchController,
+              onTap: () {
+                widget.onSearchFocusChanged(
+                    widget.searchController.text.isNotEmpty);
+              },
+              onChanged: widget.onchnage,
               decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+                prefixIcon: const Icon(
+                  Icons.search,
+                  size: 25,
+                  color: Color(0xffD9D9D9),
+                ),
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(width: 0.2, color: Colors.white),
                 ),
-                hintText: "Search Services",
-                hintStyle: TextStyle(fontSize: 10.sp),
+                hintText: "Search Everything",
+                hintStyle:
+                    TextStyle(fontSize: 13.sp, color: const Color(0xffD9D9D9)),
                 isCollapsed: true,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -89,23 +115,26 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
           ),
 
           // Search Icon Container
-          Container(
-            height: 45.h,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              color: const Color(0xFF46236a),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(19.r),
-                bottomRight: Radius.circular(19.r),
+          InkWell(
+            onTap: widget.ontapped,
+            child: Container(
+              height: 45.h,
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                color: const Color(0xFF46236a),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(19.r),
+                  bottomRight: Radius.circular(19.r),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(2.0.r),
-              child: Icon(
-                Icons.search,
-                color: Colors.white,
-                size: 20.sp,
+              child: Padding(
+                padding: EdgeInsets.all(2.0.r),
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
               ),
             ),
           ),
@@ -114,7 +143,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
     );
   }
 
-  Widget _buildDropdownButton() {
+  Widget _buildDropdownButton(int index) {
     return Container(
       height: 45.h,
       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -127,13 +156,7 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, dynamic>>(
-        selectedItemBuilder: (context) {
-          return [
-            
-            
-          ];
-        },
-        value: dropdownValue ?? items[0],
+        value: dropdownValue ?? items[index ?? 0],
         onChanged: (newValue) {
           setState(() {
             dropdownValue = newValue!;
@@ -146,7 +169,12 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(item['icon']!, height: 10.h),
+                SvgPicture.asset(
+                  alignment: Alignment.topLeft,
+                  item['icon']!,
+                  height: 10.h,
+                  color: ColorConstant.whiteColor,
+                ),
                 SizedBox(width: 8.w),
                 Text(
                   item['label']!,

@@ -9,6 +9,10 @@ class ApiConstants {
   static String logoUrl = '$baseUrl/app_logo_loader';
   static String logoutUrl = '$baseUrl/auth/logout/';
   static String getcontactSellerUrl = '$baseUrl/threads';
+    static String getHotDealScreen = '$baseUrl/homeSections';
+        static String getStoryHome = '$baseUrl/users/getrandomstory';
+
+
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -49,6 +53,8 @@ class ApiConstants {
   static String fetchProductType = '$baseUrl/packages';
   static String fetchCities = '$baseUrl/countries/NP/cities';
   static String postlisting = '$baseUrl/posts';
+    static String getoffers = '$reportComplainUrl/getoffers';
+
 
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';

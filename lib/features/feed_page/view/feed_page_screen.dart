@@ -36,19 +36,28 @@ class FeedScreen extends ConsumerWidget {
                     const SizedBox(
                       height: 40,
                     ),
-                    const Row(
+                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 30,
                         ),
-                        SizedBox(height: 50, child: NewSearchWidget()),
+                        SizedBox(height: 50, child:  NewSearchWidget(
+                                searchController: TextEditingController(),
+                                onSearchFocusChanged: (p0) {
+                                  
+                                },
+                                ontapped: () {
+                                  
+                                },
+                                onchnage: (p0) {},
+                              ),)
                       ],
                     ),
                     SizedBox(
