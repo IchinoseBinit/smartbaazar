@@ -17,23 +17,23 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // children: [
-      //   Expanded(
-      //       flex: 9,
-      //       child: QRView(key: qrKey, onQRViewCreated: _onQRViewCreated)),
-      //   SizedBox(height: 10.h,),
-      //   Expanded(
-      //       flex: 1,
-      //       child: (result != null)
-      //           ? Text("BarCode Data : ${result!.code} ")
-      //           : const Text("Scan a Code",
-      //           style: TextStyle(
-      //             color: Colors.black,
-      //             fontWeight: FontWeight.bold,
-      //             fontSize: 20
-      //           ),
-      //           ))
-      // ],
+      children: [
+        // Expanded(
+        //     flex: 9,
+        //     child: QRView(key: qrKey, onQRViewCreated: _onQRViewCreated)),
+        SizedBox(height: 10.h,),
+        // Expanded(
+        //     flex: 1,
+        //     child: (result != null)
+        //         ? Text("BarCode Data : ${result!.code} ")
+        //         : const Text("Scan a Code",
+        //         style: TextStyle(
+        //           color: Colors.black,
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 20
+        //         ),
+        //         ))
+      ],
     );
   }
 

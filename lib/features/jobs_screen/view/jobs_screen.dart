@@ -6,16 +6,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+
+import '../../product_details/constant/all_product_detail_widget.dart';
 
 class JobssScreen extends ConsumerStatefulWidget {
   const JobssScreen({super.key});
@@ -36,7 +49,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
-  // bool _showSearchResults = false;
+  // bool _showSearchProductModels = false;
   late TabController tabController;
   final List<Map<String, dynamic>> _services = [
     {'label': 'Low Price Guarantee', 'id': 1},
@@ -45,6 +58,56 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
   ];
+   final List<Map<String, dynamic>> __items = [
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+     {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+   
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
+    int headerIndex = 0;
+
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
   final PageController _adscontroller = PageController(
@@ -58,12 +121,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   }
 
   int _currentPage = 0;
+    bool _showSearchProductModels = false;
+
 
   @override
   void initState() {
     _pageController = PageController(
       viewportFraction: 0.3,
-      initialPage: selectedIndex!,
+      initialPage: headerIndex,
     );
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
@@ -72,16 +137,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
         _currentPage = 0;
       }
 
-      _pageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeIn,
-      );
+  
     });
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(selectedIndex!);
+      _pageController.jumpToPage(headerIndex);
     });
     super.initState();
     tabController = TabController(length: 3, vsync: this);
@@ -95,7 +156,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -133,28 +194,30 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     _initialDragPosition = details.globalPosition;
   }
 
-  @override
-  void dispose() {
-    _debouncer.close();
-    _searchController.dispose();
-    super.dispose();
-  }
+  
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      // _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
-
+  void dispose() {
+    // dynamictabController.dispose();
+    _debouncer.close();
+    _searchController.dispose();
+    super.dispose();
+    _scrollController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
 
     final asyncbajarValue = ref.watch(getjobsResponseProvider);
-
+ final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
 
     // }, error: (error, stackTrace) {
@@ -162,7 +225,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     // }, loading: () {
     //   return CircularProgressIndicator();
     // },)
-    // final searchResults = ref.watch(searchProvider(
+    // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
@@ -202,35 +265,131 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         height: 40,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset('assets/images/group.png'),
-                          const SizedBox(
-                            width: 20,
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VendorProfileScreen(),
+                                    ));
+                              },
+                              child: Image.asset('assets/images/group.png')),
+                          SizedBox(
+                            width: 2.w,
                           ),
                           SizedBox(
-                              height: 50,
+                              height: 40,
                               child: NewSearchWidget(
-                                onchnage: (p0) {},
+                                index: 6,
+                                onSearchFocusChanged: _onSearchFocusChanged,
+                                searchController: _searchController,
+                                ontapped: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BusinessTabScreen(
+                                          query: _searchController.text,
+                                        ),
+                                      ));
+                                },
+                                onchnage: (value) {
+                                  // print("babuk ${value}");
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           const BusinessTabScreen(),
+                                  //     ));
+                                },
                               )),
                         ],
                       ),
+                      if (_showSearchProductModels)
+                        Positioned(
+                          top: 0.h, // Position just below the search bar
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            child: SearchProductModels.when(data: (results) {
+                              if (results.isEmpty) {
+                                return const SizedBox(
+                                  child: Text('No result found'),
+                                ); // No results
+                              }
+                              return Card(
+                                elevation: 8,
+                                child: ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: results.length,
+                                  itemBuilder: (context, index) {
+                                    final product = results[index];
+                                    return ListTile(
+                                      title: Text(product.title),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BusinessTabScreen(
+                                                query: _searchController.text,
+                                              ),
+                                            ));
+
+                                        setState(() {
+                                          _showSearchProductModels = false;
+
+                                          FocusScope.of(context).unfocus();
+                                        });
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //         ProductDetailsScreen(
+                                        //       productId: product.id,
+                                        //     ),
+                                        //   ),
+                                        // );
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                ),
+                              );
+                            }, loading: () {
+                              // return SizedBox(
+                              //     width: 10.w,
+                              //     height: 10.h,
+                              //     child: CircularProgressIndicator());
+                            }, error: (error, stack) {
+                              // return SizedBox(
+                              //     width: 10.w,
+                              //     height: 10.h,
+                              //     child: CircularProgressIndicator());
+                            }),
+                          ),
+                        ),
                       SizedBox(
-                        height: 30.h,
+                        height: 20.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(items.length, (index) {
+                        children: List.generate(4, (index) {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                selectedIndex = index;
+                                headerIndex = index;
                               });
                               _pageController.animateToPage(
                                 index,
-                                duration: const Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 50),
                                 curve: Curves.easeInOut,
                               );
                             },
@@ -239,7 +398,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               width: 5.w,
                               margin: EdgeInsets.symmetric(horizontal: 5.w),
                               decoration: BoxDecoration(
-                                color: selectedIndex == index
+                                color: headerIndex == index
                                     ? Colors.amber
                                     : Colors.grey,
                                 shape: BoxShape.circle,
@@ -253,14 +412,20 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         child: PageView.builder(
                           itemCount: items.length,
                           padEnds: false,
+                          reverse: true,
+                          scrollDirection: Axis.horizontal,
                           controller: _pageController,
-                          onPageChanged: _onPageChanged,
+                          onPageChanged: (value) {
+                            setState(() {
+                              headerIndex =
+                                  value; // Update selectedIndex based on page change
+                            });
+                          },
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> data = items[index];
+                            Map<String, dynamic> data = __items[index];
 
-                            // Highlight only when index == 0 (TradeHub)
-                            bool isActive = index == 6;
-
+                            // Highlight only when index == 4
+                            bool isActive = index == 1;
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -334,10 +499,16 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           },
                         ),
                       ),
-                      const Divider(
-                        height: 0.1,
-                        color: ColorConstant.grayColor,
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: const Divider(
+                          thickness: 0.4,
+                          height: 1,
+                          color: ColorConstant.grayColor,
+                        ),
                       ),
+
                       if (_isSectionsVisible)
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -345,41 +516,47 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              const Text(
-                                "Brandbazar",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.w500,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BrandBazarScreen(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "Brandbazaar",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFD9D9D9),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "REDISCOVER SERVICES!",
-                                    style: headerstyle.copyWith(
-                                        color: const Color(0xffF9BB00),
-                                        fontSize: 10),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SubscribeAndWinEveryDay(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "BuyOrWin",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFD9D9D9),
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  Text(
-                                    "Connect,Save,Win & Beyond.",
-                                    style: headerstyle.copyWith(
-                                        color: const Color(0xffD9D9D9),
-                                        fontSize: 10),
-                                  )
-                                ],
-                              ),
-                              const Text(
-                                "BuyOrWin",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -432,18 +609,18 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 //           itemBuilder: (context, index) {
                 //             Story ref = data.stories[index];
                 //             if (index == 0) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: false,
                 //                 brandname: ref.vendorName,
                 //               );
                 //             } else if (index >= 1 && index <= 3) {
-                //               return StoryAddWidget(
+                //               return NotStoryWidget(
                 //                 index: index,
                 //                 showgift: true,
                 //               );
                 //             }
-                //             return StoryAddWidget(index: index);
+                //             return NotStoryWidget(index: index);
                 //           }),
                 //     );
                 //   },
@@ -835,12 +1012,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         itemBuilder: (context, index) {
                           VProduct hot = data.hotProducts[index];
                           return ProductDetailWidget(
-                            lefttile: "Job",
+                            wow: hot.wow,
+                            comment: hot.commentcount.toString(),
+                            discounttedPrice: hot.discounted_price,
+                            issponsored: hot.user.sponsored,
+                            lefttile: "Jobs",
                             productImage: hot.image,
                             Vimage: hot.user.photo,
                             price: hot.price,
                             title: hot.title,
                             vendorname: hot.user.name,
+                            similarproductCount: hot.similarProductCount,
+                            membershipColor: hot.user.membercolor,
+                            membershipTitle: hot.user.membershipTitle,
                           );
                         },
                       ),
@@ -1168,19 +1352,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       LogoData res = data.global[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1210,19 +1394,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1252,19 +1436,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       LogoData res = data.domestic[index];
 
                                       if (index == 0) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                             index: index,
                                             brandname: res.brandName
 
                                             // showgift: false,
                                             );
                                       } else if (index >= 1 && index <= 2) {
-                                        return StoryAddWidget(
+                                        return NotStoryWidget(
                                           index: index,
                                           showgift: true,
                                         );
                                       }
-                                      return StoryAddWidget(index: index);
+                                      return NotStoryWidget(index: index);
                                     }),
                               );
                             },
@@ -1288,7 +1472,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height:340.h,
+                      height: 100.h,
                       width: double.infinity,
                       child: ListView.builder(
                         padding: const EdgeInsets.all(3),
@@ -1299,6 +1483,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         itemBuilder: (context, index) {
                           VProduct ref = data.product[index];
                           return ProductDetailWidget(
+                            comment: ref.commentcount.toString(),
+                            discounttedPrice: ref.discounted_price,
+                            issponsored: ref.user.sponsored,
+                            membershipColor: ref.user.membercolor,
+                            membershipTitle: ref.user.membershipTitle,
+                            similarproductCount: ref.similarProductCount,
+                            wow: ref.wow,
                             lefttile: "Jobs",
                             productImage: ref.image,
                             price: ref.price,
@@ -1358,6 +1549,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image);
@@ -1490,7 +1682,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     height: 50.h,
                                     child: Center(
                                       child: Text(
-                                        "No Data Available",
+                                        "No listing available",
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
@@ -1512,13 +1704,23 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       return InkWell(
                                         onTap: () {}, // Handle onTap if needed
                                         child: ProductDetailWidget(
-                                          lefttile: "Jobs",
+                                          wow: prod.wow,
+                                          comment: prod.commentcount.toString(),
+                                          lefttile: "B2b",
                                           vendorname: prod.user.name,
-                                          discounttedPrice: "0",
-                                          Vimage: prod.user.photo,
+                                          discounttedPrice:
+                                              prod.discounted_price,
+                                          Vimage: prod.title,
+                                          issponsored: prod.user.sponsored,
                                           price: prod.price,
                                           title: prod.title,
                                           productImage: prod.image,
+                                          similarproductCount:
+                                              prod.similarProductCount,
+                                          membershipColor:
+                                              prod.user.membercolor,
+                                          membershipTitle:
+                                              prod.user.membershipTitle,
                                         ), // Replace with your actual product widget
                                       );
                                     },
@@ -1562,24 +1764,36 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       shrinkWrap: true, // Adjust to fit content
                       itemCount: data.product.length,
 
-                         gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 370,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.6,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.5,
-                                ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 370,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0.6,
+                        mainAxisSpacing: 0.2,
+                        childAspectRatio: 0.5,
+                      ),
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding:  EdgeInsets.only(bottom: 5.h),
-                          child: ProductDetailWidget(
-                            lefttile: 'Jobs',
+                          padding: EdgeInsets.only(bottom: 5.h),
+                          child: AllProductDetailWidget(
+                            wow: data.product[index].wow,
+                            comment:
+                                data.product[index].commentcount.toString(),
+                            issponsored: data.product[index].user.sponsored,
+                            discounttedPrice:
+                                data.product[index].discounted_price,
+                            lefttile: "Jobs",
                             productImage: data.product[index].image,
                             Vimage: data.product[index].user.photo,
                             vendorname: data.product[index].user.name,
                             title: data.product[index].title,
                             price: data.product[index].price,
+                            similarproductCount:
+                                data.product[index].similarProductCount,
+                            membershipColor:
+                                data.product[index].user.membercolor,
+                            membershipTitle:
+                                data.product[index].user.membershipTitle,
                           ),
                         );
                       },

@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
+import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/hot_deals/api/hot_deals_provider.dart';
 import 'package:smartbazar/features/hot_deals/view/components/hot_deals_components.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class HotViewScreen extends ConsumerStatefulWidget {
-  const HotViewScreen({Key? key}) : super(key: key);
+  String header = 'sponsored';
+  HotViewScreen({Key? key, required this.header}) : super(key: key);
 
   @override
   ConsumerState<HotViewScreen> createState() => _HotViewScreenState();
@@ -23,6 +30,13 @@ class HotViewScreen extends ConsumerStatefulWidget {
 
 class _HotViewScreenState extends ConsumerState<HotViewScreen>
     with SingleTickerProviderStateMixin {
+  bool _showSearchProductModels = false;
+  void _onSearchFocusChanged(bool hasFocus) {
+    setState(() {
+      _showSearchProductModels = hasFocus;
+    });
+  }
+
   // final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
@@ -70,7 +84,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        // _showSearchResults = query.isNotEmpty;
+        // _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -107,6 +121,11 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
 
   @override
   Widget build(BuildContext context) {
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
+    final getHotData = ref.watch(getHotDealsProvider(widget.header));
+
+    debugPrint('Search Results: ${SearchProductModels.asData?.value}');
     return Scaffold(
         extendBody: true,
         bottomNavigationBar: Padding(
@@ -218,23 +237,121 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                         height: 40,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset('assets/images/group.png'),
-                          const SizedBox(
-                            width: 20,
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VendorProfileScreen(),
+                                    ));
+                              },
+                              child: Image.asset('assets/images/group.png')),
+                          SizedBox(
+                            width: 2.w,
                           ),
                           SizedBox(
                               height: 50,
                               child: NewSearchWidget(
-                                onchnage: (p0) {},
+                                onSearchFocusChanged: _onSearchFocusChanged,
+                                searchController: _searchController,
+                                ontapped: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BusinessTabScreen(
+                                          query: _searchController.text,
+                                        ),
+                                      ));
+                                },
+                                onchnage: (p0) {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           const BusinessTabScreen(),
+                                  //     ));
+                                },
                               )),
                         ],
                       ),
+                      if (_showSearchProductModels)
+                        Positioned(
+                          top: 0.h, // Position just below the search bar
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            child: SearchProductModels.when(data: (results) {
+                              if (results.isEmpty) {
+                                return const SizedBox(
+                                  child: Text('No result found'),
+                                ); // No results
+                              }
+                              return Card(
+                                elevation: 8,
+                                child: ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: results.length,
+                                  itemBuilder: (context, index) {
+                                    final product = results[index];
+                                    return ListTile(
+                                      title: Text(product.title),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BusinessTabScreen(
+                                                query: _searchController.text,
+                                              ),
+                                            ));
+
+                                        setState(() {
+                                          _showSearchProductModels = false;
+
+                                          FocusScope.of(context).unfocus();
+                                        });
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //         ProductDetailsScreen(
+                                        //       productId: product.id,
+                                        //     ),
+                                        //   ),
+                                        // );
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                ),
+                              );
+                            }, loading: () {
+                              return null;
+                            
+                              // return SizedBox(
+                              //     width: 10.w,
+                              //     height: 10.h,
+                              //     child: CircularProgressIndicator());
+                            }, error: (error, stack) {
+                              return null;
+                            
+                              // return SizedBox(
+                              //     width: 10.w,
+                              //     height: 10.h,
+                              //     child: CircularProgressIndicator());
+                            }),
+                          ),
+                        ),
                       SizedBox(
-                        height: 30.h,
+                        height: 10.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -246,13 +363,13 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                               });
                               _pageController.animateToPage(
                                 index,
-                                duration: const Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 50),
                                 curve: Curves.easeInOut,
                               );
                             },
                             child: Container(
-                              height: 5,
-                              width: 5,
+                              height: 5.h,
+                              width: 5.w,
                               margin: EdgeInsets.symmetric(horizontal: 5.w),
                               decoration: BoxDecoration(
                                 color: selectedIndex == index
@@ -267,28 +384,30 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                       SizedBox(
                         height: 80.h,
                         child: PageView.builder(
-                          controller: _pageController,
-                          onPageChanged: _onPageChanged,
                           itemCount: items.length,
+                          padEnds: false,
+                          controller: _pageController,
+                          //  // onPageChanged: _onPageChanged,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = items[index];
 
-                            // Highlight only when index == 3
-                            bool isActive = index == 3;
-
+                            // Highlight only when index == 4
+                            bool isActive = index == 1;
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
                                   selectedIndex = index;
                                 });
                                 _pageController.animateToPage(
-                                  index,
+                                  2,
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeInOut,
                                 );
                               },
                               child: AnimatedContainer(
+                                padding: EdgeInsets.zero,
                                 duration: const Duration(milliseconds: 300),
+                                alignment: Alignment.center,
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.push(
@@ -305,6 +424,10 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                           .endsWith('.svg'))
                                         SvgPicture.asset(
                                           data['icon'],
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.contain,
+                                          theme: const SvgTheme(
+                                              currentColor: Color(0xffdd9d9d9)),
                                           color: isActive
                                               ? Colors.amber
                                               : const Color(0xffD9D9D9)
@@ -348,29 +471,53 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                         color: ColorConstant.grayColor,
                       ),
                       if (_isSectionsVisible)
-                        const Padding(
-                          padding: EdgeInsets.all(20),
+                        Padding(
+                          padding: const EdgeInsets.all(20),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Brandbazaar",
-                                style: TextStyle(
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.w500,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BrandBazarScreen(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "Brandbazaar",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFD9D9D9),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                              Text(
-                                "BuyOrWin",
-                                style: TextStyle(
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.w500,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SubscribeAndWinEveryDay(),
+                                      ));
+                                },
+                                child: const Text(
+                                  "BuyOrWin",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFFD9D9D9),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -407,18 +554,33 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                       height: 10.h,
                     ),
                     const hot_deals_container(),
+                    SizedBox(
+                      height: 5.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
-                            Text(
-                              'HOT DEALS',
-                              style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.black),
-                            ),
+                            widget.header == 'hotdeals'
+                                ? Text(
+                                    'HOT DEALS',
+                                    style: headerstyle.copyWith(
+                                        fontStyle:
+                                            GoogleFonts.quicksand().fontStyle,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15,
+                                        color: Colors.black),
+                                  )
+                                : Text(
+                                    'Sponsored DEALS',
+                                    style: headerstyle.copyWith(
+                                        fontStyle:
+                                            GoogleFonts.quicksand().fontStyle,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15,
+                                        color: Colors.black),
+                                  ),
                             SizedBox(
                               width: 10.w,
                             ),
@@ -438,19 +600,56 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 360.h,
-                      width: double.infinity,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return ProductDetailWidget();
-                        },
-                      ),
-                    )
+                    getHotData.when(
+                      data: (data) {
+                        print('gogo ${data.first.id}');
+                        return GridView.builder(
+                          physics:
+                              const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                          shrinkWrap: true, // Adjust to fit content
+                          itemCount: data.length,
+
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisExtent: 430,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0.2,
+                            mainAxisSpacing: 0.2,
+                            childAspectRatio: 0.9,
+                          ),
+                          itemBuilder: (context, index) {
+                            GlobalModel res = data[index];
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 5.h),
+                              child: ProductDetailWidget(
+                                
+                                  offer: res.offers,
+                                  // avg_rating: res.avg_rating.toDouble(),
+
+                                  // avg_rating: res.avg_rating,
+                                  comment: res.commentnum,
+                                  discounttedPrice: res.discont,
+                                  distance: res.shortestDistance,
+                                  issponsored: res.user[0].sponsored!,
+                                  lefttile: widget.header,
+                                  wow: res.wow,
+                                  productImage: res.imageUrl,
+                                  Vimage: res.user[0].photo,
+                                  vendorname: res.user[0].name,
+                                  title: res.title,
+                                  price: res.price,
+                                  similarproductCount: res.similarproductCount,
+                                  membershipColor: res.user[0].membership_color,
+                                  membershipTitle: res.user[0].membership_title),
+                            );
+                          },
+                        );
+                      },
+                      error: (error, stackTrace) {
+                        return const Text("data");
+                      },
+                      loading: () => const CircularProgressIndicator(),
+                    ),
                   ],
                 ),
               ],

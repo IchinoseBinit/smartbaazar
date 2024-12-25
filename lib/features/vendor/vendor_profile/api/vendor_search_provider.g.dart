@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vendor_profile_by_id.dart';
+part of 'vendor_search_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getVendorProfileDataByIDHash() =>
-    r'82049d22afd02ec1e14a7a5bfddc42e674b80a64';
+String _$geDataBySearchvendorHash() =>
+    r'566890aa82542043579bcb731bd85b089be76dff';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +30,27 @@ class _SystemHash {
   }
 }
 
-/// See also [getVendorProfileDataByID].
-@ProviderFor(getVendorProfileDataByID)
-const getVendorProfileDataByIDProvider = GetVendorProfileDataByIDFamily();
+/// See also [geDataBySearchvendor].
+@ProviderFor(geDataBySearchvendor)
+const geDataBySearchvendorProvider = GeDataBySearchvendorFamily();
 
-/// See also [getVendorProfileDataByID].
-class GetVendorProfileDataByIDFamily
-    extends Family<AsyncValue<VendorModelByID>> {
-  /// See also [getVendorProfileDataByID].
-  const GetVendorProfileDataByIDFamily();
+/// See also [geDataBySearchvendor].
+class GeDataBySearchvendorFamily extends Family<AsyncValue<List<GetOnlyData>>> {
+  /// See also [geDataBySearchvendor].
+  const GeDataBySearchvendorFamily();
 
-  /// See also [getVendorProfileDataByID].
-  GetVendorProfileDataByIDProvider call(
+  /// See also [geDataBySearchvendor].
+  GeDataBySearchvendorProvider call(
     String id,
   ) {
-    return GetVendorProfileDataByIDProvider(
+    return GeDataBySearchvendorProvider(
       id,
     );
   }
 
   @override
-  GetVendorProfileDataByIDProvider getProviderOverride(
-    covariant GetVendorProfileDataByIDProvider provider,
+  GeDataBySearchvendorProvider getProviderOverride(
+    covariant GeDataBySearchvendorProvider provider,
   ) {
     return call(
       provider.id,
@@ -70,33 +69,33 @@ class GetVendorProfileDataByIDFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getVendorProfileDataByIDProvider';
+  String? get name => r'geDataBySearchvendorProvider';
 }
 
-/// See also [getVendorProfileDataByID].
-class GetVendorProfileDataByIDProvider
-    extends AutoDisposeFutureProvider<VendorModelByID> {
-  /// See also [getVendorProfileDataByID].
-  GetVendorProfileDataByIDProvider(
+/// See also [geDataBySearchvendor].
+class GeDataBySearchvendorProvider
+    extends AutoDisposeFutureProvider<List<GetOnlyData>> {
+  /// See also [geDataBySearchvendor].
+  GeDataBySearchvendorProvider(
     String id,
   ) : this._internal(
-          (ref) => getVendorProfileDataByID(
-            ref as GetVendorProfileDataByIDRef,
+          (ref) => geDataBySearchvendor(
+            ref as GeDataBySearchvendorRef,
             id,
           ),
-          from: getVendorProfileDataByIDProvider,
-          name: r'getVendorProfileDataByIDProvider',
+          from: geDataBySearchvendorProvider,
+          name: r'geDataBySearchvendorProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getVendorProfileDataByIDHash,
-          dependencies: GetVendorProfileDataByIDFamily._dependencies,
+                  : _$geDataBySearchvendorHash,
+          dependencies: GeDataBySearchvendorFamily._dependencies,
           allTransitiveDependencies:
-              GetVendorProfileDataByIDFamily._allTransitiveDependencies,
+              GeDataBySearchvendorFamily._allTransitiveDependencies,
           id: id,
         );
 
-  GetVendorProfileDataByIDProvider._internal(
+  GeDataBySearchvendorProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -110,13 +109,13 @@ class GetVendorProfileDataByIDProvider
 
   @override
   Override overrideWith(
-    FutureOr<VendorModelByID> Function(GetVendorProfileDataByIDRef provider)
+    FutureOr<List<GetOnlyData>> Function(GeDataBySearchvendorRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetVendorProfileDataByIDProvider._internal(
-        (ref) => create(ref as GetVendorProfileDataByIDRef),
+      override: GeDataBySearchvendorProvider._internal(
+        (ref) => create(ref as GeDataBySearchvendorRef),
         from: from,
         name: null,
         dependencies: null,
@@ -128,13 +127,13 @@ class GetVendorProfileDataByIDProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<VendorModelByID> createElement() {
-    return _GetVendorProfileDataByIDProviderElement(this);
+  AutoDisposeFutureProviderElement<List<GetOnlyData>> createElement() {
+    return _GeDataBySearchvendorProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetVendorProfileDataByIDProvider && other.id == id;
+    return other is GeDataBySearchvendorProvider && other.id == id;
   }
 
   @override
@@ -146,19 +145,19 @@ class GetVendorProfileDataByIDProvider
   }
 }
 
-mixin GetVendorProfileDataByIDRef
-    on AutoDisposeFutureProviderRef<VendorModelByID> {
+mixin GeDataBySearchvendorRef
+    on AutoDisposeFutureProviderRef<List<GetOnlyData>> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
-class _GetVendorProfileDataByIDProviderElement
-    extends AutoDisposeFutureProviderElement<VendorModelByID>
-    with GetVendorProfileDataByIDRef {
-  _GetVendorProfileDataByIDProviderElement(super.provider);
+class _GeDataBySearchvendorProviderElement
+    extends AutoDisposeFutureProviderElement<List<GetOnlyData>>
+    with GeDataBySearchvendorRef {
+  _GeDataBySearchvendorProviderElement(super.provider);
 
   @override
-  String get id => (origin as GetVendorProfileDataByIDProvider).id;
+  String get id => (origin as GeDataBySearchvendorProvider).id;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

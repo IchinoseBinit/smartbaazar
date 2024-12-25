@@ -42,12 +42,26 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   ShippingCitiesModel? selectedpickup;
   // bool _isChecked = false;
   bool _acceptterms = false;
+  bool _trending = false;
+  final List<String> _tags = [];
+  String _inputText = "";
+
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
   List<Category> subcategoryList = [];
   Category? subcatagory;
   CityList? selectedCity;
+  List<String>? selectedColors;
+  String? selectedProductTYpe;
+  int? warrentyselected;
+    String? selectedmodel;
+
+    // String? sel;e;
+
   List<CityList>? citylistsitems = [];
+  List<Offer>? offerresponse = [];
+  Offer? selectedOffer;
+
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -56,7 +70,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
   TextEditingController discountcontroller = TextEditingController();
-
+  TextEditingController tagController = TextEditingController();
   TextEditingController weightcontroller = TextEditingController();
   TextEditingController widthcontroller = TextEditingController();
   TextEditingController lengthcontroller = TextEditingController();
@@ -77,6 +91,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     super.initState();
     _fetchTypeList();
     _fetchcities();
+    _fetchOffers();
     _fetchProductTypeList();
   }
 
@@ -99,16 +114,40 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     }
   }
 
+  void _addTag(String tag) {
+    if (tag.isNotEmpty && !_tags.contains(tag)) {
+      setState(() {
+        _tags.add(tag);
+      });
+      tagController.clear();
+    }
+  }
+
+  // Remove a tag from the list
+  void _removeTag(String tag) {
+    setState(() {
+      _tags.remove(tag);
+    });
+  }
+
+  Future<void> _fetchOffers() async {
+    try {
+      OffersResponse fetchedTypes = await repository.fetchOffers();
+      print("binod ${fetchedTypes.data.first.offers}");
+      setState(() {
+        offerresponse = fetchedTypes.data;
+      });
+    } catch (e) {
+      // Handle error, maybe show a message to the user
+      print('Failed to load types: $e');
+    }
+  }
+
   Future<void> _fetchTypeList() async {
     try {
       var allItems = await repository.fetchTypeList();
       setState(() {
-        typeListItems = isUserVerified == '1'
-            ? allItems
-            : allItems
-                .where((item) =>
-                    ["Used", "Jobs", "Events"].contains(item.typeName))
-                .toList();
+        typeListItems = allItems;
       });
 
       // var subcategory = await repository.fetchCategoryList(parentId: typeListItems.);
@@ -315,6 +354,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   },
                   onSubCategorySelected: (Category? value) {
                     categoryId = selectedcategory!.id;
+                    print("bibash ${categoryId}");
                   },
                 ),
                 SizedBox(
@@ -407,85 +447,87 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Whats in the box',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: InputDecoration.collapsed(
-                          hintText: "Mention what's included",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp,
-                              color: const Color(0xffADADAD))),
-                    ),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Brand',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: titlecontroller,
+                if (categoryId != 1)
+                  CreateListingCardWidget(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Whats in the box',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      TextField(
+                        controller: descriptionController,
                         decoration: InputDecoration.collapsed(
-                            hintText: 'Enter brand',
+                            hintText: "Mention what's included",
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
                                 color: const Color(0xffADADAD))),
                       ),
-                    ),
-                  ],
-                )),
+                      // SizedBox(
+                      //   height: 10.h,
+                      // ),
+                    ],
+                  )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                // CreateListingCardWidget(
+                //     child: Row(
+                //   children: [
+                //     Row(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           'Brand',
+                //           style: TextStyle(
+                //               fontSize: 14.sp,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.black),
+                //         ),
+                //         Text(
+                //           ' *',
+                //           style: TextStyle(
+                //               color: const Color(0xffD33636),
+                //               fontWeight: FontWeight.w500,
+                //               fontSize: 14.sp),
+                //         )
+                //       ],
+                //     ),
+                //     const Spacer(),
+                //     Expanded(
+                //       child: TextField(
+                //         controller: titlecontroller,
+                //         decoration: InputDecoration.collapsed(
+                //             hintText: 'Enter brand',
+                //             hintStyle: TextStyle(
+                //                 fontWeight: FontWeight.w500,
+                //                 fontSize: 14.sp,
+                //                 color: const Color(0xffADADAD))),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // ),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -517,15 +559,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
+                        child: CustomDropdownButton<String>(
+                          items: ['Non-Branded', 'Original/Branded'],
+                          dropdownValue: selectedProductTYpe,
                           onChanged: (newValue) {
                             setState(() {
-                              selectedCity = newValue;
+                              selectedProductTYpe = newValue;
                             });
                           },
-                          getItemLabel: (CityList item) => item.name,
+                          getItemLabel: (String item) => item,
                         ),
                       ),
                     ],
@@ -629,16 +671,60 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         width: 10.w,
                       ),
                       Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
-                          },
-                          getItemLabel: (CityList item) => item.name,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            hint: Text(
+                              selectedColors == null || selectedColors!.isEmpty
+                                  ? "Select Colors"
+                                  : selectedColors!.join(", "),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            items: [
+                              'Black',
+                              'Red',
+                              'Green',
+                              'Blue',
+                              'Pink',
+                              'Grey'
+                            ].map((color) {
+                              return DropdownMenuItem<String>(
+                                value: color,
+                                child: Row(
+                                  children: [
+                                    // Checkbox to show whether the color is selected
+                                    StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return Checkbox(
+                                          value: selectedColors != null &&
+                                              selectedColors!.contains(color),
+                                          onChanged: (bool? isChecked) {
+                                            setState(() {
+                                              if (selectedColors == null) {
+                                                selectedColors =
+                                                    []; // Initialize if null
+                                              }
+                                              if (isChecked == true) {
+                                                selectedColors!.add(
+                                                    color); // Add to selectedColors if checked
+                                              } else {
+                                                selectedColors!.remove(
+                                                    color); // Remove from selectedColors if unchecked
+                                              }
+                                            });
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    Text(color),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (_) {}, // Keeps the dropdown open
+                            icon:
+                                Icon(Icons.arrow_drop_down, color: Colors.grey),
+                          ),
                         ),
                       ),
                     ],
@@ -647,9 +733,131 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Automobile Brand',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Expanded(
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: CustomDropdownButton<String>(
+                          items: [
+                            'Zil',
+                            'Geely',
+                            'Toyota',
+                            'Honda',
+                            'BMW',
+                            'Ford'
+                          ],
+                          dropdownValue: selectedmodel,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedmodel = newValue;
+                            });
+                          },
+                          getItemLabel: (String item) => item.toString(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Automobile Model',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter model',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
+
                 SizedBox(
                   height: 10.h,
                 ),
+                  CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Year of ',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: pricecontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter model',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
                 CreateListingCardWidget(
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -678,15 +886,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
+                        child: CustomDropdownButton<int>(
+                          items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                          dropdownValue: warrentyselected,
                           onChanged: (newValue) {
                             setState(() {
-                              selectedCity = newValue;
+                              warrentyselected = newValue;
                             });
                           },
-                          getItemLabel: (CityList item) => item.name,
+                          getItemLabel: (int item) => item.toString(),
                         ),
                       ),
                     ],
@@ -839,8 +1047,12 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                     const Spacer(),
                     Checkbox(
-                      value: false,
-                      onChanged: (value) {},
+                      value: _trending,
+                      onChanged: (value) {
+                        setState(() {
+                          _trending = value!;
+                        });
+                      },
                     ),
                   ],
                 )),
@@ -1015,15 +1227,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
+                        child: CustomDropdownButton<Offer>(
+                          items: offerresponse!,
+                          dropdownValue: selectedOffer,
                           onChanged: (newValue) {
                             setState(() {
-                              selectedCity = newValue;
+                              selectedOffer = newValue;
                             });
                           },
-                          getItemLabel: (CityList item) => item.name,
+                          getItemLabel: (Offer item) => item.offers,
                         ),
                       ),
                     ],
@@ -1531,25 +1743,52 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         width: 10.w,
                       ),
                       Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: TextFieldTags<String>(
-                              textfieldTagsController: _stringTagController,
-                              initialTags: const ['python', 'java'],
-                              textSeparators: const [' ', ','],
-                              validator: (String tag) {
-                                if (tag == 'php') {
-                                  return 'Php not allowed';
-                                }
-                                return null;
+                        // Wrap the dropdown in Expanded to constrain its width
+                        child: Stack(
+                          children: [
+                            // TextField with the placeholder for typing
+                            TextField(
+                              controller: tagController,
+                              onChanged: (text) {
+                                setState(() {
+                                  _inputText = text;
+                                  tagController.text = _inputText;
+                                });
                               },
-                              inputFieldBuilder: (context, inputFieldValues) {
-                                return TextField(
-                                  // decoration: ,
-                                  controller:
-                                      inputFieldValues.textEditingController,
-                                  focusNode: inputFieldValues.focusNode,
-                                );
-                              })),
+                              onSubmitted: (value) {
+                                if (value.isNotEmpty) {
+                                  _addTag(value);
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  hintText: tagController.text.isEmpty
+                                      ? ''
+                                      : "Enter tags",
+                                  border: InputBorder.none
+                                  // border: OutlineInputBorder(),
+                                  // contentPadding: const EdgeInsets.all(8.0),
+                                  ),
+                            ),
+                            // Positioned tags that appear inside the TextField
+                            Positioned(
+                              left: 8.0,
+                              top: 1.0,
+                              bottom: 0,
+                              child: Wrap(
+                                spacing: 1,
+                                runSpacing: 2,
+                                children: _tags.map((tag) {
+                                  return Chip(
+                                    label: Text(tag),
+                                    deleteIcon: const Icon(Icons.clear),
+                                    onDeleted: () => _removeTag(tag),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1559,32 +1798,28 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   decoration: BoxDecoration(
-                    color: ColorConstant.whiteColor,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      
-                      color: ColorConstant.grayColor,
-                      width: 2
-                    )
-                  ),
+                      color: ColorConstant.whiteColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border:
+                          Border.all(color: ColorConstant.grayColor, width: 2)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text("Discount on Bulk Order !",
-                      style: headerstyle.copyWith(
-                        color: ColorConstant.blackColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14
-
-                      ),
+                      Text(
+                        "Discount on Bulk Order !",
+                        style: headerstyle.copyWith(
+                            color: ColorConstant.blackColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
                       ),
                       SizedBox(
                         height: 15.h,
                       ),
-                      const bulk_discount_widget()
+                      const BulkDiscountWidget()
                     ],
                   ),
                 )
@@ -1735,306 +1970,173 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   }
 }
 
-class bulk_discount_widget extends StatelessWidget {
-  const bulk_discount_widget({
-    super.key,
-  });
+class BulkDiscountWidget extends StatefulWidget {
+  const BulkDiscountWidget({super.key});
+
+  @override
+  _BulkDiscountWidgetState createState() => _BulkDiscountWidgetState();
+}
+
+class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
+  List<Map<String, dynamic>> discountRanges = [
+    {"from": 2, "to": 5, "rate": "Rs 50"}, // Initial discount range
+  ];
+
+  // Function to add a new range
+  void _addDiscountRange() {
+    setState(() {
+      // Add the next range to the list, for simplicity using incremental ranges
+      int nextFrom = discountRanges.length * 5 + 6;
+      int nextTo = nextFrom + 4;
+      discountRanges.add({
+        "from": nextFrom,
+        "to": nextTo,
+        "rate": "Rs ${50 - (discountRanges.length * 5)}"
+      });
+    });
+  }
+
+  // Function to delete a range
+  void _deleteDiscountRange(int index) {
+    setState(() {
+      discountRanges.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
         color: const Color(0xffFDFDFE),
         borderRadius: BorderRadius.circular(10),
-       border: Border.all(
-    
-    color: ColorConstant.grayColor,
-    width: 1
-                        
-        )
+        border: Border.all(color: Colors.grey, width: 1),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               Text("Pieces",
-              style: headerstyle.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                color: ColorConstant.blackColor
-              ),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Material(
-                    elevation: 2,
-                   borderRadius:
-                              BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "2",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
+          // For each discount range in the list
+          for (int i = 0; i < discountRanges.length; i++)
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Pieces",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: Colors.black),
                     ),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  Text(
-                    'to',
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.blackColor),
-                  ),
-                  SizedBox(
-                    width: 6.w,
-                  ),
-                  Material(
-                    elevation: 2,
-                     borderRadius:
-                              BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "5",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        _buildDiscountBox(discountRanges[i]["from"]),
+                        SizedBox(width: 6),
+                        Text('to',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black)),
+                        SizedBox(width: 6),
+                        _buildDiscountBox(discountRanges[i]["to"]),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Material(
-                    elevation: 2,
-                     borderRadius:
-                              BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "6",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text(
-                    'to',
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.blackColor),
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Material(
-                    elevation: 2,
-                     borderRadius:
-                              BorderRadius.circular(6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(6),
-                          color: const Color(0xffFDFDFE)),
-                      child: Text(
-                        "10",
-                        style: headerstyle.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffADADAD)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 40.w,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              
-               Text("Rate/piece",
-                 style: headerstyle.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                color: ColorConstant.blackColor
-              ),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Material(
-                elevation: 2,
-                 borderRadius:
-                              BorderRadius.circular(6),
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 50, top: 5, bottom: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: const Color(0xffFDFDFE)),
-                  child: Text(
-                    "Rs 50",
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xffADADAD)),
-                  ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Material(
-                elevation: 2,
-                 borderRadius:
-                              BorderRadius.circular(6),
-                child: Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 50, top: 5, bottom: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: const Color(0xffFDFDFE)),
-                  child: Text(
-                    "Rs 45",
-                    style: headerstyle.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xffADADAD)),
-                  ),
+                SizedBox(
+                  width: 40.w,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.end,
-            // crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top: 29.h),
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
-                    borderRadius: BorderRadius.circular(5),
-    
-                    border: Border.all(
-                        color: ColorConstant.grayColor),
-    
-                    // borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xff362677),
-                    radius: 12,
-                    child: Icon(
-                      Icons.add,
-                      color: ColorConstant.whiteColor,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Rate/piece",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: Colors.black),
                     ),
-                  )),
-              SizedBox(
-                height: 10.h,
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 5.w,right: 15.w),
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        borderRadius:
-                            BorderRadius.circular(5),
-    
-                        border: Border.all(
-                            color: ColorConstant.grayColor),
-    
-                        // borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const CircleAvatar(
-                        backgroundColor: Color(0xff362677),
-                        radius: 12,
-                        child: Icon(
-                          Icons.add,
-                          color: ColorConstant.whiteColor,
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        _buildDiscountBox(discountRanges[i]["rate"]),
+                        // SizedBox(width: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Plus button to add a new row
+                            GestureDetector(
+                              onTap: _addDiscountRange,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: const CircleAvatar(
+                                  backgroundColor: Color(0xff362677),
+                                  radius: 12,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // SizedBox(height: 10),
+                            // Delete button to remove a row
+                            if (i >
+                                0) // Don't show the delete button on the first row
+                              GestureDetector(
+                                onTap: () => _deleteDiscountRange(i),
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: const CircleAvatar(
+                                    backgroundColor: Color(0xff362677),
+                                    radius: 12,
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
-                      )),
-                  Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        // shape: BoxShape.circle,
-                        borderRadius:
-                            BorderRadius.circular(5),
-    
-                        border: Border.all(
-                            color: ColorConstant.grayColor),
-    
-                        // borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const CircleAvatar(
-                        backgroundColor: Color(0xff362677),
-                        radius: 12,
-                        child: Icon(
-                          Icons.delete,
-                          color: ColorConstant.whiteColor,
-                        ),
-                      )),
-                      SizedBox(height: 10.h,),
-                ],
-              )
-            ],
-          )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
         ],
+      ),
+    );
+  }
+
+  // Widget to build discount boxes (pieces and rate)
+  Widget _buildDiscountBox(dynamic value) {
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          color: const Color(0xffFDFDFE),
+        ),
+        child: Text(
+          value.toString(),
+          style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey),
+        ),
       ),
     );
   }
@@ -2162,7 +2264,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-          CreateListingCardWidget(
+        CreateListingCardWidget(
             child: Row(
           children: [
             Text(
@@ -2187,7 +2289,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-         CreateListingCardWidget(
+        CreateListingCardWidget(
             child: Row(
           children: [
             SizedBox(
@@ -2299,9 +2401,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
         //     ),
         //   ],
         // )),
-      
-       
-       
+
         SizedBox(
           height: 15.h,
         ),
@@ -2783,8 +2883,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            SizedBox(height: 10.h,),
-              Text(
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
               'Who do you want\nto sell',
               style: TextStyle(
                   fontSize: 14.sp,
@@ -2799,7 +2901,6 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            
               Row(
                 children: [
                   CustomCheckbox(
@@ -2828,7 +2929,7 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
               SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -2853,10 +2954,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   )
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -2881,10 +2982,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   )
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,
@@ -2909,10 +3010,10 @@ class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
                   )
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 8.h,
               ),
-                 Row(
+              Row(
                 children: [
                   CustomCheckbox(
                       value: _isvalid,

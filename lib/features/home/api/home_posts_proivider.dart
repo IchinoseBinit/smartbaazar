@@ -20,7 +20,7 @@ Future<HomePosts> homePosts(HomePostsRef ref) async {
 
     final List<dynamic> sponsoredPostsList = data['sponsored_posts'] ?? [];
     final List<dynamic> trendingList = data['trending'] ?? [];
-
+    final List<dynamic> sliderslist = data['sliders'] ?? [];
 
     // Ensure the response data contains the expected structure
     // Safely parse the 'sponsored_posts' and 'trending' lists into Product objects
@@ -30,15 +30,20 @@ Future<HomePosts> homePosts(HomePostsRef ref) async {
     final trending = trendingList
         .map((item) => Product.fromJson(item as Map<String, dynamic>))
         .toList();
+    final sliders = sliderslist
+        .map((item) => SliderModel.fromJson(item as Map<String, dynamic>))
+        .toList();
 
+    print("bibash ${sliders}");
     return HomePosts(
+      sliders: sliders,
       sponsored_posts: sponsoredPosts,
       trending: trending,
     );
-    } catch (e) {
+  } catch (e) {
     print("Error fetching home posts: $e");
   }
 
   // Return an empty HomePosts object in case of an error or unexpected response
-  return HomePosts(sponsored_posts: [], trending: []);
+  return HomePosts(sponsored_posts: [], trending: [], sliders: []);
 }

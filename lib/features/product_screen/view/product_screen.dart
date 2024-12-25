@@ -27,7 +27,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
@@ -56,7 +56,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
@@ -64,7 +64,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   Widget build(BuildContext context) {
     final adsList = ref.watch(fetchAdsProvider);
     final AsyncbajarValue = ref.watch(getprodwuctResposneProvider);
-    final searchResults = ref.watch(searchProvider(
+    final SearchProductModels = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
     return GenericSafeArea(
@@ -101,14 +101,14 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        if (_showSearchResults)
+                        if (_showSearchProductModels)
                           Positioned(
                             top: 0.h, // Position just below the search bar
                             left: 0,
                             right: 0,
                             child: Container(
                               color: Colors.white,
-                              child: searchResults.when(
+                              child: SearchProductModels.when(
                                 data: (results) {
                                   debugPrint(
                                       "Search results: $results"); // Debug print
@@ -127,7 +127,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                       itemBuilder: (context, index) {
                                         final product = results[index];
                                         return ListTile(
-                                          title: Text(product.title),
+                                          title: const Text('product.'),
                                           onTap: () {
                                             Navigator.push(
                                               context,
@@ -140,7 +140,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                             );
 
                                             setState(() {
-                                              _showSearchResults = false;
+                                              _showSearchProductModels = false;
                                               FocusScope.of(context).unfocus();
                                             });
                                           },

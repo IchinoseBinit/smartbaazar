@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class SubscriptionTrendingScreen extends StatefulWidget {
@@ -30,9 +29,9 @@ class _SubscriptionTrendingScreenState extends State<SubscriptionTrendingScreen>
   double offsetX = 0.0; // Horizontal swipe offset
   int currentIndex = 0; // Current card index
   List<Widget> cards = [
-    const big_container(),
-    const big_container(),
-    const big_container(),
+    // const BigContainer(),
+    // const big_container(),
+    // const big_container(),
   ];
 
   void handleSwipe() {

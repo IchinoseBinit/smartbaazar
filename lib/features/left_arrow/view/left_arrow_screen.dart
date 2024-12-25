@@ -21,13 +21,13 @@ class LeftArrowScreen extends ConsumerStatefulWidget {
 class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
   final _debouncer = BehaviorSubject<String>();
   late List<Container> _items;
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
@@ -337,7 +337,9 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 10.h,),
+              SizedBox(
+                height: 10.h,
+              ),
             ],
           ),
         ),
@@ -354,7 +356,9 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
       ),
       child: Column(
         children: [
-          SizedBox(height: 5.h,),
+          SizedBox(
+            height: 5.h,
+          ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 10.h),
             width: double.infinity,

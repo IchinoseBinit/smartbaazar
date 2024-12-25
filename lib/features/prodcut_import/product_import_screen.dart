@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -274,17 +274,17 @@ class _ChooseFileState extends State<ChooseFile> {
   }
 
   Future<void> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['csv'],
-    );
+    // final result = await FilePicker.platform.pickFiles(
+    //   type: FileType.custom,
+    //   allowedExtensions: ['csv'],
+    // );
 
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        _selectedFile = File(result.files.single.path!);
-        widget.onFileSelected(_selectedFile);
-      });
-    }
+    // if (result != null && result.files.isNotEmpty) {
+    //   setState(() {
+    //     _selectedFile = File(result.files.single.path!);
+    //     widget.onFileSelected(_selectedFile);
+    //   });
+    // }
   }
 
   Future<void> uploadFile() async {

@@ -49,6 +49,7 @@ class LoginController extends StateNotifier<GenericState> {
         MaterialPageRoute(builder: (_) => const BottomNavigationScreen()),
       );
     } catch (e) {
+      print("lol $e");
       String errorMessage = _getErrorMessage(e);
       state = ErrorState(errorMessage);
     }
@@ -92,7 +93,9 @@ class LoginController extends StateNotifier<GenericState> {
       if (responseData is Map<String, dynamic>) {
         return responseData['message'] ?? 'An unexpected error occurred.';
       }
-      return responseData is String ? responseData : 'An unexpected error occurred.';
+      return responseData is String
+          ? responseData
+          : 'An unexpected error occurred.';
     }
     return e.toString();
   }

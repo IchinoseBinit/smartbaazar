@@ -10,16 +10,29 @@ import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/promo_card.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class FeedScreen extends ConsumerWidget {
+class FeedScreen extends ConsumerStatefulWidget {
   const FeedScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final GlobalKey<ScaffoldState> _key = GlobalKey();
+  ConsumerState<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends ConsumerState<FeedScreen> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final TextEditingController _searchController = TextEditingController();
+  bool _showSearchProductModels = false;
+
+  void _onSearchFocusChanged(bool hasFocus) {
+    setState(() {
+      _showSearchProductModels = hasFocus;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2, // Two tabs: "Following" and "For You"
       child: GenericSafeArea(
@@ -61,7 +74,10 @@ class FeedScreen extends ConsumerWidget {
                         SizedBox(
                             height: 50,
                             child: NewSearchWidget(
+                              searchController: _searchController,
+                              ontapped: () {},
                               onchnage: (p0) {},
+                              onSearchFocusChanged: _onSearchFocusChanged,
                             )),
                       ],
                     ),
@@ -202,7 +218,6 @@ class FeedScreen extends ConsumerWidget {
                 // ),
                 asyncFollowingFeedContent.when(
                   data: (feedData) {
-                   
                     if (feedData.data != null && feedData.data!.story != null) {
                       final feedStoryItems = feedData.data!.story!;
                       final feedDataUserId = feedData.data!.feedPost;
@@ -404,7 +419,7 @@ class FeedScreen extends ConsumerWidget {
                                   feedStoryContent: feedStoryContent,
                                   userId:
                                       // feedData.data!.feedPost![index].userId ??
-                                          '166',
+                                      '166',
                                 );
                               },
                             ),

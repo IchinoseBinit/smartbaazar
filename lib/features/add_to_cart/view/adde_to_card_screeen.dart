@@ -211,7 +211,8 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const BottomNavigationScreen(),
+                                builder: (context) =>
+                                    const BottomNavigationScreen(),
                               ));
                         },
                         child: Row(
@@ -400,14 +401,20 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                       },
                     );
                   },
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (err, stack) {
                     String errorMessage = 'Something went wrong';
                     if (err is Exception) {
-                    errorMessage = err.toString(); // Get the specific error message
-                  }
-                    return Center(child: Text(errorMessage, style: TextStyle(fontSize: 16.sp, color: Colors.red),));
-                  } ,
+                      errorMessage =
+                          err.toString(); // Get the specific error message
+                    }
+                    return Center(
+                        child: Text(
+                      errorMessage,
+                      style: TextStyle(fontSize: 16.sp, color: Colors.red),
+                    ));
+                  },
                 ),
                 SizedBox(height: 20.h),
                 Padding(

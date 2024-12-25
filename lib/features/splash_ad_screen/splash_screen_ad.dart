@@ -78,23 +78,22 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
               ),
             ),
             adsList.isLoading
-                ? const CircularProgressIndicator()
+                ? const Center(child: CircularProgressIndicator())
                 : adsList.value != null && adsList.value!.isNotEmpty
                     ? Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 50.h),
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        width: double.infinity,
-                        height: 100.h,
-                        child: CachedNetworkImage(
-                          errorListener: (value) => const Text("Loading......"),
-                          
-                        imageUrl:  adsList.value!.first.image!,
-                        fit: BoxFit.cover,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 50.h),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          width: double.infinity,
+                          height: 100.h,
+                          child: CachedNetworkImage(
+                            errorListener: (value) =>
+                                const Text("Loading......"),
+                            imageUrl: adsList.value!.first.image!,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      
-                      ),
-                    )
+                      )
                     : const Text('No ads available'),
           ],
         ),

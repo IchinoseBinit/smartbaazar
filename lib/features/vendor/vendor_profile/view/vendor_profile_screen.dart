@@ -121,7 +121,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.emergency,
       "title": 'Hot',
       "subtitle": 'Deals',
-      "screen": const HotViewScreen(),
+      "screen":  HotViewScreen(header: 'hotdeals',),
     },
        {
       "icon": Icons.card_membership,

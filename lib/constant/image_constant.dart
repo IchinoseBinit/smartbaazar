@@ -8,6 +8,17 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+
+  final List<Map<String, dynamic>> services = [
+    {'label': 'Low Price Guarantee', 'id': 1},
+    {'label': 'Launch Offer', 'id': 2},
+    {'label': 'Seasonal offer', 'id': 3},
+    {'label': 'Promotional', 'id': 4},
+    {'label': 'Clearance sale', 'id': 5},
+    {'label': 'Festival sale', 'id': 5},
+  ];
+
+
 final List<Map<String, dynamic>> items = [
    {
       'icon': 'assets/icon/b2bIcon.svg',
@@ -57,17 +68,11 @@ final List<Map<String, dynamic>> items = [
       'label': 'Events',
       'screen': const EventsScreen()
     },
-   
-   
-   
-  
-    
   ];
 
 
 
 const String baseAsset = "assets/icon";
-
 const String drawerIcon = "$baseAsset/drawerIcon.svg";
 const String openCart = "$baseAsset/openCartIcon.svg";
 const String logoIcon = "$baseAsset/logo.svg";

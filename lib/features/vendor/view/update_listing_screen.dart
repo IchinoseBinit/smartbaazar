@@ -950,7 +950,7 @@ class _UpdateListingState extends State<UpdateListing> {
                       SizedBox(
                         height: 15.h,
                       ),
-                      const bulk_discount_widget()
+                      // const bulk_discount_widget()
                     ],
                   ),
                 ),
