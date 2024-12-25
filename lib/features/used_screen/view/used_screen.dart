@@ -1710,7 +1710,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image,
+                          );
                         },
                       ),
                     );
@@ -1774,7 +1775,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     return SizedBox(
                       width: double.infinity,
                       height:
-                          productsList[selectedIndex!].isEmpty ? 100 : 420.h,
+                          productsList[selectedIndex!].isEmpty ? 110.h : 420.h,
                       child: ValueListenableBuilder<int>(
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {

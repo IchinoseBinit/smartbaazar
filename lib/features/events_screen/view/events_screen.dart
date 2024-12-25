@@ -1793,7 +1793,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image,);
                         },
                       ),
                     );

@@ -49,7 +49,7 @@ class buyorwin_widget extends StatelessWidget {
                             height: 10.h,
                           ),
                           Text(
-                            'Adidas EQT Sneakers for M',
+                            "Discount Coupon",
                             style: headerstyle.copyWith(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),

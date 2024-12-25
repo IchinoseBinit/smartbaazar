@@ -1754,7 +1754,7 @@ SizedBox(height: 10.h,),
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image,);
                         },
                       ),
                     );

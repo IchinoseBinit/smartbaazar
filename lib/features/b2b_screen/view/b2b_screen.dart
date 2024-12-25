@@ -1769,7 +1769,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return SizedBox(
                       width: double.infinity,
                       height:
-                          productsList[selectedIndex!].isEmpty ? 150 : 420.h,
+                          productsList[selectedIndex!].isEmpty ? 110.h : 420.h,
                       child: ValueListenableBuilder<int>(
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {
