@@ -109,25 +109,24 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }
   }
 
- void _handlePageChange() {
-  final currentPage = _pageController.page!.round();
+  void _handlePageChange() {
+    final currentPage = _pageController.page!.round();
 
-  int storyOffset = 0;
-  for (int i = 0; i < vendorStories.length; i++) {
-    final vendorStoryCount = vendorStories[i].length;
-    if (currentPage < storyOffset + vendorStoryCount) {
-      setState(() {
-        _currentVendorIndex = i;
-        _currentStoryIndex = currentPage - storyOffset;
-      });
-      debugPrint('Current Vendor: $_currentVendorIndex');
-      debugPrint('Current Story: $_currentStoryIndex');
-      return;
+    int storyOffset = 0;
+    for (int i = 0; i < vendorStories.length; i++) {
+      final vendorStoryCount = vendorStories[i].length;
+      if (currentPage < storyOffset + vendorStoryCount) {
+        setState(() {
+          _currentVendorIndex = i;
+          _currentStoryIndex = currentPage - storyOffset;
+        });
+        // debugPrint('Current Vendor: $_currentVendorIndex');
+        // debugPrint('Current Story: $_currentStoryIndex');
+        return;
+      }
+      storyOffset += vendorStoryCount;
     }
-    storyOffset += vendorStoryCount;
   }
-}
-
 
   void _updateCurrentVendorIndex() {
     int currentPage = _pageController.page?.round() ?? 0;
@@ -181,52 +180,6 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     _startAutoScroll();
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   groupedStories =
-  //       groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
-  //   stories = widget.feedStory?.posts! ?? [];
-  //   // stories = widget.feedStory;
-  //   // Identify unique vendors
-  //   vendors = stories.map((story) => story.vendorName!).toSet().toList();
-  //   vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
-  //   // Filter vendor stories: Get images for each vendor
-  //   vendorStories = groupedStories.entries.map((entry) {
-  //     return entry.value.map((post) => post.image!).toList();
-  //   }).toList();
-  //   // vendorStories = vendors.map((vendor) {
-  //   //   return widget.feedStory
-  //   //       .where((story) => story.vendorName == vendor && story.posts != null)
-  //   //       .expand((story) => story.posts!)
-  //   //       .where((post) => post.image != null)
-  //   //       .map((post) => post.image!)
-  //   //       .toList();
-  //   // }).toList();
-
-  //   _pageController = PageController(initialPage: 0);
-  //   _animationController = AnimationController(vsync: this, duration: duration);
-  //   _animationController.addStatusListener((status) {
-  //     if (status == AnimationStatus.completed && !_isPaused) {
-  //       _moveToNextVendor();
-  //     }
-  //   });
-
-  //   // _currentVendorIndex = 0;
-  //   // _currentStoryIndex = 0;
-  //   // _startAutoScroll();
-  //   _currentVendorIndex = widget.selectedVendorIndex;
-  //   _currentStoryIndex = 0;
-  //   _displayedStoryIndices.clear();
-  //   int totalPreviousStories = 0;
-  //   for (int i = 0; i < _currentVendorIndex; i++) {
-  //     totalPreviousStories += vendorStories[i].length;
-  //   }
-  //   _pageController.jumpToPage(totalPreviousStories);
-
-  //   _startAutoScroll();
-  // }
-
   void _selectVendor(int vendorIndex) {
     setState(() {
       _currentVendorIndex = vendorIndex;
@@ -241,90 +194,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     _startAutoScroll();
   }
 
-  // void _moveToNextVendor() {
-  //   setState(() {
-  //     if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
-  //       _currentStoryIndex++;
-  //     } else if (_currentVendorIndex < vendorStories.length - 1) {
-  //       _currentVendorIndex++;
-  //       _currentStoryIndex = 0;
-  //       _displayedStoryIndices.clear();
-  //     } else {
-  //       Navigator.pop(context);
-  //       // All stories have been shown for all vendors, move to next author
-  //       // final nextAuthor = _getNextAuthor();
-  //       // if (nextAuthor != null) {
-  //       //   var updatedFeedStory = FeedStory(
-  //       //     posts: _getUpdatedPosts(nextAuthor),
-  //       //     // ... other properties remain the same
-  //       //   );
-  //       //   Navigator.push(
-  //       //     context,
-  //       //     MaterialPageRoute(
-  //       //       builder: (_) => FeedStoryScreen(
-  //       //         author: nextAuthor,
-  //       //         storyCount: widget.storyCount,
-  //       //         feedStory: updatedFeedStory,
-  //       //       ),
-  //       //     ),
-  //       //   ).then((_) {
-  //       //     setState(() {
-  //       //       _currentVendorIndex = 0;
-  //       //       _displayedStoryIndices.clear();
-  //       //     });
-  //       //   });
-  //       // } else {
-  //       //   Navigator.pop(context);
-  //       // }
-  //     }
-  //   });
-
-  //   if (_currentStoryIndex < vendorStories[_currentVendorIndex].length) {
-  //     _pageController.nextPage(
-  //       duration: const Duration(milliseconds: 300),
-  //       curve: Curves.easeIn,
-  //     );
-  //     _animationController.reset();
-  //     _startAutoScroll();
-  //   } else {
-  //     _stopAutoScroll();
-  //   }
-  // }
-
   Set<int> _displayedStoryIndices = {};
-
-  int _findNextUnseenStory(int currentVendorIndex) {
-    for (int i = _currentStoryIndex + 1;
-        i < vendorStories[currentVendorIndex].length;
-        i++) {
-      if (!_displayedStoryIndices.contains(i)) {
-        return i;
-      }
-    }
-    return -1; // No unseen stories found
-  }
-
-  List<Post> _getUpdatedPosts(String nextAuthor) {
-    return widget.feedStory!.posts!
-        .where((post) => post.vendorName == nextAuthor)
-        .toList();
-  }
-
-  // String? _getNextAuthor() {
-  //   final currentIndex = vendors.indexOf(widget.author);
-  //   if (currentIndex < vendors.length - 1) {
-  //     return vendors[currentIndex + 1];
-  //   }
-  //   return null; // No next author
-  // }
-
-  // String? _getPreviousAuthor() {
-  //   final currentIndex = vendors.indexOf(widget.author);
-  //   if (currentIndex < vendors.length - 1) {
-  //     return vendors[currentIndex - 1];
-  //   }
-  //   return null; // No next author
-  // }
 
   void _onTap(bool forward) {
     if (forward) {

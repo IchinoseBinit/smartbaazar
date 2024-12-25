@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
 
 class FeedStoryAddWidget extends ConsumerStatefulWidget {
@@ -12,6 +13,7 @@ class FeedStoryAddWidget extends ConsumerStatefulWidget {
   final String? vendorImage;
   final int? storyCount;
   final FeedStory? feedStoryContent;
+  final String userId;
 
   const FeedStoryAddWidget({
     super.key,
@@ -22,6 +24,7 @@ class FeedStoryAddWidget extends ConsumerStatefulWidget {
     this.vendorImage,
     this.storyCount,
     this.feedStoryContent,
+    required this.userId,
   });
 
   @override
@@ -59,7 +62,6 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
     vendors = stories.map((story) => story.vendorName!).toList();
     vendorImage = stories.map((story) => story.vendorImage!).toList();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -153,16 +155,21 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                             bottom: -5.h,
                             right: 0,
                             left: 0,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              padding: EdgeInsets.all(2.r),
-                              child: Icon(
-                                Icons.card_giftcard,
-                                color: Colors.amber,
-                                size: 24.r,
+                            child: GestureDetector(
+                              onTap: () {
+                                showCustomBottomSheet(context, widget.userId, ref);
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: EdgeInsets.all(2.r),
+                                child: Icon(
+                                  Icons.card_giftcard,
+                                  color: Colors.amber,
+                                  size: 24.r,
+                                ),
                               ),
                             ),
                           )

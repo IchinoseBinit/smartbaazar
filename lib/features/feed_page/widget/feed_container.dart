@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 
-class FeedContainer extends StatelessWidget {
+class FeedContainer extends ConsumerWidget {
   const FeedContainer({
     super.key,
     required this.vendorImage,
@@ -11,6 +13,8 @@ class FeedContainer extends StatelessWidget {
     required this.productCount,
     required this.livePrize,
     required this.distance,
+    required this.userId,
+    this.showGift,
     // this.userDetails,
     required this.interested,
     required this.engagement,
@@ -31,70 +35,107 @@ class FeedContainer extends StatelessWidget {
   final String? feedDetailImage;
   final String? membershipTitle;
   final String? membershipId;
+  final bool? showGift;
+  final String userId;
 
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: () {
-            showCustomBottomSheet(context);
-          },
+        Material(
+          elevation: 3,
+          shadowColor: ColorConstant.blackColor,
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 90.h, // Set your desired height
+            // padding: const EdgeInsets.all(10),
+            width: double.infinity,
+
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFFFFFFF), // White
-                  Color(0xFFDDDDDD), // Light Gray
-                  Color(0xFF888888), // Dark Gray
-                ],
-                stops: [0.19, 0.554, 1.0], // Define the gradient stops
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
-            ),
+                gradient: LinearGradient(
+              colors: [
+                Colors.white,
+                Color.fromARGB(255, 231, 219, 219),
+                Color(0xFFa4a4a4)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 2,
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5.w),
+                      width: 70.r,
+                      height: 70.r,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 3.w, color: const Color(0xffEACACB)),
+                        shape: BoxShape.circle,
                       ),
                     ),
-                    child: CircleAvatar(
-                      radius: 18,
-                      backgroundColor:
-                          const Color(0x7F7F7F73).withOpacity(0.45),
-                      child: ClipOval(
-                          child: vendorImage != null && vendorImage!.isNotEmpty
-                              ? Image.network(
-                                  vendorImage!,
-                                  fit: BoxFit.cover,
-                                  width: 36,
-                                  height: 36,
-                                )
-                              : Icon(
-                                  Icons.person,
-                                  size: 24.sp,
-                                )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(),
+                        ),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor:
+                              const Color(0x7F7F7F73).withOpacity(0.45),
+                          child: ClipOval(
+                              child:
+                                  vendorImage != null && vendorImage!.isNotEmpty
+                                      ? Image.network(
+                                          vendorImage!,
+                                          fit: BoxFit.cover,
+                                          width: 52,
+                                          height: 52,
+                                        )
+                                      : Icon(
+                                          Icons.person,
+                                          size: 24.sp,
+                                        )),
+                        ),
+                      ),
                     ),
-                  ),
+                    showGift!
+                        ? Positioned(
+                            bottom: -7.h,
+                            right: 0,
+                            left: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                showCustomBottomSheet(context,userId, ref);
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: EdgeInsets.all(2.r),
+                                child: Icon(
+                                  Icons.card_giftcard,
+                                  color: Colors.amber,
+                                  size: 24.r,
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
                 ),
                 // SizedBox(width: 10.w),
                 Expanded(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -112,9 +153,9 @@ class FeedContainer extends StatelessWidget {
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14.sp,
+                                        fontSize: 13.sp,
                                       ),
-                                      maxLines: 2,
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                     ),
@@ -123,6 +164,9 @@ class FeedContainer extends StatelessWidget {
                                   Image.asset(
                                     "assets/images/back.png",
                                     height: 16.h,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
                                   ),
                                 ],
                               ),
@@ -151,7 +195,7 @@ class FeedContainer extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20.h),
+                      // SizedBox(height: 10.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -165,7 +209,7 @@ class FeedContainer extends StatelessWidget {
                               ),
                               Text(
                                 "SUBSCRIBERS",
-                                style: TextStyle(fontSize: 10.sp),
+                                style: TextStyle(fontSize: 9.sp),
                               ),
                             ],
                           ),
@@ -180,7 +224,7 @@ class FeedContainer extends StatelessWidget {
                               ),
                               Text(
                                 "PRODUCTS",
-                                style: TextStyle(fontSize: 8.sp),
+                                style: TextStyle(fontSize: 9.sp),
                               ),
                             ],
                           ),
@@ -195,21 +239,21 @@ class FeedContainer extends StatelessWidget {
                               ),
                               Text(
                                 "LIVE PRIZES",
-                                style: TextStyle(fontSize: 8.sp),
+                                style: TextStyle(fontSize: 9.sp),
                               ),
                             ],
                           ),
-                          SizedBox(width: 10.w),
+                          SizedBox(width: 15.w),
                           Column(
                             children: [
                               Icon(
                                 Icons.location_on,
-                                size: 12.h,
+                                size: 18.sp,
                               ),
-                              SizedBox(height: 5.h),
+                              // SizedBox(height: 5.h),
                               Text(
                                 '${distance ?? '0'} km',
-                                style: TextStyle(fontSize: 8.sp),
+                                style: TextStyle(fontSize: 9.sp),
                               ),
                             ],
                           ),

@@ -202,12 +202,15 @@ class FeedScreen extends ConsumerWidget {
                 // ),
                 asyncFollowingFeedContent.when(
                   data: (feedData) {
+                   
                     if (feedData.data != null && feedData.data!.story != null) {
                       final feedStoryItems = feedData.data!.story!;
+                      final feedDataUserId = feedData.data!.feedPost;
                       return asyncFollowingStoryContent.when(
                         data: (feedStoryData) {
                           final feedStoryContent =
                               feedStoryData.data!.feedstory;
+
                           return Expanded(
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
@@ -215,6 +218,14 @@ class FeedScreen extends ConsumerWidget {
                               scrollDirection: Axis.horizontal,
                               itemCount: feedStoryItems.feedStory!.length,
                               itemBuilder: (context, index) {
+                                // if (feedData.data!.feedPost == null ||
+                                //     feedData.data!.feedPost![index] == null) {
+                                //   return const Center(
+                                //       child: Text('No user ID available'));
+                                // }
+                                // final userId =
+                                //     feedData.data!.feedPost![index].userId ??
+                                //         '';
                                 return FeedStoryAddWidget(
                                   index: index,
                                   vendorName: feedStoryItems
@@ -226,6 +237,7 @@ class FeedScreen extends ConsumerWidget {
                                   showGift: feedStoryItems
                                       .feedStory![index].hasSponsoredGifts,
                                   feedStoryContent: feedStoryContent,
+                                  userId: '166',
                                 );
                               },
                             ),
@@ -284,6 +296,8 @@ class FeedScreen extends ConsumerWidget {
                             feedDetailImage: feedDetail!.image!,
                             membershipTitle: userDetails.membershipTitle ?? '',
                             membershipId: userDetails.membershipId ?? '',
+                            showGift: userDetails.hasSponsoredGifts ?? false,
+                            userId: feedItem.userId ?? '',
                             //feedDetail: feedItem.feedDetail,
                           ),
                           PromoCard(
@@ -388,6 +402,9 @@ class FeedScreen extends ConsumerWidget {
                                   storyCount: story.storyCount ?? 0,
                                   showGift: story.hasSponsoredGifts ?? false,
                                   feedStoryContent: feedStoryContent,
+                                  userId:
+                                      // feedData.data!.feedPost![index].userId ??
+                                          '166',
                                 );
                               },
                             ),
@@ -459,6 +476,8 @@ class FeedScreen extends ConsumerWidget {
                             feedDetailImage: feedDetail!.image!,
                             membershipTitle: userDetails.membershipTitle,
                             membershipId: userDetails.membershipId ?? '',
+                            showGift: userDetails.hasSponsoredGifts ?? false,
+                            userId: feedItem.userId ?? '',
                             //feedDetail: feedItem.feedDetail,
                           ),
                           PromoCard(
