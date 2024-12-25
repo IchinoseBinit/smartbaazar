@@ -410,7 +410,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         response = value;
                       },
                     );
-                    print("ramu ${categoryId}");
+                    print("ramu $categoryId");
                   },
                 ),
                 SizedBox(
@@ -916,11 +916,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                       .contains(color),
                                               onChanged: (bool? isChecked) {
                                                 setState(() {
-                                                  if (selectedFeatures ==
-                                                      null) {
-                                                    selectedFeatures =
-                                                        []; // Initialize if null
-                                                  }
+                                                  selectedFeatures ??= [];
                                                   if (isChecked == true) {
                                                     selectedFeatures!.add(
                                                         color); // Add to selectedColors if checked
@@ -939,7 +935,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   );
                                 }).toList(),
                                 onChanged: (_) {}, // Keeps the dropdown open
-                                icon: Icon(Icons.arrow_drop_down,
+                                icon: const Icon(Icons.arrow_drop_down,
                                     color: Colors.grey),
                               ),
                             ),
@@ -1002,10 +998,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                 selectedColors!.contains(color),
                                             onChanged: (bool? isChecked) {
                                               setState(() {
-                                                if (selectedColors == null) {
-                                                  selectedColors =
-                                                      []; // Initialize if null
-                                                }
+                                                selectedColors ??= [];
                                                 if (isChecked == true) {
                                                   selectedColors!.add(
                                                       color); // Add to selectedColors if checked
@@ -1024,7 +1017,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 );
                               }).toList(),
                               onChanged: (_) {}, // Keeps the dropdown open
-                              icon: Icon(Icons.arrow_drop_down,
+                              icon: const Icon(Icons.arrow_drop_down,
                                   color: Colors.grey),
                             ),
                           ),
@@ -1187,7 +1180,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<String>(
-                            items: [
+                            items: const [
                               'Apple',
                               'Samsung',
                               'OnePlus',
@@ -3051,7 +3044,7 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
         color: const Color(0xffFDFDFE),
         borderRadius: BorderRadius.circular(10),
@@ -3066,24 +3059,24 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Pieces",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 12,
                           color: Colors.black),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
                         _buildDiscountBox(discountRanges[i]["from"]),
-                        SizedBox(width: 6),
-                        Text('to',
+                        const SizedBox(width: 6),
+                        const Text('to',
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black)),
-                        SizedBox(width: 6),
+                        const SizedBox(width: 6),
                         _buildDiscountBox(discountRanges[i]["to"]),
                       ],
                     ),
@@ -3095,14 +3088,14 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Rate/piece",
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 12,
                           color: Colors.black),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
                         _buildDiscountBox(discountRanges[i]["rate"]),
@@ -3179,7 +3172,7 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
         ),
         child: Text(
           value.toString(),
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey),
         ),
       ),

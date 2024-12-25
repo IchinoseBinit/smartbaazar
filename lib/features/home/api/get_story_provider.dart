@@ -24,9 +24,9 @@ Future<FeedStoryResponse> fetchStoryHome(FetchStoryHomeRef ref) async {
     return FeedStoryResponse.fromJson(response.data);
   } on TimeoutException catch (e) {
     print("Request timeout: $e");
-    return FeedStoryResponse(data:null , msg: "Request timed out");
+    return const FeedStoryResponse(data:null , msg: "Request timed out");
   } catch (e) {
     print("Error fetching home posts: $e");
-    return FeedStoryResponse(data: null, msg: "Error occurred while fetching data");
+    return const FeedStoryResponse(data: null, msg: "Error occurred while fetching data");
   }
 }

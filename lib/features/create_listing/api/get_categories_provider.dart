@@ -15,7 +15,7 @@ Future<FieldsResponse> getCategoryResponse(
     final response = await client.request(
       requestType: RequestType.post,
       url:
-          'https://smartbazaar.jianjun-rnd.com.np/api/categories/${id}/fields', // Ensure this is the correct URL
+          'https://smartbazaar.jianjun-rnd.com.np/api/categories/$id/fields', // Ensure this is the correct URL
     );
 
     if (response.statusCode == 200) {

@@ -18,9 +18,9 @@ final List<Map<String, dynamic>> services = [
   {'label': 'Festival sale', 'id': 5},
 ];
 Padding nolistingfound() {
-  return Padding(
-    padding: const EdgeInsets.only(top: 40, left: 150),
-    child: const SizedBox(child: Text("No listing found")),
+  return const Padding(
+    padding: EdgeInsets.only(top: 40, left: 150),
+    child: SizedBox(child: Text("No listing found")),
   );
 }
 

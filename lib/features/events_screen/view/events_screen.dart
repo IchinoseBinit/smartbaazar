@@ -144,7 +144,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(headerIndex!);
+      _pageController.jumpToPage(headerIndex);
     });
     super.initState();
     dynamictabController.addListener(() {
@@ -206,6 +206,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
   }
 
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
+  @override
   void dispose() {
     dynamictabController.dispose();
     _debouncer.close();
@@ -368,11 +369,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -993,7 +998,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       );
                     },
                     error: (error, stackTrace) => Text(error.toString()),
-                    loading: () => CircularProgressIndicator()),
+                    loading: () => const CircularProgressIndicator()),
                 SizedBox(
                   height: 5.h,
                 ),
@@ -1030,7 +1035,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return data.hotProducts.length == 0
+                    return data.hotProducts.isEmpty
                         ? nolistingfound()
                         : SizedBox(
                             height: 340.h,
@@ -1438,18 +1443,18 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                     if (dynamictabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].length == 0
+                              data.insidearr[0].isEmpty
                           ? 200
                           : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].length == 0
+                              data.insidearr[1].isEmpty
                           ? 200
                           : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].length == 0
+                              data.insidearr[2].isEmpty
                           ? 200
                           : 500;
                     else
@@ -1458,7 +1463,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                     return SizedBox(
                       // Use Expanded for better layout management
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         height: dynamicHeight,
                         width: double.infinity,
                         child: TabBarView(
@@ -1478,7 +1483,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
-                                data.insidearr.length == 0
+                                data.insidearr.isEmpty
                                     ? nolistingfound()
                                     : SizedBox(
                                         height: 340.h,
@@ -2018,7 +2023,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return data.product.length == 0
+                    return data.product.isEmpty
                         ? Padding(
                             padding: EdgeInsets.only(
                                 top: 100, left: 100.w, bottom: 15.h),

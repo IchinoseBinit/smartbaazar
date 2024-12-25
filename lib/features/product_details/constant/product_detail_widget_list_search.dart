@@ -247,7 +247,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                           ),
                         ),
                         offer == ''
-                            ? SizedBox()
+                            ? const SizedBox()
                             : Row(
                           children: [
                             const Icon(
@@ -281,7 +281,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                             ),
                           ],
                         )
-                            : SizedBox(),
+                            : const SizedBox(),
 
                         // SizedBox(width: 30.w,),
                         // if (discounttedPrice != '0')
@@ -304,7 +304,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Text(
-                              "${showRs}$discounttedPrice",
+                              "$showRs$discounttedPrice",
                               style:
                               // headerstyle.copyWith(
                               //   fontSize: 8.sp,
@@ -398,7 +398,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                     ),
 
                     discounttedPrice == '0'
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Row(
                       children: [
                         Image.asset(
@@ -435,10 +435,10 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                           children: [
                             Image.asset('assets/icon/Rectangle.png'),
                             Text(
-                              "${wow ?? '0'}",
+                              wow ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -451,10 +451,10 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                           children: [
                             Image.asset("assets/icon/Vector.png"),
                             Text(
-                              "${comment ?? '0'}",
+                              comment ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -473,7 +473,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                               similarproductCount?.toString() ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -547,7 +547,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                             ? Color(int.parse(
                             membershipColor!.replaceFirst('#', '0xFF')))
                             : const Color(0xff3D215F), // Default color
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(13),
                           bottomRight: Radius.circular(13),
                         ),
@@ -620,7 +620,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                                 size: 12,
                                               ),
                                               Text(
-                                                "${shortestDistance} km",
+                                                "$shortestDistance km",
                                                 style: headerstyle.copyWith(
                                                     fontSize: 8.sp,
                                                     fontWeight:
@@ -667,7 +667,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                       //   width: 1.w,
                                       // ),
                                       issponsored
-                                          ? SizedBox()
+                                          ? const SizedBox()
                                           : Row(
                                         children: [
                                           Image.asset(

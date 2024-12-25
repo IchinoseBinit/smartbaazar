@@ -23,7 +23,7 @@ class PostCard extends StatelessWidget {
       margin: EdgeInsets.only(left: 5.w),
       width: MediaQuery.sizeOf(context).width * 0.65,
       decoration: BoxDecoration(
-          border: Border.all(width: 3, color: Color(0xfD9D9D9)),
+          border: Border.all(width: 3, color: const Color(0x0fd9d9d9)),
           color: ColorConstant.whiteColor,
           borderRadius: BorderRadius.circular(6)),
       child: Column(
@@ -35,11 +35,11 @@ class PostCard extends StatelessWidget {
               Container(
                 height: 40.h,
                 width: 40.h,
-                padding: EdgeInsets.all(1),
+                padding: const EdgeInsets.all(1),
                 margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                 decoration: BoxDecoration(
                   image: DecorationImage(image: NetworkImage(photo)),
-                  border: Border.all(color: Color(0xffBDB6B6)),
+                  border: Border.all(color: const Color(0xffBDB6B6)),
                   borderRadius: BorderRadius.circular(3),
                   color: Colors.grey.shade300,
                 ),
@@ -59,7 +59,7 @@ class PostCard extends StatelessWidget {
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 10,
-                              color: Color(0xff808080))),
+                              color: const Color(0xff808080))),
                       const SizedBox(width: 15),
                       const Text(
                         "•",
@@ -68,7 +68,7 @@ class PostCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(
                         "${subscribers}h",
-                        style: TextStyle(fontSize: 10, color: Colors.grey),
+                        style: const TextStyle(fontSize: 10, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -92,14 +92,14 @@ class PostCard extends StatelessWidget {
             textDirection: TextDirection.ltr,
             TextSpan(
               text: caption,
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5),
-            child: Divider(
+            child: const Divider(
               height: 0.3,
               color: Color(0xff808080),
             ),
