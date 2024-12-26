@@ -1920,7 +1920,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 370,
+                        mainAxisExtent: 360,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,

@@ -1956,7 +1956,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 400,
+                        mainAxisExtent: 360,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.2,
                         mainAxisSpacing: 0.2,

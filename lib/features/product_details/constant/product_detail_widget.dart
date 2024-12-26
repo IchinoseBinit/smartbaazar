@@ -297,7 +297,7 @@ class ProductDetailWidget extends StatelessWidget {
                         //     ),
                         //   ),
 
-                        SizedBox(width: 37.w),
+                        SizedBox(width: 27.w),
                         if (discounttedPrice != '0')
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -609,6 +609,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         color: Colors.white,
                                         size: 12,
                                       ),
+                                      SizedBox(width: 45.w,),
                                       Row(
                                         children: [
                                           shortestDistance != null
@@ -620,7 +621,7 @@ class ProductDetailWidget extends StatelessWidget {
                                                       size: 12,
                                                     ),
                                                     Text(
-                                                      "$shortestDistance km",
+                                                      "${shortestDistance == 0.0 ? 2.0 : shortestDistance} km",
                                                       style:
                                                           headerstyle.copyWith(
                                                               fontSize: 8.sp,
