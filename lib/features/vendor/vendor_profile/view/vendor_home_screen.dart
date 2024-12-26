@@ -1530,10 +1530,10 @@ class BigContainer extends StatelessWidget {
                   ],
                 ),
                 DottedBorder(
-                  color: Color(0xff6d1a49),
+                  color: const Color(0xff6d1a49),
                   strokeWidth: 2,
-                  borderPadding: EdgeInsets.all(3),
-                  dashPattern: [9,5],
+                  borderPadding: const EdgeInsets.all(3),
+                  dashPattern: const [9,5],
                   borderType: BorderType.Circle,
                   child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -1549,7 +1549,7 @@ class BigContainer extends StatelessWidget {
                 Column(
                   children: [
                     Image.asset(
-                      "assets/images/nepalFlag.png",
+                      "assets/icon/domestic_brand.png",
                       width: 50,
                       height: 50,
                       color: Colors.grey,
@@ -1955,7 +1955,7 @@ class VendorSearchContainer extends StatelessWidget {
                               horizontal: 5.w, vertical: 5.h),
                           decoration: BoxDecoration(
                             color: const Color(0xFF46236a),
-                            border: Border.all(color: Color(0xff6d1a49)),
+                            border: Border.all(color: const Color(0xff6d1a49)),
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15.r),
                               bottomLeft: Radius.circular(15.r),

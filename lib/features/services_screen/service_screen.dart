@@ -158,7 +158,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(headerIndex!);
+      _pageController.jumpToPage(headerIndex);
     });
     super.initState();
     tabController = TabController(length: 3, vsync: this);
@@ -379,11 +379,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -748,7 +752,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          if (data.cat.isEmpty) return SizedBox();
+                          if (data.cat.isEmpty) return const SizedBox();
                           return GestureDetector(
                             onTap: () {
                               showMenu(
@@ -1481,18 +1485,18 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                     if (tabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].length == 0
+                              data.insidearr[0].isEmpty
                           ? 100
                           : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].length == 0
+                              data.insidearr[1].isEmpty
                           ? 200
                           : 500;
                     } else if (tabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].length == 0
+                              data.insidearr[2].isEmpty
                           ? 200
                           : 500;
                     else
@@ -1501,7 +1505,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     return SizedBox(
                       // Use Expanded for better layout management
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         height: dynamicHeight,
                         width: double.infinity,
                         child: TabBarView(
@@ -1762,6 +1766,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            worth: resp.worth!,
                                                         productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,

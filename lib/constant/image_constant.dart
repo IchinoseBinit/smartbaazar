@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
@@ -19,9 +18,9 @@ final List<Map<String, dynamic>> services = [
   {'label': 'Festival sale', 'id': 5},
 ];
 Padding nolistingfound() {
-  return Padding(
-    padding:  EdgeInsets.only(top: 10.h, left: 10.h),
-    child: const SizedBox(child: Text("No listing found")),
+  return const Padding(
+    padding: EdgeInsets.only(top: 40, left: 150),
+    child: SizedBox(child: Text("No listing found")),
   );
 }
 

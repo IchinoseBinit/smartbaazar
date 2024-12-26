@@ -112,11 +112,11 @@ class ProductDetailScreen extends ConsumerWidget {
                             placeholder: (context, url) => SizedBox(
                                 height: 30.h,
                                 width: 50.w,
-                                child: Center(
+                                child: const Center(
                                     child:
                                         CircularProgressIndicator())), // Placeholder widget
                             errorWidget: (context, url, error) =>
-                                Icon(Icons.error), // Error widget
+                                const Icon(Icons.error), // Error widget
                             fit: BoxFit.cover, // Adjust image fit
                             width: 50, // Match the CircleAvatar diameter
                             height: 50,
@@ -547,7 +547,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                           ),
                                         ],
                                       )
-                                    : SizedBox(),
+                                    : const SizedBox(),
                               ],
                             ),
                           ),
@@ -739,8 +739,8 @@ class ProductDetailScreen extends ConsumerWidget {
                             ],
                           ),
                           data.result?.rating_comment == null ||
-                                  data.result!.rating_comment!.isEmpty
-                              ? SizedBox()
+                                  data.result!.rating_comment.isEmpty
+                              ? const SizedBox()
                               : PeopleReviewsWidget(
                                   rate: data.result!.rating_comment),
 
@@ -898,10 +898,10 @@ class ProductDetailScreen extends ConsumerWidget {
                               )),
                           data.widgetSimilarPosts?.posts.data[0].userPhotoUrl ==
                                   null
-                              ? Padding(
+                              ? const Padding(
                                   padding:
-                                      const EdgeInsets.only(top: 40, left: 20),
-                                  child: const SizedBox(
+                                      EdgeInsets.only(top: 40, left: 20),
+                                  child: SizedBox(
                                       child: Text("No listing found")),
                                 )
                               : GridView.builder(
@@ -1005,7 +1005,7 @@ class ProductDetailScreen extends ConsumerWidget {
         loading: () => SizedBox(
             height: 30.h,
             width: 50.w,
-            child: Center(child: CircularProgressIndicator())),
+            child: const Center(child: CircularProgressIndicator())),
       ),
     );
   }

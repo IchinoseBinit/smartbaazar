@@ -1,4 +1,3 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
@@ -124,10 +123,13 @@ class LogoData {
 class Buynowmodel {
   final String image;
   final String vendorImage;
-  final String name;
+  final String? worth;
+    final String name;
+
   final int winners;
 
   Buynowmodel({
+    required this.worth,
     required this.image,
     required this.vendorImage,
     required this.name,
@@ -136,6 +138,7 @@ class Buynowmodel {
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      worth: json['worth'] as String,
       image: json['image'] as String,
       vendorImage: json['vendor_image'] as String,
       name: json['vendor_name'] as String,

@@ -85,7 +85,7 @@ class B2bScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("B2B Screen")),
-      body: Center(child: const Text("B2B Screen Content")),
+      body: const Center(child: Text("B2B Screen Content")),
     );
   }
 }

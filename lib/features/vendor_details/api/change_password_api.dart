@@ -8,18 +8,17 @@ part 'change_password_api.g.dart';
 
 @riverpod
 Future<UpdateUserDetail> changePassword(
-  ChangePasswordRef ref,
-  String password,
-  String confirmPassword,
-  String userId,
-  String email,
-  String userName
-) async {
+    ChangePasswordRef ref,
+    String password,
+    String confirmPassword,
+    String userId,
+    String email,
+    String userName) async {
   final SmartClinet client = SmartClinet();
 
   try {
     Map<String, dynamic> formData = {
-       'country_code': 'NP',
+      'country_code': 'NP',
       'language_code': 'en',
       'remove_photo': 0,
       'auth_field': 'phone',
@@ -27,7 +26,7 @@ Future<UpdateUserDetail> changePassword(
       'password': password,
       'name': userName,
       'password_confirmation': confirmPassword,
-       'ip_addr': '127.0.0.1',
+      'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
       'email': email,

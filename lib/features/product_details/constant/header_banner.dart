@@ -7,7 +7,7 @@ class HeaderBannerWidget extends StatelessWidget {
   final String title, img, vname;
   final int id;
 
-  HeaderBannerWidget(
+  const HeaderBannerWidget(
       {super.key,
       required this.title,
       required this.img,

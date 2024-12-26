@@ -719,7 +719,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                       Vimage:
                                                           res.user[0].photo!,
                                                       vendorname:
-                                                          res.user[0].name!,
+                                                          res.user[0].name,
                                                       title: res.title,
                                                       price: res.price,
                                                       similarproductCount: res
@@ -791,7 +791,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     productImage: res.imageUrl,
                                                     Vimage: res.user[0].photo!,
                                                     vendorname:
-                                                        res.user[0].name!,
+                                                        res.user[0].name,
                                                     title: res.title,
                                                     price: res.price,
                                                     similarproductCount:
@@ -842,7 +842,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                           ),
                                   ]),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                               ],

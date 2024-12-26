@@ -59,8 +59,7 @@ class ProductDetailWidget extends StatelessWidget {
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
     String showRs = discounttedPrice == '0' ? '' : '';
-    print("ramkbaba $Vimage");
-    print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       child: Card(
@@ -246,7 +245,7 @@ class ProductDetailWidget extends StatelessWidget {
                           ),
                         ),
                         offer == ''
-                            ? SizedBox()
+                            ? const SizedBox()
                             : Row(
                                 children: [
                                   const Icon(
@@ -280,7 +279,7 @@ class ProductDetailWidget extends StatelessWidget {
                                   ),
                                 ],
                               )
-                            : SizedBox(),
+                            : const SizedBox(),
 
                         // SizedBox(width: 30.w,),
                         // if (discounttedPrice != '0')
@@ -298,12 +297,12 @@ class ProductDetailWidget extends StatelessWidget {
                         //     ),
                         //   ),
 
-                        SizedBox(width: 26.w),
+                        SizedBox(width: 37.w),
                         if (discounttedPrice != '0')
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Text(
-                              "${showRs}$discounttedPrice",
+                              "$showRs$discounttedPrice",
                               style:
                                   // headerstyle.copyWith(
                                   //   fontSize: 8.sp,
@@ -340,8 +339,7 @@ class ProductDetailWidget extends StatelessWidget {
                         CircleAvatar(
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
-                          child: Text(
-                            (avg_rating ?? 0).toStringAsFixed(1),
+                          child: Text(avg_rating==0? "1.0":avg_rating.toString(),
                             // Provide fallback value of 0 when null
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
@@ -349,82 +347,81 @@ class ProductDetailWidget extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(5),
-                                bottomRight: Radius.circular(5)),
+                              topRight: Radius.circular(5),
+                              bottomRight: Radius.circular(5),
+                            ),
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating: (avg_rating ?? 1),
-                            // Use fallback value of 1 when null or 0
+                            initialRating: avg_rating == null || avg_rating == 0
+                                ? 1
+                                : avg_rating!,
+                            // Default to 1 when avg_rating is null or 0
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: 5,
-                            // Always display 5 stars
+                            itemCount: 5, // Always display 5 stars
                             itemSize: 12,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, index) {
-                              // If avg_rating is null or 0, color the first star
                               if (avg_rating == null || avg_rating == 0) {
-                                return const Icon(
-                                  Icons.star,
-                                  color: Color(0xff901B41), // First star color
-                                );
+                                // Default to 1 star when avg_rating is null or 0
+                                return index == 0
+                                    ? const Icon(Icons.star,
+                                        color: Color(
+                                            0xff901B41)) // Fill the first star
+                                    : const Icon(Icons.star,
+                                        color: Colors.grey); // Grey for others
                               } else {
                                 // Color logic based on avg_rating
                                 if (index < avg_rating!.floor()) {
-                                  // Fill the full star if it's less than the floor value of avg_rating
-                                  return const Icon(
-                                    Icons.star,
-                                    color: Color(0xff901B41),
-                                  );
+                                  // Full star if within avg_rating
+                                  return const Icon(Icons.star,
+                                      color: Color(0xff901B41));
                                 } else if (index == avg_rating!.floor() &&
                                     (avg_rating! - avg_rating!.floor()) >=
                                         0.5) {
-                                  // Fill half a star if the decimal part of avg_rating is >= 0.5
-                                  return const Icon(
-                                    Icons.star_half,
-                                    color: Color(0xff901B41),
-                                  );
+                                  // Half star if avg_rating has a decimal >= 0.5
+                                  return const Icon(Icons.star_half,
+                                      color: Color(0xff901B41));
                                 } else {
-                                  // Default grey star if it's beyond the avg_rating
-                                  return const Icon(
-                                    Icons.star,
-                                    color: Colors.grey,
-                                  );
+                                  // Grey star for others
+                                  return const Icon(Icons.star,
+                                      color: Colors.grey);
                                 }
                               }
                             },
-                            onRatingUpdate: (rating) {},
+                            onRatingUpdate: (rating) {
+                              // Handle updated rating (if required)
+                            },
                           ),
                         ),
                       ],
                     ),
-                    discounttedPrice == '0'
-                        ? SizedBox()
-                        : Row(
-                            children: [
-                              Image.asset(
-                                "assets/images/flameIcon.png",
-                                height: 10,
-                                width: 10,
-                                color: const Color(0xff901B41),
-                              ),
-                              Text(
-                                "30%",
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff901B41),
-                                    fontSize: 10),
-                              ),
-                              const Icon(
-                                Icons.arrow_downward_rounded,
-                                size: 15,
-                                color: Color(0xff901B41),
-                              )
-                            ],
+                    if (discounttedPrice == '0')
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/flameIcon.png",
+                            height: 10,
+                            width: 10,
+                            color: const Color(0xff901B41),
                           ),
+                          Text(
+                            "30%",
+                            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff901B41),
+                                fontSize: 10),
+                          ),
+                          const Icon(
+                            Icons.arrow_downward_rounded,
+                            size: 15,
+                            color: Color(0xff901B41),
+                          )
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -439,10 +436,10 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             Image.asset('assets/icon/Rectangle.png'),
                             Text(
-                              "${wow ?? '0'}",
+                              wow ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -455,10 +452,10 @@ class ProductDetailWidget extends StatelessWidget {
                           children: [
                             Image.asset("assets/icon/Vector.png"),
                             Text(
-                              "${comment ?? '0'}",
+                              comment ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -477,7 +474,7 @@ class ProductDetailWidget extends StatelessWidget {
                               similarproductCount?.toString() ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
-                                  color: Color(0xff807C7C),
+                                  color: const Color(0xff807C7C),
                                   fontWeight: FontWeight.w700),
                             )
                           ],
@@ -551,7 +548,7 @@ class ProductDetailWidget extends StatelessWidget {
                             ? Color(int.parse(
                                 membershipColor!.replaceFirst('#', '0xFF')))
                             : const Color(0xff3D215F), // Default color
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(13),
                           bottomRight: Radius.circular(13),
                         ),
@@ -623,7 +620,7 @@ class ProductDetailWidget extends StatelessWidget {
                                                       size: 12,
                                                     ),
                                                     Text(
-                                                      "${shortestDistance} km",
+                                                      "$shortestDistance km",
                                                       style:
                                                           headerstyle.copyWith(
                                                               fontSize: 8.sp,
@@ -675,12 +672,12 @@ class ProductDetailWidget extends StatelessWidget {
                                         child: Text(
                                           membershipTitle ?? "Domestic Brand",
                                           style: headerstyle.copyWith(
-                                            fontSize: 10.sp,
-                                            // Adjust font size based on length
+                                            fontSize: 10
+                                                .sp, // Adjust font size based on length
                                             fontWeight: FontWeight.w700,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          // Apply ellipsis for overflow
+                                          overflow: TextOverflow
+                                              .ellipsis, // Apply ellipsis for overflow
                                           maxLines:
                                               1, // Restrict to a single line
                                         ),
@@ -689,7 +686,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         width: 40.w,
                                       ),
                                       issponsored
-                                          ? SizedBox()
+                                          ? const SizedBox()
                                           : Row(
                                               children: [
                                                 Image.asset(

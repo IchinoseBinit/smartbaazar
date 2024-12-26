@@ -134,7 +134,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(headerIndex!);
+      _pageController.jumpToPage(headerIndex);
     });
     super.initState();
     tabController = TabController(length: 3, vsync: this);
@@ -357,11 +357,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -727,7 +731,7 @@ SizedBox(height: 10.h,),
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          if (data.cat.isEmpty) return SizedBox();
+                          if (data.cat.isEmpty) return const SizedBox();
                           return GestureDetector(
                             onTap: () {
                               showMenu(
@@ -808,7 +812,7 @@ SizedBox(height: 10.h,),
                                         children: [
                                           Text(
                                             data.cat[0].slug,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 13,
@@ -1751,6 +1755,7 @@ SizedBox(height: 10.h,),
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            worth: resp.worth!,
                                                         productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,

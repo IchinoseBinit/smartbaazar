@@ -69,7 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
-  double _currentHeight = 500; // Default height for first tab
+  final double _currentHeight = 500; // Default height for first tab
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -410,11 +410,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     ),
                                   );
                                 }, loading: () {
+                                  return null;
+                                
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
                                   //     child: CircularProgressIndicator());
                                 }, error: (error, stack) {
+                                  return null;
+                                
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
@@ -653,7 +657,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             children: [
                               StoryAddWidget(
                                 vImage: data.homestory['158']!.vendorImage,
-                                brandname: data.homestory!['158']!.vendorName,
+                                brandname: data.homestory['158']!.vendorName,
                                 index: 0,
                                 addSearch: true,
                                 showgift:
@@ -696,7 +700,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         );
                       },
                       error: (error, stackTrace) => Text(error.toString()),
-                      loading: () => CircularProgressIndicator(),
+                      loading: () => const CircularProgressIndicator(),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -764,7 +768,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 width: double.infinity,
                                                 fit: BoxFit.fill,
                                                 imageUrl: banner
-                                                    .image!, // Assuming banner.image is the image URL
+                                                    .image, // Assuming banner.image is the image URL
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         const Icon(Icons.error),
@@ -917,14 +921,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
-                                              
-
-                                              distance:prod.shortestDistance ,
-                                              issponsored: prod.user!.sponsored?? false,
-                                              shortestDistance:double.tryParse(prod.nearestBranch?? '0') ,
+                                              distance: prod.shortestDistance,
+                                              issponsored:
+                                                  prod.user!.sponsored ?? false,
+                                              shortestDistance: double.tryParse(
+                                                  prod.nearestBranch ?? '0'),
                                               wow: prod.wow,
-                                              comment:prod.commentcount.toString()?? '1' ,
-                                              avg_rating: prod.avg_rating?.toDouble(),
+                                              comment: prod.commentcount
+                                                      .toString() ??
+                                                  '1',
+                                              avg_rating:
+                                                  prod.avg_rating?.toDouble(),
 
                                               offer: prod.offers,
                                               id: int.tryParse(prod.user!.id),
@@ -991,7 +998,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               double dynamicHeight;
 
                               if (dynamictabController.index == 0) {
-                                dynamicHeight = data.insidearr[0].length == 0
+                                dynamicHeight = data.insidearr[0].isEmpty
                                     ? 140.h
                                     : 420.h;
                               } else if (dynamictabController.index == 1) {
@@ -1033,7 +1040,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 brandname: e.brandName,
                                               );
                                             }).toList(),
-                                          data.insidearr[0].length == 0
+                                          data.insidearr[0].isEmpty
                                               ? nolistingfound()
                                               : SizedBox(
                                                   height: 340.h,
@@ -1064,9 +1071,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         },
                                                         child:
                                                             ProductDetailWidget(
-                                                              shortestDistance: prod.shortestDistance,
-                                                              distance: prod.shortestDistance,
-                                                              avg_rating: prod.avg_rating,
+                                                          shortestDistance: prod
+                                                              .shortestDistance,
+                                                          distance: prod
+                                                              .shortestDistance,
+                                                          avg_rating:
+                                                              prod.avg_rating,
                                                           offer: prod.offers,
                                                           id: int.tryParse(prod
                                                               .user
@@ -1156,10 +1166,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-
-                                                      shortestDistance: prod.shortestDistance,
-                                                      distance: prod.shortestDistance,
-                                                      avg_rating: prod.avg_rating,
+                                                      shortestDistance:
+                                                          prod.shortestDistance,
+                                                      distance:
+                                                          prod.shortestDistance,
+                                                      avg_rating:
+                                                          prod.avg_rating,
                                                       offer: prod.offers,
                                                       id: int.tryParse(prod
                                                           .user.first.user_id),
@@ -1245,9 +1257,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-                                                      shortestDistance: prod.shortestDistance,
-                                                      distance: prod.shortestDistance,
-                                                      avg_rating: prod.avg_rating,
+                                                      shortestDistance:
+                                                          prod.shortestDistance,
+                                                      distance:
+                                                          prod.shortestDistance,
+                                                      avg_rating:
+                                                          prod.avg_rating,
                                                       offer: prod.offers,
                                                       id: int.tryParse(prod
                                                           .user.first.user_id),
@@ -1374,7 +1389,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
-                                        productname: resp.name,
+                                        worth: resp.worth!,
+                                        productname: "Discount Coupon",
                                         vendorImage: resp.vendorImage,
                                         vendorname: resp.name,
                                         winners: resp.winners.toString(),
@@ -1446,8 +1462,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   ));
                                             },
                                             child: ProductDetailWidget(
-
-                                              issponsored: prefs.userdetails!.sponsored!,
+                                              issponsored:
+                                                  prefs.userdetails!.sponsored!,
                                               wow: prefs.wow,
                                               distance: prefs.shortestDistance,
                                               comment:
@@ -1565,9 +1581,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ));
                                         },
                                         child: AllProductDetailWidget(
-                                          shortestDistance: data.allProducts[index].shortestDistance,
-                                          issponsored:data.allProducts[index].user.hasSponsoredGifts ,
-                                          distance: data.allProducts[index].shortestDistance,
+                                          shortestDistance: data
+                                              .allProducts[index]
+                                              .shortestDistance,
+                                          issponsored: data.allProducts[index]
+                                              .user.hasSponsoredGifts,
+                                          distance: data.allProducts[index]
+                                              .shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data

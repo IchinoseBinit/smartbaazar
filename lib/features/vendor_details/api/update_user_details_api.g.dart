@@ -6,7 +6,7 @@ part of 'update_user_details_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateUserDetailsHash() => r'5d8210e0dffd18f4741a51835f4b625522257bf7';
+String _$updateUserDetailsHash() => r'b6a71061616d55cb323ead5b711efe5c33ddb2bd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,6 +46,12 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
     String email,
     String userId,
     String genderID,
+    List<String> branchLocations,
+    String bio,
+    List<String> day,
+    List<String?> fromList,
+    List<String?> toList,
+    List<bool> closed,
   ) {
     return UpdateUserDetailsProvider(
       fullName,
@@ -54,6 +60,12 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
       email,
       userId,
       genderID,
+      branchLocations,
+      bio,
+      day,
+      fromList,
+      toList,
+      closed,
     );
   }
 
@@ -68,6 +80,12 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
       provider.email,
       provider.userId,
       provider.genderID,
+      provider.branchLocations,
+      provider.bio,
+      provider.day,
+      provider.fromList,
+      provider.toList,
+      provider.closed,
     );
   }
 
@@ -97,6 +115,12 @@ class UpdateUserDetailsProvider
     String email,
     String userId,
     String genderID,
+    List<String> branchLocations,
+    String bio,
+    List<String> day,
+    List<String?> fromList,
+    List<String?> toList,
+    List<bool> closed,
   ) : this._internal(
           (ref) => updateUserDetails(
             ref as UpdateUserDetailsRef,
@@ -106,6 +130,12 @@ class UpdateUserDetailsProvider
             email,
             userId,
             genderID,
+            branchLocations,
+            bio,
+            day,
+            fromList,
+            toList,
+            closed,
           ),
           from: updateUserDetailsProvider,
           name: r'updateUserDetailsProvider',
@@ -122,6 +152,12 @@ class UpdateUserDetailsProvider
           email: email,
           userId: userId,
           genderID: genderID,
+          branchLocations: branchLocations,
+          bio: bio,
+          day: day,
+          fromList: fromList,
+          toList: toList,
+          closed: closed,
         );
 
   UpdateUserDetailsProvider._internal(
@@ -137,6 +173,12 @@ class UpdateUserDetailsProvider
     required this.email,
     required this.userId,
     required this.genderID,
+    required this.branchLocations,
+    required this.bio,
+    required this.day,
+    required this.fromList,
+    required this.toList,
+    required this.closed,
   }) : super.internal();
 
   final String fullName;
@@ -145,6 +187,12 @@ class UpdateUserDetailsProvider
   final String email;
   final String userId;
   final String genderID;
+  final List<String> branchLocations;
+  final String bio;
+  final List<String> day;
+  final List<String?> fromList;
+  final List<String?> toList;
+  final List<bool> closed;
 
   @override
   Override overrideWith(
@@ -165,6 +213,12 @@ class UpdateUserDetailsProvider
         email: email,
         userId: userId,
         genderID: genderID,
+        branchLocations: branchLocations,
+        bio: bio,
+        day: day,
+        fromList: fromList,
+        toList: toList,
+        closed: closed,
       ),
     );
   }
@@ -182,7 +236,13 @@ class UpdateUserDetailsProvider
         other.userName == userName &&
         other.email == email &&
         other.userId == userId &&
-        other.genderID == genderID;
+        other.genderID == genderID &&
+        other.branchLocations == branchLocations &&
+        other.bio == bio &&
+        other.day == day &&
+        other.fromList == fromList &&
+        other.toList == toList &&
+        other.closed == closed;
   }
 
   @override
@@ -194,6 +254,12 @@ class UpdateUserDetailsProvider
     hash = _SystemHash.combine(hash, email.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
     hash = _SystemHash.combine(hash, genderID.hashCode);
+    hash = _SystemHash.combine(hash, branchLocations.hashCode);
+    hash = _SystemHash.combine(hash, bio.hashCode);
+    hash = _SystemHash.combine(hash, day.hashCode);
+    hash = _SystemHash.combine(hash, fromList.hashCode);
+    hash = _SystemHash.combine(hash, toList.hashCode);
+    hash = _SystemHash.combine(hash, closed.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -217,6 +283,24 @@ mixin UpdateUserDetailsRef on AutoDisposeFutureProviderRef<UpdateUserDetail> {
 
   /// The parameter `genderID` of this provider.
   String get genderID;
+
+  /// The parameter `branchLocations` of this provider.
+  List<String> get branchLocations;
+
+  /// The parameter `bio` of this provider.
+  String get bio;
+
+  /// The parameter `day` of this provider.
+  List<String> get day;
+
+  /// The parameter `fromList` of this provider.
+  List<String?> get fromList;
+
+  /// The parameter `toList` of this provider.
+  List<String?> get toList;
+
+  /// The parameter `closed` of this provider.
+  List<bool> get closed;
 }
 
 class _UpdateUserDetailsProviderElement
@@ -236,6 +320,252 @@ class _UpdateUserDetailsProviderElement
   String get userId => (origin as UpdateUserDetailsProvider).userId;
   @override
   String get genderID => (origin as UpdateUserDetailsProvider).genderID;
+  @override
+  List<String> get branchLocations =>
+      (origin as UpdateUserDetailsProvider).branchLocations;
+  @override
+  String get bio => (origin as UpdateUserDetailsProvider).bio;
+  @override
+  List<String> get day => (origin as UpdateUserDetailsProvider).day;
+  @override
+  List<String?> get fromList => (origin as UpdateUserDetailsProvider).fromList;
+  @override
+  List<String?> get toList => (origin as UpdateUserDetailsProvider).toList;
+  @override
+  List<bool> get closed => (origin as UpdateUserDetailsProvider).closed;
+}
+
+String _$updateBuyerUserDetailsHash() =>
+    r'604a887dc5ce8989ca22ddbfdab11e3b2798ad99';
+
+/// See also [updateBuyerUserDetails].
+@ProviderFor(updateBuyerUserDetails)
+const updateBuyerUserDetailsProvider = UpdateBuyerUserDetailsFamily();
+
+/// See also [updateBuyerUserDetails].
+class UpdateBuyerUserDetailsFamily
+    extends Family<AsyncValue<UpdateUserDetail>> {
+  /// See also [updateBuyerUserDetails].
+  const UpdateBuyerUserDetailsFamily();
+
+  /// See also [updateBuyerUserDetails].
+  UpdateBuyerUserDetailsProvider call(
+    String fullName,
+    String phoneNumber,
+    String userName,
+    String email,
+    String userId,
+    String genderID,
+    String branchLocations,
+  ) {
+    return UpdateBuyerUserDetailsProvider(
+      fullName,
+      phoneNumber,
+      userName,
+      email,
+      userId,
+      genderID,
+      branchLocations,
+    );
+  }
+
+  @override
+  UpdateBuyerUserDetailsProvider getProviderOverride(
+    covariant UpdateBuyerUserDetailsProvider provider,
+  ) {
+    return call(
+      provider.fullName,
+      provider.phoneNumber,
+      provider.userName,
+      provider.email,
+      provider.userId,
+      provider.genderID,
+      provider.branchLocations,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateBuyerUserDetailsProvider';
+}
+
+/// See also [updateBuyerUserDetails].
+class UpdateBuyerUserDetailsProvider
+    extends AutoDisposeFutureProvider<UpdateUserDetail> {
+  /// See also [updateBuyerUserDetails].
+  UpdateBuyerUserDetailsProvider(
+    String fullName,
+    String phoneNumber,
+    String userName,
+    String email,
+    String userId,
+    String genderID,
+    String branchLocations,
+  ) : this._internal(
+          (ref) => updateBuyerUserDetails(
+            ref as UpdateBuyerUserDetailsRef,
+            fullName,
+            phoneNumber,
+            userName,
+            email,
+            userId,
+            genderID,
+            branchLocations,
+          ),
+          from: updateBuyerUserDetailsProvider,
+          name: r'updateBuyerUserDetailsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateBuyerUserDetailsHash,
+          dependencies: UpdateBuyerUserDetailsFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateBuyerUserDetailsFamily._allTransitiveDependencies,
+          fullName: fullName,
+          phoneNumber: phoneNumber,
+          userName: userName,
+          email: email,
+          userId: userId,
+          genderID: genderID,
+          branchLocations: branchLocations,
+        );
+
+  UpdateBuyerUserDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.fullName,
+    required this.phoneNumber,
+    required this.userName,
+    required this.email,
+    required this.userId,
+    required this.genderID,
+    required this.branchLocations,
+  }) : super.internal();
+
+  final String fullName;
+  final String phoneNumber;
+  final String userName;
+  final String email;
+  final String userId;
+  final String genderID;
+  final String branchLocations;
+
+  @override
+  Override overrideWith(
+    FutureOr<UpdateUserDetail> Function(UpdateBuyerUserDetailsRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateBuyerUserDetailsProvider._internal(
+        (ref) => create(ref as UpdateBuyerUserDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        userName: userName,
+        email: email,
+        userId: userId,
+        genderID: genderID,
+        branchLocations: branchLocations,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<UpdateUserDetail> createElement() {
+    return _UpdateBuyerUserDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateBuyerUserDetailsProvider &&
+        other.fullName == fullName &&
+        other.phoneNumber == phoneNumber &&
+        other.userName == userName &&
+        other.email == email &&
+        other.userId == userId &&
+        other.genderID == genderID &&
+        other.branchLocations == branchLocations;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, fullName.hashCode);
+    hash = _SystemHash.combine(hash, phoneNumber.hashCode);
+    hash = _SystemHash.combine(hash, userName.hashCode);
+    hash = _SystemHash.combine(hash, email.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, genderID.hashCode);
+    hash = _SystemHash.combine(hash, branchLocations.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateBuyerUserDetailsRef
+    on AutoDisposeFutureProviderRef<UpdateUserDetail> {
+  /// The parameter `fullName` of this provider.
+  String get fullName;
+
+  /// The parameter `phoneNumber` of this provider.
+  String get phoneNumber;
+
+  /// The parameter `userName` of this provider.
+  String get userName;
+
+  /// The parameter `email` of this provider.
+  String get email;
+
+  /// The parameter `userId` of this provider.
+  String get userId;
+
+  /// The parameter `genderID` of this provider.
+  String get genderID;
+
+  /// The parameter `branchLocations` of this provider.
+  String get branchLocations;
+}
+
+class _UpdateBuyerUserDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<UpdateUserDetail>
+    with UpdateBuyerUserDetailsRef {
+  _UpdateBuyerUserDetailsProviderElement(super.provider);
+
+  @override
+  String get fullName => (origin as UpdateBuyerUserDetailsProvider).fullName;
+  @override
+  String get phoneNumber =>
+      (origin as UpdateBuyerUserDetailsProvider).phoneNumber;
+  @override
+  String get userName => (origin as UpdateBuyerUserDetailsProvider).userName;
+  @override
+  String get email => (origin as UpdateBuyerUserDetailsProvider).email;
+  @override
+  String get userId => (origin as UpdateBuyerUserDetailsProvider).userId;
+  @override
+  String get genderID => (origin as UpdateBuyerUserDetailsProvider).genderID;
+  @override
+  String get branchLocations =>
+      (origin as UpdateBuyerUserDetailsProvider).branchLocations;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -365,11 +365,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -732,7 +736,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          if (data.cat.isNotEmpty)
+                          if (data.cat.isNotEmpty) {
                             return GestureDetector(
                               onTap: () {
                                 showMenu(
@@ -829,7 +833,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 ),
                               ),
                             );
-                          return SizedBox();
+                          }
+                          return const SizedBox();
                         },
                         error: (error, stackTrace) {
                           return Text("error $error");
@@ -1421,18 +1426,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                     if (dynamictabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].length == 0
+                              data.insidearr[0].isEmpty
                           ? 100
                           : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].length == 0
+                              data.insidearr[1].isEmpty
                           ? 200
                           : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].length == 0
+                              data.insidearr[2].isEmpty
                           ? 200
                           : 500;
                     else
@@ -1441,7 +1446,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return SizedBox(
                       // Use Expanded for better layout management
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         height: dynamicHeight,
                         width: double.infinity,
                         child: TabBarView(
@@ -1702,6 +1707,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            worth: resp.worth!,
                                                         productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,

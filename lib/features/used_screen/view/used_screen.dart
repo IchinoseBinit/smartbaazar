@@ -374,11 +374,15 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -742,7 +746,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          if (data.cat.isEmpty) return SizedBox();
+                          if (data.cat.isEmpty) return const SizedBox();
                           return GestureDetector(
                             onTap: () {
                               showMenu(
@@ -1427,18 +1431,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                     if (tabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].length == 0
+                              data.insidearr[0].isEmpty
                           ? 100
                           : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].length == 0
+                              data.insidearr[1].isEmpty
                           ? 200
                           : 500;
                     } else if (tabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].length == 0
+                              data.insidearr[2].isEmpty
                           ? 200
                           : 500;
                     else
@@ -1446,7 +1450,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     return SizedBox(
                       // Use Expanded for better layout management
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         height: dynamicHeight,
                         width: double.infinity,
                         child: TabBarView(
@@ -1707,6 +1711,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            worth: resp.worth!,
                                                         productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,

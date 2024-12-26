@@ -12,10 +12,12 @@ class buyorwin_widget extends StatelessWidget {
     required this.proctimage,
     required this.vendorImage,
         required this.productname,
+        required this.worth
+
 
   });
 
-  final String vendorname, winners, proctimage, vendorImage,productname;
+  final String vendorname, winners, proctimage, vendorImage,productname,worth;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class buyorwin_widget extends StatelessWidget {
                                   fontSize: 11,
                                 )),
                             TextSpan(
-                                text: "Rs 15,999 x25",
+                                text: "$worth x25",
                                 style: headerstyle.copyWith(
                                     fontSize: 15, fontWeight: FontWeight.bold))
                           ]))
@@ -127,7 +129,7 @@ class buyorwin_widget extends StatelessWidget {
                               //   radius: 20.0,
                               // ),
                               Container(
-                                padding: EdgeInsets.all(2),
+                                padding: const EdgeInsets.all(2),
                                 // Thickness of the border
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
@@ -172,8 +174,8 @@ class buyorwin_widget extends StatelessWidget {
                               // ),
 
                               Text(
-                                "by ${vendorname.length > 15 ? vendorname.substring(0, 12) + '...' : vendorname}",
-                                style: TextStyle(
+                                "by ${vendorname.length > 15 ? '${vendorname.substring(0, 12)}...' : vendorname}",
+                                style: const TextStyle(
                                   fontSize: 14,
                                   // Use a fixed font size for debugging
                                   color: Colors.black, // Ensure visible text

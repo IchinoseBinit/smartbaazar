@@ -138,7 +138,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(headerIndex!);
+      _pageController.jumpToPage(headerIndex);
     });
     super.initState();
     dynamictabController.addListener(() {
@@ -366,11 +366,15 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 ),
                               );
                             }, loading: () {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
+                              return null;
+                            
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -655,7 +659,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   data: (data) {
                     print("makal ${data.sliders}");
                     return data.sliders!.isEmpty
-                        ? SizedBox()
+                        ? const SizedBox()
                         : SizedBox(
                             height: 150.h,
                             width: double.infinity,
@@ -744,7 +748,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       ),
                       asyncbajarValue.when(
                         data: (data) {
-                          return data.cat.isNotEmpty? SizedBox():  GestureDetector(
+                          return data.cat.isNotEmpty? const SizedBox():  GestureDetector(
                             onTap: () {
                               showMenu(
                                 context: context,
@@ -1367,29 +1371,29 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     double dynamicHeight;
-                    print("manish ${data.insidearr.first}");
 
                     if (dynamictabController.index == 0) {
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].length == 0
-                          ? 100
+                              data.insidearr[0].isEmpty
+                          ? 150
                           : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].length == 0
-                          ? 200
+
+                              data.insidearr[0].isEmpty
+                          ? 150
                           : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].length == 0
-                          ? 200
+                              data.insidearr[0].isEmpty
+                          ? 150
                           : 500;
                     else
                       dynamicHeight = 300;
                     return SizedBox(
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         height: dynamicHeight,
                         width: double.infinity,
                         child: TabBarView(
@@ -1409,8 +1413,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
-                                if (data.insidearr.first.isNotEmpty &&
-                                    data.insidearr.isNotEmpty)
+                                data.insidearr.first.isNotEmpty ||
+                                    data.insidearr.isNotEmpty? nolistingfound():
                                   SizedBox(
                                     height: 340.h,
                                     child: ListView.builder(
@@ -1473,13 +1477,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     }).toList(),
                                   ),
                                 ),
-                                data.insidearr.isEmpty
+                                data.insidearr.length==0 || data.insidearr[0].length==0
                                     ? nolistingfound()
                                     : SizedBox(
                                         height: 340.h,
-                                        child: data.insidearr.first.isEmpty
-                                            ? nolistingfound()
-                                            : ListView.builder(
+                                        child: ListView.builder(
                                                 clipBehavior: Clip.antiAlias,
                                                 padding:
                                                     const EdgeInsets.all(3),
@@ -1526,7 +1528,28 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                 },
                                               ),
                                       ),
-                                if (data.insidearr.first.isEmpty)
+                               
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: data.spotlight.map((e) {
+                                      return NotStoryWidget(
+                                        vImage: e.brandLogo,
+                                        index: data.domestic.indexOf(e),
+                                        brandname: e.brandName,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                            data.insidearr.length==0 || data.insidearr[0].length==0
+                                    ? nolistingfound()
+                                    :
                                   SizedBox(
                                     height: 340.h,
                                     child: data.insidearr.first.isEmpty
@@ -1576,31 +1599,13 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   )
                               ],
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.spotlight.map((e) {
-                                      return NotStoryWidget(
-                                        vImage: e.brandLogo,
-                                        index: data.domestic.indexOf(e),
-                                        brandname: e.brandName,
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
                     );
                   },
                   error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => CircularProgressIndicator(),
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 SizedBox(
@@ -1687,6 +1692,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                            worth: resp.worth!,
                             productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
