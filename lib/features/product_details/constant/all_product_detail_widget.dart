@@ -285,17 +285,19 @@ class AllProductDetailWidget extends StatelessWidget {
                         //   ],
                         // ),
 
-                        if (discounttedPrice != '0' && discounttedPrice!=null)
-                          Text(
-                            "$showRs$discounttedPrice",
-                            style: headerstyle.copyWith(
-                              fontSize: 8.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey,
-                              decoration: TextDecoration.lineThrough,
-                              decorationColor: Colors.grey,
-                            ),
-                          ),
+                      Spacer(),
+if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isNotEmpty)
+  Text(
+    "Rs$showRs$discounttedPrice",
+    style: headerstyle.copyWith(
+      fontSize: 8.sp,
+      fontWeight: FontWeight.w600,
+      color: Colors.grey,
+      decoration: TextDecoration.lineThrough,
+      decorationColor: Colors.grey,
+    ),
+  ),
+
                       ],
                     ),
                   ],
