@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'get_categories_provider.dart';
+part of 'screen_category_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getCategoryResponseHash() =>
-    r'544c552e4c82c1b44d3fd447d8ec29aa8b56feac';
+String _$getCategoriesHash() => r'a5a2e37667fb820b8ecf1ae7b7cfee719be5313e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [getCategoryResponse].
-@ProviderFor(getCategoryResponse)
-const getCategoryResponseProvider = GetCategoryResponseFamily();
+/// See also [getCategories].
+@ProviderFor(getCategories)
+const getCategoriesProvider = GetCategoriesFamily();
 
-/// See also [getCategoryResponse].
-class GetCategoryResponseFamily extends Family<AsyncValue<FieldsResponse>> {
-  /// See also [getCategoryResponse].
-  const GetCategoryResponseFamily();
+/// See also [getCategories].
+class GetCategoriesFamily extends Family<AsyncValue<List<CategoryModel>>> {
+  /// See also [getCategories].
+  const GetCategoriesFamily();
 
-  /// See also [getCategoryResponse].
-  GetCategoryResponseProvider call(
-    int id,
+  /// See also [getCategories].
+  GetCategoriesProvider call(
+    int parentId,
   ) {
-    return GetCategoryResponseProvider(
-      id,
+    return GetCategoriesProvider(
+      parentId,
     );
   }
 
   @override
-  GetCategoryResponseProvider getProviderOverride(
-    covariant GetCategoryResponseProvider provider,
+  GetCategoriesProvider getProviderOverride(
+    covariant GetCategoriesProvider provider,
   ) {
     return call(
-      provider.id,
+      provider.parentId,
     );
   }
 
@@ -69,93 +68,93 @@ class GetCategoryResponseFamily extends Family<AsyncValue<FieldsResponse>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getCategoryResponseProvider';
+  String? get name => r'getCategoriesProvider';
 }
 
-/// See also [getCategoryResponse].
-class GetCategoryResponseProvider
-    extends AutoDisposeFutureProvider<FieldsResponse> {
-  /// See also [getCategoryResponse].
-  GetCategoryResponseProvider(
-    int id,
+/// See also [getCategories].
+class GetCategoriesProvider
+    extends AutoDisposeFutureProvider<List<CategoryModel>> {
+  /// See also [getCategories].
+  GetCategoriesProvider(
+    int parentId,
   ) : this._internal(
-          (ref) => getCategoryResponse(
-            ref as GetCategoryResponseRef,
-            id,
+          (ref) => getCategories(
+            ref as GetCategoriesRef,
+            parentId,
           ),
-          from: getCategoryResponseProvider,
-          name: r'getCategoryResponseProvider',
+          from: getCategoriesProvider,
+          name: r'getCategoriesProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getCategoryResponseHash,
-          dependencies: GetCategoryResponseFamily._dependencies,
+                  : _$getCategoriesHash,
+          dependencies: GetCategoriesFamily._dependencies,
           allTransitiveDependencies:
-              GetCategoryResponseFamily._allTransitiveDependencies,
-          id: id,
+              GetCategoriesFamily._allTransitiveDependencies,
+          parentId: parentId,
         );
 
-  GetCategoryResponseProvider._internal(
+  GetCategoriesProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.parentId,
   }) : super.internal();
 
-  final int id;
+  final int parentId;
 
   @override
   Override overrideWith(
-    FutureOr<FieldsResponse> Function(GetCategoryResponseRef provider) create,
+    FutureOr<List<CategoryModel>> Function(GetCategoriesRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetCategoryResponseProvider._internal(
-        (ref) => create(ref as GetCategoryResponseRef),
+      override: GetCategoriesProvider._internal(
+        (ref) => create(ref as GetCategoriesRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        parentId: parentId,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<FieldsResponse> createElement() {
-    return _GetCategoryResponseProviderElement(this);
+  AutoDisposeFutureProviderElement<List<CategoryModel>> createElement() {
+    return _GetCategoriesProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetCategoryResponseProvider && other.id == id;
+    return other is GetCategoriesProvider && other.parentId == parentId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, parentId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin GetCategoryResponseRef on AutoDisposeFutureProviderRef<FieldsResponse> {
-  /// The parameter `id` of this provider.
-  int get id;
+mixin GetCategoriesRef on AutoDisposeFutureProviderRef<List<CategoryModel>> {
+  /// The parameter `parentId` of this provider.
+  int get parentId;
 }
 
-class _GetCategoryResponseProviderElement
-    extends AutoDisposeFutureProviderElement<FieldsResponse>
-    with GetCategoryResponseRef {
-  _GetCategoryResponseProviderElement(super.provider);
+class _GetCategoriesProviderElement
+    extends AutoDisposeFutureProviderElement<List<CategoryModel>>
+    with GetCategoriesRef {
+  _GetCategoriesProviderElement(super.provider);
 
   @override
-  int get id => (origin as GetCategoryResponseProvider).id;
+  int get parentId => (origin as GetCategoriesProvider).parentId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

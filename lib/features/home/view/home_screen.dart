@@ -235,7 +235,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
-
+  final randomstory = ref.watch(fetchStoryHomeProvider);
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -649,59 +649,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    buyorwin.when(
-                      data: (data) {
-                        return SizedBox(
-                          height: 130.h,
-                          child: Row(
-                            children: [
-                              StoryAddWidget(
-                                vImage: data.homestory['158']!.vendorImage,
-                                brandname: data.homestory['158']!.vendorName,
-                                index: 0,
-                                addSearch: true,
-                                showgift:
-                                    data.homestory['158']!.hasSponsoredGifts,
-                                onTap: () {
-                                  setState(() {
-                                    _isPopupVisible = true; // Open the popup
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 2,
-                                  itemBuilder: (context, index) {
-                                    // Define data keys based on index
-                                    final dataKey = index == 0 ? '196' : '9';
-                                    final storyData = data.homestory[dataKey]!;
+                   randomstory.when(
+  data: (data) {
+    return SizedBox(
+      height: 130.h,
+      child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
+        scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
+        child: Row(
+          children: [
+            // First StoryAddWidget with search option
+            StoryAddWidget(
+              vImage: data.data!.feedStory?.posts.first.image,
+              brandname: data.data!.feedStory?.posts.first.vendorName,
+              index: 0,
+              addSearch: true, // First item has search
+              showgift: false,
+              onTap: () {
+                setState(() {
+                  // _isPopupVisible = true; // Open the popup
+                });
+              },
+            ),
+            // Expanded is not needed since SingleChildScrollView will handle scrolling
+            // Now ListView.builder will be added directly to the row
+            ...data.data!.feedStory!.posts.map((storyData) {
+              return StoryAddWidget(
+                brandname: storyData.vendorName,
+                vImage: storyData.vendorImage,
+                index: data.data!.feedStory!.posts.indexOf(storyData),
+                addSearch: false, // For all items other than the first, no search
+                showgift: storyData.hasSponsoredGifts,
+                onTap: () {
+                  // setState(() {
+                  //   // _isPopupVisible = true; // Open the popup
+                  // });
+                },
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  },
+  error: (error, stackTrace) => Text(error.toString()),
+  loading: () => const CircularProgressIndicator(),
+),
 
-                                    return StoryAddWidget(
-                                      brandname: storyData.vendorName,
-                                      vImage: storyData.vendorImage,
-                                      index: index,
-                                      addSearch: false,
-                                      showgift: storyData.hasSponsoredGifts,
-                                      onTap: () {
-                                        setState(() {
-                                          _isPopupVisible =
-                                              true; // Open the popup
-                                        });
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      error: (error, stackTrace) => Text(error.toString()),
-                      loading: () => const CircularProgressIndicator(),
-                    ),
                     SizedBox(
                       height: 5.h,
                     ),

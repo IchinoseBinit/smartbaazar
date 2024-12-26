@@ -244,7 +244,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
-                        offer == ''
+                       offer == ''
                             ? const SizedBox()
                             : Row(
                                 children: [
@@ -262,66 +262,42 @@ class ProductDetailWidget extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                        discounttedPrice != "0"
-                            ? Row(
-                                children: [
-                                  const Icon(
-                                    Icons.track_changes_sharp,
-                                    color: Color(0xff901B41),
-                                    size: 15,
-                                  ),
-                                  Text(
-                                    "Best Price",
-                                    style: headerstyle.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff901B41),
-                                        fontSize: 8.sp),
-                                  ),
-                                ],
-                              )
-                            : const SizedBox(),
+                        // discounttedPrice != "0"
+                        //     ?
 
-                        // SizedBox(width: 30.w,),
-                        // if (discounttedPrice != '0')
-                        //   Padding(
-                        //     padding: const EdgeInsets.only(right: 8.0),
-                        //     child: Text(
-                        //       "Rs.${showRs}$discounttedPrice",
-                        //       style: headerstyle.copyWith(
-                        //         fontSize: 8.sp,
-                        //         fontWeight: FontWeight.w600,
-                        //         color: Colors.grey,
-                        //         decoration: TextDecoration.lineThrough,
-                        //         decorationColor: Colors.grey,
-                        //       ),
+                        // Row(
+                        //   children: [
+                        //     const Icon(
+                        //       Icons.track_changes_sharp,
+                        //       color: Color(0xff901B41),
+                        //       size: 15,
                         //     ),
-                        //   ),
-
-                        SizedBox(width: 37.w),
-                        if (discounttedPrice != '0')
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                              "$showRs$discounttedPrice",
-                              style:
-                                  // headerstyle.copyWith(
-                                  //   fontSize: 8.sp,
-                                  //   fontWeight: FontWeight.w600,
-                                  //   color: Colors.grey,
-                                  //   decoration: TextDecoration.lineThrough,
-                                  //   decorationThickness: 1.5, // Adjusts the thickness of the line
-                                  //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
-                                  // ),
-                                  TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                                decorationThickness: 1.5,
-                                height: 1.0,
-                              ),
-                              textAlign:
-                                  TextAlign.center, // Aligns text if necessary
+                        //    offer==''?    Text(
+                        //       "Best Price",
+                        //       style: headerstyle.copyWith(
+                        //           fontWeight: FontWeight.w700,
+                        //           color: const Color(0xff901B41),
+                        //           fontSize: 8.sp),
+                        //     ):
+                        //     Text(
+                        //       "${offer} Price",
+                        //       style: headerstyle.copyWith(
+                        //           fontWeight: FontWeight.w700,
+                        //           color: const Color(0xff901B41),
+                        //           fontSize: 8.sp),
+                        //     ),
+                        //   ],
+                        // ),
+Spacer(),
+                        if (discounttedPrice != '0' && discounttedPrice!=null)
+                          Text(
+                            "$showRs$discounttedPrice",
+                            style: headerstyle.copyWith(
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Colors.grey,
                             ),
                           ),
                       ],
@@ -399,29 +375,30 @@ class ProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (discounttedPrice == '0')
-                      Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/flameIcon.png",
-                            height: 10,
-                            width: 10,
-                            color: const Color(0xff901B41),
-                          ),
-                          Text(
-                            "30%",
-                            style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w600,
+                   discounttedPrice == '0' || discounttedPrice==null
+                        ? const SizedBox()
+                        : Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/flameIcon.png",
+                                height: 10,
+                                width: 10,
                                 color: const Color(0xff901B41),
-                                fontSize: 10),
+                              ),
+                              Text(
+                                "30%",
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff901B41),
+                                    fontSize: 10),
+                              ),
+                              const Icon(
+                                Icons.arrow_downward_rounded,
+                                size: 15,
+                                color: Color(0xff901B41),
+                              )
+                            ],
                           ),
-                          const Icon(
-                            Icons.arrow_downward_rounded,
-                            size: 15,
-                            color: Color(0xff901B41),
-                          )
-                        ],
-                      ),
                   ],
                 ),
               ),

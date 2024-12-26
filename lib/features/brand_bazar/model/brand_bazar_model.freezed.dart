@@ -20,7 +20,7 @@ BrandBazarModel _$BrandBazarModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BrandBazarModel {
-  Data get data => throw _privateConstructorUsedError;
+  Data? get data => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,9 +35,9 @@ abstract class $BrandBazarModelCopyWith<$Res> {
           BrandBazarModel value, $Res Function(BrandBazarModel) then) =
       _$BrandBazarModelCopyWithImpl<$Res, BrandBazarModel>;
   @useResult
-  $Res call({Data data, String msg});
+  $Res call({Data? data, String msg});
 
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -53,14 +53,14 @@ class _$BrandBazarModelCopyWithImpl<$Res, $Val extends BrandBazarModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? data = freezed,
     Object? msg = null,
   }) {
     return _then(_value.copyWith(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
+              as Data?,
       msg: null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -70,8 +70,12 @@ class _$BrandBazarModelCopyWithImpl<$Res, $Val extends BrandBazarModel>
 
   @override
   @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res> get data {
-    return $DataCopyWith<$Res>(_value.data, (value) {
+  $DataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $DataCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -85,10 +89,10 @@ abstract class _$$BrandBazarModelImplCopyWith<$Res>
       __$$BrandBazarModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Data data, String msg});
+  $Res call({Data? data, String msg});
 
   @override
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -102,14 +106,14 @@ class __$$BrandBazarModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
+    Object? data = freezed,
     Object? msg = null,
   }) {
     return _then(_$BrandBazarModelImpl(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
+              as Data?,
       msg: null == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
@@ -121,13 +125,13 @@ class __$$BrandBazarModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$BrandBazarModelImpl implements _BrandBazarModel {
-  const _$BrandBazarModelImpl({required this.data, required this.msg});
+  const _$BrandBazarModelImpl({this.data, required this.msg});
 
   factory _$BrandBazarModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BrandBazarModelImplFromJson(json);
 
   @override
-  final Data data;
+  final Data? data;
   @override
   final String msg;
 
@@ -166,14 +170,13 @@ class _$BrandBazarModelImpl implements _BrandBazarModel {
 
 abstract class _BrandBazarModel implements BrandBazarModel {
   const factory _BrandBazarModel(
-      {required final Data data,
-      required final String msg}) = _$BrandBazarModelImpl;
+      {final Data? data, required final String msg}) = _$BrandBazarModelImpl;
 
   factory _BrandBazarModel.fromJson(Map<String, dynamic> json) =
       _$BrandBazarModelImpl.fromJson;
 
   @override
-  Data get data;
+  Data? get data;
   @override
   String get msg;
   @override
