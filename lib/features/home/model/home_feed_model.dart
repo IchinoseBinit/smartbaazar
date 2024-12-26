@@ -17,7 +17,7 @@ class FeedStoryResponse with _$FeedStoryResponse {
 @freezed
 class Data with _$Data {
   const factory Data({
-    @JsonKey(name: 'feed_story') required List<FeedStory> feedStory,
+    @JsonKey(name: 'feedstory') required FeedStory? feedStory,
   }) = _Data;
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
@@ -26,11 +26,6 @@ class Data with _$Data {
 @freezed
 class FeedStory with _$FeedStory {
   const factory FeedStory({
-    required String id,
-    @JsonKey(name: 'vendor_name') required String vendorName,
-    @JsonKey(name: 'vendor_image') required String vendorImage,
-    @JsonKey(name: 'story_count') required int storyCount,
-    @JsonKey(name: 'has_sponsored_gifts') required bool hasSponsoredGifts,
     required List<Post> posts,
   }) = _FeedStory;
 
@@ -41,6 +36,7 @@ class FeedStory with _$FeedStory {
 @freezed
 class Post with _$Post {
   const factory Post({
+    @JsonKey(name: 'vendor_id') required String vendorId,
     @JsonKey(name: 'vendor_name') required String vendorName,
     @JsonKey(name: 'vendor_image') required String vendorImage,
     @JsonKey(name: 'story_count') required int storyCount,

@@ -8,6 +8,7 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
+import 'package:smartbazar/features/scratch_win/model/subscribe_and_win_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
@@ -15,7 +16,7 @@ class ProductDetailWidget extends StatelessWidget {
   ProductDetailWidget({
     super.key,
     // this.membership_title,
-    this.id = 168,
+    this.id,
     this.offer = '',
     this.title = "Trade",
     this.discounttedPrice = '0',
@@ -244,7 +245,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
-                        offer == ''
+                       offer == ''
                             ? const SizedBox()
                             : Row(
                                 children: [
@@ -262,68 +263,45 @@ class ProductDetailWidget extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                        discounttedPrice != "0"
-                            ? Row(
-                                children: [
-                                  const Icon(
-                                    Icons.track_changes_sharp,
-                                    color: Color(0xff901B41),
-                                    size: 15,
-                                  ),
-                                  Text(
-                                    "Best Price",
-                                    style: headerstyle.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff901B41),
-                                        fontSize: 8.sp),
-                                  ),
-                                ],
-                              )
-                            : const SizedBox(),
+                        // discounttedPrice != "0"
+                        //     ?
 
-                        // SizedBox(width: 30.w,),
-                        // if (discounttedPrice != '0')
-                        //   Padding(
-                        //     padding: const EdgeInsets.only(right: 8.0),
-                        //     child: Text(
-                        //       "Rs.${showRs}$discounttedPrice",
-                        //       style: headerstyle.copyWith(
-                        //         fontSize: 8.sp,
-                        //         fontWeight: FontWeight.w600,
-                        //         color: Colors.grey,
-                        //         decoration: TextDecoration.lineThrough,
-                        //         decorationColor: Colors.grey,
-                        //       ),
+                        // Row(
+                        //   children: [
+                        //     const Icon(
+                        //       Icons.track_changes_sharp,
+                        //       color: Color(0xff901B41),
+                        //       size: 15,
                         //     ),
-                        //   ),
+                        //    offer==''?    Text(
+                        //       "Best Price",
+                        //       style: headerstyle.copyWith(
+                        //           fontWeight: FontWeight.w700,
+                        //           color: const Color(0xff901B41),
+                        //           fontSize: 8.sp),
+                        //     ):
+                        //     Text(
+                        //       "${offer} Price",
+                        //       style: headerstyle.copyWith(
+                        //           fontWeight: FontWeight.w700,
+                        //           color: const Color(0xff901B41),
+                        //           fontSize: 8.sp),
+                        //     ),
+                        //   ],
+                        // ),
+Spacer(),
+if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isNotEmpty)
+  Text(
+    "Rs$showRs$discounttedPrice",
+    style: headerstyle.copyWith(
+      fontSize: 8.sp,
+      fontWeight: FontWeight.w600,
+      color: Colors.grey,
+      decoration: TextDecoration.lineThrough,
+      decorationColor: Colors.grey,
+    ),
+  ),
 
-                        SizedBox(width: 27.w),
-                        if (discounttedPrice != '0')
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                              "$showRs$discounttedPrice",
-                              style:
-                                  // headerstyle.copyWith(
-                                  //   fontSize: 8.sp,
-                                  //   fontWeight: FontWeight.w600,
-                                  //   color: Colors.grey,
-                                  //   decoration: TextDecoration.lineThrough,
-                                  //   decorationThickness: 1.5, // Adjusts the thickness of the line
-                                  //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
-                                  // ),
-                                  TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                                decorationThickness: 1.5,
-                                height: 1.0,
-                              ),
-                              textAlign:
-                                  TextAlign.center, // Aligns text if necessary
-                            ),
-                          ),
                       ],
                     ),
                   ],
@@ -399,29 +377,30 @@ class ProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    if (discounttedPrice == '0')
-                      Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/flameIcon.png",
-                            height: 10,
-                            width: 10,
-                            color: const Color(0xff901B41),
-                          ),
-                          Text(
-                            "30%",
-                            style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w600,
+                   discounttedPrice == '0' || discounttedPrice?.length==0
+                        ? const SizedBox()
+                        : Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/flameIcon.png",
+                                height: 10,
+                                width: 10,
                                 color: const Color(0xff901B41),
-                                fontSize: 10),
+                              ),
+                              Text(
+                                "30%",
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff901B41),
+                                    fontSize: 10),
+                              ),
+                              const Icon(
+                                Icons.arrow_downward_rounded,
+                                size: 15,
+                                color: Color(0xff901B41),
+                              )
+                            ],
                           ),
-                          const Icon(
-                            Icons.arrow_downward_rounded,
-                            size: 15,
-                            color: Color(0xff901B41),
-                          )
-                        ],
-                      ),
                   ],
                 ),
               ),
@@ -533,12 +512,12 @@ class ProductDetailWidget extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           ProductDetailScreen(productId: prod.id),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                VendorHomeScreen(vendorName: vendorname!, vid: id!)
+                          ));
                     },
                     child: Container(
                       margin: EdgeInsets.zero,
@@ -593,7 +572,7 @@ class ProductDetailWidget extends StatelessWidget {
 
                                       Text(
                                         vendorname != null &&
-                                                vendorname!.length > 19
+                                            vendorname!.length > 19
                                             ? '${vendorname!.substring(0, 15)}...'
                                             : vendorname ?? '',
                                         style: headerstyle.copyWith(
@@ -609,31 +588,31 @@ class ProductDetailWidget extends StatelessWidget {
                                         color: Colors.white,
                                         size: 12,
                                       ),
-                                      SizedBox(width: 45.w,),
+                                      SizedBox(width: 52.w,),
                                       Row(
                                         children: [
                                           shortestDistance != null
                                               ? Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.location_on,
-                                                      color: Colors.white,
-                                                      size: 12,
-                                                    ),
-                                                    Text(
-                                                      "${shortestDistance == 0.0 ? 2.0 : shortestDistance} km",
-                                                      style:
-                                                          headerstyle.copyWith(
-                                                              fontSize: 8.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                    ),
-                                                  ],
-                                                )
+                                            children: [
+                                              const Icon(
+                                                Icons.location_on,
+                                                color: Colors.white,
+                                                size: 12,
+                                              ),
+                                              Text(
+                                                "${shortestDistance == 0.0 ? 2.0 : shortestDistance} km",
+                                                style:
+                                                headerstyle.copyWith(
+                                                    fontSize: 8.sp,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w700),
+                                              ),
+                                            ],
+                                          )
                                               : SizedBox(
-                                                  height: 5.h,
-                                                ),
+                                            height: 5.h,
+                                          ),
                                         ],
                                       )
                                     ],
@@ -641,7 +620,7 @@ class ProductDetailWidget extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(
                                         width: 2.w,
@@ -680,7 +659,7 @@ class ProductDetailWidget extends StatelessWidget {
                                           overflow: TextOverflow
                                               .ellipsis, // Apply ellipsis for overflow
                                           maxLines:
-                                              1, // Restrict to a single line
+                                          1, // Restrict to a single line
                                         ),
                                       ),
                                       SizedBox(
@@ -689,18 +668,18 @@ class ProductDetailWidget extends StatelessWidget {
                                       issponsored
                                           ? const SizedBox()
                                           : Row(
-                                              children: [
-                                                Image.asset(
-                                                    "assets/images/mike.png"),
-                                                Text(
-                                                  "SPONSORED",
-                                                  style: headerstyle.copyWith(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ],
-                                            ),
+                                        children: [
+                                          Image.asset(
+                                              "assets/images/mike.png"),
+                                          Text(
+                                            "SPONSORED",
+                                            style: headerstyle.copyWith(
+                                                fontSize: 10.sp,
+                                                fontWeight:
+                                                FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ],

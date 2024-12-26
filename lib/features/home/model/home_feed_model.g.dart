@@ -23,23 +23,18 @@ Map<String, dynamic> _$$FeedStoryResponseImplToJson(
     };
 
 _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
-      feedStory: (json['feed_story'] as List<dynamic>)
-          .map((e) => FeedStory.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      feedStory: json['feedstory'] == null
+          ? null
+          : FeedStory.fromJson(json['feedstory'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
     <String, dynamic>{
-      'feed_story': instance.feedStory,
+      'feedstory': instance.feedStory,
     };
 
 _$FeedStoryImpl _$$FeedStoryImplFromJson(Map<String, dynamic> json) =>
     _$FeedStoryImpl(
-      id: json['id'] as String,
-      vendorName: json['vendor_name'] as String,
-      vendorImage: json['vendor_image'] as String,
-      storyCount: (json['story_count'] as num).toInt(),
-      hasSponsoredGifts: json['has_sponsored_gifts'] as bool,
       posts: (json['posts'] as List<dynamic>)
           .map((e) => Post.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -47,15 +42,11 @@ _$FeedStoryImpl _$$FeedStoryImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$FeedStoryImplToJson(_$FeedStoryImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'vendor_name': instance.vendorName,
-      'vendor_image': instance.vendorImage,
-      'story_count': instance.storyCount,
-      'has_sponsored_gifts': instance.hasSponsoredGifts,
       'posts': instance.posts,
     };
 
 _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
+      vendorId: json['vendor_id'] as String,
       vendorName: json['vendor_name'] as String,
       vendorImage: json['vendor_image'] as String,
       storyCount: (json['story_count'] as num).toInt(),
@@ -72,6 +63,7 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
     <String, dynamic>{
+      'vendor_id': instance.vendorId,
       'vendor_name': instance.vendorName,
       'vendor_image': instance.vendorImage,
       'story_count': instance.storyCount,

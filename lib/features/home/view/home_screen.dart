@@ -235,7 +235,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
-
+  final randomstory = ref.watch(fetchStoryHomeProvider);
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -649,59 +649,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    buyorwin.when(
-                      data: (data) {
-                        return SizedBox(
-                          height: 130.h,
-                          child: Row(
-                            children: [
-                              StoryAddWidget(
-                                vImage: data.homestory['158']!.vendorImage,
-                                brandname: data.homestory['158']!.vendorName,
-                                index: 0,
-                                addSearch: true,
-                                showgift:
-                                    data.homestory['158']!.hasSponsoredGifts,
-                                onTap: () {
-                                  setState(() {
-                                    _isPopupVisible = true; // Open the popup
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 2,
-                                  itemBuilder: (context, index) {
-                                    // Define data keys based on index
-                                    final dataKey = index == 0 ? '196' : '9';
-                                    final storyData = data.homestory[dataKey]!;
+                   randomstory.when(
+  data: (data) {
+    return SizedBox(
+      height: 130.h,
+      child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
+        scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
+        child: Row(
+          children: [
+            // First StoryAddWidget with search option
+            StoryAddWidget(
+              vImage: data.data!.feedStory?.posts.first.image,
+              brandname: data.data!.feedStory?.posts.first.vendorName,
+              index: 0,
+              addSearch: true, // First item has search
+              showgift: false,
+              onTap: () {
+                setState(() {
+                  // _isPopupVisible = true; // Open the popup
+                });
+              },
+            ),
+            // Expanded is not needed since SingleChildScrollView will handle scrolling
+            // Now ListView.builder will be added directly to the row
+            ...data.data!.feedStory!.posts.map((storyData) {
+              return StoryAddWidget(
+                brandname: storyData.vendorName,
+                vImage: storyData.vendorImage,
+                index: data.data!.feedStory!.posts.indexOf(storyData),
+                addSearch: false, // For all items other than the first, no search
+                showgift: storyData.hasSponsoredGifts,
+                onTap: () {
+                  // setState(() {
+                  //   // _isPopupVisible = true; // Open the popup
+                  // });
+                },
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  },
+  error: (error, stackTrace) => Text(error.toString()),
+  loading: () => const CircularProgressIndicator(),
+),
 
-                                    return StoryAddWidget(
-                                      brandname: storyData.vendorName,
-                                      vImage: storyData.vendorImage,
-                                      index: index,
-                                      addSearch: false,
-                                      showgift: storyData.hasSponsoredGifts,
-                                      onTap: () {
-                                        setState(() {
-                                          _isPopupVisible =
-                                              true; // Open the popup
-                                        });
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      error: (error, stackTrace) => Text(error.toString()),
-                      loading: () => const CircularProgressIndicator(),
-                    ),
                     SizedBox(
                       height: 5.h,
                     ),
@@ -742,93 +735,96 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           //   },
                           // ),
 
-                          homePostsData.when(
-                            data: (data) {
-                              return Stack(
-                                children: [
-                                  Positioned(
-                                      child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 130.h,
-                                        width: double.infinity,
-                                        child: CarouselSlider(
-                                          items: data.sliders.map((banner) {
-                                            return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const B2bScreen(),
-                                                  ),
-                                                );
-                                              },
-                                              child: CachedNetworkImage(
-                                                width: double.infinity,
-                                                fit: BoxFit.fill,
-                                                imageUrl: banner
-                                                    .image, // Assuming banner.image is the image URL
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const Icon(Icons.error),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          options: CarouselOptions(
-                                            aspectRatio: 0.1,
-                                            reverse: true,
-                                            viewportFraction: 1,
-                                            autoPlay: true,
-                                            enlargeCenterPage: true,
-                                            onPageChanged: (index, reason) {
-                                              setState(() {
-                                                _currentIndex = index;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                                  Positioned(
-                                    left: 150.w,
-                                    bottom: 10.h,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: data.sliders.map((banner) {
-                                        int index =
-                                            data.sliders.indexOf(banner);
-                                        return AnimatedContainer(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 5.0),
-                                          height: 9.0.h,
-                                          width: 9.0.w,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: _currentIndex == index
-                                                ? Colors
-                                                    .white // Active dot color
-                                                : Colors
-                                                    .grey, // Inactive dot color
+                           homePostsData.when(
+                  data: (data) {
+                    return Stack(
+                      children: [
+                        // Carousel Slider
+                        Positioned(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 130.h,
+                                width: double.infinity,
+                                child: CarouselSlider(
+                                  items: data.sliders.map((banner) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const B2bScreen(),
                                           ),
                                         );
-                                      }).toList(),
-                                    ),
-                                  )
-                                ],
-                              );
-                            },
-                            error: (error, stackTrace) {
-                              return Text("try again $error");
-                            },
-                            loading: () {
-                              return const CircularProgressIndicator();
-                            },
+                                      },
+                                      child: CachedNetworkImage(
+                                        width: double.infinity,
+                                        fit: BoxFit.fill,
+                                        imageUrl: banner.image!,
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  options: CarouselOptions(
+                                    aspectRatio:
+                                        2.5, // Adjust this as per design
+                                    viewportFraction:
+                                        1.0, // Full-screen carousel
+                                    autoPlay: true,
+                                    enlargeCenterPage: false,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex =
+                                            index; // Update the current index
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+
+                        // Dots Indicator
+                        Positioned(
+                          left: MediaQuery.of(context).size.width / 2 -
+                              50, // Center the dots
+                          bottom: 10.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: data.sliders.map((banner) {
+                              int index =
+                                  data.sliders.indexOf(banner);
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                height: 9.0,
+                                width: _currentIndex == index
+                                    ? 12.0
+                                    : 9.0, // Active dot is wider
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _currentIndex == index
+                                      ? Colors.white // Active dot color
+                                      : Colors.grey, // Inactive dot color
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text("Try again: $error");
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
 
                           SizedBox(
                             height: 5.h,
@@ -921,6 +917,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
+                                            
                                               distance: prod.shortestDistance,
                                               issponsored:
                                                   prod.user!.sponsored ?? false,
@@ -1166,6 +1163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
+                                                      
                                                       shortestDistance:
                                                           prod.shortestDistance,
                                                       distance:

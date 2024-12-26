@@ -240,7 +240,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           children: [
                             Stack(
                               children: [
-                                Positioned(
+                           if(data.vendor_card!=null)     Positioned(
                                   child: VendorSearchContainer(
                                     img: data.vendor_card!.photo!,
                                     controller: _searchController,
