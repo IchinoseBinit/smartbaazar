@@ -375,7 +375,7 @@ Spacer(),
                         ),
                       ],
                     ),
-                   discounttedPrice == '0' || discounttedPrice==null
+                   discounttedPrice == '0' || discounttedPrice?.length==0
                         ? const SizedBox()
                         : Row(
                             children: [
