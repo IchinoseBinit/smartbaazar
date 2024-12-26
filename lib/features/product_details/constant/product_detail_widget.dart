@@ -8,6 +8,7 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
+import 'package:smartbazar/features/scratch_win/model/subscribe_and_win_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
@@ -15,7 +16,7 @@ class ProductDetailWidget extends StatelessWidget {
   ProductDetailWidget({
     super.key,
     // this.membership_title,
-    this.id = 168,
+    this.id,
     this.offer = '',
     this.title = "Trade",
     this.discounttedPrice = '0',
@@ -511,12 +512,12 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           ProductDetailScreen(productId: prod.id),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                VendorHomeScreen(vendorName: vendorname!, vid: id!)
+                          ));
                     },
                     child: Container(
                       margin: EdgeInsets.zero,

@@ -917,6 +917,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
+                                            
                                               distance: prod.shortestDistance,
                                               issponsored:
                                                   prod.user!.sponsored ?? false,
@@ -1162,6 +1163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
+                                                      
                                                       shortestDistance:
                                                           prod.shortestDistance,
                                                       distance:
