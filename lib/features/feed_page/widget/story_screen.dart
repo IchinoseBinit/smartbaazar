@@ -163,7 +163,7 @@ class _StoryScreenState extends State<StoryScreen>
   Widget build(BuildContext context) {
     return GenericSafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         body: GestureDetector(
           onTapUp: (details) {
             final tapPosition = details.localPosition.dx;
@@ -406,9 +406,9 @@ class _StoryScreenState extends State<StoryScreen>
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.whatshot,
-                                size: 50,
+                                size: 40.sp,
                                 color: Colors.orange,
                               ),
                               CountdownTimer(

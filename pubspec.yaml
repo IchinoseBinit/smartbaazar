@@ -71,6 +71,7 @@ dependencies:
   geocoding: ^3.0.0
   adoptive_calendar: ^0.2.0
   confetti: ^0.8.0
+  readmore: ^3.0.0
   
 
 

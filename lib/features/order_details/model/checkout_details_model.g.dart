@@ -85,6 +85,9 @@ _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       image: json['image'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
+      discountOnBulks: (json['discount_on_bulks'] as List<dynamic>?)
+          ?.map((e) => DiscountOnBulk.fromJson(e as Map<String, dynamic>))
+          .toList(),
       itemTotal: (json['item_total'] as num?)?.toInt(),
     );
 
@@ -100,5 +103,21 @@ Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
       'image': instance.image,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
+      'discount_on_bulks': instance.discountOnBulks,
       'item_total': instance.itemTotal,
+    };
+
+_$DiscountOnBulkImpl _$$DiscountOnBulkImplFromJson(Map<String, dynamic> json) =>
+    _$DiscountOnBulkImpl(
+      pieceFrom: json['piece_from'] as String?,
+      pieceTo: json['piece_to'] as String?,
+      rate: json['rate'] as String?,
+    );
+
+Map<String, dynamic> _$$DiscountOnBulkImplToJson(
+        _$DiscountOnBulkImpl instance) =>
+    <String, dynamic>{
+      'piece_from': instance.pieceFrom,
+      'piece_to': instance.pieceTo,
+      'rate': instance.rate,
     };

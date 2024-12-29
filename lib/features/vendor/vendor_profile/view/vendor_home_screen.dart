@@ -1548,7 +1548,7 @@ class BigContainer extends StatelessWidget {
                 Column(
                   children: [
                     Image.asset(
-                      "assets/images/nepalFlag.png",
+                      "assets/icon/domestic_brand.png",
                       width: 50,
                       height: 50,
                       color: Colors.grey,
@@ -1968,10 +1968,10 @@ class VendorSearchContainer extends StatelessWidget {
                                 child: Image.network(
                                   img,
                                   width: 30.w,
-                                  height: 27.h,
+                                  height: 20.h,
                                   fit: BoxFit.cover,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),

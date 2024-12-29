@@ -847,6 +847,9 @@ mixin _$Item {
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'discount_on_bulks')
+  List<DiscountOnBulk>? get discountOnBulks =>
+      throw _privateConstructorUsedError;
   @JsonKey(name: 'item_total')
   int? get itemTotal => throw _privateConstructorUsedError;
 
@@ -871,6 +874,7 @@ abstract class $ItemCopyWith<$Res> {
       String? image,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
+      @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
       @JsonKey(name: 'item_total') int? itemTotal});
 }
 
@@ -897,6 +901,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
     Object? image = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? discountOnBulks = freezed,
     Object? itemTotal = freezed,
   }) {
     return _then(_value.copyWith(
@@ -940,6 +945,10 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      discountOnBulks: freezed == discountOnBulks
+          ? _value.discountOnBulks
+          : discountOnBulks // ignore: cast_nullable_to_non_nullable
+              as List<DiscountOnBulk>?,
       itemTotal: freezed == itemTotal
           ? _value.itemTotal
           : itemTotal // ignore: cast_nullable_to_non_nullable
@@ -966,6 +975,7 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       String? image,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
+      @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
       @JsonKey(name: 'item_total') int? itemTotal});
 }
 
@@ -989,6 +999,7 @@ class __$$ItemImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? discountOnBulks = freezed,
     Object? itemTotal = freezed,
   }) {
     return _then(_$ItemImpl(
@@ -1032,6 +1043,10 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      discountOnBulks: freezed == discountOnBulks
+          ? _value._discountOnBulks
+          : discountOnBulks // ignore: cast_nullable_to_non_nullable
+              as List<DiscountOnBulk>?,
       itemTotal: freezed == itemTotal
           ? _value.itemTotal
           : itemTotal // ignore: cast_nullable_to_non_nullable
@@ -1054,7 +1069,10 @@ class _$ItemImpl implements _Item {
       this.image,
       @JsonKey(name: 'created_at') this.createdAt,
       @JsonKey(name: 'updated_at') this.updatedAt,
-      @JsonKey(name: 'item_total') this.itemTotal});
+      @JsonKey(name: 'discount_on_bulks')
+      final List<DiscountOnBulk>? discountOnBulks,
+      @JsonKey(name: 'item_total') this.itemTotal})
+      : _discountOnBulks = discountOnBulks;
 
   factory _$ItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ItemImplFromJson(json);
@@ -1084,13 +1102,24 @@ class _$ItemImpl implements _Item {
   @override
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
+  final List<DiscountOnBulk>? _discountOnBulks;
+  @override
+  @JsonKey(name: 'discount_on_bulks')
+  List<DiscountOnBulk>? get discountOnBulks {
+    final value = _discountOnBulks;
+    if (value == null) return null;
+    if (_discountOnBulks is EqualUnmodifiableListView) return _discountOnBulks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey(name: 'item_total')
   final int? itemTotal;
 
   @override
   String toString() {
-    return 'Item(id: $id, userId: $userId, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image, createdAt: $createdAt, updatedAt: $updatedAt, itemTotal: $itemTotal)';
+    return 'Item(id: $id, userId: $userId, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image, createdAt: $createdAt, updatedAt: $updatedAt, discountOnBulks: $discountOnBulks, itemTotal: $itemTotal)';
   }
 
   @override
@@ -1111,14 +1140,28 @@ class _$ItemImpl implements _Item {
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other._discountOnBulks, _discountOnBulks) &&
             (identical(other.itemTotal, itemTotal) ||
                 other.itemTotal == itemTotal));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, vendorId, postId,
-      name, qty, price, image, createdAt, updatedAt, itemTotal);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      vendorId,
+      postId,
+      name,
+      qty,
+      price,
+      image,
+      createdAt,
+      updatedAt,
+      const DeepCollectionEquality().hash(_discountOnBulks),
+      itemTotal);
 
   @JsonKey(ignore: true)
   @override
@@ -1146,6 +1189,8 @@ abstract class _Item implements Item {
       final String? image,
       @JsonKey(name: 'created_at') final String? createdAt,
       @JsonKey(name: 'updated_at') final String? updatedAt,
+      @JsonKey(name: 'discount_on_bulks')
+      final List<DiscountOnBulk>? discountOnBulks,
       @JsonKey(name: 'item_total') final int? itemTotal}) = _$ItemImpl;
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$ItemImpl.fromJson;
@@ -1176,10 +1221,204 @@ abstract class _Item implements Item {
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
   @override
+  @JsonKey(name: 'discount_on_bulks')
+  List<DiscountOnBulk>? get discountOnBulks;
+  @override
   @JsonKey(name: 'item_total')
   int? get itemTotal;
   @override
   @JsonKey(ignore: true)
   _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DiscountOnBulk _$DiscountOnBulkFromJson(Map<String, dynamic> json) {
+  return _DiscountOnBulk.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DiscountOnBulk {
+  @JsonKey(name: 'piece_from')
+  String? get pieceFrom => throw _privateConstructorUsedError;
+  @JsonKey(name: 'piece_to')
+  String? get pieceTo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rate')
+  String? get rate => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DiscountOnBulkCopyWith<DiscountOnBulk> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DiscountOnBulkCopyWith<$Res> {
+  factory $DiscountOnBulkCopyWith(
+          DiscountOnBulk value, $Res Function(DiscountOnBulk) then) =
+      _$DiscountOnBulkCopyWithImpl<$Res, DiscountOnBulk>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'piece_from') String? pieceFrom,
+      @JsonKey(name: 'piece_to') String? pieceTo,
+      @JsonKey(name: 'rate') String? rate});
+}
+
+/// @nodoc
+class _$DiscountOnBulkCopyWithImpl<$Res, $Val extends DiscountOnBulk>
+    implements $DiscountOnBulkCopyWith<$Res> {
+  _$DiscountOnBulkCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? pieceFrom = freezed,
+    Object? pieceTo = freezed,
+    Object? rate = freezed,
+  }) {
+    return _then(_value.copyWith(
+      pieceFrom: freezed == pieceFrom
+          ? _value.pieceFrom
+          : pieceFrom // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pieceTo: freezed == pieceTo
+          ? _value.pieceTo
+          : pieceTo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rate: freezed == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DiscountOnBulkImplCopyWith<$Res>
+    implements $DiscountOnBulkCopyWith<$Res> {
+  factory _$$DiscountOnBulkImplCopyWith(_$DiscountOnBulkImpl value,
+          $Res Function(_$DiscountOnBulkImpl) then) =
+      __$$DiscountOnBulkImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'piece_from') String? pieceFrom,
+      @JsonKey(name: 'piece_to') String? pieceTo,
+      @JsonKey(name: 'rate') String? rate});
+}
+
+/// @nodoc
+class __$$DiscountOnBulkImplCopyWithImpl<$Res>
+    extends _$DiscountOnBulkCopyWithImpl<$Res, _$DiscountOnBulkImpl>
+    implements _$$DiscountOnBulkImplCopyWith<$Res> {
+  __$$DiscountOnBulkImplCopyWithImpl(
+      _$DiscountOnBulkImpl _value, $Res Function(_$DiscountOnBulkImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? pieceFrom = freezed,
+    Object? pieceTo = freezed,
+    Object? rate = freezed,
+  }) {
+    return _then(_$DiscountOnBulkImpl(
+      pieceFrom: freezed == pieceFrom
+          ? _value.pieceFrom
+          : pieceFrom // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pieceTo: freezed == pieceTo
+          ? _value.pieceTo
+          : pieceTo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rate: freezed == rate
+          ? _value.rate
+          : rate // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DiscountOnBulkImpl implements _DiscountOnBulk {
+  const _$DiscountOnBulkImpl(
+      {@JsonKey(name: 'piece_from') this.pieceFrom,
+      @JsonKey(name: 'piece_to') this.pieceTo,
+      @JsonKey(name: 'rate') this.rate});
+
+  factory _$DiscountOnBulkImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DiscountOnBulkImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'piece_from')
+  final String? pieceFrom;
+  @override
+  @JsonKey(name: 'piece_to')
+  final String? pieceTo;
+  @override
+  @JsonKey(name: 'rate')
+  final String? rate;
+
+  @override
+  String toString() {
+    return 'DiscountOnBulk(pieceFrom: $pieceFrom, pieceTo: $pieceTo, rate: $rate)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DiscountOnBulkImpl &&
+            (identical(other.pieceFrom, pieceFrom) ||
+                other.pieceFrom == pieceFrom) &&
+            (identical(other.pieceTo, pieceTo) || other.pieceTo == pieceTo) &&
+            (identical(other.rate, rate) || other.rate == rate));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, pieceFrom, pieceTo, rate);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DiscountOnBulkImplCopyWith<_$DiscountOnBulkImpl> get copyWith =>
+      __$$DiscountOnBulkImplCopyWithImpl<_$DiscountOnBulkImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DiscountOnBulkImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DiscountOnBulk implements DiscountOnBulk {
+  const factory _DiscountOnBulk(
+      {@JsonKey(name: 'piece_from') final String? pieceFrom,
+      @JsonKey(name: 'piece_to') final String? pieceTo,
+      @JsonKey(name: 'rate') final String? rate}) = _$DiscountOnBulkImpl;
+
+  factory _DiscountOnBulk.fromJson(Map<String, dynamic> json) =
+      _$DiscountOnBulkImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'piece_from')
+  String? get pieceFrom;
+  @override
+  @JsonKey(name: 'piece_to')
+  String? get pieceTo;
+  @override
+  @JsonKey(name: 'rate')
+  String? get rate;
+  @override
+  @JsonKey(ignore: true)
+  _$$DiscountOnBulkImplCopyWith<_$DiscountOnBulkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -245,7 +245,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
-                       offer == ''
+                        offer == ''
                             ? const SizedBox()
                             : Row(
                                 children: [
@@ -289,19 +289,20 @@ class ProductDetailWidget extends StatelessWidget {
                         //     ),
                         //   ],
                         // ),
-Spacer(),
-if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isNotEmpty)
-  Text(
-    "Rs$showRs$discounttedPrice",
-    style: headerstyle.copyWith(
-      fontSize: 8.sp,
-      fontWeight: FontWeight.w600,
-      color: Colors.grey,
-      decoration: TextDecoration.lineThrough,
-      decorationColor: Colors.grey,
-    ),
-  ),
-
+                        Spacer(),
+                        if (discounttedPrice != null &&
+                            discounttedPrice != '0' &&
+                            discounttedPrice!.isNotEmpty)
+                          Text(
+                            "Rs$showRs$discounttedPrice",
+                            style: headerstyle.copyWith(
+                              fontSize: 8.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: Colors.grey,
+                            ),
+                          ),
                       ],
                     ),
                   ],
@@ -317,11 +318,13 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                         CircleAvatar(
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
-                          child: Text(avg_rating==0? "1.0":avg_rating.toString(),
+                          child: Text(
+                            avg_rating == 0 ? "1.0" : avg_rating.toString(),
                             // Provide fallback value of 0 when null
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
+                        SizedBox(width: 5,),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
@@ -338,7 +341,8 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: 5, // Always display 5 stars
+                            itemCount: 5,
+                            // Always display 5 stars
                             itemSize: 12,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
@@ -377,7 +381,7 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                         ),
                       ],
                     ),
-                   discounttedPrice == '0' || discounttedPrice?.length==0
+                    discounttedPrice == '0' || discounttedPrice?.length == 0
                         ? const SizedBox()
                         : Row(
                             children: [
@@ -515,9 +519,8 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                VendorHomeScreen(vendorName: vendorname!, vid: id!)
-                          ));
+                              builder: (context) => VendorHomeScreen(
+                                  vendorName: vendorname!, vid: id!)));
                     },
                     child: Container(
                       margin: EdgeInsets.zero,
@@ -588,6 +591,9 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                                         color: Colors.white,
                                         size: 12,
                                       ),
+                                      SizedBox(
+                                        width: 52.w,
+                                      ),
                                       Row(
                                         children: [
                                           shortestDistance != null
@@ -599,7 +605,7 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                                                       size: 12,
                                                     ),
                                                     Text(
-                                                      "$shortestDistance km",
+                                                      "${shortestDistance == 0.0 ? 2.0 : shortestDistance} km",
                                                       style:
                                                           headerstyle.copyWith(
                                                               fontSize: 8.sp,
@@ -651,12 +657,12 @@ if (discounttedPrice != null && discounttedPrice != '0' && discounttedPrice!.isN
                                         child: Text(
                                           membershipTitle ?? "Domestic Brand",
                                           style: headerstyle.copyWith(
-                                            fontSize: 10
-                                                .sp, // Adjust font size based on length
+                                            fontSize: 10.sp,
+                                            // Adjust font size based on length
                                             fontWeight: FontWeight.w700,
                                           ),
-                                          overflow: TextOverflow
-                                              .ellipsis, // Apply ellipsis for overflow
+                                          overflow: TextOverflow.ellipsis,
+                                          // Apply ellipsis for overflow
                                           maxLines:
                                               1, // Restrict to a single line
                                         ),

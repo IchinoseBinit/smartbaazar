@@ -307,7 +307,7 @@ class buyorwin_widget extends StatelessWidget {
                   height: 10.h,
                 ),
               ],
-            )),
+            ),),
       ),
     );
   }
