@@ -1773,7 +1773,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         itemCount: data.buynow!.length,
                         itemBuilder: (context, index) {
                           Buynowmodel resp = data.buynow![index];
-
                           return buyorwin_widget(
                               worth: resp.worth!,
                               productname: resp.name,

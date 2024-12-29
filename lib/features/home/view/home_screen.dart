@@ -357,10 +357,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               left: 0,
                               right: 0,
                               child: Container(
-                                width: double.infinity,
-                                color: Colors.white,
+                                // width: MediaQuery.sizeOf(context).width * 0.8,
+                                // color: Colors.white,
                                 child:
-                                    SearchProductModels.when(data: (results) {
+                                SearchProductModels.when(data: (results) {
                                   if (results.isEmpty) {
                                     return const SizedBox(
                                       child: Text('No result found'),
@@ -383,9 +383,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       BusinessTabScreen(
-                                                    query:
+                                                        query:
                                                         _searchController.text,
-                                                  ),
+                                                      ),
                                                 ));
 
                                             setState(() {
@@ -406,19 +406,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         );
                                       },
                                       separatorBuilder: (context, index) =>
-                                          const Divider(),
+                                      const Divider(),
                                     ),
                                   );
                                 }, loading: () {
                                   return null;
-                                
+
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
                                   //     child: CircularProgressIndicator());
                                 }, error: (error, stack) {
                                   return null;
-                                
+
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
@@ -917,7 +917,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
-                                            
+
                                               distance: prod.shortestDistance,
                                               issponsored:
                                                   prod.user!.sponsored ?? false,
@@ -1038,7 +1038,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               );
                                             }).toList(),
                                           data.insidearr[0].isEmpty
-                                              ? nolistingfound()
+                                              ? Center(child: nolistingfound())
                                               : SizedBox(
                                                   height: 340.h,
                                                   child: ListView.builder(
@@ -1163,7 +1163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-                                                      
+
                                                       shortestDistance:
                                                           prod.shortestDistance,
                                                       distance:
@@ -1392,7 +1392,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         vendorImage: resp.vendorImage,
                                         vendorname: resp.name,
                                         winners: resp.winners.toString(),
-                                        proctimage: resp.image,);
+                                        // proctimage: resp.image,
+                                        proctimage: "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png",
+                                    );
                                   },
                                 ),
                               );

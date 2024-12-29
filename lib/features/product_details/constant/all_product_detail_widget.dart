@@ -32,12 +32,14 @@ class AllProductDetailWidget extends StatelessWidget {
       this.shortestDistance,
       this.membershipTitle,
       this.avg_rating});
+
   String? title;
   String? price;
   String? discounttedPrice;
   int? similarproductCount;
   String? views, comment, share;
   String? vendorname;
+
   // String? membership_title;
   double? distance;
   String? Vimage, productImage, lefttile;
@@ -86,7 +88,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           lefttile!,
                           style: headerstyle.copyWith(
                               fontSize: 9.sp, color: Colors.grey),
-                        )
+                        ),
                       ],
                     ),
                     PopupMenuButton(
@@ -197,7 +199,8 @@ class AllProductDetailWidget extends StatelessWidget {
                     )
                   : Image.network(
                       productImage ?? '', // Ensure Vimage is not null or empty
-                      height: 130.h, // Adjust size accordingly
+                      height: 130.h,
+                      // Adjust size accordingly
                       width: 200.w,
                       fit: BoxFit.fill,
                       loadingBuilder: (context, child, loadingProgress) {
@@ -323,6 +326,9 @@ class AllProductDetailWidget extends StatelessWidget {
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
+                        SizedBox(
+                          width: 5,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
@@ -339,7 +345,8 @@ class AllProductDetailWidget extends StatelessWidget {
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: 5, // Always display 5 stars
+                            itemCount: 5,
+                            // Always display 5 stars
                             itemSize: 12,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
@@ -626,12 +633,12 @@ class AllProductDetailWidget extends StatelessWidget {
                                         child: Text(
                                           membershipTitle ?? "Domestic Brand",
                                           style: headerstyle.copyWith(
-                                            fontSize: 10
-                                                .sp, // Adjust font size based on length
+                                            fontSize: 10.sp,
+                                            // Adjust font size based on length
                                             fontWeight: FontWeight.w700,
                                           ),
-                                          overflow: TextOverflow
-                                              .ellipsis, // Apply ellipsis for overflow
+                                          overflow: TextOverflow.ellipsis,
+                                          // Apply ellipsis for overflow
                                           maxLines:
                                               1, // Restrict to a single line
                                         ),
