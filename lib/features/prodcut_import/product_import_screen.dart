@@ -314,7 +314,7 @@ class _ChooseFileState extends State<ChooseFile> {
               padding: const EdgeInsets.only(top: 6, left: 12, bottom: 7),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: const Color(0xffEDECEC),
+                color: const Color(0xFFEDECEC),
               ),
               child: Row(
                 children: [

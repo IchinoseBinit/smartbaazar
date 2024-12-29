@@ -852,6 +852,8 @@ mixin _$Item {
       throw _privateConstructorUsedError;
   @JsonKey(name: 'item_total')
   int? get itemTotal => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_type_id')
+  String? get postTypeId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -875,7 +877,8 @@ abstract class $ItemCopyWith<$Res> {
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
-      @JsonKey(name: 'item_total') int? itemTotal});
+      @JsonKey(name: 'item_total') int? itemTotal,
+      @JsonKey(name: 'post_type_id') String? postTypeId});
 }
 
 /// @nodoc
@@ -903,6 +906,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
     Object? updatedAt = freezed,
     Object? discountOnBulks = freezed,
     Object? itemTotal = freezed,
+    Object? postTypeId = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -953,6 +957,10 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.itemTotal
           : itemTotal // ignore: cast_nullable_to_non_nullable
               as int?,
+      postTypeId: freezed == postTypeId
+          ? _value.postTypeId
+          : postTypeId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -976,7 +984,8 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
-      @JsonKey(name: 'item_total') int? itemTotal});
+      @JsonKey(name: 'item_total') int? itemTotal,
+      @JsonKey(name: 'post_type_id') String? postTypeId});
 }
 
 /// @nodoc
@@ -1001,6 +1010,7 @@ class __$$ItemImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? discountOnBulks = freezed,
     Object? itemTotal = freezed,
+    Object? postTypeId = freezed,
   }) {
     return _then(_$ItemImpl(
       id: freezed == id
@@ -1051,6 +1061,10 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.itemTotal
           : itemTotal // ignore: cast_nullable_to_non_nullable
               as int?,
+      postTypeId: freezed == postTypeId
+          ? _value.postTypeId
+          : postTypeId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1071,7 +1085,8 @@ class _$ItemImpl implements _Item {
       @JsonKey(name: 'updated_at') this.updatedAt,
       @JsonKey(name: 'discount_on_bulks')
       final List<DiscountOnBulk>? discountOnBulks,
-      @JsonKey(name: 'item_total') this.itemTotal})
+      @JsonKey(name: 'item_total') this.itemTotal,
+      @JsonKey(name: 'post_type_id') this.postTypeId})
       : _discountOnBulks = discountOnBulks;
 
   factory _$ItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -1116,10 +1131,13 @@ class _$ItemImpl implements _Item {
   @override
   @JsonKey(name: 'item_total')
   final int? itemTotal;
+  @override
+  @JsonKey(name: 'post_type_id')
+  final String? postTypeId;
 
   @override
   String toString() {
-    return 'Item(id: $id, userId: $userId, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image, createdAt: $createdAt, updatedAt: $updatedAt, discountOnBulks: $discountOnBulks, itemTotal: $itemTotal)';
+    return 'Item(id: $id, userId: $userId, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image, createdAt: $createdAt, updatedAt: $updatedAt, discountOnBulks: $discountOnBulks, itemTotal: $itemTotal, postTypeId: $postTypeId)';
   }
 
   @override
@@ -1143,7 +1161,9 @@ class _$ItemImpl implements _Item {
             const DeepCollectionEquality()
                 .equals(other._discountOnBulks, _discountOnBulks) &&
             (identical(other.itemTotal, itemTotal) ||
-                other.itemTotal == itemTotal));
+                other.itemTotal == itemTotal) &&
+            (identical(other.postTypeId, postTypeId) ||
+                other.postTypeId == postTypeId));
   }
 
   @JsonKey(ignore: true)
@@ -1161,7 +1181,8 @@ class _$ItemImpl implements _Item {
       createdAt,
       updatedAt,
       const DeepCollectionEquality().hash(_discountOnBulks),
-      itemTotal);
+      itemTotal,
+      postTypeId);
 
   @JsonKey(ignore: true)
   @override
@@ -1191,7 +1212,8 @@ abstract class _Item implements Item {
       @JsonKey(name: 'updated_at') final String? updatedAt,
       @JsonKey(name: 'discount_on_bulks')
       final List<DiscountOnBulk>? discountOnBulks,
-      @JsonKey(name: 'item_total') final int? itemTotal}) = _$ItemImpl;
+      @JsonKey(name: 'item_total') final int? itemTotal,
+      @JsonKey(name: 'post_type_id') final String? postTypeId}) = _$ItemImpl;
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$ItemImpl.fromJson;
 
@@ -1226,6 +1248,9 @@ abstract class _Item implements Item {
   @override
   @JsonKey(name: 'item_total')
   int? get itemTotal;
+  @override
+  @JsonKey(name: 'post_type_id')
+  String? get postTypeId;
   @override
   @JsonKey(ignore: true)
   _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>

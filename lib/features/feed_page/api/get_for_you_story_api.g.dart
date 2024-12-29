@@ -6,7 +6,7 @@ part of 'get_for_you_story_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getForYouStoryHash() => r'e52f761417853bca7dee0af98439318b103a0bd5';
+String _$getForYouStoryHash() => r'0f9cb9ad9be93c9a7ea1bf55ac149c899f2dc467';
 
 /// See also [getForYouStory].
 @ProviderFor(getForYouStory)

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
+import 'package:smartbazar/features/feed_page/model/feed_gift_card_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 
 class FeedContainer extends ConsumerWidget {
@@ -43,6 +45,8 @@ class FeedContainer extends ConsumerWidget {
   // final FeedDetail? feedDetail;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final feedGiftCardFuture = ref.watch(getFeedGiftCardProvider(userId));
+
     return Column(
       children: [
         Material(
@@ -108,12 +112,21 @@ class FeedContainer extends ConsumerWidget {
                     ),
                     showGift!
                         ? Positioned(
-                            bottom: -7.h,
+                            bottom: -6.h,
                             right: 0,
                             left: 0,
                             child: GestureDetector(
                               onTap: () {
-                                showCustomBottomSheet(context,userId, ref);
+                                feedGiftCardFuture.when(
+                                  data: (feedCardData) {
+                                    return showCustomBottomSheet(
+                                        context, feedCardData);
+                                  },
+                                  error: (error, stackTrace) =>
+                                      Text("error $error"),
+                                  loading: () => const Center(
+                                      child: CircularProgressIndicator()),
+                                );
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -124,7 +137,7 @@ class FeedContainer extends ConsumerWidget {
                                 child: Icon(
                                   Icons.card_giftcard,
                                   color: Colors.amber,
-                                  size: 24.r,
+                                  size: 20.r,
                                 ),
                               ),
                             ),
@@ -243,12 +256,12 @@ class FeedContainer extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          SizedBox(width: 15.w),
+                          SizedBox(width: 10.w),
                           Column(
                             children: [
                               Icon(
                                 Icons.location_on,
-                                size: 18.sp,
+                                size: 14.sp,
                               ),
                               // SizedBox(height: 5.h),
                               Text(

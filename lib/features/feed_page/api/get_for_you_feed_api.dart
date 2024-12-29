@@ -16,8 +16,14 @@ Future<GetForYouFeedModel> getForYouFeedApi(GetForYouFeedApiRef ref) async {
       url: ApiConstants.getForYouFeedUrl,
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data;
-      return GetForYouFeedModel.fromJson(jsonResponse);
+      // final Map<String, dynamic> jsonResponse = response.data;
+      // return GetForYouFeedModel.fromJson(jsonResponse);
+      final jsonResponse = response.data;
+      if (jsonResponse is Map<String, dynamic>) {
+        return GetForYouFeedModel.fromJson(jsonResponse);
+      } else {
+        throw Exception('Invalid response format');
+      }
     } else {
       throw Exception('Failed to load your feed content');
     }

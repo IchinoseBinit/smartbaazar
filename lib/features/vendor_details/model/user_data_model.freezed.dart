@@ -296,6 +296,26 @@ mixin _$UserData {
   String? get gender => throw _privateConstructorUsedError;
   @JsonKey(name: 'dob')
   String? get dob => throw _privateConstructorUsedError;
+  @JsonKey(name: "membership_plan_id")
+  String? get membershipPlanId => throw _privateConstructorUsedError;
+  @JsonKey(name: "membership_payment_status")
+  String? get membershipPaymentStatus => throw _privateConstructorUsedError;
+  @JsonKey(name: "membership_start")
+  String? get membershipStart => throw _privateConstructorUsedError;
+  @JsonKey(name: "membership_end")
+  String? get membershipEnd => throw _privateConstructorUsedError;
+  @JsonKey(name: "membership_status")
+  String? get membershipStatus => throw _privateConstructorUsedError;
+  @JsonKey(name: "bio")
+  String? get bio => throw _privateConstructorUsedError;
+  @JsonKey(name: "opening_hours")
+  String? get openingHours => throw _privateConstructorUsedError;
+  @JsonKey(name: "users_location")
+  String? get usersLocation => throw _privateConstructorUsedError;
+  @JsonKey(name: "branch_location")
+  String? get branchLocation => throw _privateConstructorUsedError;
+  @JsonKey(name: "device_token")
+  String? get deviceToken => throw _privateConstructorUsedError;
   @JsonKey(name: 'deleted_at')
   String? get deletedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
@@ -366,6 +386,17 @@ abstract class $UserDataCopyWith<$Res> {
       @JsonKey(name: 'user_verify') String? userVerify,
       @JsonKey(name: 'gender') String? gender,
       @JsonKey(name: 'dob') String? dob,
+      @JsonKey(name: "membership_plan_id") String? membershipPlanId,
+      @JsonKey(name: "membership_payment_status")
+      String? membershipPaymentStatus,
+      @JsonKey(name: "membership_start") String? membershipStart,
+      @JsonKey(name: "membership_end") String? membershipEnd,
+      @JsonKey(name: "membership_status") String? membershipStatus,
+      @JsonKey(name: "bio") String? bio,
+      @JsonKey(name: "opening_hours") String? openingHours,
+      @JsonKey(name: "users_location") String? usersLocation,
+      @JsonKey(name: "branch_location") String? branchLocation,
+      @JsonKey(name: "device_token") String? deviceToken,
       @JsonKey(name: 'deleted_at') String? deletedAt,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt});
@@ -434,6 +465,16 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
     Object? userVerify = freezed,
     Object? gender = freezed,
     Object? dob = freezed,
+    Object? membershipPlanId = freezed,
+    Object? membershipPaymentStatus = freezed,
+    Object? membershipStart = freezed,
+    Object? membershipEnd = freezed,
+    Object? membershipStatus = freezed,
+    Object? bio = freezed,
+    Object? openingHours = freezed,
+    Object? usersLocation = freezed,
+    Object? branchLocation = freezed,
+    Object? deviceToken = freezed,
     Object? deletedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -639,6 +680,46 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as String?,
+      membershipPlanId: freezed == membershipPlanId
+          ? _value.membershipPlanId
+          : membershipPlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPaymentStatus: freezed == membershipPaymentStatus
+          ? _value.membershipPaymentStatus
+          : membershipPaymentStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStart: freezed == membershipStart
+          ? _value.membershipStart
+          : membershipStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipEnd: freezed == membershipEnd
+          ? _value.membershipEnd
+          : membershipEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStatus: freezed == membershipStatus
+          ? _value.membershipStatus
+          : membershipStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bio: freezed == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      openingHours: freezed == openingHours
+          ? _value.openingHours
+          : openingHours // ignore: cast_nullable_to_non_nullable
+              as String?,
+      usersLocation: freezed == usersLocation
+          ? _value.usersLocation
+          : usersLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      branchLocation: freezed == branchLocation
+          ? _value.branchLocation
+          : branchLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deviceToken: freezed == deviceToken
+          ? _value.deviceToken
+          : deviceToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       deletedAt: freezed == deletedAt
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
@@ -715,6 +796,17 @@ abstract class _$$UserDataImplCopyWith<$Res>
       @JsonKey(name: 'user_verify') String? userVerify,
       @JsonKey(name: 'gender') String? gender,
       @JsonKey(name: 'dob') String? dob,
+      @JsonKey(name: "membership_plan_id") String? membershipPlanId,
+      @JsonKey(name: "membership_payment_status")
+      String? membershipPaymentStatus,
+      @JsonKey(name: "membership_start") String? membershipStart,
+      @JsonKey(name: "membership_end") String? membershipEnd,
+      @JsonKey(name: "membership_status") String? membershipStatus,
+      @JsonKey(name: "bio") String? bio,
+      @JsonKey(name: "opening_hours") String? openingHours,
+      @JsonKey(name: "users_location") String? usersLocation,
+      @JsonKey(name: "branch_location") String? branchLocation,
+      @JsonKey(name: "device_token") String? deviceToken,
       @JsonKey(name: 'deleted_at') String? deletedAt,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt});
@@ -781,6 +873,16 @@ class __$$UserDataImplCopyWithImpl<$Res>
     Object? userVerify = freezed,
     Object? gender = freezed,
     Object? dob = freezed,
+    Object? membershipPlanId = freezed,
+    Object? membershipPaymentStatus = freezed,
+    Object? membershipStart = freezed,
+    Object? membershipEnd = freezed,
+    Object? membershipStatus = freezed,
+    Object? bio = freezed,
+    Object? openingHours = freezed,
+    Object? usersLocation = freezed,
+    Object? branchLocation = freezed,
+    Object? deviceToken = freezed,
     Object? deletedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -986,6 +1088,46 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as String?,
+      membershipPlanId: freezed == membershipPlanId
+          ? _value.membershipPlanId
+          : membershipPlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPaymentStatus: freezed == membershipPaymentStatus
+          ? _value.membershipPaymentStatus
+          : membershipPaymentStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStart: freezed == membershipStart
+          ? _value.membershipStart
+          : membershipStart // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipEnd: freezed == membershipEnd
+          ? _value.membershipEnd
+          : membershipEnd // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStatus: freezed == membershipStatus
+          ? _value.membershipStatus
+          : membershipStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bio: freezed == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      openingHours: freezed == openingHours
+          ? _value.openingHours
+          : openingHours // ignore: cast_nullable_to_non_nullable
+              as String?,
+      usersLocation: freezed == usersLocation
+          ? _value.usersLocation
+          : usersLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      branchLocation: freezed == branchLocation
+          ? _value.branchLocation
+          : branchLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deviceToken: freezed == deviceToken
+          ? _value.deviceToken
+          : deviceToken // ignore: cast_nullable_to_non_nullable
+              as String?,
       deletedAt: freezed == deletedAt
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
@@ -1056,6 +1198,17 @@ class _$UserDataImpl implements _UserData {
       @JsonKey(name: 'user_verify') this.userVerify,
       @JsonKey(name: 'gender') this.gender,
       @JsonKey(name: 'dob') this.dob,
+      @JsonKey(name: "membership_plan_id") required this.membershipPlanId,
+      @JsonKey(name: "membership_payment_status")
+      required this.membershipPaymentStatus,
+      @JsonKey(name: "membership_start") required this.membershipStart,
+      @JsonKey(name: "membership_end") required this.membershipEnd,
+      @JsonKey(name: "membership_status") required this.membershipStatus,
+      @JsonKey(name: "bio") required this.bio,
+      @JsonKey(name: "opening_hours") required this.openingHours,
+      @JsonKey(name: "users_location") required this.usersLocation,
+      @JsonKey(name: "branch_location") required this.branchLocation,
+      @JsonKey(name: "device_token") required this.deviceToken,
       @JsonKey(name: 'deleted_at') this.deletedAt,
       @JsonKey(name: 'created_at') this.createdAt,
       @JsonKey(name: 'updated_at') this.updatedAt});
@@ -1214,6 +1367,36 @@ class _$UserDataImpl implements _UserData {
   @JsonKey(name: 'dob')
   final String? dob;
   @override
+  @JsonKey(name: "membership_plan_id")
+  final String? membershipPlanId;
+  @override
+  @JsonKey(name: "membership_payment_status")
+  final String? membershipPaymentStatus;
+  @override
+  @JsonKey(name: "membership_start")
+  final String? membershipStart;
+  @override
+  @JsonKey(name: "membership_end")
+  final String? membershipEnd;
+  @override
+  @JsonKey(name: "membership_status")
+  final String? membershipStatus;
+  @override
+  @JsonKey(name: "bio")
+  final String? bio;
+  @override
+  @JsonKey(name: "opening_hours")
+  final String? openingHours;
+  @override
+  @JsonKey(name: "users_location")
+  final String? usersLocation;
+  @override
+  @JsonKey(name: "branch_location")
+  final String? branchLocation;
+  @override
+  @JsonKey(name: "device_token")
+  final String? deviceToken;
+  @override
   @JsonKey(name: 'deleted_at')
   final String? deletedAt;
   @override
@@ -1225,7 +1408,7 @@ class _$UserDataImpl implements _UserData {
 
   @override
   String toString() {
-    return 'UserData(id: $id, countryCode: $countryCode, languageCode: $languageCode, userTypeId: $userTypeId, genderId: $genderId, name: $name, photo: $photo, about: $about, phone: $phone, phoneHidden: $phoneHidden, username: $username, email: $email, emailVerifiedAt: $emailVerifiedAt, password: $password, rememberToken: $rememberToken, isAdmin: $isAdmin, canBeImpersonated: $canBeImpersonated, disableComments: $disableComments, ipAddr: $ipAddr, provider: $provider, providerId: $providerId, emailToken: $emailToken, phoneToken: $phoneToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, timeZone: $timeZone, blocked: $blocked, closed: $closed, lastActivity: $lastActivity, lastLoginAt: $lastLoginAt, ims: $ims, brandbazar: $brandbazar, brandbazarVerify: $brandbazarVerify, brandbazarStatus: $brandbazarStatus, brandbazarPaymentStatus: $brandbazarPaymentStatus, paymentQr: $paymentQr, bankName: $bankName, bankBranch: $bankBranch, acHolder: $acHolder, acNumber: $acNumber, banner: $banner, description: $description, panVat: $panVat, taxCertificate: $taxCertificate, registerCertificate: $registerCertificate, userVerify: $userVerify, gender: $gender, dob: $dob, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'UserData(id: $id, countryCode: $countryCode, languageCode: $languageCode, userTypeId: $userTypeId, genderId: $genderId, name: $name, photo: $photo, about: $about, phone: $phone, phoneHidden: $phoneHidden, username: $username, email: $email, emailVerifiedAt: $emailVerifiedAt, password: $password, rememberToken: $rememberToken, isAdmin: $isAdmin, canBeImpersonated: $canBeImpersonated, disableComments: $disableComments, ipAddr: $ipAddr, provider: $provider, providerId: $providerId, emailToken: $emailToken, phoneToken: $phoneToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, timeZone: $timeZone, blocked: $blocked, closed: $closed, lastActivity: $lastActivity, lastLoginAt: $lastLoginAt, ims: $ims, brandbazar: $brandbazar, brandbazarVerify: $brandbazarVerify, brandbazarStatus: $brandbazarStatus, brandbazarPaymentStatus: $brandbazarPaymentStatus, paymentQr: $paymentQr, bankName: $bankName, bankBranch: $bankBranch, acHolder: $acHolder, acNumber: $acNumber, banner: $banner, description: $description, panVat: $panVat, taxCertificate: $taxCertificate, registerCertificate: $registerCertificate, userVerify: $userVerify, gender: $gender, dob: $dob, membershipPlanId: $membershipPlanId, membershipPaymentStatus: $membershipPaymentStatus, membershipStart: $membershipStart, membershipEnd: $membershipEnd, membershipStatus: $membershipStatus, bio: $bio, openingHours: $openingHours, usersLocation: $usersLocation, branchLocation: $branchLocation, deviceToken: $deviceToken, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1294,8 +1477,7 @@ class _$UserDataImpl implements _UserData {
                 other.brandbazarVerify == brandbazarVerify) &&
             (identical(other.brandbazarStatus, brandbazarStatus) ||
                 other.brandbazarStatus == brandbazarStatus) &&
-            (identical(
-                    other.brandbazarPaymentStatus, brandbazarPaymentStatus) ||
+            (identical(other.brandbazarPaymentStatus, brandbazarPaymentStatus) ||
                 other.brandbazarPaymentStatus == brandbazarPaymentStatus) &&
             (identical(other.paymentQr, paymentQr) ||
                 other.paymentQr == paymentQr) &&
@@ -1319,12 +1501,25 @@ class _$UserDataImpl implements _UserData {
                 other.userVerify == userVerify) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.dob, dob) || other.dob == dob) &&
-            (identical(other.deletedAt, deletedAt) ||
-                other.deletedAt == deletedAt) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            (identical(other.membershipPlanId, membershipPlanId) ||
+                other.membershipPlanId == membershipPlanId) &&
+            (identical(other.membershipPaymentStatus, membershipPaymentStatus) ||
+                other.membershipPaymentStatus == membershipPaymentStatus) &&
+            (identical(other.membershipStart, membershipStart) ||
+                other.membershipStart == membershipStart) &&
+            (identical(other.membershipEnd, membershipEnd) ||
+                other.membershipEnd == membershipEnd) &&
+            (identical(other.membershipStatus, membershipStatus) ||
+                other.membershipStatus == membershipStatus) &&
+            (identical(other.bio, bio) || other.bio == bio) &&
+            (identical(other.openingHours, openingHours) ||
+                other.openingHours == openingHours) &&
+            (identical(other.usersLocation, usersLocation) || other.usersLocation == usersLocation) &&
+            (identical(other.branchLocation, branchLocation) || other.branchLocation == branchLocation) &&
+            (identical(other.deviceToken, deviceToken) || other.deviceToken == deviceToken) &&
+            (identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt) &&
+            (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
@@ -1381,6 +1576,16 @@ class _$UserDataImpl implements _UserData {
         userVerify,
         gender,
         dob,
+        membershipPlanId,
+        membershipPaymentStatus,
+        membershipStart,
+        membershipEnd,
+        membershipStatus,
+        bio,
+        openingHours,
+        usersLocation,
+        branchLocation,
+        deviceToken,
         deletedAt,
         createdAt,
         updatedAt
@@ -1454,6 +1659,19 @@ abstract class _UserData implements UserData {
       @JsonKey(name: 'user_verify') final String? userVerify,
       @JsonKey(name: 'gender') final String? gender,
       @JsonKey(name: 'dob') final String? dob,
+      @JsonKey(name: "membership_plan_id")
+      required final String? membershipPlanId,
+      @JsonKey(name: "membership_payment_status")
+      required final String? membershipPaymentStatus,
+      @JsonKey(name: "membership_start") required final String? membershipStart,
+      @JsonKey(name: "membership_end") required final String? membershipEnd,
+      @JsonKey(name: "membership_status")
+      required final String? membershipStatus,
+      @JsonKey(name: "bio") required final String? bio,
+      @JsonKey(name: "opening_hours") required final String? openingHours,
+      @JsonKey(name: "users_location") required final String? usersLocation,
+      @JsonKey(name: "branch_location") required final String? branchLocation,
+      @JsonKey(name: "device_token") required final String? deviceToken,
       @JsonKey(name: 'deleted_at') final String? deletedAt,
       @JsonKey(name: 'created_at') final String? createdAt,
       @JsonKey(name: 'updated_at') final String? updatedAt}) = _$UserDataImpl;
@@ -1611,6 +1829,36 @@ abstract class _UserData implements UserData {
   @override
   @JsonKey(name: 'dob')
   String? get dob;
+  @override
+  @JsonKey(name: "membership_plan_id")
+  String? get membershipPlanId;
+  @override
+  @JsonKey(name: "membership_payment_status")
+  String? get membershipPaymentStatus;
+  @override
+  @JsonKey(name: "membership_start")
+  String? get membershipStart;
+  @override
+  @JsonKey(name: "membership_end")
+  String? get membershipEnd;
+  @override
+  @JsonKey(name: "membership_status")
+  String? get membershipStatus;
+  @override
+  @JsonKey(name: "bio")
+  String? get bio;
+  @override
+  @JsonKey(name: "opening_hours")
+  String? get openingHours;
+  @override
+  @JsonKey(name: "users_location")
+  String? get usersLocation;
+  @override
+  @JsonKey(name: "branch_location")
+  String? get branchLocation;
+  @override
+  @JsonKey(name: "device_token")
+  String? get deviceToken;
   @override
   @JsonKey(name: 'deleted_at')
   String? get deletedAt;

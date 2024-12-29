@@ -27,6 +27,8 @@ mixin _$CartItem {
       throw _privateConstructorUsedError; //  required String? vendorId,
   @JsonKey(name: 'post_id')
   String? get postId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_type_id')
+  String? get postTypeId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get qty => throw _privateConstructorUsedError;
   String get price => throw _privateConstructorUsedError;
@@ -47,6 +49,7 @@ abstract class $CartItemCopyWith<$Res> {
       {String id,
       @JsonKey(name: 'vendor_id') String? vendorId,
       @JsonKey(name: 'post_id') String? postId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String name,
       String qty,
       String price,
@@ -69,6 +72,7 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? id = null,
     Object? vendorId = freezed,
     Object? postId = freezed,
+    Object? postTypeId = freezed,
     Object? name = null,
     Object? qty = null,
     Object? price = null,
@@ -86,6 +90,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
       postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postTypeId: freezed == postTypeId
+          ? _value.postTypeId
+          : postTypeId // ignore: cast_nullable_to_non_nullable
               as String?,
       name: null == name
           ? _value.name
@@ -119,6 +127,7 @@ abstract class _$$CartItemImplCopyWith<$Res>
       {String id,
       @JsonKey(name: 'vendor_id') String? vendorId,
       @JsonKey(name: 'post_id') String? postId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String name,
       String qty,
       String price,
@@ -139,6 +148,7 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? id = null,
     Object? vendorId = freezed,
     Object? postId = freezed,
+    Object? postTypeId = freezed,
     Object? name = null,
     Object? qty = null,
     Object? price = null,
@@ -156,6 +166,10 @@ class __$$CartItemImplCopyWithImpl<$Res>
       postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postTypeId: freezed == postTypeId
+          ? _value.postTypeId
+          : postTypeId // ignore: cast_nullable_to_non_nullable
               as String?,
       name: null == name
           ? _value.name
@@ -184,6 +198,7 @@ class _$CartItemImpl implements _CartItem {
       {required this.id,
       @JsonKey(name: 'vendor_id') this.vendorId,
       @JsonKey(name: 'post_id') this.postId,
+      @JsonKey(name: 'post_type_id') this.postTypeId,
       required this.name,
       required this.qty,
       required this.price,
@@ -203,6 +218,9 @@ class _$CartItemImpl implements _CartItem {
   @JsonKey(name: 'post_id')
   final String? postId;
   @override
+  @JsonKey(name: 'post_type_id')
+  final String? postTypeId;
+  @override
   final String name;
   @override
   final String qty;
@@ -213,7 +231,7 @@ class _$CartItemImpl implements _CartItem {
 
   @override
   String toString() {
-    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image)';
+    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image)';
   }
 
   @override
@@ -225,6 +243,8 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.vendorId, vendorId) ||
                 other.vendorId == vendorId) &&
             (identical(other.postId, postId) || other.postId == postId) &&
+            (identical(other.postTypeId, postTypeId) ||
+                other.postTypeId == postTypeId) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.qty, qty) || other.qty == qty) &&
             (identical(other.price, price) || other.price == price) &&
@@ -233,8 +253,8 @@ class _$CartItemImpl implements _CartItem {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, vendorId, postId, name, qty, price, image);
+  int get hashCode => Object.hash(
+      runtimeType, id, vendorId, postId, postTypeId, name, qty, price, image);
 
   @JsonKey(ignore: true)
   @override
@@ -255,6 +275,7 @@ abstract class _CartItem implements CartItem {
       {required final String id,
       @JsonKey(name: 'vendor_id') final String? vendorId,
       @JsonKey(name: 'post_id') final String? postId,
+      @JsonKey(name: 'post_type_id') final String? postTypeId,
       required final String name,
       required final String qty,
       required final String price,
@@ -271,6 +292,9 @@ abstract class _CartItem implements CartItem {
   @override //  required String? vendorId,
   @JsonKey(name: 'post_id')
   String? get postId;
+  @override
+  @JsonKey(name: 'post_type_id')
+  String? get postTypeId;
   @override
   String get name;
   @override
