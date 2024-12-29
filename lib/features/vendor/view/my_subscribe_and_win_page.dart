@@ -113,10 +113,16 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildHeaderSection(data),
+                  
+                  SizedBox(height: 5.h,),
                   _buildUserDetailsSection(data),
+                  SizedBox(height: 5.h,),
                   _buildGiftsSection(data),
+                  SizedBox(height: 5.h,),
                   _buildWinnersSection(data),
+                 SizedBox(height: 5.h,), 
                   _buildPrizeSponsorSection(data),
+                  SizedBox(height: 5.h,),
                   _buildTermsAndConditionsSection(data),
                 ],
               ),
@@ -224,64 +230,65 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
     );
   }
 
-  Widget _buildGiftsAndPrizesSection(MySubscribeAndWinModel data) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Gifts and Prizes',
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10.h),
-        ...data.gifts!.map((gift) {
-          // You may need to cast gift to a proper model class if it's more than dynamic
-          return Card(
-            elevation: 3,
-            child: Padding(
-              padding: EdgeInsets.all(8.w),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Image of gift
-                  Image.network(
-                    gift.giftDetails!.imageUrl!, // Update with correct path
-                    width: 60.w,
-                    height: 60.w,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(width: 10.w),
+  // Widget _buildGiftsAndPrizesSection(MySubscribeAndWinModel data) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       SizedBox(height: 5.h,),
+  //       Text(
+  //         'Gifts and Prizes',
+  //         style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+  //       ),
+  //       SizedBox(height: 10.h),
+  //       ...data.gifts!.map((gift) {
+  //         // You may need to cast gift to a proper model class if it's more than dynamic
+  //         return Card(
+  //           elevation: 3,
+  //           child: Padding(
+  //             padding: EdgeInsets.all(8.w),
+  //             child: Row(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 // Image of gift
+  //                 Image.network(
+  //                   gift.giftDetails!.imageUrl!, // Update with correct path
+  //                   width: 60.w,
+  //                   height: 60.w,
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //                 SizedBox(width: 10.w),
 
-                  // Details about the gift
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          gift.giftDetails!.name ?? 'Gift Name',
-                          style: TextStyle(
-                              fontSize: 14.sp, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 5.h),
-                        Text(
-                          'Rs. ${gift.giftDetails!.worth ?? ''}',
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                        SizedBox(height: 5.h),
-                        Text(
-                          'Date: ${gift.giftDetails!.createdAt ?? ''}',
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }).toList(),
-      ],
-    );
-  }
+  //                 // Details about the gift
+  //                 Expanded(
+  //                   child: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Text(
+  //                         gift.giftDetails!.name ?? 'Gift Name',
+  //                         style: TextStyle(
+  //                             fontSize: 14.sp, fontWeight: FontWeight.bold),
+  //                       ),
+  //                       SizedBox(height: 5.h),
+  //                       Text(
+  //                         'Rs. ${gift.giftDetails!.worth ?? ''}',
+  //                         style: TextStyle(fontSize: 12.sp),
+  //                       ),
+  //                       SizedBox(height: 5.h),
+  //                       Text(
+  //                         'Date: ${gift.giftDetails!.createdAt ?? ''}',
+  //                         style: TextStyle(fontSize: 12.sp),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       }).toList(),
+  //     ],
+  //   );
+  // }
 
   Widget _buildGiftInfoContainer(
       {required String title, required String value}) {
@@ -375,35 +382,44 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
             ),
           ),
           SizedBox(height: 18.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(data.winners?.length ?? 0, (index) {
-              // Cast the dynamic list to a Winner model object
-              final Winner winner = data.winners?[index] as Winner;
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Correctly accessing the name property within the Winner object
-                  Text(
-                    '${winner.name!.name}', // Accessing the name inside Name class
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                
+                data.winners?.length ?? 0, (index) {
+                // Cast the dynamic list to a Winner model object
+                final Winner winner = data.winners?[index] as Winner;
+            
+                return Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Correctly accessing the name property within the Winner object
+                      Text(
+                        '${winner.name!.name}', // Accessing the name inside Name class
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        '${winner.giftWorth!.worth}', // Accessing the name inside Name class
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    '${winner.giftWorth!.worth}', // Accessing the name inside Name class
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),

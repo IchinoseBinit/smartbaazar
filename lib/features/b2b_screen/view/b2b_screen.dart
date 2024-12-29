@@ -36,6 +36,7 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class B2bScreen extends ConsumerStatefulWidget {
   const B2bScreen({super.key});
@@ -220,11 +221,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-  final randomstory = ref.watch(fetchStoryHomeProvider);
+    final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
-            final category = ref.watch(getCategoriesProvider(217));
+    final category = ref.watch(getCategoriesProvider(217));
 
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
@@ -552,7 +553,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(
@@ -595,60 +596,65 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ),
                   ),
                 ),
-             randomstory.when(
-  data: (data) {
-    return SizedBox(
-      height: 130.h,
-      child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
-        scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
-        child: Row(
-          children: [
-            // First StoryAddWidget with search option
-            StoryAddWidget(
-              vImage: data.data!.feedStory?.posts.first.image,
-              brandname: data.data!.feedStory?.posts.first.vendorName,
-              index: 0,
-              addSearch: true, // First item has search
-              showgift: false,
-              onTap: () {
-                setState(() {
-                  // _isPopupVisible = true; // Open the popup
-                });
-              },
-            ),
-            // Expanded is not needed since SingleChildScrollView will handle scrolling
-            // Now ListView.builder will be added directly to the row
-            ...data.data!.feedStory!.posts.map((storyData) {
-              return StoryAddWidget(
-                brandname: storyData.vendorName,
-                vImage: storyData.vendorImage,
-                index: data.data!.feedStory!.posts.indexOf(storyData),
-                addSearch: false, // For all items other than the first, no search
-                showgift: storyData.hasSponsoredGifts,
-                onTap: () {
-                  // setState(() {
-                  //   // _isPopupVisible = true; // Open the popup
-                  // });
-                },
-              );
-            }).toList(),
-          ],
-        ),
-      ),
-    );
-  },
-  error: (error, stackTrace) => Text(error.toString()),
-  loading: () => const CircularProgressIndicator(),
-),
-
-                SizedBox(
-                  height: 10.h,
+                randomstory.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130.h,
+                      child: SingleChildScrollView(
+                        // Wrapping the Row with SingleChildScrollView
+                        scrollDirection:
+                            Axis.horizontal, // Ensuring it scrolls horizontally
+                        child: Row(
+                          children: [
+                            // First StoryAddWidget with search option
+                            StoryAddWidget(
+                              vImage: data.data!.feedStory?.posts.first.image,
+                              brandname:
+                                  data.data!.feedStory?.posts.first.vendorName,
+                              index: 0,
+                              addSearch: true, // First item has search
+                              showgift: false,
+                              onTap: () {
+                                setState(() {
+                                  // _isPopupVisible = true; // Open the popup
+                                });
+                              },
+                            ),
+                            // Expanded is not needed since SingleChildScrollView will handle scrolling
+                            // Now ListView.builder will be added directly to the row
+                            ...data.data!.feedStory!.posts.map((storyData) {
+                              return StoryAddWidget(
+                                brandname: storyData.vendorName,
+                                vImage: storyData.vendorImage,
+                                index: data.data!.feedStory!.posts
+                                    .indexOf(storyData),
+                                addSearch:
+                                    false, // For all items other than the first, no search
+                                showgift: storyData.hasSponsoredGifts,
+                                onTap: () {
+                                  // setState(() {
+                                  //   // _isPopupVisible = true; // Open the popup
+                                  // });
+                                },
+                              );
+                            }).toList(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 SizedBox(
                   height: 10.h,
                 ),
-                 asyncbajarValue.when(
+
+                SizedBox(
+                  height: 10.h,
+                ),
+                asyncbajarValue.when(
                   data: (data) {
                     return Stack(
                       children: [
@@ -708,8 +714,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: data.sliders!.map((banner) {
-                              int index =
-                                  data.sliders!.indexOf(banner);
+                              int index = data.sliders!.indexOf(banner);
                               return AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
                                 margin:
@@ -742,174 +747,193 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                   height: 10.h,
                 ),
                 category.when(
-  data: (data) {
-    print("bibash ${data.first.parentClosure?.slug}");
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h),
-      child: Column(
-        children: [
-          // Row for "ALL" and other services
-          SizedBox(
-            height: 100.h, // Adjust height as necessary
-            width: double.infinity,
-            child: Row(
-              children: [
-                // "ALL" Services (Standalone)
-                DottedBorder(
-                  strokeWidth: 2,
-                  color: Colors.grey,
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(10),
-                  dashPattern: const [15, 15],
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "ALL",
-                          style: headerstyle.copyWith(
-                            color: ColorConstant.blackColor,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "B2b",
-                          style: headerstyle.copyWith(
-                            color: ColorConstant.blackColor,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Other Services List
-                Expanded(
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: data.map((e) {
-                      return Padding(
-                        padding: EdgeInsets.zero,
-                        child: GestureDetector(
-                          onTap: () {
-                            showMenu(
-                              context: context,
-                              position: const RelativeRect.fromLTRB(0, 0, 0, 0), // Base position
-                              items: [
-                                PopupMenuItem(
-                                  value: 1,
-                                  child: ListTile(
-                                    title: const Text("View Story"),
-                                    leading: const Icon(Icons.book),
-                                    onTap: () {
-                                      // Implement onTap logic
-                                    },
-                                  ),
-                                ),
-                                // Check if parentClosure is not null and show it
-                                if (e.parentClosure != null)
-                                  PopupMenuItem(
-                                    value: 2,
-                                    child: ListTile(
-                                      title: Text("${e.parentClosure?.slug ?? 'N/A'}"),
-                                      leading: const Icon(Icons.info),
+                  data: (data) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: Column(
+                        children: [
+                          // Row for "ALL" and other services
+                          SizedBox(
+                            height: 100.h, // Adjust height as necessary
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                // "ALL" Services (Standalone)
+                                DottedBorder(
+                                  strokeWidth: 2,
+                                  color: Colors.grey,
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(10),
+                                  dashPattern: const [15, 15],
+                                  child: SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "ALL",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "B2b",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                              ],
-                            );
-                          },
-                          child: PopupMenuButton<int>(
-                            offset: const Offset(0, 60), // Position for the menu
-                            itemBuilder: (context) => [
-                              const PopupMenuItem(
-                                value: 1,
-                                child: Text("View Story", style: TextStyle(fontSize: 16.0)),
-                              ),
-                              if (e.parentClosure != null)
-                                PopupMenuItem(
-                                  value: 2,
-                                  child: Text(
-                                    "${e.parentClosure?.slug ?? 'No Parent'}",
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
                                 ),
-                            ],
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              child: DashedBorder(
-                                dashCount: 3,
-                                child: SizedBox(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset('assets/images/cloth.png'),
-                                      Wrap(
-                                        children: [
-                                          Text(
-                                            e.name ?? 'No Name',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13,
+
+                                // Other Services List
+                                Expanded(
+                                  child: ListView(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    children: data.map((e) {
+                                      return Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showMenu(
+                                              context: context,
+                                              position:
+                                                  const RelativeRect.fromLTRB(0,
+                                                      0, 0, 0), // Base position
+                                              items: [
+                                                PopupMenuItem(
+                                                  value: 1,
+                                                  child: ListTile(
+                                                    title: const Text(
+                                                        "View Story"),
+                                                    leading:
+                                                        const Icon(Icons.book),
+                                                    onTap: () {
+                                                      // Implement onTap logic
+                                                    },
+                                                  ),
+                                                ),
+                                                // Check if parentClosure is not null and show it
+                                                if (e.parentClosure != null)
+                                                  PopupMenuItem(
+                                                    value: 2,
+                                                    child: ListTile(
+                                                      title: Text(
+                                                          "${e.parentClosure?.slug ?? 'N/A'}"),
+                                                      leading: const Icon(
+                                                          Icons.info),
+                                                    ),
+                                                  ),
+                                              ],
+                                            );
+                                          },
+                                          child: PopupMenuButton<int>(
+                                            offset: const Offset(
+                                                0, 60), // Position for the menu
+                                            itemBuilder: (context) => [
+                                              const PopupMenuItem(
+                                                value: 1,
+                                                child: Text("View Story",
+                                                    style: TextStyle(
+                                                        fontSize: 16.0)),
+                                              ),
+                                              if (e.parentClosure != null)
+                                                PopupMenuItem(
+                                                  value: 2,
+                                                  child: Text(
+                                                    "${e.parentClosure?.slug ?? 'No Parent'}",
+                                                    style: TextStyle(
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                            ],
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.w),
+                                              child: DashedBorder(
+                                                dashCount: 3,
+                                                child: SizedBox(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Image.asset(
+                                                          'assets/images/cloth.png'),
+                                                      Wrap(
+                                                        children: [
+                                                          Text(
+                                                            e.name ?? 'No Name',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 13,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 15),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'HOT DEALS',
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Image.asset(
+                                  'assets/images/flameIcon.png',
+                                  width: 16.w,
+                                  height: 17.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                          nolistingfound(),
+                        ],
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => CircularProgressIndicator(),
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, top: 15),
-            child: Row(
-              children: [
-                Text(
-                  'HOT DEALS',
-                  style: headerstyle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Image.asset(
-                  'assets/images/flameIcon.png',
-                  width: 16.w,
-                  height: 17.h,
-                ),
-              ],
-            ),
-          ),
-          nolistingfound(),
-        ],
-      ),
-    );
-  },
-  error: (error, stackTrace) {
-    return Text(error.toString());
-  },
-  loading: () => CircularProgressIndicator(),
-),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(

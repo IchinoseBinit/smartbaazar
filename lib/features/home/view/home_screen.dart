@@ -14,6 +14,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
@@ -34,6 +35,7 @@ import 'package:smartbazar/features/product_details/constant/product_detail_widg
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
@@ -235,7 +237,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
-  final randomstory = ref.watch(fetchStoryHomeProvider);
+    final randomstory = ref.watch(fetchStoryHomeProvider);
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -411,14 +413,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   );
                                 }, loading: () {
                                   return null;
-                                
+
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
                                   //     child: CircularProgressIndicator());
                                 }, error: (error, stack) {
                                   return null;
-                                
+
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
@@ -593,7 +595,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const SubscribeAndWinEveryDay(),
+                                                MySubscribeAndWinPage(),
                                           ));
                                     },
                                     child: const Text(
@@ -649,52 +651,57 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                   randomstory.when(
-  data: (data) {
-    return SizedBox(
-      height: 130.h,
-      child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
-        scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
-        child: Row(
-          children: [
-            // First StoryAddWidget with search option
-            StoryAddWidget(
-              vImage: data.data!.feedStory?.posts.first.image,
-              brandname: data.data!.feedStory?.posts.first.vendorName,
-              index: 0,
-              addSearch: true, // First item has search
-              showgift: false,
-              onTap: () {
-                setState(() {
-                  // _isPopupVisible = true; // Open the popup
-                });
-              },
-            ),
-            // Expanded is not needed since SingleChildScrollView will handle scrolling
-            // Now ListView.builder will be added directly to the row
-            ...data.data!.feedStory!.posts.map((storyData) {
-              return StoryAddWidget(
-                brandname: storyData.vendorName,
-                vImage: storyData.vendorImage,
-                index: data.data!.feedStory!.posts.indexOf(storyData),
-                addSearch: false, // For all items other than the first, no search
-                showgift: storyData.hasSponsoredGifts,
-                onTap: () {
-                  // setState(() {
-                  //   // _isPopupVisible = true; // Open the popup
-                  // });
-                },
-              );
-            }).toList(),
-          ],
-        ),
-      ),
-    );
-  },
-  error: (error, stackTrace) => Text(error.toString()),
-  loading: () => const CircularProgressIndicator(),
-),
-
+                    randomstory.when(
+                      data: (data) {
+                        return SizedBox(
+                          height: 130.h,
+                          child: SingleChildScrollView(
+                            // Wrapping the Row with SingleChildScrollView
+                            scrollDirection: Axis
+                                .horizontal, // Ensuring it scrolls horizontally
+                            child: Row(
+                              children: [
+                                // First StoryAddWidget with search option
+                                StoryAddWidget(
+                                  vImage:
+                                      data.data!.feedStory?.posts.first.image,
+                                  brandname: data
+                                      .data!.feedStory?.posts.first.vendorName,
+                                  index: 0,
+                                  addSearch: true, // First item has search
+                                  showgift: false,
+                                  onTap: () {
+                                    setState(() {
+                                      // _isPopupVisible = true; // Open the popup
+                                    });
+                                  },
+                                ),
+                                // Expanded is not needed since SingleChildScrollView will handle scrolling
+                                // Now ListView.builder will be added directly to the row
+                                ...data.data!.feedStory!.posts.map((storyData) {
+                                  return StoryAddWidget(
+                                    brandname: storyData.vendorName,
+                                    vImage: storyData.vendorImage,
+                                    index: data.data!.feedStory!.posts
+                                        .indexOf(storyData),
+                                    addSearch:
+                                        false, // For all items other than the first, no search
+                                    showgift: storyData.hasSponsoredGifts,
+                                    onTap: () {
+                                      // setState(() {
+                                      //   // _isPopupVisible = true; // Open the popup
+                                      // });
+                                    },
+                                  );
+                                }).toList(),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () => const CircularProgressIndicator(),
+                    ),
                     SizedBox(
                       height: 5.h,
                     ),
@@ -735,96 +742,102 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           //   },
                           // ),
 
-                           homePostsData.when(
-                  data: (data) {
-                    return Stack(
-                      children: [
-                        // Carousel Slider
-                        Positioned(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 130.h,
-                                width: double.infinity,
-                                child: CarouselSlider(
-                                  items: data.sliders.map((banner) {
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const B2bScreen(),
+                          homePostsData.when(
+                            data: (data) {
+                              return Stack(
+                                children: [
+                                  // Carousel Slider
+                                  Positioned(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 130.h,
+                                          width: double.infinity,
+                                          child: CarouselSlider(
+                                            items: data.sliders.map((banner) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const B2bScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: CachedNetworkImage(
+                                                  width: double.infinity,
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: banner.image!,
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            options: CarouselOptions(
+                                              aspectRatio:
+                                                  2.5, // Adjust this as per design
+                                              viewportFraction:
+                                                  1.0, // Full-screen carousel
+                                              autoPlay: true,
+                                              enlargeCenterPage: false,
+                                              onPageChanged: (index, reason) {
+                                                setState(() {
+                                                  _currentIndex =
+                                                      index; // Update the current index
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Dots Indicator
+                                  Positioned(
+                                    left:
+                                        MediaQuery.of(context).size.width / 2 -
+                                            50, // Center the dots
+                                    bottom: 10.h,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: data.sliders.map((banner) {
+                                        int index =
+                                            data.sliders.indexOf(banner);
+                                        return AnimatedContainer(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          height: 9.0,
+                                          width: _currentIndex == index
+                                              ? 12.0
+                                              : 9.0, // Active dot is wider
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: _currentIndex == index
+                                                ? Colors
+                                                    .white // Active dot color
+                                                : Colors
+                                                    .grey, // Inactive dot color
                                           ),
                                         );
-                                      },
-                                      child: CachedNetworkImage(
-                                        width: double.infinity,
-                                        fit: BoxFit.fill,
-                                        imageUrl: banner.image!,
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  options: CarouselOptions(
-                                    aspectRatio:
-                                        2.5, // Adjust this as per design
-                                    viewportFraction:
-                                        1.0, // Full-screen carousel
-                                    autoPlay: true,
-                                    enlargeCenterPage: false,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currentIndex =
-                                            index; // Update the current index
-                                      });
-                                    },
+                                      }).toList(),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Dots Indicator
-                        Positioned(
-                          left: MediaQuery.of(context).size.width / 2 -
-                              50, // Center the dots
-                          bottom: 10.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: data.sliders.map((banner) {
-                              int index =
-                                  data.sliders.indexOf(banner);
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5.0),
-                                height: 9.0,
-                                width: _currentIndex == index
-                                    ? 12.0
-                                    : 9.0, // Active dot is wider
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: _currentIndex == index
-                                      ? Colors.white // Active dot color
-                                      : Colors.grey, // Inactive dot color
-                                ),
+                                ],
                               );
-                            }).toList(),
+                            },
+                            error: (error, stackTrace) {
+                              return Text("Try again: $error");
+                            },
+                            loading: () {
+                              return const CircularProgressIndicator();
+                            },
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Text("Try again: $error");
-                  },
-                  loading: () {
-                    return const CircularProgressIndicator();
-                  },
-                ),
 
                           SizedBox(
                             height: 5.h,
@@ -917,7 +930,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
-                                            
                                               distance: prod.shortestDistance,
                                               issponsored:
                                                   prod.user!.sponsored ?? false,
@@ -995,9 +1007,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               double dynamicHeight;
 
                               if (dynamictabController.index == 0) {
-                                dynamicHeight = data.insidearr[0].isEmpty
-                                    ? 140.h
-                                    : 420.h;
+                                dynamicHeight =
+                                    data.insidearr[0].isEmpty ? 140.h : 420.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
@@ -1163,7 +1174,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-                                                      
                                                       shortestDistance:
                                                           prod.shortestDistance,
                                                       distance:
@@ -1765,7 +1775,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const AddToCartScreen(),
+                                          const CreateNewListinScreen(),
                                     ));
                               },
                               icon: Column(

@@ -1,33 +1,29 @@
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
+import 'package:adoptive_calendar/adoptive_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
-import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
 import 'package:smartbazar/features/create_listing/api/get_categories_provider.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
+import 'package:smartbazar/features/create_listing/view/SellerInformationWidget.dart';
 import 'package:smartbazar/features/create_listing/widget/category_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
-import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class CreateNewListinScreen extends ConsumerStatefulWidget {
   const CreateNewListinScreen({super.key});
@@ -44,9 +40,19 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   ShippingCitiesModel? selectedpickup;
   // bool _isChecked = false;
   bool _acceptterms = false;
-  bool _trending = false;
+  bool trending = false;
   final List<String> _tags = [];
   String _inputText = "";
+  DateTime? timeAndMonth;
+  List<List<dynamic>>? cf = [];
+
+  void _onDateSelected(DateTime? date) {
+    if (date != null) {
+      setState(() {
+        timeAndMonth = date;
+      });
+    }
+  }
 
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
@@ -56,12 +62,17 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   Option? selectedElecModel;
   List<Option>? selectedColors;
   List<Option>? selectedFeatures;
-  DateTime? selectedStartDate;
-    DateTime? deadlineDate;
 
+  DateTime? selectedStartDate;
+  DateTime? selectmanufacturingdate;
+  DateTime? grocceryexpiraydate;
+
+  DateTime? deadlineDate;
 
   Option? selectedProductTYpe;
   Option? fuelType;
+  Option? trasnmsissiontype;
+
   int? warrentyselected;
   Option? selectedmodel;
   Option? selecetedWarrenty;
@@ -70,38 +81,70 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   Option? selectedRoom;
   Option? jobtype;
 
-  String? selectedmobilebrand;
+  Option? selectedmobilebrand;
   // String? sel;e;
 
   List<CityList>? citylistsitems = [];
   List<Offer>? offerresponse = [];
   Offer? selectedOffer;
   Option? selectedFurnished;
+  Option? selecctedProductTYpe;
 
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController heightcontroller = TextEditingController();
+    TextEditingController experiencecontroller = TextEditingController();
+  TextEditingController comapnycontroller = TextEditingController();
+
 
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
+  TextEditingController modelcontroller = TextEditingController();
+
+  TextEditingController streetsizecontroller = TextEditingController();
+  TextEditingController storagecontroller = TextEditingController();
+  TextEditingController sizecontroller = TextEditingController();
+  TextEditingController Gbcontroller = TextEditingController();
+
+  TextEditingController auomobilecontroller = TextEditingController();
+
+  TextEditingController milagecontroller = TextEditingController();
+  TextEditingController whatsintheboxcontroller = TextEditingController();
+
+  TextEditingController yearofregistrationcontroller = TextEditingController();
+  TextEditingController kilometerscontroller = TextEditingController();
+  TextEditingController stockcontroller = TextEditingController();
+  TextEditingController addresscontroller = TextEditingController();
+
   TextEditingController discountcontroller = TextEditingController();
   TextEditingController tagController = TextEditingController();
   TextEditingController weightcontroller = TextEditingController();
   TextEditingController widthcontroller = TextEditingController();
   TextEditingController lengthcontroller = TextEditingController();
+  TextEditingController youtubecontroller = TextEditingController();
+
   String accept = '0';
   String? isUserVerified;
   TextEditingController namecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   NewListingRepository repository = NewListingRepository();
   int? categoryId;
+  int? categoryId1;
+  int? selectedStoryDisplayDays; // Holds the selected value
+
+  int? categoryId2;
   FieldsResponse? response;
   FieldsResponse? phoneresp;
-
+  List<Offer>? getoffer;
+  Offer? selectedoffer;
+  bool? _isselected;
   FieldsResponse? furnitureresresp;
   FieldsResponse? laptoprep;
   FieldsResponse? getRoad;
+  FieldsResponse? getcloth;
+  Category? childcategory;
+  FieldsResponse? getsize;
 
   @override
   void initState() {
@@ -133,7 +176,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       });
     } catch (e) {
       // Handle error, maybe show a message to the user
-      print('Failed to load types: $e');
     }
   }
 
@@ -156,13 +198,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   Future<void> _fetchOffers() async {
     try {
       OffersResponse fetchedTypes = await repository.fetchOffers();
-      print("binod ${fetchedTypes.data.first.offers}");
-      setState(() {
-        offerresponse = fetchedTypes.data;
-      });
+      getoffer = fetchedTypes.data;
     } catch (e) {
       // Handle error, maybe show a message to the user
-      print('Failed to load types: $e');
     }
   }
 
@@ -174,9 +212,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       });
 
       // var subcategory = await repository.fetchCategoryList(parentId: typeListItems.);
-    } catch (e) {
-      print('Failed to load types: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> _fetchProductTypeList() async {
@@ -189,20 +225,37 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       });
     } catch (e) {
       // Handle error, maybe show a message to the user
-      print('Failed to load product types: $e');
     }
   }
 
-  final _stringTagController = StringTagController();
+  // final _stringTagController = StringTagController();
+  void _handleCategorySelection(
+      Category? selectedCategory, String type, WidgetRef ref) {
+    // print("bibash ${selectedCategory?.id}");
+    if (selectedCategory != null) {
+      final categoryId = selectedCategory.id;
+
+      // Notify provider
+      ref.read(GetCategoryResponseProvider(categoryId));
+
+      // Watch provider and fetch data
+      final getCategories = ref.watch(GetCategoryResponseProvider(categoryId));
+      getCategories.whenData((value) {
+        response = value;
+      });
+    } else {}
+  }
 
   @override
   Widget build(BuildContext context) {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
     final getCategories =
         ref.watch(GetCategoryResponseProvider(categoryId ?? 1)); //car
-    final phone = ref.watch(GetCategoryResponseProvider(9)).whenData(
+    ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) {
+          
         phoneresp = value;
+   
       },
     ); //phone
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
@@ -215,12 +268,29 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
         furnitureresresp = value;
       },
     ); //car
-    final road = ref.watch(GetCategoryResponseProvider(37)); //car
+    final road = ref.watch(GetCategoryResponseProvider(37)).whenData(
+      (value) {
+        getRoad = getRoad;
+        print("bibash ${getRoad?.result.keys}");
+      },
+    ); //car
+    final cloth = ref.watch(GetCategoryResponseProvider(54)).whenData(
+      (value) {
+        getcloth = value;
+      },
+    );
+    final selltofields = ref.watch(GetCategoryResponseProvider(217));
+
     getCategories.whenData(
       (value) {
-        print("bibash  ${value.result}");
         getRoad = value; //car
+        // print('bibashl ${getRoad?.result['8']?.id}');
       },
+    );
+    selltofields.when(
+      data: (data) {},
+      error: (error, stackTrace) => null,
+      loading: () => null,
     );
 
     citySuggestionsAsync.when(
@@ -382,6 +452,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             setState(() {
                               selectedType = newValue!;
                             });
+                            print("type ${selectedType?.typeId}");
                           },
                           getItemLabel: (TypeList item) => item.typeName,
                         ),
@@ -395,65 +466,158 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
                 CategoryField(
                   onCategorySelected: (Category? category) async {
-                    setState(() {
-                      selectedcategory = category;
-                    });
-                    categoryId = selectedcategory!.id;
+                    if (category != null) {
+                      setState(() {
+                        selectedcategory = category;
+                        categoryId = category.id; // Update categoryId safely
+                      });
+                    } else {}
                   },
-                  onSubCategorySelected: (Category? value) {
-                    categoryId = selectedcategory!.id;
-                    final getCategories =
-                        ref.watch(GetCategoryResponseProvider(categoryId!));
-                    getCategories.whenData(
-                      (value) {
-                        // print("bibash  ${value.result}");
-                        response = value;
-                      },
-                    );
-                    print("ramu $categoryId");
+                  onSubCategorySelected: (Category? subCategory) {
+                    categoryId = subCategory?.id;
+                    _handleCategorySelection(
+                        selectedcategory, "Subcategory", ref);
+                  },
+                  onSubCategorySelected1: (Category? sub1) {
+                    categoryId = sub1?.id;
+                    _handleCategorySelection(
+                        selectedcategory, "Sub-subcategory 1", ref);
+                  },
+                  onSubCategorySelected2: (Category? sub2) {
+                    categoryId = sub2?.id;
+                    _handleCategorySelection(
+                        selectedcategory, "Sub-subcategory 2", ref);
                   },
                 ),
+
                 SizedBox(
                   height: 10.h,
                 ),
 
                 CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Title',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                  child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Title',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          
+                          controller: titlecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter title',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
                         ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
+                      ),
+                    ],
+                  ),
+                ),
+                if (selectedcategory?.id == 122)
+                  CreateListingCardWidget(
+                    child: Row(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Event Address',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        const Spacer(),
+                        Expanded(
+                          child: TextField(
+                            controller: addresscontroller,
+                            decoration: InputDecoration.collapsed(
+                                hintText: 'Enter address',
+                                hintStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp,
+                                    color: const Color(0xffADADAD))),
+                          ),
+                        ),
                       ],
                     ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: titlecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter title',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
+                  ),
+                if (selectedcategory?.id == 122)
+                  CreateListingCardWidget(
+                    child: Row(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Time',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        const Spacer(),
+                        Expanded(
+                            child: InkWell(
+                                onTap: () async {
+                                  final pickedDate = await showDialog<DateTime>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AdoptiveCalendar(
+                                        initialDate: DateTime
+                                            .now(), // Default current date
+                                        action:
+                                            true, // Enable action buttons (Confirm/Cancel)
+                                      );
+                                    },
+                                  );
+                                  _onDateSelected(pickedDate);
+                                },
+                                child: Text(timeAndMonth == null
+                                    ? "Pick a time"
+                                    : DateFormat('yyyy/MM/dd HH:mm')
+                                        .format(timeAndMonth!)))),
+                      ],
                     ),
-                  ],
-                )),
-                if (categoryId == 73)
+                  ),
+                if (selectedcategory?.id == 73)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -479,7 +643,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: titlecontroller,
+                          controller: experiencecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter experience',
                               hintStyle: TextStyle(
@@ -493,7 +657,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (categoryId == 73)
+                if (selectedcategory?.id == 73)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -519,7 +683,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: titlecontroller,
+                          controller: comapnycontroller,
                           decoration: InputDecoration.collapsed(
                               hintText:
                                   'Enter company name leav if not want to disclose',
@@ -571,56 +735,61 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     // ),
                   ],
                 )),
+
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                if (categoryId == 1 || categoryId == 14)
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Whats in the box',
-                            style: TextStyle(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'What\'s in the box',
+                              style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
                                 color: const Color(0xffD33636),
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      TextField(
-                        controller: descriptionController,
-                        decoration: InputDecoration.collapsed(
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15.h),
+                        TextField(
+                          controller: whatsintheboxcontroller,
+                          onEditingComplete: () {
+                            if (getRoad?.result['59']?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result['59']?.id}', // Create the key dynamically
+                                whatsintheboxcontroller.text,
+                              ]);
+                            }
+                          },
+                          decoration: InputDecoration.collapsed(
                             hintText: "Mention what's included",
                             hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                      // SizedBox(
-                      //   height: 10.h,
-                      // ),
-                    ],
-                  )),
-                SizedBox(
-                  height: 10.h,
-                ),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              color: const Color(0xffADADAD),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 // CreateListingCardWidget(
                 //     child: Row(
                 //   children: [
@@ -658,10 +827,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //   ],
                 // ),
                 // ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                // CreateListingCardWidget(
+
                 //   child: Row(
                 //     mainAxisSize: MainAxisSize.max,
                 //     children: [
@@ -703,7 +869,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //     ],
                 //   ),
                 // ),
-                if (categoryId == 37)
+                if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -746,7 +912,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (categoryId == 73)
+                if (selectedcategory?.id == 73)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -770,9 +936,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             )
                           ],
                         ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
+                        // SizedBox(
+                        //   width: 10.w,
+                        // ),
                         // Expanded(
                         //   // Wrap the dropdown in Expanded to constrain its width
                         //   child: CustomDropdownButton<Option>(
@@ -791,7 +957,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-                if (categoryId != 30)
+                if (selectedcategory?.id != 30 && selectedcategory?.id != 1)
+                if(phoneresp!=null)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -810,86 +977,101 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
                         Expanded(
-                            // Wrap the dropdown in Expanded to constrain its width
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "7 days Exchange & Return",
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: true,
-                                  onChanged: (value) {},
-                                ),
-                                Text(
-                                  "valid for change of mind",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: false,
-                                  onChanged: (value) {},
-                                ),
-                                const Text(
-                                    "valid for defective,\nmissing or demaged items")
-                              ],
-                            ),
-                          ],
-                        )),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // First Checkbox option
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: _isselected ==
+                                        true, // The first checkbox is selected if _isselected is true
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isselected =
+                                            true; // Set _isselected to true when the first checkbox is selected
+                                      });
+                                      cf?.add([
+                                        'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
+                                        phoneresp!.result['8']!.options[0].id,
+                                      ]);
+                                    },
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      phoneresp!.result['8']!.options[0].value,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              // Second Checkbox option
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: _isselected ==
+                                        false, // The second checkbox is selected if _isselected is false
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isselected =
+                                            false; // Set _isselected to false when the second checkbox is selected
+                                      });
+                                      cf?.add([
+                                        'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
+                                        phoneresp!.result['8']!.options[1].id,
+                                      ]);
+                                    },
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      phoneresp!.result['8']!.options[1].value,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                if (categoryId == 1)
-                  CreateListingCardWidget(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Available Features',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        if (categoryId == 1)
+
+                if (getRoad?.result != null)
+                  if (selectedcategory?.id == 1)
+                    CreateListingCardWidget(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Available features',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                ' *',
+                                style: TextStyle(
+                                    color: const Color(0xffD33636),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp),
+                              )
+                            ],
+                          ),
                           Expanded(
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<Option>(
@@ -897,17 +1079,16 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 hint: Text(
                                   selectedFeatures == null ||
                                           selectedFeatures!.isEmpty
-                                      ? "Select Features"
+                                      ? "Select features"
                                       : selectedFeatures!.first.value,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items: response!.result['17']!.options
-                                    .map((color) {
+                                items:
+                                    getRoad!.result['17']!.options.map((color) {
                                   return DropdownMenuItem<Option>(
                                     value: color,
                                     child: Row(
                                       children: [
-                                        // Checkbox to show whether the color is selected
                                         StatefulBuilder(
                                           builder: (context, setState) {
                                             return Checkbox(
@@ -918,11 +1099,34 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                 setState(() {
                                                   selectedFeatures ??= [];
                                                   if (isChecked == true) {
-                                                    selectedFeatures!.add(
-                                                        color); // Add to selectedColors if checked
+                                                    selectedFeatures!
+                                                        .add(color);
                                                   } else {
-                                                    selectedFeatures!.remove(
-                                                        color); // Remove from selectedColors if unchecked
+                                                    selectedFeatures!
+                                                        .remove(color);
+                                                  }
+
+                                                  final cfKey =
+                                                      'cf.${getRoad!.result['17']!.id}';
+                                                  final cfValue = selectedFeatures!
+                                                      .map((feature) =>
+                                                          feature.id)
+                                                      .toSet()
+                                                      .toList(); // Ensure unique values
+
+                                                  // Check if cf already contains this key
+                                                  int index = cf?.indexWhere(
+                                                          (entry) =>
+                                                              entry[0] ==
+                                                              cfKey) ??
+                                                      -1;
+
+                                                  if (index >= 0) {
+                                                    // Update existing entry
+                                                    cf?[index][1] = cfValue;
+                                                  } else {
+                                                    // Add a new entry
+                                                    cf?.add([cfKey, cfValue]);
                                                   }
                                                 });
                                               },
@@ -940,13 +1144,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               ),
                             ),
                           ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
                 SizedBox(
                   height: 5.h,
                 ),
-                if (categoryId == 1 || categoryId == 9)
+                if (selectedcategory?.id == 1 || selectedcategory?.id == 9)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -973,59 +1177,86 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<Option>(
-                              isExpanded: true,
-                              hint: Text(
-                                selectedColors == null ||
-                                        selectedColors!.isEmpty
-                                    ? "Select colors"
-                                    : selectedColors!.first.value,
-                                overflow: TextOverflow.ellipsis,
+                        if (getRoad?.result != null)
+                          Expanded(
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<Option>(
+                                isExpanded: true,
+                                hint: Text(
+                                  selectedColors == null ||
+                                          selectedColors!.isEmpty
+                                      ? "Select colors"
+                                      : selectedColors!.first.value,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                items:
+                                    getRoad!.result['8']!.options.map((color) {
+                                  return DropdownMenuItem<Option>(
+                                    value: color,
+                                    child: Row(
+                                      children: [
+                                        StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Checkbox(
+                                              value: selectedColors != null &&
+                                                  selectedColors!
+                                                      .contains(color),
+                                              onChanged: (bool? isChecked) {
+                                                setState(() {
+                                                  selectedColors ??= [];
+                                                  if (isChecked == true) {
+                                                    selectedColors!.add(color);
+                                                  } else {
+                                                    selectedColors!
+                                                        .remove(color);
+                                                  }
+
+                                                  final cfKey =
+                                                      'cf.${getRoad!.result['8']!.id}';
+                                                  final cfValue = selectedColors!
+                                                      .map((feature) =>
+                                                          feature.id)
+                                                      .toSet()
+                                                      .toList(); // Ensure unique values
+
+                                                  // Check if cf already contains this key
+                                                  int index = cf?.indexWhere(
+                                                          (entry) =>
+                                                              entry[0] ==
+                                                              cfKey) ??
+                                                      -1;
+
+                                                  if (index >= 0) {
+                                                    // Update existing entry
+                                                    cf?[index][1] = cfValue;
+                                                  } else {
+                                                    // Add a new entry
+                                                    cf?.add([cfKey, cfValue]);
+                                                  }
+                                                });
+
+                                                // Print the updated cf list
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        Text(color.value),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (_) {}, // Keeps the dropdown open
+                                icon: const Icon(Icons.arrow_drop_down,
+                                    color: Colors.grey),
                               ),
-                              items:
-                                  response!.result['8']!.options.map((color) {
-                                return DropdownMenuItem<Option>(
-                                  value: color,
-                                  child: Row(
-                                    children: [
-                                      // Checkbox to show whether the color is selected
-                                      StatefulBuilder(
-                                        builder: (context, setState) {
-                                          return Checkbox(
-                                            value: selectedColors != null &&
-                                                selectedColors!.contains(color),
-                                            onChanged: (bool? isChecked) {
-                                              setState(() {
-                                                selectedColors ??= [];
-                                                if (isChecked == true) {
-                                                  selectedColors!.add(
-                                                      color); // Add to selectedColors if checked
-                                                } else {
-                                                  selectedColors!.remove(
-                                                      color); // Remove from selectedColors if unchecked
-                                                }
-                                              });
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      Text(color.value),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (_) {}, // Keeps the dropdown open
-                              icon: const Icon(Icons.arrow_drop_down,
-                                  color: Colors.grey),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
-                if (categoryId == 73) // Conditionally show the calendar
+                if (selectedcategory?.id == 73 ||
+                    selectedcategory?.id ==
+                        122) // Conditionally show the calendar
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1087,7 +1318,135 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                    if (categoryId == 73) // Conditionally show the calendar
+                if (selectedcategory?.id ==
+                    171) // Conditionally show the calendar
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Manufactured Date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  selectmanufacturingdate =
+                                      pickedDate; // Save the selected date
+                                });
+                              }
+                            },
+                            child: Text(
+                              selectedStartDate != null
+                                  ? '${selectedStartDate!.toLocal()}'.split(
+                                      ' ')[0] // Display the selected date
+                                  : 'Select date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: selectedStartDate != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (selectedcategory?.id ==
+                    171) // Conditionally show the calendar
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Expiry Date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  grocceryexpiraydate =
+                                      pickedDate; // Save the selected date
+                                });
+                              }
+                            },
+                            child: Text(
+                              selectedStartDate != null
+                                  ? '${selectedStartDate!.toLocal()}'.split(
+                                      ' ')[0] // Display the selected date
+                                  : 'Select date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: selectedStartDate != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (selectedcategory?.id == 73 ||
+                    selectedcategory?.id ==
+                        122) // Conditionally show the calendar
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1150,7 +1509,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-                if (categoryId == 9)
+                if (selectedcategory?.id == 9)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1179,32 +1538,22 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         ),
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<String>(
-                            items: const [
-                              'Apple',
-                              'Samsung',
-                              'OnePlus',
-                              'Google',
-                              'Xiaomi',
-                              'Oppo',
-                              'Vivo',
-                              'Sony',
-                              'Huawei',
-                              'Motorola'
-                            ],
+                          child: CustomDropdownButton<Option>(
+                            items: phoneresp!.result['13']!.options,
                             dropdownValue: selectedmobilebrand,
                             onChanged: (newValue) {
                               setState(() {
                                 selectedmobilebrand = newValue;
                               });
                             },
-                            getItemLabel: (String item) => item.toString(),
+                            getItemLabel: (Option item) =>
+                                item.value.toString(),
                           ),
                         ),
                       ],
                     ),
                   ),
-                if (categoryId == 1)
+                if (selectedcategory?.id == 1)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1231,25 +1580,26 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<Option>(
-                            items: response!.result['10']!.options,
-                            dropdownValue: selectedmodel,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedmodel = newValue;
-                              });
-                            },
-                            getItemLabel: (Option item) =>
-                                item.value.toString(),
+                        if (getRoad?.result != null)
+                          Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: CustomDropdownButton<Option>(
+                              items: getRoad!.result['10']!.options,
+                              dropdownValue: selectedmodel,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedmodel = newValue;
+                                });
+                              },
+                              getItemLabel: (Option item) =>
+                                  item.value.toString(),
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
 
-                if (categoryId == 1)
+                if (selectedcategory?.id == 1)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1275,7 +1625,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: pricecontroller,
+                          controller: auomobilecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter model',
                               hintStyle: TextStyle(
@@ -1286,7 +1636,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-                if (categoryId == 37)
+                if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1312,7 +1662,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: pricecontroller,
+                          controller: streetsizecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Size of road in feet',
                               hintStyle: TextStyle(
@@ -1323,7 +1673,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-                if (categoryId == 30)
+                if (selectedcategory?.id == 30)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1349,7 +1699,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: pricecontroller,
+                          controller: sizecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Anna or ropani',
                               hintStyle: TextStyle(
@@ -1360,6 +1710,42 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
+                CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Enter address',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          ' *',
+                          style: TextStyle(
+                              color: const Color(0xffD33636),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextField(
+                        controller: addresscontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: 'Enter address',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                  ],
+                )),
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -1385,7 +1771,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
-                        controller: pricecontroller,
+                        controller: stockcontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Enter stock',
                             hintStyle: TextStyle(
@@ -1400,44 +1786,68 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (categoryId == 1)
+                if (selectedcategory?.id == 1)
                   CreateListingCardWidget(
-                      child: Row(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Year of Registration',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      Expanded(
-                        child: TextField(
-                          controller: pricecontroller,
-                          decoration: InputDecoration.collapsed(
-                              hintText: 'Enter registration',
-                              hintStyle: TextStyle(
-                                  fontWeight: FontWeight.w500,
+                    child: Row(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Year of Registration',
+                              style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: const Color(0xffADADAD))),
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  )),
-                if (categoryId == 1)
+                        const Spacer(),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime.now(),
+                                helpText: 'Select Year of Registration',
+                                fieldHintText: 'Year',
+                              );
+
+                              if (selectedDate != null) {
+                                // Assign selected year to the controller
+                                yearofregistrationcontroller.text =
+                                    selectedDate.year.toString();
+                              }
+                            },
+                            child: AbsorbPointer(
+                              child: TextField(
+                                controller: yearofregistrationcontroller,
+                                readOnly: true, // Make it non-editable
+                                decoration: InputDecoration.collapsed(
+                                  hintText: 'Enter registration year',
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: const Color(0xffADADAD)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (selectedcategory?.id == 1)
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -1463,7 +1873,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         const Spacer(),
                         Expanded(
                           child: TextField(
-                            controller: pricecontroller,
+                            controller: kilometerscontroller,
                             decoration: InputDecoration.collapsed(
                                 hintText: 'kilometers',
                                 hintStyle: TextStyle(
@@ -1475,7 +1885,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (categoryId == 14)
+
+                if (selectedcategory?.id == 54)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1484,7 +1895,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Fuel Type',
+                              'Size',
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w500,
@@ -1502,103 +1913,20 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<Option>(
-                              items: response!.result['14']!.options,
-                              dropdownValue: fuelType,
+                        if (getRoad?.result != null)
+                          Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: CustomDropdownButton<Option>(
+                              items: getRoad!.result['12']!.options,
+                              dropdownValue: selecetedWarrenty,
                               onChanged: (newValue) {
                                 setState(() {
-                                  fuelType = newValue;
+                                  selecetedWarrenty = newValue;
                                 });
                               },
-                              getItemLabel: (Option item) => item.value),
-                        ),
-                      ],
-                    ),
-                  ),
-                if (categoryId == 1)
-                  CreateListingCardWidget(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Fuel Type',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            )
-                          ],
-                        ),
-                        if (categoryId == 54)
-                          CreateListingCardWidget(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Size',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      ' *',
-                                      style: TextStyle(
-                                          color: const Color(0xffD33636),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14.sp),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Expanded(
-                                  // Wrap the dropdown in Expanded to constrain its width
-                                  child: CustomDropdownButton<Option>(
-                                    items: laptoprep!.result['12']!.options,
-                                    dropdownValue: selecetedWarrenty,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selecetedWarrenty = newValue;
-                                      });
-                                    },
-                                    getItemLabel: (Option item) => item.value,
-                                  ),
-                                ),
-                              ],
+                              getItemLabel: (Option item) => item.value,
                             ),
                           ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<Option>(
-                              items: response!.result['14']!.options,
-                              dropdownValue: fuelType,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  fuelType = newValue;
-                                });
-                              },
-                              getItemLabel: (Option item) => item.value),
-                        ),
                       ],
                     ),
                   ),
@@ -1610,7 +1938,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Warranty',
+                            'Select offer',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -1630,21 +1958,115 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                       Expanded(
                         // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<Option>(
-                          items: laptoprep!.result['12']!.options,
-                          dropdownValue: selecetedWarrenty,
+                        child: CustomDropdownButton<Offer>(
+                          items: getoffer ?? [],
+                          dropdownValue: selectedoffer,
                           onChanged: (newValue) {
                             setState(() {
-                              selecetedWarrenty = newValue;
+                              selectedoffer = newValue;
                             });
                           },
-                          getItemLabel: (Option item) => item.value,
+                          getItemLabel: (Offer item) => item.offers,
                         ),
                       ),
                     ],
                   ),
                 ),
-                if (categoryId == 37)
+                if (selectedcategory?.id == 1)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fuel Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        if (getRoad?.result != null)
+                          Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: CustomDropdownButton<Option>(
+                                items: getRoad!.result['14']!.options,
+                                dropdownValue: fuelType,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    fuelType = newValue;
+                                  });
+                                },
+                                getItemLabel: (Option item) => item.value),
+                          ),
+                      ],
+                    ),
+                  ),
+                if (selectedcategory?.id == 1)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Warranty',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: getRoad!.result['19']?.options ?? [],
+                            dropdownValue: selecetedWarrenty,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selecetedWarrenty = newValue;
+
+                                // Initialize cf if null and add the new entry
+
+                                cf?.add([
+                                  'cf.${getRoad!.result['19']?.id}', // Create the key dynamically
+                                  selecetedWarrenty
+                                      ?.id // Get the selected warranty ID
+                                ]);
+                              });
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1671,23 +2093,24 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<Option>(
-                            items: getRoad!.result['6']!.options,
-                            dropdownValue: selectedbuildingtype,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedbuildingtype = newValue;
-                              });
-                            },
-                            getItemLabel: (Option item) => item.value,
+                        if (getRoad?.result != null)
+                          Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: CustomDropdownButton<Option>(
+                              items: getRoad!.result['6']!.options,
+                              dropdownValue: selectedbuildingtype,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedbuildingtype = newValue;
+                                });
+                              },
+                              getItemLabel: (Option item) => item.value,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
-                if (categoryId == 9 || categoryId == 14)
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1733,48 +2156,166 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Seller Type',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
-                          },
-                          getItemLabel: (CityList item) => item.name,
+                if (selectedcategory?.id == 54)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Size',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<CityList>(
+                            items: citylistsitems!,
+                            dropdownValue: selectedCity,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedCity = newValue;
+                              });
+                            },
+                            getItemLabel: (CityList item) => item.name,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                // if (selectedcategory?.id != 1)
+                //   CreateListingCardWidget(
+                //     child: Row(
+                //       mainAxisSize: MainAxisSize.max,
+                //       children: [
+                //         Row(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               'Seller Type',
+                //               style: TextStyle(
+                //                   fontSize: 14.sp,
+                //                   fontWeight: FontWeight.w500,
+                //                   color: Colors.black),
+                //             ),
+                //             Text(
+                //               ' *',
+                //               style: TextStyle(
+                //                   color: const Color(0xffD33636),
+                //                   fontWeight: FontWeight.w500,
+                //                   fontSize: 14.sp),
+                //             )
+                //           ],
+                //         ),
+                //         SizedBox(
+                //           width: 10.w,
+                //         ),
+                //         Expanded(
+                //           // Wrap the dropdown in Expanded to constrain its width
+                //           child: CustomDropdownButton<CityList>(
+                //             items: citylistsitems!,
+                //             dropdownValue: selectedCity,
+                //             onChanged: (newValue) {
+                //               setState(() {
+                //                 selectedCity = newValue;
+                //               });
+                //             },
+                //             getItemLabel: (CityList item) => item.name,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                if (selectedcategory?.id != 1 && selectedcategory?.id != 9)
+                  CreateListingCardWidget(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Transmission Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        if (getRoad?.result != null)
+                          Column(
+                            children: getRoad!.result['15']!.options
+                                .map<Widget>((option) {
+                              return RadioListTile<Option>(
+                                value: option,
+                                groupValue: trasnmsissiontype,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    trasnmsissiontype = newValue;
+
+                                    // Create dynamic cf key
+                                    final cfKey =
+                                        'cf.${getRoad!.result['15']!.id}';
+                                    final cfValue = [trasnmsissiontype!.id];
+
+                                    // Check if cf already contains this key
+                                    int index = cf?.indexWhere(
+                                            (entry) => entry[0] == cfKey) ??
+                                        -1;
+
+                                    if (index >= 0) {
+                                      // Update existing entry
+                                      cf?[index][1] = cfValue;
+                                    } else {
+                                      // Add a new entry
+                                      cf?.add([cfKey, cfValue]);
+                                    }
+                                  });
+
+                                  // Debug: Print the updated cf list
+                                },
+                                title: Text(
+                                  option
+                                      .value, // Display the label for each radio button
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                      ],
+                    ),
+                  ),
+
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -1800,7 +2341,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
-                        controller: pricecontroller,
+                        controller: youtubecontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Enter youtube link',
                             hintStyle: TextStyle(
@@ -1811,47 +2352,47 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
-
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Model',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: pricecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter price',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
+                if (selectedcategory?.id != 1)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Model',
+                            style: TextStyle(
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                )),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: modelcontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter model',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 SizedBox(
                   height: 10.h,
                 ),
-                if (categoryId == 1)
+                if (selectedcategory?.id == 1)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1877,7 +2418,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: pricecontroller,
+                          controller: milagecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Mileage',
                               hintStyle: TextStyle(
@@ -1888,43 +2429,52 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'RAM in GB',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: pricecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'in GB',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
+                if (selectedcategory?.id != 1)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'RAM in GB',
+                            style: TextStyle(
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                )),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          onSubmitted: (value) {
+                              if (getRoad?.result['16']?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result['16']?.id}', // Create the key dynamically
+                                value
+                              ]);
+                            }
+                          },
+                          controller: Gbcontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'in GB',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -1952,55 +2502,20 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                     const Spacer(),
                     Checkbox(
-                      value: _trending,
+                      value: trending,
                       onChanged: (value) {
                         setState(() {
-                          _trending = value!;
+                          trending = value!;
                         });
                       },
                     ),
                   ],
                 )),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Available Stock',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: pricecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Available Qty',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
+
                 SizedBox(
                   height: 10.h,
                 ),
-                if (categoryId == 9)
+                if (selectedcategory?.id == 9)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2026,7 +2541,16 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: pricecontroller,
+                          controller: storagecontroller,
+                          onSubmitted: (value) {
+                              if (getRoad?.result['32']?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result['32']?.id}', // Create the key dynamically
+                                storagecontroller.text,
+                              ]);
+                            }
+                          },
                           decoration: InputDecoration.collapsed(
                               hintText: 'storage in gb',
                               hintStyle: TextStyle(
@@ -2062,7 +2586,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                     Expanded(
                       child: TextField(
-                        controller: null,
+                        controller: pricecontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'RS xxxxx',
                             hintStyle: TextStyle(
@@ -2099,7 +2623,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     )
                   ],
                 )),
-                if (categoryId == 9 || categoryId == 14)
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2139,7 +2663,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (categoryId == 37)
+                if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2235,57 +2759,12 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
+
                 CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Offer',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<Offer>(
-                          items: offerresponse!,
-                          dropdownValue: selectedOffer,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedOffer = newValue;
-                            });
-                          },
-                          getItemLabel: (Offer item) => item.offers,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Story Display Days',
@@ -2300,32 +2779,51 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 color: const Color(0xffD33636),
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp),
-                          )
+                          ),
                         ],
                       ),
                       SizedBox(
-                        width: 10.w,
+                        height: 10.h,
                       ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<CityList>(
-                          items: citylistsitems!,
-                          dropdownValue: selectedCity,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedCity = newValue;
-                            });
-                          },
-                          getItemLabel: (CityList item) => item.name,
+                      DropdownButton<int>(
+                        isExpanded: true, // Ensures dropdown spans full width
+                        value:
+                            selectedStoryDisplayDays, // The currently selected value
+                        hint: Text(
+                          'Select Story Display Days',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey,
+                          ),
                         ),
+                        items: List.generate(10, (index) {
+                          int day = index + 1; // Generates values from 1 to 10
+                          return DropdownMenuItem<int>(
+                            value: day,
+                            child: Text(
+                              '$day Days',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              ),
+                            ),
+                          );
+                        }),
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedStoryDisplayDays = newValue;
+                          });
+                        },
                       ),
                     ],
                   ),
                 ),
+
                 SizedBox(
                   height: 5.h,
                 ),
-                if (categoryId == 14)
+                if (selectedcategory?.id == 14)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -2369,8 +2867,12 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Packaged Product Dimensions"),
+                    Text(
+                      "Packaged Product Dimensions",
+                      style: TextStyle(fontSize: 13),
+                    ),
                     Row(
                       children: [
                         Checkbox(
@@ -2448,7 +2950,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //   ],
                 // )),
 
-                if (categoryId == 9 || categoryId == 14 || categoryId == 30)
+                if (selectedcategory?.id == 9 ||
+                    selectedcategory?.id == 14 ||
+                    selectedcategory?.id == 30 ||
+                    selectedcategory?.id == 171)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2487,43 +2992,80 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Product Type',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      // CustomDropdownButton<ProductType>(
-                      //   items: productTypeListItems,
-                      //   dropdownValue: selectedProductType,
-                      //   onChanged: (ProductType? newValue) {
-                      //     setState(() {
-                      //       selectedProductType = newValue!;
-                      //     });
-                      //   },
-                      //   getItemLabel: (ProductType item) => item.name,
-                      // ),
-                    ],
+                if (selectedcategory?.id == 1 || selectedcategory?.id == 9)
+                  CreateListingCardWidget(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Product Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Column(
+                          children: getRoad!.result['4']!.options
+                              .map<Widget>((option) {
+                            return RadioListTile<Option>(
+                              value: option,
+                              groupValue: selecctedProductTYpe,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selecctedProductTYpe = newValue;
+
+                                  // Create dynamic cf key
+                                  final cfKey =
+                                      'cf.${getRoad!.result['4']!.id}';
+                                  final cfValue = [selecctedProductTYpe!.id];
+
+                                  // Check if cf already contains this key
+                                  int index = cf?.indexWhere(
+                                          (entry) => entry[0] == cfKey) ??
+                                      -1;
+
+                                  if (index >= 0) {
+                                    // Update existing entry
+                                    cf?[index][1] = cfValue;
+                                  } else {
+                                    // Add a new entry
+                                    cf?.add([cfKey, cfValue]);
+                                  }
+                                });
+
+                                // Debug: Print the updated cf list
+                                print("Updated cf: $cf");
+                              },
+                              title: Text(
+                                option
+                                    .value, // Display the label for each radio button
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+
                 // const ReturnPolicyCardWidget(),
                 // SizedBox(
                 //   height: 10.h,
@@ -2563,16 +3105,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 // SizedBox(
                 //   height: 10.h,
                 // ),
+
                 CreateListingCardWidget(
                     child: Row(
                   children: [
-                    // Text(
-                    //   'Length(cm)',
-                    //   style: TextStyle(
-                    //       fontWeight: FontWeight.w500,
-                    //       fontSize: 14.sp,
-                    //       color: Colors.black),
-                    // ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -2680,6 +3216,31 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
+                if (selectedcategory?.id == 171)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Text(
+                        'Grocery Brand',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: Colors.black),
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: weightcontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Grocery Brand',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -2687,7 +3248,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     child: Row(
                   children: [
                     Text(
-                      'Weight (Km)',
+                      'Weight (Kg)',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.sp,
@@ -2833,34 +3394,34 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 15.h,
                 ),
-
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  decoration: BoxDecoration(
-                      color: ColorConstant.whiteColor,
-                      borderRadius: BorderRadius.circular(20),
-                      border:
-                          Border.all(color: ColorConstant.grayColor, width: 2)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Discount on Bulk Order !",
-                        style: headerstyle.copyWith(
-                            color: ColorConstant.blackColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      const BulkDiscountWidget()
-                    ],
-                  ),
-                )
+                if (selectedType?.typeId == 7)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20),
+                    decoration: BoxDecoration(
+                        color: ColorConstant.whiteColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            color: ColorConstant.grayColor, width: 2)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Discount on Bulk Order !",
+                          style: headerstyle.copyWith(
+                              color: ColorConstant.blackColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14),
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        const BulkDiscountWidget()
+                      ],
+                    ),
+                  )
                 // CreateListingCardWidget(
                 //     child: Row(
                 //   mainAxisSize: MainAxisSize.max,
@@ -2972,6 +3533,24 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 SellerInformationWidget(
+                  stock: stockcontroller.text,
+                  story: selectedStoryDisplayDays,
+
+                  cfvalue: cf,
+                  address: addresscontroller.text,
+                  posttype: selectedType?.typeId,
+
+                  childid: childcategory?.id.toString(),
+                  parentid: categoryId.toString(),
+                  youtube: youtubecontroller.text,
+                  mileage: milagecontroller.text,
+                  tags: _tags,
+                  trending: trending ? 1 : 0,
+                  transmission: trasnmsissiontype,
+                  warrenty: selecetedWarrenty,
+                  fuel: fuelType,
+                  offer: selectedoffer,
+                  producttype: selectedProductTYpe,
                   shippingList: shippingcities,
                   category: selectedcategory?.id.toString() ?? '',
                   type: selectedType?.typeId.toString() ??
@@ -3177,909 +3756,5 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
         ),
       ),
     );
-  }
-}
-
-class SellerInformationWidget extends StatefulWidget {
-  SellerInformationWidget(
-      {super.key,
-      this.category,
-      this.title,
-      this.city,
-      this.price,
-      this.description,
-      this.length = '0',
-      this.width = '0',
-      this.type,
-      this.height = '0',
-      this.weight = '0',
-      this.phonecoontroller,
-      this.terms = '0',
-      this.discount = '0',
-      this.emailcontroller,
-      this.nameconroller,
-      required this.shippingList});
-
-  String? type;
-  String? category;
-  String? title;
-  String? city;
-  String? price;
-  String? description;
-  String? length;
-  String? width;
-  String? height;
-  String? weight;
-  TextEditingController? phonecoontroller;
-  String? terms;
-  String discount;
-  TextEditingController? emailcontroller;
-
-  TextEditingController? nameconroller;
-  List<ShippingCitiesModel> shippingList;
-
-  @override
-  State<SellerInformationWidget> createState() =>
-      _SellerInformationWidgetState();
-}
-
-class _SellerInformationWidgetState extends State<SellerInformationWidget> {
-  TextEditingController? pickupcontroller = TextEditingController();
-  ShippingCitiesModel? selectedpickup;
-  List<File?> selectedImages = [];
-  bool isloading = false;
-
-  void onImagesSelected(List<File?> images) {
-    setState(() {
-      selectedImages = images;
-    });
-  }
-
-  Future<String> convertFileToBase64(File file) async {
-    // Read the file as bytes
-    final bytes = await file.readAsBytes();
-    // Convert bytes to base64
-    return base64Encode(bytes);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            SvgPicture.asset(userIcon),
-            SizedBox(
-              width: 10.w,
-            ),
-            Text(
-              'Seller Information',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 15.h,
-        ),
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            SizedBox(
-              width: 5.w,
-            ),
-            Text(
-              'Email',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            SizedBox(
-              width: 5.w,
-            ),
-            Text(
-              '*',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            const Spacer(),
-            Expanded(
-              child: TextField(
-                controller: widget.emailcontroller,
-                decoration: InputDecoration.collapsed(
-                    hintText: 'XXX@gmail.com',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
-                        color: const Color(0xffADADAD))),
-              ),
-            ),
-          ],
-        )),
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            Text(
-              'Pickup Location',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            Expanded(
-              // Wrap the dropdown in Expanded to constrain its width
-              child: CustomDropdownButton<ShippingCitiesModel>(
-                items: widget.shippingList,
-                dropdownValue: selectedpickup,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedpickup = newValue;
-                  });
-                },
-                getItemLabel: (ShippingCitiesModel item) => item.name,
-              ),
-            ),
-          ],
-        )),
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            SizedBox(
-              width: 5.w,
-            ),
-            Text(
-              'Phone Number',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            Text(
-              '*',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            SizedBox(
-              width: 15.w,
-            ),
-            Expanded(
-              child: TextField(
-                controller: widget.phonecoontroller,
-                decoration: InputDecoration.collapsed(
-                    hintText: '98XXXXXX',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
-                        color: const Color(0xffADADAD))),
-              ),
-            ),
-            SizedBox(
-              width: 30.w,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                  color: const Color(0xffEDECEC),
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: Column(
-                children: [
-                  CustomCheckbox(value: false, onChanged: (value) {}),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'Hide',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff888888),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        )),
-        //   CreateListingCardWidget(
-        //     child: Row(
-        //   children: [
-        //     Text(
-        //       'Enter tag',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 14.sp,
-        //           color: Colors.black),
-        //     ),
-        //     const Spacer(),
-        //     Expanded(
-        //       child: TextField(
-        //         controller: widget.nameconroller,
-        //         decoration: InputDecoration.collapsed(
-        //             hintText: widget.nameconroller?.text ?? 'name',
-        //             hintStyle: TextStyle(
-        //                 fontWeight: FontWeight.w500,
-        //                 fontSize: 14.sp,
-        //                 color: const Color(0xffADADAD))),
-        //       ),
-        //     ),
-        //   ],
-        // )),
-        // SizedBox(
-        //   height: 10.h,
-        // ),
-        // CreateListingCardWidget(
-        //     child: Row(
-        //   children: [
-        //     Text(
-        //       'Enter name',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 14.sp,
-        //           color: Colors.black),
-        //     ),
-        //     const Spacer(),
-        //     Expanded(
-        //       child: TextField(
-        //         controller: widget.nameconroller,
-        //         decoration: InputDecoration.collapsed(
-        //             hintText: widget.nameconroller?.text ?? 'name',
-        //             hintStyle: TextStyle(
-        //                 fontWeight: FontWeight.w500,
-        //                 fontSize: 14.sp,
-        //                 color: const Color(0xffADADAD))),
-        //       ),
-        //     ),
-        //   ],
-        // )),
-
-        SizedBox(
-          height: 15.h,
-        ),
-        Row(
-          children: [
-            const Icon(Icons.camera_alt),
-            SizedBox(
-              width: 10.w,
-            ),
-            Text(
-              'Photos',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 15.h,
-        ),
-        SelectPhotFromFilesContainer(
-          onImagesSelected: (image) {
-            setState(() {
-              selectedImages = image;
-            });
-          },
-        ),
-        Center(
-          child: Text(
-            'Add up to 6 pictures. Use real pictures of your products, not cataloges.',
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 10.sp,
-                color: const Color(0xffADADAD)),
-          ),
-        ),
-        SizedBox(
-          height: 5.h,
-        ),
-        Row(
-          children: [
-            SvgPicture.asset(tagIcon),
-            SizedBox(
-              width: 7.w,
-            ),
-            Text(
-              'Pricing',
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            )
-          ],
-        ),
-        SizedBox(
-          height: 20.h,
-        ),
-        Text(
-          'Permium Listing',
-          style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w700,
-              color: const Color(0xff888888)),
-        ),
-        SizedBox(
-          height: 8.h,
-        ),
-        Text(
-          'The premium package help seller to promote their products or service by giving more visibility to their listings to attract more buyers and sell faster',
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 10.sp,
-              color: const Color(0xffADADAD)),
-        ),
-        // SizedBox(
-        //   height: 15.h,
-        // ),
-        // CreateListingCardWidget(
-        //     child: Row(
-        //   children: [
-        //     Text(
-        //       'Regular (Free)',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 14.sp,
-        //           color: Colors.black),
-        //     ),
-        //     const Spacer(),
-        //     Expanded(
-        //       child: TextField(
-        //         decoration: InputDecoration.collapsed(
-        //             hintText: 'Rs. 0.00',
-        //             hintStyle: TextStyle(
-        //                 fontWeight: FontWeight.w500,
-        //                 fontSize: 14.sp,
-        //                 color: const Color(0xffADADAD))),
-        //       ),
-        //     ),
-        //   ],
-        // )),
-        // SizedBox(
-        //   height: 4.h,
-        // ),
-        Text(
-          'Keep online for 60 days',
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 10.sp,
-              color: const Color(0xffADADAD)),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10.w,
-            vertical: 20.h,
-          ),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              color: const Color(0xff362677)),
-          child: Row(
-            children: [
-              Text(
-                'Smart Boost',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                'Rs. 50',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 7.h,
-        ),
-
-        Text(
-          "90 days of promotion | Facebook Ads (4 days) | Up to 10 images allowed. Facebook boost fir 4 days (5 per day) + 2 discount | Pay only 18 with free designing! Call 9840714218 for details | Displayed at the top of the page in search result page | Featured on the home page | Featured in the category | Keep online for 90 days.",
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 10.sp,
-              color: const Color(0xffADADAD)),
-        ),
-        SizedBox(
-          height: 30.h,
-        ),
-
-        isloading
-            ? const Center(child: CircularProgressIndicator())
-            : Center(
-                child: GeneralEelevatedButton(
-                    text: 'Submit',
-                    onPresssed: () async {
-                      setState(() {
-                        isloading = true;
-                      });
-                      if (widget.category != null &&
-                          widget.title != null &&
-                          widget.city != null &&
-                          widget.price != null &&
-                          widget.description != null &&
-                          widget.type != null &&
-                          widget.phonecoontroller?.text.isNotEmpty == true &&
-                          selectedpickup!.name.isNotEmpty &&
-                          selectedImages.isNotEmpty &&
-                          widget.terms != null) {
-                        try {
-                          // Dummy data
-                          await createlisting(
-                                  null, // ref
-                                  widget.category!.trim(), // category
-                                  widget.title!.trim(), // title
-                                  widget.city!.trim(), // city
-                                  widget.price!.trim(), // price
-                                  widget.description!.trim(), // description
-                                  widget.length?.trim() ?? '0', // length
-                                  widget.weight?.trim() ?? '0', // width
-                                  widget.height?.trim() ?? '0', // height
-                                  widget.weight?.trim() ?? '0', // weight
-                                  widget.discount.trim(), // discounted price
-                                  widget.type?.trim() ?? '0', // type
-                                  widget.emailcontroller!.text, // email
-                                  widget.phonecoontroller!.text, // phone
-                                  widget.nameconroller!.text, // username
-                                  selectedpickup!.name, // pickup
-                                  selectedImages, // images
-                                  widget.terms?.trim() ??
-                                      '0', // accept (e.g., "1" for yes, or whatever value is expected)
-                                  pickupcontroller!
-                                      .text // address (use the appropriate address here)
-                                  )
-                              .then(
-                            (value) async {
-                              setState(() {
-                                isloading = false;
-                              });
-                              return await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    child: AlertDialog(
-                                      shape: BeveledRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      content: Builder(
-                                        builder: (context) {
-                                          return SizedBox(
-                                            height: 300.h,
-                                            width: 900.w,
-                                            child: Column(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        const Text(
-                                                          "Message",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 19),
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            icon: const Icon(
-                                                                Icons.close)),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 30.h,
-                                                    ),
-                                                    Text(
-                                                      value,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 19),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        } catch (e) {}
-                      } else {
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text("Missing Fields"),
-                              content: const Text(
-                                  "Please fill in all required fields to create a listing."),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("OK"),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    })),
-        SizedBox(
-          height: 20.h,
-        )
-      ],
-    );
-  }
-}
-
-class SelectPhotFromFilesContainer extends StatefulWidget {
-  const SelectPhotFromFilesContainer({
-    super.key,
-    required this.onImagesSelected,
-  });
-  final Function(List<File?>) onImagesSelected;
-
-  @override
-  State<SelectPhotFromFilesContainer> createState() =>
-      _SelectPhotFromFilesContainerState();
-}
-
-class _SelectPhotFromFilesContainerState
-    extends State<SelectPhotFromFilesContainer> {
-  List<File?> images = [];
-  final ImagePickerService _imagePickerService = ImagePickerService();
-
-  void selectImages() async {
-    if (images.length < 6) {
-      List<File?> selectedImages =
-          await _imagePickerService.pickMultipleImages(context);
-      if (selectedImages.isNotEmpty) {
-        setState(() {
-          images.addAll(selectedImages);
-        });
-        // Pass the selected images to the parent using the callback
-        widget.onImagesSelected(images);
-      }
-    } else {
-      _imagePickerService.showSnackBar(
-        context: context,
-        content: 'You can upload up to 6 photos only.',
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 13.5.h),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.r),
-          border: Border.all(width: 1.w, color: const Color(0xffADADAD))),
-      child: DottedBorder(
-        borderType: BorderType.RRect,
-        radius: Radius.circular(10.r),
-        dashPattern: const [2, 3],
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-          child: GestureDetector(
-            onTap: selectImages,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-              child: images.isNotEmpty
-                  ? LayoutBuilder(
-                      builder: (context, constraints) {
-                        return ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: constraints.maxHeight,
-                          ),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Display 2 images per row
-                              crossAxisSpacing: 8.w,
-                              mainAxisSpacing: 8.h,
-                              childAspectRatio: 1, // Square images
-                            ),
-                            itemCount: images.length,
-                            itemBuilder: (context, index) {
-                              return Stack(
-                                children: [
-                                  Image.file(
-                                    images[index]!,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          images.removeAt(index);
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: Colors.red,
-                                        size: 24,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    )
-                  : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Click to select files',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD),
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 12.h,
-                          ),
-                          Container(
-                            width: 120.w,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 13.w, vertical: 9.h),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.r),
-                                border: Border.all(
-                                    width: 1.w,
-                                    color: const Color(0xffADADAD))),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.open_in_browser_outlined),
-                                SizedBox(
-                                  width: 2.w,
-                                ),
-                                Text(
-                                  'Browse..',
-                                  style: TextStyle(
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ReturnPolicyCardWidget extends StatefulWidget {
-  const ReturnPolicyCardWidget({
-    super.key,
-  });
-
-  @override
-  State<ReturnPolicyCardWidget> createState() => _ReturnPolicyCardWidgetState();
-}
-
-class _ReturnPolicyCardWidgetState extends State<ReturnPolicyCardWidget> {
-  final bool _isvalid = false;
-  bool _isDamge = false;
-  @override
-  Widget build(BuildContext context) {
-    return CreateListingCardWidget(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Sell to',
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Text(
-              'Who do you want\nto sell',
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-          ],
-        ),
-        SizedBox(width: 140.w),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CustomCheckbox(
-                      value: _isvalid,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDamge = value;
-                        });
-                      }),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Dealer',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  CustomCheckbox(
-                      value: _isvalid,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDamge = value;
-                        });
-                      }),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Distributer',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  CustomCheckbox(
-                      value: _isvalid,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDamge = value;
-                        });
-                      }),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Importer',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  CustomCheckbox(
-                      value: _isvalid,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDamge = value;
-                        });
-                      }),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Retailer',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  CustomCheckbox(
-                      value: _isvalid,
-                      onChanged: (value) {
-                        setState(() {
-                          _isDamge = value;
-                        });
-                      }),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Wholeseller',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        )
-      ],
-    ));
   }
 }

@@ -416,7 +416,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 width: 300.0,
                                                 child: TextField(
                                                   onSubmitted: (value) {
-                                                    print("bibash $value");
                                                     final postsAsyncValue = ref
                                                         .watch(
                                                             geDataBySearchvendorProvider(

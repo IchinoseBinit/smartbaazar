@@ -34,6 +34,7 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 import '../../product_details/constant/all_product_detail_widget.dart';
 
@@ -212,7 +213,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-      final randomstory = ref.watch(fetchStoryHomeProvider);
+    final randomstory = ref.watch(fetchStoryHomeProvider);
 
     final asyncbajarValue = ref.watch(getSocioDataProvider);
     final SearchProductModels =
@@ -364,14 +365,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               );
                             }, loading: () {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -543,7 +544,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(
@@ -586,56 +587,61 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     ),
                   ),
                 ),
-               randomstory.when(
-  data: (data) {
-    return SizedBox(
-      height: 130.h,
-      child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
-        scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
-        child: Row(
-          children: [
-            // First StoryAddWidget with search option
-            StoryAddWidget(
-              vImage: data.data!.feedStory?.posts.first.image,
-              brandname: data.data!.feedStory?.posts.first.vendorName,
-              index: 0,
-              addSearch: true, // First item has search
-              showgift: false,
-              onTap: () {
-                setState(() {
-                  // _isPopupVisible = true; // Open the popup
-                });
-              },
-            ),
-            // Expanded is not needed since SingleChildScrollView will handle scrolling
-            // Now ListView.builder will be added directly to the row
-            ...data.data!.feedStory!.posts.map((storyData) {
-              return StoryAddWidget(
-                brandname: storyData.vendorName,
-                vImage: storyData.vendorImage,
-                index: data.data!.feedStory!.posts.indexOf(storyData),
-                addSearch: false, // For all items other than the first, no search
-                showgift: storyData.hasSponsoredGifts,
-                onTap: () {
-                  // setState(() {
-                  //   // _isPopupVisible = true; // Open the popup
-                  // });
-                },
-              );
-            }).toList(),
-          ],
-        ),
-      ),
-    );
-  },
-  error: (error, stackTrace) => Text(error.toString()),
-  loading: () => const CircularProgressIndicator(),
-),
+                randomstory.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130.h,
+                      child: SingleChildScrollView(
+                        // Wrapping the Row with SingleChildScrollView
+                        scrollDirection:
+                            Axis.horizontal, // Ensuring it scrolls horizontally
+                        child: Row(
+                          children: [
+                            // First StoryAddWidget with search option
+                            StoryAddWidget(
+                              vImage: data.data!.feedStory?.posts.first.image,
+                              brandname:
+                                  data.data!.feedStory?.posts.first.vendorName,
+                              index: 0,
+                              addSearch: true, // First item has search
+                              showgift: false,
+                              onTap: () {
+                                setState(() {
+                                  // _isPopupVisible = true; // Open the popup
+                                });
+                              },
+                            ),
+                            // Expanded is not needed since SingleChildScrollView will handle scrolling
+                            // Now ListView.builder will be added directly to the row
+                            ...data.data!.feedStory!.posts.map((storyData) {
+                              return StoryAddWidget(
+                                brandname: storyData.vendorName,
+                                vImage: storyData.vendorImage,
+                                index: data.data!.feedStory!.posts
+                                    .indexOf(storyData),
+                                addSearch:
+                                    false, // For all items other than the first, no search
+                                showgift: storyData.hasSponsoredGifts,
+                                onTap: () {
+                                  // setState(() {
+                                  //   // _isPopupVisible = true; // Open the popup
+                                  // });
+                                },
+                              );
+                            }).toList(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const CircularProgressIndicator(),
+                ),
 
                 SizedBox(
                   height: 10.h,
                 ),
-          asyncbajarValue.when(
+                asyncbajarValue.when(
                   data: (data) {
                     return Stack(
                       children: [
@@ -695,8 +701,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: data.sliders!.map((banner) {
-                              int index =
-                                  data.sliders!.indexOf(banner);
+                              int index = data.sliders!.indexOf(banner);
                               return AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
                                 margin:
@@ -725,9 +730,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
 
-  
                 SizedBox(
                   height: 100.h,
                   width: double.infinity,
@@ -862,7 +868,7 @@ SizedBox(height: 10.h,),
                                         CrossAxisAlignment.center,
                                     children: [
                                       // Image.asset('assets/images/cloth.png'),
-                                       Wrap(
+                                      Wrap(
                                         children: [
                                           Text(
                                             data.cat[0].slug,
@@ -1080,12 +1086,12 @@ SizedBox(height: 10.h,),
                           return InkWell(
                             onTap: () {
                               // print("bibash ${hot.id}");
-                                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductDetailScreen(productId: hot.id),
-                              ));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(productId: hot.id),
+                                  ));
                             },
                             child: ProductDetailWidget(
                               membershipColor: hot.user.membercolor,
@@ -1809,8 +1815,8 @@ SizedBox(height: 10.h,),
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                            worth: resp.worth!,
-                                                        productname: resp.name,
+                              worth: resp.worth!,
+                              productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),

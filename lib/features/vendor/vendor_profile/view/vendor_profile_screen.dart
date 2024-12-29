@@ -117,19 +117,20 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": '',
       "screen": const DisputesScreen(),
     },
-     {
+    {
       "icon": Icons.emergency,
       "title": 'Hot',
       "subtitle": 'Products',
-      "screen":  HotViewScreen(header: 'hotdeals',),
+      "screen": HotViewScreen(
+        header: 'hotdeals',
+      ),
     },
-       {
+    {
       "icon": Icons.card_membership,
       "title": 'Mermbership',
       "subtitle": '',
       "screen": const LeftArrowScreen(),
     },
-    
   ];
   final List<Map<String, dynamic>> sellerCenterListing = [
     {
@@ -204,13 +205,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": 'Bazar',
       "screen": const BottomNavigationScreen(),
     },
-      {
+    {
       "icon": Icons.feed,
       "title": 'Create',
       "subtitle": 'Feed',
       "screen": const FeedScreen(),
     },
-
   ];
 
   final List<Map<String, dynamic>> accointProfileList = [
@@ -279,12 +279,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
               const Spacer(),
               InkWell(
                 onTap: () {
-                     Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AddToCartScreen(),
-              ),
-            );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const AddToCartScreen(),
+                    ),
+                  );
                 },
                 child: Container(
                   height: 32.h,

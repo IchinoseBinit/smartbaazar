@@ -17,6 +17,7 @@ import 'package:smartbazar/features/product_details/product_deatials_screen.dart
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class BusinessTabScreen extends ConsumerStatefulWidget {
   final String query;
@@ -421,7 +422,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(

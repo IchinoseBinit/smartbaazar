@@ -58,7 +58,7 @@ class MyListingScreen extends ConsumerWidget {
               ),
               listingResponse.when(
                 data: (data) {
-                  final products = data.products?.data ?? [];
+                  final products = data.products?.data?? [];
                   return products.isEmpty
                       ? const Center(child: Text('No listings available'))
                       : Expanded(
@@ -86,7 +86,7 @@ class MyListingScreen extends ConsumerWidget {
 }
 
 class MyListinDetails extends ConsumerWidget {
-  final ProductData product;
+  final Product product;
 
   const MyListinDetails({super.key, required this.product});
 

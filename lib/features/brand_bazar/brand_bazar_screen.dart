@@ -36,6 +36,7 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class BrandBazarScreen extends ConsumerStatefulWidget {
   const BrandBazarScreen({super.key});
@@ -215,7 +216,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     _searchController.dispose();
     super.dispose();
     _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -555,7 +555,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(
@@ -598,54 +598,59 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     ),
                   ),
                 ),
-      randomstory.when(
-  data: (data) {
-    return SizedBox(
-      height: 130.h,
-      child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
-        scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
-        child: Row(
-          children: [
-            // First StoryAddWidget with search option
-            StoryAddWidget(
-              vImage: data.data!.feedStory?.posts.first.image,
-              brandname: data.data!.feedStory?.posts.first.vendorName,
-              index: 0,
-              addSearch: true, // First item has search
-              showgift: false,
-              onTap: () {
-                setState(() {
-                  // _isPopupVisible = true; // Open the popup
-                });
-              },
-            ),
-            // Expanded is not needed since SingleChildScrollView will handle scrolling
-            // Now ListView.builder will be added directly to the row
-            ...data.data!.feedStory!.posts.map((storyData) {
-              return StoryAddWidget(
-                brandname: storyData.vendorName,
-                vImage: storyData.vendorImage,
-                index: data.data!.feedStory!.posts.indexOf(storyData),
-                addSearch: false, // For all items other than the first, no search
-                showgift: storyData.hasSponsoredGifts,
-                onTap: () {
-                  // setState(() {
-                  //   // _isPopupVisible = true; // Open the popup
-                  // });
-                },
-              );
-            }).toList(),
-          ],
-        ),
-      ),
-    );
-  },
-  error: (error, stackTrace) => Text(error.toString()),
-  loading: () => const CircularProgressIndicator(),
-),
-
-SizedBox(height: 20.h,),
-
+                randomstory.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 130.h,
+                      child: SingleChildScrollView(
+                        // Wrapping the Row with SingleChildScrollView
+                        scrollDirection:
+                            Axis.horizontal, // Ensuring it scrolls horizontally
+                        child: Row(
+                          children: [
+                            // First StoryAddWidget with search option
+                            StoryAddWidget(
+                              vImage: data.data!.feedStory?.posts.first.image,
+                              brandname:
+                                  data.data!.feedStory?.posts.first.vendorName,
+                              index: 0,
+                              addSearch: true, // First item has search
+                              showgift: false,
+                              onTap: () {
+                                setState(() {
+                                  // _isPopupVisible = true; // Open the popup
+                                });
+                              },
+                            ),
+                            // Expanded is not needed since SingleChildScrollView will handle scrolling
+                            // Now ListView.builder will be added directly to the row
+                            ...data.data!.feedStory!.posts.map((storyData) {
+                              return StoryAddWidget(
+                                brandname: storyData.vendorName,
+                                vImage: storyData.vendorImage,
+                                index: data.data!.feedStory!.posts
+                                    .indexOf(storyData),
+                                addSearch:
+                                    false, // For all items other than the first, no search
+                                showgift: storyData.hasSponsoredGifts,
+                                onTap: () {
+                                  // setState(() {
+                                  //   // _isPopupVisible = true; // Open the popup
+                                  // });
+                                },
+                              );
+                            }).toList(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
                 asyncbajarValue.when(
                   data: (data) {
                     return Stack(
@@ -739,8 +744,6 @@ SizedBox(height: 20.h,),
                 SizedBox(
                   height: 5.h,
                 ),
-         
-
                 SizedBox(
                   height: 10.h,
                 ),
