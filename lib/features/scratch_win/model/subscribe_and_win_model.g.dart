@@ -21,11 +21,11 @@ _$SubscribeAndWinModelImpl _$$SubscribeAndWinModelImplFromJson(
       gifts: (json['gifts'] as List<dynamic>?)
           ?.map((e) => Gift.fromJson(e as Map<String, dynamic>))
           .toList(),
-      sponsorVendors: (json['sponsorVendors'] as List<dynamic>?)
+      sponsorVendors: (json['sponsor_vendors'] as List<dynamic>?)
           ?.map((e) => SponsorVendor.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalWorth: (json['totalWorth'] as num?)?.toInt(),
-      giftCount: (json['giftCount'] as num?)?.toInt(),
+      totalWorth: (json['total_worth'] as num?)?.toInt(),
+      giftCount: (json['gift_count'] as num?)?.toInt(),
       winners: (json['winners'] as List<dynamic>?)
           ?.map((e) => Winner.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -38,9 +38,9 @@ Map<String, dynamic> _$$SubscribeAndWinModelImplToJson(
       'content4': instance.content4,
       'user': instance.user,
       'gifts': instance.gifts,
-      'sponsorVendors': instance.sponsorVendors,
-      'totalWorth': instance.totalWorth,
-      'giftCount': instance.giftCount,
+      'sponsor_vendors': instance.sponsorVendors,
+      'total_worth': instance.totalWorth,
+      'gift_count': instance.giftCount,
       'winners': instance.winners,
     };
 
@@ -71,11 +71,11 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
 
 _$GiftImpl _$$GiftImplFromJson(Map<String, dynamic> json) => _$GiftImpl(
       id: json['id'] as String?,
-      userId: json['userId'] as String?,
-      giftId: json['giftId'] as String?,
+      userId: json['user_id'] as String?,
+      giftId: json['gift_id'] as String?,
       status: json['status'] as String?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
       gifts: json['gifts'] == null
           ? null
           : GiftDetails.fromJson(json['gifts'] as Map<String, dynamic>),
@@ -87,11 +87,11 @@ _$GiftImpl _$$GiftImplFromJson(Map<String, dynamic> json) => _$GiftImpl(
 Map<String, dynamic> _$$GiftImplToJson(_$GiftImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'giftId': instance.giftId,
+      'user_id': instance.userId,
+      'gift_id': instance.giftId,
       'status': instance.status,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'gifts': instance.gifts,
       'vendors': instance.vendors,
     };
@@ -101,8 +101,8 @@ _$GiftDetailsImpl _$$GiftDetailsImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       image: json['image'] as String?,
       worth: json['worth'] as String?,
-      createdAt: json['createdAt'] as String?,
-      imageUrl: json['imageUrl'] as String?,
+      createdAt: json['created_at'] as String?,
+      imageUrl: json['image_url'] as String?,
     );
 
 Map<String, dynamic> _$$GiftDetailsImplToJson(_$GiftDetailsImpl instance) =>
@@ -110,8 +110,8 @@ Map<String, dynamic> _$$GiftDetailsImplToJson(_$GiftDetailsImpl instance) =>
       'name': instance.name,
       'image': instance.image,
       'worth': instance.worth,
-      'createdAt': instance.createdAt,
-      'imageUrl': instance.imageUrl,
+      'created_at': instance.createdAt,
+      'image_url': instance.imageUrl,
     };
 
 _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
@@ -143,14 +143,14 @@ Map<String, dynamic> _$$SponsorVendorImplToJson(_$SponsorVendorImpl instance) =>
 
 _$WinnerImpl _$$WinnerImplFromJson(Map<String, dynamic> json) => _$WinnerImpl(
       id: json['id'] as String?,
-      userId: json['userId'] as String?,
-      giftId: json['giftId'] as String?,
+      userId: json['user_id'] as String?,
+      giftId: json['gift_id'] as String?,
       status: json['status'] as String?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-      giftWorth: json['giftWorth'] == null
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      giftWorth: json['gift_worth'] == null
           ? null
-          : GiftWorth.fromJson(json['giftWorth'] as Map<String, dynamic>),
+          : GiftWorth.fromJson(json['gift_worth'] as Map<String, dynamic>),
       name: json['name'] == null
           ? null
           : Name.fromJson(json['name'] as Map<String, dynamic>),
@@ -159,12 +159,12 @@ _$WinnerImpl _$$WinnerImplFromJson(Map<String, dynamic> json) => _$WinnerImpl(
 Map<String, dynamic> _$$WinnerImplToJson(_$WinnerImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'giftId': instance.giftId,
+      'user_id': instance.userId,
+      'gift_id': instance.giftId,
       'status': instance.status,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'giftWorth': instance.giftWorth,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'gift_worth': instance.giftWorth,
       'name': instance.name,
     };
 

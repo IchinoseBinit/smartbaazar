@@ -13,6 +13,7 @@ import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/order_details/model/checkout_details_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:collection/collection.dart';
 
 class OrderDetailsScreen extends ConsumerStatefulWidget {
   const OrderDetailsScreen({
@@ -189,7 +190,11 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       ),
                       const Text('Checkout'),
                       const Spacer(),
-                      const Text('Go back')
+                      GestureDetector(
+                        onTap: () {
+                          
+                        },
+                        child: const Text('Go back'))
                     ],
                   ),
                   SizedBox(
@@ -253,7 +258,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       return null;
                     },
                   ),
-                  if (checkoutDetails.data?.items?.isNotEmpty ?? false)
+                  if (checkoutDetails.data!.items![0].postTypeId == '7')
                     Container(
                       height: 160.h,
                       child: Column(
@@ -438,7 +443,11 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   //   thickness: 2,
                   //   color: Color(0xffD9D9D9),
                   // ),
-                  OrderSummaryWidget(items: checkoutDetails.data!.items ?? []),
+                  OrderSummaryWidget(
+                      items: checkoutDetails.data!.items ?? [],
+                      discounts:
+                          checkoutDetails.data!.items!.first.discountOnBulks ??
+                              []),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: RichTextWidget(
@@ -539,8 +548,17 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
 
 class OrderSummaryWidget extends StatelessWidget {
   final List<Item> items;
+  final List<DiscountOnBulk>? discounts;
+  // final String? pieceFrom;
+  // final String? pieceTo;
+  // final String? rateFromBulkDiscount;
 
-  const OrderSummaryWidget({Key? key, required this.items}) : super(key: key);
+  const OrderSummaryWidget({Key? key, required this.items, this.discounts
+      //  this.pieceFrom,
+      //  this.pieceTo,
+      //   this.rateFromBulkDiscount,
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -567,6 +585,32 @@ class OrderSummaryWidget extends StatelessWidget {
   }
 
   Widget buildItemRow(Item item) {
+    DiscountOnBulk? matchingDiscount =
+        findMatchingDiscount(int.tryParse(item.qty) ?? 0, discounts);
+
+    double originalPrice = double.tryParse(item.price) ?? 0.0;
+    double discountedPrice = originalPrice;
+    String discountText = 'No discount';
+
+    debugPrint('Item: ${item.name}, Qty: ${item.qty}, Price: $originalPrice');
+    debugPrint('Matching Discount: $matchingDiscount');
+
+    if (matchingDiscount != null &&
+        matchingDiscount.rate != null &&
+        matchingDiscount.rate!.isNotEmpty) {
+      double discountPercentage =
+          double.tryParse(matchingDiscount.rate!) ?? 0.0;
+      if (discountPercentage > 0) {
+        discountedPrice = discountPercentage;
+        // discountedPrice = originalPrice * (1 - discountPercentage / 100);
+        // discountText = '$discountPercentage%';
+      }
+    }
+
+    debugPrint(
+        'Original Price: $originalPrice, Discounted Price: $discountedPrice');
+    debugPrint('Discounts List: $discounts');
+
     return Column(
       children: [
         Row(
@@ -586,16 +630,25 @@ class OrderSummaryWidget extends StatelessWidget {
           children: [
             Text('Quantity',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-            Text(item.qty ?? '1')
+            Text(item.qty.toString())
           ],
         ),
         SizedBox(height: 5.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Rate',
+            Text('Original Rate',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-            Text('Rs ${item.price ?? '0'}')
+            Text('Rs $originalPrice')
+          ],
+        ),
+        SizedBox(height: 5.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Discounted Rate',
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+            Text('Rs ${discountedPrice.toStringAsFixed(2)} ')
           ],
         ),
         SizedBox(height: 5.h),
@@ -604,7 +657,8 @@ class OrderSummaryWidget extends StatelessWidget {
           children: [
             Text('Total Payment',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
-            Text('Rs ${item.itemTotal ?? '0'}')
+            Text(
+                'Rs ${(discountedPrice * int.parse(item.qty)).toStringAsFixed(2)}')
           ],
         ),
         SizedBox(height: 5.h),
@@ -615,6 +669,17 @@ class OrderSummaryWidget extends StatelessWidget {
         SizedBox(height: 5.h),
       ],
     );
+  }
+
+  DiscountOnBulk? findMatchingDiscount(
+      int qty, List<DiscountOnBulk>? discounts) {
+    if (discounts == null || discounts.isEmpty) return null;
+
+    return discounts.firstWhereOrNull((discount) =>
+        discount.pieceFrom != null &&
+        discount.pieceTo != null &&
+        (qty >= int.parse(discount.pieceFrom!) &&
+            qty <= int.parse(discount.pieceTo!)));
   }
 }
 

@@ -2879,7 +2879,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           value: false,
                           onChanged: (value) {},
                         ),
-                        const Text("Hyper Delivery")
+                        const Text("Hyper Delivery", style: TextStyle(fontSize: 13),)
                       ],
                     )
                   ],

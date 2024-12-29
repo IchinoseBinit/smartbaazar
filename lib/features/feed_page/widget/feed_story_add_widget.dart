@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
@@ -65,6 +66,9 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final feedGiftCardFuture =
+        ref.watch(getFeedGiftCardProvider(widget.userId));
+print(widget.showGift);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -157,7 +161,16 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                             left: 0,
                             child: GestureDetector(
                               onTap: () {
-                                showCustomBottomSheet(context, widget.userId, ref);
+                                feedGiftCardFuture.when(
+                                  data: (feedCardData) {
+                                    return showCustomBottomSheet(
+                                        context, feedCardData);
+                                  },
+                                  error: (error, stackTrace) =>
+                                      Text("error $error"),
+                                  loading: () => const Center(
+                                      child: CircularProgressIndicator()),
+                                );
                               },
                               child: Container(
                                 decoration: const BoxDecoration(

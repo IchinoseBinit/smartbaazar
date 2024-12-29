@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
+import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
+import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
 
 class AccountDetailsWidget extends ConsumerStatefulWidget {
   const AccountDetailsWidget({super.key});
@@ -108,7 +112,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       // if (openingHoursWidget != null) {
       //   openingHours = openingHoursWidget.openingHours;
       // }
-    
+
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         fullName!,
         phoneNumber!,
@@ -164,345 +168,522 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     });
   }
 
+  Future<void> _loadData() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final asyncUserDetails = ref.watch(getUserDetailsProvider);
+
+      switch (asyncUserDetails.runtimeType) {
+        case AsyncLoading:
+          break;
+        case AsyncError:
+          throw Exception(asyncUserDetails.error.toString());
+        case AsyncData:
+          final userData =
+              (asyncUserDetails as AsyncData<UserDataModel>).value.data?.first;
+
+          if (userData != null) {
+            setState(() {
+              fullName = userData.name;
+              phoneNumber = userData.phone;
+              email = userData.email;
+              userName = userData.username;
+              genderID = userData.genderId;
+              description = userData.about ?? '';
+
+              // Parse branch locations
+              List<dynamic> branchLocations;
+              if (userData.branchLocation != null) {
+                branchLocations =
+                    jsonDecode(jsonDecode(userData.branchLocation!));
+              } else {
+                branchLocations = [];
+              }
+
+              // Clear existing controllers
+              branchControllers.clear();
+
+              // Add new controllers
+              for (var i = 0; i < branchLocations.length; i++) {
+                TextEditingController controller =
+                    TextEditingController(text: branchLocations[i]['location']);
+                branchControllers.add(controller);
+              }
+              List<String> branchLocationsText =
+                  branchLocations.map((location) {
+                return location['location'] as String;
+              }).toList();
+
+              print('Printed locations: $branchLocationsText');
+
+              // Parse opening hours
+              if (userData.openingHours != null) {
+                List<dynamic> openingHoursData =
+                    jsonDecode(userData.openingHours ?? '');
+                for (var hour in openingHoursData) {
+                  String day = hour['day'];
+                  openingHours[day]!['from'] = hour['from'];
+                  openingHours[day]!['to'] = hour['to'];
+                  openingHours[day]!['closed'] = hour['closed'];
+                }
+              }
+            });
+
+            // Store printed locations
+          }
+          break;
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading user details: $error')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final asyncUserDetails = ref.watch(getUserDetailsProvider);
+
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(bottom: 18.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(width: 1, color: const Color(0xffADADAD)),
-      ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 17.h, left: 12.w),
-              child: Text(
-                'Account Details',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            const Divider(color: Color(0xffADADAD)),
-            Padding(
-              padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(bottom: 18.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(width: 1, color: const Color(0xffADADAD)),
+        ),
+        child: asyncUserDetails.when(
+          data: (data) {
+            if (data.data != null && data.data!.isNotEmpty) {
+              _loadData();
+            }
+            List<dynamic> branchLocations =
+                jsonDecode(data.data!.first.branchLocation!);
+
+// // If you need to extract specific fields (e.g., `location`):
+            List<String> branchLocationsText = branchLocations.map((location) {
+              return location['location']
+                  as String; // Assuming each location is a Map with a 'location' key
+            }).toList();
+
+            return Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Gender Selection Radio Buttons
                   Padding(
-                    padding: EdgeInsets.only(top: 10.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Gender',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Radio<String>(
-                          value: '1', // Male
-                          groupValue: genderID,
-                          onChanged: _updateGender,
-                          fillColor:
-                              WidgetStateProperty.all(const Color(0xff362677)),
-                        ),
-                        Text(
-                          'Male',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Radio<String>(
-                          value: '2', // Female
-                          groupValue: genderID,
-                          onChanged: _updateGender,
-                          fillColor:
-                              WidgetStateProperty.all(const Color(0xff362677)),
-                        ),
-                        Text(
-                          'Female',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Radio<String>(
-                          value: '3', // Others
-                          groupValue: genderID,
-                          onChanged: _updateGender,
-                          fillColor:
-                              WidgetStateProperty.all(const Color(0xff362677)),
-                        ),
-                        Text(
-                          'Others',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    padding: EdgeInsets.only(top: 17.h, left: 12.w),
+                    child: Text(
+                      'Account Details',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  CustomTextFieldWidget(
-                    fill: true,
-                    fillColor: const Color(0xFFF6F2F2),
-                    icon: Icons.person,
-                    textInputType: TextInputAction.next,
-                    hintText: "Name",
-                    onChanged: (value) => fullName = value,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your name';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 10.2.h),
-                  CustomTextFieldWidget(
-                    fill: true,
-                    fillColor: const Color(0xFFF6F2F2),
-                    icon: Icons.call,
-                    hintText: "Phone Number",
-                    textInputType: TextInputAction.next,
-                    onChanged: (value) => phoneNumber = value,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your phone number';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 10.2.h),
-                  CustomTextFieldWidget(
-                    fill: true,
-                    fillColor: const Color(0xFFF6F2F2),
-                    icon: Icons.mail,
-                    textInputType: TextInputAction.next,
-                    hintText: "Email",
-                    onChanged: (value) => email = value,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your email';
-                      }
-                      return null;
-                    },
-                  ),
-                  // SizedBox(height: 10.2.h),
-                  // CustomTextFieldWidget(
-                  //   fill: true,
-                  //   fillColor: const Color(0xffF3F3F3),
-                  //   icon: Icons.calendar_today,
-                  //   hintText: "Date of Birth",
-                  //   onChanged: (value) => dob = value,
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Enter your date of birth';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
-                  SizedBox(height: 10.2.h),
-                  CustomTextFieldWidget(
-                    fill: true,
-                    fillColor: const Color(0xFFF6F2F2),
-                    icon: Icons.person_outline,
-                    textInputType: TextInputAction.next,
-                    hintText: "User Name",
-                    onChanged: (value) => userName = value,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter your username';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 10.2.h),
-
-                  ...List.generate(
-                    branchControllers.length,
-                    (index) => Column(
+                  const Divider(color: Color(0xffADADAD)),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFieldWidget(
-                                fill: true,
-                                fillColor: const Color(0xFFF6F2F2),
-                                icon: Icons.location_on,
-                                iconColor: Colors.red,
-                                textInputType: TextInputAction.next,
-                                hintText: "Branch Location ",
-                                controller: branchControllers[index],
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Enter branch location';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
-                            // if (index == branchControllers.length - 1)
-                            //   IconButton(
-                            //     onPressed: _addBranchField,
-                            //     icon: const Icon(Icons.add_circle,
-                            //         color: Colors.green),
-                            //   ),
-                            // IconButton(
-                            //   onPressed: () {
-                            //     _removeBranchField(index);
-                            //   },
-                            //   icon: const Icon(Icons.remove_circle,
-                            //       color: Colors.red),
-                            // ),
-                            if (index == 0)
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xFFADADAD)),
-                                ),
-                                child: GestureDetector(
-                                  onTap: _addBranchField,
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(
-                                        4.0), // Adjust padding to control the gap
-                                    child: Icon(Icons.add_circle,
-                                        color: Color(0xFF362677)),
-                                  ),
-                                ),
-                              )
-                            else ...[
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xFFADADAD)),
-                                ),
-                                child: GestureDetector(
-                                  onTap: _addBranchField,
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(
-                                        4.0), // Adjust padding to control the gap
-                                    child: Icon(Icons.add_circle,
-                                        color: Color(0xFF362677)),
-                                  ),
+                        // Gender Selection Radio Buttons
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Gender',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
                                 ),
                               ),
-                              SizedBox(width: 10.w),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xFFADADAD)),
+                              Radio<String>(
+                                value: '1', // Male
+                                groupValue: genderID,
+                                onChanged: _updateGender,
+                                fillColor: WidgetStateProperty.all(
+                                    const Color(0xff362677)),
+                              ),
+                              Text(
+                                'Male',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
                                 ),
-                                child: GestureDetector(
-                                  onTap: () => _removeBranchField(index),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(4.0),
-                                    child:
-                                        Icon(Icons.delete, color: Colors.black),
-                                  ),
+                              ),
+                              Radio<String>(
+                                value: '2', // Female
+                                groupValue: genderID,
+                                onChanged: _updateGender,
+                                fillColor: WidgetStateProperty.all(
+                                    const Color(0xff362677)),
+                              ),
+                              Text(
+                                'Female',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Radio<String>(
+                                value: '3', // Others
+                                groupValue: genderID,
+                                onChanged: _updateGender,
+                                fillColor: WidgetStateProperty.all(
+                                    const Color(0xff362677)),
+                              ),
+                              Text(
+                                'Others',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
                                 ),
                               ),
                             ],
-                          ],
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        CustomTextFieldWidget(
+                          fill: true,
+                          fillColor: const Color(0xFFF6F2F2),
+                          icon: Icons.person,
+                          textInputType: TextInputAction.next,
+                          hintText: data.data!.first.name ?? 'Name',
+                          hintTextColor: Colors.black,
+                          onChanged: (value) => fullName = value,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter your name';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 10.2.h),
+                        CustomTextFieldWidget(
+                          fill: true,
+                          fillColor: const Color(0xFFF6F2F2),
+                          icon: Icons.call,
+                          hintText: data.data!.first.phone ?? "Phone Number",
+                          hintTextColor: Colors.black,
+                          textInputType: TextInputAction.next,
+                          onChanged: (value) => phoneNumber = value,
+                          validator: (value) {
+                            // if (value == null || value.isEmpty) {
+                            //   return 'Enter your phone number';
+                            // }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 10.2.h),
+                        CustomTextFieldWidget(
+                          fill: true,
+                          fillColor: const Color(0xFFF6F2F2),
+                          icon: Icons.mail,
+                          textInputType: TextInputAction.next,
+                          hintText: data.data!.first.email ?? "Email",
+                          hintTextColor: Colors.black,
+                          onChanged: (value) => email = value,
+                          validator: (value) {
+                            // if (value == null || value.isEmpty) {
+                            //   return 'Enter your email';
+                            // }
+                            return null;
+                          },
+                        ),
+                        // SizedBox(height: 10.2.h),
+                        // CustomTextFieldWidget(
+                        //   fill: true,
+                        //   fillColor: const Color(0xffF3F3F3),
+                        //   icon: Icons.calendar_today,
+                        //   hintText: "Date of Birth",
+                        //   onChanged: (value) => dob = value,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Enter your date of birth';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+                        SizedBox(height: 10.2.h),
+                        CustomTextFieldWidget(
+                          fill: true,
+                          fillColor: const Color(0xFFF6F2F2),
+                          icon: Icons.person_outline,
+                          textInputType: TextInputAction.next,
+                          hintText: data.data!.first.username ?? "User Name",
+                          hintTextColor: Colors.black,
+                          onChanged: (value) => userName = value,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter your username';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 10.2.h),
+
+                        // ...List.generate(
+                        //   branchControllers.length,
+                        //   (index) => Column(
+                        //     children: [
+                        //       Row(
+                        //         children: [
+                        //           Expanded(
+                        //             child: CustomTextFieldWidget(
+                        //               fill: true,
+                        //               fillColor: const Color(0xFFF6F2F2),
+                        //               icon: Icons.location_on,
+                        //               iconColor: Colors.red,
+                        //               textInputType: TextInputAction.next,
+                        //               hintText: index == 0
+                        //                   ? data.data!.first.branchLocation ??
+                        //                       "Primary Branch Location"
+                        //                   : "Additional Branch Location",
+                        //               controller: branchControllers[index],
+                        //               validator: (value) {
+                        //                 if (value == null || value.isEmpty) {
+                        //                   return 'Enter branch location';
+                        //                 }
+                        //                 return null;
+                        //               },
+                        //             ),
+                        //           ),
+                        //           SizedBox(width: 10.w),
+                        //           if (index == 0)
+                        //             Container(
+                        //               decoration: BoxDecoration(
+                        //                 border: Border.all(
+                        //                     color: const Color(0xFFADADAD)),
+                        //               ),
+                        //               child: GestureDetector(
+                        //                 onTap: _addBranchField,
+                        //                 child: const Padding(
+                        //                   padding: EdgeInsets.all(
+                        //                       4.0), // Adjust padding to control the gap
+                        //                   child: Icon(Icons.add_circle,
+                        //                       color: Color(0xFF362677)),
+                        //                 ),
+                        //               ),
+                        //             )
+                        //           else ...[
+                        //             Container(
+                        //               decoration: BoxDecoration(
+                        //                 border: Border.all(
+                        //                     color: const Color(0xFFADADAD)),
+                        //               ),
+                        //               child: GestureDetector(
+                        //                 onTap: _addBranchField,
+                        //                 child: const Padding(
+                        //                   padding: EdgeInsets.all(
+                        //                       4.0), // Adjust padding to control the gap
+                        //                   child: Icon(Icons.add_circle,
+                        //                       color: Color(0xFF362677)),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //             SizedBox(width: 10.w),
+                        //             Container(
+                        //               decoration: BoxDecoration(
+                        //                 border: Border.all(
+                        //                     color: const Color(0xFFADADAD)),
+                        //               ),
+                        //               child: GestureDetector(
+                        //                 onTap: () => _removeBranchField(index),
+                        //                 child: const Padding(
+                        //                   padding: EdgeInsets.all(4.0),
+                        //                   child: Icon(Icons.delete,
+                        //                       color: Colors.black),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ],
+                        //       ),
+                        //       SizedBox(height: 10.2.h),
+                        //     ],
+                        //   ),
+                        // ),
+                        ...List.generate(
+                          branchControllers.length,
+                          (index) => Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextFieldWidget(
+                                      fill: true,
+                                      fillColor: const Color(0xFFF6F2F2),
+                                      icon: Icons.location_on,
+                                      iconColor: Colors.red,
+                                      textInputType: TextInputAction.next,
+                                      hintText: branchLocationsText != null &&
+                                              branchLocationsText.isNotEmpty
+                                          ? branchLocationsText[index]
+                                          : 'Your Location',
+                                      hintTextColor: Colors.black,
+                                      controller: branchControllers[index],
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Enter branch location';
+                                        }
+                                        print(branchLocationsText[index]);
+
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  if (index == branchControllers.length - 1)
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xFFADADAD)),
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: _addBranchField,
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: Icon(Icons.add_circle,
+                                              color: Color(0xFF362677)),
+                                        ),
+                                      ),
+                                    )
+                                  else if (index > 0) ...[
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xFFADADAD)),
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: _addBranchField,
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: Icon(Icons.add_circle,
+                                              color: Color(0xFF362677)),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xFFADADAD)),
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () => _removeBranchField(index),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: Icon(Icons.delete,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                              SizedBox(height: 10.2.h),
+                            ],
+                          ),
+                        ),
+
+                        // SizedBox(width: 10.w),
+                        // Container(
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(8.r),
+                        //       border: Border.all(
+                        //         width: 1,
+                        //         color: const Color(0xFFADADAD),
+                        //       ),
+                        //     ),
+                        //     child: IconButton(
+                        //         onPressed: () {},
+                        //         icon: const Icon(Icons.add_circle))),
+                        SizedBox(height: 10.2.h),
+                        SizedBox(
+                          height: 350.h,
+                          child: OpeningHoursWidget(openingHours: openingHours),
+                        ),
+                        // CustomTextFieldWidget(
+                        //   fill: true,
+                        //   fillColor: const Color(0xFFF6F2F2),
+                        //   // fillColor: const Color(0xFFF3F3F3),
+                        //   icon: Icons.watch_later_outlined,
+                        //   textInputType: TextInputAction.next,
+                        //   hintText: "Opening Hours",
+                        //   onChanged: (value) => openingHours = value,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Enter your opening hours';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+
+                        SizedBox(height: 10.2.h),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'Write in your bio...',
+                            hintStyle: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xFFADADAD)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          maxLines: 5,
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.done,
+                          onChanged: (value) {
+                            description = value;
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a description';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        SizedBox(height: 10.h),
+                        GeneralTextButton(
+                          marginH: 0,
+                          height: 25.h,
+                          width: 100.w,
+                          title: 'Update',
+                          fgColor: Colors.white,
+                          bgColor: const Color(0xff362677),
+                          isSmallText: true,
+                          onPressed: isLoading ? null : _submitUpdate,
+                        ),
                       ],
                     ),
                   ),
-                  // SizedBox(width: 10.w),
-                  // Container(
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(8.r),
-                  //       border: Border.all(
-                  //         width: 1,
-                  //         color: const Color(0xFFADADAD),
-                  //       ),
-                  //     ),
-                  //     child: IconButton(
-                  //         onPressed: () {},
-                  //         icon: const Icon(Icons.add_circle))),
-                  SizedBox(height: 10.2.h),
-                  SizedBox(
-                    height: 350.h,
-                    child: OpeningHoursWidget(openingHours: openingHours),
-                  ),
-                  // CustomTextFieldWidget(
-                  //   fill: true,
-                  //   fillColor: const Color(0xFFF6F2F2),
-                  //   // fillColor: const Color(0xFFF3F3F3),
-                  //   icon: Icons.watch_later_outlined,
-                  //   textInputType: TextInputAction.next,
-                  //   hintText: "Opening Hours",
-                  //   onChanged: (value) => openingHours = value,
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Enter your opening hours';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
-
-                  SizedBox(height: 10.2.h),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Write in your bio...',
-                      hintStyle: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xFFADADAD)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    maxLines: 5,
-                    keyboardType: TextInputType.multiline,
-                    textInputAction: TextInputAction.done,
-                    onChanged: (value) {
-                      description = value;
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a description';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  SizedBox(height: 10.h),
-                  GeneralTextButton(
-                    marginH: 0,
-                    height: 25.h,
-                    width: 100.w,
-                    title: 'Update',
-                    fgColor: Colors.white,
-                    bgColor: const Color(0xff362677),
-                    isSmallText: true,
-                    onPressed: isLoading ? null : _submitUpdate,
-                  ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(
+            child: Text('Error loading checkout details: $error'),
+          ),
+        ));
   }
 }
 
@@ -580,6 +761,7 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
             itemCount: widget.openingHours.keys.length,
             itemBuilder: (context, index) {
               String day = widget.openingHours.keys.elementAt(index);
+              bool closed = widget.openingHours[day]!['closed'];
               return Row(
                 children: [
                   Expanded(
@@ -588,26 +770,22 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                     style:
                         TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
                   )),
-                  if (!widget.openingHours[day]!['closed'])
+                  if (!closed)
                     Expanded(
                       child: Container(
                         height: 20.h,
-                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                        margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                        padding: EdgeInsets.symmetric(horizontal: 1.w),
+                        margin: EdgeInsets.symmetric(horizontal: 1.w),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border:
-                                Border.all(width: 1, color: Colors.black12)),
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(width: 1, color: Colors.black12),
+                        ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             isExpanded: false,
                             alignment: AlignmentDirectional.centerEnd,
                             value: widget.openingHours[day]!['from'],
-                            // hint: Text(
-                            //   'From',
-                            //   style: TextStyle(fontSize: 12.sp),
-                            // ),
                             onChanged: (value) {
                               setState(() {
                                 widget.openingHours[day]!['from'] = value;
@@ -619,10 +797,8 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                                       value: time,
                                       child: Padding(
                                         padding: EdgeInsets.zero,
-                                        child: Text(
-                                          time,
-                                          style: TextStyle(fontSize: 10.sp),
-                                        ),
+                                        child: Text(time,
+                                            style: TextStyle(fontSize: 10.sp)),
                                       ),
                                     ))
                                 .toList(),
@@ -631,28 +807,21 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                         ),
                       ),
                     ),
-                  if (!widget.openingHours[day]!['closed'])
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                  if (!widget.openingHours[day]!['closed'])
+                  if (!closed) SizedBox(width: 10.w),
+                  if (!closed)
                     Expanded(
                       child: Container(
                         height: 20.h,
-                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                        margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                        padding: EdgeInsets.symmetric(horizontal: 1.w),
+                        margin: EdgeInsets.symmetric(horizontal: 1.w),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border:
-                                Border.all(width: 1, color: Colors.black12)),
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(width: 1, color: Colors.black12),
+                        ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: widget.openingHours[day]!['to'],
-                            // hint: Text(
-                            //   'To',
-                            //   style: TextStyle(fontSize: 12.sp),
-                            // ),
                             onChanged: (value) {
                               setState(() {
                                 widget.openingHours[day]!['to'] = value;
@@ -664,10 +833,8 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                                       value: time,
                                       child: Padding(
                                         padding: EdgeInsets.zero,
-                                        child: Text(
-                                          time,
-                                          style: TextStyle(fontSize: 10.sp),
-                                        ),
+                                        child: Text(time,
+                                            style: TextStyle(fontSize: 10.sp)),
                                       ),
                                     ))
                                 .toList(),
@@ -677,7 +844,7 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
                       ),
                     ),
                   Checkbox(
-                    value: widget.openingHours[day]!['closed'],
+                    value: closed,
                     onChanged: (value) {
                       setState(() {
                         widget.openingHours[day]!['closed'] = value!;

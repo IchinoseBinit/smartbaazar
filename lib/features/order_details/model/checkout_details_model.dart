@@ -66,6 +66,7 @@ class Item with _$Item {
     @JsonKey(name: 'updated_at') String? updatedAt,
     @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
     @JsonKey(name: 'item_total') int? itemTotal,
+    @JsonKey(name: 'post_type_id') String? postTypeId,
   }) = _Item;
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

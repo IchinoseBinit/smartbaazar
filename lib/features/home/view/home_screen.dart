@@ -14,6 +14,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
@@ -34,6 +35,7 @@ import 'package:smartbazar/features/product_details/constant/product_detail_widg
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
@@ -45,7 +47,6 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 import '../../../general_widget/story_search_bar.dart';
-import '../../vendor/view/my_subscribe_and_win_page.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -358,8 +359,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               left: 0,
                               right: 0,
                               child: Container(
-                                // width: MediaQuery.sizeOf(context).width * 0.8,
-                                // color: Colors.white,
+                                width: double.infinity,
+                                color: Colors.white,
                                 child:
                                 SearchProductModels.when(data: (results) {
                                   if (results.isEmpty) {
@@ -654,14 +655,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       data: (data) {
                         return SizedBox(
                           height: 130.h,
-                          child: SingleChildScrollView( // Wrapping the Row with SingleChildScrollView
-                            scrollDirection: Axis.horizontal, // Ensuring it scrolls horizontally
+                          child: SingleChildScrollView(
+                            // Wrapping the Row with SingleChildScrollView
+                            scrollDirection: Axis
+                                .horizontal, // Ensuring it scrolls horizontally
                             child: Row(
                               children: [
                                 // First StoryAddWidget with search option
                                 StoryAddWidget(
-                                  vImage: data.data!.feedStory?.posts.first.image,
-                                  brandname: data.data!.feedStory?.posts.first.vendorName,
+                                  vImage:
+                                  data.data!.feedStory?.posts.first.image,
+                                  brandname: data
+                                      .data!.feedStory?.posts.first.vendorName,
                                   index: 0,
                                   addSearch: true, // First item has search
                                   showgift: false,
@@ -677,8 +682,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   return StoryAddWidget(
                                     brandname: storyData.vendorName,
                                     vImage: storyData.vendorImage,
-                                    index: data.data!.feedStory!.posts.indexOf(storyData),
-                                    addSearch: false, // For all items other than the first, no search
+                                    index: data.data!.feedStory!.posts
+                                        .indexOf(storyData),
+                                    addSearch:
+                                    false, // For all items other than the first, no search
                                     showgift: storyData.hasSponsoredGifts,
                                     onTap: () {
                                       // setState(() {
@@ -695,7 +702,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       error: (error, stackTrace) => Text(error.toString()),
                       loading: () => const CircularProgressIndicator(),
                     ),
-
                     SizedBox(
                       height: 5.h,
                     ),
@@ -763,7 +769,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   width: double.infinity,
                                                   fit: BoxFit.fill,
                                                   imageUrl: banner.image!,
-                                                  errorWidget: (context, url, error) =>
+                                                  errorWidget: (context, url,
+                                                      error) =>
                                                   const Icon(Icons.error),
                                                 ),
                                               );
@@ -790,18 +797,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                   // Dots Indicator
                                   Positioned(
-                                    left: MediaQuery.of(context).size.width / 2 -
+                                    left:
+                                    MediaQuery.of(context).size.width / 2 -
                                         50, // Center the dots
                                     bottom: 10.h,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                       children: data.sliders.map((banner) {
                                         int index =
                                         data.sliders.indexOf(banner);
                                         return AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
-                                          margin:
-                                          const EdgeInsets.symmetric(horizontal: 5.0),
+                                          duration:
+                                          const Duration(milliseconds: 300),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
                                           height: 9.0,
                                           width: _currentIndex == index
                                               ? 12.0
@@ -809,8 +819,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: _currentIndex == index
-                                                ? Colors.white // Active dot color
-                                                : Colors.grey, // Inactive dot color
+                                                ? Colors
+                                                .white // Active dot color
+                                                : Colors
+                                                .grey, // Inactive dot color
                                           ),
                                         );
                                       }).toList(),
@@ -918,7 +930,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // Handle product click if needed
                                             },
                                             child: ProductDetailWidget(
-
                                               distance: prod.shortestDistance,
                                               issponsored:
                                               prod.user!.sponsored ?? false,
@@ -996,9 +1007,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               double dynamicHeight;
 
                               if (dynamictabController.index == 0) {
-                                dynamicHeight = data.insidearr[0].isEmpty
-                                    ? 140.h
-                                    : 420.h;
+                                dynamicHeight =
+                                data.insidearr[0].isEmpty ? 140.h : 420.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
@@ -1164,7 +1174,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-
                                                       shortestDistance:
                                                       prod.shortestDistance,
                                                       distance:
@@ -1388,14 +1397,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
-                                      worth: resp.worth!,
-                                      productname: "Discount Coupon",
-                                      vendorImage: resp.vendorImage,
-                                      vendorname: resp.name,
-                                      winners: resp.winners.toString(),
-                                      // proctimage: resp.image,
-                                      proctimage: "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png",
-                                    );
+                                        worth: resp.worth!,
+                                        productname: "Discount Coupon",
+                                        vendorImage: resp.vendorImage,
+                                        vendorname: resp.name,
+                                        winners: resp.winners.toString(),
+                                        proctimage: "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png");
                                   },
                                 ),
                               );
@@ -1560,7 +1567,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 360,
+                                  mainAxisExtent: 400,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,
@@ -1715,7 +1722,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                         SizedBox(
                           height: 6.h,
                         ),
-                        Image.asset('assets/images/Smartbazaar-Icon-for-QR.png', height: 35.h, width: 35.w,),
+                        Image.asset('assets/images/smart.png'),
                         SizedBox(
                           height: 6.h,
                         ),
@@ -1754,7 +1761,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                   color: Color(0xff918994),
                                 ),
                                 Text(
-                                  "Cart",
+                                  "cart",
                                   style: headerstyle.copyWith(
                                       fontSize: 9,
                                       fontWeight: FontWeight.w700,
@@ -1768,7 +1775,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                    const AddToCartScreen(),
+                                    const CreateNewListinScreen(),
                                   ));
                             },
                             icon: Column(

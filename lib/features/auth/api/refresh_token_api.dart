@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
@@ -38,7 +39,17 @@ Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
     } else {
       throw Exception('Failed to refresh token: ${response.statusCode}');
     }
-  } catch (e) {
+  }on DioException catch (e) {
+      String errorMessage = 'An unexpected error occurred.';
+      if (e.response != null) {
+        errorMessage = e.response?.data['message'] ?? 'Unknown server error';
+      } else if (e.type == DioExceptionType.connectionTimeout) {
+        errorMessage = 'Connection timeout. Please try again.';
+      } else {
+        errorMessage = 'Something went wrong. Please check your connection.';
+      }
+      throw Exception(e.response?.data['message'] ?? errorMessage);
+    }  catch (e) {
     print('Error handling refresh token: $e');
     throw Exception('Failed to handle refresh token');
   }

@@ -220,39 +220,31 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                   data: (feedData) {
                     if (feedData.data != null && feedData.data!.story != null) {
                       final feedStoryItems = feedData.data!.story!;
-                      final feedDataUserId = feedData.data!.feedPost;
                       return asyncFollowingStoryContent.when(
                         data: (feedStoryData) {
                           final feedStoryContent =
-                              feedStoryData.data!.feedstory;
-
+                              feedStoryData.data?.feedstory;
                           return Expanded(
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              itemCount: feedStoryItems.feedStory!.length,
+                              itemCount:
+                                  feedStoryData.data!.feedstory!.posts!.length,
                               itemBuilder: (context, index) {
-                                // if (feedData.data!.feedPost == null ||
-                                //     feedData.data!.feedPost![index] == null) {
-                                //   return const Center(
-                                //       child: Text('No user ID available'));
-                                // }
-                                // final userId =
-                                //     feedData.data!.feedPost![index].userId ??
-                                //         '';
+                                final story = feedStoryData
+                                    .data!.feedstory!.posts![index];
                                 return FeedStoryAddWidget(
                                   index: index,
-                                  vendorName: feedStoryItems
-                                      .feedStory![index].vendorName,
-                                  vendorImage: feedStoryItems
-                                      .feedStory![index].vendorImage,
-                                  storyCount: feedStoryItems
-                                      .feedStory![index].storyCount,
-                                  showGift: feedStoryItems
-                                      .feedStory![index].hasSponsoredGifts,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
                                   feedStoryContent: feedStoryContent,
-                                  userId: '166',
+                                  userId: story.vendorId!,
+                                  // feedData.data!.feedPost![index].userId ??
                                 );
                               },
                             ),
@@ -417,9 +409,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                   storyCount: story.storyCount ?? 0,
                                   showGift: story.hasSponsoredGifts ?? false,
                                   feedStoryContent: feedStoryContent,
-                                  userId:
-                                      // feedData.data!.feedPost![index].userId ??
-                                      '166',
+                                  userId: story.vendorId!,
+                                  // feedData.data!.feedPost![index].userId ??
                                 );
                               },
                             ),

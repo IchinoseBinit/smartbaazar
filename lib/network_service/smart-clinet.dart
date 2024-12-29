@@ -41,24 +41,26 @@ class SmartClinet {
           options.headers['Authorization'] = 'Bearer $token';
           return handler.next(options);
         },
-      onError: (DioException error, handler) async {
-  if (error.response != null && error.response!.statusCode! >= 400) {
-    final success = await _refreshToken();
-    if (success) {
-      RequestOptions requestOptions = error.requestOptions;
-      requestOptions.headers['Authorization'] = 'Bearer $token';
-      try {
-        final response = await _retry(requestOptions);
-        return handler.resolve(response); // Return successful retry response
-      } on DioException catch (retryError) {
-        return handler.next(retryError); // Handle retry failure properly
-      }
-    }
-    return handler.next(error); // If token refresh fails, return original error
-  }
-  return handler.next(error); // Forward any other error
-},
-
+        onError: (DioException error, handler) async {
+          if (error.response != null && error.response!.statusCode! >= 400) {
+            final success = await _refreshToken();
+            if (success) {
+              RequestOptions requestOptions = error.requestOptions;
+              requestOptions.headers['Authorization'] = 'Bearer $token';
+              try {
+                final response = await _retry(requestOptions);
+                return handler
+                    .resolve(response); // Return successful retry response
+              } on DioException catch (retryError) {
+                return handler
+                    .next(retryError); // Handle retry failure properly
+              }
+            }
+            return handler
+                .next(error); // If token refresh fails, return original error
+          }
+          return handler.next(error); // Forward any other error
+        },
         onResponse: (options, handler) {
           return handler.next(options);
         },

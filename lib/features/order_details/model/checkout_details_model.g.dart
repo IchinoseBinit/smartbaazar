@@ -89,6 +89,7 @@ _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
           ?.map((e) => DiscountOnBulk.fromJson(e as Map<String, dynamic>))
           .toList(),
       itemTotal: (json['item_total'] as num?)?.toInt(),
+      postTypeId: json['post_type_id'] as String?,
     );
 
 Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
@@ -105,6 +106,7 @@ Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
       'updated_at': instance.updatedAt,
       'discount_on_bulks': instance.discountOnBulks,
       'item_total': instance.itemTotal,
+      'post_type_id': instance.postTypeId,
     };
 
 _$DiscountOnBulkImpl _$$DiscountOnBulkImplFromJson(Map<String, dynamic> json) =>

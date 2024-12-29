@@ -3,22 +3,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 
-class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  final GlobalKey<ScaffoldState> scaffoldKey;
+class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
   final TextEditingController searchController;
   final VoidCallback onCartTap;
   final Function(bool) onSearchFocusChanged;
   final Function(String)? onsubmit;
   Function()? serchontap;
 
-   AppbarWidget({
-    Key? key,
-    required this.scaffoldKey,
-    required this.searchController,
-    required this.onCartTap,
-    required this.onSearchFocusChanged,
-    required this.onsubmit,
-    this.serchontap
-  }) : super(key: key);
+  AppbarWidget(
+      {Key? key,
+      required this.scaffoldKey,
+      required this.searchController,
+      required this.onCartTap,
+      required this.onSearchFocusChanged,
+      required this.onsubmit,
+      this.serchontap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,9 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
       ),
       title: Column(
         children: [
-          SizedBox(height: 10.h,),
+          SizedBox(
+            height: 10.h,
+          ),
           //  Image.asset(
           //     alignment: Alignment.center,
           //     'assets/images/smartlogo.png',
@@ -51,7 +54,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
                 child: SizedBox(
                   height: 33.h,
                   child: TextFormField(
-                    onFieldSubmitted:onsubmit,
+                    onFieldSubmitted: onsubmit,
                     controller: searchController,
                     decoration: InputDecoration(
                       hintText: 'Search...',
@@ -69,7 +72,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
                         ),
                       ),
                       suffixIcon: InkWell(
-                             onTap:serchontap ,
+                        onTap: serchontap,
                         child: Container(
                           width: 70.w,
                           decoration: BoxDecoration(
@@ -117,6 +120,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget{  fina
       ),
     );
   }
-   @override
+
+  @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

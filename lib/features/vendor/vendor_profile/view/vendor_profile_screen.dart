@@ -13,6 +13,7 @@ import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
@@ -209,7 +210,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.feed,
       "title": 'Create',
       "subtitle": 'Feed',
-      "screen": const FeedScreen(),
+      "screen":  FeedFormScreen(),
     },
   ];
 
@@ -235,6 +236,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   Widget build(BuildContext context) {
     return GenericSafeArea(
       child: Scaffold(
+        extendBody: true,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppBar(
           automaticallyImplyLeading: false,

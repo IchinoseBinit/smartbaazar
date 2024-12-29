@@ -20,13 +20,21 @@ SubscribeAndWinModel _$SubscribeAndWinModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SubscribeAndWinModel {
+  @JsonKey(name: 'content3')
   List<Content>? get content3 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'content4')
   List<Content>? get content4 => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user')
   User? get user => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gifts')
   List<Gift>? get gifts => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sponsor_vendors')
   List<SponsorVendor>? get sponsorVendors => throw _privateConstructorUsedError;
+  @JsonKey(name: 'total_worth')
   int? get totalWorth => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gift_count')
   int? get giftCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'winners')
   List<Winner>? get winners => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,14 +50,14 @@ abstract class $SubscribeAndWinModelCopyWith<$Res> {
       _$SubscribeAndWinModelCopyWithImpl<$Res, SubscribeAndWinModel>;
   @useResult
   $Res call(
-      {List<Content>? content3,
-      List<Content>? content4,
-      User? user,
-      List<Gift>? gifts,
-      List<SponsorVendor>? sponsorVendors,
-      int? totalWorth,
-      int? giftCount,
-      List<Winner>? winners});
+      {@JsonKey(name: 'content3') List<Content>? content3,
+      @JsonKey(name: 'content4') List<Content>? content4,
+      @JsonKey(name: 'user') User? user,
+      @JsonKey(name: 'gifts') List<Gift>? gifts,
+      @JsonKey(name: 'sponsor_vendors') List<SponsorVendor>? sponsorVendors,
+      @JsonKey(name: 'total_worth') int? totalWorth,
+      @JsonKey(name: 'gift_count') int? giftCount,
+      @JsonKey(name: 'winners') List<Winner>? winners});
 
   $UserCopyWith<$Res>? get user;
 }
@@ -135,14 +143,14 @@ abstract class _$$SubscribeAndWinModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<Content>? content3,
-      List<Content>? content4,
-      User? user,
-      List<Gift>? gifts,
-      List<SponsorVendor>? sponsorVendors,
-      int? totalWorth,
-      int? giftCount,
-      List<Winner>? winners});
+      {@JsonKey(name: 'content3') List<Content>? content3,
+      @JsonKey(name: 'content4') List<Content>? content4,
+      @JsonKey(name: 'user') User? user,
+      @JsonKey(name: 'gifts') List<Gift>? gifts,
+      @JsonKey(name: 'sponsor_vendors') List<SponsorVendor>? sponsorVendors,
+      @JsonKey(name: 'total_worth') int? totalWorth,
+      @JsonKey(name: 'gift_count') int? giftCount,
+      @JsonKey(name: 'winners') List<Winner>? winners});
 
   @override
   $UserCopyWith<$Res>? get user;
@@ -209,14 +217,15 @@ class __$$SubscribeAndWinModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
   const _$SubscribeAndWinModelImpl(
-      {final List<Content>? content3,
-      final List<Content>? content4,
-      this.user,
-      final List<Gift>? gifts,
+      {@JsonKey(name: 'content3') final List<Content>? content3,
+      @JsonKey(name: 'content4') final List<Content>? content4,
+      @JsonKey(name: 'user') this.user,
+      @JsonKey(name: 'gifts') final List<Gift>? gifts,
+      @JsonKey(name: 'sponsor_vendors')
       final List<SponsorVendor>? sponsorVendors,
-      this.totalWorth,
-      this.giftCount,
-      final List<Winner>? winners})
+      @JsonKey(name: 'total_worth') this.totalWorth,
+      @JsonKey(name: 'gift_count') this.giftCount,
+      @JsonKey(name: 'winners') final List<Winner>? winners})
       : _content3 = content3,
         _content4 = content4,
         _gifts = gifts,
@@ -228,6 +237,7 @@ class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
 
   final List<Content>? _content3;
   @override
+  @JsonKey(name: 'content3')
   List<Content>? get content3 {
     final value = _content3;
     if (value == null) return null;
@@ -238,6 +248,7 @@ class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
 
   final List<Content>? _content4;
   @override
+  @JsonKey(name: 'content4')
   List<Content>? get content4 {
     final value = _content4;
     if (value == null) return null;
@@ -247,9 +258,11 @@ class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
   }
 
   @override
+  @JsonKey(name: 'user')
   final User? user;
   final List<Gift>? _gifts;
   @override
+  @JsonKey(name: 'gifts')
   List<Gift>? get gifts {
     final value = _gifts;
     if (value == null) return null;
@@ -260,6 +273,7 @@ class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
 
   final List<SponsorVendor>? _sponsorVendors;
   @override
+  @JsonKey(name: 'sponsor_vendors')
   List<SponsorVendor>? get sponsorVendors {
     final value = _sponsorVendors;
     if (value == null) return null;
@@ -269,11 +283,14 @@ class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
   }
 
   @override
+  @JsonKey(name: 'total_worth')
   final int? totalWorth;
   @override
+  @JsonKey(name: 'gift_count')
   final int? giftCount;
   final List<Winner>? _winners;
   @override
+  @JsonKey(name: 'winners')
   List<Winner>? get winners {
     final value = _winners;
     if (value == null) return null;
@@ -336,33 +353,43 @@ class _$SubscribeAndWinModelImpl implements _SubscribeAndWinModel {
 
 abstract class _SubscribeAndWinModel implements SubscribeAndWinModel {
   const factory _SubscribeAndWinModel(
-      {final List<Content>? content3,
-      final List<Content>? content4,
-      final User? user,
-      final List<Gift>? gifts,
-      final List<SponsorVendor>? sponsorVendors,
-      final int? totalWorth,
-      final int? giftCount,
-      final List<Winner>? winners}) = _$SubscribeAndWinModelImpl;
+          {@JsonKey(name: 'content3') final List<Content>? content3,
+          @JsonKey(name: 'content4') final List<Content>? content4,
+          @JsonKey(name: 'user') final User? user,
+          @JsonKey(name: 'gifts') final List<Gift>? gifts,
+          @JsonKey(name: 'sponsor_vendors')
+          final List<SponsorVendor>? sponsorVendors,
+          @JsonKey(name: 'total_worth') final int? totalWorth,
+          @JsonKey(name: 'gift_count') final int? giftCount,
+          @JsonKey(name: 'winners') final List<Winner>? winners}) =
+      _$SubscribeAndWinModelImpl;
 
   factory _SubscribeAndWinModel.fromJson(Map<String, dynamic> json) =
       _$SubscribeAndWinModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'content3')
   List<Content>? get content3;
   @override
+  @JsonKey(name: 'content4')
   List<Content>? get content4;
   @override
+  @JsonKey(name: 'user')
   User? get user;
   @override
+  @JsonKey(name: 'gifts')
   List<Gift>? get gifts;
   @override
+  @JsonKey(name: 'sponsor_vendors')
   List<SponsorVendor>? get sponsorVendors;
   @override
+  @JsonKey(name: 'total_worth')
   int? get totalWorth;
   @override
+  @JsonKey(name: 'gift_count')
   int? get giftCount;
   @override
+  @JsonKey(name: 'winners')
   List<Winner>? get winners;
   @override
   @JsonKey(ignore: true)
@@ -376,7 +403,9 @@ Content _$ContentFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Content {
+  @JsonKey(name: 'title')
   String? get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'content')
   String? get content => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -389,7 +418,9 @@ abstract class $ContentCopyWith<$Res> {
   factory $ContentCopyWith(Content value, $Res Function(Content) then) =
       _$ContentCopyWithImpl<$Res, Content>;
   @useResult
-  $Res call({String? title, String? content});
+  $Res call(
+      {@JsonKey(name: 'title') String? title,
+      @JsonKey(name: 'content') String? content});
 }
 
 /// @nodoc
@@ -428,7 +459,9 @@ abstract class _$$ContentImplCopyWith<$Res> implements $ContentCopyWith<$Res> {
       __$$ContentImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? title, String? content});
+  $Res call(
+      {@JsonKey(name: 'title') String? title,
+      @JsonKey(name: 'content') String? content});
 }
 
 /// @nodoc
@@ -461,14 +494,18 @@ class __$$ContentImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ContentImpl implements _Content {
-  const _$ContentImpl({this.title, this.content});
+  const _$ContentImpl(
+      {@JsonKey(name: 'title') this.title,
+      @JsonKey(name: 'content') this.content});
 
   factory _$ContentImpl.fromJson(Map<String, dynamic> json) =>
       _$$ContentImplFromJson(json);
 
   @override
+  @JsonKey(name: 'title')
   final String? title;
   @override
+  @JsonKey(name: 'content')
   final String? content;
 
   @override
@@ -504,14 +541,17 @@ class _$ContentImpl implements _Content {
 }
 
 abstract class _Content implements Content {
-  const factory _Content({final String? title, final String? content}) =
-      _$ContentImpl;
+  const factory _Content(
+      {@JsonKey(name: 'title') final String? title,
+      @JsonKey(name: 'content') final String? content}) = _$ContentImpl;
 
   factory _Content.fromJson(Map<String, dynamic> json) = _$ContentImpl.fromJson;
 
   @override
+  @JsonKey(name: 'title')
   String? get title;
   @override
+  @JsonKey(name: 'content')
   String? get content;
   @override
   @JsonKey(ignore: true)
@@ -525,8 +565,11 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
+  @JsonKey(name: 'photo')
   String? get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'username')
   String? get username => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -539,7 +582,10 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String? photo, String? name, String? username});
+  $Res call(
+      {@JsonKey(name: 'photo') String? photo,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username});
 }
 
 /// @nodoc
@@ -583,7 +629,10 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? photo, String? name, String? username});
+  $Res call(
+      {@JsonKey(name: 'photo') String? photo,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username});
 }
 
 /// @nodoc
@@ -620,16 +669,22 @@ class __$$UserImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserImpl implements _User {
-  const _$UserImpl({this.photo, this.name, this.username});
+  const _$UserImpl(
+      {@JsonKey(name: 'photo') this.photo,
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'username') this.username});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
 
   @override
+  @JsonKey(name: 'photo')
   final String? photo;
   @override
+  @JsonKey(name: 'name')
   final String? name;
   @override
+  @JsonKey(name: 'username')
   final String? username;
 
   @override
@@ -668,17 +723,20 @@ class _$UserImpl implements _User {
 
 abstract class _User implements User {
   const factory _User(
-      {final String? photo,
-      final String? name,
-      final String? username}) = _$UserImpl;
+      {@JsonKey(name: 'photo') final String? photo,
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'username') final String? username}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
+  @JsonKey(name: 'photo')
   String? get photo;
   @override
+  @JsonKey(name: 'name')
   String? get name;
   @override
+  @JsonKey(name: 'username')
   String? get username;
   @override
   @JsonKey(ignore: true)
@@ -692,13 +750,21 @@ Gift _$GiftFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Gift {
+  @JsonKey(name: 'id')
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gift_id')
   String? get giftId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
   String? get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gifts')
   GiftDetails? get gifts => throw _privateConstructorUsedError;
+  @JsonKey(name: 'vendors')
   Vendor? get vendors => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -712,14 +778,14 @@ abstract class $GiftCopyWith<$Res> {
       _$GiftCopyWithImpl<$Res, Gift>;
   @useResult
   $Res call(
-      {String? id,
-      String? userId,
-      String? giftId,
-      String? status,
-      String? createdAt,
-      String? updatedAt,
-      GiftDetails? gifts,
-      Vendor? vendors});
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'gift_id') String? giftId,
+      @JsonKey(name: 'status') String? status,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
+      @JsonKey(name: 'gifts') GiftDetails? gifts,
+      @JsonKey(name: 'vendors') Vendor? vendors});
 
   $GiftDetailsCopyWith<$Res>? get gifts;
   $VendorCopyWith<$Res>? get vendors;
@@ -816,14 +882,14 @@ abstract class _$$GiftImplCopyWith<$Res> implements $GiftCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? id,
-      String? userId,
-      String? giftId,
-      String? status,
-      String? createdAt,
-      String? updatedAt,
-      GiftDetails? gifts,
-      Vendor? vendors});
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'gift_id') String? giftId,
+      @JsonKey(name: 'status') String? status,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
+      @JsonKey(name: 'gifts') GiftDetails? gifts,
+      @JsonKey(name: 'vendors') Vendor? vendors});
 
   @override
   $GiftDetailsCopyWith<$Res>? get gifts;
@@ -891,33 +957,41 @@ class __$$GiftImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GiftImpl implements _Gift {
   const _$GiftImpl(
-      {this.id,
-      this.userId,
-      this.giftId,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.gifts,
-      this.vendors});
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'user_id') this.userId,
+      @JsonKey(name: 'gift_id') this.giftId,
+      @JsonKey(name: 'status') this.status,
+      @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'updated_at') this.updatedAt,
+      @JsonKey(name: 'gifts') this.gifts,
+      @JsonKey(name: 'vendors') this.vendors});
 
   factory _$GiftImpl.fromJson(Map<String, dynamic> json) =>
       _$$GiftImplFromJson(json);
 
   @override
+  @JsonKey(name: 'id')
   final String? id;
   @override
+  @JsonKey(name: 'user_id')
   final String? userId;
   @override
+  @JsonKey(name: 'gift_id')
   final String? giftId;
   @override
+  @JsonKey(name: 'status')
   final String? status;
   @override
+  @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @override
+  @JsonKey(name: 'gifts')
   final GiftDetails? gifts;
   @override
+  @JsonKey(name: 'vendors')
   final Vendor? vendors;
 
   @override
@@ -963,32 +1037,40 @@ class _$GiftImpl implements _Gift {
 
 abstract class _Gift implements Gift {
   const factory _Gift(
-      {final String? id,
-      final String? userId,
-      final String? giftId,
-      final String? status,
-      final String? createdAt,
-      final String? updatedAt,
-      final GiftDetails? gifts,
-      final Vendor? vendors}) = _$GiftImpl;
+      {@JsonKey(name: 'id') final String? id,
+      @JsonKey(name: 'user_id') final String? userId,
+      @JsonKey(name: 'gift_id') final String? giftId,
+      @JsonKey(name: 'status') final String? status,
+      @JsonKey(name: 'created_at') final String? createdAt,
+      @JsonKey(name: 'updated_at') final String? updatedAt,
+      @JsonKey(name: 'gifts') final GiftDetails? gifts,
+      @JsonKey(name: 'vendors') final Vendor? vendors}) = _$GiftImpl;
 
   factory _Gift.fromJson(Map<String, dynamic> json) = _$GiftImpl.fromJson;
 
   @override
+  @JsonKey(name: 'id')
   String? get id;
   @override
+  @JsonKey(name: 'user_id')
   String? get userId;
   @override
+  @JsonKey(name: 'gift_id')
   String? get giftId;
   @override
+  @JsonKey(name: 'status')
   String? get status;
   @override
+  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   String? get updatedAt;
   @override
+  @JsonKey(name: 'gifts')
   GiftDetails? get gifts;
   @override
+  @JsonKey(name: 'vendors')
   Vendor? get vendors;
   @override
   @JsonKey(ignore: true)
@@ -1002,10 +1084,15 @@ GiftDetails _$GiftDetailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GiftDetails {
+  @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
+  @JsonKey(name: 'worth')
   String? get worth => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_url')
   String? get imageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1021,11 +1108,11 @@ abstract class $GiftDetailsCopyWith<$Res> {
       _$GiftDetailsCopyWithImpl<$Res, GiftDetails>;
   @useResult
   $Res call(
-      {String? name,
-      String? image,
-      String? worth,
-      String? createdAt,
-      String? imageUrl});
+      {@JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'worth') String? worth,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'image_url') String? imageUrl});
 }
 
 /// @nodoc
@@ -1081,11 +1168,11 @@ abstract class _$$GiftDetailsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? name,
-      String? image,
-      String? worth,
-      String? createdAt,
-      String? imageUrl});
+      {@JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'worth') String? worth,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'image_url') String? imageUrl});
 }
 
 /// @nodoc
@@ -1134,20 +1221,29 @@ class __$$GiftDetailsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GiftDetailsImpl implements _GiftDetails {
   const _$GiftDetailsImpl(
-      {this.name, this.image, this.worth, this.createdAt, this.imageUrl});
+      {@JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'image') this.image,
+      @JsonKey(name: 'worth') this.worth,
+      @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'image_url') this.imageUrl});
 
   factory _$GiftDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$GiftDetailsImplFromJson(json);
 
   @override
+  @JsonKey(name: 'name')
   final String? name;
   @override
+  @JsonKey(name: 'image')
   final String? image;
   @override
+  @JsonKey(name: 'worth')
   final String? worth;
   @override
+  @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
+  @JsonKey(name: 'image_url')
   final String? imageUrl;
 
   @override
@@ -1190,24 +1286,29 @@ class _$GiftDetailsImpl implements _GiftDetails {
 
 abstract class _GiftDetails implements GiftDetails {
   const factory _GiftDetails(
-      {final String? name,
-      final String? image,
-      final String? worth,
-      final String? createdAt,
-      final String? imageUrl}) = _$GiftDetailsImpl;
+      {@JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'image') final String? image,
+      @JsonKey(name: 'worth') final String? worth,
+      @JsonKey(name: 'created_at') final String? createdAt,
+      @JsonKey(name: 'image_url') final String? imageUrl}) = _$GiftDetailsImpl;
 
   factory _GiftDetails.fromJson(Map<String, dynamic> json) =
       _$GiftDetailsImpl.fromJson;
 
   @override
+  @JsonKey(name: 'name')
   String? get name;
   @override
+  @JsonKey(name: 'image')
   String? get image;
   @override
+  @JsonKey(name: 'worth')
   String? get worth;
   @override
+  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
+  @JsonKey(name: 'image_url')
   String? get imageUrl;
   @override
   @JsonKey(ignore: true)
@@ -1221,8 +1322,11 @@ Vendor _$VendorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Vendor {
+  @JsonKey(name: 'photo')
   String? get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'username')
   String? get username => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1235,7 +1339,10 @@ abstract class $VendorCopyWith<$Res> {
   factory $VendorCopyWith(Vendor value, $Res Function(Vendor) then) =
       _$VendorCopyWithImpl<$Res, Vendor>;
   @useResult
-  $Res call({String? photo, String? name, String? username});
+  $Res call(
+      {@JsonKey(name: 'photo') String? photo,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username});
 }
 
 /// @nodoc
@@ -1279,7 +1386,10 @@ abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
       __$$VendorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? photo, String? name, String? username});
+  $Res call(
+      {@JsonKey(name: 'photo') String? photo,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username});
 }
 
 /// @nodoc
@@ -1317,16 +1427,22 @@ class __$$VendorImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VendorImpl implements _Vendor {
-  const _$VendorImpl({this.photo, this.name, this.username});
+  const _$VendorImpl(
+      {@JsonKey(name: 'photo') this.photo,
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'username') this.username});
 
   factory _$VendorImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorImplFromJson(json);
 
   @override
+  @JsonKey(name: 'photo')
   final String? photo;
   @override
+  @JsonKey(name: 'name')
   final String? name;
   @override
+  @JsonKey(name: 'username')
   final String? username;
 
   @override
@@ -1365,17 +1481,20 @@ class _$VendorImpl implements _Vendor {
 
 abstract class _Vendor implements Vendor {
   const factory _Vendor(
-      {final String? photo,
-      final String? name,
-      final String? username}) = _$VendorImpl;
+      {@JsonKey(name: 'photo') final String? photo,
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'username') final String? username}) = _$VendorImpl;
 
   factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
 
   @override
+  @JsonKey(name: 'photo')
   String? get photo;
   @override
+  @JsonKey(name: 'name')
   String? get name;
   @override
+  @JsonKey(name: 'username')
   String? get username;
   @override
   @JsonKey(ignore: true)
@@ -1389,8 +1508,11 @@ SponsorVendor _$SponsorVendorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SponsorVendor {
+  @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'photo')
   String? get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'username')
   String? get username => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1405,7 +1527,10 @@ abstract class $SponsorVendorCopyWith<$Res> {
           SponsorVendor value, $Res Function(SponsorVendor) then) =
       _$SponsorVendorCopyWithImpl<$Res, SponsorVendor>;
   @useResult
-  $Res call({String? name, String? photo, String? username});
+  $Res call(
+      {@JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'photo') String? photo,
+      @JsonKey(name: 'username') String? username});
 }
 
 /// @nodoc
@@ -1450,7 +1575,10 @@ abstract class _$$SponsorVendorImplCopyWith<$Res>
       __$$SponsorVendorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name, String? photo, String? username});
+  $Res call(
+      {@JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'photo') String? photo,
+      @JsonKey(name: 'username') String? username});
 }
 
 /// @nodoc
@@ -1488,16 +1616,22 @@ class __$$SponsorVendorImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SponsorVendorImpl implements _SponsorVendor {
-  const _$SponsorVendorImpl({this.name, this.photo, this.username});
+  const _$SponsorVendorImpl(
+      {@JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'photo') this.photo,
+      @JsonKey(name: 'username') this.username});
 
   factory _$SponsorVendorImpl.fromJson(Map<String, dynamic> json) =>
       _$$SponsorVendorImplFromJson(json);
 
   @override
+  @JsonKey(name: 'name')
   final String? name;
   @override
+  @JsonKey(name: 'photo')
   final String? photo;
   @override
+  @JsonKey(name: 'username')
   final String? username;
 
   @override
@@ -1536,18 +1670,21 @@ class _$SponsorVendorImpl implements _SponsorVendor {
 
 abstract class _SponsorVendor implements SponsorVendor {
   const factory _SponsorVendor(
-      {final String? name,
-      final String? photo,
-      final String? username}) = _$SponsorVendorImpl;
+      {@JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'photo') final String? photo,
+      @JsonKey(name: 'username') final String? username}) = _$SponsorVendorImpl;
 
   factory _SponsorVendor.fromJson(Map<String, dynamic> json) =
       _$SponsorVendorImpl.fromJson;
 
   @override
+  @JsonKey(name: 'name')
   String? get name;
   @override
+  @JsonKey(name: 'photo')
   String? get photo;
   @override
+  @JsonKey(name: 'username')
   String? get username;
   @override
   @JsonKey(ignore: true)
@@ -1561,13 +1698,21 @@ Winner _$WinnerFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Winner {
+  @JsonKey(name: 'id')
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gift_id')
   String? get giftId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
   String? get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gift_worth')
   GiftWorth? get giftWorth => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
   Name? get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1581,14 +1726,14 @@ abstract class $WinnerCopyWith<$Res> {
       _$WinnerCopyWithImpl<$Res, Winner>;
   @useResult
   $Res call(
-      {String? id,
-      String? userId,
-      String? giftId,
-      String? status,
-      String? createdAt,
-      String? updatedAt,
-      GiftWorth? giftWorth,
-      Name? name});
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'gift_id') String? giftId,
+      @JsonKey(name: 'status') String? status,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
+      @JsonKey(name: 'gift_worth') GiftWorth? giftWorth,
+      @JsonKey(name: 'name') Name? name});
 
   $GiftWorthCopyWith<$Res>? get giftWorth;
   $NameCopyWith<$Res>? get name;
@@ -1685,14 +1830,14 @@ abstract class _$$WinnerImplCopyWith<$Res> implements $WinnerCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? id,
-      String? userId,
-      String? giftId,
-      String? status,
-      String? createdAt,
-      String? updatedAt,
-      GiftWorth? giftWorth,
-      Name? name});
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'gift_id') String? giftId,
+      @JsonKey(name: 'status') String? status,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
+      @JsonKey(name: 'gift_worth') GiftWorth? giftWorth,
+      @JsonKey(name: 'name') Name? name});
 
   @override
   $GiftWorthCopyWith<$Res>? get giftWorth;
@@ -1761,33 +1906,41 @@ class __$$WinnerImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$WinnerImpl implements _Winner {
   const _$WinnerImpl(
-      {this.id,
-      this.userId,
-      this.giftId,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.giftWorth,
-      this.name});
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'user_id') this.userId,
+      @JsonKey(name: 'gift_id') this.giftId,
+      @JsonKey(name: 'status') this.status,
+      @JsonKey(name: 'created_at') this.createdAt,
+      @JsonKey(name: 'updated_at') this.updatedAt,
+      @JsonKey(name: 'gift_worth') this.giftWorth,
+      @JsonKey(name: 'name') this.name});
 
   factory _$WinnerImpl.fromJson(Map<String, dynamic> json) =>
       _$$WinnerImplFromJson(json);
 
   @override
+  @JsonKey(name: 'id')
   final String? id;
   @override
+  @JsonKey(name: 'user_id')
   final String? userId;
   @override
+  @JsonKey(name: 'gift_id')
   final String? giftId;
   @override
+  @JsonKey(name: 'status')
   final String? status;
   @override
+  @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @override
+  @JsonKey(name: 'gift_worth')
   final GiftWorth? giftWorth;
   @override
+  @JsonKey(name: 'name')
   final Name? name;
 
   @override
@@ -1834,32 +1987,40 @@ class _$WinnerImpl implements _Winner {
 
 abstract class _Winner implements Winner {
   const factory _Winner(
-      {final String? id,
-      final String? userId,
-      final String? giftId,
-      final String? status,
-      final String? createdAt,
-      final String? updatedAt,
-      final GiftWorth? giftWorth,
-      final Name? name}) = _$WinnerImpl;
+      {@JsonKey(name: 'id') final String? id,
+      @JsonKey(name: 'user_id') final String? userId,
+      @JsonKey(name: 'gift_id') final String? giftId,
+      @JsonKey(name: 'status') final String? status,
+      @JsonKey(name: 'created_at') final String? createdAt,
+      @JsonKey(name: 'updated_at') final String? updatedAt,
+      @JsonKey(name: 'gift_worth') final GiftWorth? giftWorth,
+      @JsonKey(name: 'name') final Name? name}) = _$WinnerImpl;
 
   factory _Winner.fromJson(Map<String, dynamic> json) = _$WinnerImpl.fromJson;
 
   @override
+  @JsonKey(name: 'id')
   String? get id;
   @override
+  @JsonKey(name: 'user_id')
   String? get userId;
   @override
+  @JsonKey(name: 'gift_id')
   String? get giftId;
   @override
+  @JsonKey(name: 'status')
   String? get status;
   @override
+  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   String? get updatedAt;
   @override
+  @JsonKey(name: 'gift_worth')
   GiftWorth? get giftWorth;
   @override
+  @JsonKey(name: 'name')
   Name? get name;
   @override
   @JsonKey(ignore: true)
@@ -1873,6 +2034,7 @@ GiftWorth _$GiftWorthFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GiftWorth {
+  @JsonKey(name: 'worth')
   String? get worth => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1886,7 +2048,7 @@ abstract class $GiftWorthCopyWith<$Res> {
   factory $GiftWorthCopyWith(GiftWorth value, $Res Function(GiftWorth) then) =
       _$GiftWorthCopyWithImpl<$Res, GiftWorth>;
   @useResult
-  $Res call({String? worth});
+  $Res call({@JsonKey(name: 'worth') String? worth});
 }
 
 /// @nodoc
@@ -1921,7 +2083,7 @@ abstract class _$$GiftWorthImplCopyWith<$Res>
       __$$GiftWorthImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? worth});
+  $Res call({@JsonKey(name: 'worth') String? worth});
 }
 
 /// @nodoc
@@ -1949,12 +2111,13 @@ class __$$GiftWorthImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GiftWorthImpl implements _GiftWorth {
-  const _$GiftWorthImpl({this.worth});
+  const _$GiftWorthImpl({@JsonKey(name: 'worth') this.worth});
 
   factory _$GiftWorthImpl.fromJson(Map<String, dynamic> json) =>
       _$$GiftWorthImplFromJson(json);
 
   @override
+  @JsonKey(name: 'worth')
   final String? worth;
 
   @override
@@ -1989,12 +2152,14 @@ class _$GiftWorthImpl implements _GiftWorth {
 }
 
 abstract class _GiftWorth implements GiftWorth {
-  const factory _GiftWorth({final String? worth}) = _$GiftWorthImpl;
+  const factory _GiftWorth({@JsonKey(name: 'worth') final String? worth}) =
+      _$GiftWorthImpl;
 
   factory _GiftWorth.fromJson(Map<String, dynamic> json) =
       _$GiftWorthImpl.fromJson;
 
   @override
+  @JsonKey(name: 'worth')
   String? get worth;
   @override
   @JsonKey(ignore: true)
@@ -2008,6 +2173,7 @@ Name _$NameFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Name {
+  @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2020,7 +2186,7 @@ abstract class $NameCopyWith<$Res> {
   factory $NameCopyWith(Name value, $Res Function(Name) then) =
       _$NameCopyWithImpl<$Res, Name>;
   @useResult
-  $Res call({String? name});
+  $Res call({@JsonKey(name: 'name') String? name});
 }
 
 /// @nodoc
@@ -2054,7 +2220,7 @@ abstract class _$$NameImplCopyWith<$Res> implements $NameCopyWith<$Res> {
       __$$NameImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name});
+  $Res call({@JsonKey(name: 'name') String? name});
 }
 
 /// @nodoc
@@ -2081,12 +2247,13 @@ class __$$NameImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$NameImpl implements _Name {
-  const _$NameImpl({this.name});
+  const _$NameImpl({@JsonKey(name: 'name') this.name});
 
   factory _$NameImpl.fromJson(Map<String, dynamic> json) =>
       _$$NameImplFromJson(json);
 
   @override
+  @JsonKey(name: 'name')
   final String? name;
 
   @override
@@ -2121,11 +2288,12 @@ class _$NameImpl implements _Name {
 }
 
 abstract class _Name implements Name {
-  const factory _Name({final String? name}) = _$NameImpl;
+  const factory _Name({@JsonKey(name: 'name') final String? name}) = _$NameImpl;
 
   factory _Name.fromJson(Map<String, dynamic> json) = _$NameImpl.fromJson;
 
   @override
+  @JsonKey(name: 'name')
   String? get name;
   @override
   @JsonKey(ignore: true)
