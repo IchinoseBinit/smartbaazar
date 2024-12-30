@@ -348,16 +348,16 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-                     CustomPageView(
-                            // selectedindex: 3,
+                      CustomPageView(
+                        // selectedindex: 3,
 
-                            pageController: _pageController,
-                            items: items,
-                            // initialIndex: 1,
-                          
-                            activeColor: Colors.amber,
-                            inactiveColor: const Color(0xffD9D9D9),
-                          ),
+                        pageController: _pageController,
+                        items: items,
+                        // initialIndex: 1,
+
+                        activeColor: Colors.amber,
+                        inactiveColor: const Color(0xffD9D9D9),
+                      ),
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -454,9 +454,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           children: [
                             // First StoryAddWidget with search option
                             StoryAddWidget(
-                              vImage: data.data!.feedStory?.posts.first.image,
+                              vImage: data!.feedStory?.posts?.first.image,
                               brandname:
-                                  data.data!.feedStory?.posts.first.vendorName,
+                                  data!.feedStory?.posts?.first.vendorName,
                               index: 0,
                               addSearch: true, // First item has search
                               showgift: false,
@@ -468,11 +468,11 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                             ),
                             // Expanded is not needed since SingleChildScrollView will handle scrolling
                             // Now ListView.builder will be added directly to the row
-                            ...data.data!.feedStory!.posts.map((storyData) {
+                            ...data!.feedStory!.posts!.map((storyData) {
                               return StoryAddWidget(
                                 brandname: storyData.vendorName,
                                 vImage: storyData.vendorImage,
-                                index: data.data!.feedStory!.posts
+                                index: data!.feedStory!.posts!
                                     .indexOf(storyData),
                                 addSearch:
                                     false, // For all items other than the first, no search
@@ -694,7 +694,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 10.w),
                                               child: DashedBorder(
-                                                
                                                 padding: 0,
                                                 dashCount: 2,
                                                 child: SizedBox(

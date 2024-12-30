@@ -124,7 +124,7 @@ class Buynowmodel {
   final String image;
   final String vendorImage;
   final String? worth;
-    final String name;
+  final String name;
 
   final int winners;
 
@@ -224,7 +224,7 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
       requestType: RequestType.getWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections',
     );
-
+    print("baby ${response.data}");
     final data = response.data;
 
     final newProducts = (data['new_products'] as List<dynamic>?)
@@ -246,20 +246,19 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               return LogoData.fromJson(winJson);
             }).toList() ??
             [];
-                          print("Mapping JSON: ${global.length}"); // Debug each item
-
+    print("Mapping JSON: ${global.length}"); // Debug each item
 
     final locald = (data['domestic_brandbazarLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-                                          print("Mapping doma: ${locald.length}"); // Debug each item
+    print("Mapping doma: ${locald.length}"); // Debug each item
 
     final spotd = (data['spotlightLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-                                  print("Mapping spot: ${spotd.length}"); // Debug each item
+    print("Mapping spot: ${spotd.length}"); // Debug each item
 
     final rawBrandbazarGlobal =
         data['brandbazar_global'] as List<dynamic>? ?? [];
@@ -291,7 +290,7 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
-                                      print("Mapping spot: ${spotd.length}"); // Debug each item
+    print("lamot spot: ${data['home_story']}"); // Debug each item
 
     final Map<String, VendorModel> homestory = (data['home_story']
                 as Map<String, dynamic>?)
@@ -300,7 +299,7 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
         {};
 
     return HotWithBuy(
-        homestory: homestory,
+        homestory: {},
         doma: domas,
         spot: spotl,
         home: newProducts,
