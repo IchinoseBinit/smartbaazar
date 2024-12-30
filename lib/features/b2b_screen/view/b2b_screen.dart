@@ -74,53 +74,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   // }
 
   int? dynamicsize;
-  final List<Map<String, dynamic>> __items = [
-    {
-      'icon': 'assets/icon/loading.svg',
-      'label': 'Everything',
-      'screen': const HomeScreen()
-    },
-    {
-      'icon': 'assets/icon/b2bIcon.svg',
-      'label': 'TradeHub',
-      'screen': const B2bScreen()
-    },
-    {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
-    {
-      'icon': 'assets/icon/usedIcon.svg',
-      'label': 'Used',
-      'screen': const UsedScreen()
-    },
-    {
-      'icon': 'assets/icon/openCartIcon.svg',
-      'label': 'SocioShop',
-      'screen': const SocioShopScreen()
-    },
-    {
-      'icon': 'assets/icon/box.svg',
-      'label': 'ServiceHub',
-      'screen': const ServicesScreen()
-    },
-    {
-      'icon': 'assets/icon/vectors.svg',
-      'label': 'Job',
-      'screen': const JobssScreen()
-    },
-    {
-      'icon': 'assets/icon/groceryIcon.svg',
-      'label': 'Grocery',
-      'screen': const GrocarysScreen()
-    },
-    {
-      'icon': 'assets/icon/eventIcon.svg',
-      'label': 'Events',
-      'screen': const EventsScreen()
-    },
-  ];
+
   int _currentPage = 0;
 
   @override
@@ -392,125 +346,17 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(4, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                headerIndex = index;
-                              });
-                              _pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 50),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              decoration: BoxDecoration(
-                                color: headerIndex == index
-                                    ? Colors.amber
-                                    : Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      SizedBox(
-                        height: 80.h,
-                        child: PageView.builder(
-                          itemCount: items.length,
-                          padEnds: false,
-                          reverse: true,
-                          scrollDirection: Axis.horizontal,
-                          controller: _pageController,
-                          onPageChanged: (value) {
-                            setState(() {
-                              headerIndex =
-                                  value; // Update selectedIndex based on page change
-                            });
-                          },
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
 
-                            // Highlight only when index == 4
-                            bool isActive = index == 1;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                                _pageController.animateToPage(
-                                  2,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.center,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => data['screen']),
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (data['icon']
-                                          .toString()
-                                          .endsWith('.svg'))
-                                        SvgPicture.asset(
-                                          data['icon'],
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
-                                          theme: const SvgTheme(
-                                              currentColor: Color(0xffdd9d9d9)),
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        )
-                                      else
-                                        Image.asset(
-                                          data['icon'],
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        data['label'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                      CustomPageView(
+                        // selectedindex: 0,
+                        // selectedindex: 2,
+
+                        pageController: _pageController,
+                        items: items,
+                        // initialIndex: 1,
+
+                        activeColor: Colors.amber,
+                        inactiveColor: const Color(0xffD9D9D9),
                       ),
 
                       Padding(
@@ -827,8 +673,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   PopupMenuItem(
                                                     value: 2,
                                                     child: ListTile(
-                                                      title: Text(
-                                                          "${e.parentClosure?.slug ?? 'N/A'}"),
+                                                      title: Text(e
+                                                              .parentClosure
+                                                              ?.slug ??
+                                                          'N/A'),
                                                       leading: const Icon(
                                                           Icons.info),
                                                     ),
@@ -850,8 +698,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 PopupMenuItem(
                                                   value: 2,
                                                   child: Text(
-                                                    "${e.parentClosure?.slug ?? 'No Parent'}",
-                                                    style: TextStyle(
+                                                    e.parentClosure?.slug ??
+                                                        'No Parent',
+                                                    style: const TextStyle(
                                                         fontSize: 16.0),
                                                   ),
                                                 ),
@@ -860,8 +709,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 10.w),
                                               child: DashedBorder(
-                                                dashCount: 3,
+                                                dashCount:
+                                                    1, // Number of dashes in the border
                                                 child: SizedBox(
+                                                  width: 200
+                                                      .w, // Fixed width for the container
                                                   child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -872,21 +724,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                     children: [
                                                       Image.asset(
                                                           'assets/images/cloth.png'),
-                                                      Wrap(
-                                                        children: [
-                                                          Text(
-                                                            e.name ?? 'No Name',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13,
-                                                            ),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
                                                           ),
-                                                        ],
-                                                      ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -901,30 +752,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
                         ],
                       ),
                     );
@@ -932,7 +759,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => CircularProgressIndicator(),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
@@ -979,6 +806,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           VProduct hot = data.hotProducts[index];
                           return InkWell(
                             onTap: () {
+                              print("biabsh ${hot.id}");
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

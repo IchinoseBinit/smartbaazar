@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
@@ -126,4 +128,151 @@ class ImageConstant {
   static String pageNotFound = '$basePath/pageNotFoundImage.png';
   static String facebookShareImage = '$basePath/facebookShare.png';
   static String subscribeImage = '$basePath/subscribe.png';
+}
+
+
+class CustomPageView extends StatefulWidget {
+  final List<Map<String, dynamic>> items;
+  final Color activeColor;
+  final Color inactiveColor;
+  final PageController pageController;
+
+  const CustomPageView({
+    Key? key,
+    required this.items,
+    required this.pageController,
+    this.activeColor = Colors.amber,
+    this.inactiveColor = const Color(0xffD9D9D9),
+  }) : super(key: key);
+
+  @override
+  State<CustomPageView> createState() => _CustomPageViewState();
+}
+
+class _CustomPageViewState extends State<CustomPageView> {
+  int selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(widget.items.length, (index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = index;
+                });
+                widget.pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 50),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: Container(
+                height: 5.h,
+                width: 5.w,
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                decoration: BoxDecoration(
+                  color: selectedIndex == index
+                      ? widget.activeColor
+                      : widget.inactiveColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            );
+          }),
+        ),
+        SizedBox(
+          height: 80.h,
+          child: PageView.builder(
+            itemCount: widget.items.length,
+            padEnds: false,
+            controller: widget.pageController,
+            onPageChanged: (value) {
+              setState(() {
+                selectedIndex = value;
+              });
+            },
+            itemBuilder: (context, index) {
+              // Avoid showing empty pages
+              if (widget.items.isEmpty || index >= widget.items.length) {
+                return Container(); // Return an empty container for empty pages
+              }
+
+              final data = widget.items[index];
+              final isActive = index == selectedIndex;
+
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                  widget.pageController.animateToPage(
+                    2,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: AnimatedContainer(
+                  padding: EdgeInsets.zero,
+                  duration: const Duration(milliseconds: 300),
+                  alignment: Alignment.center,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => data['screen'],
+                        ),
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (data['icon'].toString().endsWith('.svg'))
+                          SvgPicture.asset(
+                            data['icon'],
+                            alignment: Alignment.center,
+                            fit: BoxFit.contain,
+                            theme: const SvgTheme(currentColor: Colors.black),
+                            color: isActive
+                                ? widget.activeColor
+                                : widget.inactiveColor.withOpacity(0.5),
+                            width: 20,
+                            height: 20,
+                          )
+                        else
+                          Image.asset(
+                            data['icon'],
+                            color: isActive
+                                ? widget.activeColor
+                                : widget.inactiveColor.withOpacity(0.5),
+                            width: 20,
+                            height: 20,
+                          ),
+                        const SizedBox(height: 8),
+                        Text(
+                          data['label'],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: isActive
+                                ? widget.activeColor
+                                : widget.inactiveColor.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

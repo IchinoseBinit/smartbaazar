@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
-import 'package:smartbazar/features/feed_page/model/feed_gift_card_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 
 class FeedContainer extends ConsumerWidget {

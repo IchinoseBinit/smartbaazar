@@ -76,53 +76,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   int _currentIndex = 0;
 
   int? dynamicsize;
-  final List<Map<String, dynamic>> __items = [
-    {
-      'icon': 'assets/icon/loading.svg',
-      'label': 'Everything',
-      'screen': const HomeScreen()
-    },
-    {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
-    {
-      'icon': 'assets/icon/b2bIcon.svg',
-      'label': 'TradeHub',
-      'screen': const B2bScreen()
-    },
-    {
-      'icon': 'assets/icon/usedIcon.svg',
-      'label': 'Used',
-      'screen': const UsedScreen()
-    },
-    {
-      'icon': 'assets/icon/openCartIcon.svg',
-      'label': 'SocioShop',
-      'screen': const SocioShopScreen()
-    },
-    {
-      'icon': 'assets/icon/box.svg',
-      'label': 'ServiceHub',
-      'screen': const ServicesScreen()
-    },
-    {
-      'icon': 'assets/icon/vectors.svg',
-      'label': 'Job',
-      'screen': const JobssScreen()
-    },
-    {
-      'icon': 'assets/icon/groceryIcon.svg',
-      'label': 'Grocery',
-      'screen': const GrocarysScreen()
-    },
-    {
-      'icon': 'assets/icon/eventIcon.svg',
-      'label': 'Events',
-      'screen': const EventsScreen()
-    },
-  ];
+
   int _currentPage = 0;
 
   @override
@@ -255,7 +209,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -394,126 +348,16 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(4, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                headerIndex = index;
-                              });
-                              _pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 50),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              decoration: BoxDecoration(
-                                color: headerIndex == index
-                                    ? Colors.amber
-                                    : Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      SizedBox(
-                        height: 80.h,
-                        child: PageView.builder(
-                          itemCount: items.length,
-                          padEnds: false,
-                          reverse: true,
-                          scrollDirection: Axis.horizontal,
-                          controller: _pageController,
-                          onPageChanged: (value) {
-                            setState(() {
-                              headerIndex =
-                                  value; // Update selectedIndex based on page change
-                            });
-                          },
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
+                     CustomPageView(
+                            // selectedindex: 3,
 
-                            // Highlight only when index == 4
-                            bool isActive = index == 1;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                                _pageController.animateToPage(
-                                  2,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.center,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => data['screen']),
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (data['icon']
-                                          .toString()
-                                          .endsWith('.svg'))
-                                        SvgPicture.asset(
-                                          data['icon'],
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
-                                          theme: const SvgTheme(
-                                              currentColor: Color(0xffdd9d9d9)),
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        )
-                                      else
-                                        Image.asset(
-                                          data['icon'],
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        data['label'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                            pageController: _pageController,
+                            items: items,
+                            // initialIndex: 1,
+                          
+                            activeColor: Colors.amber,
+                            inactiveColor: const Color(0xffD9D9D9),
+                          ),
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -840,8 +684,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                 PopupMenuItem(
                                                   value: 1,
                                                   child: Text(
-                                                    e.slug!,
-                                                    style: TextStyle(
+                                                    e.slug,
+                                                    style: const TextStyle(
                                                         fontSize: 16.0),
                                                   ),
                                                 ),
@@ -850,7 +694,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 10.w),
                                               child: DashedBorder(
-                                                dashCount: 3,
+                                                
+                                                padding: 0,
+                                                dashCount: 2,
                                                 child: SizedBox(
                                                   // width: 100.w,
                                                   // height: 100.h,
@@ -864,21 +710,20 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                     children: [
                                                       Image.asset(
                                                           'assets/images/cloth.png'),
-                                                      Wrap(
-                                                        children: [
-                                                          Text(
-                                                            e.name ?? 'No Name',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13,
-                                                            ),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
                                                           ),
-                                                        ],
-                                                      ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -923,7 +768,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => CircularProgressIndicator(),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 200.h,

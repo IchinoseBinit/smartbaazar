@@ -210,7 +210,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.feed,
       "title": 'Create',
       "subtitle": 'Feed',
-      "screen":  FeedFormScreen(),
+      "screen":  const FeedFormScreen(),
     },
   ];
 

@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
@@ -75,7 +76,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   }
 
   int _currentPage = 0;
-  final List<Map<String, dynamic>> __items = [
+  final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
@@ -218,6 +219,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     final asyncbajarValue = ref.watch(getSocioDataProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
+         final category = ref.watch(getCategoriesProvider(0));
     // asyncbajarValue.when(data: (data) {
 
     // }, error: (error, stackTrace) {
@@ -426,7 +428,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             });
                           },
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
+                            Map<String, dynamic> data = _items[index];
 
                             // Highlight only when index == 4
                             bool isActive = index == 1;
@@ -734,311 +736,198 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   height: 10.h,
                 ),
 
-                SizedBox(
-                  height: 100.h,
-                  width: double.infinity,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.only(left: 7.w),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: [
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [15, 15],
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "ALL",
-                                style: headerstyle.copyWith(
-                                    color: ColorConstant.blackColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text("SERVICES",
-                                  style: headerstyle.copyWith(
-                                      color: ColorConstant.blackColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      // DottedBorder(
-                      //     strokeWidth: 2,
-
-                      //     dashPattern: [15, 10],
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     stackFit: StackFit.loose,
-                      //     radius: const Radius.circular(70),
-                      //     padding: const EdgeInsets.all(27),
-                      //     color: Colors.black,
-                      //     child: Container(
-                      //       height: 100,
-                      //       width: 100,
-                      //       child: const Text("data"))
-                      //     ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      asyncbajarValue.when(
-                        data: (data) {
-                          if (data.cat.isEmpty) return const SizedBox();
-                          return GestureDetector(
-                            onTap: () {
-                              showMenu(
-                                context: context,
-                                position: const RelativeRect.fromLTRB(0, 0, 0,
-                                    0), // Base position; offset is handled by PopupMenuButton
-                                items: [
-                                  PopupMenuItem(
-                                    value: 1,
-                                    child: ListTile(
-                                      title: const Text("View Story"),
-                                      leading: const Icon(Icons.book),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Story" action here
-                                      },
+                  category.when(
+                  data: (data) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: Column(
+                        children: [
+                          // Row for "ALL" and other services
+                          SizedBox(
+                            height: 100.h, // Adjust height as necessary
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                // "ALL" Services (Standalone)
+                                DottedBorder(
+                                  strokeWidth: 2,
+                                  color: Colors.grey,
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(10),
+                                  dashPattern: const [15, 15],
+                                  child: SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "ALL",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "B2b",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  PopupMenuItem(
-                                    value: 2,
-                                    child: ListTile(
-                                      title: const Text("View Product"),
-                                      leading: const Icon(Icons.shopping_bag),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Product" action here
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                            child: PopupMenuButton<int>(
-                              offset: const Offset(0,
-                                  60), // The offset to position the menu above the widget
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 1,
-                                  child: Text("View Story",
-                                      style: TextStyle(fontSize: 16.0)),
                                 ),
-                                const PopupMenuItem(
-                                  value: 2,
-                                  child: Text("View Product",
-                                      style: TextStyle(fontSize: 16.0)),
-                                ),
-                              ],
-                              onCanceled: () {
-                                // print("You have canceled the menu selection.");
-                              },
-                              onSelected: (value) {
-                                switch (value) {
-                                  case 1:
-                                    // Handle "View Story"
-                                    break;
-                                  case 2:
-                                    // Handle "View Product"
-                                    break;
-                                  default:
-                                    print("Invalid choice");
-                                    break;
-                                }
-                              },
-                              child: DashedBorder(
-                                dashCount: 2,
-                                child: SizedBox(
-                                  width: 100.w,
-                                  height: 100.h,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      // Image.asset('assets/images/cloth.png'),
-                                      Wrap(
-                                        children: [
-                                          Text(
-                                            data.cat[0].slug,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13,
+
+                                // Other Services List
+                                Expanded(
+                                  child: ListView(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    children: data.map((e) {
+                                      return Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showMenu(
+                                              context: context,
+                                              position:
+                                                  const RelativeRect.fromLTRB(0,
+                                                      0, 0, 0), // Base position
+                                              items: [
+                                                PopupMenuItem(
+                                                  value: 1,
+                                                  child: ListTile(
+                                                    title: const Text(
+                                                        "View Story"),
+                                                    leading:
+                                                        const Icon(Icons.book),
+                                                    onTap: () {
+                                                      // Implement onTap logic
+                                                    },
+                                                  ),
+                                                ),
+                                                // Check if parentClosure is not null and show it
+                                                if (e.parentClosure != null)
+                                                  PopupMenuItem(
+                                                    value: 2,
+                                                    child: ListTile(
+                                                      title: Text(e
+                                                              .parentClosure
+                                                              ?.slug ??
+                                                          'N/A'),
+                                                      leading: const Icon(
+                                                          Icons.info),
+                                                    ),
+                                                  ),
+                                              ],
+                                            );
+                                          },
+                                          child: PopupMenuButton<int>(
+                                            offset: const Offset(
+                                                0, 60), // Position for the menu
+                                            itemBuilder: (context) => [
+                                              const PopupMenuItem(
+                                                value: 1,
+                                                child: Text("View Story",
+                                                    style: TextStyle(
+                                                        fontSize: 16.0)),
+                                              ),
+                                              if (e.parentClosure != null)
+                                                PopupMenuItem(
+                                                  value: 2,
+                                                  child: Text(
+                                                    e.parentClosure?.slug ??
+                                                        'No Parent',
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                            ],
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.w),
+                                              child: DashedBorder(
+                                                dashCount:
+                                                    1, // Number of dashes in the border
+                                                child: SizedBox(
+                                                  width: 200
+                                                      .w, // Fixed width for the container
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Image.asset(
+                                                          'assets/images/cloth.png'),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          return Text("error $error");
-                        },
-                        loading: () {
-                          return const CircularProgressIndicator();
-                        },
-                      ),
-
-                      // DottedBorder(
-                      //   strokeWidth: 2,
-                      //   color: Colors.grey,
-                      //   borderType: BorderType.RRect,
-                      //   radius: const Radius.circular(10),
-                      //   dashPattern: const [10, 10],
-                      //   child: SizedBox(
-                      //       width: 100.w,
-                      //       height: 100.h,
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           Image.asset('assets/images/cloth.png'),
-                      //           Wrap(
-                      //             children: [
-                      //               Text(
-                      //                 "HEALTH,\nSPORTS",
-                      //                 style: headerstyle.copyWith(
-                      //                     color: Colors.black,
-                      //                     fontWeight: FontWeight.w500,
-                      //                     fontSize: 13),
-                      //               )
-                      //             ],
-                      //           ),
-                      //         ],
-                      //       )),
-                      // ),
-
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [10, 10],
-                        child: SizedBox(
-                            width: 100.w,
-                            height: 100.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 15),
+                            child: Row(
                               children: [
-                                Image.asset(
-                                  'assets/images/cloth.png',
+                                Text(
+                                  'HOT DEALS',
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      "SPORTS,\nAND",
-                                      style: headerstyle.copyWith(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13),
-                                    )
-                                  ],
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Image.asset(
+                                  'assets/images/flameIcon.png',
+                                  width: 16.w,
+                                  height: 17.h,
                                 ),
                               ],
-                            )),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-
-                      // DottedBorder(
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     radius: const Radius.circular(10),
-                      //     padding: const EdgeInsets.all(20),
-                      //     strokeWidth: 1,
-                      //     color: Colors.black,
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //           'assets/images/cloth.png',
-                      //         ),
-                      //         Wrap(
-                      //           children: [
-                      //             Text(
-                      //               "SPORTS,\nAND",
-                      //               style: headerstyle.copyWith(
-                      //                   color: Colors.black,
-                      //                   fontWeight: FontWeight.w500,
-                      //                   fontSize: 13),
-                      //             )
-                      //           ],
-                      //         ),
-                      //       ],
-                      //     )),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.flight,
-                            color: Color(0xff6E6E6E),
+                            ),
                           ),
-                          Text(
-                            "TRAVELS,\nTOURS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
+                          nolistingfound(),
                         ],
                       ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.tv,
-                            color: Color(0xff6E6E6E),
-                          ),
-                          Text(
-                            "ELECTRONICS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          ),
-                          Text(
-                            "&",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      )
-                    ],
-                  ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),

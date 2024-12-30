@@ -58,7 +58,7 @@ class MyListingScreen extends ConsumerWidget {
               ),
               listingResponse.when(
                 data: (data) {
-                  final products = data.products?.data?? [];
+                  final products = data.products?.data ?? [];
                   return products.isEmpty
                       ? const Center(child: Text('No listings available'))
                       : Expanded(
@@ -123,9 +123,10 @@ class MyListinDetails extends ConsumerWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
+                  // print("niko ${product.id}");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const UpdateListing()),
+                    MaterialPageRoute(builder: (_) =>  UpdateListing(id: product.id,)),
                   );
                 },
                 child: const Icon(

@@ -131,15 +131,14 @@ class ProductDetailScreen extends ConsumerWidget {
                     onTap: () {
                       // print("biabsh ");
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const OrderDetailsScreen(
-                              selectedProductIds: [],
-                              selectedVendorIds: [],
-                            ),
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderDetailsScreen(
+                            selectedProductIds: [],
+                            selectedVendorIds: [],
                           ),
-                          );
+                        ),
+                      );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),

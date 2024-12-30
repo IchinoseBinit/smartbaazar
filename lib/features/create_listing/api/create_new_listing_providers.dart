@@ -39,7 +39,7 @@ Future<String> createlisting(
   String? youtube,
 }) async {
   final SmartClinet client = SmartClinet();
-  print("binodo ${cf}");
+  print("binodo $cf");
   try {
     // Create FormData to handle text fields and file uploads together
     FormData formData = FormData.fromMap({
@@ -99,14 +99,14 @@ Future<String> createlisting(
     }
      // Print all data being sent to the API
     print("i sent Fields:");
-    formData.fields.forEach((field) {
+    for (var field in formData.fields) {
       print("${field.key}: ${field.value}");
-    });
+    }
 
     print("\nFormData Files:");
-    formData.files.forEach((file) {
+    for (var file in formData.files) {
       print("${file.key}: ${file.value.filename}");
-    });
+    }
 
     // Send the request
     final response = await client.request(

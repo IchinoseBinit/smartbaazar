@@ -94,9 +94,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TextEditingController titlecontroller = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController heightcontroller = TextEditingController();
-    TextEditingController experiencecontroller = TextEditingController();
+  TextEditingController experiencecontroller = TextEditingController();
   TextEditingController comapnycontroller = TextEditingController();
-
 
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
@@ -128,6 +127,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   String? isUserVerified;
   TextEditingController namecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
+  TextEditingController screensizecontroller = TextEditingController();
+
   NewListingRepository repository = NewListingRepository();
   int? categoryId;
   int? categoryId1;
@@ -240,6 +241,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
       // Watch provider and fetch data
       final getCategories = ref.watch(GetCategoryResponseProvider(categoryId));
+      final event = ref.watch(GetCategoryResponseProvider(217));
+      event.when(
+        data: (data) {}
+        ,
+        error: (error, stackTrace) {},
+        loading: () => CircularProgressIndicator(),
+      );
       getCategories.whenData((value) {
         response = value;
       });
@@ -253,9 +261,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
         ref.watch(GetCategoryResponseProvider(categoryId ?? 1)); //car
     ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) {
-          
+        print("manis ${value.result['6']?.id}");
         phoneresp = value;
-   
       },
     ); //phone
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
@@ -271,7 +278,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     final road = ref.watch(GetCategoryResponseProvider(37)).whenData(
       (value) {
         getRoad = getRoad;
-        print("bibash ${getRoad?.result.keys}");
       },
     ); //car
     final cloth = ref.watch(GetCategoryResponseProvider(54)).whenData(
@@ -519,7 +525,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          
                           controller: titlecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter title',
@@ -601,6 +606,16 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AdoptiveCalendar(
+                                        onSelection: (p0) {
+                                          if (phoneresp?.result['5']?.id !=
+                                              null) {
+                                            // Ensure the dynamic key is safe to access
+                                            cf?.add([
+                                              'cf.${phoneresp!.result['16']?.id}', // Create the key dynamically
+                                              p0
+                                            ]);
+                                          }
+                                        },
                                         initialDate: DateTime
                                             .now(), // Default current date
                                         action:
@@ -768,7 +783,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(height: 15.h),
                         TextField(
                           controller: whatsintheboxcontroller,
-                          onEditingComplete: () {
+                          onSubmitted: (value) {
                             if (getRoad?.result['59']?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
@@ -958,94 +973,96 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   ),
 
                 if (selectedcategory?.id != 30 && selectedcategory?.id != 1)
-                if(phoneresp!=null)
-                  CreateListingCardWidget(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Return Policy',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Column(
+                  if (phoneresp != null)
+                    CreateListingCardWidget(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // First Checkbox option
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: _isselected ==
-                                        true, // The first checkbox is selected if _isselected is true
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _isselected =
-                                            true; // Set _isselected to true when the first checkbox is selected
-                                      });
-                                      cf?.add([
-                                        'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
-                                        phoneresp!.result['8']!.options[0].id,
-                                      ]);
-                                    },
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      phoneresp!.result['8']!.options[0].value,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              // Second Checkbox option
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: _isselected ==
-                                        false, // The second checkbox is selected if _isselected is false
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _isselected =
-                                            false; // Set _isselected to false when the second checkbox is selected
-                                      });
-                                      cf?.add([
-                                        'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
-                                        phoneresp!.result['8']!.options[1].id,
-                                      ]);
-                                    },
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      phoneresp!.result['8']!.options[1].value,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  )
-                                ],
+                              Text(
+                                'Return Policy',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // First Checkbox option
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: _isselected ==
+                                          true, // The first checkbox is selected if _isselected is true
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isselected =
+                                              true; // Set _isselected to true when the first checkbox is selected
+                                        });
+                                        cf?.add([
+                                          'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
+                                          phoneresp!.result['8']!.options[0].id,
+                                        ]);
+                                      },
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        phoneresp!
+                                            .result['8']!.options[0].value,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                // Second Checkbox option
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: _isselected ==
+                                          false, // The second checkbox is selected if _isselected is false
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isselected =
+                                              false; // Set _isselected to false when the second checkbox is selected
+                                        });
+                                        cf?.add([
+                                          'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
+                                          phoneresp!.result['8']!.options[1].id,
+                                        ]);
+                                      },
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        phoneresp!
+                                            .result['8']!.options[1].value,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
 
                 if (getRoad?.result != null)
                   if (selectedcategory?.id == 1)
@@ -1189,8 +1206,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                       : selectedColors!.first.value,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items:
-                                    getRoad!.result['8']!.options.map((color) {
+                                items: phoneresp!.result['9']!.options
+                                    .map((color) {
                                   return DropdownMenuItem<Option>(
                                     value: color,
                                     child: Row(
@@ -1545,6 +1562,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               setState(() {
                                 selectedmobilebrand = newValue;
                               });
+                              if (phoneresp?.result['13']?.id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${phoneresp!.result['13']?.id}', // Create the key dynamically
+                                  selectedmobilebrand?.id,
+                                ]);
+                              }
                             },
                             getItemLabel: (Option item) =>
                                 item.value.toString(),
@@ -1625,6 +1649,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          onSubmitted: (value) {},
                           controller: auomobilecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter model',
@@ -2110,7 +2135,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
+                if (selectedcategory?.id == 9 && selectedcategory?.id == 14)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -2456,13 +2481,14 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                              if (getRoad?.result['16']?.id != null) {
+                            if (phoneresp?.result['16']?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result['16']?.id}', // Create the key dynamically
+                                'cf.${phoneresp!.result['16']?.id}', // Create the key dynamically
                                 value
                               ]);
                             }
+                            print("ninik ${cf}");
                           },
                           controller: Gbcontroller,
                           decoration: InputDecoration.collapsed(
@@ -2543,7 +2569,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         child: TextField(
                           controller: storagecontroller,
                           onSubmitted: (value) {
-                              if (getRoad?.result['32']?.id != null) {
+                            if (getRoad?.result['32']?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
                                 'cf.${getRoad!.result['32']?.id}', // Create the key dynamically
@@ -2623,7 +2649,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     )
                   ],
                 )),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
+                if (selectedcategory?.id != 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2649,7 +2675,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          controller: discountcontroller,
+                          controller: screensizecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter Screen Size (inches)',
                               hintStyle: TextStyle(
@@ -2869,7 +2895,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Packaged Product Dimensions",
                       style: TextStyle(fontSize: 13),
                     ),
@@ -2879,7 +2905,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           value: false,
                           onChanged: (value) {},
                         ),
-                        const Text("Hyper Delivery", style: TextStyle(fontSize: 13),)
+                        const Text(
+                          "Hyper Delivery",
+                          style: TextStyle(fontSize: 13),
+                        )
                       ],
                     )
                   ],
@@ -3019,7 +3048,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           height: 10.h,
                         ),
                         Column(
-                          children: getRoad!.result['4']!.options
+                          children: phoneresp!.result['4']!.options
                               .map<Widget>((option) {
                             return RadioListTile<Option>(
                               value: option,
@@ -3071,7 +3100,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //   height: 10.h,
                 // ),
                 // Row(
-                //   children: [
+                //   children: [prod
                 //     Text(
                 //       'Packaged Product Dimension',
                 //       style: TextStyle(

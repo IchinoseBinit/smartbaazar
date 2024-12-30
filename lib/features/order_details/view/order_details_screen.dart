@@ -259,7 +259,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     },
                   ),
                   if (checkoutDetails.data!.items![0].postTypeId == '7')
-                    Container(
+                    SizedBox(
                       height: 160.h,
                       child: Column(
                         children: [
@@ -1006,12 +1006,12 @@ class DiscountOnBulkContainer extends StatelessWidget {
                 SizedBox(width: 15.w),
                 Icon(
                   Icons.arrow_downward_rounded,
-                  color: Color(0xFF4B004B),
+                  color: const Color(0xFF4B004B),
                   size: 24.sp,
                 ),
                 Text("30%",
                     style: TextStyle(
-                        color: Color(0xFF4B004B),
+                        color: const Color(0xFF4B004B),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w900)),
               ],

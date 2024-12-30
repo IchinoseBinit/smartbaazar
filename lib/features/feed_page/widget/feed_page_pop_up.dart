@@ -7,7 +7,7 @@ import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
 
 void showCustomBottomSheet(
     BuildContext context, FeedGiftCardModel feedGiftCard) {
-  String _getMembershipImage(String? membershipId) {
+  String getMembershipImage(String? membershipId) {
     switch (membershipId) {
       case '1':
         return 'assets/icon/basic_seller.png';
@@ -112,7 +112,7 @@ void showCustomBottomSheet(
                                         ),
                                         SizedBox(width: 15.w),
                                         Image.asset(
-                                          _getMembershipImage(feedGiftCard
+                                          getMembershipImage(feedGiftCard
                                               .userDetail?.membershipId),
                                           width: 16.w,
                                           height: 16.h,
@@ -412,7 +412,7 @@ class PopUpDiscountImageCard extends StatelessWidget {
                       backgroundImage: feedGiftCard.image != null &&
                               feedGiftCard.image!.isNotEmpty
                           ? NetworkImage(feedGiftCard.image!)
-                          : AssetImage('assets/images/smartbazarlogo.png')
+                          : const AssetImage('assets/images/smartbazarlogo.png')
                               as ImageProvider,
                     )),
                 Positioned(

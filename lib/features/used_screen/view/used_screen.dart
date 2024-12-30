@@ -88,7 +88,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
   int? dynamicsize;
   int _currentPage = 0;
-  final List<Map<String, dynamic>> __items = [
+  final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
@@ -447,7 +447,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                             });
                           },
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
+                            Map<String, dynamic> data = _items[index];
 
                             // Highlight only when index == 4
                             bool isActive = index == 1;
@@ -839,8 +839,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   PopupMenuItem(
                                                     value: 2,
                                                     child: ListTile(
-                                                      title: Text(
-                                                          "${e.parentClosure?.slug ?? 'N/A'}"),
+                                                      title: Text(e
+                                                              .parentClosure
+                                                              ?.slug ??
+                                                          'N/A'),
                                                       leading: const Icon(
                                                           Icons.info),
                                                     ),
@@ -862,8 +864,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 PopupMenuItem(
                                                   value: 2,
                                                   child: Text(
-                                                    "${e.parentClosure?.slug ?? 'No Parent'}",
-                                                    style: TextStyle(
+                                                    e.parentClosure?.slug ??
+                                                        'No Parent',
+                                                    style: const TextStyle(
                                                         fontSize: 16.0),
                                                   ),
                                                 ),
@@ -884,21 +887,20 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     children: [
                                                       Image.asset(
                                                           'assets/images/cloth.png'),
-                                                      Wrap(
-                                                        children: [
-                                                          Text(
-                                                            e.name ?? 'No Name',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13,
-                                                            ),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
                                                           ),
-                                                        ],
-                                                      ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -944,7 +946,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => CircularProgressIndicator(),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),

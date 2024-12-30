@@ -113,8 +113,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                         TextField(
                           decoration: InputDecoration(
                               filled: true,
-                              fillColor: Color(0xFFEDECEC).withOpacity(0.3),
-                              enabledBorder: OutlineInputBorder(
+                              fillColor: const Color(0xFFEDECEC).withOpacity(0.3),
+                              enabledBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Color(0xFFD9D9D9)))),
                         ),
@@ -133,8 +133,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                           maxLines: 5,
                           decoration: InputDecoration(
                               filled: true,
-                              fillColor: Color(0xFFEDECEC).withOpacity(0.3),
-                              enabledBorder: OutlineInputBorder(
+                              fillColor: const Color(0xFFEDECEC).withOpacity(0.3),
+                              enabledBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Color(0xFFD9D9D9)))),
                         ),

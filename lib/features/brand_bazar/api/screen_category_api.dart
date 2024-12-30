@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/screen_category_mode.dart';
 
 import 'package:smartbazar/network_service/smart-clinet.dart';

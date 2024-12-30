@@ -33,8 +33,6 @@ _$FieldDataImpl _$$FieldDataImplFromJson(Map<String, dynamic> json) =>
       defaultValue: json['default_value'] as String?,
       required: json['required'] as String,
       useAsFilter: json['use_as_filter'] as String,
-      help: json['help'] as String?,
-      active: json['active'] as String,
       options: (json['options'] as List<dynamic>)
           .map((e) => Option.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -50,8 +48,6 @@ Map<String, dynamic> _$$FieldDataImplToJson(_$FieldDataImpl instance) =>
       'default_value': instance.defaultValue,
       'required': instance.required,
       'use_as_filter': instance.useAsFilter,
-      'help': instance.help,
-      'active': instance.active,
       'options': instance.options,
     };
 
@@ -60,7 +56,6 @@ _$OptionImpl _$$OptionImplFromJson(Map<String, dynamic> json) => _$OptionImpl(
       fieldId: json['field_id'] as String,
       value: json['value'] as String,
       parentId: (json['parent_id'] as num?)?.toInt(),
-      depth: (json['depth'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$OptionImplToJson(_$OptionImpl instance) =>
@@ -69,5 +64,4 @@ Map<String, dynamic> _$$OptionImplToJson(_$OptionImpl instance) =>
       'field_id': instance.fieldId,
       'value': instance.value,
       'parent_id': instance.parentId,
-      'depth': instance.depth,
     };
