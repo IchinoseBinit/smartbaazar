@@ -513,7 +513,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                             username:
                                 widget.nameconroller?.text.trim(), // username
                             pickup:
-                                selectedpickup?.name?.trim() ?? '', // pickup
+                                selectedpickup?.name.trim() ?? '', // pickup
                             images: selectedImages, // images
                             accept: widget.terms?.trim() ?? '0', // accept terms
                             address:

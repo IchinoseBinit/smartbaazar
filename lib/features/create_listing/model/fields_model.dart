@@ -24,8 +24,6 @@ class FieldData with _$FieldData {
     @JsonKey(name: 'default_value') String? defaultValue,
     required String required,
     @JsonKey(name: 'use_as_filter') required String useAsFilter,
-    String? help,
-    required String active,
     required List<Option> options,
   }) = _FieldData;
 
@@ -39,7 +37,6 @@ class Option with _$Option {
     @JsonKey(name: 'field_id') required String fieldId,
     required String value,
     @JsonKey(name: 'parent_id') int? parentId,
-    int? depth,
   }) = _Option;
 
   factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);

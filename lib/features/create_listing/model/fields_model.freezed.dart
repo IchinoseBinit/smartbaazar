@@ -213,8 +213,6 @@ mixin _$FieldData {
   String get required => throw _privateConstructorUsedError;
   @JsonKey(name: 'use_as_filter')
   String get useAsFilter => throw _privateConstructorUsedError;
-  String? get help => throw _privateConstructorUsedError;
-  String get active => throw _privateConstructorUsedError;
   List<Option> get options => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -237,8 +235,6 @@ abstract class $FieldDataCopyWith<$Res> {
       @JsonKey(name: 'default_value') String? defaultValue,
       String required,
       @JsonKey(name: 'use_as_filter') String useAsFilter,
-      String? help,
-      String active,
       List<Option> options});
 }
 
@@ -263,8 +259,6 @@ class _$FieldDataCopyWithImpl<$Res, $Val extends FieldData>
     Object? defaultValue = freezed,
     Object? required = null,
     Object? useAsFilter = null,
-    Object? help = freezed,
-    Object? active = null,
     Object? options = null,
   }) {
     return _then(_value.copyWith(
@@ -300,14 +294,6 @@ class _$FieldDataCopyWithImpl<$Res, $Val extends FieldData>
           ? _value.useAsFilter
           : useAsFilter // ignore: cast_nullable_to_non_nullable
               as String,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String,
       options: null == options
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
@@ -333,8 +319,6 @@ abstract class _$$FieldDataImplCopyWith<$Res>
       @JsonKey(name: 'default_value') String? defaultValue,
       String required,
       @JsonKey(name: 'use_as_filter') String useAsFilter,
-      String? help,
-      String active,
       List<Option> options});
 }
 
@@ -357,8 +341,6 @@ class __$$FieldDataImplCopyWithImpl<$Res>
     Object? defaultValue = freezed,
     Object? required = null,
     Object? useAsFilter = null,
-    Object? help = freezed,
-    Object? active = null,
     Object? options = null,
   }) {
     return _then(_$FieldDataImpl(
@@ -394,14 +376,6 @@ class __$$FieldDataImplCopyWithImpl<$Res>
           ? _value.useAsFilter
           : useAsFilter // ignore: cast_nullable_to_non_nullable
               as String,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String,
       options: null == options
           ? _value._options
           : options // ignore: cast_nullable_to_non_nullable
@@ -422,8 +396,6 @@ class _$FieldDataImpl implements _FieldData {
       @JsonKey(name: 'default_value') this.defaultValue,
       required this.required,
       @JsonKey(name: 'use_as_filter') required this.useAsFilter,
-      this.help,
-      required this.active,
       required final List<Option> options})
       : _options = options;
 
@@ -449,10 +421,6 @@ class _$FieldDataImpl implements _FieldData {
   @override
   @JsonKey(name: 'use_as_filter')
   final String useAsFilter;
-  @override
-  final String? help;
-  @override
-  final String active;
   final List<Option> _options;
   @override
   List<Option> get options {
@@ -463,7 +431,7 @@ class _$FieldDataImpl implements _FieldData {
 
   @override
   String toString() {
-    return 'FieldData(id: $id, belongsTo: $belongsTo, name: $name, type: $type, max: $max, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, help: $help, active: $active, options: $options)';
+    return 'FieldData(id: $id, belongsTo: $belongsTo, name: $name, type: $type, max: $max, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, options: $options)';
   }
 
   @override
@@ -483,8 +451,6 @@ class _$FieldDataImpl implements _FieldData {
                 other.required == required) &&
             (identical(other.useAsFilter, useAsFilter) ||
                 other.useAsFilter == useAsFilter) &&
-            (identical(other.help, help) || other.help == help) &&
-            (identical(other.active, active) || other.active == active) &&
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
@@ -500,8 +466,6 @@ class _$FieldDataImpl implements _FieldData {
       defaultValue,
       required,
       useAsFilter,
-      help,
-      active,
       const DeepCollectionEquality().hash(_options));
 
   @JsonKey(ignore: true)
@@ -528,8 +492,6 @@ abstract class _FieldData implements FieldData {
       @JsonKey(name: 'default_value') final String? defaultValue,
       required final String required,
       @JsonKey(name: 'use_as_filter') required final String useAsFilter,
-      final String? help,
-      required final String active,
       required final List<Option> options}) = _$FieldDataImpl;
 
   factory _FieldData.fromJson(Map<String, dynamic> json) =
@@ -555,10 +517,6 @@ abstract class _FieldData implements FieldData {
   @JsonKey(name: 'use_as_filter')
   String get useAsFilter;
   @override
-  String? get help;
-  @override
-  String get active;
-  @override
   List<Option> get options;
   @override
   @JsonKey(ignore: true)
@@ -578,7 +536,6 @@ mixin _$Option {
   String get value => throw _privateConstructorUsedError;
   @JsonKey(name: 'parent_id')
   int? get parentId => throw _privateConstructorUsedError;
-  int? get depth => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -594,8 +551,7 @@ abstract class $OptionCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'field_id') String fieldId,
       String value,
-      @JsonKey(name: 'parent_id') int? parentId,
-      int? depth});
+      @JsonKey(name: 'parent_id') int? parentId});
 }
 
 /// @nodoc
@@ -615,7 +571,6 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
     Object? fieldId = null,
     Object? value = null,
     Object? parentId = freezed,
-    Object? depth = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -634,10 +589,6 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
           ? _value.parentId
           : parentId // ignore: cast_nullable_to_non_nullable
               as int?,
-      depth: freezed == depth
-          ? _value.depth
-          : depth // ignore: cast_nullable_to_non_nullable
-              as int?,
     ) as $Val);
   }
 }
@@ -653,8 +604,7 @@ abstract class _$$OptionImplCopyWith<$Res> implements $OptionCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'field_id') String fieldId,
       String value,
-      @JsonKey(name: 'parent_id') int? parentId,
-      int? depth});
+      @JsonKey(name: 'parent_id') int? parentId});
 }
 
 /// @nodoc
@@ -672,7 +622,6 @@ class __$$OptionImplCopyWithImpl<$Res>
     Object? fieldId = null,
     Object? value = null,
     Object? parentId = freezed,
-    Object? depth = freezed,
   }) {
     return _then(_$OptionImpl(
       id: null == id
@@ -691,10 +640,6 @@ class __$$OptionImplCopyWithImpl<$Res>
           ? _value.parentId
           : parentId // ignore: cast_nullable_to_non_nullable
               as int?,
-      depth: freezed == depth
-          ? _value.depth
-          : depth // ignore: cast_nullable_to_non_nullable
-              as int?,
     ));
   }
 }
@@ -706,8 +651,7 @@ class _$OptionImpl implements _Option {
       {required this.id,
       @JsonKey(name: 'field_id') required this.fieldId,
       required this.value,
-      @JsonKey(name: 'parent_id') this.parentId,
-      this.depth});
+      @JsonKey(name: 'parent_id') this.parentId});
 
   factory _$OptionImpl.fromJson(Map<String, dynamic> json) =>
       _$$OptionImplFromJson(json);
@@ -722,12 +666,10 @@ class _$OptionImpl implements _Option {
   @override
   @JsonKey(name: 'parent_id')
   final int? parentId;
-  @override
-  final int? depth;
 
   @override
   String toString() {
-    return 'Option(id: $id, fieldId: $fieldId, value: $value, parentId: $parentId, depth: $depth)';
+    return 'Option(id: $id, fieldId: $fieldId, value: $value, parentId: $parentId)';
   }
 
   @override
@@ -739,14 +681,12 @@ class _$OptionImpl implements _Option {
             (identical(other.fieldId, fieldId) || other.fieldId == fieldId) &&
             (identical(other.value, value) || other.value == value) &&
             (identical(other.parentId, parentId) ||
-                other.parentId == parentId) &&
-            (identical(other.depth, depth) || other.depth == depth));
+                other.parentId == parentId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, fieldId, value, parentId, depth);
+  int get hashCode => Object.hash(runtimeType, id, fieldId, value, parentId);
 
   @JsonKey(ignore: true)
   @override
@@ -767,8 +707,7 @@ abstract class _Option implements Option {
       {required final int id,
       @JsonKey(name: 'field_id') required final String fieldId,
       required final String value,
-      @JsonKey(name: 'parent_id') final int? parentId,
-      final int? depth}) = _$OptionImpl;
+      @JsonKey(name: 'parent_id') final int? parentId}) = _$OptionImpl;
 
   factory _Option.fromJson(Map<String, dynamic> json) = _$OptionImpl.fromJson;
 
@@ -782,8 +721,6 @@ abstract class _Option implements Option {
   @override
   @JsonKey(name: 'parent_id')
   int? get parentId;
-  @override
-  int? get depth;
   @override
   @JsonKey(ignore: true)
   _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>

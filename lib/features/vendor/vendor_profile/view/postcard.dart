@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/scratch_win/model/subscribe_and_win_model.dart';
 
 class PostCard extends StatelessWidget {
   final String photo, image, subscribers, caption, name;

@@ -66,7 +66,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     {'label': 'Promotional', 'id': 4},
     {'label': 'Clearance sale', 'id': 5},
   ];
-  final List<Map<String, dynamic>> __items = [
+  final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
@@ -433,7 +433,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             });
                           },
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
+                            Map<String, dynamic> data = _items[index];
 
                             // Highlight only when index == 4
                             bool isActive = index == 1;
@@ -776,7 +776,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           ),
                                         ),
                                         Text(
-                                          "Brands",
+                                          "B2b",
                                           style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 15,
@@ -822,8 +822,10 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                   PopupMenuItem(
                                                     value: 2,
                                                     child: ListTile(
-                                                      title: Text(
-                                                          "${e.parentClosure?.slug ?? 'N/A'}"),
+                                                      title: Text(e
+                                                              .parentClosure
+                                                              ?.slug ??
+                                                          'N/A'),
                                                       leading: const Icon(
                                                           Icons.info),
                                                     ),
@@ -845,8 +847,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 PopupMenuItem(
                                                   value: 2,
                                                   child: Text(
-                                                    "${e.parentClosure?.slug ?? 'No Parent'}",
-                                                    style: TextStyle(
+                                                    e.parentClosure?.slug ??
+                                                        'No Parent',
+                                                    style: const TextStyle(
                                                         fontSize: 16.0),
                                                   ),
                                                 ),
@@ -855,8 +858,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 10.w),
                                               child: DashedBorder(
-                                                dashCount: 3,
+                                                dashCount:
+                                                    1, // Number of dashes in the border
                                                 child: SizedBox(
+                                                  width: 200
+                                                      .w, // Fixed width for the container
                                                   child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -867,21 +873,20 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                     children: [
                                                       Image.asset(
                                                           'assets/images/cloth.png'),
-                                                      Wrap(
-                                                        children: [
-                                                          Text(
-                                                            e.name ?? 'No Name',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13,
-                                                            ),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
                                                           ),
-                                                        ],
-                                                      ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -927,8 +932,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => CircularProgressIndicator(),
-                ),
+                  loading: () => const CircularProgressIndicator(),
+                ),  
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(

@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/home/model/home_feed_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';

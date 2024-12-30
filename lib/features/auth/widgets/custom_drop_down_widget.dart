@@ -72,12 +72,10 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
           );
         }).toList(),
         onChanged: (newValue) {
-          if (widget.onChanged != null) {
-            setState(() {
-              widget.onChanged(newValue);
-            });
-          }
-        },
+          setState(() {
+            widget.onChanged(newValue);
+          });
+                },
       ),
     );
   }

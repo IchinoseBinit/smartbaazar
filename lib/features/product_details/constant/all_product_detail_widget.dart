@@ -290,7 +290,7 @@ class AllProductDetailWidget extends StatelessWidget {
                         //   ],
                         // ),
 
-                        Spacer(),
+                        const Spacer(),
                         if (discounttedPrice != null &&
                             discounttedPrice != '0' &&
                             discounttedPrice!.isNotEmpty)
@@ -326,7 +326,7 @@ class AllProductDetailWidget extends StatelessWidget {
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Container(
