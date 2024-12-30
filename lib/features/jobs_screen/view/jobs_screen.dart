@@ -59,13 +59,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
   late TabController tabController;
-  final List<Map<String, dynamic>> _services = [
-    {'label': 'Low Price Guarantee', 'id': 1},
-    {'label': 'Launch Offer', 'id': 2},
-    {'label': 'Seasonal offer', 'id': 3},
-    {'label': 'Promotional', 'id': 4},
-    {'label': 'Clearance sale', 'id': 5},
-  ];
+
+  
   final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
@@ -1311,7 +1306,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     if (tabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 100
+                              ? 200
                               : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
@@ -1397,7 +1392,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           },
                                         ),
                                       )
-                                    : const SizedBox(),
+                                    : Center(child: nolistingfound(),)
                               ],
                             ),
                             Column(
@@ -1417,7 +1412,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? const SizedBox()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1483,7 +1478,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? const SizedBox()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1700,7 +1695,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {
                           // Map category labels to their respective product lists
-                          List<String> categories = _services
+                          List<String> categories = services
                               .map((e) => e['label'] as String)
                               .toList();
 
@@ -1723,7 +1718,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       child: Container(
                                         alignment: Alignment.center,
                                         margin: const EdgeInsets.all(5),
-                                        width: 100.w,
+                                        width: 150.w,
                                         decoration: BoxDecoration(
                                           color: isSelected
                                               ? const Color(0xFF681b4e)

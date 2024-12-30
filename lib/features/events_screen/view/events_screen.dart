@@ -909,30 +909,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
+                         
                         ],
                       ),
                     );
@@ -975,7 +952,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return data.hotProducts.isEmpty
-                        ? nolistingfound()
+                        ? Center(child: nolistingfound())
                         : SizedBox(
                             height: 340.h,
                             width: double.infinity,
@@ -1423,7 +1400,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     );
                                   }).toList(),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1517,11 +1494,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                 //       }),
                                 // ),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: data.insidearr.isEmpty
-                                            ? nolistingfound()
+                                            ? Center(child: nolistingfound())
                                             : ListView.builder(
                                                 clipBehavior: Clip.antiAlias,
                                                 padding:
@@ -1588,11 +1565,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: data.insidearr.isEmpty
-                                            ? nolistingfound()
+                                            ? Center(child: nolistingfound())
                                             : ListView.builder(
                                                 clipBehavior: Clip.antiAlias,
                                                 padding:
@@ -1752,7 +1729,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                   },
                 ),
 
-                asyncbajarValue.when(
+             
+                SizedBox(
+                  height: 10.h,
+                ),
+              asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
                       height: 70.h,
@@ -1782,14 +1763,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 420.h,
                   child: ValueListenableBuilder<int>(
                     valueListenable: selectedIndexNotifier,
                     builder: (context, selectedIndex, child) {
@@ -1827,7 +1808,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
-                                        color: ColorConstant.whiteColor,
+                                        color: Colors
+                                            .white, // Use color directly or define in constants
                                       ),
                                     ),
                                   ),
@@ -1846,10 +1828,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               List<List<VProduct>> productsList = [
                                 data.low_price_guarantee, // Corresponds to SHOPZONE
                                 data.Launch_offer, // Corresponds to HOB
-
                                 data.seasonal, // Corresponds to SERVICES
-
                                 data.promotional, // Corresponds to TRADEHUB
+                                data.clearance_sale, // Corresponds to USED
                                 data.Launch_festival_offer, // Corresponds to USED
                               ];
 
@@ -1863,15 +1844,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               List<VProduct> products =
                                   productsList[selectedIndex];
 
-                              return SizedBox(
-                                height: 340.h,
-                                child: data.insidearr.isEmpty
-                                    ? const Padding(
-                                        padding: EdgeInsets.only(top: 100),
-                                        child: SizedBox(
-                                          child: Text("No listing available"),
-                                        ),
-                                      )
+                              // Calculate height dynamically
+                              double calculatedHeight =
+                                  products.isNotEmpty ? 359.h : 100.h;
+
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                height: calculatedHeight,
+                                child: products.isEmpty
+                                    ?Center(child: nolistingfound(),)
                                     : ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1885,16 +1866,16 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ProductDetailScreen(
-                                                              productId:
-                                                                  prod.id)));
-                                            },
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
+                                            }, // Handle onTap if needed
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
                                               comment:
                                                   prod.commentcount.toString(),
-                                              lefttile: "B2B",
+                                              lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
                                                   prod.discounted_price,
@@ -1914,30 +1895,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         },
                                       ),
                               );
-
-                              // SizedBox(
-                              //    height: 340.h,
-                              //   child: ListView.builder(
-                              //     scrollDirection: Axis.horizontal,
-                              //     itemCount: products.length,
-                              //     itemBuilder: (context, index) {
-                              //       return InkWell(
-                              //         onTap: () {}, // Handle onTap if needed
-                              //         child: ProductDetailWidget(
-                              //           vendorname: prod.user.name,
-                              //           discounttedPrice: "0",
-                              //           Vimage: prod.user.photo,
-                              //           price: prod.price,
-                              //           title: prod.title,
-                              //           productImage: prod.image,
-                              //         ), // Replace with your actual product widget
-                              //       );
-                              //     },
-                              //   ),
-                              // );
                             },
-                            error: (error, stackTrace) => Text("Error: $error"),
-                            loading: () => const CircularProgressIndicator(),
+                            error: (error, stackTrace) => const Center(
+                              child: Text("Error loading data"),
+                            ),
+                            loading: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
                         ],
                       );
@@ -1963,13 +1927,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return data.product.isEmpty
-                        ? Padding(
-                            padding: EdgeInsets.only(
-                                top: 100, left: 100.w, bottom: 15.h),
-                            child: const SizedBox(
-                              child: Text("No listing available"),
-                            ),
-                          )
+                        ? Center(child: nolistingfound())
                         : GridView.builder(
                             physics:
                                 const NeverScrollableScrollPhysics(), // Disable grid scrolling

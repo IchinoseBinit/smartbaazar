@@ -53,6 +53,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
   int? selectedIndex = 3;
+    int? selectedTab = 0;
+
   int _currentIndex = 0;
 
   final ScrollController _scrollController = ScrollController();
@@ -67,13 +69,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   late TabController tabController;
   bool _showSearchProductModels = false;
 
-  final List<Map<String, dynamic>> _services = [
-    {'label': 'Low Price Guarantee', 'id': 1},
-    {'label': 'Launch Offer', 'id': 2},
-    {'label': 'Seasonal offer', 'id': 3},
-    {'label': 'Promotional', 'id': 4},
-    {'label': 'Clearance sale', 'id': 5},
-  ];
+
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
   final PageController _adscontroller = PageController(
@@ -638,8 +634,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               return StoryAddWidget(
                                 brandname: storyData.vendorName,
                                 vImage: storyData.vendorImage,
-                                index: data.feedStory!.posts!
-                                    .indexOf(storyData),
+                                index:
+                                    data.feedStory!.posts!.indexOf(storyData),
                                 addSearch:
                                     false, // For all items other than the first, no search
                                 showgift: storyData.hasSponsoredGifts,
@@ -915,30 +911,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
+                       
                         ],
                       ),
                     );
@@ -1385,7 +1358,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     if (tabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 100
+                              ? 200
                               : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
@@ -1471,7 +1444,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           },
                                         ),
                                       )
-                                    : const SizedBox(),
+                                    : Center(child: nolistingfound(),),
                               ],
                             ),
                             Column(
@@ -1491,7 +1464,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? const SizedBox()
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1562,7 +1535,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? const SizedBox()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1733,10 +1706,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     return SizedBox(
                       width: double.infinity,
                       height:
-                          productsList[selectedIndex!].isEmpty ? 100 : 420.h,
+                          productsList[selectedTab!].isEmpty ? 200 : 420.h,
                       child: ValueListenableBuilder<int>(
                         valueListenable: selectedIndexNotifier,
-                        builder: (context, selectedIndex, child) {
+                        builder: (context, selectedTab, child) {
                           // Map category labels to their respective product lists
                           List<String> categories = services
                               .map((e) => e['label'] as String)
@@ -1752,7 +1725,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   scrollDirection: Axis.horizontal,
                                   itemCount: categories.length,
                                   itemBuilder: (context, index) {
-                                    bool isSelected = index == selectedIndex;
+                                    bool isSelected = index == selectedTab;
                                     return GestureDetector(
                                       onTap: () {
                                         // Update the selected index
@@ -1790,14 +1763,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   // Define the products list corresponding to each category
 
                                   // Ensure the index is valid
-                                  if (selectedIndex < 0 ||
-                                      selectedIndex >= productsList.length) {
-                                    selectedIndex =
+                                  if (selectedTab < 0 ||
+                                      selectedTab >= productsList.length) {
+                                    selectedTab =
                                         0; // Default to the first category if index is out of bounds
                                   }
 
                                   List<VProduct> products =
-                                      productsList[selectedIndex];
+                                      productsList[selectedTab];
 
                                   return data.insidearr.isEmpty
                                       ? nolistingfound()
