@@ -67,7 +67,7 @@ class AllProductDetailWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: SizedBox(
-          height: 100.h,
+          height: 50.h,
           width: 360.w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
