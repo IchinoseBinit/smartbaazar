@@ -76,11 +76,12 @@ class ProductDetailWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SvgPicture.asset(
                           b2bIcon,
@@ -91,11 +92,18 @@ class ProductDetailWidget extends StatelessWidget {
                           lefttile!,
                           style: headerstyle.copyWith(
                               fontSize: 9.sp, color: Colors.grey),
-                        )
+                        ),
                       ],
                     ),
                     PopupMenuButton(
-                      padding: EdgeInsets.zero,
+                      child: Icon(
+                        size: 20,
+                        color: ColorConstant.grayColor,
+                        Icons.more_vert,
+                      ),
+                      onSelected: (value) {},
+
+                      padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
@@ -136,7 +144,14 @@ class ProductDetailWidget extends StatelessWidget {
                           PopupMenuItem(
                               height: 30,
                               padding: const EdgeInsets.only(left: 5),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VendorProfileScreen(),
+                                    ));
+                              },
                               child: Text(
                                 "Conatct Seller",
                                 style: headerstyle.copyWith(
@@ -324,7 +339,9 @@ class ProductDetailWidget extends StatelessWidget {
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
-                        const SizedBox(width: 5,),
+                        const SizedBox(
+                          width: 5,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
