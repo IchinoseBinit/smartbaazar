@@ -224,8 +224,8 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
       requestType: RequestType.getWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections',
     );
-    print("baby ${response.data}");
     final data = response.data;
+    print("baby ${response.data['buy_or_win']}");
 
     final newProducts = (data['new_products'] as List<dynamic>?)
             ?.map((productJson) => Home1GlobalModel.fromJson(productJson))
@@ -290,13 +290,12 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
-    print("lamot spot: ${data['home_story']}"); // Debug each item
 
-    final Map<String, VendorModel> homestory = (data['home_story']
-                as Map<String, dynamic>?)
-            ?.map((key, value) => MapEntry(
-                key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
-        {};
+    // final Map<String, VendorModel> homestory = (data['home_story']
+    //             as Map<String, dynamic>?)
+    //         ?.map((key, value) => MapEntry(
+    //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
+    //     {};
 
     return HotWithBuy(
         homestory: {},
