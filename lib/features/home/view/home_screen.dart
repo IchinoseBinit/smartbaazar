@@ -1022,7 +1022,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     : 300.h;
                               else
                                 dynamicHeight = 300;
-
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -1049,7 +1048,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               );
                                             }).toList(),
                                           data.insidearr[0].isEmpty
-                                              ? Center(child: nolistingfound())
+                                              ? Padding(
+                                                padding: EdgeInsets.only(top: 28.h),
+                                                child: Center(child: nolistingfound()),
+                                              )
                                               : SizedBox(
                                             height: 340.h,
                                             child: ListView.builder(
@@ -1457,7 +1459,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) {
                                           SponsoredProduct prefs = data[index];
-
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(

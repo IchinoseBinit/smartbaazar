@@ -334,10 +334,10 @@ class ProductDetailWidget extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating: avg_rating == null || avg_rating == 0
+                            initialRating: avg_rating == null
                                 ? 1
                                 : avg_rating!,
-                            // Default to 1 when avg_rating is null or 0
+                            // Default to 1 when avg_rating is null
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -671,8 +671,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         width: 40.w,
                                       ),
                                       issponsored
-                                          ? const SizedBox()
-                                          : Row(
+                                          ? Row(
                                               children: [
                                                 Image.asset(
                                                     "assets/images/mike.png"),
@@ -684,7 +683,7 @@ class ProductDetailWidget extends StatelessWidget {
                                                           FontWeight.w700),
                                                 ),
                                               ],
-                                            ),
+                                            ) : const SizedBox(),
                                     ],
                                   ),
                                 ],

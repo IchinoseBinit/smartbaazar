@@ -19,7 +19,7 @@ final List<Map<String, dynamic>> services = [
 ];
 Padding nolistingfound() {
   return const Padding(
-    padding: EdgeInsets.only(top: 40, left: 10),
+    padding: EdgeInsets.only(top: 10, left: 10),
     child: SizedBox(child: Text("No listing found")),
   );
 }
