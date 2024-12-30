@@ -614,9 +614,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           children: [
                             // First StoryAddWidget with search option
                             StoryAddWidget(
-                              vImage: data.data!.feedStory?.posts.first.image,
+                              vImage: data.feedStory?.posts?.first.image,
                               brandname:
-                                  data.data!.feedStory?.posts.first.vendorName,
+                                  data.feedStory?.posts?.first.vendorName,
                               index: 0,
                               addSearch: true, // First item has search
                               showgift: false,
@@ -628,11 +628,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             ),
                             // Expanded is not needed since SingleChildScrollView will handle scrolling
                             // Now ListView.builder will be added directly to the row
-                            ...data.data!.feedStory!.posts.map((storyData) {
+                            ...data.feedStory!.posts!.map((storyData) {
                               return StoryAddWidget(
                                 brandname: storyData.vendorName,
                                 vImage: storyData.vendorImage,
-                                index: data.data!.feedStory!.posts
+                                index: data.feedStory!.posts!
                                     .indexOf(storyData),
                                 addSearch:
                                     false, // For all items other than the first, no search

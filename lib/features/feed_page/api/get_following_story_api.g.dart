@@ -6,7 +6,7 @@ part of 'get_following_story_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getFollowingStoryHash() => r'5058eb2436cec89b05aae960f0566a8946d746d3';
+String _$getFollowingStoryHash() => r'84602d0cb6c795e2c3c8e1320105391c5aab308d';
 
 /// See also [getFollowingStory].
 @ProviderFor(getFollowingStory)

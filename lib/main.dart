@@ -12,6 +12,7 @@ import 'package:smartbazar/features/create_listing/widget/create_listing_card_wi
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -42,9 +43,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             // textTheme: GoogleFonts.quicksandTextTheme(
@@ -54,7 +55,35 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: B2bScreen()),
-    );
+          home: SplashScreen(),
+        ));
   }
 }
+
+// class FeedStoryWidget extends ConsumerWidget {
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final randomstory = ref.watch(fetchStoryHomeProvider);
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           randomstory.when(
+//             data: (data) {
+//               return Container(
+//                 width: 100,
+//                 height: 100,
+//                 color: Colors.amber,
+//               );
+//             },
+//             error: (error, stackTrace) {
+//               return Text(error.toString());
+//             },
+//             loading: () {
+//               return Text("loading");
+//             },
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
