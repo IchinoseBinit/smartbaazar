@@ -634,6 +634,8 @@ class ProductDetailWidget extends StatelessWidget {
                                         "assets/images/nepalFlag.png",
                                         height: 9.h,
                                       ),
+
+
                                       SizedBox(
                                         width: 1.w,
                                       ),
@@ -650,7 +652,7 @@ class ProductDetailWidget extends StatelessWidget {
                                       //       fontWeight: FontWeight.w700,
                                       //     ),
                                       //   ),
-                                      // ),
+                                      // ),e
 
                                       SizedBox(
                                         width: 80.w,

@@ -392,7 +392,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             activeColor: Colors.amber,
                             inactiveColor: const Color(0xffD9D9D9),
                           ),
-
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             child: const Divider(
@@ -401,7 +400,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               color: ColorConstant.grayColor,
                             ),
                           ),
-
                           if (_isSectionsVisible)
                             Padding(
                               padding: const EdgeInsets.all(20),
