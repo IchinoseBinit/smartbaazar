@@ -342,6 +342,8 @@ Map<String, dynamic> _$$PostTypeImplToJson(_$PostTypeImpl instance) =>
 _$VendorUserDetailImpl _$$VendorUserDetailImplFromJson(
         Map<String, dynamic> json) =>
     _$VendorUserDetailImpl(
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
+      nearestBranch: json['nearestBranch'] as String?,
       memberColor: json['membership_color'] as String?,
       membershipTitle: json['membership_title'] as String?,
     );
@@ -349,6 +351,8 @@ _$VendorUserDetailImpl _$$VendorUserDetailImplFromJson(
 Map<String, dynamic> _$$VendorUserDetailImplToJson(
         _$VendorUserDetailImpl instance) =>
     <String, dynamic>{
+      'shortestDistance': instance.shortestDistance,
+      'nearestBranch': instance.nearestBranch,
       'membership_color': instance.memberColor,
       'membership_title': instance.membershipTitle,
     };

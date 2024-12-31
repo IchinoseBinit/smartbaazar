@@ -611,7 +611,7 @@ class ProductDetailWidget extends StatelessWidget {
                                       SizedBox(
                                         width: 52.w,
                                       ),
-                                      Row(
+                                    if(shortestDistance!=null)  Row(
                                         children: [
                                           shortestDistance != null
                                               ? Row(

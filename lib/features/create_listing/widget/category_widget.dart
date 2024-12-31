@@ -10,9 +10,11 @@ class CategoryField extends StatefulWidget {
   final Function(Category?) onSubCategorySelected;
   final Function(Category?)? onSubCategorySelected1;
   final Function(Category?)? onSubCategorySelected2;
+  final String? id;
 
   const CategoryField({
     Key? key,
+    required this.id,
     required this.onCategorySelected,
     required this.onSubCategorySelected,
     this.onSubCategorySelected1,
@@ -43,7 +45,7 @@ class _CategoryFieldState extends State<CategoryField> {
   Future<void> _fetchCategoryList() async {
     try {
       NewListingRepository repository = NewListingRepository();
-      final categories = await repository.fetchCategoryList();
+      final categories = await repository.fetchCategoryList(parentId: widget.id ?? '0');
       setState(() {
         categoryListItems = categories;
       });
@@ -81,11 +83,12 @@ class _CategoryFieldState extends State<CategoryField> {
     }
   }
 
-  Widget _buildDropdown(
-      {required String label,
-      required List<Category> items,
-      required Category? selectedValue,
-      required Function(Category?) onChanged}) {
+  Widget _buildDropdown({
+    required String label,
+    required List<Category> items,
+    required Category? selectedValue,
+    required Function(Category?) onChanged,
+  }) {
     return CreateListingCardWidget(
       child: Row(
         children: [

@@ -243,8 +243,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       final getCategories = ref.watch(GetCategoryResponseProvider(categoryId));
       final event = ref.watch(GetCategoryResponseProvider(217));
       event.when(
-        data: (data) {}
-        ,
+        data: (data) {},
         error: (error, stackTrace) {},
         loading: () => CircularProgressIndicator(),
       );
@@ -426,75 +425,78 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Type',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                      Expanded(
-                        // Wrap the dropdown in Expanded to constrain its width
-                        child: CustomDropdownButton<TypeList>(
-                          items: typeListItems,
-                          dropdownValue: selectedType,
-                          onChanged: (TypeList? newValue) async {
-                            setState(() {
-                              selectedType = newValue!;
-                            });
-                            print("type ${selectedType?.typeId}");
-                          },
-                          getItemLabel: (TypeList item) => item.typeName,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+             CreateListingCardWidget(
+  child: Row(
+    mainAxisSize: MainAxisSize.max,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Type',
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black),
+          ),
+          Text(
+            ' *',
+            style: TextStyle(
+                color: const Color(0xffD33636),
+                fontWeight: FontWeight.w500,
+                fontSize: 14.sp),
+          )
+        ],
+      ),
+      Expanded(
+        child: CustomDropdownButton<TypeList>(
+          items: typeListItems,
+          dropdownValue: selectedType,
+          onChanged: (TypeList? newValue) async {
+            setState(() {
+              selectedType = newValue!;
+              // Update the category list based on selectedType
+              // Example: Assuming you have a method to get categories based on type
+              selectedcategory = null; // Reset selected category
+              categoryId = null; // Reset category ID
+              // Fetch or update category list based on selectedType
+              // e.g., categories = fetchCategories(selectedType);
+            });
+          },
+          getItemLabel: (TypeList item) => item.typeName,
+        ),
+      ),
+    ],
+  ),
+),
 
-                SizedBox(
-                  height: 10.h,
-                ),
-                CategoryField(
-                  onCategorySelected: (Category? category) async {
-                    if (category != null) {
-                      setState(() {
-                        selectedcategory = category;
-                        categoryId = category.id; // Update categoryId safely
-                      });
-                    } else {}
-                  },
-                  onSubCategorySelected: (Category? subCategory) {
-                    categoryId = subCategory?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Subcategory", ref);
-                  },
-                  onSubCategorySelected1: (Category? sub1) {
-                    categoryId = sub1?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Sub-subcategory 1", ref);
-                  },
-                  onSubCategorySelected2: (Category? sub2) {
-                    categoryId = sub2?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Sub-subcategory 2", ref);
-                  },
-                ),
+SizedBox(
+  height: 10.h,
+),
+
+CategoryField(
+  id: selectedcategory?.id.toString(),
+  onCategorySelected: (Category? category) async {
+    if (category != null) {
+      setState(() {
+        selectedcategory = category;
+        categoryId = category.id; // Update categoryId safely
+      });
+    }
+  },
+  onSubCategorySelected: (Category? subCategory,) {
+    categoryId = subCategory?.id;
+    _handleCategorySelection(selectedcategory, "Subcategory", ref);
+  },
+  onSubCategorySelected1: (Category? sub1) {
+    categoryId = sub1?.id;
+    _handleCategorySelection(selectedcategory, "Sub-subcategory 1", ref);
+  },
+  onSubCategorySelected2: (Category? sub2) {
+    categoryId = sub2?.id;
+    _handleCategorySelection(selectedcategory, "Sub-subcategory 2", ref);
+  },
+),
 
                 SizedBox(
                   height: 10.h,

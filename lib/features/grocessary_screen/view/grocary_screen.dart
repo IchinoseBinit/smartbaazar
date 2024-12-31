@@ -1616,11 +1616,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                              gift_qty: resp.gift_qty!,
-                              worth: resp.worth!,
-                              productname: resp.name,
-                              vendorImage: resp.vendorImage!,
-                              vendorname: resp.name,
+                            gift_qty: resp.gift_qty!,
+                            worth: resp.worth!,
+                            productname: resp.name?? '',
+                              vendorImage: resp.vendorImage?? '',
+                              vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
                               proctimage: resp.image ?? '');
                         },

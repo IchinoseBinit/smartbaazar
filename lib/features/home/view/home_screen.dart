@@ -1,6 +1,6 @@
-import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,9 +13,9 @@ import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
+import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
-import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -25,7 +25,6 @@ import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
-import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
@@ -270,7 +269,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
-    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
+
     return Scaffold(
         extendBody: true,
         key: _key,
@@ -620,72 +619,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       data: (data) {
                         return SizedBox(
                           height: 130.h,
-                          child: Row(
-                            children: [
-                              // Expanded(
-                              //   child: ListView.builder(
-                              //     padding: EdgeInsets.zero,
-                              //     shrinkWrap: true,
-                              //     scrollDirection: Axis.horizontal,
-                              //     itemCount: 2,
-                              //     itemBuilder: (context, index) {
-                              //       // Define data keys based on index
-                              //       final dataKey = index == 0 ? '196' : '9';
-                              //      final storyData = data.homestory[dataKey]!;
-
-                              //       return StoryAddWidget(
-                              //         brandname: storyData.vendorName,
-                              //         vImage: storyData.vendorImage,
-                              //         index: index,
-                              //         addSearch: false,
-                              //         showgift: storyData.hasSponsoredGifts,
-                              //         onTap: () {
-                              //           setState(() {
-                              //             _isPopupVisible =
-                              //                 true; // Open the popup
-                              //           });
-                              //         },
-                              //       );
-                              //     },
-                              //   ),
-                              // ),
-                              asyncHomeStoryContent.when(
-                                data: (feedStoryData) {
-                                  final feedStoryContent =
-                                      feedStoryData.homeStory?.story;
-                                  return Expanded(
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: feedStoryData
-                                          .homeStory!.story!.posts!.length,
-                                      itemBuilder: (context, index) {
-                                        final story = feedStoryData
-                                            .homeStory!.story!.posts![index];
-                                        return HomePageStoryContainer(
-                                          index: index,
-                                          vendorName: story.vendorName ??
-                                              "Unknown Vendor",
-                                          vendorImage: story.vendorImage ??
-                                              "https://example.com/default-image.png",
-                                          storyCount: story.storyCount ?? 0,
-                                          showGift:
-                                              story.hasSponsoredGifts ?? false,
-                                          feedStoryContent: feedStoryContent,
-                                          userId: story.vendorId!,
-                                          // feedData.data!.feedPost![index].userId ??
-                                        );
-                                      },
-                                    ),
+                          child: SingleChildScrollView(
+                            // Wrapping the Row with SingleChildScrollView
+                            scrollDirection: Axis
+                                .horizontal, // Ensuring it scrolls horizontally
+                            child: Row(
+                              children: [
+                                // First StoryAddWidget with search option
+                                StoryAddWidget(
+                                  vImage: data!.feedStory?.posts?.first.image,
+                                  brandname:
+                                      data!.feedStory?.posts?.first.vendorName,
+                                  index: 0,
+                                  addSearch: true, // First item has search
+                                  showgift: false,
+                                  onTap: () {
+                                    setState(() {
+                                      // _isPopupVisible = true; // Open the popup
+                                    });
+                                  },
+                                ),
+                                // Expanded is not needed since SingleChildScrollView will handle scrolling
+                                // Now ListView.builder will be added directly to the row
+                                ...data!.feedStory!.posts!.map((storyData) {
+                                  return StoryAddWidget(
+                                    brandname: storyData.vendorName,
+                                    vImage: storyData.vendorImage,
+                                    index: data!.feedStory!.posts!
+                                        .indexOf(storyData),
+                                    addSearch:
+                                        false, // For all items other than the first, no search
+                                    showgift: storyData.hasSponsoredGifts,
+                                    onTap: () {
+                                      // setState(() {
+                                      //   // _isPopupVisible = true; // Open the popup
+                                      // });
+                                    },
                                   );
-                                },
-                                loading: () => const Center(
-                                    child: CircularProgressIndicator()),
-                                error: (error, stack) =>
-                                    Center(child: Text('Error: $error')),
-                              ),
-                            ],
+                                }).toList(),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -903,84 +876,80 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         },
                                       ),
                                     ),
-                                    products.isNotEmpty
-                                        ? SizedBox(
-                                            child: AnimatedContainer(
-                                                duration:
-                                                    Duration(microseconds: 400),
-                                                height: 340.h,
-                                                width: double.infinity,
-                                                child: ListView.builder(
-                                                  padding:
-                                                      const EdgeInsets.all(3),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: products.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    CategoryProduct prod =
-                                                        products[index];
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductDetailScreen(
-                                                                      productId:
-                                                                          prod.id),
-                                                            ));
-                                                        // Handle product click if needed
-                                                      },
-                                                      child:
-                                                          ProductDetailWidget(
-                                                        distance: prod
-                                                            .shortestDistance,
-                                                        issponsored: prod.user!
-                                                                .sponsored ??
-                                                            false,
-                                                        shortestDistance:
-                                                            double.tryParse(
-                                                                prod.nearestBranch ??
-                                                                    '0'),
-                                                        wow: prod.wow,
-                                                        comment: prod
-                                                                .commentcount
-                                                                .toString() ??
-                                                            '1',
-                                                        avg_rating: prod
-                                                            .avg_rating
-                                                            ?.toDouble(),
+                                    products.isNotEmpty?
+                                    SizedBox(
+                                      child: AnimatedContainer(
+                                        duration: Duration(microseconds: 400),
+                                        height: 340.h,
+                                        width: double.infinity,
+                                        child: ListView.builder(
+                                                padding:
+                                                    const EdgeInsets.all(3),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: products.length,
+                                                itemBuilder: (context, index) {
+                                                  CategoryProduct prod =
+                                                      products[index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetailScreen(
+                                                                    productId:
+                                                                        prod.id),
+                                                          ));
+                                                      // Handle product click if needed
+                                                    },
+                                                    child: ProductDetailWidget(
+                                                      distance:
+                                                          prod.shortestDistance,
+                                                      issponsored: prod.userdetails!
+                                                              .sponsored ??
+                                                          false,
+                                                      shortestDistance:
+                                                          double.tryParse(
+                                                              prod.nearestBranch ??
+                                                                  '0'),
+                                                      wow: prod.wow,
+                                                      comment: prod.commentCount
+                                                              .toString() ??
+                                                          '1',
+                                                      avg_rating: prod
+                                                          .avgRating
+                                                          ?.toDouble(),
 
-                                                        offer: prod.offers,
-                                                        id: int.tryParse(
-                                                            prod.user!.id),
-                                                        lefttile: categories[
-                                                            selectedIndex],
-                                                        vendorname:
-                                                            prod.user!.name,
-                                                        discounttedPrice: prod
-                                                            .discounted_price,
-                                                        Vimage:
-                                                            prod.user!.photo,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage:
-                                                            prod.image,
-                                                        membershipColor: prod
-                                                            .user!.membercolor,
-                                                        similarproductCount: prod
-                                                            .similarproductCount,
-                                                        membershipTitle: prod
-                                                            .user!
-                                                            .membershipTitle,
-                                                        // avg_rating: prod.average_rating,
-                                                      ),
-                                                    );
-                                                  },
-                                                )),
-                                          )
-                                        : nolistingfound(),
+                                                      offer: prod.offers,
+                                                      id: int.tryParse(
+                                                          prod.userdetails!.id),
+                                                      lefttile: categories[
+                                                          selectedIndex],
+                                                      vendorname:
+                                                          prod.userdetails!.name,
+                                                      discounttedPrice:
+                                                          prod.discountedPrice,
+                                                      Vimage: prod.userdetails!.photo,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      membershipColor: prod
+                                                          .userdetails!.memberColor,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipTitle: prod
+                                                          .userdetails!
+                                                          .membershipTitle,
+                                                      // avg_rating: prod.average_rating,
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                          
+                                      ),
+                                    ):nolistingfound(),
+                          
                                   ],
                                 ),
                               );
@@ -1093,7 +1062,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               builder: (context) =>
                                                                   ProductDetailScreen(
                                                                       productId:
-                                                                          prod.id!),
+                                                                          prod.id),
                                                             ),
                                                           );
                                                         },
@@ -1189,7 +1158,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           builder: (context) =>
                                                               ProductDetailScreen(
                                                                   productId:
-                                                                      prod.id!),
+                                                                      prod.id),
                                                         ),
                                                       );
                                                     },
@@ -1280,7 +1249,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           builder: (context) =>
                                                               ProductDetailScreen(
                                                                   productId:
-                                                                      prod.id!),
+                                                                      prod.id),
                                                         ),
                                                       );
                                                     },
@@ -1420,8 +1389,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         gift_qty: resp.gift_qty!,
                                         worth: resp.worth!,
                                         productname: "Discount Coupon",
-                                        vendorImage: resp.vendorImage ?? '',
-                                        vendorname: resp.name ?? '',
+                                        vendorImage: resp.vendorImage,
+                                        vendorname: resp.name,
                                         winners: resp.winners.toString(),
                                         proctimage:
                                             "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png");
@@ -1612,11 +1581,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         child: AllProductDetailWidget(
                                           shortestDistance: data
                                               .allProducts[index]
-                                              .shortestDistance,
+                                              .userdetails.shortestDistance,
                                           issponsored: data.allProducts[index]
-                                              .user.hasSponsoredGifts,
+                                              .userss.sponsored,
                                           distance: data.allProducts[index]
-                                              .shortestDistance,
+                                              .userdetails.shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data
@@ -1632,9 +1601,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           productImage:
                                               data.allProducts[index].image,
                                           Vimage: data
-                                              .allProducts[index].user.photo,
+                                              .allProducts[index].userss.photo,
+                                              
                                           vendorname:
-                                              data.allProducts[index].user.name,
+                                              data.allProducts[index].userss.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
@@ -1642,11 +1612,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .similarProductCount,
                                           membershipColor: data
                                               .allProducts[index]
-                                              .userDetail
-                                              .memberColor,
+                                              .userss
+                                              .membercolor,
                                           membershipTitle: data
                                               .allProducts[index]
-                                              .userDetail
+                                              .userss
                                               .membershipTitle,
                                         ),
                                       ));

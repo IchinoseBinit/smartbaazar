@@ -92,89 +92,101 @@ Future<HomeProductType> homeCategory(HomeCategoryRef ref) async {
 }
 
 // Model for Product (CategoryProduct) and Vendor (User)
+// Model for Category Product
 class CategoryProduct {
   final String id;
   final String price;
   final String title;
   final String description;
-  final VendorUser? user;
+  final VendorUser? userdetails;
   final String image;
-  final String? discounted_price;
-  final int? similarproductCount;
+  final String? discountedPrice;
+  final int? similarProductCount;
   final String? offers;
   final String? wow;
-  final int? commentcount;
-
-  final int? avg_rating;
+  final int? commentCount;
+  final int? avgRating;
   final double? shortestDistance;
   final String? nearestBranch;
 
   CategoryProduct({
-    required this.commentcount,
-    required this.wow,
-    required this.nearestBranch,
-    required this.shortestDistance,
     required this.id,
+    required this.price,
     required this.title,
     required this.description,
-    required this.user,
+    this.userdetails,
     required this.image,
-    required this.price,
-    required this.offers,
-    required this.avg_rating,
-    required this.discounted_price,
-    required this.similarproductCount,
+    this.discountedPrice,
+    this.similarProductCount,
+    this.offers,
+    this.wow,
+    this.commentCount,
+    this.avgRating,
+    this.shortestDistance,
+    this.nearestBranch,
   });
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) {
     return CategoryProduct(
-      commentcount: json['commentcount'],
-      wow: json['wow'],
-      nearestBranch: json['nearestBranch'],
-      shortestDistance: json['shortestDistance'],
-      avg_rating: json['avg_rating'],
-      offers: json['offers'] ?? '',
-      discounted_price: json['discounted_price'] ?? '',
-      image: json['image'] ?? '',
-      price: json['price'] ?? '',
       id: json['id'] ?? '',
+      price: json['price'] ?? '0.0',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      similarproductCount: json['similarProductCount'] ?? '',
-      user: VendorUser.fromJson(json['userdetails'] ?? {}),
+      userdetails: json['userdetails'] != null
+          ? VendorUser.fromJson(json['userdetails'])
+          : null,
+      image: json['image'] ?? '',
+      discountedPrice: json['discounted_price'],
+      similarProductCount: json['similarProductCount'] as int?,
+      offers: json['offers'] ?? '',
+      wow: json['wow'],
+      commentCount: json['commentcount'] as int?,
+      avgRating: json['avg_rating'] as int?,
+      shortestDistance: (json['shortestDistance'] != null)
+          ? double.tryParse(json['shortestDistance'].toString())
+          : null,
+      nearestBranch: json['nearestBranch'],
     );
   }
 }
 
-// Class for Vendor User (example)
+// Model for Vendor User
 class VendorUser {
   final String id;
   final String name;
   final String photo;
-  final String? membercolor;
-
+  final String? memberColor;
+  final double? shortestDistance;
+  final String? nearestBranch;
   final bool? sponsored;
   final String? membershipTitle;
 
-  VendorUser(
-      {required this.id,
-      required this.name,
-      required this.sponsored,
-      required this.photo,
-      required this.membershipTitle,
-      required this.membercolor});
+  VendorUser({
+    required this.id,
+    required this.name,
+    required this.photo,
+    this.memberColor,
+    this.shortestDistance,
+    this.nearestBranch,
+    this.sponsored,
+    this.membershipTitle,
+  });
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
-      sponsored: json['sponsored'],
-      photo: json['photo'] ?? '',
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',
-      membercolor: json['membership_color'] ?? '',
-      membershipTitle: json['membership_title'] ?? '',
+      photo: json['photo'] ?? '',
+      memberColor: json['membership_color'],
+      shortestDistance: (json['shortestDistance']),
+         
+      nearestBranch: json['nearestBranch'],
+      sponsored: json['sponsored'] ?? false,
+      membershipTitle: json['membership_title'],
     );
   }
 }
+
 
 // Fixed ShopZone model to be consistent
 class ShopZone {
