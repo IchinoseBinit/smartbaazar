@@ -60,6 +60,55 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   // bool _showSearchProductModels = false;
   late TabController dynamictabController;
   bool _showSearchProductModels = false;
+   final List<Map<String, dynamic>> _items = [
+
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+    {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
   int headerIndex = 0;
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -348,16 +397,101 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-                      CustomPageView(
-                        // selectedindex: 3,
+                  
+                          SizedBox(
+                            height: 80.h,
+                            child: PageView.builder(
+                              itemCount: _items.length,
+                              padEnds: false,
+                              controller: _pageController,
+                              onPageChanged: (value) {
+                                setState(() {
+                                  selectedIndex =
+                                      value; // Update selectedIndex based on page change
+                                });
+                              },
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data = _items[index];
 
-                        pageController: _pageController,
-                        items: items,
-                        // initialIndex: 1,
-
-                        activeColor: Colors.amber,
-                        inactiveColor: const Color(0xffD9D9D9),
-                      ),
+                                // Highlight only when index == 4
+                                bool isActive = index == 1;
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                    _pageController.animateToPage(
+                                      2,
+                                      duration:
+                                      const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
+                                    duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              data['screen']),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          if (data['icon']
+                                              .toString()
+                                              .endsWith('.svg'))
+                                            SvgPicture.asset(
+                                              data['icon'],
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                              theme: const SvgTheme(
+                                                  currentColor:
+                                                  Color(0xffdd9d9d9)),
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                              width: 20,
+                                              height: 20,
+                                            )
+                                          else
+                                            Image.asset(
+                                              data['icon'],
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            data['label'],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),

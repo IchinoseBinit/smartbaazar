@@ -424,16 +424,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 20.h,
                           ),
-                          // CustomPageView(
-                          //   // selectedindex: 1,
-                          //
-                          //   pageController: _pageController,
-                          //   items: items,
-                          //   // initialIndex: 1,
-                          //
-                          //   activeColor: Colors.amber,
-                          //   inactiveColor: const Color(0xffD9D9D9),
-                          // ),
+                         
 
                           SizedBox(
                             height: 80.h,
