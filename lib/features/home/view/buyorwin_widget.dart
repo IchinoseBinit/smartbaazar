@@ -39,7 +39,7 @@ class buyorwin_widget extends StatelessWidget {
             child: Stack(
               children: [
                 Positioned(
-                  top: 0,
+                  top: -9,
                   child: ClipPath(
                     clipper: CustomCardBackgroundClipper(),
                     child: Container(

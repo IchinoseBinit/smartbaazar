@@ -783,7 +783,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           ),
                                         ),
                                         Text(
-                                          "B2b",
+                                          "Services",
                                           style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 15,

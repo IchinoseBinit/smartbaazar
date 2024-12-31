@@ -784,7 +784,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           ),
                                         ),
                                         Text(
-                                          "B2b",
+                                          "Events",
                                           style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 15,

@@ -789,7 +789,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           ),
                                         ),
                                         Text(
-                                          "Brands",
+                                          "Used",
                                           style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 15,

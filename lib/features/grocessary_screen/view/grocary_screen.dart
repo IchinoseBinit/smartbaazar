@@ -797,7 +797,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                           ),
                                         ),
                                         Text(
-                                          "B2b",
+                                          "Grocary",
                                           style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 15,

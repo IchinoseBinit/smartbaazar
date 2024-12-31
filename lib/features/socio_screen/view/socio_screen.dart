@@ -746,154 +746,158 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal, // Make the entire row scrollable
+
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "B2b",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Socio",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
-                                    physics: const BouncingScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    children: data.map((e) {
-                                      return Padding(
-                                        padding: EdgeInsets.zero,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showMenu(
-                                              context: context,
-                                              position:
-                                                  const RelativeRect.fromLTRB(0,
-                                                      0, 0, 0), // Base position
-                                              items: [
-                                                PopupMenuItem(
-                                                  value: 1,
-                                                  child: ListTile(
-                                                    title: const Text(
-                                                        "View Story"),
-                                                    leading:
-                                                        const Icon(Icons.book),
-                                                    onTap: () {
-                                                      // Implement onTap logic
-                                                    },
+                              
+                                  // Other Services List
+                                  Expanded(
+                                    child: ListView(
+                                      physics: const BouncingScrollPhysics(),
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      children: data.map((e) {
+                                        return Padding(
+                                          padding: EdgeInsets.zero,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showMenu(
+                                                context: context,
+                                                position:
+                                                    const RelativeRect.fromLTRB(0,
+                                                        0, 0, 0), // Base position
+                                                items: [
+                                                  PopupMenuItem(
+                                                    value: 1,
+                                                    child: ListTile(
+                                                      title: const Text(
+                                                          "View Story"),
+                                                      leading:
+                                                          const Icon(Icons.book),
+                                                      onTap: () {
+                                                        // Implement onTap logic
+                                                      },
+                                                    ),
                                                   ),
+                                                  // Check if parentClosure is not null and show it
+                                                  if (e.parentClosure != null)
+                                                    PopupMenuItem(
+                                                      value: 2,
+                                                      child: ListTile(
+                                                        title: Text(e
+                                                                .parentClosure
+                                                                ?.slug ??
+                                                            'N/A'),
+                                                        leading: const Icon(
+                                                            Icons.info),
+                                                      ),
+                                                    ),
+                                                ],
+                                              );
+                                            },
+                                            child: PopupMenuButton<int>(
+                                              offset: const Offset(
+                                                  0, 60), // Position for the menu
+                                              itemBuilder: (context) => [
+                                                const PopupMenuItem(
+                                                  value: 1,
+                                                  child: Text("View Story",
+                                                      style: TextStyle(
+                                                          fontSize: 16.0)),
                                                 ),
-                                                // Check if parentClosure is not null and show it
                                                 if (e.parentClosure != null)
                                                   PopupMenuItem(
                                                     value: 2,
-                                                    child: ListTile(
-                                                      title: Text(e
-                                                              .parentClosure
-                                                              ?.slug ??
-                                                          'N/A'),
-                                                      leading: const Icon(
-                                                          Icons.info),
+                                                    child: Text(
+                                                      e.parentClosure?.slug ??
+                                                          'No Parent',
+                                                      style: const TextStyle(
+                                                          fontSize: 16.0),
                                                     ),
                                                   ),
                                               ],
-                                            );
-                                          },
-                                          child: PopupMenuButton<int>(
-                                            offset: const Offset(
-                                                0, 60), // Position for the menu
-                                            itemBuilder: (context) => [
-                                              const PopupMenuItem(
-                                                value: 1,
-                                                child: Text("View Story",
-                                                    style: TextStyle(
-                                                        fontSize: 16.0)),
-                                              ),
-                                              if (e.parentClosure != null)
-                                                PopupMenuItem(
-                                                  value: 2,
-                                                  child: Text(
-                                                    e.parentClosure?.slug ??
-                                                        'No Parent',
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0),
-                                                  ),
-                                                ),
-                                            ],
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w),
-                                              child: DashedBorder(
-                                                dashCount:
-                                                    1, // Number of dashes in the border
-                                                child: SizedBox(
-                                                  width: 200
-                                                      .w, // Fixed width for the container
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Image.asset(
-                                                          'assets/images/cloth.png'),
-                                                      Center(
-                                                        child: Text(
-                                                          e.name ?? 'No Name',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 13,
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
+                                                child: DashedBorder(
+                                                  dashCount:
+                                                      1, // Number of dashes in the border
+                                                  child: SizedBox(
+                                                    width: 200
+                                                        .w, // Fixed width for the container
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                            'assets/images/cloth.png'),
+                                                        Center(
+                                                          child: Text(
+                                                            e.name ?? 'No Name',
+                                                            style:
+                                                                const TextStyle(
+                                                              color: Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontSize: 13,
+                                                            ),
+                                                            textAlign:
+                                                                TextAlign.center,
                                                           ),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      )
-                                                    ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }).toList(),
+                                        );
+                                      }).toList(),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                        

@@ -60,7 +60,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   // bool _showSearchProductModels = false;
   late TabController tabController;
 
-  
   final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
@@ -619,8 +618,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               return StoryAddWidget(
                                 brandname: storyData.vendorName,
                                 vImage: storyData.vendorImage,
-                                index: data.feedStory!.posts!
-                                    .indexOf(storyData),
+                                index:
+                                    data.feedStory!.posts!.indexOf(storyData),
                                 addSearch:
                                     false, // For all items other than the first, no search
                                 showgift: storyData.hasSponsoredGifts,
@@ -771,7 +770,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           ),
                                         ),
                                         Text(
-                                          "B2b",
+                                          "Jobs",
                                           style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 15,
@@ -896,30 +895,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
                         ],
                       ),
                     );
@@ -950,6 +925,57 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       )
                     ],
                   ),
+                ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    if (data.hotProducts.isNotEmpty) {
+                      return SizedBox(
+                        height: 340.h,
+                        width: double.infinity,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(3),
+                          clipBehavior: Clip.antiAlias,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.hotProducts.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            VProduct hot = data.hotProducts[index];
+                            return InkWell(
+                              onTap: () {
+                                print("biabsh ${hot.id}");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailScreen(
+                                          productId: hot.id),
+                                    ));
+                              },
+                              child: ProductDetailWidget(
+                                wow: hot.wow,
+                                comment: hot.commentcount.toString(),
+                                discounttedPrice: hot.discounted_price,
+                                issponsored: hot.user.sponsored,
+                                lefttile: "B2b-Shop",
+                                productImage: hot.image,
+                                Vimage: hot.user.photo,
+                                price: hot.price,
+                                title: hot.title,
+                                vendorname: hot.user.name,
+                                similarproductCount: hot.similarProductCount,
+                                membershipColor: hot.user.membercolor,
+                                membershipTitle: hot.user.membershipTitle,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return Center(child: nolistingfound());
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 // Expanded(
@@ -1320,7 +1346,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               ? 200
                               : 500;
                     else
-                      dynamicHeight = 300;
+                      dynamicHeight = 500;
 
                     return SizedBox(
                       // Use Expanded for better layout management
@@ -1345,6 +1371,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
+                                  SizedBox(height: 10.h,),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1392,7 +1419,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           },
                                         ),
                                       )
-                                    : Center(child: nolistingfound(),)
+                                    : Center(
+                                        child: nolistingfound(),
+                                      )
                               ],
                             ),
                             Column(
@@ -1411,8 +1440,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                SizedBox(height: 10.h,),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1477,8 +1509,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                SizedBox(height: 10.h,),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1623,7 +1658,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                             gift_qty: resp.gift_qty!,
+                              gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage,
