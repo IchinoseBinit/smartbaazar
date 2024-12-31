@@ -10,6 +10,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
@@ -1022,15 +1023,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
                                         data.doma[0].isNotEmpty)
-                                    ? 425.h
+                                    ? 420.h
                                     : 200.h;
                               } else if (dynamictabController.index == 2)
                                 dynamicHeight = (data.spotlight.isNotEmpty &&
                                         data.spot[0].isNotEmpty)
-                                    ? 425.h
+                                    ? 420.h
                                     : 300.h;
                               else
-                                dynamicHeight = 315;
+                                dynamicHeight = 300;
 
                               return SizedBox(
                                 child: AnimatedContainer(
@@ -1047,68 +1048,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          asyncHomeStoryContent.when(
-                                            data: (feedStoryData) {
-                                              final feedStoryContent =
-                                                  feedStoryData
-                                                      .homeStory?.story;
-                                              return Expanded(
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: feedStoryData
-                                                      .homeStory!
-                                                      .story!
-                                                      .posts!
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    final story = feedStoryData
-                                                        .homeStory!
-                                                        .story!
-                                                        .posts![index];
-                                                    return HomePageStoryContainer(
-                                                      index: index,
-                                                      vendorName:
-                                                          story.vendorName ??
-                                                              "Unknown Vendor",
-                                                      vendorImage: story
-                                                              .vendorImage ??
-                                                          "https://example.com/default-image.png",
-                                                      storyCount:
-                                                          story.storyCount ?? 0,
-                                                      showGift: story
-                                                              .hasSponsoredGifts ??
-                                                          false,
-                                                      feedStoryContent:
-                                                          feedStoryContent,
-                                                      userId: story.vendorId!,
-                                                      // feedData.data!.feedPost![index].userId ??
-                                                    );
-                                                  },
-                                                ),
+                                          if (data.global.isNotEmpty)
+                                            ...data.global.map((e) {
+                                              return NotStoryWidget(
+                                                vImage: e
+                                                    .brandLogo, // Use the correct variable name
+                                                index: data.global.indexOf(
+                                                    e), // Get the index
+                                                brandname: e.brandName,
                                               );
-                                            },
-                                            loading: () => const Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                            error: (error, stack) => Center(
-                                                child: Text('Error: $error')),
-                                          ),
-                                          // if (data.global.isNotEmpty)
-                                          //   ...data.global.map((e) {
-                                          //     return NotStoryWidget(
-                                          //       vImage: e
-                                          //           .brandLogo, // Use the correct variable name
-                                          //       index: data.global.indexOf(
-                                          //           e), // Get the index
-                                          //       brandname: e.brandName,
-                                          //     );
-                                          //   }).toList(),
+                                            }).toList(),
                                           data.insidearr[0].isEmpty
-                                              ? nolistingfound()
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 28.h),
+                                                  child: Center(
+                                                      child: nolistingfound()),
+                                                )
                                               : SizedBox(
                                                   height: 340.h,
                                                   child: ListView.builder(
@@ -1132,8 +1088,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               builder: (context) =>
                                                                   ProductDetailScreen(
                                                                       productId:
-                                                                          prod.id ??
-                                                                              ''),
+                                                                          prod.id!),
                                                             ),
                                                           );
                                                         },
@@ -1189,55 +1144,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          asyncHomeStoryContent.when(
-                                            data: (feedStoryData) {
-                                              final feedStoryContent =
-                                                  feedStoryData
-                                                      .homeStory?.story;
-                                              return Expanded(
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: feedStoryData
-                                                      .homeStory!
-                                                      .story!
-                                                      .posts!
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    final story = feedStoryData
-                                                        .homeStory!
-                                                        .story!
-                                                        .posts![index];
-                                                    return HomePageStoryContainer(
-                                                      index: index,
-                                                      vendorName:
-                                                          story.vendorName ??
-                                                              "Unknown Vendor",
-                                                      vendorImage: story
-                                                              .vendorImage ??
-                                                          "https://example.com/default-image.png",
-                                                      storyCount:
-                                                          story.storyCount ?? 0,
-                                                      showGift: story
-                                                              .hasSponsoredGifts ??
-                                                          false,
-                                                      feedStoryContent:
-                                                          feedStoryContent,
-                                                      userId: story.vendorId!,
-                                                      // feedData.data!.feedPost![index].userId ??
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            loading: () => const Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                            error: (error, stack) => Center(
-                                                child: Text('Error: $error')),
+                                          if (data.domestic.isNotEmpty)
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    data.domestic.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e.brandLogo,
+                                                    index: data.domestic
+                                                        .indexOf(e),
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          SizedBox(
+                                            height: 15.h,
                                           ),
                                           if (data.domestic.isNotEmpty)
                                             SizedBox(
@@ -1261,8 +1184,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           builder: (context) =>
                                                               ProductDetailScreen(
                                                                   productId:
-                                                                      prod.id ??
-                                                                          ''),
+                                                                      prod.id!),
                                                         ),
                                                       );
                                                     },
@@ -1313,55 +1235,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          asyncHomeStoryContent.when(
-                                            data: (feedStoryData) {
-                                              final feedStoryContent =
-                                                  feedStoryData
-                                                      .homeStory?.story;
-                                              return Expanded(
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  shrinkWrap: true,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: feedStoryData
-                                                      .homeStory!
-                                                      .story!
-                                                      .posts!
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    final story = feedStoryData
-                                                        .homeStory!
-                                                        .story!
-                                                        .posts![index];
-                                                    return HomePageStoryContainer(
-                                                      index: index,
-                                                      vendorName:
-                                                          story.vendorName ??
-                                                              "Unknown Vendor",
-                                                      vendorImage: story
-                                                              .vendorImage ??
-                                                          "https://example.com/default-image.png",
-                                                      storyCount:
-                                                          story.storyCount ?? 0,
-                                                      showGift: story
-                                                              .hasSponsoredGifts ??
-                                                          false,
-                                                      feedStoryContent:
-                                                          feedStoryContent,
-                                                      userId: story.vendorId!,
-                                                      // feedData.data!.feedPost![index].userId ??
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                            loading: () => const Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                            error: (error, stack) => Center(
-                                                child: Text('Error: $error')),
+                                          if (data.domestic.isNotEmpty)
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    data.spotlight.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e.brandLogo,
+                                                    index: data.spotlight
+                                                        .indexOf(e),
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          SizedBox(
+                                            height: 15.h,
                                           ),
                                           if (data.spot[0].isNotEmpty)
                                             SizedBox(
@@ -1385,8 +1275,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           builder: (context) =>
                                                               ProductDetailScreen(
                                                                   productId:
-                                                                      prod.id ??
-                                                                          ''),
+                                                                      prod.id!),
                                                         ),
                                                       );
                                                     },
