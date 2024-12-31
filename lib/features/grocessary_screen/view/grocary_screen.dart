@@ -166,6 +166,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
       });
     });
   }
+      int? selectedTab = 0;
+
 
   void _handleScroll() {
     final scrollOffset = _scrollController.offset;
@@ -920,30 +922,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
+                       
                         ],
                       ),
                     );
@@ -1332,18 +1311,18 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 150
+                              ? 200
                               : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 150
+                              ? 200
                               : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 150
+                              ? 200
                               : 500;
                     else
                       dynamicHeight = 300;
@@ -1371,7 +1350,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   }).toList(),
                                 data.insidearr.first.isNotEmpty ||
                                         data.insidearr.isNotEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1437,7 +1416,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 ),
                                 data.insidearr.isEmpty ||
                                         data.insidearr[0].isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1503,7 +1482,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 ),
                                 data.insidearr.isEmpty ||
                                         data.insidearr[0].isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: data.insidearr.first.isEmpty
@@ -1667,8 +1646,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-
-                asyncbajarValue.when(
+               
+                
+                SizedBox(
+                  height: 10.h,
+                ),
+                  asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
                       height: 70.h,
@@ -1698,153 +1681,152 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 ),
                 SizedBox(
                   height: 10.h,
                 ),
-                asyncbajarValue.when(
-                  data: (data) {
-                    List<List<VProduct>> productsList = [
-                      data.low_price_guarantee, // Corresponds to SHOPZONE
-                      data.Launch_offer, // Corresponds to HOB
-                      data.seasonal, // Corresponds to SERVICES
-                      data.promotional, // Corresponds to TRADEHUB
-                      data.Launch_festival_offer, // Corresponds to USED
-                    ];
+                SizedBox(
+                  width: double.infinity,
+                  child: ValueListenableBuilder<int>(
+                    valueListenable: selectedIndexNotifier,
+                    builder: (context, selectedIndex, child) {
+                      // Map category labels to their respective product lists
+                      List<String> categories =
+                          services.map((e) => e['label'] as String).toList();
 
-                    return SizedBox(
-                      width: double.infinity,
-                      height: productsList.every((list) => list.isEmpty)
-                          ? 150.h
-                          : 420.h,
-                      child: ValueListenableBuilder<int>(
-                        valueListenable: selectedIndexNotifier,
-                        builder: (context, selectedIndex, child) {
-                          // Map category labels to their respective product lists
-                          List<String> categories = services
-                              .map((e) => e['label'] as String)
-                              .toList();
-
-                          return Column(
-                            children: [
-                              // Category Selector Row
-                              SizedBox(
-                                width: double.infinity,
-                                height: 50.h,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: categories.length,
-                                  itemBuilder: (context, index) {
-                                    bool isSelected = index == selectedIndex;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        // Update the selected index
-                                        selectedIndexNotifier.value = index;
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        margin: const EdgeInsets.all(5),
-                                        width: 150.w,
-                                        decoration: BoxDecoration(
-                                          color: isSelected
-                                              ? const Color(0xFF681b4e)
-                                              : const Color(0xffA5A5A5),
-                                        ),
-                                        child: Text(
-                                          categories[index],
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorConstant.whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                      return Column(
+                        children: [
+                          // Category Selector Row
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: categories.length,
+                              itemBuilder: (context, index) {
+                                bool isSelected = index == selectedIndex;
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Update the selected index
+                                    selectedIndexNotifier.value = index;
                                   },
-                                ),
-                              ),
-
-                              // Spacer
-                              SizedBox(height: 5.h),
-
-                              // Display Products for the selected category
-                              Builder(builder: (context) {
-                                // Ensure the index is valid
-                                if (selectedIndex < 0 ||
-                                    selectedIndex >= productsList.length) {
-                                  selectedIndex =
-                                      0; // Default to the first category
-                                }
-
-                                List<VProduct> products =
-                                    productsList[selectedIndex];
-
-                                if (products.isEmpty) {
-                                  return SizedBox(
-                                    height: 50.h,
-                                    child: Center(
-                                      child: Text(
-                                        "No listing available",
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.grey,
-                                        ),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.all(5),
+                                    width: 150.w,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? const Color(0xFF681b4e)
+                                          : const Color(0xffA5A5A5),
+                                    ),
+                                    child: Text(
+                                      categories[index],
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors
+                                            .white, // Use color directly or define in constants
                                       ),
                                     ),
-                                  );
-                                }
-
-                                return SizedBox(
-                                  height: 360.h,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: products.length,
-                                    itemBuilder: (context, index) {
-                                      VProduct prod = products[index];
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetailScreen(
-                                                          productId: prod.id)));
-                                        }, // Handle onTap if needed
-                                        child: ProductDetailWidget(
-                                          wow: prod.wow,
-                                          comment: prod.commentcount.toString(),
-                                          lefttile: "Grocary",
-                                          vendorname: prod.user.name,
-                                          discounttedPrice:
-                                              prod.discounted_price,
-                                          Vimage: prod.title,
-                                          issponsored: prod.user.sponsored,
-                                          price: prod.price,
-                                          title: prod.title,
-                                          productImage: prod.image,
-                                          similarproductCount:
-                                              prod.similarProductCount,
-                                          membershipColor:
-                                              prod.user.membercolor,
-                                          membershipTitle:
-                                              prod.user.membershipTitle,
-                                        ), // Replace with your actual product widget
-                                      );
-                                    },
                                   ),
                                 );
-                              }),
-                            ],
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) => Text("Error: $error"),
-                  loading: () => const CircularProgressIndicator(),
+                              },
+                            ),
+                          ),
+
+                          // Spacer
+                          SizedBox(height: 5.h),
+
+                          // Display Products for the selected category
+                          asyncbajarValue.when(
+                            data: (data) {
+                              // Define the products list corresponding to each category
+                              List<List<VProduct>> productsList = [
+                                data.low_price_guarantee, // Corresponds to SHOPZONE
+                                data.Launch_offer, // Corresponds to HOB
+                                data.seasonal, // Corresponds to SERVICES
+                                data.promotional, // Corresponds to TRADEHUB
+                                data.clearance_sale, // Corresponds to USED
+                                data.Launch_festival_offer, // Corresponds to USED
+                              ];
+
+                              // Ensure the index is valid
+                              if (selectedIndex < 0 ||
+                                  selectedIndex >= productsList.length) {
+                                selectedIndex =
+                                    0; // Default to the first category if index is out of bounds
+                              }
+
+                              List<VProduct> products =
+                                  productsList[selectedIndex];
+
+                              // Calculate height dynamically
+                              double calculatedHeight =
+                                  products.isNotEmpty ? 359.h : 100.h;
+
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                height: calculatedHeight,
+                                child: products.isEmpty
+                                    ?Center(child: nolistingfound(),)
+                                    : ListView.builder(
+                                        clipBehavior: Clip.antiAlias,
+                                        padding: const EdgeInsets.all(3),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: products.length,
+                                        itemBuilder: (context, index) {
+                                          VProduct prod = products[index];
+
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductDetailScreen(
+                                                            productId: prod.id),
+                                                  ));
+                                            }, // Handle onTap if needed
+                                            child: ProductDetailWidget(
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentcount.toString(),
+                                              lefttile: "B2b",
+                                              vendorname: prod.user.name,
+                                              discounttedPrice:
+                                                  prod.discounted_price,
+                                              Vimage: prod.title,
+                                              issponsored: prod.user.sponsored,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipColor:
+                                                  prod.user.membercolor,
+                                              membershipTitle:
+                                                  prod.user.membershipTitle,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                              );
+                            },
+                            error: (error, stackTrace) => const Center(
+                              child: Text("Error loading data"),
+                            ),
+                            loading: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
+              
 
                 Padding(
                   padding: const EdgeInsets.all(10),

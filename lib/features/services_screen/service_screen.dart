@@ -67,14 +67,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
   late TabController tabController;
-  final List<Map<String, dynamic>> _services = [
-    {'label': 'Low Price Guarantee', 'id': 1},
-    {'label': 'Launch Offer', 'id': 2},
-    {'label': 'Seasonal offer', 'id': 3},
-    {'label': 'Promotional', 'id': 4},
-    {'label': 'Clearance sale', 'id': 5},
-    {'label': 'Festive sale', 'id': 5},
-  ];
+
   bool _showSearchProductModels = false;
 
   final List<Map<String, dynamic>> _items = [
@@ -915,30 +908,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
+                       
                         ],
                       ),
                     );
@@ -950,6 +920,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 ),
 
                 Padding(
+
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
@@ -1433,7 +1404,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     if (tabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 100
+                              ? 200
                               : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
@@ -1520,7 +1491,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           },
                                         ),
                                       )
-                                    : const SizedBox(),
+                                    : Center(child: nolistingfound(),),
                               ],
                             ),
                             Column(
@@ -1540,7 +1511,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   ),
                                 ),
                                 data.insidearr.isNotEmpty
-                                    ? const SizedBox()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 140.h,
                                         child: ListView.builder(
@@ -1611,7 +1582,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   ),
                                 ),
                                 data.insidearr.isNotEmpty
-                                    ? const SizedBox()
+                                    ? Center(child: nolistingfound(),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1850,12 +1821,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
-                                    ? const Center(
-                                        child: Text(
-                                          "No products found",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      )
+                                    ?Center(child: nolistingfound(),)
                                     : ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
