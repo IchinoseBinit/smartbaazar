@@ -36,7 +36,7 @@ class _PromoCardState extends State<PromoCard> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 243, 244, 242),
+            color: const Color.fromARGB(255, 243, 244, 242),
             // boxShadow: [#8183804A
             //   BoxShadow(
             //     color: Colors.grey.shade300,
@@ -81,7 +81,7 @@ class _PromoCardState extends State<PromoCard> {
                         ],
                       ),
                     ),
-                    if (widget.products.length > 0)
+                    if (widget.products.isNotEmpty)
                       _productFirstItem(
                         imagePath: widget.products[0]["imagePath"]!,
                         price: widget.products[0]["price"]!,
@@ -211,8 +211,8 @@ class _PromoCardState extends State<PromoCard> {
           Container(
             width: 155.w,
             height: 120.h,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
@@ -236,8 +236,8 @@ class _PromoCardState extends State<PromoCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // if (showHotIcon)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 5.0),
                     child: Icon(Icons.check_box, color: Colors.white),
                     // child: Image.asset(
                     //   'assets/icon/flame.png',
@@ -282,8 +282,8 @@ class _PromoCardState extends State<PromoCard> {
           Container(
             width: 155.w,
             height: 120.h,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),

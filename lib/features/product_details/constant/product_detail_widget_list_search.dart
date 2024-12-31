@@ -6,10 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class ProductDetailWidgetListSearch extends StatelessWidget {
   ProductDetailWidgetListSearch({
@@ -55,7 +52,6 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // String showRs = "Rs";
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
@@ -101,7 +97,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
                       constraints:
-                      const BoxConstraints.expand(width: 150, height: 150),
+                          const BoxConstraints.expand(width: 150, height: 150),
                       // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
                       color: const Color(0xff766c7a).withOpacity(0.9),
@@ -117,7 +113,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                 "Share",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                  GoogleFonts.quicksand().fontFamily,
+                                      GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 9,
                                 ),
@@ -129,7 +125,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                 "Save",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                  GoogleFonts.quicksand().fontFamily,
+                                      GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -142,7 +138,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                 "Conatct Seller",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                  GoogleFonts.quicksand().fontFamily,
+                                      GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -154,7 +150,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                 "Get Seller Directives",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                  GoogleFonts.quicksand().fontFamily,
+                                      GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -167,16 +163,16 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                      const ReportComplainScreen(
-                                          productId: "167",
-                                          productName: "techstore"),
+                                          const ReportComplainScreen(
+                                              productId: "167",
+                                              productName: "techstore"),
                                     ));
                               },
                               child: Text(
                                 "Report",
                                 style: headerstyle.copyWith(
                                   fontFamily:
-                                  GoogleFonts.quicksand().fontFamily,
+                                      GoogleFonts.quicksand().fontFamily,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 8,
                                 ),
@@ -189,31 +185,31 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
               ),
               productImage == 'null'
                   ? Image.asset(
-                'assets/images/shoppingimages.png',
-                height: 130.h,
-                width: 200.2,
-                fit: BoxFit.fill,
-              )
+                      'assets/images/shoppingimages.png',
+                      height: 130.h,
+                      width: 200.2,
+                      fit: BoxFit.fill,
+                    )
                   : Image.network(
-                productImage ?? '', // Ensure Vimage is not null or empty
-                height: 130.h,
-                // Adjust size accordingly
-                width: 200.w,
-                fit: BoxFit.fill,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child; // If no loading, show the image
-                  } else {
-                    return const Center(
-                        child:
-                        CircularProgressIndicator()); // Show loading indicator
-                  }
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons
-                      .error); // Show error icon if image fails to load
-                },
-              ),
+                      productImage ?? '', // Ensure Vimage is not null or empty
+                      height: 130.h,
+                      // Adjust size accordingly
+                      width: 200.w,
+                      fit: BoxFit.fill,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child; // If no loading, show the image
+                        } else {
+                          return const Center(
+                              child:
+                                  CircularProgressIndicator()); // Show loading indicator
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons
+                            .error); // Show error icon if image fails to load
+                      },
+                    ),
               SizedBox(
                 height: 5.h,
               ),
@@ -249,38 +245,38 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                         offer == ''
                             ? const SizedBox()
                             : Row(
-                          children: [
-                            const Icon(
-                              Icons.track_changes_sharp,
-                              color: Color(0xff901B41),
-                              size: 15,
-                            ),
-                            Text(
-                              offer ?? '',
-                              style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xff901B41),
-                                  fontSize: 8.sp),
-                            ),
-                          ],
-                        ),
+                                children: [
+                                  const Icon(
+                                    Icons.track_changes_sharp,
+                                    color: Color(0xff901B41),
+                                    size: 15,
+                                  ),
+                                  Text(
+                                    offer ?? '',
+                                    style: headerstyle.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xff901B41),
+                                        fontSize: 8.sp),
+                                  ),
+                                ],
+                              ),
                         discounttedPrice != "0"
                             ? Row(
-                          children: [
-                            const Icon(
-                              Icons.track_changes_sharp,
-                              color: Color(0xff901B41),
-                              size: 15,
-                            ),
-                            Text(
-                              "Best Price",
-                              style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xff901B41),
-                                  fontSize: 8.sp),
-                            ),
-                          ],
-                        )
+                                children: [
+                                  const Icon(
+                                    Icons.track_changes_sharp,
+                                    color: Color(0xff901B41),
+                                    size: 15,
+                                  ),
+                                  Text(
+                                    "Best Price",
+                                    style: headerstyle.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xff901B41),
+                                        fontSize: 8.sp),
+                                  ),
+                                ],
+                              )
                             : const SizedBox(),
 
                         // SizedBox(width: 30.w,),
@@ -306,15 +302,15 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                             child: Text(
                               "$showRs$discounttedPrice",
                               style:
-                              // headerstyle.copyWith(
-                              //   fontSize: 8.sp,
-                              //   fontWeight: FontWeight.w600,
-                              //   color: Colors.grey,
-                              //   decoration: TextDecoration.lineThrough,
-                              //   decorationThickness: 1.5, // Adjusts the thickness of the line
-                              //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
-                              // ),
-                              TextStyle(
+                                  // headerstyle.copyWith(
+                                  //   fontSize: 8.sp,
+                                  //   fontWeight: FontWeight.w600,
+                                  //   color: Colors.grey,
+                                  //   decoration: TextDecoration.lineThrough,
+                                  //   decorationThickness: 1.5, // Adjusts the thickness of the line
+                                  //   decorationStyle: TextDecorationStyle.solid, // Ensures a solid line
+                                  // ),
+                                  TextStyle(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey,
@@ -323,7 +319,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                 height: 1.0,
                               ),
                               textAlign:
-                              TextAlign.center, // Aligns text if necessary
+                                  TextAlign.center, // Aligns text if necessary
                             ),
                           ),
                       ],
@@ -342,7 +338,8 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
                           child: Text(
-                            (avg_rating ?? 0).toStringAsFixed(1),  // Provide fallback value of 0 when null
+                            (avg_rating ?? 0).toStringAsFixed(
+                                1), // Provide fallback value of 0 when null
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
@@ -354,19 +351,21 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating: (avg_rating ?? 1),  // Use fallback value of 1 when null or 0
+                            initialRating: (avg_rating ??
+                                1), // Use fallback value of 1 when null or 0
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
-                            itemCount: 5,  // Always display 5 stars
+                            itemCount: 5, // Always display 5 stars
                             itemSize: 12,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, index) {
                               // If avg_rating is null or 0, color the first star
                               if (avg_rating == null || avg_rating == 0) {
                                 return const Icon(
                                   Icons.star,
-                                  color: Color(0xff901B41),  // First star color
+                                  color: Color(0xff901B41), // First star color
                                 );
                               } else {
                                 // Color logic based on avg_rating
@@ -376,7 +375,9 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                     Icons.star,
                                     color: Color(0xff901B41),
                                   );
-                                } else if (index == avg_rating!.floor() && (avg_rating! - avg_rating!.floor()) >= 0.5) {
+                                } else if (index == avg_rating!.floor() &&
+                                    (avg_rating! - avg_rating!.floor()) >=
+                                        0.5) {
                                   // Fill half a star if the decimal part of avg_rating is >= 0.5
                                   return const Icon(
                                     Icons.star_half,
@@ -396,31 +397,30 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     discounttedPrice == '0'
                         ? const SizedBox()
                         : Row(
-                      children: [
-                        Image.asset(
-                          "assets/images/flameIcon.png",
-                          height: 10,
-                          width: 10,
-                          color: const Color(0xff901B41),
-                        ),
-                        Text(
-                          "30%",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xff901B41),
-                              fontSize: 10),
-                        ),
-                        const Icon(
-                          Icons.arrow_downward_rounded,
-                          size: 15,
-                          color: Color(0xff901B41),
-                        )
-                      ],
-                    ),
+                            children: [
+                              Image.asset(
+                                "assets/images/flameIcon.png",
+                                height: 10,
+                                width: 10,
+                                color: const Color(0xff901B41),
+                              ),
+                              Text(
+                                "30%",
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff901B41),
+                                    fontSize: 10),
+                              ),
+                              const Icon(
+                                Icons.arrow_downward_rounded,
+                                size: 15,
+                                color: Color(0xff901B41),
+                              )
+                            ],
+                          ),
                   ],
                 ),
               ),
@@ -487,7 +487,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                 children: [
                   Container(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
                     decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -545,7 +545,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: membershipColor != null
                             ? Color(int.parse(
-                            membershipColor!.replaceFirst('#', '0xFF')))
+                                membershipColor!.replaceFirst('#', '0xFF')))
                             : const Color(0xff3D215F), // Default color
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(13),
@@ -553,8 +553,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                         ),
                       ),
                       // ),
-                      child:
-                      Row(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -593,7 +592,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
 
                                       Text(
                                         vendorname != null &&
-                                            vendorname!.length > 19
+                                                vendorname!.length > 19
                                             ? '${vendorname!.substring(0, 15)}...'
                                             : vendorname ?? '',
                                         style: headerstyle.copyWith(
@@ -613,31 +612,34 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                         children: [
                                           shortestDistance != null
                                               ? Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.location_on,
-                                                color: Colors.white,
-                                                size: 12,
-                                              ),
-                                              Text(
-                                                "$shortestDistance km",
-                                                style: headerstyle.copyWith(
-                                                    fontSize: 8.sp,
-                                                    fontWeight:
-                                                    FontWeight.w700),
-                                              ),
-                                            ],
-                                          )
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.location_on,
+                                                      color: Colors.white,
+                                                      size: 12,
+                                                    ),
+                                                    Text(
+                                                      "$shortestDistance km",
+                                                      style:
+                                                          headerstyle.copyWith(
+                                                              fontSize: 8.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                    ),
+                                                  ],
+                                                )
                                               : SizedBox(
-                                            height: 5.h,
-                                          ),
+                                                  height: 5.h,
+                                                ),
                                         ],
                                       )
                                     ],
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(
                                         width: 2.w,
@@ -654,8 +656,10 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                         child: Text(
                                           membershipTitle ?? "Domestic Brand",
                                           style: headerstyle.copyWith(
-                                            fontSize: (membershipTitle != null &&
-                                                membershipTitle!.length > 15)
+                                            fontSize: (membershipTitle !=
+                                                        null &&
+                                                    membershipTitle!.length >
+                                                        15)
                                                 ? 8.sp
                                                 : 10.sp,
                                             // Adjust font size based on length
@@ -669,18 +673,18 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                                       issponsored
                                           ? const SizedBox()
                                           : Row(
-                                        children: [
-                                          Image.asset(
-                                              "assets/images/mike.png"),
-                                          Text(
-                                            "SPONSORED",
-                                            style: headerstyle.copyWith(
-                                                fontSize: 10.sp,
-                                                fontWeight:
-                                                FontWeight.w700),
-                                          ),
-                                        ],
-                                      ),
+                                              children: [
+                                                Image.asset(
+                                                    "assets/images/mike.png"),
+                                                Text(
+                                                  "SPONSORED",
+                                                  style: headerstyle.copyWith(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                              ],
+                                            ),
                                     ],
                                   ),
                                 ],

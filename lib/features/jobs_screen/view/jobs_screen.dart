@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
@@ -14,6 +18,7 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
+import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -29,6 +34,7 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 import '../../product_details/constant/all_product_detail_widget.dart';
 
@@ -53,14 +59,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
   late TabController tabController;
-  final List<Map<String, dynamic>> _services = [
-    {'label': 'Low Price Guarantee', 'id': 1},
-    {'label': 'Launch Offer', 'id': 2},
-    {'label': 'Seasonal offer', 'id': 3},
-    {'label': 'Promotional', 'id': 4},
-    {'label': 'Clearance sale', 'id': 5},
-  ];
-  final List<Map<String, dynamic>> __items = [
+
+  final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
@@ -108,6 +108,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     },
   ];
   int headerIndex = 0;
+  int _currentIndex = 0;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -212,10 +213,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-
+    final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getjobsResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
+    final category = ref.watch(getCategoriesProvider(73));
+
     // asyncbajarValue.when(data: (data) {
 
     // }, error: (error, stackTrace) {
@@ -363,14 +366,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               );
                             }, loading: () {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -424,7 +427,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             });
                           },
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
+                            Map<String, dynamic> data = _items[index];
 
                             // Highlight only when index == 4
                             bool isActive = index == 1;
@@ -542,7 +545,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(
@@ -585,403 +588,321 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     ),
                   ),
                 ),
-                // Center(
-                //   child: Container(
-                //     alignment: AlignmentDirectional.centerStart,
-                //     margin: EdgeInsets.only(top: 5.h),
-                //     height: 7.h,
-                //     width: 60.w,
-                //     decoration: BoxDecoration(
-                //         color: const Color(0xFF681b4e),
-                //         borderRadius: BorderRadius.circular(5)),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                asyncbajarValue.when(
+                randomstory.when(
                   data: (data) {
                     return SizedBox(
-                      height: 130,
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: data.sliders!.length,
-                          itemBuilder: (context, index) {
-                            Story ref = data.stories[index];
-                            if (index == 0) {
+                      height: 130.h,
+                      child: SingleChildScrollView(
+                        // Wrapping the Row with SingleChildScrollView
+                        scrollDirection:
+                            Axis.horizontal, // Ensuring it scrolls horizontally
+                        child: Row(
+                          children: [
+                            // First StoryAddWidget with search option
+                            StoryAddWidget(
+                              vImage: data.feedStory?.posts?.first.image,
+                              brandname:
+                                  data.feedStory?.posts?.first.vendorName,
+                              index: 0,
+                              addSearch: true, // First item has search
+                              showgift: false,
+                              onTap: () {
+                                setState(() {
+                                  // _isPopupVisible = true; // Open the popup
+                                });
+                              },
+                            ),
+                            // Expanded is not needed since SingleChildScrollView will handle scrolling
+                            // Now ListView.builder will be added directly to the row
+                            ...data.feedStory!.posts!.map((storyData) {
                               return StoryAddWidget(
-                                  vImage: ref.vendorImage,
-                                  brandname: ref.vendorName,
-                                  index: 0,
-                                  addSearch: true,
-                                  showgift: ref.hasSponsoredGifts,
-                                  onTap: () {
-                                    // setState(() {
-                                    //   _isPopupVisible = true; // Open the popup
-                                    // });
-                                  });
-                            } else if (index >= 1 && index <= 3) {
-                              return NotStoryWidget(
-                                brandname: ref.vendorName,
-                                vImage: ref.vendorImage,
-                                addSearch: false,
-                                index: index,
-                                showgift: ref.hasSponsoredGifts,
+                                brandname: storyData.vendorName,
+                                vImage: storyData.vendorImage,
+                                index:
+                                    data.feedStory!.posts!.indexOf(storyData),
+                                addSearch:
+                                    false, // For all items other than the first, no search
+                                showgift: storyData.hasSponsoredGifts,
+                                onTap: () {
+                                  // setState(() {
+                                  //   // _isPopupVisible = true; // Open the popup
+                                  // });
+                                },
                               );
-                            }
-                            return NotStoryWidget(index: index);
-                          }),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Text(error.toString());
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-
-                asyncbajarValue.when(
-                  data: (data) {
-                    return SizedBox(
-                      height: 150.h,
-                      width: double.infinity,
-                      child: PageView.builder(
-                        reverse: true,
-                        allowImplicitScrolling: true,
-                        itemCount: data.sliders!.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            data.sliders![index].image!,
-                            height: 150.h,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                          );
-                          // Image.asset(
-                          //     height: 150.h,
-                          //     width: double.infinity,
-                          //     fit: BoxFit.fill,
-                          //     );
-                        },
+                            }).toList(),
+                          ],
+                        ),
                       ),
                     );
                   },
-                  error: (error, stackTrace) {
-                    return Text(error.toString());
-                  },
+                  error: (error, stackTrace) => Text(error.toString()),
                   loading: () => const CircularProgressIndicator(),
                 ),
+
                 SizedBox(
                   height: 10.h,
                 ),
-                SizedBox(
-                  height: 100.h,
-                  width: double.infinity,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.only(left: 7.w),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: [
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [15, 15],
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
+                asyncbajarValue.when(
+                  data: (data) {
+                    return Stack(
+                      children: [
+                        // Carousel Slider
+                        Positioned(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "ALL",
-                                style: headerstyle.copyWith(
-                                    color: ColorConstant.blackColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
+                              SizedBox(
+                                height: 130.h,
+                                width: double.infinity,
+                                child: CarouselSlider(
+                                  items: data.sliders!.map((banner) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const B2bScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: CachedNetworkImage(
+                                        width: double.infinity,
+                                        fit: BoxFit.fill,
+                                        imageUrl: banner.image!,
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  options: CarouselOptions(
+                                    aspectRatio:
+                                        2.5, // Adjust this as per design
+                                    viewportFraction:
+                                        1.0, // Full-screen carousel
+                                    autoPlay: true,
+                                    enlargeCenterPage: false,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex =
+                                            index; // Update the current index
+                                      });
+                                    },
+                                  ),
+                                ),
                               ),
-                              Text("SERVICES",
-                                  style: headerstyle.copyWith(
-                                      color: ColorConstant.blackColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold))
                             ],
                           ),
                         ),
-                      ),
-                      // DottedBorder(
-                      //     strokeWidth: 2,
 
-                      //     dashPattern: [15, 10],
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     stackFit: StackFit.loose,
-                      //     radius: const Radius.circular(70),
-                      //     padding: const EdgeInsets.all(27),
-                      //     color: Colors.black,
-                      //     child: Container(
-                      //       height: 100,
-                      //       width: 100,
-                      //       child: const Text("data"))
-                      //     ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      asyncbajarValue.when(
-                        data: (data) {
-                          if (data.cat.isEmpty) return const SizedBox();
-                          return GestureDetector(
-                            onTap: () {
-                              showMenu(
-                                context: context,
-                                position: const RelativeRect.fromLTRB(0, 0, 0,
-                                    0), // Base position; offset is handled by PopupMenuButton
-                                items: [
-                                  PopupMenuItem(
-                                    value: 1,
-                                    child: ListTile(
-                                      title: const Text("View Story"),
-                                      leading: const Icon(Icons.book),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Story" action here
-                                      },
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 2,
-                                    child: ListTile(
-                                      title: const Text("View Product"),
-                                      leading: const Icon(Icons.shopping_bag),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the popup
-                                        // Handle "View Product" action here
-                                      },
-                                    ),
-                                  ),
-                                ],
+                        // Dots Indicator
+                        Positioned(
+                          left: MediaQuery.of(context).size.width / 2 -
+                              50, // Center the dots
+                          bottom: 10.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: data.sliders!.map((banner) {
+                              int index = data.sliders!.indexOf(banner);
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                height: 9.0,
+                                width: _currentIndex == index
+                                    ? 12.0
+                                    : 9.0, // Active dot is wider
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _currentIndex == index
+                                      ? Colors.white // Active dot color
+                                      : Colors.grey, // Inactive dot color
+                                ),
                               );
-                            },
-                            child: PopupMenuButton<int>(
-                              offset: const Offset(0,
-                                  60), // The offset to position the menu above the widget
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 1,
-                                  child: Text("View Story",
-                                      style: TextStyle(fontSize: 16.0)),
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text("Try again: $error");
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+
+                category.when(
+                  data: (data) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: Column(
+                        children: [
+                          // Row for "ALL" and other services
+                          SizedBox(
+                            height: 100.h, // Adjust height as necessary
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                // "ALL" Services (Standalone)
+                                DottedBorder(
+                                  strokeWidth: 2,
+                                  color: Colors.grey,
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(10),
+                                  dashPattern: const [15, 15],
+                                  child: SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "ALL",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Jobs",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                const PopupMenuItem(
-                                  value: 2,
-                                  child: Text("View Product",
-                                      style: TextStyle(fontSize: 16.0)),
-                                ),
-                              ],
-                              onCanceled: () {
-                                print("You have canceled the menu selection.");
-                              },
-                              onSelected: (value) {
-                                switch (value) {
-                                  case 1:
-                                    // Handle "View Story"
-                                    break;
-                                  case 2:
-                                    // Handle "View Product"
-                                    break;
-                                  default:
-                                    print("Invalid choice");
-                                    break;
-                                }
-                              },
-                              child: DashedBorder(
-                                dashCount: 2,
-                                child: SizedBox(
-                                  width: 100.w,
-                                  height: 100.h,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset('assets/images/cloth.png'),
-                                      const Wrap(
-                                        children: [
-                                          Text(
-                                            "HEALTH,\nSPORTS",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 13,
+
+                                // Other Services List
+                                Expanded(
+                                  child: ListView(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    children: data.map((e) {
+                                      return Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showMenu(
+                                              context: context,
+                                              position:
+                                                  const RelativeRect.fromLTRB(0,
+                                                      0, 0, 0), // Base position
+                                              items: [
+                                                PopupMenuItem(
+                                                  value: 1,
+                                                  child: ListTile(
+                                                    title: const Text(
+                                                        "View Story"),
+                                                    leading:
+                                                        const Icon(Icons.book),
+                                                    onTap: () {
+                                                      // Implement onTap logic
+                                                    },
+                                                  ),
+                                                ),
+                                                // Check if parentClosure is not null and show it
+                                                if (e.parentClosure != null)
+                                                  PopupMenuItem(
+                                                    value: 2,
+                                                    child: ListTile(
+                                                      title: Text(e
+                                                              .parentClosure
+                                                              ?.slug ??
+                                                          'N/A'),
+                                                      leading: const Icon(
+                                                          Icons.info),
+                                                    ),
+                                                  ),
+                                              ],
+                                            );
+                                          },
+                                          child: PopupMenuButton<int>(
+                                            offset: const Offset(
+                                                0, 60), // Position for the menu
+                                            itemBuilder: (context) => [
+                                              const PopupMenuItem(
+                                                value: 1,
+                                                child: Text("View Story",
+                                                    style: TextStyle(
+                                                        fontSize: 16.0)),
+                                              ),
+                                              if (e.parentClosure != null)
+                                                PopupMenuItem(
+                                                  value: 2,
+                                                  child: Text(
+                                                    e.parentClosure?.slug ??
+                                                        'No Parent',
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                            ],
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.w),
+                                              child: DashedBorder(
+                                                dashCount:
+                                                    1, // Number of dashes in the border
+                                                child: SizedBox(
+                                                  width: 200
+                                                      .w, // Fixed width for the container
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Image.asset(
+                                                          'assets/images/cloth.png'),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          return Text("error $error");
-                        },
-                        loading: () {
-                          return const CircularProgressIndicator();
-                        },
-                      ),
-
-                      // DottedBorder(
-                      //   strokeWidth: 2,
-                      //   color: Colors.grey,
-                      //   borderType: BorderType.RRect,
-                      //   radius: const Radius.circular(10),
-                      //   dashPattern: const [10, 10],
-                      //   child: SizedBox(
-                      //       width: 100.w,
-                      //       height: 100.h,
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           Image.asset('assets/images/cloth.png'),
-                      //           Wrap(
-                      //             children: [
-                      //               Text(
-                      //                 "HEALTH,\nSPORTS",
-                      //                 style: headerstyle.copyWith(
-                      //                     color: Colors.black,
-                      //                     fontWeight: FontWeight.w500,
-                      //                     fontSize: 13),
-                      //               )
-                      //             ],
-                      //           ),
-                      //         ],
-                      //       )),
-                      // ),
-
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [10, 10],
-                        child: SizedBox(
-                            width: 100.w,
-                            height: 100.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/cloth.png',
-                                ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      "SPORTS,\nAND",
-                                      style: headerstyle.copyWith(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13),
-                                    )
-                                  ],
-                                ),
                               ],
-                            )),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-
-                      // DottedBorder(
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     radius: const Radius.circular(10),
-                      //     padding: const EdgeInsets.all(20),
-                      //     strokeWidth: 1,
-                      //     color: Colors.black,
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //           'assets/images/cloth.png',
-                      //         ),
-                      //         Wrap(
-                      //           children: [
-                      //             Text(
-                      //               "SPORTS,\nAND",
-                      //               style: headerstyle.copyWith(
-                      //                   color: Colors.black,
-                      //                   fontWeight: FontWeight.w500,
-                      //                   fontSize: 13),
-                      //             )
-                      //           ],
-                      //         ),
-                      //       ],
-                      //     )),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.flight,
-                            color: Color(0xff6E6E6E),
+                            ),
                           ),
-                          Text(
-                            "TRAVELS,\nTOURS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
                         ],
                       ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.tv,
-                            color: Color(0xff6E6E6E),
-                          ),
-                          Text(
-                            "ELECTRONICS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          ),
-                          Text(
-                            "&",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      )
-                    ],
-                  ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
@@ -1004,6 +925,57 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       )
                     ],
                   ),
+                ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    if (data.hotProducts.isNotEmpty) {
+                      return SizedBox(
+                        height: 340.h,
+                        width: double.infinity,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(3),
+                          clipBehavior: Clip.antiAlias,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.hotProducts.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            VProduct hot = data.hotProducts[index];
+                            return InkWell(
+                              onTap: () {
+                                print("biabsh ${hot.id}");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailScreen(
+                                          productId: hot.id),
+                                    ));
+                              },
+                              child: ProductDetailWidget(
+                                wow: hot.wow,
+                                comment: hot.commentcount.toString(),
+                                discounttedPrice: hot.discounted_price,
+                                issponsored: hot.user.sponsored,
+                                lefttile: "B2b-Shop",
+                                productImage: hot.image,
+                                Vimage: hot.user.photo,
+                                price: hot.price,
+                                title: hot.title,
+                                vendorname: hot.user.name,
+                                similarproductCount: hot.similarProductCount,
+                                membershipColor: hot.user.membercolor,
+                                membershipTitle: hot.user.membershipTitle,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return Center(child: nolistingfound());
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 // Expanded(
@@ -1358,23 +1330,23 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     double dynamicHeight;
 
                     if (tabController.index == 0) {
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].isEmpty
-                          ? 100
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[0].isEmpty
+                              ? 200
+                              : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].isEmpty
-                          ? 200
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[1].isEmpty
+                              ? 200
+                              : 500;
                     } else if (tabController.index == 2)
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].isEmpty
-                          ? 200
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[2].isEmpty
+                              ? 200
+                              : 500;
                     else
-                      dynamicHeight = 300;
+                      dynamicHeight = 500;
 
                     return SizedBox(
                       // Use Expanded for better layout management
@@ -1399,6 +1371,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
+                                  SizedBox(height: 10.h,),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1446,7 +1419,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           },
                                         ),
                                       )
-                                    : const SizedBox(),
+                                    : Center(
+                                        child: nolistingfound(),
+                                      )
                               ],
                             ),
                             Column(
@@ -1465,8 +1440,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                SizedBox(height: 10.h,),
                                 data.insidearr.isEmpty
-                                    ? const SizedBox()
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1531,8 +1509,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                SizedBox(height: 10.h,),
                                 data.insidearr.isEmpty
-                                    ? const SizedBox()
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1677,10 +1658,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                            worth: resp.worth!,
-                                                        productname: resp.name?? '',
-                              vendorImage: resp.vendorImage?? '',
-                              vendorname: resp.name?? '',
+                              gift_qty: resp.gift_qty!,
+                              worth: resp.worth!,
+                              productname: resp.name,
+                              vendorImage: resp.vendorImage!,
+                              vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image?? '');
                         },
@@ -1749,7 +1731,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedIndex, child) {
                           // Map category labels to their respective product lists
-                          List<String> categories = _services
+                          List<String> categories = services
                               .map((e) => e['label'] as String)
                               .toList();
 
@@ -1772,7 +1754,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       child: Container(
                                         alignment: Alignment.center,
                                         margin: const EdgeInsets.all(5),
-                                        width: 100.w,
+                                        width: 150.w,
                                         decoration: BoxDecoration(
                                           color: isSelected
                                               ? const Color(0xFF681b4e)

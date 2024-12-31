@@ -414,7 +414,7 @@
 //                                   context,
 //                                   MaterialPageRoute(
 //                                     builder: (context) =>
-//                                         const SubscribeAndWinEveryDay(),
+//                                         const MySubscribeAndWinPage(),
 //                                   ));
 //                             },
 //                             child: const Text(

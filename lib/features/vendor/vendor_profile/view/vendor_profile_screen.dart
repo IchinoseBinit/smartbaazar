@@ -118,19 +118,26 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": '',
       "screen": const DisputesScreen(),
     },
-     {
+    {
       "icon": Icons.emergency,
       "title": 'Hot',
-      "subtitle": 'Deals',
-      "screen":  HotViewScreen(header: 'hotdeals',),
+      "subtitle": 'Products',
+      "screen": HotViewScreen(
+        header: 'hotdeals',
+      ),
     },
-       {
+    {
       "icon": Icons.card_membership,
       "title": 'Mermbership',
       "subtitle": '',
       "screen": const LeftArrowScreen(),
     },
-    
+     {
+      "icon": Icons.settings_applications_rounded,
+      "title": 'Sponsored',
+      "subtitle": '',
+      "screen":  HotViewScreen(header: 'sponsored',),
+    },
   ];
   final List<Map<String, dynamic>> sellerCenterListing = [
     {
@@ -205,13 +212,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": 'Bazar',
       "screen": const BottomNavigationScreen(),
     },
-      {
+    {
       "icon": Icons.feed,
       "title": 'Create',
       "subtitle": 'Feed',
-      "screen":  FeedFormScreen(),
+      "screen":  const FeedFormScreen(),
     },
-
   ];
 
   final List<Map<String, dynamic>> accointProfileList = [
@@ -281,12 +287,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
               const Spacer(),
               InkWell(
                 onTap: () {
-                     Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AddToCartScreen(),
-              ),
-            );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const AddToCartScreen(),
+                    ),
+                  );
                 },
                 child: Container(
                   height: 32.h,

@@ -6,7 +6,7 @@ part 'brand_bazar_model.g.dart';
 @freezed
 class BrandBazarModel with _$BrandBazarModel {
   const factory BrandBazarModel({
-    required Data data,
+     Data? data,
     required String msg,
   }) = _BrandBazarModel;
 

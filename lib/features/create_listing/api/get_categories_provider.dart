@@ -1,6 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
@@ -17,10 +15,10 @@ Future<FieldsResponse> getCategoryResponse(
       url:
           'https://smartbazaar.jianjun-rnd.com.np/api/categories/$id/fields', // Ensure this is the correct URL
     );
-
+    print("lodu ${response.data}");
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse =
-          response.data; // Parse the response data
+          response.data; // Parse the response data>
       return FieldsResponse.fromJson(jsonResponse); // Convert to your model
     } else {
       throw Exception(
@@ -32,4 +30,3 @@ Future<FieldsResponse> getCategoryResponse(
     throw Exception('Failed to load brandbazar section: $e');
   }
 }
-

@@ -13,7 +13,7 @@ Future<GetFeedStoriesModel> getForYouStory(GetForYouStoryRef ref) async {
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: ApiConstants.getForYouFeedStory,
+      url: ApiConstants.getForYoufeedstory,
     );
     if (response.statusCode == 200) {
       // final Map<String, dynamic> jsonResponse = response.data;

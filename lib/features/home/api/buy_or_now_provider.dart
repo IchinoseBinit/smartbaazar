@@ -124,7 +124,8 @@ class Buynowmodel {
   final String? image;
   final String? vendorImage;
   final String? worth;
-    final String? name;
+  final String name;
+  final String? gift_qty;
 
   final int winners;
 
@@ -134,10 +135,12 @@ class Buynowmodel {
     required this.vendorImage,
     required this.name,
     required this.winners,
+    required this.gift_qty,
   });
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      gift_qty: json['gift_qty'] as String,
       worth: json['worth'] as String,
       image: json['image'] as String,
       vendorImage: json['vendor_image'] as String,
@@ -224,8 +227,8 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
       requestType: RequestType.get,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections',
     );
-
     final data = response.data;
+    print("baby ${response.data['buy_or_win']}");
 
     final newProducts = (data['new_products'] as List<dynamic>?)
             ?.map((productJson) => Home1GlobalModel.fromJson(productJson))
@@ -246,20 +249,19 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               return LogoData.fromJson(winJson);
             }).toList() ??
             [];
-                          print("Mapping JSON: ${global.length}"); // Debug each item
-
+    print("Mapping JSON: ${global.length}"); // Debug each item
 
     final locald = (data['domestic_brandbazarLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-                                          print("Mapping doma: ${locald.length}"); // Debug each item
+    print("Mapping doma: ${locald.length}"); // Debug each item
 
     final spotd = (data['spotlightLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-                                  print("Mapping spot: ${spotd.length}"); // Debug each item
+    print("Mapping spot: ${spotd.length}"); // Debug each item
 
     final rawBrandbazarGlobal =
         data['brandbazar_global'] as List<dynamic>? ?? [];
@@ -291,6 +293,12 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
+
+    // final Map<String, VendorModel> homestory = (data['home_story']
+    //             as Map<String, dynamic>?)
+    //         ?.map((key, value) => MapEntry(
+    //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
+    //     {};
                                       print("Mapping spot: ${spotd.length}"); // Debug each item
 
     // final Map<String, VendorModel> homestory = (data['home_story']

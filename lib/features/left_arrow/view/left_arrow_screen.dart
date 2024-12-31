@@ -23,7 +23,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool _showSearchProductModels = false;
   final _debouncer = BehaviorSubject<String>();
-  late List<Container> _items;
+  late List<Container> items;
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
@@ -37,7 +37,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   @override
   void initState() {
     super.initState();
-    _items = [
+    items = [
       left_arrow(const Color(0xff362664)),
       left_arrow(const Color(0xff901B41)),
       left_arrow(const Color(0xff362664)),
@@ -267,7 +267,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: _items.asMap().entries.map((entry) {
+                      children: items.asMap().entries.map((entry) {
                         return Container(
                           width: 12.0,
                           height: 12.0,
@@ -302,7 +302,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                           // Wrap the Container with Expanded
                           child: CarouselSlider(
                             carouselController: _carouselController,
-                            items: _items.map(
+                            items: items.map(
                               (item) {
                                 return item;
                               },
@@ -323,7 +323,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         ),
                         IconButton(
                             onPressed: () {
-                              if (_currentIndex < _items.length - 1) {
+                              if (_currentIndex < items.length - 1) {
                                 _carouselController.animateToPage(
                                   _currentIndex + 1, // Move to next slide
                                   duration: const Duration(milliseconds: 300),

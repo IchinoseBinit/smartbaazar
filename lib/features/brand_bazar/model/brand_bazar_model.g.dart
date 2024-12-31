@@ -9,7 +9,9 @@ part of 'brand_bazar_model.dart';
 _$BrandBazarModelImpl _$$BrandBazarModelImplFromJson(
         Map<String, dynamic> json) =>
     _$BrandBazarModelImpl(
-      data: Data.fromJson(json['data'] as Map<String, dynamic>),
+      data: json['data'] == null
+          ? null
+          : Data.fromJson(json['data'] as Map<String, dynamic>),
       msg: json['msg'] as String,
     );
 

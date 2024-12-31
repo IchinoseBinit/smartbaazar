@@ -601,9 +601,9 @@ class _PreferredTimeZoneDropdownState extends State<PreferredTimeZoneDropdown> {
                   color: const Color(
                     0xFFAEC5FF,
                   )),
-              child: Icon(
+              child: const Icon(
                 Icons.hourglass_bottom,
-                color: const Color(0xff362677),
+                color: Color(0xff362677),
               ),
             ),
           ),
