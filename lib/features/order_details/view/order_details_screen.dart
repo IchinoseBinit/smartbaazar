@@ -191,10 +191,10 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       const Text('Checkout'),
                       const Spacer(),
                       GestureDetector(
-                        onTap: () {
-                          
-                        },
-                        child: const Text('Go back'))
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Go back'))
                     ],
                   ),
                   SizedBox(

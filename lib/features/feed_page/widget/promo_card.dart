@@ -35,20 +35,14 @@ class _PromoCardState extends State<PromoCard> {
       child: Center(
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            // borderRadius: BorderRadius.circular(),
             color: const Color.fromARGB(255, 243, 244, 242),
-            // boxShadow: [#8183804A
-            //   BoxShadow(
-            //     color: Colors.grey.shade300,
-            //     blurRadius: 5,
-            //     offset: const Offset(0, 5),
-            //   ),
-            // ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
+              // Reduce SizedBox height
+              const SizedBox(height: 5),
 
               // Product Images and Prices
               SingleChildScrollView(
@@ -59,7 +53,6 @@ class _PromoCardState extends State<PromoCard> {
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
                         color: Colors.red.shade100,
-                        // borderRadius: BorderRadius.circular(8),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -67,13 +60,14 @@ class _PromoCardState extends State<PromoCard> {
                           RotatedBox(
                             quarterTurns: 3,
                             child: Padding(
-                              padding: const EdgeInsets.all(4.0),
+                              padding:
+                                  const EdgeInsets.all(2.0), // Reduce padding
                               child: Text(
                                 widget.offerText,
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 8.sp,
+                                  fontSize: 7.sp, // Reduce font size
                                 ),
                               ),
                             ),
@@ -81,6 +75,8 @@ class _PromoCardState extends State<PromoCard> {
                         ],
                       ),
                     ),
+
+                    // Product List
                     if (widget.products.isNotEmpty)
                       _productFirstItem(
                         imagePath: widget.products[0]["imagePath"]!,
@@ -96,21 +92,9 @@ class _PromoCardState extends State<PromoCard> {
                         postType: product["id"]!,
                       );
                     }).toList(),
-                    // ...widget.products.asMap().entries.map((entry) {
-                    //   int index = entry.key;
-                    //   Map<String, String> product = entry.value;
-
-                    //   return _productItem(
-                    //     imagePath: product["imagePath"]!,
-                    //     price: product["price"]!,
-                    //     showHotIcon: index == 0,
-                    //   );
-                    // }).toList(),
                   ],
                 ),
               ),
-
-              // const SizedBox(height: 15),
 
               // Description Section
               Container(
@@ -121,48 +105,35 @@ class _PromoCardState extends State<PromoCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(4.0), // Reduce padding
                         child: Row(
                           children: [
                             Container(
                               color: const Color(0xFF4B004B),
                               child: Image.asset(
                                 "assets/images/announcement.png",
-                                width: 25.w,
-                                height: 20.h,
+                                width: 20.w, // Reduce image size
+                                height: 15.h, // Reduce image size
                               ),
                             ),
-                            SizedBox(width: 10.w),
+                            SizedBox(width: 5.w), // Reduce spacing
                             Text(
                               widget.captionTitle ?? "Special Offer!",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 11.sp,
-                              ),
-                            ),
-                            SizedBox(width: 5.w),
-                            const CircleAvatar(
-                              radius: 2,
-                              backgroundColor: Colors.grey,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              "20h",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
+                                fontSize: 10.sp, // Reduce font size
                               ),
                             ),
                             const Spacer(),
                             Image.asset(
                               "assets/images/pin_icon.png",
-                              width: 25,
-                              height: 25,
+                              width: 20, // Reduce size
+                              height: 20, // Reduce size
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5), // Reduce spacing
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -170,17 +141,13 @@ class _PromoCardState extends State<PromoCard> {
                             child: ReadMoreText(
                               widget.caption,
                               style: TextStyle(
-                                  fontSize: 12.sp, color: Colors.black87),
+                                  fontSize: 11.sp, // Reduce font size
+                                  color: Colors.black87),
                               trimLines: 2,
                               colorClickableText: Colors.blue,
-                              trimMode: TrimMode.Line, // Trims by lines
+                              trimMode: TrimMode.Line,
                               trimCollapsedText: ' More',
                               trimExpandedText: ' Less',
-
-                              // maxLines: isExpanded ? null : 2,
-                              // overflow: isExpanded
-                              //     ? TextOverflow.visible
-                              //     : TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -209,8 +176,8 @@ class _PromoCardState extends State<PromoCard> {
         children: [
           // Product Image
           Container(
-            width: 155.w,
-            height: 120.h,
+            width: 135.w,
+            height: 75.h,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
@@ -226,12 +193,12 @@ class _PromoCardState extends State<PromoCard> {
 
           // Product Price with Optional Icon
           Container(
-            width: 155.w,
+            width: 135.w,
             decoration: const BoxDecoration(
               color: Color(0xFF70646B),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(6.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -280,8 +247,8 @@ class _PromoCardState extends State<PromoCard> {
         children: [
           // Product Image
           Container(
-            width: 155.w,
-            height: 120.h,
+            width: 135.w,
+            height: 90.h,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
@@ -297,7 +264,7 @@ class _PromoCardState extends State<PromoCard> {
 
           // Product Price with Optional Icon
           Container(
-            width: 155.w,
+            width: 135.w,
             decoration: const BoxDecoration(
               color: Colors.black87,
             ),

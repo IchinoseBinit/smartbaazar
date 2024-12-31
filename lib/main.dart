@@ -43,21 +43,24 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            // textTheme: GoogleFonts.quicksandTextTheme(
-            //   Theme.of(context).textTheme,
-            // ),
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          // textTheme: GoogleFonts.quicksandTextTheme(
+          //   Theme.of(context).textTheme,
+          // ),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.transparent,
           ),
-          home: HomeScreen(),
+          fontFamily: GoogleFonts.quicksand().fontFamily,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
-        );
+        home: SplashScreen(),
+      ),
+    );
   }
 }
 

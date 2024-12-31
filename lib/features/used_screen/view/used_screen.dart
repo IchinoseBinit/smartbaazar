@@ -4,6 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -228,6 +230,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     final randomstory = ref.watch(fetchStoryHomeProvider);
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('2'));
 
     final asyncbajarValue = ref.watch(getUsedResponseProvider);
     final SearchProductModels =
@@ -603,55 +606,88 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     ),
                   ),
                 ),
-                randomstory.when(
-                  data: (data) {
+                // randomstory.when(
+                //   data: (data) {
+                //     return SizedBox(
+                //       height: 130.h,
+                //       child: SingleChildScrollView(
+                //         // Wrapping the Row with SingleChildScrollView
+                //         scrollDirection:
+                //             Axis.horizontal, // Ensuring it scrolls horizontally
+                //         child: Row(
+                //           children: [
+                //             // First StoryAddWidget with search option
+                //             StoryAddWidget(
+                //               vImage: data.feedStory?.posts?.first.image,
+                //               brandname:
+                //                   data.feedStory?.posts?.first.vendorName,
+                //               index: 0,
+                //               addSearch: true, // First item has search
+                //               showgift: false,
+                //               onTap: () {
+                //                 setState(() {
+                //                   // _isPopupVisible = true; // Open the popup
+                //                 });
+                //               },
+                //             ),
+                //             // Expanded is not needed since SingleChildScrollView will handle scrolling
+                //             // Now ListView.builder will be added directly to the row
+                //             ...data.feedStory!.posts!.map((storyData) {
+                //               return StoryAddWidget(
+                //                 brandname: storyData.vendorName,
+                //                 vImage: storyData.vendorImage,
+                //                 index:
+                //                     data.feedStory!.posts!.indexOf(storyData),
+                //                 addSearch:
+                //                     false, // For all items other than the first, no search
+                //                 showgift: storyData.hasSponsoredGifts,
+                //                 onTap: () {
+                //                   // setState(() {
+                //                   //   // _isPopupVisible = true; // Open the popup
+                //                   // });
+                //                 },
+                //               );
+                //             }).toList(),
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                //   error: (error, stackTrace) => Text(error.toString()),
+                //   loading: () => const CircularProgressIndicator(),
+                // ),
+                asyncPostTypeContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.homeStory?.story;
                     return SizedBox(
-                      height: 130.h,
-                      child: SingleChildScrollView(
-                        // Wrapping the Row with SingleChildScrollView
-                        scrollDirection:
-                            Axis.horizontal, // Ensuring it scrolls horizontally
-                        child: Row(
-                          children: [
-                            // First StoryAddWidget with search option
-                            StoryAddWidget(
-                              vImage: data.feedStory?.posts?.first.image,
-                              brandname:
-                                  data.feedStory?.posts?.first.vendorName,
-                              index: 0,
-                              addSearch: true, // First item has search
-                              showgift: false,
-                              onTap: () {
-                                setState(() {
-                                  // _isPopupVisible = true; // Open the popup
-                                });
-                              },
-                            ),
-                            // Expanded is not needed since SingleChildScrollView will handle scrolling
-                            // Now ListView.builder will be added directly to the row
-                            ...data.feedStory!.posts!.map((storyData) {
-                              return StoryAddWidget(
-                                brandname: storyData.vendorName,
-                                vImage: storyData.vendorImage,
-                                index:
-                                    data.feedStory!.posts!.indexOf(storyData),
-                                addSearch:
-                                    false, // For all items other than the first, no search
-                                showgift: storyData.hasSponsoredGifts,
-                                onTap: () {
-                                  // setState(() {
-                                  //   // _isPopupVisible = true; // Open the popup
-                                  // });
-                                },
-                              );
-                            }).toList(),
-                          ],
-                        ),
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            feedStoryData.homeStory!.story!.posts!.length,
+                        itemBuilder: (context, index) {
+                          final story =
+                              feedStoryData.homeStory!.story!.posts![index];
+                          return HomePageStoryContainer(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                            // feedData.data!.feedPost![index].userId ??
+                          );
+                        },
                       ),
                     );
                   },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
                 SizedBox(

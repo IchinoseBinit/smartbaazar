@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +14,20 @@ import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/api/grocery_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -228,6 +227,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(171));
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('8'));
 
     // asyncbajarValue.when(data: (data) {
 
@@ -612,55 +612,38 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 SizedBox(
                   height: 10.h,
                 ),
-                randomstory.when(
-                  data: (data) {
+                asyncPostTypeContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.homeStory?.story;
                     return SizedBox(
-                      height: 130.h,
-                      child: SingleChildScrollView(
-                        // Wrapping the Row with SingleChildScrollView
-                        scrollDirection:
-                            Axis.horizontal, // Ensuring it scrolls horizontally
-                        child: Row(
-                          children: [
-                            // First StoryAddWidget with search option
-                            StoryAddWidget(
-                              vImage: data.feedStory?.posts?.first.image,
-                              brandname:
-                                  data.feedStory?.posts?.first.vendorName,
-                              index: 0,
-                              addSearch: true, // First item has search
-                              showgift: false,
-                              onTap: () {
-                                setState(() {
-                                  // _isPopupVisible = true; // Open the popup
-                                });
-                              },
-                            ),
-                            // Expanded is not needed since SingleChildScrollView will handle scrolling
-                            // Now ListView.builder will be added directly to the row
-                            ...data.feedStory!.posts!.map((storyData) {
-                              return StoryAddWidget(
-                                brandname: storyData.vendorName,
-                                vImage: storyData.vendorImage,
-                                index:
-                                    data.feedStory!.posts!.indexOf(storyData),
-                                addSearch:
-                                    false, // For all items other than the first, no search
-                                showgift: storyData.hasSponsoredGifts,
-                                onTap: () {
-                                  // setState(() {
-                                  //   // _isPopupVisible = true; // Open the popup
-                                  // });
-                                },
-                              );
-                            }).toList(),
-                          ],
-                        ),
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            feedStoryData.homeStory!.story!.posts!.length,
+                        itemBuilder: (context, index) {
+                          final story =
+                              feedStoryData.homeStory!.story!.posts![index];
+                          return HomePageStoryContainer(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                            // feedData.data!.feedPost![index].userId ??
+                          );
+                        },
                       ),
                     );
                   },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
                 SizedBox(
