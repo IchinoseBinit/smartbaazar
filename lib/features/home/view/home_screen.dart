@@ -1069,11 +1069,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             }).toList(),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
+<<<<<<< HEAD
                                                   padding: EdgeInsets.only(
                                                       top: 28.h),
                                                   child: Center(
                                                       child: nolistingfound()),
                                                 )
+=======
+                                                padding: EdgeInsets.only(top: 28.h),
+                                                child: Center(child: nolistingfound()),
+                                              )
+>>>>>>> c4d94c763d4e4a2093d8fcc66bf2d1e693f1b9aa
                                               : SizedBox(
                                                   height: 340.h,
                                                   child: ListView.builder(

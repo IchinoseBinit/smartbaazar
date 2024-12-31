@@ -165,8 +165,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
       });
     });
   }
-      int? selectedTab = 0;
 
+  int? selectedTab = 0;
 
   void _handleScroll() {
     final scrollOffset = _scrollController.offset;
@@ -642,8 +642,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               return StoryAddWidget(
                                 brandname: storyData.vendorName,
                                 vImage: storyData.vendorImage,
-                                index: data.feedStory!.posts!
-                                    .indexOf(storyData),
+                                index:
+                                    data.feedStory!.posts!.indexOf(storyData),
                                 addSearch:
                                     false, // For all items other than the first, no search
                                 showgift: storyData.hasSponsoredGifts,
@@ -921,7 +921,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               ],
                             ),
                           ),
-                       
                         ],
                       ),
                     );
@@ -1349,7 +1348,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   }).toList(),
                                 data.insidearr.first.isNotEmpty ||
                                         data.insidearr.isNotEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1415,7 +1416,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 ),
                                 data.insidearr.isEmpty ||
                                         data.insidearr[0].isEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1481,7 +1484,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 ),
                                 data.insidearr.isEmpty ||
                                         data.insidearr[0].isEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: data.insidearr.first.isEmpty
@@ -1634,7 +1639,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               vendorImage: resp.vendorImage?? '',
                               vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image?? '');
+                              proctimage: resp.image ?? '');
                         },
                       ),
                     );
@@ -1646,12 +1651,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-               
-                
+
                 SizedBox(
                   height: 10.h,
                 ),
-                  asyncbajarValue.when(
+                asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
                       height: 70.h,
@@ -1770,7 +1774,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
-                                    ?Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1826,7 +1832,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     },
                   ),
                 ),
-              
 
                 Padding(
                   padding: const EdgeInsets.all(10),

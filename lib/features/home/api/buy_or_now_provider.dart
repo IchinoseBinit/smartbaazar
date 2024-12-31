@@ -299,6 +299,13 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
     //         ?.map((key, value) => MapEntry(
     //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
     //     {};
+                                      print("Mapping spot: ${spotd.length}"); // Debug each item
+
+    // final Map<String, VendorModel> homestory = (data['home_story']
+    //             as Map<String, dynamic>?)
+    //         ?.map((key, value) => MapEntry(
+    //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
+    //     {};
 
     return HotWithBuy(
         homestory: {},

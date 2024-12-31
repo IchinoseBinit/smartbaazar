@@ -53,7 +53,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
   int? selectedIndex = 3;
-    int? selectedTab = 0;
+  int? selectedTab = 0;
 
   int _currentIndex = 0;
 
@@ -68,7 +68,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   // bool _showSearchProductModels = false;
   late TabController tabController;
   bool _showSearchProductModels = false;
-
 
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -911,7 +910,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               ],
                             ),
                           ),
-                       
                         ],
                       ),
                     );
@@ -1444,7 +1442,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           },
                                         ),
                                       )
-                                    : Center(child: nolistingfound(),),
+                                    : Center(
+                                        child: nolistingfound(),
+                                      ),
                               ],
                             ),
                             Column(
@@ -1535,7 +1535,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1637,10 +1639,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+<<<<<<< HEAD
                              gift_qty: resp.gift_qty!,
+=======
+                              gift_qty: resp.gift_qty!,
+>>>>>>> c4d94c763d4e4a2093d8fcc66bf2d1e693f1b9aa
                               worth: resp.worth!,
                               productname: resp.name,
-                              vendorImage: resp.vendorImage,
+                              vendorImage: resp.vendorImage!,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image ?? '');
@@ -1706,8 +1712,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                     return SizedBox(
                       width: double.infinity,
-                      height:
-                          productsList[selectedTab!].isEmpty ? 200 : 420.h,
+                      height: productsList[selectedTab!].isEmpty ? 200 : 420.h,
                       child: ValueListenableBuilder<int>(
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedTab, child) {

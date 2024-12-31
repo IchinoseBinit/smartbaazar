@@ -1661,7 +1661,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
-                              vendorImage: resp.vendorImage,
+                              vendorImage: resp.vendorImage!,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image?? '');
