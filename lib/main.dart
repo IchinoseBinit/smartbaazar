@@ -10,13 +10,16 @@ import 'package:smartbazar/features/create_listing/api/create_new_listing_provid
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/product_screen/view/product_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -40,9 +43,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             // textTheme: GoogleFonts.quicksandTextTheme(
@@ -52,95 +55,34 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SplashScreen()
-          // redirect to splashscreen
-          // HomeScreen()
-
-          // home: BusinessTabScreen(
-          //   query: 'acer',
-          // apple ois a bababaa
-          // )
-          // home:  VendorHomeScreen(vendorName: 'clubhousesiphal',vid: 165,),
-          ),
-    );
+          home: SplashScreen(),
+        ),
+        );
   }
 }
 
-
-// class YourWidget extends StatefulWidget {
+// class FeedStoryWidget extends ConsumerWidget {
 //   @override
-//   _YourWidgetState createState() => _YourWidgetState();
-// }
-
-// class _YourWidgetState extends State<YourWidget>
-//     with SingleTickerProviderStateMixin {
-//   late TabController dynamictabController;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     dynamictabController = TabController(length: 3, vsync: this);
-
-//     // Add a listener to rebuild the widget on tab change
-//     dynamictabController.addListener(() {
-//       setState(() {});
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     dynamictabController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // Calculate dynamic height based on the current tab
-//     double dynamicHeight;
-//     if (dynamictabController.index == 1) {
-//       dynamicHeight = 400; // Height for second tab
-//     } else if (dynamictabController.index == 2) {
-//       dynamicHeight = 500; // Height for third tab
-//     } else {
-//       dynamicHeight = 100; // Default height for first tab
-//     }
-
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final randomstory = ref.watch(fetchStoryHomeProvider);
 //     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Dynamic Height Test'),
-//         bottom: TabBar(
-//           controller: dynamictabController,
-//           tabs: const [
-//             Tab(text: "First Tab"),
-//             Tab(text: "Second Tab"),
-//             Tab(text: "Third Tab"),
-//           ],
-//         ),
-//       ),
 //       body: Column(
 //         children: [
-//           AnimatedContainer(
-//             duration: const Duration(milliseconds: 300),
-//             height: dynamicHeight, // Use dynamic height
-//             width: double.infinity,
-//             color: Colors.blueGrey[100], // Visual aid to see height
-//             child: TabBarView(
-//               controller: dynamictabController,
-//               children: [
-//                 Center(child: Text("Content for First Tab")),
-//                 Center(child: Text("Content for Second Tab")),
-//                 Center(child: Text("Content for Third Tab")),
-//               ],
-//             ),
-//           ),
-//           Expanded(
-//             child: Center(
-//               child: Text(
-//                 "This space is outside the AnimatedContainer.",
-//                 textAlign: TextAlign.center,
-//               ),
-//             ),
-//           ),
+//           randomstory.when(
+//             data: (data) {
+//               return Container(
+//                 width: 100,
+//                 height: 100,
+//                 color: Colors.amber,
+//               );
+//             },
+//             error: (error, stackTrace) {
+//               return Text(error.toString());
+//             },
+//             loading: () {
+//               return Text("loading");
+//             },
+//           )
 //         ],
 //       ),
 //     );

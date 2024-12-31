@@ -532,8 +532,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                                       icon: Icons.location_on,
                                       iconColor: Colors.red,
                                       textInputType: TextInputAction.next,
-                                      hintText: branchLocationsText != null &&
-                                              branchLocationsText.isNotEmpty
+                                      hintText: branchLocationsText.isNotEmpty
                                           ? branchLocationsText[index]
                                           : 'Your Location',
                                       hintTextColor: Colors.black,

@@ -223,6 +223,8 @@ class PostType with _$PostType {
 @freezed
 class VendorUserDetail with _$VendorUserDetail {
   const factory VendorUserDetail({
+       @JsonKey(name: 'shortestDistance') double? shortestDistance,
+          @JsonKey(name: 'nearestBranch') String? nearestBranch,
     // String? id,
     // String? name,
     // String? photo,

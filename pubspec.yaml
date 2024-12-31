@@ -63,15 +63,17 @@ dependencies:
   http: ^1.2.2
   open_file: ^3.5.9
   csv: ^6.0.0
-  qr_code_scanner: ^1.0.1
   collapsible_sidebar: ^2.0.7
   textfield_tags: ^3.0.1
   swipe_cards: ^2.0.0+1
   flutter_card_swiper: ^7.0.2
   geolocator: ^13.0.2
   geocoding: ^3.0.0
+  adoptive_calendar: ^0.2.0
+  confetti: ^0.8.0
   readmore: ^3.0.0
   collection: ^1.18.0
+  
 
 
 dev_dependencies:
@@ -90,6 +92,8 @@ dev_dependencies:
   riverpod_lint: ^2.3.10
   freezed: ^2.5.2
   json_serializable: ^6.8.0
+  
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

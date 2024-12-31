@@ -469,7 +469,7 @@
 //                                         context,
 //                                         MaterialPageRoute(
 //                                           builder: (context) =>
-//                                               const SubscribeAndWinEveryDay(),
+//                                               const MySubscribeAndWinPage(),
 //                                         ));
 //                                   },
 //                                   child: Image.network(scratch))

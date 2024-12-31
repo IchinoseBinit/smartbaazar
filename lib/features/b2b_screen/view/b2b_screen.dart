@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
+import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
@@ -15,6 +19,7 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
+import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -31,6 +36,7 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class B2bScreen extends ConsumerStatefulWidget {
   const B2bScreen({super.key});
@@ -53,46 +59,33 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
   late TabController dynamictabController;
-  bool _showSearchProductModels = false;
-  int headerIndex = 0;
-  PageController _pageController = PageController(viewportFraction: 0.3);
-  Timer? _timer;
-  final PageController _adscontroller = PageController(
-    initialPage: 0,
-  );
+   final List<Map<String, dynamic>> _items = [
 
-  // void _onPageChanged(int index) {
-  //   setState(() {
-  //     selectedIndex = index;
-  //   });
-  // }
-
-  int? dynamicsize;
-  final List<Map<String, dynamic>> __items = [
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+     {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
       'screen': const HomeScreen()
     },
     {
-      'icon': 'assets/icon/b2bIcon.svg',
-      'label': 'TradeHub',
-      'screen': const B2bScreen()
-    },
-    {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
-    {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
       'screen': const UsedScreen()
     },
+   
     {
-      'icon': 'assets/icon/openCartIcon.svg',
-      'label': 'SocioShop',
-      'screen': const SocioShopScreen()
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
     },
     {
       'icon': 'assets/icon/box.svg',
@@ -115,6 +108,22 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
       'screen': const EventsScreen()
     },
   ];
+  bool _showSearchProductModels = false;
+  int headerIndex = 0;
+  PageController _pageController = PageController(viewportFraction: 0.3);
+  Timer? _timer;
+  final PageController _adscontroller = PageController(
+    initialPage: 0,
+  );
+  int _currentIndex = 0;
+  // void _onPageChanged(int index) {
+  //   setState(() {
+  //     selectedIndex = index;
+  //   });
+  // }
+
+  int? dynamicsize;
+
   int _currentPage = 0;
 
   @override
@@ -215,10 +224,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-
+    final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
+    final category = ref.watch(getCategoriesProvider(217));
+
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
     // }, error: (error, stackTrace) {
@@ -366,14 +377,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               );
                             }, loading: () {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -384,126 +395,103 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(4, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                headerIndex = index;
-                              });
-                              _pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 50),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              decoration: BoxDecoration(
-                                color: headerIndex == index
-                                    ? Colors.amber
-                                    : Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      SizedBox(
-                        height: 80.h,
-                        child: PageView.builder(
-                          itemCount: items.length,
-                          padEnds: false,
-                          reverse: true,
-                          scrollDirection: Axis.horizontal,
-                          controller: _pageController,
-                          onPageChanged: (value) {
-                            setState(() {
-                              headerIndex =
-                                  value; // Update selectedIndex based on page change
-                            });
-                          },
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = __items[index];
-
-                            // Highlight only when index == 4
-                            bool isActive = index == 1;
-                            return GestureDetector(
-                              onTap: () {
+                      
+                          SizedBox(
+                            height: 80.h,
+                            child: PageView.builder(
+                              itemCount: _items.length,
+                              padEnds: false,
+                              controller: _pageController,
+                              onPageChanged: (value) {
                                 setState(() {
-                                  selectedIndex = index;
+                                  selectedIndex =
+                                      value; // Update selectedIndex based on page change
                                 });
-                                _pageController.animateToPage(
-                                  2,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
                               },
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.center,
-                                child: InkWell(
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data = _items[index];
+
+                                // Highlight only when index == 4
+                                bool isActive = index == 1;
+                                return GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => data['screen']),
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                    _pageController.animateToPage(
+                                      2,
+                                      duration:
+                                      const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
                                     );
                                   },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (data['icon']
-                                          .toString()
-                                          .endsWith('.svg'))
-                                        SvgPicture.asset(
-                                          data['icon'],
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
-                                          theme: const SvgTheme(
-                                              currentColor: Color(0xffdd9d9d9)),
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
+                                    duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              data['screen']),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          if (data['icon']
+                                              .toString()
+                                              .endsWith('.svg'))
+                                            SvgPicture.asset(
+                                              data['icon'],
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                              theme: const SvgTheme(
+                                                  currentColor:
+                                                  Color(0xffdd9d9d9)),
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
                                                   .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        )
-                                      else
-                                        Image.asset(
-                                          data['icon'],
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
+                                              width: 20,
+                                              height: 20,
+                                            )
+                                          else
+                                            Image.asset(
+                                              data['icon'],
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
                                                   .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        data['label'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            data['label'],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
                                                   .withOpacity(0.5),
-                                        ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                                );
+                              },
+                            ),
+                          ),
+
+                  
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -545,7 +533,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(
@@ -588,406 +576,324 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ),
                   ),
                 ),
-                // Center(
-                //   child: Container(
-                //     alignment: AlignmentDirectional.centerStart,
-                //     margin: EdgeInsets.only(top: 5.h),
-                //     height: 7.h,
-                //     width: 60.w,
-                //     decoration: BoxDecoration(
-                //         color: const Color(0xFF681b4e),
-                //         borderRadius: BorderRadius.circular(5)),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                asyncbajarValue.when(
+                randomstory.when(
                   data: (data) {
                     return SizedBox(
-                      height: 130,
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: data.sliders!.length,
-                          itemBuilder: (context, index) {
-                            Story ref = data.stories[index];
-                            if (index == 0) {
+                      height: 130.h,
+                      child: SingleChildScrollView(
+                        // Wrapping the Row with SingleChildScrollView
+                        scrollDirection:
+                            Axis.horizontal, // Ensuring it scrolls horizontally
+                        child: Row(
+                          children: [
+                            // First StoryAddWidget with search option
+                            StoryAddWidget(
+                              vImage: data.feedStory?.posts?.first.image,
+                              brandname:
+                                  data.feedStory?.posts?.first.vendorName,
+                              index: 0,
+                              addSearch: true, // First item has search
+                              showgift: false,
+                              onTap: () {
+                                setState(() {
+                                  // _isPopupVisible = true; // Open the popup
+                                });
+                              },
+                            ),
+                            // Expanded is not needed since SingleChildScrollView will handle scrolling
+                            // Now ListView.builder will be added directly to the row
+                            ...data.feedStory!.posts!.map((storyData) {
                               return StoryAddWidget(
-                                  vImage: ref.vendorImage,
-                                  brandname: ref.vendorName,
-                                  index: 0,
-                                  addSearch: true,
-                                  showgift: ref.hasSponsoredGifts,
-                                  onTap: () {
-                                    // setState(() {
-                                    //   _isPopupVisible = true; // Open the popup
-                                    // });
-                                  });
-                            } else if (index >= 1 && index <= 3) {
-                              return NotStoryWidget(
-                                brandname: ref.vendorName,
-                                vImage: ref.vendorImage,
-                                addSearch: false,
-                                index: index,
-                                showgift: ref.hasSponsoredGifts,
+                                brandname: storyData.vendorName,
+                                vImage: storyData.vendorImage,
+                                index: data.feedStory!.posts!
+                                    .indexOf(storyData),
+                                addSearch:
+                                    false, // For all items other than the first, no search
+                                showgift: storyData.hasSponsoredGifts,
+                                onTap: () {
+                                  // setState(() {
+                                  //   // _isPopupVisible = true; // Open the popup
+                                  // });
+                                },
                               );
-                            }
-                            return NotStoryWidget(index: index);
-                          }),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Text(error.toString());
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                asyncbajarValue.when(
-                  data: (data) {
-                    return SizedBox(
-                      height: 150.h,
-                      width: double.infinity,
-                      child: PageView.builder(
-                        reverse: true,
-                        allowImplicitScrolling: true,
-                        itemCount: data.sliders!.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            data.sliders![index].image!,
-                            height: 150.h,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                          );
-                          // Image.asset(
-                          //     height: 150.h,
-                          //     width: double.infinity,
-                          //     fit: BoxFit.fill,
-                          //     );
-                        },
+                            }).toList(),
+                          ],
+                        ),
                       ),
                     );
                   },
-                  error: (error, stackTrace) {
-                    return Text(error.toString());
-                  },
+                  error: (error, stackTrace) => Text(error.toString()),
                   loading: () => const CircularProgressIndicator(),
                 ),
+
                 SizedBox(
                   height: 10.h,
                 ),
+
                 SizedBox(
-                  height: 100.h,
-                  width: double.infinity,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.only(left: 7.w),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: [
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [15, 15],
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
+                  height: 10.h,
+                ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return Stack(
+                      children: [
+                        // Carousel Slider
+                        Positioned(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "ALL",
-                                style: headerstyle.copyWith(
-                                    color: ColorConstant.blackColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
+                              SizedBox(
+                                height: 130.h,
+                                width: double.infinity,
+                                child: CarouselSlider(
+                                  items: data.sliders!.map((banner) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const B2bScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: CachedNetworkImage(
+                                        width: double.infinity,
+                                        fit: BoxFit.fill,
+                                        imageUrl: banner.image!,
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  options: CarouselOptions(
+                                    aspectRatio:
+                                        2.5, // Adjust this as per design
+                                    viewportFraction:
+                                        1.0, // Full-screen carousel
+                                    autoPlay: true,
+                                    enlargeCenterPage: false,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex =
+                                            index; // Update the current index
+                                      });
+                                    },
+                                  ),
+                                ),
                               ),
-                              Text("SERVICES",
-                                  style: headerstyle.copyWith(
-                                      color: ColorConstant.blackColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold))
                             ],
                           ),
                         ),
-                      ),
-                      // DottedBorder(
-                      //     strokeWidth: 2,
 
-                      //     dashPattern: [15, 10],
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     stackFit: StackFit.loose,
-                      //     radius: const Radius.circular(70),
-                      //     padding: const EdgeInsets.all(27),
-                      //     color: Colors.black,
-                      //     child: Container(
-                      //       height: 100,
-                      //       width: 100,
-                      //       child: const Text("data"))
-                      //     ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      asyncbajarValue.when(
-                        data: (data) {
-                          if (data.cat.isNotEmpty) {
-                            return GestureDetector(
-                              onTap: () {
-                                showMenu(
-                                  context: context,
-                                  position: const RelativeRect.fromLTRB(0, 0, 0,
-                                      0), // Base position; offset is handled by PopupMenuButton
-                                  items: [
-                                    PopupMenuItem(
-                                      value: 1,
-                                      child: ListTile(
-                                        title: const Text("View Story"),
-                                        leading: const Icon(Icons.book),
-                                        onTap: () {
-                                          Navigator.pop(
-                                              context); // Close the popup
-                                          // Handle "View Story" action here
-                                        },
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      value: 2,
-                                      child: ListTile(
-                                        title: const Text("View Product"),
-                                        leading: const Icon(Icons.shopping_bag),
-                                        onTap: () {
-                                          Navigator.pop(
-                                              context); // Close the popup
-                                          // Handle "View Product" action here
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                              child: PopupMenuButton<int>(
-                                offset: const Offset(0,
-                                    60), // The offset to position the menu above the widget
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    value: 1,
-                                    child: Text("View Story",
-                                        style: TextStyle(fontSize: 16.0)),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 2,
-                                    child: Text("View Product",
-                                        style: TextStyle(fontSize: 16.0)),
-                                  ),
-                                ],
-                                onCanceled: () {
-                                  print(
-                                      "You have canceled the menu selection.");
-                                },
-                                onSelected: (value) {
-                                  switch (value) {
-                                    case 1:
-                                      // Handle "View Story"
-                                      break;
-                                    case 2:
-                                      // Handle "View Product"
-                                      break;
-                                    default:
-                                      print("Invalid choice");
-                                      break;
-                                  }
-                                },
-                                child: DashedBorder(
-                                  dashCount: 2,
+                        // Dots Indicator
+                        Positioned(
+                          left: MediaQuery.of(context).size.width / 2 -
+                              50, // Center the dots
+                          bottom: 10.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: data.sliders!.map((banner) {
+                              int index = data.sliders!.indexOf(banner);
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                height: 9.0,
+                                width: _currentIndex == index
+                                    ? 12.0
+                                    : 9.0, // Active dot is wider
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _currentIndex == index
+                                      ? Colors.white // Active dot color
+                                      : Colors.grey, // Inactive dot color
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text("Try again: $error");
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                category.when(
+                  data: (data) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: Column(
+                        children: [
+                          // Row for "ALL" and other services
+                          SizedBox(
+                            height: 100.h, // Adjust height as necessary
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                // "ALL" Services (Standalone)
+                                DottedBorder(
+                                  strokeWidth: 2,
+                                  color: Colors.grey,
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(10),
+                                  dashPattern: const [15, 15],
                                   child: SizedBox(
-                                    width: 100.w,
-                                    height: 100.h,
+                                    width: 100,
+                                    height: 100,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
                                       children: [
-                                        Image.asset('assets/images/cloth.png'),
-                                        const Wrap(
-                                          children: [
-                                            Text(
-                                              "HEALTH,\nSPORTS",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                          ],
+                                        Text(
+                                          "ALL",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "B2b",
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }
-                          return const SizedBox();
-                        },
-                        error: (error, stackTrace) {
-                          return Text("error $error");
-                        },
-                        loading: () {
-                          return const CircularProgressIndicator();
-                        },
-                      ),
 
-                      // DottedBorder(
-                      //   strokeWidth: 2,
-                      //   color: Colors.grey,
-                      //   borderType: BorderType.RRect,
-                      //   radius: const Radius.circular(10),
-                      //   dashPattern: const [10, 10],
-                      //   child: SizedBox(
-                      //       width: 100.w,
-                      //       height: 100.h,
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           Image.asset('assets/images/cloth.png'),
-                      //           Wrap(
-                      //             children: [
-                      //               Text(
-                      //                 "HEALTH,\nSPORTS",
-                      //                 style: headerstyle.copyWith(
-                      //                     color: Colors.black,
-                      //                     fontWeight: FontWeight.w500,
-                      //                     fontSize: 13),
-                      //               )
-                      //             ],
-                      //           ),
-                      //         ],
-                      //       )),
-                      // ),
-
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      DottedBorder(
-                        strokeWidth: 2,
-                        color: Colors.grey,
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        dashPattern: const [10, 10],
-                        child: SizedBox(
-                            width: 100.w,
-                            height: 100.h,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/cloth.png',
-                                ),
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      "SPORTS,\nAND",
-                                      style: headerstyle.copyWith(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13),
-                                    )
-                                  ],
+                                // Other Services List
+                                Expanded(
+                                  child: ListView(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    children: data.map((e) {
+                                      return Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showMenu(
+                                              context: context,
+                                              position:
+                                                  const RelativeRect.fromLTRB(0,
+                                                      0, 0, 0), // Base position
+                                              items: [
+                                                PopupMenuItem(
+                                                  value: 1,
+                                                  child: ListTile(
+                                                    title: const Text(
+                                                        "View Story"),
+                                                    leading:
+                                                        const Icon(Icons.book),
+                                                    onTap: () {
+                                                      // Implement onTap logic
+                                                    },
+                                                  ),
+                                                ),
+                                                // Check if parentClosure is not null and show it
+                                                if (e.parentClosure != null)
+                                                  PopupMenuItem(
+                                                    value: 2,
+                                                    child: ListTile(
+                                                      title: Text(e
+                                                              .parentClosure
+                                                              ?.slug ??
+                                                          'N/A'),
+                                                      leading: const Icon(
+                                                          Icons.info),
+                                                    ),
+                                                  ),
+                                              ],
+                                            );
+                                          },
+                                          child: PopupMenuButton<int>(
+                                            offset: const Offset(
+                                                0, 60), // Position for the menu
+                                            itemBuilder: (context) => [
+                                              const PopupMenuItem(
+                                                value: 1,
+                                                child: Text("View Story",
+                                                    style: TextStyle(
+                                                        fontSize: 16.0)),
+                                              ),
+                                              if (e.parentClosure != null)
+                                                PopupMenuItem(
+                                                  value: 2,
+                                                  child: Text(
+                                                    e.parentClosure?.slug ??
+                                                        'No Parent',
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                            ],
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.w),
+                                              child: DashedBorder(
+                                                dashCount:
+                                                    1, // Number of dashes in the border
+                                                child: SizedBox(
+                                                  width: 200
+                                                      .w, // Fixed width for the container
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Image.asset(
+                                                          'assets/images/cloth.png'),
+                                                      Center(
+                                                        child: Text(
+                                                          e.name ?? 'No Name',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ],
-                            )),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-
-                      // DottedBorder(
-                      //     borderPadding: const EdgeInsets.only(left: 5),
-                      //     radius: const Radius.circular(10),
-                      //     padding: const EdgeInsets.all(20),
-                      //     strokeWidth: 1,
-                      //     color: Colors.black,
-                      //     child: Column(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //           'assets/images/cloth.png',
-                      //         ),
-                      //         Wrap(
-                      //           children: [
-                      //             Text(
-                      //               "SPORTS,\nAND",
-                      //               style: headerstyle.copyWith(
-                      //                   color: Colors.black,
-                      //                   fontWeight: FontWeight.w500,
-                      //                   fontSize: 13),
-                      //             )
-                      //           ],
-                      //         ),
-                      //       ],
-                      //     )),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.flight,
-                            color: Color(0xff6E6E6E),
+                            ),
                           ),
-                          Text(
-                            "TRAVELS,\nTOURS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
                         ],
                       ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.tv,
-                            color: Color(0xff6E6E6E),
-                          ),
-                          Text(
-                            "ELECTRONICS",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          ),
-                          Text(
-                            "&",
-                            style: headerstyle.copyWith(
-                                color: const Color(0xff6E6E6E),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      )
-                    ],
-                  ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
@@ -1034,6 +940,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           VProduct hot = data.hotProducts[index];
                           return InkWell(
                             onTap: () {
+                              print("biabsh ${hot.id}");
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -1425,21 +1332,21 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     double dynamicHeight;
 
                     if (dynamictabController.index == 0) {
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].isEmpty
-                          ? 100
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[0].isEmpty
+                              ? 200
+                              : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].isEmpty
-                          ? 200
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[1].isEmpty
+                              ? 200
+                              : 500;
                     } else if (dynamictabController.index == 2)
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].isEmpty
-                          ? 200
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[2].isEmpty
+                              ? 200
+                              : 500;
                     else
                       dynamicHeight = 300;
 
@@ -1707,10 +1614,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                            worth: resp.worth!,
-                                                        productname: resp.name?? '',
-                              vendorImage: resp.vendorImage?? '',
-                              vendorname: resp.name?? '',
+                             gift_qty: resp.gift_qty!,
+                              worth: resp.worth!,
+                              productname: resp.name,
+                              vendorImage: resp.vendorImage!,
+                              vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image?? '');
                         },
@@ -1956,7 +1864,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 400,
+                        mainAxisExtent: 340.9,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.2,
                         mainAxisSpacing: 0.2,

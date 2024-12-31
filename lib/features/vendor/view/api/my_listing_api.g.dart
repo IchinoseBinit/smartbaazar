@@ -7,7 +7,7 @@ part of 'my_listing_api.dart';
 // **************************************************************************
 
 String _$getMyListingResponseHash() =>
-    r'a517e0f2a362e5b204e523ef3466b873e6393709';
+    r'473d63466f8172839d609d94da97cb0cc09786b6';
 
 /// See also [getMyListingResponse].
 @ProviderFor(getMyListingResponse)

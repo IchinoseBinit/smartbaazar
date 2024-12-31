@@ -19,6 +19,7 @@ import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 class HotViewScreen extends ConsumerStatefulWidget {
   String header = 'sponsored';
@@ -335,14 +336,14 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                               );
                             }, loading: () {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -501,7 +502,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const SubscribeAndWinEveryDay(),
+                                            const MySubscribeAndWinPage(),
                                       ));
                                 },
                                 child: const Text(
@@ -622,7 +623,6 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                             return Padding(
                               padding: EdgeInsets.only(bottom: 5.h),
                               child: ProductDetailWidget(
-                                
                                   offer: res.offers,
                                   // avg_rating: res.avg_rating.toDouble(),
 
@@ -640,7 +640,8 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                   price: res.price,
                                   similarproductCount: res.similarproductCount,
                                   membershipColor: res.user[0].membership_color,
-                                  membershipTitle: res.user[0].membership_title),
+                                  membershipTitle:
+                                      res.user[0].membership_title),
                             );
                           },
                         );

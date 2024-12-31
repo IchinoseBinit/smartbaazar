@@ -34,7 +34,6 @@ Future<HomePosts> homePosts(HomePostsRef ref) async {
         .map((item) => SliderModel.fromJson(item as Map<String, dynamic>))
         .toList();
 
-    print("bibash $sliders");
     return HomePosts(
       sliders: sliders,
       sponsored_posts: sponsoredPosts,

@@ -6,7 +6,7 @@ part of 'create_new_listing_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createlistingHash() => r'0aba741d7632d897bd54b2b11e4d46a1df7262ce';
+String _$createlistingHash() => r'15924f105aa0f904812af207f40fedfc78371da9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -39,45 +39,61 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
   const CreatelistingFamily();
 
   /// See also [createlisting].
-  CreatelistingProvider call(
-    String category,
-    String title,
-    String city,
-    String price,
-    String description,
-    String length,
-    String width,
-    String height,
-    String weight,
-    String disprice,
-    String type,
-    String email,
-    String phone,
-    String username,
-    String pickup,
-    List<File?> images,
-    String accept,
-    String address,
-  ) {
+  CreatelistingProvider call({
+    List<List<dynamic>>? cf,
+    List<String>? tags,
+    required String? category,
+    required String? stock,
+    String? mileage,
+    String? warrenty,
+    required String? title,
+    required String? city,
+    required String? price,
+    required String? description,
+    String? length,
+    String? width,
+    String? height,
+    String? weight,
+    String? disprice,
+    required String? posttype,
+    required String? email,
+    required String? phone,
+    required String? username,
+    required String? pickup,
+    List<File?>? images,
+    required String? accept,
+    required String? address,
+    String? offer,
+    String? story,
+    String? youtube,
+  }) {
     return CreatelistingProvider(
-      category,
-      title,
-      city,
-      price,
-      description,
-      length,
-      width,
-      height,
-      weight,
-      disprice,
-      type,
-      email,
-      phone,
-      username,
-      pickup,
-      images,
-      accept,
-      address,
+      cf: cf,
+      tags: tags,
+      category: category,
+      stock: stock,
+      mileage: mileage,
+      warrenty: warrenty,
+      title: title,
+      city: city,
+      price: price,
+      description: description,
+      length: length,
+      width: width,
+      height: height,
+      weight: weight,
+      disprice: disprice,
+      posttype: posttype,
+      email: email,
+      phone: phone,
+      username: username,
+      pickup: pickup,
+      images: images,
+      accept: accept,
+      address: address,
+      offer: offer,
+      story: story,
+      youtube: youtube,
     );
   }
 
@@ -86,24 +102,32 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
     covariant CreatelistingProvider provider,
   ) {
     return call(
-      provider.category,
-      provider.title,
-      provider.city,
-      provider.price,
-      provider.description,
-      provider.length,
-      provider.width,
-      provider.height,
-      provider.weight,
-      provider.disprice,
-      provider.type,
-      provider.email,
-      provider.phone,
-      provider.username,
-      provider.pickup,
-      provider.images,
-      provider.accept,
-      provider.address,
+      cf: provider.cf,
+      tags: provider.tags,
+      category: provider.category,
+      stock: provider.stock,
+      mileage: provider.mileage,
+      warrenty: provider.warrenty,
+      title: provider.title,
+      city: provider.city,
+      price: provider.price,
+      description: provider.description,
+      length: provider.length,
+      width: provider.width,
+      height: provider.height,
+      weight: provider.weight,
+      disprice: provider.disprice,
+      posttype: provider.posttype,
+      email: provider.email,
+      phone: provider.phone,
+      username: provider.username,
+      pickup: provider.pickup,
+      images: provider.images,
+      accept: provider.accept,
+      address: provider.address,
+      offer: provider.offer,
+      story: provider.story,
+      youtube: provider.youtube,
     );
   }
 
@@ -125,46 +149,62 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
 /// See also [createlisting].
 class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
   /// See also [createlisting].
-  CreatelistingProvider(
-    String category,
-    String title,
-    String city,
-    String price,
-    String description,
-    String length,
-    String width,
-    String height,
-    String weight,
-    String disprice,
-    String type,
-    String email,
-    String phone,
-    String username,
-    String pickup,
-    List<File?> images,
-    String accept,
-    String address,
-  ) : this._internal(
+  CreatelistingProvider({
+    List<List<dynamic>>? cf,
+    List<String>? tags,
+    required String? category,
+    required String? stock,
+    String? mileage,
+    String? warrenty,
+    required String? title,
+    required String? city,
+    required String? price,
+    required String? description,
+    String? length,
+    String? width,
+    String? height,
+    String? weight,
+    String? disprice,
+    required String? posttype,
+    required String? email,
+    required String? phone,
+    required String? username,
+    required String? pickup,
+    List<File?>? images,
+    required String? accept,
+    required String? address,
+    String? offer,
+    String? story,
+    String? youtube,
+  }) : this._internal(
           (ref) => createlisting(
             ref as CreatelistingRef,
-            category,
-            title,
-            city,
-            price,
-            description,
-            length,
-            width,
-            height,
-            weight,
-            disprice,
-            type,
-            email,
-            phone,
-            username,
-            pickup,
-            images,
-            accept,
-            address,
+            cf: cf,
+            tags: tags,
+            category: category,
+            stock: stock,
+            mileage: mileage,
+            warrenty: warrenty,
+            title: title,
+            city: city,
+            price: price,
+            description: description,
+            length: length,
+            width: width,
+            height: height,
+            weight: weight,
+            disprice: disprice,
+            posttype: posttype,
+            email: email,
+            phone: phone,
+            username: username,
+            pickup: pickup,
+            images: images,
+            accept: accept,
+            address: address,
+            offer: offer,
+            story: story,
+            youtube: youtube,
           ),
           from: createlistingProvider,
           name: r'createlistingProvider',
@@ -175,7 +215,12 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
           dependencies: CreatelistingFamily._dependencies,
           allTransitiveDependencies:
               CreatelistingFamily._allTransitiveDependencies,
+          cf: cf,
+          tags: tags,
           category: category,
+          stock: stock,
+          mileage: mileage,
+          warrenty: warrenty,
           title: title,
           city: city,
           price: price,
@@ -185,7 +230,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
           height: height,
           weight: weight,
           disprice: disprice,
-          type: type,
+          posttype: posttype,
           email: email,
           phone: phone,
           username: username,
@@ -193,6 +238,9 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
           images: images,
           accept: accept,
           address: address,
+          offer: offer,
+          story: story,
+          youtube: youtube,
         );
 
   CreatelistingProvider._internal(
@@ -202,7 +250,12 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.cf,
+    required this.tags,
     required this.category,
+    required this.stock,
+    required this.mileage,
+    required this.warrenty,
     required this.title,
     required this.city,
     required this.price,
@@ -212,7 +265,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     required this.height,
     required this.weight,
     required this.disprice,
-    required this.type,
+    required this.posttype,
     required this.email,
     required this.phone,
     required this.username,
@@ -220,26 +273,37 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     required this.images,
     required this.accept,
     required this.address,
+    required this.offer,
+    required this.story,
+    required this.youtube,
   }) : super.internal();
 
-  final String category;
-  final String title;
-  final String city;
-  final String price;
-  final String description;
-  final String length;
-  final String width;
-  final String height;
-  final String weight;
-  final String disprice;
-  final String type;
-  final String email;
-  final String phone;
-  final String username;
-  final String pickup;
-  final List<File?> images;
-  final String accept;
-  final String address;
+  final List<List<dynamic>>? cf;
+  final List<String>? tags;
+  final String? category;
+  final String? stock;
+  final String? mileage;
+  final String? warrenty;
+  final String? title;
+  final String? city;
+  final String? price;
+  final String? description;
+  final String? length;
+  final String? width;
+  final String? height;
+  final String? weight;
+  final String? disprice;
+  final String? posttype;
+  final String? email;
+  final String? phone;
+  final String? username;
+  final String? pickup;
+  final List<File?>? images;
+  final String? accept;
+  final String? address;
+  final String? offer;
+  final String? story;
+  final String? youtube;
 
   @override
   Override overrideWith(
@@ -254,7 +318,12 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        cf: cf,
+        tags: tags,
         category: category,
+        stock: stock,
+        mileage: mileage,
+        warrenty: warrenty,
         title: title,
         city: city,
         price: price,
@@ -264,7 +333,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         height: height,
         weight: weight,
         disprice: disprice,
-        type: type,
+        posttype: posttype,
         email: email,
         phone: phone,
         username: username,
@@ -272,6 +341,9 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         images: images,
         accept: accept,
         address: address,
+        offer: offer,
+        story: story,
+        youtube: youtube,
       ),
     );
   }
@@ -284,7 +356,12 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
   @override
   bool operator ==(Object other) {
     return other is CreatelistingProvider &&
+        other.cf == cf &&
+        other.tags == tags &&
         other.category == category &&
+        other.stock == stock &&
+        other.mileage == mileage &&
+        other.warrenty == warrenty &&
         other.title == title &&
         other.city == city &&
         other.price == price &&
@@ -294,20 +371,28 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         other.height == height &&
         other.weight == weight &&
         other.disprice == disprice &&
-        other.type == type &&
+        other.posttype == posttype &&
         other.email == email &&
         other.phone == phone &&
         other.username == username &&
         other.pickup == pickup &&
         other.images == images &&
         other.accept == accept &&
-        other.address == address;
+        other.address == address &&
+        other.offer == offer &&
+        other.story == story &&
+        other.youtube == youtube;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, cf.hashCode);
+    hash = _SystemHash.combine(hash, tags.hashCode);
     hash = _SystemHash.combine(hash, category.hashCode);
+    hash = _SystemHash.combine(hash, stock.hashCode);
+    hash = _SystemHash.combine(hash, mileage.hashCode);
+    hash = _SystemHash.combine(hash, warrenty.hashCode);
     hash = _SystemHash.combine(hash, title.hashCode);
     hash = _SystemHash.combine(hash, city.hashCode);
     hash = _SystemHash.combine(hash, price.hashCode);
@@ -317,7 +402,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     hash = _SystemHash.combine(hash, height.hashCode);
     hash = _SystemHash.combine(hash, weight.hashCode);
     hash = _SystemHash.combine(hash, disprice.hashCode);
-    hash = _SystemHash.combine(hash, type.hashCode);
+    hash = _SystemHash.combine(hash, posttype.hashCode);
     hash = _SystemHash.combine(hash, email.hashCode);
     hash = _SystemHash.combine(hash, phone.hashCode);
     hash = _SystemHash.combine(hash, username.hashCode);
@@ -325,65 +410,92 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     hash = _SystemHash.combine(hash, images.hashCode);
     hash = _SystemHash.combine(hash, accept.hashCode);
     hash = _SystemHash.combine(hash, address.hashCode);
+    hash = _SystemHash.combine(hash, offer.hashCode);
+    hash = _SystemHash.combine(hash, story.hashCode);
+    hash = _SystemHash.combine(hash, youtube.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin CreatelistingRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `cf` of this provider.
+  List<List<dynamic>>? get cf;
+
+  /// The parameter `tags` of this provider.
+  List<String>? get tags;
+
   /// The parameter `category` of this provider.
-  String get category;
+  String? get category;
+
+  /// The parameter `stock` of this provider.
+  String? get stock;
+
+  /// The parameter `mileage` of this provider.
+  String? get mileage;
+
+  /// The parameter `warrenty` of this provider.
+  String? get warrenty;
 
   /// The parameter `title` of this provider.
-  String get title;
+  String? get title;
 
   /// The parameter `city` of this provider.
-  String get city;
+  String? get city;
 
   /// The parameter `price` of this provider.
-  String get price;
+  String? get price;
 
   /// The parameter `description` of this provider.
-  String get description;
+  String? get description;
 
   /// The parameter `length` of this provider.
-  String get length;
+  String? get length;
 
   /// The parameter `width` of this provider.
-  String get width;
+  String? get width;
 
   /// The parameter `height` of this provider.
-  String get height;
+  String? get height;
 
   /// The parameter `weight` of this provider.
-  String get weight;
+  String? get weight;
 
   /// The parameter `disprice` of this provider.
-  String get disprice;
+  String? get disprice;
 
-  /// The parameter `type` of this provider.
-  String get type;
+  /// The parameter `posttype` of this provider.
+  String? get posttype;
 
   /// The parameter `email` of this provider.
-  String get email;
+  String? get email;
 
   /// The parameter `phone` of this provider.
-  String get phone;
+  String? get phone;
 
   /// The parameter `username` of this provider.
-  String get username;
+  String? get username;
 
   /// The parameter `pickup` of this provider.
-  String get pickup;
+  String? get pickup;
 
   /// The parameter `images` of this provider.
-  List<File?> get images;
+  List<File?>? get images;
 
   /// The parameter `accept` of this provider.
-  String get accept;
+  String? get accept;
 
   /// The parameter `address` of this provider.
-  String get address;
+  String? get address;
+
+  /// The parameter `offer` of this provider.
+  String? get offer;
+
+  /// The parameter `story` of this provider.
+  String? get story;
+
+  /// The parameter `youtube` of this provider.
+  String? get youtube;
 }
 
 class _CreatelistingProviderElement
@@ -391,41 +503,57 @@ class _CreatelistingProviderElement
   _CreatelistingProviderElement(super.provider);
 
   @override
-  String get category => (origin as CreatelistingProvider).category;
+  List<List<dynamic>>? get cf => (origin as CreatelistingProvider).cf;
   @override
-  String get title => (origin as CreatelistingProvider).title;
+  List<String>? get tags => (origin as CreatelistingProvider).tags;
   @override
-  String get city => (origin as CreatelistingProvider).city;
+  String? get category => (origin as CreatelistingProvider).category;
   @override
-  String get price => (origin as CreatelistingProvider).price;
+  String? get stock => (origin as CreatelistingProvider).stock;
   @override
-  String get description => (origin as CreatelistingProvider).description;
+  String? get mileage => (origin as CreatelistingProvider).mileage;
   @override
-  String get length => (origin as CreatelistingProvider).length;
+  String? get warrenty => (origin as CreatelistingProvider).warrenty;
   @override
-  String get width => (origin as CreatelistingProvider).width;
+  String? get title => (origin as CreatelistingProvider).title;
   @override
-  String get height => (origin as CreatelistingProvider).height;
+  String? get city => (origin as CreatelistingProvider).city;
   @override
-  String get weight => (origin as CreatelistingProvider).weight;
+  String? get price => (origin as CreatelistingProvider).price;
   @override
-  String get disprice => (origin as CreatelistingProvider).disprice;
+  String? get description => (origin as CreatelistingProvider).description;
   @override
-  String get type => (origin as CreatelistingProvider).type;
+  String? get length => (origin as CreatelistingProvider).length;
   @override
-  String get email => (origin as CreatelistingProvider).email;
+  String? get width => (origin as CreatelistingProvider).width;
   @override
-  String get phone => (origin as CreatelistingProvider).phone;
+  String? get height => (origin as CreatelistingProvider).height;
   @override
-  String get username => (origin as CreatelistingProvider).username;
+  String? get weight => (origin as CreatelistingProvider).weight;
   @override
-  String get pickup => (origin as CreatelistingProvider).pickup;
+  String? get disprice => (origin as CreatelistingProvider).disprice;
   @override
-  List<File?> get images => (origin as CreatelistingProvider).images;
+  String? get posttype => (origin as CreatelistingProvider).posttype;
   @override
-  String get accept => (origin as CreatelistingProvider).accept;
+  String? get email => (origin as CreatelistingProvider).email;
   @override
-  String get address => (origin as CreatelistingProvider).address;
+  String? get phone => (origin as CreatelistingProvider).phone;
+  @override
+  String? get username => (origin as CreatelistingProvider).username;
+  @override
+  String? get pickup => (origin as CreatelistingProvider).pickup;
+  @override
+  List<File?>? get images => (origin as CreatelistingProvider).images;
+  @override
+  String? get accept => (origin as CreatelistingProvider).accept;
+  @override
+  String? get address => (origin as CreatelistingProvider).address;
+  @override
+  String? get offer => (origin as CreatelistingProvider).offer;
+  @override
+  String? get story => (origin as CreatelistingProvider).story;
+  @override
+  String? get youtube => (origin as CreatelistingProvider).youtube;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

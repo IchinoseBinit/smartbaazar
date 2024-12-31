@@ -7,10 +7,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
+import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
@@ -28,19 +29,21 @@ import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
-import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 import '../../../general_widget/story_search_bar.dart';
+import '../../events_screen/view/events_screen.dart';
+import '../../grocessary_screen/view/grocary_screen.dart';
+import '../../jobs_screen/view/jobs_screen.dart';
+import '../../services_screen/service_screen.dart';
+import '../../socio_screen/view/socio_screen.dart';
+import '../../used_screen/view/used_screen.dart';
+
+int selectedIndex = 0; // Keep track of the selected index
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -66,12 +69,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
   final double _currentHeight = 500; // Default height for first tab
-
   final List<Map<String, dynamic>> _items = [
     {
-      'icon': 'assets/icon/b2bIcon.svg',
-      'label': 'TradeHub',
-      'screen': const B2bScreen()
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
     },
     {
       'icon': 'assets/icon/loading.svg',
@@ -79,19 +81,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       'screen': const HomeScreen()
     },
     {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
-    {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
       'screen': const UsedScreen()
     },
     {
-      'icon': 'assets/icon/openCartIcon.svg',
-      'label': 'SocioShop',
-      'screen': const SocioShopScreen()
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
     },
     {
       'icon': 'assets/icon/box.svg',
@@ -144,10 +146,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       setState(() {
         _showSearchProductModels = query.isNotEmpty;
       });
-    });
-    // Use the addPostFrameCallback to jump to the selected page after the widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(selectedIndex);
     });
 
     // Set up debounce for search functionality
@@ -231,7 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
-
+    final randomstory = ref.watch(fetchStoryHomeProvider);
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -241,7 +239,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    int currentPageIndex = 0;
 
     // category.when(
     //   data: (data) {
@@ -425,34 +422,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 20.h,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(4, (index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                  _pageController.animateToPage(
-                                    index,
-                                    duration: const Duration(milliseconds: 50),
-                                    curve: Curves.easeInOut,
-                                  );
-                                },
-                                child: Container(
-                                  height: 5.h,
-                                  width: 5.w,
-                                  margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                  decoration: BoxDecoration(
-                                    color: selectedIndex == index
-                                        ? Colors.amber
-                                        : Colors.grey,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
+
                           SizedBox(
                             height: 80.h,
                             child: PageView.builder(
@@ -556,7 +526,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               color: ColorConstant.grayColor,
                             ),
                           ),
-
                           if (_isSectionsVisible)
                             Padding(
                               padding: const EdgeInsets.all(20),
@@ -589,7 +558,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const SubscribeAndWinEveryDay(),
+                                                const MySubscribeAndWinPage(),
                                           ));
                                     },
                                     child: const Text(
@@ -645,7 +614,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    buyorwin.when(
+                    randomstory.when(
                       data: (data) {
                         return SizedBox(
                           height: 130.h,
@@ -765,53 +734,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             data: (data) {
                               return Stack(
                                 children: [
+                                  // Carousel Slider
                                   Positioned(
-                                      child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 130.h,
-                                        width: double.infinity,
-                                        child: CarouselSlider(
-                                          items: data.sliders.map((banner) {
-                                            return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const B2bScreen(),
-                                                  ),
-                                                );
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 130.h,
+                                          width: double.infinity,
+                                          child: CarouselSlider(
+                                            items: data.sliders.map((banner) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const B2bScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: CachedNetworkImage(
+                                                  width: double.infinity,
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: banner.image,
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            options: CarouselOptions(
+                                              aspectRatio:
+                                                  2.5, // Adjust this as per design
+                                              viewportFraction:
+                                                  1.0, // Full-screen carousel
+                                              autoPlay: true,
+                                              enlargeCenterPage: false,
+                                              onPageChanged: (index, reason) {
+                                                setState(() {
+                                                  _currentIndex =
+                                                      index; // Update the current index
+                                                });
                                               },
-                                              child: CachedNetworkImage(
-                                                width: double.infinity,
-                                                fit: BoxFit.fill,
-                                                imageUrl: banner
-                                                    .image, // Assuming banner.image is the image URL
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const Icon(Icons.error),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          options: CarouselOptions(
-                                            aspectRatio: 0.1,
-                                            reverse: true,
-                                            viewportFraction: 1,
-                                            autoPlay: true,
-                                            enlargeCenterPage: true,
-                                            onPageChanged: (index, reason) {
-                                              setState(() {
-                                                _currentIndex = index;
-                                              });
-                                            },
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  )),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Dots Indicator
                                   Positioned(
-                                    left: 150.w,
+                                    left:
+                                        MediaQuery.of(context).size.width / 2 -
+                                            50, // Center the dots
                                     bottom: 10.h,
                                     child: Row(
                                       mainAxisAlignment:
@@ -824,8 +800,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               const Duration(milliseconds: 300),
                                           margin: const EdgeInsets.symmetric(
                                               horizontal: 5.0),
-                                          height: 9.0.h,
-                                          width: 9.0.w,
+                                          height: 9.0,
+                                          width: _currentIndex == index
+                                              ? 12.0
+                                              : 9.0, // Active dot is wider
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: _currentIndex == index
@@ -837,12 +815,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         );
                                       }).toList(),
                                     ),
-                                  )
+                                  ),
                                 ],
                               );
                             },
                             error: (error, stackTrace) {
-                              return Text("try again $error");
+                              return Text("Try again: $error");
                             },
                             loading: () {
                               return const CircularProgressIndicator();
@@ -853,145 +831,175 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 5.h,
                           ),
 
-                          SizedBox(
-                            width: double.infinity,
-                            height: 420.h,
-                            child: Column(
-                              children: [
-                                // Category Selector Row
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50.h,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: categories.length,
-                                    itemBuilder: (context, index) {
-                                      bool isSelected = index == selectedIndex;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedIndex =
-                                                index; // Update selected index
-                                          });
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          margin: const EdgeInsets.all(5),
-                                          width: 100.w,
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? const Color(0xFF681b4e)
-                                                : const Color(0xffA5A5A5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Text(
-                                            categories[index],
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                          // Display Products for the selected category
+                          category.when(
+                            data: (data) {
+                              double dynamicHeight;
+                              // Define the products list corresponding to each category
+                              List<List<CategoryProduct>> productsList = [
+                                data.new_products, // SHOPZONE
+                                data.b2b_products, // TRADEHUB
+                                data.services, // SERVICES
+                                data.used_products, // USED
+                                data.jobs, // JOB
+                                data.event, // EVENT
+                                data.grocarry, // GROCERY
+                              ];
+                              print("pandal ${data.new_products.first.userdetails?.shortestDistance}");
 
-                                // Spacer
-                                SizedBox(height: 5.h),
+                              // Ensure selectedIndex is valid and get products
+                              List<CategoryProduct> products =
+                                  productsList[selectedIndex];
 
-                                // Display Products for the selected category
-                                category.when(
-                                  data: (data) {
-                                    // Define the products list corresponding to each category
-                                    List<List<CategoryProduct>> productsList = [
-                                      data.new_products, // SHOPZONE
-                                      data.b2b_products, // TRADEHUB
-                                      data.services, // SERVICES
-                                      data.used_products, // USED
-                                      data.jobs, // JOB
-                                      data.event, // EVENT
-                                      data.grocarry, // GROCERY
-                                    ];
+                              if (products.length == 0) {
+                                dynamicHeight =
+                                    products.isEmpty ? 130.h : 420.h;
+                              } else
+                                dynamicHeight = 390.h;
 
-                                    // Ensure selectedIndex is valid and get products
-                                    List<CategoryProduct> products =
-                                        productsList[selectedIndex];
-                                    return SizedBox(
-                                      height: 340.h,
+                              return SizedBox(
+                                height: dynamicHeight,
+                                width: double.infinity,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 50.h,
                                       child: ListView.builder(
-                                        padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: products.length,
+                                        itemCount: categories.length,
                                         itemBuilder: (context, index) {
-                                          CategoryProduct prod =
-                                              products[index];
-                                          return InkWell(
+                                          bool isSelected =
+                                              index == selectedIndex;
+                                          return GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProductDetailScreen(
-                                                            productId: prod.id),
-                                                  ));
-                                              // Handle product click if needed
+                                              setState(() {
+                                                selectedIndex =
+                                                    index; // Update selected index
+                                              });
                                             },
-                                            child: ProductDetailWidget(
-                                              distance: prod.shortestDistance,
-                                              issponsored:
-                                                  prod.user!.sponsored ?? false,
-                                              shortestDistance: double.tryParse(
-                                                  prod.nearestBranch ?? '0'),
-                                              wow: prod.wow,
-                                              comment: prod.commentcount
-                                                      .toString() ??
-                                                  '1',
-                                              avg_rating:
-                                                  prod.avg_rating?.toDouble(),
-
-                                              offer: prod.offers,
-                                              id: int.tryParse(prod.user!.id),
-                                              lefttile:
-                                                  categories[selectedIndex],
-                                              vendorname: prod.user!.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.user!.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              membershipColor:
-                                                  prod.user!.membercolor,
-                                              similarproductCount:
-                                                  prod.similarproductCount,
-                                              membershipTitle:
-                                                  prod.user!.membershipTitle,
-                                              // avg_rating: prod.average_rating,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              margin: const EdgeInsets.all(5),
+                                              width: 100.w,
+                                              decoration: BoxDecoration(
+                                                color: isSelected
+                                                    ? const Color(0xFF681b4e)
+                                                    : const Color(0xffA5A5A5),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                categories[index],
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
                                           );
                                         },
                                       ),
-                                    );
-                                  },
-                                  error: (error, stackTrace) =>
-                                      Center(child: Text("Error: $error")),
-                                  loading: () => const Center(
-                                      child: CircularProgressIndicator()),
+                                    ),
+                                    products.isNotEmpty
+                                        ? SizedBox(
+                                            child: AnimatedContainer(
+                                                duration:
+                                                    Duration(microseconds: 400),
+                                                height: 340.h,
+                                                width: double.infinity,
+                                                child: ListView.builder(
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: products.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    CategoryProduct prod =
+                                                        products[index];
+
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                      productId:
+                                                                          prod.id),
+                                                            ));
+                                                        // Handle product click if needed
+                                                      },
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        distance: prod
+                                                            .shortestDistance,
+                                                        issponsored: prod
+                                                                .userdetails!
+                                                                .sponsored ??
+                                                            false,
+                                                        shortestDistance:
+                                                            double.tryParse(
+                                                                prod.nearestBranch ??
+                                                                    '0'),
+                                                        wow: prod.wow,
+                                                        comment: prod
+                                                                .commentCount
+                                                                .toString() ??
+                                                            '1',
+                                                        avg_rating: prod
+                                                            .avgRating
+                                                            ?.toDouble(),
+
+                                                        offer: prod.offers,
+                                                        id: int.tryParse(prod
+                                                            .userdetails!.id),
+                                                        lefttile: categories[
+                                                            selectedIndex],
+                                                        vendorname: prod
+                                                            .userdetails!.name,
+                                                        discounttedPrice: prod
+                                                            .discountedPrice,
+                                                        Vimage: prod
+                                                            .userdetails!.photo,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.image,
+                                                        membershipColor: prod
+                                                            .userdetails!
+                                                            .memberColor,
+                                                        similarproductCount: prod
+                                                            .similarProductCount,
+                                                        membershipTitle: prod
+                                                            .userdetails!
+                                                            .membershipTitle,
+                                                        // avg_rating: prod.average_rating,
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                          )
+                                        : nolistingfound(),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              );
+                            },
+                            error: (error, stackTrace) =>
+                                Center(child: Text("Error: $error")),
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
+                          ),
+                          SizedBox(
+                            height: 60.h,
                           ),
 
                           // Expanded(
 
                           // child: ProductDetailWidget(),),
 
-                          SizedBox(
-                            height: 5.h,
-                          ),
                           SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -1019,6 +1027,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               if (dynamictabController.index == 0) {
                                 dynamicHeight =
                                     data.insidearr[0].isEmpty ? 140.h : 420.h;
+                                dynamicHeight =
+                                    data.insidearr[0].isEmpty ? 140.h : 420.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
@@ -1032,7 +1042,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     : 300.h;
                               else
                                 dynamicHeight = 300;
-
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -1267,6 +1276,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 itemBuilder: (context, index) {
                                                   GlobalModel prod =
                                                       data.spot[0][index];
+                                                  print(
+                                                      "latu ${prod.shortestDistance}");
                                                   return InkWell(
                                                     onTap: () {
                                                       Navigator.push(
@@ -1412,12 +1423,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
+                                        gift_qty: resp.gift_qty!,
                                         worth: resp.worth!,
                                         productname: "Discount Coupon",
                                         vendorImage: resp.vendorImage ?? '',
                                         vendorname: resp.name ?? '',
                                         winners: resp.winners.toString(),
-                                        proctimage: resp.image ?? '');
+                                        proctimage:
+                                            "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png");
                                   },
                                 ),
                               );
@@ -1472,7 +1485,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) {
                                           SponsoredProduct prefs = data[index];
-
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1582,7 +1594,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 400,
+                                  mainAxisExtent: 400.9,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,
@@ -1591,6 +1603,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
+                                  print(
+                                      "kalu ${res.userdetails.shortestDistance}");
+
                                   return Padding(
                                       padding: EdgeInsets.only(bottom: 5.h),
                                       child: InkWell(
@@ -1606,11 +1621,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         child: AllProductDetailWidget(
                                           shortestDistance: data
                                               .allProducts[index]
+                                              .userdetails
                                               .shortestDistance,
                                           issponsored: data.allProducts[index]
-                                              .user.hasSponsoredGifts,
+                                              .userss.hasSponsoredGifts,
                                           distance: data.allProducts[index]
-                                              .shortestDistance,
+                                              .userdetails.shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data
@@ -1626,9 +1642,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           productImage:
                                               data.allProducts[index].image,
                                           Vimage: data
-                                              .allProducts[index].user.photo,
-                                          vendorname:
-                                              data.allProducts[index].user.name,
+                                              .allProducts[index].userss.photo,
+                                          vendorname: data
+                                              .allProducts[index].userss.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
@@ -1636,11 +1652,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .similarProductCount,
                                           membershipColor: data
                                               .allProducts[index]
-                                              .userDetail
+                                              .userdetails
                                               .memberColor,
                                           membershipTitle: data
                                               .allProducts[index]
-                                              .userDetail
+                                              .userdetails
                                               .membershipTitle,
                                         ),
                                       ));
@@ -1790,7 +1806,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const AddToCartScreen(),
+                                          const CreateNewListinScreen(),
                                     ));
                               },
                               icon: Column(
@@ -1801,7 +1817,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                     color: Color(0xff918994),
                                   ),
                                   Text(
-                                    "add",
+                                    "Sell",
                                     style: headerstyle.copyWith(
                                         fontSize: 9,
                                         fontWeight: FontWeight.w700,

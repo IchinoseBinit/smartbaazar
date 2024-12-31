@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/api/vendor_search.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_search_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -240,7 +236,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           children: [
                             Stack(
                               children: [
-                                Positioned(
+                           if(data.vendor_card!=null)     Positioned(
                                   child: VendorSearchContainer(
                                     img: data.vendor_card!.photo!,
                                     controller: _searchController,
@@ -416,7 +412,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 width: 300.0,
                                                 child: TextField(
                                                   onSubmitted: (value) {
-                                                    print("bibash $value");
                                                     final postsAsyncValue = ref
                                                         .watch(
                                                             geDataBySearchvendorProvider(
@@ -1969,10 +1964,10 @@ class VendorSearchContainer extends StatelessWidget {
                                 child: Image.network(
                                   img,
                                   width: 30.w,
-                                  height: 27.h,
+                                  height: 20.h,
                                   fit: BoxFit.cover,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),

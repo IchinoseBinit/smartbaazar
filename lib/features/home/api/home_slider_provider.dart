@@ -13,36 +13,33 @@ class VProduct {
   final String price;
   final String title;
   final String description;
-  final VendorUser user;
+  final VendorUser userss;
   final String image;
   final int? similarProductCount;
-  final VendorUserDetail userDetail;
+  final VendorUserDetail userdetails;
   final String? offers;
   final String? discounted_price;
   final int? avg_rating;
   final int? commentcount;
   final String? wow;
-  final double? shortestDistance;
 
   VProduct(
       {required this.id,
       required this.title,
-      required this.shortestDistance,
       required this.avg_rating,
       required this.commentcount,
       required this.wow,
       required this.discounted_price,
       required this.description,
       required this.similarProductCount,
-      required this.user,
+      required this.userss,
       required this.image,
       required this.price,
       required this.offers,
-      required this.userDetail});
+      required this.userdetails});
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
-      shortestDistance: json['shortestDistance'],
       wow: json['wow'],
       discounted_price: json['discounted_price'],
       commentcount: json['commentcount'],
@@ -54,8 +51,8 @@ class VProduct {
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       similarProductCount: json['similarProductCount'] ?? '',
-      userDetail: VendorUserDetail.fromJson(json['userDetail'] ?? {}),
-      user: VendorUser.fromJson(
+      userdetails: VendorUserDetail.fromJson(json['userdetails'] ?? {}),
+      userss: VendorUser.fromJson(
           json['user'] ?? {}), // Parsing user within each product
     );
   }
@@ -107,12 +104,10 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
 
     // Log all users from products
     print(
-        "All products user data: ${homepage.allProducts.map((product) => product.user).toList()}");
+        "All products user data: ${homepage.allProducts.map((product) => product.userss).toList()}");
 
     return homepage;
   } catch (e) {
-    print("djffffffffffffffffffffff$e");
     throw Exception("Failed to fetch homepage data: $e");
-    
   }
 }

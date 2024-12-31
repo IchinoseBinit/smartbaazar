@@ -127,42 +127,43 @@ class ProductDetailScreen extends ConsumerWidget {
                   SizedBox(
                     width: 10.w,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 5),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [Color(0xff808080), Color(0xFF40246f)]),
-                        border: Border.all(
-                            color: ColorConstant.toastBackgroundColor)),
-                    child: Column(
-                      children: [
-                        const Icon(
-                          Icons.check_box_rounded,
-                          color: ColorConstant.toastBackgroundColor,
+                  InkWell(
+                    onTap: () {
+                      // print("biabsh ");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderDetailsScreen(
+                            selectedProductIds: [],
+                            selectedVendorIds: [],
+                          ),
                         ),
-                        SizedBox(
-                          width: 3.h,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const OrderDetailsScreen(
-                                    selectedProductIds: [],
-                                    selectedVendorIds: [],
-                                  ),
-                                ));
-                          },
-                          child: Text(
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              colors: [Color(0xff808080), Color(0xFF40246f)]),
+                          border: Border.all(
+                              color: ColorConstant.toastBackgroundColor)),
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.check_box_rounded,
+                            color: ColorConstant.toastBackgroundColor,
+                          ),
+                          SizedBox(
+                            width: 3.h,
+                          ),
+                          Text(
                             "Buy",
                             style: headerstyle.copyWith(),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -302,8 +303,8 @@ class ProductDetailScreen extends ConsumerWidget {
 
                       if (data.result != null)
                         HeaderBannerWidget(
-                          id: data.result!.user!.id,
-                          vname: data.result!.user!.name,
+                            id: data.result!.user!.id,
+                            vname: data.result!.user!.name,
                             img: data.result!.user_photo_url,
                             title: data.result!.feed_post!.isEmpty
                                 ? "Trade-hub"
@@ -682,60 +683,62 @@ class ProductDetailScreen extends ConsumerWidget {
                                           fontWeight: FontWeight.w700,
                                           color: Colors.black87),
                                     ),
-                               if(data.result?.ratings!=null)   Text(
-                                    "${data.result!.ratings!.averageRating} ratings",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.black45),
-                                  )
+                                  if (data.result?.ratings != null)
+                                    Text(
+                                      "${data.result!.ratings!.averageRating} ratings",
+                                      style: headerstyle.copyWith(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black45),
+                                    )
                                 ],
                               ),
-                          if(data.result?.ratings!=null)    Column(
-                                children: [
-                                  StarWidget(
-                                    star: data
-                                        .result!.ratings!.ratingCounts.five!,
-                                    value:
-                                        0.2, // Adjust progress bar value as needed
-                                    width: 100, // Progress bar width
-                                    numStar: data
-                                        .result!.ratings!.ratingCounts.five!,
-                                  ),
-                                  StarWidget(
-                                      star: data.result!.ratings!.ratingCounts
-                                          .four!, // Only 1 star highlighted
+                              if (data.result?.ratings != null)
+                                Column(
+                                  children: [
+                                    StarWidget(
+                                      star: data
+                                          .result!.ratings!.ratingCounts.five!,
                                       value:
                                           0.2, // Adjust progress bar value as needed
                                       width: 100, // Progress bar width
                                       numStar: data
-                                          .result!.ratings!.ratingCounts.four!),
-                                  StarWidget(
-                                      star: data.result!.ratings!.ratingCounts
-                                          .three!, // Only 1 star highlighted
-                                      value:
-                                          0.2, // Adjust progress bar value as needed
-                                      width: 100, // Progress bar width
-                                      numStar: data.result!.ratings!
-                                          .ratingCounts.three!),
-                                  StarWidget(
-                                      star: data.result!.ratings!.ratingCounts
-                                          .two!, // Only 1 star highlighted
-                                      value:
-                                          0.2, // Adjust progress bar value as needed
-                                      width: 100, // Progress bar width
-                                      numStar: data
-                                          .result!.ratings!.ratingCounts.two!),
-                                  StarWidget(
-                                      star: data.result!.ratings!.ratingCounts
-                                          .one!, // Only 1 star highlighted
-                                      value:
-                                          0.2, // Adjust progress bar value as needed
-                                      width: 100, // Progress bar width
-                                      numStar: data
-                                          .result!.ratings!.ratingCounts.one!),
-                                ],
-                              )
+                                          .result!.ratings!.ratingCounts.five!,
+                                    ),
+                                    StarWidget(
+                                        star: data.result!.ratings!.ratingCounts
+                                            .four!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.four!),
+                                    StarWidget(
+                                        star: data.result!.ratings!.ratingCounts
+                                            .three!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.three!),
+                                    StarWidget(
+                                        star: data.result!.ratings!.ratingCounts
+                                            .two!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.two!),
+                                    StarWidget(
+                                        star: data.result!.ratings!.ratingCounts
+                                            .one!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.one!),
+                                  ],
+                                )
                             ],
                           ),
                           data.result?.rating_comment == null ||
@@ -854,28 +857,29 @@ class ProductDetailScreen extends ConsumerWidget {
                             }),
                           ),
 
-                         if(data.result?.deals!=null) Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: SizedBox(
-                              height: 300,
-                              child: selectedIndex == 1
-                                  ? CardWidget(
-                                      deal: data.result!.deals ??
-                                          []) // Show deals content for selectedIndex 1
-                                  : selectedIndex == 2
-                                      ? CardWidget(
-                                          deal: data.result!.shop ??
-                                              []) // Show shop content for selectedIndex 2
-                                      : selectedIndex == 3
-                                          ? SwapablePostCard(
-                                              post: data.result!.feed_post!)
-                                          : selectedIndex == 4
-                                              ? LiveSwapble(
-                                                  post:
-                                                      data.result!.live_prizes)
-                                              : const SizedBox(), // Fallback for other index values
+                          if (data.result?.deals != null)
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: SizedBox(
+                                height: 300,
+                                child: selectedIndex == 1
+                                    ? CardWidget(
+                                        deal: data.result!.deals ??
+                                            []) // Show deals content for selectedIndex 1
+                                    : selectedIndex == 2
+                                        ? CardWidget(
+                                            deal: data.result!.shop ??
+                                                []) // Show shop content for selectedIndex 2
+                                        : selectedIndex == 3
+                                            ? SwapablePostCard(
+                                                post: data.result!.feed_post!)
+                                            : selectedIndex == 4
+                                                ? LiveSwapble(
+                                                    post: data
+                                                        .result!.live_prizes)
+                                                : const SizedBox(), // Fallback for other index values
+                              ),
                             ),
-                          ),
 
                           SizedBox(
                             height: 10.h,
@@ -899,10 +903,9 @@ class ProductDetailScreen extends ConsumerWidget {
                           data.widgetSimilarPosts?.posts.data[0].userPhotoUrl ==
                                   null
                               ? const Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 40, left: 20),
-                                  child: SizedBox(
-                                      child: Text("No listing found")),
+                                  padding: EdgeInsets.only(top: 40, left: 20),
+                                  child:
+                                      SizedBox(child: Text("No listing found")),
                                 )
                               : GridView.builder(
                                   physics:

@@ -13,7 +13,7 @@ Future<SubscribeAndWinModel> getSubscribeAndWin(
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: ApiConstants.getSubscribeAndWinUrl,
+      url: ApiConstants.getMYSubscribeAndWinUrl,
     );
     print("biabsh $response");
     if (response.statusCode == 200) {

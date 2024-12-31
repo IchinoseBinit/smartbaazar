@@ -1,83 +1,50 @@
-// import 'package:flutter/material.dart';
-// import 'package:textfield_tags/textfield_tags.dart';
-
-// class TagsExample extends StatefulWidget {
-//   const TagsExample({Key? key}) : super(key: key);
+// class CalendarWithTime extends StatefulWidget {
+//   const CalendarWithTime({super.key});
 
 //   @override
-//   _TagsExampleState createState() => _TagsExampleState();
+//   _CalendarWithTimeState createState() => _CalendarWithTimeState();
 // }
 
-// class _TagsExampleState extends State<TagsExample> {
-//   late TextfieldTagsController _controller;
-//   List<String> somethingHere = [];
+// class _CalendarWithTimeState extends State<CalendarWithTime> {
+//   DateTime? selectedDateTime;
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = TextfieldTagsController();
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
-//   void onDelete(int index) {
-//     setState(() {
-//       somethingHere.removeAt(index);
-//     });
+//   void _onDateSelected(DateTime? date) {
+//     if (date != null) {
+//       setState(() {
+//         selectedDateTime = date;
+//       });
+//     }
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Simple Textfield Tags Example'),
-//         centerTitle: true,
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(14.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               const SizedBox(height: 12.0),
-//               const Text(
-//                 'In just a few words, what are 3 positive things about dogs? (optional)',
-//                 style: TextStyle(
-//                   fontWeight: FontWeight.bold,
-//                   fontSize: 16.0,
-//                 ),
-//               ),
-//               Padding(
-//                   padding: const EdgeInsets.only(top: 16.0),
-//                   child: TextFieldTags(
-//                     textfieldTagsController: _controller,
-                    
-//                     inputFieldBuilder: (context, textFieldTagValues) {
-//                       return Container(
-                        
-//                       );
-//                     },
-//                   )),
-//               Wrap(
-//                 spacing: 6.0,
-//                 children: somethingHere.map((tag) {
-//                   return Chip(
-//                     label: Text(tag),
-//                     onDeleted: () {
-//                       setState(() {
-//                         somethingHere.remove(tag);
-//                       });
-//                     },
-//                   );
-//                 }).toList(),
-//               ),
-//             ],
+//     return Center(
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Text(
+//             selectedDateTime != null
+//                 ? "Selected Date & Time: $selectedDateTime"
+//                 : "No Date Selected",
+//             style: const TextStyle(fontSize: 18),
 //           ),
-//         ),
+//           const SizedBox(height: 20),
+//           ElevatedButton(
+//             onPressed: () async {
+//               final pickedDate = await showDialog<DateTime>(
+//                 context: context,
+//                 builder: (BuildContext context) {
+//                   return AdoptiveCalendar(
+//                     initialDate: DateTime.now(), // Default current date
+//                     action: true, // Enable action buttons (Confirm/Cancel)
+//                   );
+//                 },
+//               );
+//               _onDateSelected(pickedDate);
+//             },
+//             child: const Text("Open Calendar"),
+//           ),
+//         ],
 //       ),
 //     );
 //   }

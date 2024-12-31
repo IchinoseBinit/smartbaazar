@@ -194,7 +194,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     _startAutoScroll();
   }
 
-  Set<int> _displayedStoryIndices = {};
+  final Set<int> _displayedStoryIndices = {};
 
   void _onTap(bool forward) {
     if (forward) {
