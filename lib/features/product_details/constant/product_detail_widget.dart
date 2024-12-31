@@ -609,7 +609,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         size: 12,
                                       ),
                                       SizedBox(
-                                        width: 42.w,
+                                        width: 52.w,
                                       ),
                                       Row(
                                         children: [

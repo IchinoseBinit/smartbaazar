@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
@@ -36,6 +37,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 
 import '../../../general_widget/story_search_bar.dart';
+import '../../events_screen/view/events_screen.dart';
+import '../../grocessary_screen/view/grocary_screen.dart';
+import '../../jobs_screen/view/jobs_screen.dart';
+import '../../services_screen/service_screen.dart';
+import '../../socio_screen/view/socio_screen.dart';
+import '../../used_screen/view/used_screen.dart';
 
 int selectedIndex = 0; // Keep track of the selected index
 
@@ -63,6 +70,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
   final double _currentHeight = 500; // Default height for first tab
+  final List<Map<String, dynamic>> _items = [
+
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+    {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
 
   @override
   void initState() {
@@ -369,16 +424,114 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 20.h,
                           ),
-                          CustomPageView(
-                            // selectedindex: 1,
+                          // CustomPageView(
+                          //   // selectedindex: 1,
+                          //
+                          //   pageController: _pageController,
+                          //   items: items,
+                          //   // initialIndex: 1,
+                          //
+                          //   activeColor: Colors.amber,
+                          //   inactiveColor: const Color(0xffD9D9D9),
+                          // ),
 
-                            pageController: _pageController,
-                            items: items,
-                            // initialIndex: 1,
+                          SizedBox(
+                            height: 80.h,
+                            child: PageView.builder(
+                              itemCount: _items.length,
+                              padEnds: false,
+                              controller: _pageController,
+                              onPageChanged: (value) {
+                                setState(() {
+                                  selectedIndex =
+                                      value; // Update selectedIndex based on page change
+                                });
+                              },
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data = _items[index];
 
-                            activeColor: Colors.amber,
-                            inactiveColor: const Color(0xffD9D9D9),
+                                // Highlight only when index == 4
+                                bool isActive = index == 1;
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                    _pageController.animateToPage(
+                                      2,
+                                      duration:
+                                      const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  },
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
+                                    duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              data['screen']),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          if (data['icon']
+                                              .toString()
+                                              .endsWith('.svg'))
+                                            SvgPicture.asset(
+                                              data['icon'],
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                              theme: const SvgTheme(
+                                                  currentColor:
+                                                  Color(0xffdd9d9d9)),
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                              width: 20,
+                                              height: 20,
+                                            )
+                                          else
+                                            Image.asset(
+                                              data['icon'],
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            data['label'],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
+
+
+
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             child: const Divider(
