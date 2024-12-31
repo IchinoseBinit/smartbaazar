@@ -379,7 +379,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             activeColor: Colors.amber,
                             inactiveColor: const Color(0xffD9D9D9),
                           ),
-
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             child: const Divider(
@@ -388,7 +387,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               color: ColorConstant.grayColor,
                             ),
                           ),
-
                           if (_isSectionsVisible)
                             Padding(
                               padding: const EdgeInsets.all(20),
@@ -690,7 +688,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               if (products.length == 0) {
                                 dynamicHeight = products.isEmpty ? 130.h : 420.h;
                               } else
-                                dynamicHeight = 420.h;
+                                dynamicHeight = 390.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -867,7 +865,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     : 300.h;
                               else
                                 dynamicHeight = 300;
-
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -894,7 +891,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               );
                                             }).toList(),
                                           data.insidearr[0].isEmpty
-                                              ? Center(child: nolistingfound())
+                                              ? Padding(
+                                                padding: EdgeInsets.only(top: 28.h),
+                                                child: Center(child: nolistingfound()),
+                                              )
                                               : SizedBox(
                                                   height: 340.h,
                                                   child: ListView.builder(
@@ -1242,6 +1242,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
+                                      
+                                      gift_qty: resp.gift_qty!,
                                         worth: resp.worth!,
                                         productname: "Discount Coupon",
                                         vendorImage: resp.vendorImage,
@@ -1303,7 +1305,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) {
                                           SponsoredProduct prefs = data[index];
-
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1413,7 +1414,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 350,
+                                  mainAxisExtent: 340.9,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,

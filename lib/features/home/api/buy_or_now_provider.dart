@@ -125,6 +125,7 @@ class Buynowmodel {
   final String vendorImage;
   final String? worth;
   final String name;
+  final String? gift_qty;
 
   final int winners;
 
@@ -134,10 +135,12 @@ class Buynowmodel {
     required this.vendorImage,
     required this.name,
     required this.winners,
+    required this.gift_qty,
   });
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      gift_qty: json['gift_qty'] as String,
       worth: json['worth'] as String,
       image: json['image'] as String,
       vendorImage: json['vendor_image'] as String,

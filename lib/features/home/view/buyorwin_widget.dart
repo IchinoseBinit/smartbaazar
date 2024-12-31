@@ -12,12 +12,13 @@ class buyorwin_widget extends StatelessWidget {
     required this.proctimage,
     required this.vendorImage,
         required this.productname,
-        required this.worth
+        required this.worth,
+        required this.gift_qty,
 
 
   });
 
-  final String vendorname, winners, proctimage, vendorImage,productname,worth;
+  final String vendorname, winners, proctimage, vendorImage,productname,worth,gift_qty;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class buyorwin_widget extends StatelessWidget {
                                   fontSize: 11,
                                 )),
                             TextSpan(
-                                text: "$worth x25",
+                                text: "$worth x${gift_qty}",
                                 style: headerstyle.copyWith(
                                     fontSize: 15, fontWeight: FontWeight.bold))
                           ]))
@@ -102,7 +103,7 @@ class buyorwin_widget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("x25",
+                            Text("x ${gift_qty}",
                                 style: headerstyle.copyWith(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,

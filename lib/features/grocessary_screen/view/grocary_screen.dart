@@ -1629,6 +1629,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                             gift_qty: resp.gift_qty!,
+                            
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage,
@@ -1871,7 +1873,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 370,
+                        mainAxisExtent: 334.9,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,

@@ -72,7 +72,7 @@ class AllProductDetailWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 5.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -95,7 +95,6 @@ class AllProductDetailWidget extends StatelessWidget {
                       child: Icon(
                         size: 20,
                         color: ColorConstant.grayColor,
-
                         Icons.more_vert,
                       ),
                       onSelected: (value) {},
@@ -253,7 +252,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                   const Icon(
                                     Icons.track_changes_sharp,
                                     color: Color(0xff901B41),
-                                    size: 15,
+                                    size: 14,
                                   ),
                                   Text(
                                     offer ?? '',
@@ -323,7 +322,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           child:
                               // avg_rating.toString() ?? '0',
                               Text(
-                            avg_rating == 0 ? "1.0" : avg_rating.toString(),
+                            avg_rating == 0 || avg_rating==null ? "0.0" : avg_rating.toString(),
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
@@ -340,7 +339,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           ),
                           child: RatingBar.builder(
                             initialRating: avg_rating == null || avg_rating == 0
-                                ? 1
+                                ? 0
                                 : avg_rating!,
                             // Default to 1 when avg_rating is null or 0
                             minRating: 1,
@@ -648,8 +647,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                         width: 5.w,
                                       ),
                                       issponsored
-                                          ? const SizedBox()
-                                          : Row(
+                                          ? Row(
                                               children: [
                                                 Image.asset(
                                                     "assets/images/mike.png"),
@@ -661,7 +659,8 @@ class AllProductDetailWidget extends StatelessWidget {
                                                           FontWeight.w700),
                                                 ),
                                               ],
-                                            ),
+                                            )
+                                          : const SizedBox(),
                                     ],
                                   ),
                                 ],

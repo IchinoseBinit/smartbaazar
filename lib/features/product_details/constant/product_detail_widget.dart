@@ -334,7 +334,7 @@ class ProductDetailWidget extends StatelessWidget {
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
                           child: Text(
-                            avg_rating == 0 ? "1.0" : avg_rating.toString(),
+                            avg_rating == 0 ? "0.0" : avg_rating.toString(),
                             // Provide fallback value of 0 when null
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
@@ -351,10 +351,10 @@ class ProductDetailWidget extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating: avg_rating == null || avg_rating == 0
-                                ? 1
+                            initialRating: avg_rating == null
+                                ? 0.0
                                 : avg_rating!,
-                            // Default to 1 when avg_rating is null or 0
+                            // Default to 1 when avg_rating is null
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -364,7 +364,7 @@ class ProductDetailWidget extends StatelessWidget {
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, index) {
-                              if (avg_rating == null || avg_rating == 0) {
+                              if (avg_rating == null) {
                                 // Default to 1 star when avg_rating is null or 0
                                 return index == 0
                                     ? const Icon(Icons.star,
@@ -593,7 +593,7 @@ class ProductDetailWidget extends StatelessWidget {
                                       Text(
                                         vendorname != null &&
                                                 vendorname!.length > 19
-                                            ? '${vendorname!.substring(0, 15)}...'
+                                            ? '${vendorname!.substring(0, 14)}...'
                                             : vendorname ?? '',
                                         style: headerstyle.copyWith(
                                           fontSize: 12.sp,
@@ -609,7 +609,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         size: 12,
                                       ),
                                       SizedBox(
-                                        width: 52.w,
+                                        width: 42.w,
                                       ),
                                       Row(
                                         children: [
@@ -651,6 +651,8 @@ class ProductDetailWidget extends StatelessWidget {
                                         "assets/images/nepalFlag.png",
                                         height: 9.h,
                                       ),
+
+
                                       SizedBox(
                                         width: 1.w,
                                       ),
@@ -667,10 +669,10 @@ class ProductDetailWidget extends StatelessWidget {
                                       //       fontWeight: FontWeight.w700,
                                       //     ),
                                       //   ),
-                                      // ),
+                                      // ),e
 
                                       SizedBox(
-                                        width: 80.w,
+                                        width: 70.w,
                                         child: Text(
                                           membershipTitle ?? "Domestic Brand",
                                           style: headerstyle.copyWith(
@@ -688,8 +690,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         width: 40.w,
                                       ),
                                       issponsored
-                                          ? const SizedBox()
-                                          : Row(
+                                          ? Row(
                                               children: [
                                                 Image.asset(
                                                     "assets/images/mike.png"),
@@ -701,7 +702,7 @@ class ProductDetailWidget extends StatelessWidget {
                                                           FontWeight.w700),
                                                 ),
                                               ],
-                                            ),
+                                            ) : const SizedBox(),
                                     ],
                                   ),
                                 ],

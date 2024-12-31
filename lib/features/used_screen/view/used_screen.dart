@@ -1637,6 +1637,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                             gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage,
@@ -1886,7 +1887,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 370,
+                        mainAxisExtent: 340.9,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,
