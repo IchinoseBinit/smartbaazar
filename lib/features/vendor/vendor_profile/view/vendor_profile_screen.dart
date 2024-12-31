@@ -132,6 +132,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": '',
       "screen": const LeftArrowScreen(),
     },
+     {
+      "icon": Icons.settings_applications_rounded,
+      "title": 'Sponsored',
+      "subtitle": '',
+      "screen":  HotViewScreen(header: 'sponsored',),
+    },
   ];
   final List<Map<String, dynamic>> sellerCenterListing = [
     {

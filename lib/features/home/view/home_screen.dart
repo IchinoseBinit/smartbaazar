@@ -690,7 +690,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               if (products.length == 0) {
                                 dynamicHeight = products.isEmpty ? 130.h : 420.h;
                               } else
-                                dynamicHeight = 340.h;
+                                dynamicHeight = 420.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
