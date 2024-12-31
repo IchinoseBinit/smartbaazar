@@ -23,7 +23,7 @@ class AllProductDetailWidget extends StatelessWidget {
       this.vendorname = 'John',
       this.distance = 2,
       this.Vimage = '',
-      this.productImage = '',
+      this.productImage,
       this.lefttile = 'TradeHub',
       this.similarproductCount,
       this.membershipColor,
@@ -55,8 +55,7 @@ class AllProductDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String showRs = "Rs";
     showRs = discounttedPrice == '0' ? '' : '';
-    print("ramkbaba $Vimage");
-    print("Membership colorrrrrrrrrrrrrrrrrrrrrrr${discounttedPrice == '0'}");
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       child: Card(
@@ -67,17 +66,18 @@ class AllProductDetailWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: SizedBox(
-          height: 50.h,
-          width: 360.w,
+          height: 100.h,
+          width: 30.w,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 5.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SvgPicture.asset(
                           b2bIcon,
@@ -92,7 +92,15 @@ class AllProductDetailWidget extends StatelessWidget {
                       ],
                     ),
                     PopupMenuButton(
-                      padding: EdgeInsets.zero,
+                      child: Icon(
+                        size: 20,
+                        color: ColorConstant.grayColor,
+
+                        Icons.more_vert,
+                      ),
+                      onSelected: (value) {},
+
+                      padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
@@ -190,33 +198,26 @@ class AllProductDetailWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              productImage == 'null'
-                  ? Image.asset(
-                      'assets/images/shoppingimages.png',
-                      height: 130.h,
-                      width: 200.2,
-                      fit: BoxFit.fill,
-                    )
-                  : Image.network(
-                      productImage ?? '', // Ensure Vimage is not null or empty
-                      height: 130.h,
-                      // Adjust size accordingly
-                      width: 200.w,
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; // If no loading, show the image
-                        } else {
-                          return const Center(
-                              child:
-                                  CircularProgressIndicator()); // Show loading indicator
-                        }
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons
-                            .error); // Show error icon if image fails to load
-                      },
-                    ),
+              Image.network(
+                productImage ?? '', // Ensure Vimage is not null or empty
+                height: 130.h,
+                // Adjust size accordingly
+                width: 200.w,
+                fit: BoxFit.fill,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; // If no loading, show the image
+                  } else {
+                    return const Center(
+                        child:
+                            CircularProgressIndicator()); // Show loading indicator
+                  }
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                      Icons.error); // Show error icon if image fails to load
+                },
+              ),
               SizedBox(
                 height: 5.h,
               ),
@@ -647,7 +648,8 @@ class AllProductDetailWidget extends StatelessWidget {
                                         width: 5.w,
                                       ),
                                       issponsored
-                                          ? Row(
+                                          ? const SizedBox()
+                                          : Row(
                                               children: [
                                                 Image.asset(
                                                     "assets/images/mike.png"),
@@ -659,7 +661,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                                           FontWeight.w700),
                                                 ),
                                               ],
-                                            ) : const SizedBox(),
+                                            ),
                                     ],
                                   ),
                                 ],

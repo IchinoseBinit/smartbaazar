@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -6,12 +5,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
@@ -33,23 +29,15 @@ import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
-import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 import '../../../general_widget/story_search_bar.dart';
 
 int selectedIndex = 0; // Keep track of the selected index
-final PageController _pageController = PageController();
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -198,7 +186,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    int currentPageIndex = 0;
 
     // category.when(
     //   data: (data) {
@@ -679,145 +666,165 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 5.h,
                           ),
 
-                          SizedBox(
-                            width: double.infinity,
-                            height: 420.h,
-                            child: Column(
-                              children: [
-                                // Category Selector Row
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50.h,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: categories.length,
-                                    itemBuilder: (context, index) {
-                                      bool isSelected = index == selectedIndex;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedIndex =
-                                                index; // Update selected index
-                                          });
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          margin: const EdgeInsets.all(5),
-                                          width: 100.w,
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? const Color(0xFF681b4e)
-                                                : const Color(0xffA5A5A5),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Text(
-                                            categories[index],
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                          // Display Products for the selected category
+                          category.when(
+                            data: (data) {
+                              double dynamicHeight;
+                              // Define the products list corresponding to each category
+                              List<List<CategoryProduct>> productsList = [
+                                data.new_products, // SHOPZONE
+                                data.b2b_products, // TRADEHUB
+                                data.services, // SERVICES
+                                data.used_products, // USED
+                                data.jobs, // JOB
+                                data.event, // EVENT
+                                data.grocarry, // GROCERY
+                              ];
 
-                                // Spacer
-                                SizedBox(height: 5.h),
+                              // Ensure selectedIndex is valid and get products
+                              List<CategoryProduct> products =
+                                  productsList[selectedIndex];
 
-                                // Display Products for the selected category
-                                category.when(
-                                  data: (data) {
-                                    // Define the products list corresponding to each category
-                                    List<List<CategoryProduct>> productsList = [
-                                      data.new_products, // SHOPZONE
-                                      data.b2b_products, // TRADEHUB
-                                      data.services, // SERVICES
-                                      data.used_products, // USED
-                                      data.jobs, // JOB
-                                      data.event, // EVENT
-                                      data.grocarry, // GROCERY
-                                    ];
+                              if (products.length == 0) {
+                                dynamicHeight = products.isEmpty ? 130.h : 420.h;
+                              } else
+                                dynamicHeight = 340.h;
 
-                                    // Ensure selectedIndex is valid and get products
-                                    List<CategoryProduct> products =
-                                        productsList[selectedIndex];
-                                    return SizedBox(
-                                      height: 340.h,
+                              return SizedBox(
+                                height: dynamicHeight,
+                                width: double.infinity,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 50.h,
                                       child: ListView.builder(
-                                        padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: products.length,
+                                        itemCount: categories.length,
                                         itemBuilder: (context, index) {
-                                          CategoryProduct prod =
-                                              products[index];
-                                          return InkWell(
+                                          bool isSelected =
+                                              index == selectedIndex;
+                                          return GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProductDetailScreen(
-                                                            productId: prod.id),
-                                                  ));
-                                              // Handle product click if needed
+                                              setState(() {
+                                                selectedIndex =
+                                                    index; // Update selected index
+                                              });
                                             },
-                                            child: ProductDetailWidget(
-                                              distance: prod.shortestDistance,
-                                              issponsored:
-                                                  prod.user!.sponsored ?? false,
-                                              shortestDistance: double.tryParse(
-                                                  prod.nearestBranch ?? '0'),
-                                              wow: prod.wow,
-                                              comment: prod.commentcount
-                                                      .toString() ??
-                                                  '1',
-                                              avg_rating:
-                                                  prod.avg_rating?.toDouble(),
-
-                                              offer: prod.offers,
-                                              id: int.tryParse(prod.user!.id),
-                                              lefttile:
-                                                  categories[selectedIndex],
-                                              vendorname: prod.user!.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.user!.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              membershipColor:
-                                                  prod.user!.membercolor,
-                                              similarproductCount:
-                                                  prod.similarproductCount,
-                                              membershipTitle:
-                                                  prod.user!.membershipTitle,
-                                              // avg_rating: prod.average_rating,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              margin: const EdgeInsets.all(5),
+                                              width: 100.w,
+                                              decoration: BoxDecoration(
+                                                color: isSelected
+                                                    ? const Color(0xFF681b4e)
+                                                    : const Color(0xffA5A5A5),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                categories[index],
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
                                           );
                                         },
                                       ),
-                                    );
-                                  },
-                                  error: (error, stackTrace) =>
-                                      Center(child: Text("Error: $error")),
-                                  loading: () => const Center(
-                                      child: CircularProgressIndicator()),
+                                    ),
+                                    products.isNotEmpty?
+                                    SizedBox(
+                                      child: AnimatedContainer(
+                                        duration: Duration(microseconds: 400),
+                                        height: 340.h,
+                                        width: double.infinity,
+                                        child: ListView.builder(
+                                                padding:
+                                                    const EdgeInsets.all(3),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: products.length,
+                                                itemBuilder: (context, index) {
+                                                  CategoryProduct prod =
+                                                      products[index];
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetailScreen(
+                                                                    productId:
+                                                                        prod.id),
+                                                          ));
+                                                      // Handle product click if needed
+                                                    },
+                                                    child: ProductDetailWidget(
+                                                      distance:
+                                                          prod.shortestDistance,
+                                                      issponsored: prod.user!
+                                                              .sponsored ??
+                                                          false,
+                                                      shortestDistance:
+                                                          double.tryParse(
+                                                              prod.nearestBranch ??
+                                                                  '0'),
+                                                      wow: prod.wow,
+                                                      comment: prod.commentcount
+                                                              .toString() ??
+                                                          '1',
+                                                      avg_rating: prod
+                                                          .avg_rating
+                                                          ?.toDouble(),
+
+                                                      offer: prod.offers,
+                                                      id: int.tryParse(
+                                                          prod.user!.id),
+                                                      lefttile: categories[
+                                                          selectedIndex],
+                                                      vendorname:
+                                                          prod.user!.name,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.user!.photo,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      membershipColor: prod
+                                                          .user!.membercolor,
+                                                      similarproductCount: prod
+                                                          .similarproductCount,
+                                                      membershipTitle: prod
+                                                          .user!
+                                                          .membershipTitle,
+                                                      // avg_rating: prod.average_rating,
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                          
+                                      ),
+                                    ):nolistingfound(),
+                          
+                                  ],
                                 ),
-                              ],
-                            ),
+                              );
+                            },
+                            error: (error, stackTrace) =>
+                                Center(child: Text("Error: $error")),
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
                           ),
+                          SizedBox(height: 60.h,),
 
                           // Expanded(
 
                           // child: ProductDetailWidget(),),
 
-                          SizedBox(
-                            height: 5.h,
-                          ),
+                        
                           SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -840,7 +847,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                           buyorwin.when(
                             data: (data) {
-                              print("bibash ${data.homestory.keys}");
                               double dynamicHeight;
 
                               if (dynamictabController.index == 0) {
@@ -1406,7 +1412,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 400,
+                                  mainAxisExtent: 350,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,
