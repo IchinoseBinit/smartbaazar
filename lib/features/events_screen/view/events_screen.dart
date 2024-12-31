@@ -24,12 +24,9 @@ import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
-import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
@@ -1796,11 +1793,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                           return buyorwin_widget(
                             worth: resp.worth!,
-                            productname: resp.name,
-                              vendorImage: resp.vendorImage,
-                              vendorname: resp.name,
+                            productname: resp.name?? '',
+                              vendorImage: resp.vendorImage?? '',
+                              vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image?? '');
                         },
                       ),
                     );

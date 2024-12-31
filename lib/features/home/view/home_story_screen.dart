@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class FeedStoryScreen extends StatefulWidget {
+class HomeStoryScreen extends StatefulWidget {
   final String author;
   final int storyCount;
-  final FeedStory? feedStory;
+  final Story? feedStory;
   final int initialIndex;
   final int selectedVendorIndex;
 
-  const FeedStoryScreen(
+  const HomeStoryScreen(
       {super.key,
       required this.author,
       required this.storyCount,
@@ -21,10 +21,10 @@ class FeedStoryScreen extends StatefulWidget {
       this.feedStory});
 
   @override
-  State<FeedStoryScreen> createState() => _FeedStoryScreenState();
+  State<HomeStoryScreen> createState() => _HomeStoryScreenState();
 }
 
-class _FeedStoryScreenState extends State<FeedStoryScreen>
+class _HomeStoryScreenState extends State<HomeStoryScreen>
     with TickerProviderStateMixin {
   late List<Post> stories;
   late List<String> vendors;

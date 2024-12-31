@@ -216,53 +216,50 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                 //     ),
                 //   ],
                 // ),
-                asyncFollowingFeedContent.when(
-                  data: (feedData) {
-                    if (feedData.data != null && feedData.data!.story != null) {
-                      final feedStoryItems = feedData.data!.story!;
-                      return asyncFollowingStoryContent.when(
-                        data: (feedStoryData) {
-                          final feedStoryContent =
-                              feedStoryData.data?.feedstory;
-                          return Expanded(
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount:
-                                  feedStoryData.data!.feedstory!.posts!.length,
-                              itemBuilder: (context, index) {
-                                final story = feedStoryData
-                                    .data!.feedstory!.posts![index];
-                                return FeedStoryAddWidget(
-                                  index: index,
-                                  vendorName:
-                                      story.vendorName ?? "Unknown Vendor",
-                                  vendorImage: story.vendorImage ??
-                                      "https://example.com/default-image.png",
-                                  storyCount: story.storyCount ?? 0,
-                                  showGift: story.hasSponsoredGifts ?? false,
-                                  feedStoryContent: feedStoryContent,
-                                  userId: story.vendorId!,
-                                  // feedData.data!.feedPost![index].userId ??
-                                );
-                              },
-                            ),
+                // asyncFollowingFeedContent.when(
+                //   data: (feedData) {
+                //     if (feedData.data != null && feedData.data!.story != null) {
+                //       final feedStoryItems = feedData.data!.story!;
+
+                //     } else {
+                //       return const Center(child: Text('No story available'));
+                //     }
+                //   },
+                //   loading: () =>
+                //       const Center(child: CircularProgressIndicator()),
+                //   error: (error, stack) => Center(child: Text('Error: $error')),
+                // ),
+                asyncFollowingStoryContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.data?.feedstory;
+                    return Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: feedStoryData.data!.feedstory!.posts!.length,
+                        itemBuilder: (context, index) {
+                          final story =
+                              feedStoryData.data!.feedstory!.posts![index];
+                          return FeedStoryAddWidget(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                            // feedData.data!.feedPost![index].userId ??
                           );
                         },
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (error, stack) =>
-                            Center(child: Text('Error: $error')),
-                      );
-                    } else {
-                      return const Center(child: Text('No story available'));
-                    }
+                      ),
+                    );
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
-                ),
+                )
               ],
             ),
           ),

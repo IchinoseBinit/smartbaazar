@@ -6,7 +6,7 @@ part of 'buy_or_now_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchBuyAndHotHash() => r'adc318d52f5f8c3210b4c69b92be5aafb0493226';
+String _$fetchBuyAndHotHash() => r'7b21cae8f50b0fe0b28a999bf9536f5f6055db22';
 
 /// See also [fetchBuyAndHot].
 @ProviderFor(fetchBuyAndHot)

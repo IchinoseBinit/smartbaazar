@@ -1,23 +1,17 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
-import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
+import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -27,6 +21,7 @@ import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
@@ -275,7 +270,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
-
+    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
     return Scaffold(
         extendBody: true,
         key: _key,
@@ -411,14 +406,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   );
                                 }, loading: () {
                                   return null;
-                                
+
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
                                   //     child: CircularProgressIndicator());
                                 }, error: (error, stack) {
                                   return null;
-                                
+
                                   // return SizedBox(
                                   //     width: 10.w,
                                   //     height: 10.h,
@@ -655,45 +650,68 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           height: 130.h,
                           child: Row(
                             children: [
-                              StoryAddWidget(
-                                vImage: data.homestory['158']!.vendorImage,
-                                brandname: data.homestory['158']!.vendorName,
-                                index: 0,
-                                addSearch: true,
-                                showgift:
-                                    data.homestory['158']!.hasSponsoredGifts,
-                                onTap: () {
-                                  setState(() {
-                                    _isPopupVisible = true; // Open the popup
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 2,
-                                  itemBuilder: (context, index) {
-                                    // Define data keys based on index
-                                    final dataKey = index == 0 ? '196' : '9';
-                                    final storyData = data.homestory[dataKey]!;
+                              // Expanded(
+                              //   child: ListView.builder(
+                              //     padding: EdgeInsets.zero,
+                              //     shrinkWrap: true,
+                              //     scrollDirection: Axis.horizontal,
+                              //     itemCount: 2,
+                              //     itemBuilder: (context, index) {
+                              //       // Define data keys based on index
+                              //       final dataKey = index == 0 ? '196' : '9';
+                              //      final storyData = data.homestory[dataKey]!;
 
-                                    return StoryAddWidget(
-                                      brandname: storyData.vendorName,
-                                      vImage: storyData.vendorImage,
-                                      index: index,
-                                      addSearch: false,
-                                      showgift: storyData.hasSponsoredGifts,
-                                      onTap: () {
-                                        setState(() {
-                                          _isPopupVisible =
-                                              true; // Open the popup
-                                        });
+                              //       return StoryAddWidget(
+                              //         brandname: storyData.vendorName,
+                              //         vImage: storyData.vendorImage,
+                              //         index: index,
+                              //         addSearch: false,
+                              //         showgift: storyData.hasSponsoredGifts,
+                              //         onTap: () {
+                              //           setState(() {
+                              //             _isPopupVisible =
+                              //                 true; // Open the popup
+                              //           });
+                              //         },
+                              //       );
+                              //     },
+                              //   ),
+                              // ),
+                              asyncHomeStoryContent.when(
+                                data: (feedStoryData) {
+                                  final feedStoryContent =
+                                      feedStoryData.homeStory?.story;
+                                  return Expanded(
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: feedStoryData
+                                          .homeStory!.story!.posts!.length,
+                                      itemBuilder: (context, index) {
+                                        final story = feedStoryData
+                                            .homeStory!.story!.posts![index];
+                                        return HomePageStoryContainer(
+                                          index: index,
+                                          vendorName: story.vendorName ??
+                                              "Unknown Vendor",
+                                          vendorImage: story.vendorImage ??
+                                              "https://example.com/default-image.png",
+                                          storyCount: story.storyCount ?? 0,
+                                          showGift:
+                                              story.hasSponsoredGifts ?? false,
+                                          feedStoryContent: feedStoryContent,
+                                          userId: story.vendorId!,
+                                          // feedData.data!.feedPost![index].userId ??
+                                        );
                                       },
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  );
+                                },
+                                loading: () => const Center(
+                                    child: CircularProgressIndicator()),
+                                error: (error, stack) =>
+                                    Center(child: Text('Error: $error')),
                               ),
                             ],
                           ),
@@ -998,22 +1016,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               double dynamicHeight;
 
                               if (dynamictabController.index == 0) {
-                                dynamicHeight = data.insidearr[0].isEmpty
-                                    ? 140.h
-                                    : 420.h;
+                                dynamicHeight =
+                                    data.insidearr[0].isEmpty ? 140.h : 420.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
                                         data.doma[0].isNotEmpty)
-                                    ? 420.h
+                                    ? 425.h
                                     : 200.h;
                               } else if (dynamictabController.index == 2)
                                 dynamicHeight = (data.spotlight.isNotEmpty &&
                                         data.spot[0].isNotEmpty)
-                                    ? 420.h
+                                    ? 425.h
                                     : 300.h;
                               else
-                                dynamicHeight = 300;
+                                dynamicHeight = 315;
 
                               return SizedBox(
                                 child: AnimatedContainer(
@@ -1030,16 +1047,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.global.isNotEmpty)
-                                            ...data.global.map((e) {
-                                              return NotStoryWidget(
-                                                vImage: e
-                                                    .brandLogo, // Use the correct variable name
-                                                index: data.global.indexOf(
-                                                    e), // Get the index
-                                                brandname: e.brandName,
+                                          asyncHomeStoryContent.when(
+                                            data: (feedStoryData) {
+                                              final feedStoryContent =
+                                                  feedStoryData
+                                                      .homeStory?.story;
+                                              return Expanded(
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: feedStoryData
+                                                      .homeStory!
+                                                      .story!
+                                                      .posts!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    final story = feedStoryData
+                                                        .homeStory!
+                                                        .story!
+                                                        .posts![index];
+                                                    return HomePageStoryContainer(
+                                                      index: index,
+                                                      vendorName:
+                                                          story.vendorName ??
+                                                              "Unknown Vendor",
+                                                      vendorImage: story
+                                                              .vendorImage ??
+                                                          "https://example.com/default-image.png",
+                                                      storyCount:
+                                                          story.storyCount ?? 0,
+                                                      showGift: story
+                                                              .hasSponsoredGifts ??
+                                                          false,
+                                                      feedStoryContent:
+                                                          feedStoryContent,
+                                                      userId: story.vendorId!,
+                                                      // feedData.data!.feedPost![index].userId ??
+                                                    );
+                                                  },
+                                                ),
                                               );
-                                            }).toList(),
+                                            },
+                                            loading: () => const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                            error: (error, stack) => Center(
+                                                child: Text('Error: $error')),
+                                          ),
+                                          // if (data.global.isNotEmpty)
+                                          //   ...data.global.map((e) {
+                                          //     return NotStoryWidget(
+                                          //       vImage: e
+                                          //           .brandLogo, // Use the correct variable name
+                                          //       index: data.global.indexOf(
+                                          //           e), // Get the index
+                                          //       brandname: e.brandName,
+                                          //     );
+                                          //   }).toList(),
                                           data.insidearr[0].isEmpty
                                               ? nolistingfound()
                                               : SizedBox(
@@ -1065,7 +1132,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               builder: (context) =>
                                                                   ProductDetailScreen(
                                                                       productId:
-                                                                          prod.id),
+                                                                          prod.id ??
+                                                                              ''),
                                                             ),
                                                           );
                                                         },
@@ -1121,23 +1189,55 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.domestic.isNotEmpty)
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children:
-                                                    data.domestic.map((e) {
-                                                  return NotStoryWidget(
-                                                    vImage: e.brandLogo,
-                                                    index: data.domestic
-                                                        .indexOf(e),
-                                                    brandname: e.brandName,
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          SizedBox(
-                                            height: 15.h,
+                                          asyncHomeStoryContent.when(
+                                            data: (feedStoryData) {
+                                              final feedStoryContent =
+                                                  feedStoryData
+                                                      .homeStory?.story;
+                                              return Expanded(
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: feedStoryData
+                                                      .homeStory!
+                                                      .story!
+                                                      .posts!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    final story = feedStoryData
+                                                        .homeStory!
+                                                        .story!
+                                                        .posts![index];
+                                                    return HomePageStoryContainer(
+                                                      index: index,
+                                                      vendorName:
+                                                          story.vendorName ??
+                                                              "Unknown Vendor",
+                                                      vendorImage: story
+                                                              .vendorImage ??
+                                                          "https://example.com/default-image.png",
+                                                      storyCount:
+                                                          story.storyCount ?? 0,
+                                                      showGift: story
+                                                              .hasSponsoredGifts ??
+                                                          false,
+                                                      feedStoryContent:
+                                                          feedStoryContent,
+                                                      userId: story.vendorId!,
+                                                      // feedData.data!.feedPost![index].userId ??
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            loading: () => const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                            error: (error, stack) => Center(
+                                                child: Text('Error: $error')),
                                           ),
                                           if (data.domestic.isNotEmpty)
                                             SizedBox(
@@ -1161,7 +1261,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           builder: (context) =>
                                                               ProductDetailScreen(
                                                                   productId:
-                                                                      prod.id),
+                                                                      prod.id ??
+                                                                          ''),
                                                         ),
                                                       );
                                                     },
@@ -1212,23 +1313,55 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.domestic.isNotEmpty)
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children:
-                                                    data.spotlight.map((e) {
-                                                  return NotStoryWidget(
-                                                    vImage: e.brandLogo,
-                                                    index: data.spotlight
-                                                        .indexOf(e),
-                                                    brandname: e.brandName,
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          SizedBox(
-                                            height: 15.h,
+                                          asyncHomeStoryContent.when(
+                                            data: (feedStoryData) {
+                                              final feedStoryContent =
+                                                  feedStoryData
+                                                      .homeStory?.story;
+                                              return Expanded(
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: feedStoryData
+                                                      .homeStory!
+                                                      .story!
+                                                      .posts!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    final story = feedStoryData
+                                                        .homeStory!
+                                                        .story!
+                                                        .posts![index];
+                                                    return HomePageStoryContainer(
+                                                      index: index,
+                                                      vendorName:
+                                                          story.vendorName ??
+                                                              "Unknown Vendor",
+                                                      vendorImage: story
+                                                              .vendorImage ??
+                                                          "https://example.com/default-image.png",
+                                                      storyCount:
+                                                          story.storyCount ?? 0,
+                                                      showGift: story
+                                                              .hasSponsoredGifts ??
+                                                          false,
+                                                      feedStoryContent:
+                                                          feedStoryContent,
+                                                      userId: story.vendorId!,
+                                                      // feedData.data!.feedPost![index].userId ??
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            loading: () => const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                            error: (error, stack) => Center(
+                                                child: Text('Error: $error')),
                                           ),
                                           if (data.spot[0].isNotEmpty)
                                             SizedBox(
@@ -1252,7 +1385,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           builder: (context) =>
                                                               ProductDetailScreen(
                                                                   productId:
-                                                                      prod.id),
+                                                                      prod.id ??
+                                                                          ''),
                                                         ),
                                                       );
                                                     },
@@ -1391,10 +1525,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     return buyorwin_widget(
                                         worth: resp.worth!,
                                         productname: "Discount Coupon",
-                                        vendorImage: resp.vendorImage,
-                                        vendorname: resp.name,
+                                        vendorImage: resp.vendorImage ?? '',
+                                        vendorname: resp.name ?? '',
                                         winners: resp.winners.toString(),
-                                        proctimage: resp.image);
+                                        proctimage: resp.image ?? '');
                                   },
                                 ),
                               );

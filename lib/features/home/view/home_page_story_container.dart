@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
-import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
-import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
-import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
+import 'package:smartbazar/features/home/view/home_story_screen.dart';
 
-class FeedStoryAddWidget extends ConsumerStatefulWidget {
+class HomePageStoryContainer extends ConsumerStatefulWidget {
   final int index;
   final bool? showGift;
   final bool? addSearch;
   final String? vendorName;
   final String? vendorImage;
   final int? storyCount;
-  final FeedStory? feedStoryContent;
+  final Story? feedStoryContent;
   final String userId;
 
-  const FeedStoryAddWidget({
+  const HomePageStoryContainer({
     super.key,
     required this.index,
     this.showGift,
@@ -29,10 +27,12 @@ class FeedStoryAddWidget extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<FeedStoryAddWidget> createState() => _FeedStoryAddWidgetState();
+  ConsumerState<HomePageStoryContainer> createState() =>
+      _HomePageStoryContainerState();
 }
 
-class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
+class _HomePageStoryContainerState
+    extends ConsumerState<HomePageStoryContainer> {
   late List<Post> stories;
   late List<String> vendors;
   late List<String> vendorImage;
@@ -68,15 +68,15 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final feedGiftCardFuture =
-        ref.watch(getFeedGiftCardProvider(widget.userId));
-    print(widget.showGift);
+    // final feedGiftCardFuture =
+    //     ref.watch(getFeedGiftCardProvider(widget.userId));
+    // print(widget.showGift);
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => FeedStoryScreen(
+            builder: (_) => HomeStoryScreen(
               selectedVendorIndex: widget.index,
               initialIndex: widget.index,
               author: widget.vendorName ?? '',
@@ -164,16 +164,16 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                             left: 0,
                             child: GestureDetector(
                               onTap: () {
-                                feedGiftCardFuture.when(
-                                  data: (feedCardData) {
-                                    return showCustomBottomSheet(
-                                        context, feedCardData);
-                                  },
-                                  error: (error, stackTrace) =>
-                                      Text("error $error"),
-                                  loading: () => const Center(
-                                      child: CircularProgressIndicator()),
-                                );
+                                // feedGiftCardFuture.when(
+                                //   data: (feedCardData) {
+                                //     return showCustomBottomSheet(
+                                //         context, feedCardData);
+                                //   },
+                                //   error: (error, stackTrace) =>
+                                //       Text("error $error"),
+                                //   loading: () => const Center(
+                                //       child: CircularProgressIndicator()),
+                                // );
                               },
                               child: Container(
                                 decoration: const BoxDecoration(

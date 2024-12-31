@@ -707,7 +707,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                         builder: (context) =>
                                                             ProductDetailScreen(
                                                                 productId:
-                                                                    res.id),
+                                                                    res.id ??
+                                                                        ''),
                                                       ),
                                                     );
                                                   },

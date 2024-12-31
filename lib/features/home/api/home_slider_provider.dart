@@ -111,6 +111,8 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
 
     return homepage;
   } catch (e) {
+    print("djffffffffffffffffffffff$e");
     throw Exception("Failed to fetch homepage data: $e");
+    
   }
 }

@@ -1708,11 +1708,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                           return buyorwin_widget(
                             worth: resp.worth!,
-                                                        productname: resp.name,
-                              vendorImage: resp.vendorImage,
-                              vendorname: resp.name,
+                                                        productname: resp.name?? '',
+                              vendorImage: resp.vendorImage?? '',
+                              vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image?? '');
                         },
                       ),
                     );

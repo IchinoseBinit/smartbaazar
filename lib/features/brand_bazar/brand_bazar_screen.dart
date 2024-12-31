@@ -15,6 +15,7 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
+import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -218,6 +219,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
+            final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
+
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
     // }, error: (error, stackTrace) {
@@ -1619,11 +1622,11 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
                           return buyorwin_widget(
                             worth: resp.worth!,
-                            productname: resp.name,
-                              vendorImage: resp.vendorImage,
-                              vendorname: resp.name,
+                            productname: resp.name?? '',
+                              vendorImage: resp.vendorImage?? '',
+                              vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image?? '');
                         },
                       ),
                     );

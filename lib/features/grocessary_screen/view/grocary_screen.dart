@@ -11,7 +11,6 @@ import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/api/grocery_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -20,7 +19,6 @@ import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -1693,11 +1691,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
                           return buyorwin_widget(
                             worth: resp.worth!,
-                            productname: resp.name,
-                              vendorImage: resp.vendorImage,
-                              vendorname: resp.name,
+                            productname: resp.name?? '',
+                              vendorImage: resp.vendorImage?? '',
+                              vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image?? '');
                         },
                       ),
                     );

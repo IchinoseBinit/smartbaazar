@@ -375,14 +375,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               );
                             }, loading: () {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
                               //     child: CircularProgressIndicator());
                             }, error: (error, stack) {
                               return null;
-                            
+
                               // return SizedBox(
                               //     width: 10.w,
                               //     height: 10.h,
@@ -1430,21 +1430,21 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     double dynamicHeight;
 
                     if (tabController.index == 0) {
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[0].isEmpty
-                          ? 100
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[0].isEmpty
+                              ? 100
+                              : 500;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[1].isEmpty
-                          ? 200
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[1].isEmpty
+                              ? 200
+                              : 500;
                     } else if (tabController.index == 2)
-                      dynamicHeight = data.insidearr.isEmpty ||
-                              data.insidearr[2].isEmpty
-                          ? 200
-                          : 500;
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[2].isEmpty
+                              ? 200
+                              : 500;
                     else
                       dynamicHeight = 300;
                     return SizedBox(
@@ -1711,12 +1711,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                            worth: resp.worth!,
-                                                        productname: resp.name,
-                              vendorImage: resp.vendorImage,
-                              vendorname: resp.name,
+                              worth: resp.worth!,
+                              productname: resp.name ?? '',
+                              vendorImage: resp.vendorImage ?? '',
+                              vendorname: resp.name ?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image ?? '');
                         },
                       ),
                     );
