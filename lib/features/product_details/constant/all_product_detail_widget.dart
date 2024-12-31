@@ -253,7 +253,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                   const Icon(
                                     Icons.track_changes_sharp,
                                     color: Color(0xff901B41),
-                                    size: 15,
+                                    size: 14,
                                   ),
                                   Text(
                                     offer ?? '',
@@ -648,8 +648,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                         width: 5.w,
                                       ),
                                       issponsored
-                                          ? const SizedBox()
-                                          : Row(
+                                          ? Row(
                                               children: [
                                                 Image.asset(
                                                     "assets/images/mike.png"),
@@ -661,7 +660,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                                           FontWeight.w700),
                                                 ),
                                               ],
-                                            ),
+                                            ) : const SizedBox(),
                                     ],
                                   ),
                                 ],

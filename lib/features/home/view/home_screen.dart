@@ -688,7 +688,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               if (products.length == 0) {
                                 dynamicHeight = products.isEmpty ? 130.h : 420.h;
                               } else
-                                dynamicHeight = 340.h;
+                                dynamicHeight = 390.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -1412,7 +1412,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 350,
+                                  mainAxisExtent: 340.9,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,

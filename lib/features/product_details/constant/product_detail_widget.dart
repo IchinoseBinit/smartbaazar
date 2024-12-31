@@ -593,7 +593,7 @@ class ProductDetailWidget extends StatelessWidget {
                                       Text(
                                         vendorname != null &&
                                                 vendorname!.length > 19
-                                            ? '${vendorname!.substring(0, 15)}...'
+                                            ? '${vendorname!.substring(0, 14)}...'
                                             : vendorname ?? '',
                                         style: headerstyle.copyWith(
                                           fontSize: 12.sp,
@@ -609,7 +609,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         size: 12,
                                       ),
                                       SizedBox(
-                                        width: 52.w,
+                                        width: 42.w,
                                       ),
                                       Row(
                                         children: [
@@ -672,7 +672,7 @@ class ProductDetailWidget extends StatelessWidget {
                                       // ),e
 
                                       SizedBox(
-                                        width: 80.w,
+                                        width: 70.w,
                                         child: Text(
                                           membershipTitle ?? "Domestic Brand",
                                           style: headerstyle.copyWith(

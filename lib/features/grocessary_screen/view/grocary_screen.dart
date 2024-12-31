@@ -1871,7 +1871,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 370,
+                        mainAxisExtent: 334.9,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,
