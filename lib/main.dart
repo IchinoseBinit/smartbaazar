@@ -14,6 +14,8 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 
 void main() {
@@ -46,7 +48,7 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: B2bScreen())
+          home: VendorHomeScreen(vendorName: "techstore", vid: 9))
     );
   }
 }

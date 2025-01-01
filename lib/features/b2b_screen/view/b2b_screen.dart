@@ -1538,7 +1538,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                           ProductDetailScreen(
                                                               productId:
                                                                   prod.id),
-                                                    ));
+                                                    ),
+                                                    );
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
