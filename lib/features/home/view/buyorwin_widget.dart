@@ -105,7 +105,7 @@ class buyorwin_widget extends StatelessWidget {
                           children: [
                             Text("x ${gift_qty}",
                                 style: headerstyle.copyWith(
-                                    fontSize: 11,
+                                    fontSize: 8,
                                     fontWeight: FontWeight.bold,
                                     color: const Color(0xffEC325D))),
                             Text("PRIZES",
