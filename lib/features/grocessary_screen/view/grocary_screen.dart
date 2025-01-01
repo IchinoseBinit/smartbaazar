@@ -986,8 +986,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             },
                             child: ProductDetailWidget(
                               wow: hot.wow,
-                              comment: hot.commentCount.toString(),
-                              discounttedPrice: hot.discountedPrice,
+                              comment: hot.commentcount.toString(),
+                              discounttedPrice: hot.discounted_price,
                               issponsored: hot.user.sponsored,
                               lefttile: "B2b-Shop",
                               productImage: hot.image,
@@ -1373,12 +1373,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 lefttile: "B2B",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1441,12 +1441,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 lefttile: "B2B",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1514,13 +1514,13 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     },
                                                     child: ProductDetailWidget(
                                                       wow: prod.wow,
-                                                      comment: prod.commentCount
+                                                      comment: prod.commentcount
                                                           .toString(),
                                                       lefttile: "B2B",
                                                       vendorname:
                                                           prod.user.name,
                                                       discounttedPrice:
-                                                          prod.discountedPrice,
+                                                          prod.discounted_price,
                                                       Vimage: prod.title,
                                                       issponsored:
                                                           prod.user.sponsored,
@@ -1567,8 +1567,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //         itemBuilder: (context, index) {
                 //           VProduct ref = data.product[index];
                 //           return ProductDetailWidget(
-                //             comment: ref.commentCount.toString(),
-                //             discounttedPrice: ref.discountedPrice,
+                //             comment: ref.commentcount.toString(),
+                //             discounttedPrice: ref.discounted_price,
                 //             issponsored: ref.user.sponsored,
                 //             membershipColor: ref.user.membershipColor,
                 //             membershipTitle: ref.user.membershipTitle,
@@ -1633,13 +1633,13 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                              gift_qty: resp.gift_qty!,
-                              worth: resp.worth!,
-                              productname: resp.name,
-                              vendorImage: resp.vendorImage,
-                              vendorname: resp.name,
+                            gift_qty: resp.gift_qty!,
+                            worth: resp.worth!,
+                            productname: resp.name?? '',
+                              vendorImage: resp.vendorImage?? '',
+                              vendorname: resp.name?? '',
                               winners: resp.winners.toString(),
-                              proctimage: resp.image);
+                              proctimage: resp.image ?? '');
                         },
                       ),
                     );
@@ -1798,11 +1798,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
                                               comment:
-                                                  prod.commentCount.toString(),
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
-                                                  prod.discountedPrice,
+                                                  prod.discounted_price,
                                               Vimage: prod.title,
                                               issponsored: prod.user.sponsored,
                                               price: prod.price,
@@ -1894,10 +1894,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           child: AllProductDetailWidget(
                             wow: data.product[index].wow,
                             comment:
-                                data.product[index].commentCount.toString(),
+                                data.product[index].commentcount.toString(),
                             issponsored: data.product[index].user.sponsored,
                             discounttedPrice:
-                                data.product[index].discountedPrice,
+                                data.product[index].discounted_price,
                             lefttile: "B2b-Shop",
                             productImage: data.product[index].image,
                             Vimage: data.product[index].user.photo,

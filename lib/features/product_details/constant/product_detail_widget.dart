@@ -253,7 +253,7 @@ class ProductDetailWidget extends StatelessWidget {
                           // height: 20.h,
                           width: 100.w,
                           child: Text(
-                            'Rs ${price!}',
+                            'Rs ${price?? 0}',
                             style: headerstyle.copyWith(
                                 color: ColorConstant.blackColor,
                                 fontSize: 12.sp,

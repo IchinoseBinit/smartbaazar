@@ -950,8 +950,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                             },
                             child: ProductDetailWidget(
                               wow: hot.wow,
-                              comment: hot.commentCount.toString(),
-                              discounttedPrice: hot.discountedPrice,
+                              comment: hot.commentcount.toString(),
+                              discounttedPrice: hot.discounted_price,
                               issponsored: hot.user.sponsored,
                               lefttile: "B2b-Shop",
                               productImage: hot.image,
@@ -1042,12 +1042,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                     ));
                                               },
                                               child: ProductDetailWidget(
-                                                offer: pro.discountedPrice,
+                                                offer: pro.discounted_price,
                                                 wow: pro.wow,
                                                 comment:
-                                                    pro.commentCount.toString(),
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
-                                                    pro.discountedPrice,
+                                                    pro.discounted_price,
                                                 issponsored: pro.user.sponsored,
                                                 lefttile: "B2b-Shop",
                                                 Vimage: pro.user.photo,
@@ -1130,10 +1130,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           issponsored: pro.user.sponsored,
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
                                           price: pro.price,
@@ -1204,9 +1204,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1278,9 +1278,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1398,12 +1398,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 lefttile: "B2b",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1469,7 +1469,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                     ));
                                               },
                                               child: ProductDetailWidget(
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
                                                 issponsored:
@@ -1477,7 +1477,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 lefttile: "B2b-Shop",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1535,7 +1535,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                     ));
                                               },
                                               child: ProductDetailWidget(
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
                                                 issponsored:
@@ -1543,7 +1543,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 lefttile: "B2b-Shop",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1774,7 +1774,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentCount
+                                                  comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,
                                                   lefttile: "B2b-Shop",
@@ -1782,7 +1782,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   issponsored:
                                                       prod.user.sponsored,
                                                   discounttedPrice:
-                                                      prod.discountedPrice,
+                                                      prod.discounted_price,
                                                   Vimage: prod.user.photo,
                                                   price: prod.price,
                                                   title: prod.title,
@@ -1886,10 +1886,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                             child: AllProductDetailWidget(
                               wow: data.product[index].wow,
                               comment:
-                                  data.product[index].commentCount.toString(),
+                                  data.product[index].commentcount.toString(),
                               issponsored: data.product[index].user.sponsored,
                               discounttedPrice:
-                                  data.product[index].discountedPrice,
+                                  data.product[index].discounted_price,
                               lefttile: "B2b-Shop",
                               productImage: data.product[index].image,
                               Vimage: data.product[index].user.photo,

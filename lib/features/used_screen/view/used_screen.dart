@@ -972,9 +972,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ));
                             },
                             child: ProductDetailWidget(
-                              comment: hot.commentCount.toString(),
+                              comment: hot.commentcount.toString(),
                               wow: hot.wow,
-                              discounttedPrice: hot.discountedPrice,
+                              discounttedPrice: hot.discounted_price,
                               issponsored: hot.user.sponsored,
                               lefttile: "Used",
                               productImage: hot.image,
@@ -1066,10 +1066,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 comment:
-                                                    pro.commentCount.toString(),
+                                                    pro.commentcount.toString(),
                                                 wow: pro.wow,
                                                 discounttedPrice:
-                                                    pro.discountedPrice,
+                                                    pro.discounted_price,
                                                 issponsored: pro.user.sponsored,
                                                 lefttile: "Used",
                                                 Vimage: pro.user.photo,
@@ -1152,10 +1152,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           issponsored: pro.user.sponsored,
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           lefttile: "Used",
                                           Vimage: pro.user.photo,
                                           price: pro.price,
@@ -1225,10 +1225,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               ));
                                         },
                                         child: ProductDetailWidget(
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           wow: pro.wow,
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "Used",
                                           Vimage: pro.user.photo,
@@ -1300,9 +1300,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "Used",
                                           Vimage: pro.user.photo,
@@ -1419,12 +1419,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 lefttile: "B2b",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1493,14 +1493,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 issponsored:
                                                     prod.user.sponsored,
                                                 lefttile: "Used",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1561,14 +1561,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 issponsored:
                                                     prod.user.sponsored,
                                                 lefttile: "Used",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1798,7 +1798,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentCount
+                                                  comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,
                                                   lefttile: "Used",
@@ -1806,7 +1806,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   issponsored:
                                                       prod.user.sponsored,
                                                   discounttedPrice:
-                                                      prod.discountedPrice,
+                                                      prod.discounted_price,
                                                   Vimage: prod.user.photo,
                                                   price: prod.price,
                                                   title: prod.title,
@@ -1910,10 +1910,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                             child: AllProductDetailWidget(
                               wow: data.product[index].wow,
                               comment:
-                                  data.product[index].commentCount.toString(),
+                                  data.product[index].commentcount.toString(),
                               issponsored: data.product[index].user.sponsored,
                               discounttedPrice:
-                                  data.product[index].discountedPrice,
+                                  data.product[index].discounted_price,
                               lefttile: "Used",
                               productImage: data.product[index].image,
                               Vimage: data.product[index].user.photo,

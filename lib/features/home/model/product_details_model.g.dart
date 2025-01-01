@@ -342,19 +342,35 @@ Map<String, dynamic> _$$PostTypeImplToJson(_$PostTypeImpl instance) =>
 _$VendorUserDetailImpl _$$VendorUserDetailImplFromJson(
         Map<String, dynamic> json) =>
     _$VendorUserDetailImpl(
-      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
-      nearestBranch: json['nearestBranch'] as String?,
-      membership_color: json['membership_color'] as String?,
+      user_id: json['user_id'] as String?,
+      membership_plan_id: json['membership_plan_id'] as String?,
+      membership_status: json['membership_status'] as String?,
+      membership_id: json['membership_id'] as String?,
       membership_title: json['membership_title'] as String?,
+      membership_color: json['membership_color'] as String?,
+      photo: json['photo'] as String?,
+      name: json['name'] as String?,
+      storyCount: (json['storyCount'] as num?)?.toInt(),
+      sponsored: json['sponsored'] as bool?,
+      has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$VendorUserDetailImplToJson(
         _$VendorUserDetailImpl instance) =>
     <String, dynamic>{
-      'shortestDistance': instance.shortestDistance,
-      'nearestBranch': instance.nearestBranch,
-      'membership_color': instance.membership_color,
+      'user_id': instance.user_id,
+      'membership_plan_id': instance.membership_plan_id,
+      'membership_status': instance.membership_status,
+      'membership_id': instance.membership_id,
       'membership_title': instance.membership_title,
+      'membership_color': instance.membership_color,
+      'photo': instance.photo,
+      'name': instance.name,
+      'storyCount': instance.storyCount,
+      'sponsored': instance.sponsored,
+      'has_sponsored_gifts': instance.has_sponsored_gifts,
+      'shortestDistance': instance.shortestDistance,
     };
 
 _$RatingCountsImpl _$$RatingCountsImplFromJson(Map<String, dynamic> json) =>

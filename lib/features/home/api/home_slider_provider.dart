@@ -7,53 +7,53 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part "home_slider_provider.g.dart";
-
 class VProduct {
   final String id;
   final String price;
   final String title;
   final String description;
-  final VendorUser userss;
+  final VendorUser user;
   final String image;
   final int? similarProductCount;
-  final VendorUserDetail userdetails;
+  final VendorUserDetail userDetail;
   final String? offers;
-  final String? discounted_price;
-  final int? avg_rating;
-  final int? commentcount;
+  final String? discountedPrice;
+  final int? avgRating;
+  final int? commentCount;
   final String? wow;
 
-  VProduct(
-      {required this.id,
-      required this.title,
-      required this.avg_rating,
-      required this.commentcount,
-      required this.wow,
-      required this.discounted_price,
-      required this.description,
-      required this.similarProductCount,
-      required this.userss,
-      required this.image,
-      required this.price,
-      required this.offers,
-      required this.userdetails});
+  VProduct({
+    required this.id,
+    required this.title,
+    required this.avgRating,
+    required this.commentCount,
+    required this.wow,
+    required this.discountedPrice,
+    required this.description,
+    required this.similarProductCount,
+    required this.user,
+    required this.image,
+    required this.price,
+    required this.offers,
+    required this.userDetail,
+  });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
+    
     return VProduct(
       wow: json['wow'],
-      discounted_price: json['discounted_price'],
-      commentcount: json['commentcount'],
-      avg_rating: json['avg_rating'],
-      offers: json['offers'] ?? '',
-      image: json['image'] ?? '',
-      price: json['price'] ?? '',
-      id: json['id'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
-      similarProductCount: json['similarProductCount'] ?? '',
-      userdetails: VendorUserDetail.fromJson(json['userdetails'] ?? {}),
-      userss: VendorUser.fromJson(
-          json['user'] ?? {}), // Parsing user within each product
+      discountedPrice: json['discounted_price'],
+      commentCount: json['commentcount'],
+      avgRating: json['avg_rating'],
+      offers: json['offers'],
+      image: json['image'],
+      price: json['price'],
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      similarProductCount: json['similarProductCount'],
+      userDetail: VendorUserDetail.fromJson(json['userDetail'] ?? {}),
+      user: VendorUser.fromJson(json['user'] ?? {}),
     );
   }
 }
@@ -92,6 +92,7 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
       requestType: RequestType.getWithToken,
       url: ApiConstants.homeSlider2BannerUrl,
     );
+
     final data = response.data;
 
     if (data == null) {
@@ -100,11 +101,9 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
 
     final homepage = Homepage1.fromJson(data);
 
-    print("kalu data: ${homepage.allProducts.first.userdetails}"); // Log the raw response data
+    print("kalu data: ${homepage.allProducts.first.userDetail.membership_title}"); // Log the raw response data
 
-    // Log all users from products
-    print(
-        "All products user data: ${homepage.allProducts.map((product) => product.userss).toList()}");
+
 
     return homepage;
   } catch (e) {

@@ -303,7 +303,6 @@ import 'package:dio/dio.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -538,46 +537,46 @@ class VProduct {
   final String description;
   final VendorUser user;
   final String image;
-  final int? similarProductCount;
-  final VendorUserDetail userDetail;
-  final String? offers;
-  final String? discountedPrice;
-  final int? avgRating;
-  final int? commentCount;
   final String? wow;
+  final String? stock;
+  final int? commentcount;
+  final String? discounted_price;
+  final int? similarProductCount;
+  final String offers;
+  final int? avg_rating;
 
-  VProduct({
-    required this.id,
-    required this.title,
-    required this.avgRating,
-    required this.commentCount,
-    required this.wow,
-    required this.discountedPrice,
-    required this.description,
-    required this.similarProductCount,
-    required this.user,
-    required this.image,
-    required this.price,
-    required this.offers,
-    required this.userDetail,
-  });
+  VProduct(
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.user,
+      required this.image,
+      required this.price,
+      required this.wow,
+      required this.stock,
+      required this.commentcount,
+      required this.offers,
+      required this.similarProductCount,
+      required this.discounted_price,
+      required this.avg_rating,
+      });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
-      wow: json['wow'],
-      discountedPrice: json['discounted_price'],
-      commentCount: json['commentcount'],
-      avgRating: json['avg_rating'],
-      offers: json['offers'],
-      image: json['image'],
-      price: json['price'],
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      similarProductCount: json['similarProductCount'],
-      userDetail: VendorUserDetail.fromJson(json['userDetail'] ?? {}),
-      user: VendorUser.fromJson(json['user'] ?? {}),
-    );
+        offers: json["offers"] ?? '',
+        discounted_price: json['discounted_price'] ?? '',
+        commentcount: json['commentcount'] ?? 0,
+        stock: json['stock'] ?? '',
+        id: json['id'] ?? '',
+        title: json['title'] ?? '',
+        description: json['description'] ?? '',
+        user: VendorUser.fromJson(json['userdetails'] ?? {}),
+        image: json['image'] ?? '',
+        price: json['price'] ?? '',
+        similarProductCount: json['similarProductCount'] ?? 0,
+        wow: json['wow'] ?? '',
+        avg_rating: json['avg_rating']
+        );
   }
 }
 
@@ -620,7 +619,6 @@ class VendorUser {
     );
   }
 }
-
 
 @riverpod
 Future<PostTypeFetch> getServiceProvider(GetServiceProviderRef ref) async {

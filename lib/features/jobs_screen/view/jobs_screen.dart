@@ -952,8 +952,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               },
                               child: ProductDetailWidget(
                                 wow: hot.wow,
-                                comment: hot.commentCount.toString(),
-                                discounttedPrice: hot.discountedPrice,
+                                comment: hot.commentcount.toString(),
+                                discounttedPrice: hot.discounted_price,
                                 issponsored: hot.user.sponsored,
                                 lefttile: "B2b-Shop",
                                 productImage: hot.image,
@@ -1009,8 +1009,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             },
                             child: ProductDetailWidget(
                               wow: hot.wow,
-                              comment: hot.commentCount.toString(),
-                              discounttedPrice: hot.discountedPrice,
+                              comment: hot.commentcount.toString(),
+                              discounttedPrice: hot.discounted_price,
                               issponsored: hot.user.sponsored,
                               lefttile: "Jobs",
                               productImage: hot.image,
@@ -1396,12 +1396,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 lefttile: "B2b",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1467,7 +1467,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                                     prod.id)));
                                               },
                                               child: ProductDetailWidget(
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
                                                 issponsored:
@@ -1475,7 +1475,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 lefttile: "B2b-Shop",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1535,7 +1535,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                                     prod.id)));
                                               },
                                               child: ProductDetailWidget(
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
                                                 issponsored:
@@ -1543,7 +1543,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 lefttile: "B2b-Shop",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1595,7 +1595,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 //             comment: ref.commentcount.toString(),
                 //             discounttedPrice: ref.discounted_price,
                 //             issponsored: ref.user.sponsored,
-                //             membershipColor: ref.user.membercolor,
+                //             membershipColor: ref.user.membershipColor,
                 //             membershipTitle: ref.user.membershipTitle,
                 //             similarproductCount: ref.similarProductCount,
                 //             wow: ref.wow,
@@ -1824,11 +1824,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                         }, // Handle onTap if needed
                                         child: ProductDetailWidget(
                                           wow: prod.wow,
-                                          comment: prod.commentCount.toString(),
+                                          comment: prod.commentcount.toString(),
                                           lefttile: "B2b",
                                           vendorname: prod.user.name,
                                           discounttedPrice:
-                                              prod.discountedPrice,
+                                              prod.discounted_price,
                                           Vimage: prod.title,
                                           issponsored: prod.user.sponsored,
                                           price: prod.price,
@@ -1921,10 +1921,10 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             child: AllProductDetailWidget(
                               wow: data.product[index].wow,
                               comment:
-                                  data.product[index].commentCount.toString(),
+                                  data.product[index].commentcount.toString(),
                               issponsored: data.product[index].user.sponsored,
                               discounttedPrice:
-                                  data.product[index].discountedPrice,
+                                  data.product[index].discounted_price,
                               lefttile: "Jobs",
                               productImage: data.product[index].image,
                               Vimage: data.product[index].user.photo,

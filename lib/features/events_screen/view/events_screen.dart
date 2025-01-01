@@ -972,8 +972,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   },
                                   child: ProductDetailWidget(
                                     wow: hot.wow,
-                                    comment: hot.commentCount.toString(),
-                                    discounttedPrice: hot.discountedPrice,
+                                    comment: hot.commentcount.toString(),
+                                    discounttedPrice: hot.discounted_price,
                                     issponsored: hot.user.sponsored,
                                     lefttile: "B2b-Shop",
                                     productImage: hot.image,
@@ -1064,12 +1064,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                                     pro.id)));
                                               },
                                               child: ProductDetailWidget(
-                                                offer: pro.discountedPrice,
+                                                offer: pro.discounted_price,
                                                 wow: pro.wow,
                                                 comment:
-                                                    pro.commentCount.toString(),
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
-                                                    pro.discountedPrice,
+                                                    pro.discounted_price,
                                                 issponsored: pro.user.sponsored,
                                                 lefttile: "B2b-Shop",
                                                 Vimage: pro.user.photo,
@@ -1150,11 +1150,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                           productId: pro.id)));
                                         },
                                         child: ProductDetailWidget(
-                                          offer: pro.discountedPrice,
+                                          offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1224,11 +1224,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                           productId: pro.id)));
                                         },
                                         child: ProductDetailWidget(
-                                          offer: pro.discountedPrice,
+                                          offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1298,11 +1298,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                           productId: pro.id)));
                                         },
                                         child: ProductDetailWidget(
-                                          offer: pro.discountedPrice,
+                                          offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment: pro.commentCount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
-                                              pro.discountedPrice,
+                                              pro.discounted_price,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "B2b-Shop",
                                           Vimage: pro.user.photo,
@@ -1420,12 +1420,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentCount
+                                                comment: prod.commentcount
                                                     .toString(),
                                                 lefttile: "B2B",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discountedPrice,
+                                                    prod.discounted_price,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1519,13 +1519,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     },
                                                     child: ProductDetailWidget(
                                                       wow: prod.wow,
-                                                      comment: prod.commentCount
+                                                      comment: prod.commentcount
                                                           .toString(),
                                                       lefttile: "B2B",
                                                       vendorname:
                                                           prod.user.name,
                                                       discounttedPrice:
-                                                          prod.discountedPrice,
+                                                          prod.discounted_price,
                                                       Vimage: prod.title,
                                                       issponsored:
                                                           prod.user.sponsored,
@@ -1590,13 +1590,13 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     },
                                                     child: ProductDetailWidget(
                                                       wow: prod.wow,
-                                                      comment: prod.commentCount
+                                                      comment: prod.commentcount
                                                           .toString(),
                                                       lefttile: "B2B",
                                                       vendorname:
                                                           prod.user.name,
                                                       discounttedPrice:
-                                                          prod.discountedPrice,
+                                                          prod.discounted_price,
                                                       Vimage: prod.title,
                                                       issponsored:
                                                           prod.user.sponsored,
@@ -1873,11 +1873,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                             child: ProductDetailWidget(
                                               wow: prod.wow,
                                               comment:
-                                                  prod.commentCount.toString(),
+                                                  prod.commentcount.toString(),
                                               lefttile: "B2b",
                                               vendorname: prod.user.name,
                                               discounttedPrice:
-                                                  prod.discountedPrice,
+                                                  prod.discounted_price,
                                               Vimage: prod.title,
                                               issponsored: prod.user.sponsored,
                                               price: prod.price,
@@ -1957,12 +1957,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   padding: EdgeInsets.only(bottom: 5.h),
                                   child: ProductDetailWidget(
                                     wow: data.product[index].wow,
-                                    comment: data.product[index].commentCount
+                                    comment: data.product[index].commentcount
                                         .toString(),
                                     issponsored:
                                         data.product[index].user.sponsored,
                                     discounttedPrice:
-                                        data.product[index].discountedPrice,
+                                        data.product[index].discounted_price,
                                     lefttile: "B2b-Shop",
                                     productImage: data.product[index].image,
                                     Vimage: data.product[index].user.photo,

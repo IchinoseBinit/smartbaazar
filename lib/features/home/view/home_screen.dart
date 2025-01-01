@@ -1508,11 +1508,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     //     itemBuilder: (context, index) {
                                     //       SponsoredProduct resp = data[index];
                                     //       return ProductDetailWidget(
-                                    //         Vimage: resp.userdetails!.photo,
+                                    //         Vimage: resp.user!.photo,
                                     //         price: resp.price,
                                     //         productImage: resp.image,
                                     //         title: resp.title,
-                                    //         vendorname: resp.userdetails!.name,
+                                    //         vendorname: resp.user!.name,
                                     //       );
                                     //     },
                                     //   ),
@@ -1573,7 +1573,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   VProduct res = data.allProducts[index];
                                   
                                   print(
-                                      "binod ${res.userdetails.membership_title}");
+                                      "binodl ${res.userDetail.sponsored}");
                                   return Padding(
                                       padding: EdgeInsets.only(bottom: 5.h),
                                       child: InkWell(
@@ -1587,32 +1587,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ));
                                         },
                                         child: AllProductDetailWidget(
+                                          
                                           shortestDistance: data
                                               .allProducts[index]
-                                              .userdetails
+                                              .user
                                               .shortestDistance,
                                           issponsored: data.allProducts[index]
-                                              .userss.sponsored,
+                                              .userDetail.sponsored?? false,
                                           distance: data.allProducts[index]
-                                              .userdetails.shortestDistance,
+                                              .user.shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data
                                               .allProducts[index]
-                                              .discounted_price,
+                                              .discountedPrice,
                                           comment: data
-                                              .allProducts[index].commentcount
+                                              .allProducts[index].commentCount
                                               .toString(),
                                           avg_rating: data
-                                              .allProducts[index].avg_rating!
+                                              .allProducts[index].avgRating!
                                               .toDouble(),
                                           offer: data.allProducts[index].offers,
                                           productImage:
                                               data.allProducts[index].image,
                                           Vimage: data
-                                              .allProducts[index].userss.photo,
+                                              .allProducts[index].userDetail.photo,
                                           vendorname: data
-                                              .allProducts[index].userss.name,
+                                              .allProducts[index].userDetail.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
@@ -1620,12 +1621,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .similarProductCount,
                                           membershipColor: data
                                               .allProducts[index]
-                                              .userss
-                                              .membershipColor,
+                                              .userDetail
+                                              .membership_color,
                                           membershipTitle: data
                                               .allProducts[index]
-                                              .userss
-                                              .membershipTitle,
+                                              .userDetail
+                                              .membership_title,
                                         ),
                                       ));
                                 },
