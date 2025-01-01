@@ -1,0 +1,281 @@
+{
+    "success": true,
+    "result": [
+        {
+            "id": 31,
+            "belongs_to": "posts",
+            "name": "Road size",
+            "type": "number",
+            "max": null,
+            "default_value": "",
+            "required": "0",
+            "use_as_filter": "0",
+            "help": "Size of road in feet",
+            "active": "1",
+            "options": []
+        },
+        {
+            "id": 62,
+            "belongs_to": "posts",
+            "name": "Branded",
+            "type": "checkbox",
+            "max": null,
+            "default_value": "0",
+            "required": "0",
+            "use_as_filter": "1",
+            "help": "",
+            "active": "1",
+            "options": []
+        },
+        {
+            "id": 9,
+            "belongs_to": "posts",
+            "name": "Size",
+            "type": "text",
+            "max": null,
+            "default_value": "",
+            "required": "1",
+            "use_as_filter": "1",
+            "help": "Anna or ropani",
+            "active": "1",
+            "options": []
+        },
+        {
+            "id": 10,
+            "belongs_to": "posts",
+            "name": "Rooms",
+            "type": "select",
+            "max": null,
+            "default_value": "",
+            "required": "0",
+            "use_as_filter": "1",
+            "help": "",
+            "active": "1",
+            "options": [
+                {
+                    "id": 67,
+                    "field_id": "10",
+                    "value": "0",
+                    "parent_id": null,
+                    "lft": "133",
+                    "rgt": "134",
+                    "depth": "1"
+                },
+                {
+                    "id": 68,
+                    "field_id": "10",
+                    "value": "1",
+                    "parent_id": null,
+                    "lft": "135",
+                    "rgt": "136",
+                    "depth": "1"
+                },
+                {
+                    "id": 69,
+                    "field_id": "10",
+                    "value": "2",
+                    "parent_id": null,
+                    "lft": "137",
+                    "rgt": "138",
+                    "depth": "1"
+                },
+                {
+                    "id": 70,
+                    "field_id": "10",
+                    "value": "3",
+                    "parent_id": null,
+                    "lft": "139",
+                    "rgt": "140",
+                    "depth": "1"
+                },
+                {
+                    "id": 71,
+                    "field_id": "10",
+                    "value": "4",
+                    "parent_id": null,
+                    "lft": "141",
+                    "rgt": "142",
+                    "depth": "1"
+                },
+                {
+                    "id": 72,
+                    "field_id": "10",
+                    "value": "5",
+                    "parent_id": null,
+                    "lft": "143",
+                    "rgt": "144",
+                    "depth": "1"
+                },
+                {
+                    "id": 73,
+                    "field_id": "10",
+                    "value": "6",
+                    "parent_id": null,
+                    "lft": "145",
+                    "rgt": "146",
+                    "depth": "1"
+                },
+                {
+                    "id": 74,
+                    "field_id": "10",
+                    "value": "7",
+                    "parent_id": null,
+                    "lft": "147",
+                    "rgt": "148",
+                    "depth": "1"
+                },
+                {
+                    "id": 75,
+                    "field_id": "10",
+                    "value": "8",
+                    "parent_id": null,
+                    "lft": "149",
+                    "rgt": "150",
+                    "depth": "1"
+                },
+                {
+                    "id": 76,
+                    "field_id": "10",
+                    "value": "9",
+                    "parent_id": null,
+                    "lft": "151",
+                    "rgt": "152",
+                    "depth": "1"
+                },
+                {
+                    "id": 77,
+                    "field_id": "10",
+                    "value": "10",
+                    "parent_id": null,
+                    "lft": "153",
+                    "rgt": "154",
+                    "depth": "1"
+                },
+                {
+                    "id": 78,
+                    "field_id": "10",
+                    "value": "> 10",
+                    "parent_id": null,
+                    "lft": "155",
+                    "rgt": "156",
+                    "depth": "1"
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "belongs_to": "posts",
+            "name": "Furnished",
+            "type": "radio",
+            "max": null,
+            "default_value": "",
+            "required": "0",
+            "use_as_filter": "1",
+            "help": "",
+            "active": "1",
+            "options": [
+                {
+                    "id": 173,
+                    "field_id": "13",
+                    "value": "Fully- Furnished",
+                    "parent_id": null,
+                    "lft": null,
+                    "rgt": null,
+                    "depth": null
+                },
+                {
+                    "id": 84,
+                    "field_id": "13",
+                    "value": "Not Furnished",
+                    "parent_id": null,
+                    "lft": "167",
+                    "rgt": "168",
+                    "depth": null
+                },
+                {
+                    "id": 85,
+                    "field_id": "13",
+                    "value": "Semi- Furnished",
+                    "parent_id": null,
+                    "lft": "169",
+                    "rgt": "170",
+                    "depth": null
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "belongs_to": "posts",
+            "name": "Building Type",
+            "type": "select",
+            "max": null,
+            "default_value": "",
+            "required": "0",
+            "use_as_filter": "1",
+            "help": "",
+            "active": "1",
+            "options": [
+                {
+                    "id": 79,
+                    "field_id": "11",
+                    "value": "Apartment",
+                    "parent_id": null,
+                    "lft": "157",
+                    "rgt": "158",
+                    "depth": null
+                },
+                {
+                    "id": 80,
+                    "field_id": "11",
+                    "value": "House",
+                    "parent_id": null,
+                    "lft": "159",
+                    "rgt": "160",
+                    "depth": null
+                },
+                {
+                    "id": 81,
+                    "field_id": "11",
+                    "value": "Office",
+                    "parent_id": null,
+                    "lft": "161",
+                    "rgt": "162",
+                    "depth": null
+                },
+                {
+                    "id": 82,
+                    "field_id": "11",
+                    "value": "Store",
+                    "parent_id": null,
+                    "lft": "163",
+                    "rgt": "164",
+                    "depth": null
+                },
+                {
+                    "id": 83,
+                    "field_id": "11",
+                    "value": "Plot of land",
+                    "parent_id": null,
+                    "lft": "165",
+                    "rgt": "166",
+                    "depth": null
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "belongs_to": "posts",
+            "name": "Parking",
+            "type": "checkbox",
+            "max": null,
+            "default_value": "",
+            "required": "0",
+            "use_as_filter": "1",
+            "help": "",
+            "active": "1",
+            "options": []
+        }
+    ],
+    "errors": [],
+    "old": []
+}

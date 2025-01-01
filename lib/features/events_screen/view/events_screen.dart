@@ -742,46 +742,47 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Events",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Events",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -888,8 +889,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -968,7 +969,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     vendorname: hot.user.name,
                                     similarproductCount:
                                         hot.similarProductCount,
-                                    membershipColor: hot.user.membercolor,
+                                    membershipColor: hot.user.membershipColor,
                                     membershipTitle: hot.user.membershipTitle,
                                   ),
                                 );
@@ -1065,7 +1066,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 similarproductCount:
                                                     pro.similarProductCount,
                                                 membershipColor:
-                                                    pro.user.membercolor,
+                                                    pro.user.membershipColor,
                                                 membershipTitle:
                                                     pro.user.membershipTitle,
                                               ),
@@ -1149,7 +1150,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1223,7 +1224,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1297,7 +1298,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1371,18 +1372,25 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (data.global.isNotEmpty)
-                                  ...data.global.map((e) {
-                                    return NotStoryWidget(
-                                      vImage: e
-                                          .brandLogo, // Use the correct variable name
-                                      index: data.global
-                                          .indexOf(e), // Get the index
-                                      brandname: e.brandName,
-                                    );
-                                  }).toList(),
+                                Row(
+                                  children: [
+                                    if (data.global.isNotEmpty)
+                                      ...data.global.map((e) {
+                                        return NotStoryWidget(
+                                          vImage: e
+                                              .brandLogo, // Use the correct variable name
+                                          index: data.global.indexOf(
+                                              e), // Get the index
+                                          brandname: e.brandName,
+                                        );
+                                      }).toList(),
+                                  ],
+                                ),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound())
+                                    ? Center(child: Padding(
+                                  padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                  child: nolistingfound(),
+                                ),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1420,7 +1428,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1476,7 +1484,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                 //       }),
                                 // ),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound())
+                                    ? Center(child: Padding(
+                                  padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                  child: nolistingfound(),
+                                ),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: data.insidearr.isEmpty
@@ -1520,7 +1531,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                       similarproductCount: prod
                                                           .similarProductCount,
                                                       membershipColor:
-                                                          prod.user.membercolor,
+                                                          prod.user.membershipColor,
                                                       membershipTitle: prod
                                                           .user.membershipTitle,
                                                     ),
@@ -1547,7 +1558,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound())
+                                    ? Center(child: Padding(
+                                  padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                  child: nolistingfound(),
+                                ),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: data.insidearr.isEmpty
@@ -1591,7 +1605,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                       similarproductCount: prod
                                                           .similarProductCount,
                                                       membershipColor:
-                                                          prod.user.membercolor,
+                                                          prod.user.membershipColor,
                                                       membershipTitle: prod
                                                           .user.membershipTitle,
                                                     ),
@@ -1638,7 +1652,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 //             title: ref.title,
                 //             vendorname: ref.user.name,
                 //             similarproductCount: ref.similarProductCount,
-                //             membershipColor: ref.user.membercolor,
+                //             membershipColor: ref.user.membershipColor,
                 //             membershipTitle: ref.user.membershipTitle,
                 //           );
                 //         },
@@ -1871,7 +1885,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor,
+                                                  prod.user.membershipColor,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
                                             ),
@@ -1957,7 +1971,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                     similarproductCount:
                                         data.product[index].similarProductCount,
                                     membershipColor:
-                                        data.product[index].user.membercolor,
+                                        data.product[index].user.membershipColor,
                                     membershipTitle: data
                                         .product[index].user.membershipTitle,
                                   ),

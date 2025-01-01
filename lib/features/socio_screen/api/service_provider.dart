@@ -8,9 +8,6 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'service_provider.g.dart';
 
 
-
-
-
 @riverpod
 Future<PostTypeFetch> getSocioData(GetSocioDataRef ref) async {
   final SmartClinet client = SmartClinet();

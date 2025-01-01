@@ -15,7 +15,6 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
-import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -25,7 +24,6 @@ import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
-import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
@@ -241,7 +239,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
+
     // category.when(
     //   data: (data) {
     //     print("bibash ${data.jobs.first.id}");
@@ -616,40 +614,55 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    asyncHomeStoryContent.when(
-                      data: (feedStoryData) {
-                        final feedStoryContent = feedStoryData.homeStory?.story;
+                    randomstory.when(
+                      data: (data) {
                         return SizedBox(
-                          height: 100.h,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                                feedStoryData.homeStory!.story!.posts!.length,
-                            itemBuilder: (context, index) {
-                              final story =
-                                  feedStoryData.homeStory!.story!.posts![index];
-                              return HomePageStoryContainer(
-                                index: index,
-                                vendorName:
-                                    story.vendorName ?? "Unknown Vendor",
-                                vendorImage: story.vendorImage ??
-                                    "https://example.com/default-image.png",
-                                storyCount: story.storyCount ?? 0,
-                                showGift: story.hasSponsoredGifts ?? false,
-                                feedStoryContent: feedStoryContent,
-                                userId: story.vendorId!,
-                                // feedData.data!.feedPost![index].userId ??
-                              );
-                            },
+                          height: 130.h,
+                          child: SingleChildScrollView(
+                            // Wrapping the Row with SingleChildScrollView
+                            scrollDirection: Axis
+                                .horizontal, // Ensuring it scrolls horizontally
+                            child: Row(
+                              children: [
+                                // First StoryAddWidget with search option
+                                StoryAddWidget(
+                                  vImage: data!.feedStory?.posts?.first.image,
+                                  brandname:
+                                      data!.feedStory?.posts?.first.vendorName,
+                                  index: 0,
+                                  addSearch: true, // First item has search
+                                  showgift: false,
+                                  onTap: () {
+                                    setState(() {
+                                      // _isPopupVisible = true; // Open the popup
+                                    });
+                                  },
+                                ),
+                                // Expanded is not needed since SingleChildScrollView will handle scrolling
+                                // Now ListView.builder will be added directly to the row
+                                ...data!.feedStory!.posts!.map((storyData) {
+                                  return StoryAddWidget(
+                                    brandname: storyData.vendorName,
+                                    vImage: storyData.vendorImage,
+                                    index: data!.feedStory!.posts!
+                                        .indexOf(storyData),
+                                    addSearch:
+                                        false, // For all items other than the first, no search
+                                    showgift: storyData.hasSponsoredGifts,
+                                    onTap: () {
+                                      // setState(() {
+                                      //   // _isPopupVisible = true; // Open the popup
+                                      // });
+                                    },
+                                  );
+                                }).toList(),
+                              ],
+                            ),
                           ),
                         );
                       },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
-                      error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () => const CircularProgressIndicator(),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -879,6 +892,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
+                                                  
                                                     return InkWell(
                                                       onTap: () {
                                                         Navigator.push(
@@ -941,7 +955,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   },
                                                 )),
                                           )
-                                        : nolistingfound(),
+                                        : Padding(
+                                          padding: EdgeInsets.only(top: 50.h),
+                                          child: nolistingfound()),
                                   ],
                                 ),
                               );
@@ -1014,16 +1030,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.global.isNotEmpty)
-                                            ...data.global.map((e) {
-                                              return NotStoryWidget(
-                                                vImage: e
-                                                    .brandLogo, // Use the correct variable name
-                                                index: data.global.indexOf(
-                                                    e), // Get the index
-                                                brandname: e.brandName,
-                                              );
-                                            }).toList(),
+                                          Row(
+                                            children: [
+                                              if (data.global.isNotEmpty)
+                                                ...data.global.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e
+                                                        .brandLogo, // Use the correct variable name
+                                                    index: data.global.indexOf(
+                                                        e), // Get the index
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                            ],
+                                          ),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
                                                   padding: EdgeInsets.only(
@@ -1452,6 +1472,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   ));
                                             },
                                             child: ProductDetailWidget(
+                                              shortestDistance: prefs.userdetails?.shortestDistance,
                                               issponsored:
                                                   prefs.userdetails!.sponsored!,
                                               wow: prefs.wow,
@@ -1495,11 +1516,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     //     itemBuilder: (context, index) {
                                     //       SponsoredProduct resp = data[index];
                                     //       return ProductDetailWidget(
-                                    //         Vimage: resp.userdetails!.photo,
+                                    //         Vimage: resp.user!.photo,
                                     //         price: resp.price,
                                     //         productImage: resp.image,
                                     //         title: resp.title,
-                                    //         vendorname: resp.userdetails!.name,
+                                    //         vendorname: resp.user!.name,
                                     //       );
                                     //     },
                                     //   ),
@@ -1549,7 +1570,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 345.9,
+                                  mainAxisExtent: 340.9,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,
@@ -1558,6 +1579,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
+
                                   return Padding(
                                       padding: EdgeInsets.only(bottom: 5.h),
                                       child: InkWell(
@@ -1571,32 +1593,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ));
                                         },
                                         child: AllProductDetailWidget(
+                                          
+
                                           shortestDistance: data
                                               .allProducts[index]
-                                              .userdetails
+                                              .user
                                               .shortestDistance,
                                           issponsored: data.allProducts[index]
-                                              .userss.sponsored,
-                                          distance: data.allProducts[index]
-                                              .userdetails.shortestDistance,
+                                                  .userDetail.sponsored ??
+                                              false,
+                                          distance: data.allProducts[index].user
+                                              .shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data
                                               .allProducts[index]
-                                              .discounted_price,
+                                              .discountedPrice,
                                           comment: data
-                                              .allProducts[index].commentcount
+                                              .allProducts[index].commentCount
                                               .toString(),
                                           avg_rating: data
-                                              .allProducts[index].avg_rating!
+                                              .allProducts[index].avgRating!
                                               .toDouble(),
                                           offer: data.allProducts[index].offers,
                                           productImage:
                                               data.allProducts[index].image,
-                                          Vimage: data
-                                              .allProducts[index].userss.photo,
-                                          vendorname: data
-                                              .allProducts[index].userss.name,
+                                          Vimage: data.allProducts[index]
+                                              .userDetail.photo,
+                                          vendorname: data.allProducts[index]
+                                              .userDetail.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
@@ -1604,12 +1629,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .similarProductCount,
                                           membershipColor: data
                                               .allProducts[index]
-                                              .userss
-                                              .membercolor,
+                                              .userDetail
+                                              .membership_color,
                                           membershipTitle: data
                                               .allProducts[index]
-                                              .userss
-                                              .membershipTitle,
+                                              .userDetail
+                                              .membership_title,
                                         ),
                                       ));
                                 },

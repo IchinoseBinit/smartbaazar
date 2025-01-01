@@ -10,9 +10,9 @@ _$FieldsResponseImpl _$$FieldsResponseImplFromJson(Map<String, dynamic> json) =>
     _$FieldsResponseImpl(
       success: json['success'] as bool,
       message: json['message'] as String?,
-      result: (json['result'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, FieldData.fromJson(e as Map<String, dynamic>)),
-      ),
+      result: (json['result'] as List<dynamic>)
+          .map((e) => FieldData.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$FieldsResponseImplToJson(

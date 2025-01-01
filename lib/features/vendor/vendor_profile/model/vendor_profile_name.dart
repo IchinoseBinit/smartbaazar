@@ -76,6 +76,7 @@ class UserDetailsModel with _$UserDetailsModel {
     bool? sponsored,
     bool? has_sponsored_gifts,
     List<dynamic>? nearestBranch,
+    double? shortestDistance, 
   }) = _UserDetailsModel;
 
   factory UserDetailsModel.fromJson(Map<String, dynamic> json) =>
