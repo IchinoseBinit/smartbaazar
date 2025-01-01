@@ -19,11 +19,13 @@ import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
@@ -229,6 +231,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
+
     final randomstory = ref.watch(fetchStoryHomeProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -604,55 +608,38 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     ),
                   ),
                 ),
-                randomstory.when(
-                  data: (data) {
+                asyncPostTypeContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.homeStory?.story;
                     return SizedBox(
-                      height: 130.h,
-                      child: SingleChildScrollView(
-                        // Wrapping the Row with SingleChildScrollView
-                        scrollDirection:
-                            Axis.horizontal, // Ensuring it scrolls horizontally
-                        child: Row(
-                          children: [
-                            // First StoryAddWidget with search option
-                            StoryAddWidget(
-                              vImage: data!.feedStory?.posts?.first.image,
-                              brandname:
-                                  data!.feedStory?.posts?.first.vendorName,
-                              index: 0,
-                              addSearch: true, // First item has search
-                              showgift: false,
-                              onTap: () {
-                                setState(() {
-                                  // _isPopupVisible = true; // Open the popup
-                                });
-                              },
-                            ),
-                            // Expanded is not needed since SingleChildScrollView will handle scrolling
-                            // Now ListView.builder will be added directly to the row
-                            ...data!.feedStory!.posts!.map((storyData) {
-                              return StoryAddWidget(
-                                brandname: storyData.vendorName,
-                                vImage: storyData.vendorImage,
-                                index: data!.feedStory!.posts
-                                   ! .indexOf(storyData),
-                                addSearch:
-                                    false, // For all items other than the first, no search
-                                showgift: storyData.hasSponsoredGifts,
-                                onTap: () {
-                                  // setState(() {
-                                  //   // _isPopupVisible = true; // Open the popup
-                                  // });
-                                },
-                              );
-                            }).toList(),
-                          ],
-                        ),
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            feedStoryData.homeStory!.story!.posts!.length,
+                        itemBuilder: (context, index) {
+                          final story =
+                              feedStoryData.homeStory!.story!.posts![index];
+                          return HomePageStoryContainer(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                            // feedData.data!.feedPost![index].userId ??
+                          );
+                        },
                       ),
                     );
                   },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -908,7 +895,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               ],
                             ),
                           ),
-                       
                         ],
                       ),
                     );
@@ -920,7 +906,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 ),
 
                 Padding(
-
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
@@ -1491,7 +1476,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           },
                                         ),
                                       )
-                                    : Center(child: nolistingfound(),),
+                                    : Center(
+                                        child: nolistingfound(),
+                                      ),
                               ],
                             ),
                             Column(
@@ -1511,7 +1498,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   ),
                                 ),
                                 data.insidearr.isNotEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 140.h,
                                         child: ListView.builder(
@@ -1582,7 +1571,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   ),
                                 ),
                                 data.insidearr.isNotEmpty
-                                    ? Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1684,13 +1675,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                             gift_qty: resp.gift_qty!,
+                              gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage!,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image?? '');
+                              proctimage: resp.image ?? '');
                         },
                       ),
                     );
@@ -1822,7 +1813,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
-                                    ?Center(child: nolistingfound(),)
+                                    ? Center(
+                                        child: nolistingfound(),
+                                      )
                                     : ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),

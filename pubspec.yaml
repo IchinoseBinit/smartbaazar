@@ -69,7 +69,7 @@ dependencies:
   flutter_card_swiper: ^7.0.2
   geolocator: ^13.0.2
   geocoding: ^3.0.0
-  adoptive_calendar: ^0.2.0
+  adoptive_calendar: ^0.1.9
   confetti: ^0.8.0
   readmore: ^3.0.0
   collection: ^1.18.0

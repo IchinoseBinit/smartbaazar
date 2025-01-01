@@ -58,6 +58,7 @@ void showCustomBottomSheet(
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -76,9 +77,9 @@ void showCustomBottomSheet(
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                // const SizedBox(width: 10),
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       mainAxisAlignment:
@@ -97,9 +98,7 @@ void showCustomBottomSheet(
                                         ),
                                         SizedBox(width: 15.w),
                                         Text(
-                                          feedGiftCard
-                                                  .buyOrWinCard?.first.name ??
-                                              '',
+                                          'PRIZE CONTRIBUTOR' ?? '',
                                           style: TextStyle(
                                               fontSize: 7.sp,
                                               color: Colors.white),
@@ -132,7 +131,8 @@ void showCustomBottomSheet(
                                     SizedBox(height: 20.h),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Column(
                                           children: [
@@ -388,7 +388,7 @@ class PopUpDiscountImageCard extends StatelessWidget {
                                   fontSize: 11,
                                 )),
                             TextSpan(
-                                text: "${feedGiftCard.worth} x25",
+                                text: "${feedGiftCard.worth} x${feedGiftCard.giftQty}",
                                 style: headerstyle.copyWith(
                                     fontSize: 15, fontWeight: FontWeight.bold))
                           ]))
@@ -427,7 +427,7 @@ class PopUpDiscountImageCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("x25",
+                            Text("x${feedGiftCard.giftQty}",
                                 style: headerstyle.copyWith(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
@@ -565,7 +565,7 @@ class PopUpDiscountImageCard extends StatelessWidget {
                                 width: 5.w,
                               ),
                               Text(
-                                '${feedGiftCard.wow ?? 0}k ',
+                                '${feedGiftCard.wow ?? 0}K ',
                                 style: headerstyle.copyWith(
                                     color: const Color(0xff831F67),
                                     fontSize: 10,
