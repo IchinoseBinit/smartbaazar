@@ -344,8 +344,8 @@ _$VendorUserDetailImpl _$$VendorUserDetailImplFromJson(
     _$VendorUserDetailImpl(
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
       nearestBranch: json['nearestBranch'] as String?,
-      memberColor: json['membership_color'] as String?,
-      membershipTitle: json['membership_title'] as String?,
+      membership_color: json['membership_color'] as String?,
+      membership_title: json['membership_title'] as String?,
     );
 
 Map<String, dynamic> _$$VendorUserDetailImplToJson(
@@ -353,8 +353,8 @@ Map<String, dynamic> _$$VendorUserDetailImplToJson(
     <String, dynamic>{
       'shortestDistance': instance.shortestDistance,
       'nearestBranch': instance.nearestBranch,
-      'membership_color': instance.memberColor,
-      'membership_title': instance.membershipTitle,
+      'membership_color': instance.membership_color,
+      'membership_title': instance.membership_title,
     };
 
 _$RatingCountsImpl _$$RatingCountsImplFromJson(Map<String, dynamic> json) =>

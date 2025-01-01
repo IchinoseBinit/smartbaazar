@@ -93,14 +93,14 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
       url: ApiConstants.homeSlider2BannerUrl,
     );
     final data = response.data;
-    print("Response data: $data"); // Log the raw response data
 
     if (data == null) {
       throw Exception("No data returned from API");
     }
 
     final homepage = Homepage1.fromJson(data);
-    print("binod ${homepage.allProducts.first.image}");
+
+    print("kalu data: ${homepage.allProducts.first.userdetails}"); // Log the raw response data
 
     // Log all users from products
     print(

@@ -223,18 +223,16 @@ class PostType with _$PostType {
 @freezed
 class VendorUserDetail with _$VendorUserDetail {
   const factory VendorUserDetail({
-       @JsonKey(name: 'shortestDistance') double? shortestDistance,
-          @JsonKey(name: 'nearestBranch') String? nearestBranch,
-    // String? id,
-    // String? name,
-    // String? photo,
-    @JsonKey(name: 'membership_color') String? memberColor,
-    @JsonKey(name: 'membership_title') String? membershipTitle,
+    double? shortestDistance,
+    String? nearestBranch,
+    String? membership_color,
+    String? membership_title,
   }) = _VendorUserDetail;
 
   factory VendorUserDetail.fromJson(Map<String, dynamic> json) =>
       _$VendorUserDetailFromJson(json);
 }
+
 
 @freezed
 class RatingCounts with _$RatingCounts {

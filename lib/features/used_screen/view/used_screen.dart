@@ -972,9 +972,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ));
                             },
                             child: ProductDetailWidget(
-                              comment: hot.commentcount.toString(),
+                              comment: hot.commentCount.toString(),
                               wow: hot.wow,
-                              discounttedPrice: hot.discounted_price,
+                              discounttedPrice: hot.discountedPrice,
                               issponsored: hot.user.sponsored,
                               lefttile: "Used",
                               productImage: hot.image,
@@ -983,7 +983,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               title: hot.title,
                               vendorname: hot.user.name,
                               similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membercolor,
+                              membershipColor: hot.user.membershipColor,
                               membershipTitle: hot.user.membershipTitle,
                             ),
                           );
@@ -1066,10 +1066,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 comment:
-                                                    pro.commentcount.toString(),
+                                                    pro.commentCount.toString(),
                                                 wow: pro.wow,
                                                 discounttedPrice:
-                                                    pro.discounted_price,
+                                                    pro.discountedPrice,
                                                 issponsored: pro.user.sponsored,
                                                 lefttile: "Used",
                                                 Vimage: pro.user.photo,
@@ -1080,7 +1080,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     pro.similarProductCount,
                                                 membershipColor:
-                                                    pro.user.membercolor,
+                                                    pro.user.membershipColor,
                                                 membershipTitle:
                                                     pro.user.membershipTitle,
                                               ),
@@ -1152,10 +1152,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentcount.toString(),
+                                          comment: pro.commentCount.toString(),
                                           issponsored: pro.user.sponsored,
                                           discounttedPrice:
-                                              pro.discounted_price,
+                                              pro.discountedPrice,
                                           lefttile: "Used",
                                           Vimage: pro.user.photo,
                                           price: pro.price,
@@ -1164,7 +1164,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1225,10 +1225,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               ));
                                         },
                                         child: ProductDetailWidget(
-                                          comment: pro.commentcount.toString(),
+                                          comment: pro.commentCount.toString(),
                                           wow: pro.wow,
                                           discounttedPrice:
-                                              pro.discounted_price,
+                                              pro.discountedPrice,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "Used",
                                           Vimage: pro.user.photo,
@@ -1238,7 +1238,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1300,9 +1300,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         },
                                         child: ProductDetailWidget(
                                           wow: pro.wow,
-                                          comment: pro.commentcount.toString(),
+                                          comment: pro.commentCount.toString(),
                                           discounttedPrice:
-                                              pro.discounted_price,
+                                              pro.discountedPrice,
                                           issponsored: pro.user.sponsored,
                                           lefttile: "Used",
                                           Vimage: pro.user.photo,
@@ -1312,7 +1312,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1419,12 +1419,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentcount
+                                                comment: prod.commentCount
                                                     .toString(),
                                                 lefttile: "B2b",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
-                                                    prod.discounted_price,
+                                                    prod.discountedPrice,
                                                 Vimage: prod.title,
                                                 issponsored:
                                                     prod.user.sponsored,
@@ -1434,7 +1434,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1493,14 +1493,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentcount
+                                                comment: prod.commentCount
                                                     .toString(),
                                                 issponsored:
                                                     prod.user.sponsored,
                                                 lefttile: "Used",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discounted_price,
+                                                    prod.discountedPrice,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1508,7 +1508,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1561,14 +1561,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               },
                                               child: ProductDetailWidget(
                                                 wow: prod.wow,
-                                                comment: prod.commentcount
+                                                comment: prod.commentCount
                                                     .toString(),
                                                 issponsored:
                                                     prod.user.sponsored,
                                                 lefttile: "Used",
                                                 vendorname: prod.title,
                                                 discounttedPrice:
-                                                    prod.discounted_price,
+                                                    prod.discountedPrice,
                                                 Vimage: prod.user.photo,
                                                 price: prod.price,
                                                 title: prod.title,
@@ -1576,7 +1576,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1798,7 +1798,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
-                                                  comment: prod.commentcount
+                                                  comment: prod.commentCount
                                                       .toString(),
                                                   wow: prod.wow,
                                                   lefttile: "Used",
@@ -1806,7 +1806,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   issponsored:
                                                       prod.user.sponsored,
                                                   discounttedPrice:
-                                                      prod.discounted_price,
+                                                      prod.discountedPrice,
                                                   Vimage: prod.user.photo,
                                                   price: prod.price,
                                                   title: prod.title,
@@ -1814,7 +1814,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   similarproductCount:
                                                       prod.similarProductCount,
                                                   membershipColor:
-                                                      prod.user.membercolor,
+                                                      prod.user.membershipColor,
                                                   membershipTitle:
                                                       prod.user.membershipTitle,
                                                 ),
@@ -1910,10 +1910,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                             child: AllProductDetailWidget(
                               wow: data.product[index].wow,
                               comment:
-                                  data.product[index].commentcount.toString(),
+                                  data.product[index].commentCount.toString(),
                               issponsored: data.product[index].user.sponsored,
                               discounttedPrice:
-                                  data.product[index].discounted_price,
+                                  data.product[index].discountedPrice,
                               lefttile: "Used",
                               productImage: data.product[index].image,
                               Vimage: data.product[index].user.photo,
@@ -1923,7 +1923,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               similarproductCount:
                                   data.product[index].similarProductCount,
                               membershipColor:
-                                  data.product[index].user.membercolor,
+                                  data.product[index].user.membershipColor,
                               membershipTitle:
                                   data.product[index].user.membershipTitle,
                             ),

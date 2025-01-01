@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -71,7 +70,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   PageController _pageController = PageController(viewportFraction: 0.3);
   final double _currentHeight = 500; // Default height for first tab
   final List<Map<String, dynamic>> _items = [
-
     {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
@@ -424,7 +422,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 20.h,
                           ),
-                         
 
                           SizedBox(
                             height: 80.h,
@@ -451,7 +448,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     _pageController.animateToPage(
                                       2,
                                       duration:
-                                      const Duration(milliseconds: 300),
+                                          const Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
                                     );
                                   },
@@ -465,12 +462,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                              data['screen']),
+                                                  data['screen']),
                                         );
                                       },
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           if (data['icon']
                                               .toString()
@@ -481,11 +478,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               fit: BoxFit.contain,
                                               theme: const SvgTheme(
                                                   currentColor:
-                                                  Color(0xffdd9d9d9)),
+                                                      Color(0xffdd9d9d9)),
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
+                                                      .withOpacity(0.5),
                                               width: 20,
                                               height: 20,
                                             )
@@ -495,7 +492,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
+                                                      .withOpacity(0.5),
                                               width: 20,
                                               height: 20,
                                             ),
@@ -509,7 +506,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               color: isActive
                                                   ? Colors.amber
                                                   : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
+                                                      .withOpacity(0.5),
                                             ),
                                           ),
                                         ],
@@ -520,8 +517,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               },
                             ),
                           ),
-
-
 
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -830,7 +825,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   productsList[selectedIndex];
 
                               if (products.length == 0) {
-                                dynamicHeight = products.isEmpty ? 130.h : 420.h;
+                                dynamicHeight =
+                                    products.isEmpty ? 130.h : 420.h;
                               } else
                                 dynamicHeight = 390.h;
 
@@ -879,80 +875,86 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         },
                                       ),
                                     ),
-                                    products.isNotEmpty?
-                                    SizedBox(
-                                      child: AnimatedContainer(
-                                        duration: Duration(microseconds: 400),
-                                        height: 340.h,
-                                        width: double.infinity,
-                                        child: ListView.builder(
-                                                padding:
-                                                    const EdgeInsets.all(3),
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: products.length,
-                                                itemBuilder: (context, index) {
-                                                  CategoryProduct prod =
-                                                      products[index];
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ProductDetailScreen(
-                                                                    productId:
-                                                                        prod.id),
-                                                          ));
-                                                      // Handle product click if needed
-                                                    },
-                                                    child: ProductDetailWidget(
-                                                      distance:
-                                                          prod.shortestDistance,
-                                                      issponsored: prod.userdetails!
-                                                              .sponsored ??
-                                                          false,
-                                                      shortestDistance:
-                                                          double.tryParse(
-                                                              prod.nearestBranch ??
-                                                                  '0'),
-                                                      wow: prod.wow,
-                                                      comment: prod.commentCount
-                                                              .toString() ??
-                                                          '1',
-                                                      avg_rating: prod
-                                                          .avgRating
-                                                          ?.toDouble(),
+                                    products.isNotEmpty
+                                        ? SizedBox(
+                                            child: AnimatedContainer(
+                                                duration:
+                                                    Duration(microseconds: 400),
+                                                height: 340.h,
+                                                width: double.infinity,
+                                                child: ListView.builder(
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: products.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    CategoryProduct prod =
+                                                        products[index];
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                      productId:
+                                                                          prod.id),
+                                                            ));
+                                                        // Handle product click if needed
+                                                      },
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        distance: prod
+                                                            .shortestDistance,
+                                                        issponsored: prod
+                                                                .userdetails!
+                                                                .sponsored ??
+                                                            false,
+                                                        shortestDistance:
+                                                            double.tryParse(
+                                                                prod.nearestBranch ??
+                                                                    '0'),
+                                                        wow: prod.wow,
+                                                        comment: prod
+                                                                .commentCount
+                                                                .toString() ??
+                                                            '1',
+                                                        avg_rating: prod
+                                                            .avgRating
+                                                            ?.toDouble(),
 
-                                                      offer: prod.offers,
-                                                      id: int.tryParse(
-                                                          prod.userdetails!.id),
-                                                      lefttile: categories[
-                                                          selectedIndex],
-                                                      vendorname:
-                                                          prod.userdetails!.name,
-                                                      discounttedPrice:
-                                                          prod.discountedPrice,
-                                                      Vimage: prod.userdetails!.photo,
-                                                      price: prod.price,
-                                                      title: prod.title,
-                                                      productImage: prod.image,
-                                                      membershipColor: prod
-                                                          .userdetails!.memberColor,
-                                                      similarproductCount: prod
-                                                          .similarProductCount,
-                                                      membershipTitle: prod
-                                                          .userdetails!
-                                                          .membershipTitle,
-                                                      // avg_rating: prod.average_rating,
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                          
-                                      ),
-                                    ):nolistingfound(),
-                          
+                                                        offer: prod.offers,
+                                                        id: int.tryParse(prod
+                                                            .userdetails!.id),
+                                                        lefttile: categories[
+                                                            selectedIndex],
+                                                        vendorname: prod
+                                                            .userdetails!.name,
+                                                        discounttedPrice: prod
+                                                            .discountedPrice,
+                                                        Vimage: prod
+                                                            .userdetails!.photo,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.image,
+                                                        membershipColor: prod
+                                                            .userdetails!
+                                                            .memberColor,
+                                                        similarproductCount: prod
+                                                            .similarProductCount,
+                                                        membershipTitle: prod
+                                                            .userdetails!
+                                                            .membershipTitle,
+                                                        // avg_rating: prod.average_rating,
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                          )
+                                        : nolistingfound(),
                                   ],
                                 ),
                               );
@@ -962,13 +964,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             loading: () => const Center(
                                 child: CircularProgressIndicator()),
                           ),
-                          SizedBox(height: 60.h,),
+                          SizedBox(
+                            height: 60.h,
+                          ),
 
                           // Expanded(
 
                           // child: ProductDetailWidget(),),
 
-                        
                           SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -1036,9 +1039,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             }).toList(),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
-                                                padding: EdgeInsets.only(top: 28.h),
-                                                child: Center(child: nolistingfound()),
-                                              )
+                                                  padding: EdgeInsets.only(
+                                                      top: 28.h),
+                                                  child: Center(
+                                                      child: nolistingfound()),
+                                                )
                                               : SizedBox(
                                                   height: 340.h,
                                                   child: ListView.builder(
@@ -1386,8 +1391,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
-                                      
-                                      gift_qty: resp.gift_qty!,
+                                        gift_qty: resp.gift_qty!,
                                         worth: resp.worth!,
                                         productname: "Discount Coupon",
                                         vendorImage: resp.vendorImage,
@@ -1558,7 +1562,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 400.9,
+                                  mainAxisExtent: 340.9,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,
@@ -1567,6 +1571,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
+                                  
+                                  print(
+                                      "binod ${res.userdetails.membership_title}");
                                   return Padding(
                                       padding: EdgeInsets.only(bottom: 5.h),
                                       child: InkWell(
@@ -1582,7 +1589,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         child: AllProductDetailWidget(
                                           shortestDistance: data
                                               .allProducts[index]
-                                              .userdetails.shortestDistance,
+                                              .userdetails
+                                              .shortestDistance,
                                           issponsored: data.allProducts[index]
                                               .userss.sponsored,
                                           distance: data.allProducts[index]
@@ -1603,9 +1611,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               data.allProducts[index].image,
                                           Vimage: data
                                               .allProducts[index].userss.photo,
-                                              
-                                          vendorname:
-                                              data.allProducts[index].userss.name,
+                                          vendorname: data
+                                              .allProducts[index].userss.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
@@ -1614,7 +1621,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           membershipColor: data
                                               .allProducts[index]
                                               .userss
-                                              .membercolor,
+                                              .membershipColor,
                                           membershipTitle: data
                                               .allProducts[index]
                                               .userss

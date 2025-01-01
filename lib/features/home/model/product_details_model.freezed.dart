@@ -3723,17 +3723,10 @@ VendorUserDetail _$VendorUserDetailFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VendorUserDetail {
-  @JsonKey(name: 'shortestDistance')
   double? get shortestDistance => throw _privateConstructorUsedError;
-  @JsonKey(name: 'nearestBranch')
-  String? get nearestBranch =>
-      throw _privateConstructorUsedError; // String? id,
-// String? name,
-// String? photo,
-  @JsonKey(name: 'membership_color')
-  String? get memberColor => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle => throw _privateConstructorUsedError;
+  String? get nearestBranch => throw _privateConstructorUsedError;
+  String? get membership_color => throw _privateConstructorUsedError;
+  String? get membership_title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3748,10 +3741,10 @@ abstract class $VendorUserDetailCopyWith<$Res> {
       _$VendorUserDetailCopyWithImpl<$Res, VendorUserDetail>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'shortestDistance') double? shortestDistance,
-      @JsonKey(name: 'nearestBranch') String? nearestBranch,
-      @JsonKey(name: 'membership_color') String? memberColor,
-      @JsonKey(name: 'membership_title') String? membershipTitle});
+      {double? shortestDistance,
+      String? nearestBranch,
+      String? membership_color,
+      String? membership_title});
 }
 
 /// @nodoc
@@ -3769,8 +3762,8 @@ class _$VendorUserDetailCopyWithImpl<$Res, $Val extends VendorUserDetail>
   $Res call({
     Object? shortestDistance = freezed,
     Object? nearestBranch = freezed,
-    Object? memberColor = freezed,
-    Object? membershipTitle = freezed,
+    Object? membership_color = freezed,
+    Object? membership_title = freezed,
   }) {
     return _then(_value.copyWith(
       shortestDistance: freezed == shortestDistance
@@ -3781,13 +3774,13 @@ class _$VendorUserDetailCopyWithImpl<$Res, $Val extends VendorUserDetail>
           ? _value.nearestBranch
           : nearestBranch // ignore: cast_nullable_to_non_nullable
               as String?,
-      memberColor: freezed == memberColor
-          ? _value.memberColor
-          : memberColor // ignore: cast_nullable_to_non_nullable
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -3802,10 +3795,10 @@ abstract class _$$VendorUserDetailImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'shortestDistance') double? shortestDistance,
-      @JsonKey(name: 'nearestBranch') String? nearestBranch,
-      @JsonKey(name: 'membership_color') String? memberColor,
-      @JsonKey(name: 'membership_title') String? membershipTitle});
+      {double? shortestDistance,
+      String? nearestBranch,
+      String? membership_color,
+      String? membership_title});
 }
 
 /// @nodoc
@@ -3821,8 +3814,8 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
   $Res call({
     Object? shortestDistance = freezed,
     Object? nearestBranch = freezed,
-    Object? memberColor = freezed,
-    Object? membershipTitle = freezed,
+    Object? membership_color = freezed,
+    Object? membership_title = freezed,
   }) {
     return _then(_$VendorUserDetailImpl(
       shortestDistance: freezed == shortestDistance
@@ -3833,13 +3826,13 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
           ? _value.nearestBranch
           : nearestBranch // ignore: cast_nullable_to_non_nullable
               as String?,
-      memberColor: freezed == memberColor
-          ? _value.memberColor
-          : memberColor // ignore: cast_nullable_to_non_nullable
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -3849,33 +3842,26 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorUserDetailImpl implements _VendorUserDetail {
   const _$VendorUserDetailImpl(
-      {@JsonKey(name: 'shortestDistance') this.shortestDistance,
-      @JsonKey(name: 'nearestBranch') this.nearestBranch,
-      @JsonKey(name: 'membership_color') this.memberColor,
-      @JsonKey(name: 'membership_title') this.membershipTitle});
+      {this.shortestDistance,
+      this.nearestBranch,
+      this.membership_color,
+      this.membership_title});
 
   factory _$VendorUserDetailImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorUserDetailImplFromJson(json);
 
   @override
-  @JsonKey(name: 'shortestDistance')
   final double? shortestDistance;
   @override
-  @JsonKey(name: 'nearestBranch')
   final String? nearestBranch;
-// String? id,
-// String? name,
-// String? photo,
   @override
-  @JsonKey(name: 'membership_color')
-  final String? memberColor;
+  final String? membership_color;
   @override
-  @JsonKey(name: 'membership_title')
-  final String? membershipTitle;
+  final String? membership_title;
 
   @override
   String toString() {
-    return 'VendorUserDetail(shortestDistance: $shortestDistance, nearestBranch: $nearestBranch, memberColor: $memberColor, membershipTitle: $membershipTitle)';
+    return 'VendorUserDetail(shortestDistance: $shortestDistance, nearestBranch: $nearestBranch, membership_color: $membership_color, membership_title: $membership_title)';
   }
 
   @override
@@ -3887,16 +3873,16 @@ class _$VendorUserDetailImpl implements _VendorUserDetail {
                 other.shortestDistance == shortestDistance) &&
             (identical(other.nearestBranch, nearestBranch) ||
                 other.nearestBranch == nearestBranch) &&
-            (identical(other.memberColor, memberColor) ||
-                other.memberColor == memberColor) &&
-            (identical(other.membershipTitle, membershipTitle) ||
-                other.membershipTitle == membershipTitle));
+            (identical(other.membership_color, membership_color) ||
+                other.membership_color == membership_color) &&
+            (identical(other.membership_title, membership_title) ||
+                other.membership_title == membership_title));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, shortestDistance, nearestBranch,
-      memberColor, membershipTitle);
+      membership_color, membership_title);
 
   @JsonKey(ignore: true)
   @override
@@ -3915,29 +3901,22 @@ class _$VendorUserDetailImpl implements _VendorUserDetail {
 
 abstract class _VendorUserDetail implements VendorUserDetail {
   const factory _VendorUserDetail(
-          {@JsonKey(name: 'shortestDistance') final double? shortestDistance,
-          @JsonKey(name: 'nearestBranch') final String? nearestBranch,
-          @JsonKey(name: 'membership_color') final String? memberColor,
-          @JsonKey(name: 'membership_title') final String? membershipTitle}) =
-      _$VendorUserDetailImpl;
+      {final double? shortestDistance,
+      final String? nearestBranch,
+      final String? membership_color,
+      final String? membership_title}) = _$VendorUserDetailImpl;
 
   factory _VendorUserDetail.fromJson(Map<String, dynamic> json) =
       _$VendorUserDetailImpl.fromJson;
 
   @override
-  @JsonKey(name: 'shortestDistance')
   double? get shortestDistance;
   @override
-  @JsonKey(name: 'nearestBranch')
   String? get nearestBranch;
-  @override // String? id,
-// String? name,
-// String? photo,
-  @JsonKey(name: 'membership_color')
-  String? get memberColor;
   @override
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle;
+  String? get membership_color;
+  @override
+  String? get membership_title;
   @override
   @JsonKey(ignore: true)
   _$$VendorUserDetailImplCopyWith<_$VendorUserDetailImpl> get copyWith =>
