@@ -250,11 +250,15 @@ class AllProductDetailWidget extends StatelessWidget {
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w800),
                         ),
-                        offer != null &&  offer?.length!=0
+                        offer != null && offer?.length != 0
                             ? Row(
                                 children: [
-                                  SizedBox(width: 5.w,),
-                                  if (offer != null || discounttedPrice != null || offer?.length!=0)
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  if (offer != null ||
+                                      discounttedPrice != null ||
+                                      offer?.length != 0)
                                     const Icon(
                                       Icons.track_changes_sharp,
                                       color: Color(0xff901B41),
@@ -653,21 +657,19 @@ class AllProductDetailWidget extends StatelessWidget {
                                       SizedBox(
                                         width: 5.w,
                                       ),
-                                      issponsored
-                                          ? Row(
-                                              children: [
-                                                Image.asset(
-                                                    "assets/images/mike.png"),
-                                                Text(
-                                                  "SPONSORED",
-                                                  style: headerstyle.copyWith(
-                                                      fontSize: 10.sp,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                              ],
-                                            )
-                                          : const SizedBox(),
+                                      if (issponsored)
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                                "assets/images/mike.png"),
+                                            Text(
+                                              "SPONSORED",
+                                              style: headerstyle.copyWith(
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )
                                     ],
                                   ),
                                 ],

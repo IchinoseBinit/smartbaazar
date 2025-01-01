@@ -1925,6 +1925,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   ));
                             },
                             child: AllProductDetailWidget(
+                              offer: data.product[index].offers,
+                              shortestDistance:data.product[index].user.shortestDistance ,
+                              avg_rating: data.product[index].avg_rating?.toDouble(),
                               wow: data.product[index].wow,
                               comment:
                                   data.product[index].commentcount.toString(),
