@@ -892,6 +892,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
+                                                  
                                                     return InkWell(
                                                       onTap: () {
                                                         Navigator.push(
@@ -954,7 +955,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   },
                                                 )),
                                           )
-                                        : nolistingfound(),
+                                        : Padding(
+                                          padding: EdgeInsets.only(top: 50.h),
+                                          child: nolistingfound()),
                                   ],
                                 ),
                               );
@@ -1027,16 +1030,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.global.isNotEmpty)
-                                            ...data.global.map((e) {
-                                              return NotStoryWidget(
-                                                vImage: e
-                                                    .brandLogo, // Use the correct variable name
-                                                index: data.global.indexOf(
-                                                    e), // Get the index
-                                                brandname: e.brandName,
-                                              );
-                                            }).toList(),
+                                          Row(
+                                            children: [
+                                              if (data.global.isNotEmpty)
+                                                ...data.global.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e
+                                                        .brandLogo, // Use the correct variable name
+                                                    index: data.global.indexOf(
+                                                        e), // Get the index
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                            ],
+                                          ),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
                                                   padding: EdgeInsets.only(
@@ -1465,6 +1472,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   ));
                                             },
                                             child: ProductDetailWidget(
+                                              shortestDistance: prefs.userdetails?.shortestDistance,
                                               issponsored:
                                                   prefs.userdetails!.sponsored!,
                                               wow: prefs.wow,
@@ -1571,9 +1579,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
-                                  
-                                  print(
-                                      "binodl ${res.userDetail.sponsored}");
+
                                   return Padding(
                                       padding: EdgeInsets.only(bottom: 5.h),
                                       child: InkWell(
@@ -1588,14 +1594,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         },
                                         child: AllProductDetailWidget(
                                           
+
                                           shortestDistance: data
                                               .allProducts[index]
                                               .user
                                               .shortestDistance,
                                           issponsored: data.allProducts[index]
-                                              .userDetail.sponsored?? false,
-                                          distance: data.allProducts[index]
-                                              .user.shortestDistance,
+                                                  .userDetail.sponsored ??
+                                              false,
+                                          distance: data.allProducts[index].user
+                                              .shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data
@@ -1610,10 +1618,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           offer: data.allProducts[index].offers,
                                           productImage:
                                               data.allProducts[index].image,
-                                          Vimage: data
-                                              .allProducts[index].userDetail.photo,
-                                          vendorname: data
-                                              .allProducts[index].userDetail.name,
+                                          Vimage: data.allProducts[index]
+                                              .userDetail.photo,
+                                          vendorname: data.allProducts[index]
+                                              .userDetail.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data

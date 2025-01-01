@@ -15,7 +15,7 @@ class AllProductDetailWidget extends StatelessWidget {
       {super.key,
       // this.membership_title,
       this.id,
-      this.offer = '',
+      this.offer,
       this.title = "Trade",
       this.discounttedPrice = '0',
       this.comment = '0',
@@ -53,6 +53,7 @@ class AllProductDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("billu ${offer?.length}");
     String showRs = "Rs";
     showRs = discounttedPrice == '0' ? '' : '';
 
@@ -213,8 +214,12 @@ class AllProductDetailWidget extends StatelessWidget {
                   }
                 },
                 errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
-                      Icons.error); // Show error icon if image fails to load
+                  return SizedBox(
+                    height: 130.h,
+                    // Adjust size accordingly
+                    width: 200.w,
+                    child: const Icon(Icons.error),
+                  ); // Show error icon if image fails to load
                 },
               ),
               SizedBox(
@@ -245,24 +250,29 @@ class AllProductDetailWidget extends StatelessWidget {
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w800),
                         ),
-                        offer == ''
-                            ? const SizedBox()
-                            : Row(
+                        offer != null &&  offer?.length!=0
+                            ? Row(
                                 children: [
-                                  const Icon(
-                                    Icons.track_changes_sharp,
-                                    color: Color(0xff901B41),
-                                    size: 14,
-                                  ),
-                                  Text(
-                                    offer ?? '',
-                                    style: headerstyle.copyWith(
+                                  SizedBox(width: 5.w,),
+                                  if (offer != null || discounttedPrice != null || offer?.length!=0)
+                                    const Icon(
+                                      Icons.track_changes_sharp,
+                                      color: Color(0xff901B41),
+                                      size: 14,
+                                    ),
+                                  if (offer != null)
+                                    Text(
+                                      offer!,
+                                      style: headerstyle.copyWith(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff901B41),
-                                        fontSize: 8.sp),
-                                  ),
+                                        fontSize: 8.sp,
+                                      ),
+                                    ),
                                 ],
-                              ),
+                              )
+                            : const SizedBox(),
+
                         // discounttedPrice != "0"
                         //     ?
 
@@ -322,7 +332,9 @@ class AllProductDetailWidget extends StatelessWidget {
                           child:
                               // avg_rating.toString() ?? '0',
                               Text(
-                            avg_rating == 0 || avg_rating==null ? "0.0" : avg_rating.toString(),
+                            avg_rating == 0 || avg_rating == null
+                                ? "0.0"
+                                : avg_rating.toString(),
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
                         ),
@@ -531,10 +543,12 @@ class AllProductDetailWidget extends StatelessWidget {
                       margin: EdgeInsets.zero,
                       padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
-                        color: membershipColor != null && membershipColor!=''
-                            ? Color(int.parse(
-                                membershipColor!.replaceFirst('#', '0xFF'),),)
-
+                        color: membershipColor != null && membershipColor != ''
+                            ? Color(
+                                int.parse(
+                                  membershipColor!.replaceFirst('#', '0xFF'),
+                                ),
+                              )
                             : const Color(0xff3D215F), // Default color
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(13),
@@ -586,32 +600,24 @@ class AllProductDetailWidget extends StatelessWidget {
                                         color: Colors.white,
                                         size: 12,
                                       ),
-                                      Row(
-                                        children: [
-                                          shortestDistance != null
-                                              ? Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.location_on,
-                                                      color: Colors.white,
-                                                      size: 12,
-                                                    ),
-                                                    Text(
-                                                      "$shortestDistance km",
-                                                      style:
-                                                          headerstyle.copyWith(
-                                                              fontSize: 8.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                    ),
-                                                  ],
-                                                )
-                                              : SizedBox(
-                                                  height: 5.h,
-                                                ),
-                                        ],
-                                      )
+                                      if (shortestDistance != null &&
+                                          shortestDistance != 0.0)
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            Text(
+                                              "${shortestDistance ?? 2.0} km",
+                                              style: headerstyle.copyWith(
+                                                fontSize: 8.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                     ],
                                   ),
                                   Row(
