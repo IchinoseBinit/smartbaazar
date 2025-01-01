@@ -16,7 +16,9 @@ import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/api/hot_deals_provider.dart';
 import 'package:smartbazar/features/hot_deals/view/components/hot_deals_components.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -605,46 +607,62 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                       data: (data) {
                         print('gogo ${data.first.id}');
                         return GridView.builder(
-                          physics:
-                              const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                          shrinkWrap: true, // Adjust to fit content
-                          itemCount: data.length,
+                                physics:
+                                    const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                shrinkWrap: true, // Adjust to fit content
+                                padding: EdgeInsets.zero,
+                                itemCount: data.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 340.9,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.2,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.9,
+                                ),
 
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisExtent: 430,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0.2,
-                            mainAxisSpacing: 0.2,
-                            childAspectRatio: 0.9,
-                          ),
-                          itemBuilder: (context, index) {
-                            GlobalModel res = data[index];
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 5.h),
-                              child: ProductDetailWidget(
-                                  offer: res.offers,
-                                  // avg_rating: res.avg_rating.toDouble(),
+                                itemBuilder: (context, index) {
+                                  GlobalModel res = data[index];
 
-                                  // avg_rating: res.avg_rating,
-                                  comment: res.commentnum,
-                                  discounttedPrice: res.discont,
-                                  distance: res.shortestDistance,
-                                  issponsored: res.user[0].sponsored!,
-                                  lefttile: widget.header,
-                                  wow: res.wow,
-                                  productImage: res.imageUrl,
-                                  Vimage: res.user[0].photo,
-                                  vendorname: res.user[0].name,
-                                  title: res.title,
-                                  price: res.price,
-                                  similarproductCount: res.similarproductCount,
-                                  membershipColor: res.user[0].membership_color,
-                                  membershipTitle:
-                                      res.user[0].membership_title),
-                            );
-                          },
-                        );
+                                  return Padding(
+                                      padding: EdgeInsets.only(bottom: 5.h),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailScreen(
+                                                        productId: res.id),
+                                              ));
+                                        },
+                                        child: AllProductDetailWidget(
+                                          
+
+                                          shortestDistance: data
+                                              [index].shortestDistance,
+                                              
+                                              
+                                          issponsored: data[index].user[0].sponsored!,
+                                          distance: data[index].user[0].shortestDistance,
+                                          wow: data[index].wow,
+                                          discounttedPrice: data[index].discont,
+                                          comment: data[index].commentnum,
+                                          avg_rating: data[index].avg_rating,
+                                          offer: data[index].offers,
+                                          productImage:
+                                              data[index].imageUrl,
+                                          Vimage: data[index].user[0].photo,
+                                          vendorname: data[index].user[0].name,
+                                          title: data[index].title,
+                                          price: data[index].price,
+                                          similarproductCount:data[index].similarproductCount,
+                                          membershipColor: data[index].user[0].membership_color,
+                                          membershipTitle: data[index].user[0].membership_title
+                                        ),
+                                      ));
+                                },
+                              );
                       },
                       error: (error, stackTrace) {
                         return const Text("data");

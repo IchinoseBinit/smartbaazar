@@ -17,7 +17,7 @@ class AllProductDetailWidget extends StatelessWidget {
       this.id,
       this.offer,
       this.title = "Trade",
-      this.discounttedPrice = '0',
+      this.discounttedPrice,
       this.comment = '0',
       this.price = '1',
       this.vendorname = 'John',
@@ -217,6 +217,7 @@ class AllProductDetailWidget extends StatelessWidget {
                   return SizedBox(
                     height: 130.h,
                     // Adjust size accordingly
+
                     width: 200.w,
                     child: const Icon(Icons.error),
                   ); // Show error icon if image fails to load
@@ -401,7 +402,7 @@ class AllProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    discounttedPrice == '0' || discounttedPrice == null
+                    discounttedPrice?.length == 0 || discounttedPrice == null
                         ? const SizedBox()
                         : Row(
                             children: [
@@ -657,19 +658,17 @@ class AllProductDetailWidget extends StatelessWidget {
                                       SizedBox(
                                         width: 5.w,
                                       ),
-                                      if (issponsored)
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                                "assets/images/mike.png"),
-                                            Text(
-                                              "SPONSORED",
-                                              style: headerstyle.copyWith(
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        )
+                                      Row(
+                                        children: [
+                                          Image.asset("assets/images/mike.png"),
+                                          Text(
+                                            "SPONSORED",
+                                            style: headerstyle.copyWith(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
                                 ],

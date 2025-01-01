@@ -1312,7 +1312,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                   },
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 50.h,
                   width: double.infinity,
                   child: TabBar(
                     controller: dynamictabController,
@@ -1335,18 +1335,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     else
                       dynamicHeight = 300;
@@ -1364,7 +1364,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (data.global.isNotEmpty)
+                            Row(
+                              children: [    if (data.global.isNotEmpty)
                                   ...data.global.map((e) {
                                     return NotStoryWidget(
                                       vImage: e
@@ -1373,7 +1374,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           .indexOf(e), // Get the index
                                       brandname: e.brandName,
                                     );
-                                  }).toList(),
+                                  }).toList(),],
+                            ),
+                            SizedBox(height: 5.h,),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1422,7 +1425,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           },
                                         ),
                                       )
-                                    : const SizedBox(),
+                                    : Center(child: nolistingfound())
                               ],
                             ),
                             Column(
@@ -1441,8 +1444,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                 SizedBox(height: 5.h,),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1512,8 +1516,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                 SizedBox(height: 5.h,),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1633,6 +1638,39 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
+                  Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Sponsored",
+                                  textAlign: TextAlign.center,
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: const Color(0xff551b55)),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Center(
+                                  child: Container(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    margin: EdgeInsets.only(bottom: 5.h),
+                                    height: 5.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xff901B41),
+                                        borderRadius: BorderRadius.circular(5)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                             nolistingfound(),
+                             SizedBox(height: 5.h,)
+                              ],
+                            ),
+                          ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -1775,6 +1813,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  offer: prod.offers,
+                                                  shortestDistance: prod.user.shortestDistance,
+                                                  avg_rating: prod.avg_rating?.toDouble(),
+
                                                   comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,

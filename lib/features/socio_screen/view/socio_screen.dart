@@ -1422,6 +1422,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         itemBuilder: (context, index) {
                                           VProduct prod =
                                               data.insidearr[0][index];
+                                          print('pinkyk ${prod.offers}');
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1433,7 +1434,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   ));
                                             },
                                             child: ProductDetailWidget(
-
+                                              offer: prod.offers,
+                                              avg_rating:
+                                                  prod.avg_rating?.toDouble(),
+                                              shortestDistance:
+                                                  prod.user.shortestDistance,
                                               comment:
                                                   prod.commentcount.toString(),
                                               wow: prod.wow,
@@ -1833,7 +1838,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   ));
                                             }, // Handle onTap if needed
                                             child: ProductDetailWidget(
-                                              offer:prod.offers ,
+                                              offer: prod.offers,
                                               // shortestDistance: prod.user.shortestDistance?[0],
                                               // avg_rating: prod.avg_rating?.toDouble(),
                                               comment:
@@ -1918,6 +1923,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   ));
                             },
                             child: AllProductDetailWidget(
+                              offer: data.product[index].offers,
+                              shortestDistance: data.product[index].user.shortestDistance,
+                              avg_rating: data.product[index].avg_rating?.toDouble(),
                               wow: data.product[index].wow,
                               comment:
                                   data.product[index].commentcount.toString(),
