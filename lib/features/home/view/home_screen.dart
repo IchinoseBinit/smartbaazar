@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -16,6 +15,7 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
+import 'package:smartbazar/features/home/api/home_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -25,6 +25,7 @@ import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
@@ -240,7 +241,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-
+    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
     // category.when(
     //   data: (data) {
     //     print("bibash ${data.jobs.first.id}");
@@ -615,55 +616,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    randomstory.when(
-                      data: (data) {
+                    asyncHomeStoryContent.when(
+                      data: (feedStoryData) {
+                        final feedStoryContent = feedStoryData.homeStory?.story;
                         return SizedBox(
-                          height: 130.h,
-                          child: SingleChildScrollView(
-                            // Wrapping the Row with SingleChildScrollView
-                            scrollDirection: Axis
-                                .horizontal, // Ensuring it scrolls horizontally
-                            child: Row(
-                              children: [
-                                // First StoryAddWidget with search option
-                                StoryAddWidget(
-                                  vImage: data!.feedStory?.posts?.first.image,
-                                  brandname:
-                                      data!.feedStory?.posts?.first.vendorName,
-                                  index: 0,
-                                  addSearch: true, // First item has search
-                                  showgift: false,
-                                  onTap: () {
-                                    setState(() {
-                                      // _isPopupVisible = true; // Open the popup
-                                    });
-                                  },
-                                ),
-                                // Expanded is not needed since SingleChildScrollView will handle scrolling
-                                // Now ListView.builder will be added directly to the row
-                                ...data!.feedStory!.posts!.map((storyData) {
-                                  return StoryAddWidget(
-                                    brandname: storyData.vendorName,
-                                    vImage: storyData.vendorImage,
-                                    index: data!.feedStory!.posts!
-                                        .indexOf(storyData),
-                                    addSearch:
-                                        false, // For all items other than the first, no search
-                                    showgift: storyData.hasSponsoredGifts,
-                                    onTap: () {
-                                      // setState(() {
-                                      //   // _isPopupVisible = true; // Open the popup
-                                      // });
-                                    },
-                                  );
-                                }).toList(),
-                              ],
-                            ),
+                          height: 100.h,
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                feedStoryData.homeStory!.story!.posts!.length,
+                            itemBuilder: (context, index) {
+                              final story =
+                                  feedStoryData.homeStory!.story!.posts![index];
+                              return HomePageStoryContainer(
+                                index: index,
+                                vendorName:
+                                    story.vendorName ?? "Unknown Vendor",
+                                vendorImage: story.vendorImage ??
+                                    "https://example.com/default-image.png",
+                                storyCount: story.storyCount ?? 0,
+                                showGift: story.hasSponsoredGifts ?? false,
+                                feedStoryContent: feedStoryContent,
+                                userId: story.vendorId!,
+                                // feedData.data!.feedPost![index].userId ??
+                              );
+                            },
                           ),
                         );
                       },
-                      error: (error, stackTrace) => Text(error.toString()),
-                      loading: () => const CircularProgressIndicator(),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (error, stack) =>
+                          Center(child: Text('Error: $error')),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -876,80 +862,86 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         },
                                       ),
                                     ),
-                                    products.isNotEmpty?
-                                    SizedBox(
-                                      child: AnimatedContainer(
-                                        duration: Duration(microseconds: 400),
-                                        height: 340.h,
-                                        width: double.infinity,
-                                        child: ListView.builder(
-                                                padding:
-                                                    const EdgeInsets.all(3),
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: products.length,
-                                                itemBuilder: (context, index) {
-                                                  CategoryProduct prod =
-                                                      products[index];
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ProductDetailScreen(
-                                                                    productId:
-                                                                        prod.id),
-                                                          ));
-                                                      // Handle product click if needed
-                                                    },
-                                                    child: ProductDetailWidget(
-                                                      distance:
-                                                          prod.shortestDistance,
-                                                      issponsored: prod.userdetails!
-                                                              .sponsored ??
-                                                          false,
-                                                      shortestDistance:
-                                                          double.tryParse(
-                                                              prod.nearestBranch ??
-                                                                  '0'),
-                                                      wow: prod.wow,
-                                                      comment: prod.commentCount
-                                                              .toString() ??
-                                                          '1',
-                                                      avg_rating: prod
-                                                          .avgRating
-                                                          ?.toDouble(),
+                                    products.isNotEmpty
+                                        ? SizedBox(
+                                            child: AnimatedContainer(
+                                                duration:
+                                                    Duration(microseconds: 400),
+                                                height: 340.h,
+                                                width: double.infinity,
+                                                child: ListView.builder(
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: products.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    CategoryProduct prod =
+                                                        products[index];
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                      productId:
+                                                                          prod.id),
+                                                            ));
+                                                        // Handle product click if needed
+                                                      },
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        distance: prod
+                                                            .shortestDistance,
+                                                        issponsored: prod
+                                                                .userdetails!
+                                                                .sponsored ??
+                                                            false,
+                                                        shortestDistance:
+                                                            double.tryParse(
+                                                                prod.nearestBranch ??
+                                                                    '0'),
+                                                        wow: prod.wow,
+                                                        comment: prod
+                                                                .commentCount
+                                                                .toString() ??
+                                                            '1',
+                                                        avg_rating: prod
+                                                            .avgRating
+                                                            ?.toDouble(),
 
-                                                      offer: prod.offers,
-                                                      id: int.tryParse(
-                                                          prod.userdetails!.id),
-                                                      lefttile: categories[
-                                                          selectedIndex],
-                                                      vendorname:
-                                                          prod.userdetails!.name,
-                                                      discounttedPrice:
-                                                          prod.discountedPrice,
-                                                      Vimage: prod.userdetails!.photo,
-                                                      price: prod.price,
-                                                      title: prod.title,
-                                                      productImage: prod.image,
-                                                      membershipColor: prod
-                                                          .userdetails!.memberColor,
-                                                      similarproductCount: prod
-                                                          .similarProductCount,
-                                                      membershipTitle: prod
-                                                          .userdetails!
-                                                          .membershipTitle,
-                                                      // avg_rating: prod.average_rating,
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                          
-                                      ),
-                                    ):nolistingfound(),
-                          
+                                                        offer: prod.offers,
+                                                        id: int.tryParse(prod
+                                                            .userdetails!.id),
+                                                        lefttile: categories[
+                                                            selectedIndex],
+                                                        vendorname: prod
+                                                            .userdetails!.name,
+                                                        discounttedPrice: prod
+                                                            .discountedPrice,
+                                                        Vimage: prod
+                                                            .userdetails!.photo,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.image,
+                                                        membershipColor: prod
+                                                            .userdetails!
+                                                            .memberColor,
+                                                        similarproductCount: prod
+                                                            .similarProductCount,
+                                                        membershipTitle: prod
+                                                            .userdetails!
+                                                            .membershipTitle,
+                                                        // avg_rating: prod.average_rating,
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                          )
+                                        : nolistingfound(),
                                   ],
                                 ),
                               );
@@ -1581,7 +1573,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         child: AllProductDetailWidget(
                                           shortestDistance: data
                                               .allProducts[index]
-                                              .userdetails.shortestDistance,
+                                              .userdetails
+                                              .shortestDistance,
                                           issponsored: data.allProducts[index]
                                               .userss.sponsored,
                                           distance: data.allProducts[index]
@@ -1602,9 +1595,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               data.allProducts[index].image,
                                           Vimage: data
                                               .allProducts[index].userss.photo,
-                                              
-                                          vendorname:
-                                              data.allProducts[index].userss.name,
+                                          vendorname: data
+                                              .allProducts[index].userss.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
