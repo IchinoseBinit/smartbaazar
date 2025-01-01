@@ -52,65 +52,123 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
     });
   }
 
-  void submitForm() {
-  bool isFormValid = _formKey.currentState!.validate();
-  setState(() {
-    isSubmitting = true;
-  });
+//   void submitForm() {
+//   bool isFormValid = _formKey.currentState!.validate();
+//   setState(() {
+//     isSubmitting = true;
+//   });
 
-  final captionTitle = captionTitleController.text;
-  final caption = captionController.text;
-  final offersId = offersController.text;
-  final productsIds = selectedValues
-      .where((element) => element != null)
-      .map((e) => e.toString())
-      .toList();
+//   final captionTitle = captionTitleController.text;
+//   final caption = captionController.text;
+//   final offersId = offersController.text;
+//   final productsIds = selectedValues
+//       .where((element) => element != null)
+//       .map((e) => e.toString())
+//       .toList();
 
-  _formKey.currentState!.save();
+//   _formKey.currentState!.save();
 
-  final result = ref
-      .read(postFeedFormProvider(
-          captionTitle, caption, offersId, productsIds, imageFile!))
-      .when(
-        data: (bool success) {
-          setState(() {
-            isSubmitting = false;
-          });
+//   final result = ref
+//       .read(postFeedFormProvider(
+//           captionTitle, caption, offersId, productsIds, imageFile!))
+//       .when(
+//         data: (bool success) {
+//           setState(() {
+//             isSubmitting = false;
+//           });
 
-          if (success) {
-            _resetForm(); // Reset form fields and image
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Feed submitted successfully!')),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Failed to submit feed.')),
-            );
-          }
-        },
-        loading: () {
-          setState(() {
-            isSubmitting = true;
-          });
-        },
-        error: (error, stack) {
-          setState(() {
-            isSubmitting = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $error')),
-          );
-        },
+//           if (success) {
+//             _resetForm(); // Reset form fields and image
+//             ScaffoldMessenger.of(context).showSnackBar(
+//               const SnackBar(content: Text('Feed submitted successfully!')),
+//             );
+//           } else {
+//             ScaffoldMessenger.of(context).showSnackBar(
+//               const SnackBar(content: Text('Failed to submit feed.')),
+//             );
+//           }
+//         },
+//         loading: () {
+//           setState(() {
+//             isSubmitting = true;
+//           });
+//         },
+//         error: (error, stack) {
+//           setState(() {
+//             isSubmitting = false;
+//           });
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(content: Text('Error: $error')),
+//           );
+//         },
+//       );
+// }
+  void submitForm() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => isSubmitting = true);
+    if (imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select an image.')),
       );
-}
+      return;
+    }
 
+    final captionTitle = captionTitleController.text.trim();
+    final caption = captionController.text.trim();
+    final offersId = offersController.text.trim();
+    final productsIds = selectedValues
+        .where((element) => element != null)
+        .map((e) => e.toString())
+        .toList();
+
+    final feedProvider = ref.read(postFeedFormProvider(
+      captionTitle,
+      caption,
+      offersId,
+      productsIds,
+      imageFile!,
+    ));
+
+    feedProvider.when(
+      data: (success) {
+        setState(() => isSubmitting = false);
+
+        if (success) {
+          _resetForm();
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Success'),
+              content: const Text('Feed submitted successfully!'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      loading: () => setState(() => isSubmitting = true),
+      error: (error, stack) {
+        setState(() => isSubmitting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $error')),
+        );
+      },
+    );
+  }
 
   void _resetForm() {
     captionTitleController.clear();
     captionController.clear();
     offersController.clear();
+    imageFile = null;
     selectedValues = [null];
     selectProductController = [TextEditingController()];
+    // _imageWidgetKey.currentState?.resetImage();
   }
 
   @override

@@ -27,7 +27,7 @@ Future<bool> postFeedForm(PostFeedFormRef ref, String captionTitle,
       url: ApiConstants.postFeedForm,
       parameter: formData,
     );
-    if (response.statusCode == 200 && response.data['data'] == 'success') {
+    if (response.statusCode == 200 && response.data['data'] == true) {
       print('Feed details posted successfully!');
       return true;
     } else {
