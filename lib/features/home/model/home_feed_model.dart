@@ -5,9 +5,13 @@ class FeedStoryResponse {
   FeedStoryResponse({required this.feedStory, required this.msg});
 
   factory FeedStoryResponse.fromJson(Map<String, dynamic> json) {
+    final feedStoryData = json['data']?['feedstory'];
+    if (feedStoryData == null) {
+      throw Exception("Missing 'data.feedstory' in JSON response.");
+    }
     return FeedStoryResponse(
-      feedStory: FeedStory.fromJson(json['data']['feedstory']),
-      msg: json['msg'],
+      feedStory: FeedStory.fromJson(feedStoryData),
+      msg: json['msg'] ?? '',
     );
   }
 }
@@ -18,8 +22,8 @@ class FeedStory {
   FeedStory({required this.posts});
 
   factory FeedStory.fromJson(Map<String, dynamic> json) {
-    var list = json['posts'] as List;
-    List<Post> postsList = list.map((i) => Post.fromJson(i)).toList();
+    final list = json['posts'] as List? ?? [];
+    final postsList = list.map((i) => Post.fromJson(i)).toList();
     return FeedStory(posts: postsList);
   }
 }
@@ -34,7 +38,6 @@ class Post {
   final String title;
   final String image;
   final int similarProductCount;
-  final int commentCount;
   final int averageRating;
   final double? discountPercentage;
 
@@ -48,24 +51,22 @@ class Post {
     required this.title,
     required this.image,
     required this.similarProductCount,
-    required this.commentCount,
     required this.averageRating,
     this.discountPercentage,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      vendorId: json['vendor_id'],
-      vendorName: json['vendor_name'],
-      vendorImage: json['vendor_image'],
-      storyCount: json['story_count'],
-      hasSponsoredGifts: json['has_sponsored_gifts'],
-      id: json['id'],
-      title: json['title'],
-      image: json['image'],
-      similarProductCount: json['similarproductcount'],
-      commentCount: int.tryParse(json['comment_count']) ?? 0,
-      averageRating: json['average_rating'],
+      vendorId: json['vendor_id'] ?? '',
+      vendorName: json['vendor_name'] ?? '',
+      vendorImage: json['vendor_image'] ?? '',
+      storyCount: json['story_count'] ?? 0,
+      hasSponsoredGifts: json['has_sponsored_gifts'] ?? false,
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
+      image: json['image'] ?? '',
+      similarProductCount: json['similarproductcount'] ?? 0,
+      averageRating: json['average_rating'] ?? 0,
       discountPercentage: json['discount_percentage'] != null
           ? json['discount_percentage'].toDouble()
           : null,

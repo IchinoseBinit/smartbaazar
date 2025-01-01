@@ -531,9 +531,10 @@ class AllProductDetailWidget extends StatelessWidget {
                       margin: EdgeInsets.zero,
                       padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
-                        color: membershipColor != null
+                        color: membershipColor != null && membershipColor!=''
                             ? Color(int.parse(
-                                membershipColor!.replaceFirst('#', '0xFF')))
+                                membershipColor!.replaceFirst('#', '0xFF'),),)
+
                             : const Color(0xff3D215F), // Default color
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(13),

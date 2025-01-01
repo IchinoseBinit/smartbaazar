@@ -7,11 +7,12 @@ class FieldsResponse with _$FieldsResponse {
   factory FieldsResponse({
     required bool success,
     String? message,
-    required Map<String, FieldData> result,
+    required List<FieldData> result, // Change Map to List
   }) = _FieldsResponse;
 
   factory FieldsResponse.fromJson(Map<String, dynamic> json) => _$FieldsResponseFromJson(json);
 }
+
 
 @freezed
 class FieldData with _$FieldData {
