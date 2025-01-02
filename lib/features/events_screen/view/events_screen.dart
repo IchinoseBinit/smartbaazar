@@ -225,7 +225,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(geteventResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -637,7 +637,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 ),
 
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {

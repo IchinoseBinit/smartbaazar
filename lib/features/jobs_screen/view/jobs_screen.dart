@@ -212,7 +212,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getjobsResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -623,8 +623,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
+
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {

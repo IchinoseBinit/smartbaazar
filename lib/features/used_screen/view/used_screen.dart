@@ -229,7 +229,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('2'));
 
     final asyncbajarValue = ref.watch(getUsedResponseProvider);
@@ -691,7 +691,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                 ),
 
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {

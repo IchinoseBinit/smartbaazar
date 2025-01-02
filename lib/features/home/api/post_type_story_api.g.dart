@@ -7,7 +7,7 @@ part of 'post_type_story_api.dart';
 // **************************************************************************
 
 String _$getPostTypeStoryApiHash() =>
-    r'5401d4e140a83ceaf0aaec8ca7bd573dc7389b17';
+    r'5a5c5425e0a75b63457a3552d61c7fd8cc314f8b';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -222,7 +222,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getGrocertResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -646,8 +646,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
-                SizedBox(
-                  height: 10.h,
+               SizedBox(
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -1293,18 +1293,18 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     else
                       dynamicHeight = 300;
@@ -1872,8 +1872,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       padding: EdgeInsets.zero,
 
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 334.9,
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 305.4.h,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,

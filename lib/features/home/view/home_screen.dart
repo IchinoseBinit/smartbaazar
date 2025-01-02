@@ -15,6 +15,7 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -24,6 +25,7 @@ import 'package:smartbazar/features/home/model/home_posts_model.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
@@ -230,6 +232,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
     final randomstory = ref.watch(fetchStoryHomeProvider);
+        final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('1'));
+
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -614,56 +618,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    randomstory.when(
-                      data: (data) {
-                        return SizedBox(
-                          height: 130.h,
-                          child: SingleChildScrollView(
-                            // Wrapping the Row with SingleChildScrollView
-                            scrollDirection: Axis
-                                .horizontal, // Ensuring it scrolls horizontally
-                            child: Row(
-                              children: [
-                                // First StoryAddWidget with search option
-                                StoryAddWidget(
-                                  vImage: data!.feedStory?.posts?.first.image,
-                                  brandname:
-                                      data!.feedStory?.posts?.first.vendorName,
-                                  index: 0,
-                                  addSearch: true, // First item has search
-                                  showgift: false,
-                                  onTap: () {
-                                    setState(() {
-                                      // _isPopupVisible = true; // Open the popup
-                                    });
-                                  },
-                                ),
-                                // Expanded is not needed since SingleChildScrollView will handle scrolling
-                                // Now ListView.builder will be added directly to the row
-                                ...data!.feedStory!.posts!.map((storyData) {
-                                  return StoryAddWidget(
-                                    brandname: storyData.vendorName,
-                                    vImage: storyData.vendorImage,
-                                    index: data!.feedStory!.posts!
-                                        .indexOf(storyData),
-                                    addSearch:
-                                        false, // For all items other than the first, no search
-                                    showgift: storyData.hasSponsoredGifts,
-                                    onTap: () {
-                                      // setState(() {
-                                      //   // _isPopupVisible = true; // Open the popup
-                                      // });
-                                    },
-                                  );
-                                }).toList(),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      error: (error, stackTrace) => Text(error.toString()),
-                      loading: () => const CircularProgressIndicator(),
-                    ),
+                   asyncPostTypeContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.homeStory?.story;
+                    return SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            feedStoryData.homeStory!.story!.posts!.length,
+                        itemBuilder: (context, index) {
+                          print("kala ${feedStoryData.homeStory}");
+                          final story =
+                              feedStoryData.homeStory!.story!.posts![index];
+                          return HomePageStoryContainer(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                            // feedData.data!.feedPost![index].userId ??
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
+                ),
                     SizedBox(
                       height: 5.h,
                     ),

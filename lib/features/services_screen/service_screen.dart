@@ -233,7 +233,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     //     final adsList = ref.watch(fetchAdsProvider);
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
 
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final asyncbajarValue = ref.watch(getServiceProviderProvider);
@@ -620,6 +620,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         itemCount:
                             feedStoryData.homeStory!.story!.posts!.length,
                         itemBuilder: (context, index) {
+                          print("kala ${feedStoryData.homeStory}");
                           final story =
                               feedStoryData.homeStory!.story!.posts![index];
                           return HomePageStoryContainer(
@@ -640,6 +641,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
+                ),
+                  SizedBox(
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -1426,8 +1430,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         return NotStoryWidget(
                                           vImage: e
                                               .brandLogo, // Use the correct variable name
-                                          index: data.global.indexOf(
-                                              e), // Get the index
+                                          index: data.global
+                                              .indexOf(e), // Get the index
                                           brandname: e.brandName,
                                         );
                                       }).toList(),
@@ -1482,11 +1486,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         ),
                                       )
                                     : Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 20.0.h), // Add padding here
-                                    child: nolistingfound(),
-                                  ),
-                                ),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 20.0.h), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
+                                      ),
                               ],
                             ),
                             Column(
@@ -1509,7 +1514,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     ? Center(
                                         child: Center(
                                           child: Padding(
-                                            padding: EdgeInsets.only(top: 25.0.h), // Add padding here
+                                            padding: EdgeInsets.only(
+                                                top:
+                                                    25.0.h), // Add padding here
                                             child: nolistingfound(),
                                           ),
                                         ),
@@ -1587,7 +1594,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     ? Center(
                                         child: Center(
                                           child: Padding(
-                                            padding: EdgeInsets.only(top: 20.0.h), // Add padding here
+                                            padding: EdgeInsets.only(
+                                                top:
+                                                    20.0.h), // Add padding here
                                             child: nolistingfound(),
                                           ),
                                         ),
@@ -1937,8 +1946,10 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                             },
                             child: AllProductDetailWidget(
                               offer: data.product[index].offers,
-                              shortestDistance:data.product[index].user.shortestDistance ,
-                              avg_rating: data.product[index].avg_rating?.toDouble(),
+                              shortestDistance:
+                                  data.product[index].user.shortestDistance,
+                              avg_rating:
+                                  data.product[index].avg_rating?.toDouble(),
                               wow: data.product[index].wow,
                               comment:
                                   data.product[index].commentcount.toString(),
