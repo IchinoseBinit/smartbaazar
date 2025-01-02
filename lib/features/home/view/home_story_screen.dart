@@ -503,22 +503,22 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                 ),
               ),
               Positioned(
-                  bottom: 10,
+                  bottom: 20,
                   child: Container(
                     color: Colors.transparent,
                     child: Row(
                       children: [
                         Container(
                           width: MediaQuery.sizeOf(context).width * 0.8,
-                          height: 75.h,
+                          height: 70.h,
                           color: Colors.black.withOpacity(0.3),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.whatshot,
-                                  size: 30,
+                                  size: 40.sp,
                                   color: Colors.orange,
                                 ),
                                 CountdownTimer(
@@ -534,18 +534,19 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                         ),
                         Container(
                           width: MediaQuery.sizeOf(context).width * 0.2,
-                          height: 75.h,
+                          height: 70.h,
                           color: Colors.orange,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "Ending Soon",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 10.sp),
+                                      color: Colors.white, fontSize: 9),
                                 ),
-                                SizedBox(height: 10.h),
+                                // SizedBox(height: 6),
                                 const Row(
                                   children: [
                                     Icon(
@@ -611,11 +612,11 @@ class _CountdownTimerState extends State<CountdownTimer> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildCircularIndicator(days, 'Days', Colors.orange),
-        const SizedBox(width: 8),
+        const SizedBox(width: 6),
         _buildCircularIndicator(hours, 'Hours', Colors.green),
-        const SizedBox(width: 8),
+        const SizedBox(width: 6),
         _buildCircularIndicator(minutes, 'Minutes', Colors.yellow),
-        const SizedBox(width: 8),
+        const SizedBox(width: 6),
         _buildCircularIndicator(seconds, 'Seconds', Colors.red),
       ],
     );
@@ -623,14 +624,14 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   Widget _buildCircularIndicator(int value, String label, Color color) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      // mainAxisSize: MainAxisSize.min,
       children: [
         Stack(
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 50,
-              height: 50,
+              // width: 40,
+              // height: 40,
               child: CircularProgressIndicator(
                 value: value /
                     (label == 'Days'
@@ -641,16 +642,16 @@ class _CountdownTimerState extends State<CountdownTimer> {
               ),
             ),
             Text(
-              value.toString().padLeft(2, '0'),
+              value.toString().padLeft(1, '0'),
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(
           label,
           style: const TextStyle(
