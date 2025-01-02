@@ -51,6 +51,11 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       id: json['id'] as String?,
       title: json['title'] as String?,
       image: json['image'] as String?,
+      similarProductCount: (json['similarproductcount'] as num?)?.toInt(),
+      commentCount: json['comment_count'] as String?,
+      averageRating: json['average_rating'],
+      discountPercentage: (json['discount_percentage'] as num?)?.toDouble(),
+      wow: json['wow'] as String?,
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -63,4 +68,9 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'image': instance.image,
+      'similarproductcount': instance.similarProductCount,
+      'comment_count': instance.commentCount,
+      'average_rating': instance.averageRating,
+      'discount_percentage': instance.discountPercentage,
+      'wow': instance.wow,
     };

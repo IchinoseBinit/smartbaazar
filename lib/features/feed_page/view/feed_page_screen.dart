@@ -38,9 +38,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       child: GenericSafeArea(
         child: Scaffold(
           extendBody: true,
+          backgroundColor: Colors.transparent,
           key: _key,
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
           body: Column(
             children: [
               // Gradient Header Section
@@ -310,6 +310,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                       "imagePath": product.image ??
                                           "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
                                       "price": product.price! ?? "N/A",
+                                      "id": feedItem.id ?? "",
                                     })
                                 .toList(),
                             captionTitle: '${feedItem.captionTitle}',

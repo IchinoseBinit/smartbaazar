@@ -13,10 +13,10 @@ packages:
     dependency: "direct main"
     description:
       name: adoptive_calendar
-      sha256: "58ee961a0471267d7fd630cb5ee48eb67e5a096b9766da09f3004b58527678d9"
+      sha256: "3f049b91715f66e3c68219c26f461b0d6c7ae9fe32a9a5b0129f4cbd4fb980a3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.1.9"
   analyzer:
     dependency: transitive
     description:

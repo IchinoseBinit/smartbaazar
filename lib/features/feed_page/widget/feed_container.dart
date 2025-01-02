@@ -49,7 +49,7 @@ class FeedContainer extends ConsumerWidget {
     return Column(
       children: [
         Material(
-          elevation: 3,
+          elevation: 5,
           shadowColor: ColorConstant.blackColor,
           child: Container(
             // padding: const EdgeInsets.all(10),
@@ -281,6 +281,9 @@ class FeedContainer extends ConsumerWidget {
             ),
           ),
         ),
+        SizedBox(
+          height: 1.h,
+        ),
         Container(
           height: 300.h,
           width: MediaQuery.of(context).size.width,
@@ -327,7 +330,7 @@ class FeedContainer extends ConsumerWidget {
 
               // Icons Section (Like, Comment, Share) positioned above the image
               Positioned(
-                bottom: 50.0, // Positioned higher so it's above the image
+                bottom: 60.0, // Positioned higher so it's above the image
                 right: 10.0,
                 left: 10,
                 child: Row(
@@ -385,7 +388,9 @@ class FeedContainer extends ConsumerWidget {
                   ],
                 ),
               ),
-
+              SizedBox(
+                height: 10.h,
+              ),
               // Interested, Engagement, and Views Section (above the image)
               Positioned(
                 //  top: 4,
@@ -400,7 +405,7 @@ class FeedContainer extends ConsumerWidget {
                     // padding: EdgeInsets.symmetric(horizontal: 20.w),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(
-                          0.9), // Slight opacity to blend with image
+                          0.5), // Slight opacity to blend with image
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(5.0),
                         bottomRight: Radius.circular(5.0),

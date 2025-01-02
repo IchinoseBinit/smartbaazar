@@ -125,4 +125,6 @@ class ApiConstants {
   static String getForYoufeedstory = '$baseUrl/users/getrandomstory';
   static String getFeedGiftCardUrl = '$baseUrl/users/buyorwin/';
   static String getFeedProductDropDownUrl = '$baseUrl/users/products_feed';
+  static String postFeedForm = '$baseUrl/users/storefeed';
+  static String getOffersUrl = '$baseUrl/posts/getoffers';
 }
