@@ -20,25 +20,27 @@ import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
-import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+
+import '../../home/api/post_type_story_api.dart';
+import '../../home/view/home_page_story_container.dart';
 
 class B2bScreen extends ConsumerStatefulWidget {
   const B2bScreen({super.key});
@@ -61,13 +63,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
   late TabController dynamictabController;
-  final List<Map<String, dynamic>> _items = [
+   final List<Map<String, dynamic>> _items = [
+
     {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
     },
-    {
+     {
       'icon': 'assets/icon/b2bIcon.svg',
       'label': 'TradeHub',
       'screen': const B2bScreen()
@@ -82,6 +85,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
       'label': 'Used',
       'screen': const UsedScreen()
     },
+   
     {
       'icon': 'assets/icon/brandBazarIcon.svg',
       'label': 'Brandbazaar',
@@ -224,12 +228,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('7'));
     final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(217));
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('7'));
 
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
@@ -396,97 +400,103 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-
-                      SizedBox(
-                        height: 80.h,
-                        child: PageView.builder(
-                          itemCount: _items.length,
-                          padEnds: false,
-                          controller: _pageController,
-                          onPageChanged: (value) {
-                            setState(() {
-                              selectedIndex =
-                                  value; // Update selectedIndex based on page change
-                            });
-                          },
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = _items[index];
-
-                            // Highlight only when index == 4
-                            bool isActive = index == 1;
-                            return GestureDetector(
-                              onTap: () {
+                      
+                          SizedBox(
+                            height: 80.h,
+                            child: PageView.builder(
+                              itemCount: _items.length,
+                              padEnds: false,
+                              controller: _pageController,
+                              onPageChanged: (value) {
                                 setState(() {
-                                  selectedIndex = index;
+                                  selectedIndex =
+                                      value; // Update selectedIndex based on page change
                                 });
-                                _pageController.animateToPage(
-                                  2,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
                               },
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.center,
-                                child: InkWell(
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data = _items[index];
+
+                                // Highlight only when index == 4
+                                bool isActive = index == 1;
+                                return GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => data['screen']),
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
+                                    _pageController.animateToPage(
+                                      2,
+                                      duration:
+                                      const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
                                     );
                                   },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (data['icon']
-                                          .toString()
-                                          .endsWith('.svg'))
-                                        SvgPicture.asset(
-                                          data['icon'],
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
-                                          theme: const SvgTheme(
-                                              currentColor: Color(0xffdd9d9d9)),
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
+                                    duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              data['screen']),
+                                        );
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          if (data['icon']
+                                              .toString()
+                                              .endsWith('.svg'))
+                                            SvgPicture.asset(
+                                              data['icon'],
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.contain,
+                                              theme: const SvgTheme(
+                                                  currentColor:
+                                                  Color(0xffdd9d9d9)),
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
                                                   .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        )
-                                      else
-                                        Image.asset(
-                                          data['icon'],
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
+                                              width: 20,
+                                              height: 20,
+                                            )
+                                          else
+                                            Image.asset(
+                                              data['icon'],
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
                                                   .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        data['label'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
+                                              width: 20,
+                                              height: 20,
+                                            ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            data['label'],
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: isActive
+                                                  ? Colors.amber
+                                                  : const Color(0xffD9D9D9)
                                                   .withOpacity(0.5),
-                                        ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                                );
+                              },
+                            ),
+                          ),
+
+                  
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -621,21 +631,21 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         }
                       }
                     }
-
                     // If any of the above conditions fail, return a default widget
                     return Text(
                         'No stories available.You Need to login for story');
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(child: Text('Error: $error')),
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
 
                 SizedBox(
-                  height: 15.h,
+                  height: 10.h,
                 ),
 
-              
+                SizedBox(
+                  height: 10.h,
+                ),
                 asyncbajarValue.when(
                   data: (data) {
                     return Stack(
@@ -1366,20 +1376,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    if (data.global.isNotEmpty)
-                                      ...data.global.map((e) {
-                                        return NotStoryWidget(
-                                          vImage: e
-                                              .brandLogo, // Use the correct variable name
-                                          index: data.global.indexOf(
-                                              e), // Get the index
-                                          brandname: e.brandName,
-                                        );
-                                      }).toList(),
-                                  ],
-                                ),
+                            Row(
+                              children: [    if (data.global.isNotEmpty)
+                                  ...data.global.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e
+                                          .brandLogo, // Use the correct variable name
+                                      index: data.global
+                                          .indexOf(e), // Get the index
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),],
+                            ),
+                            SizedBox(height: 5.h,),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1449,12 +1458,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 ),
                                  SizedBox(height: 5.h,),
                                 data.insidearr.isEmpty
-                                    ? Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 20.0), // Add padding here
-                                    child: nolistingfound(),
-                                  ),
-                                )
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1526,14 +1530,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 ),
                                  SizedBox(height: 5.h,),
                                 data.insidearr.isEmpty
-                                    ? Center(
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 20.0), // Add padding here
-                                      child: nolistingfound(),
-                                    ),
-                                  ),
-                                )
+                                    ? Center(child: nolistingfound())
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1553,7 +1550,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                           ProductDetailScreen(
                                                               productId:
                                                                   prod.id),
-                                                    ));
+                                                    ),
+                                                    );
                                               },
                                               child: ProductDetailWidget(
                                                 comment: prod.commentcount
@@ -1635,13 +1633,13 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                              gift_qty: resp.gift_qty!,
+                             gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage!,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image ?? '');
+                              proctimage: resp.image?? '');
                         },
                       ),
                     );
@@ -1815,6 +1813,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             itemCount: products.length,
                                             itemBuilder: (context, index) {
                                               VProduct prod = products[index];
+
                                               return InkWell(
                                                 onTap: () {
                                                   Navigator.push(
@@ -1910,6 +1909,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ],
                   ),
                 ),
+
                 asyncbajarValue.when(
                   data: (data) {
                     return GridView.builder(
@@ -1919,8 +1919,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       itemCount: data.product.length,
 
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 340.9,
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 310.h,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.2,
                         mainAxisSpacing: 0.2,

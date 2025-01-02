@@ -796,8 +796,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                       itemCount: data.all_products?.length,
 
                                       gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        mainAxisExtent: 430,
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: 310.h,
                                         crossAxisCount: 2,
                                         crossAxisSpacing: 0.2,
                                         mainAxisSpacing: 0.2,

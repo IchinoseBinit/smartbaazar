@@ -1944,8 +1944,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       itemCount: data.product.length,
 
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 340.9,
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 310.h,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,

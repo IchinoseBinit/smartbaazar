@@ -1899,8 +1899,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       padding: EdgeInsets.zero,
 
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 334.9,
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 305.4.h,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
                         mainAxisSpacing: 0.2,
