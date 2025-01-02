@@ -428,36 +428,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 20.h,
                           ),
-                            Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(4, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                              });
-                              _pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 50),
-                                curve: Curves.easeInOut,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(4, (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndex = index;
+                                  });
+                                  _pageController.animateToPage(
+                                    index,
+                                    duration: const Duration(milliseconds: 50),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
+                                child: Container(
+                                  height: 5.h,
+                                  width: 5.w,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                  decoration: BoxDecoration(
+                                    color: selectedIndex == index
+                                        ? Colors.amber
+                                        : Colors.grey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
                               );
-                            },
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              decoration: BoxDecoration(
-                                color: selectedIndex == index
-                                    ? Colors.amber
-                                    : Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
+                            }),
+                          ),
 
-                         SizedBox(
+                          SizedBox(
                             height: 80.h,
                             child: PageView.builder(
                               itemCount: _items.length,
@@ -851,7 +851,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
 
                           // Display Products for the selected category
-                            category.when(
+                          category.when(
                             data: (data) {
                               double dynamicHeight;
                               // Define the products list corresponding to each category
@@ -937,7 +937,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
-                                                  
+
                                                     return InkWell(
                                                       onTap: () {
                                                         Navigator.push(
@@ -1001,8 +1001,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 )),
                                           )
                                         : Padding(
-                                          padding: EdgeInsets.only(top: 50.h),
-                                          child: nolistingfound()),
+                                            padding: EdgeInsets.only(top: 50.h),
+                                            child: nolistingfound()),
                                   ],
                                 ),
                               );

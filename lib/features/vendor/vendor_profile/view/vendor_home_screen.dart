@@ -1331,6 +1331,7 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
             controller: widget.tabController,
             children: [
               BigContainer(
+
                 memebertitle: widget.data.membership_title!,
                 lat: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
                 long: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
@@ -1654,7 +1655,7 @@ class BigContainer extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
+                location=='null'? SizedBox():  Text(
                       location,
                       style: TextStyle(
                         fontSize: 9.sp,
@@ -2035,9 +2036,7 @@ class VendorSearchContainer extends StatelessWidget {
                   )),
             ],
           ),
-          SizedBox(
-            height: 30.h,
-          ),
+        
         ],
       ),
     );
