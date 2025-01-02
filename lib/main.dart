@@ -5,21 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
-import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/product_screen/view/product_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
-import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -43,27 +36,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          // textTheme: GoogleFonts.quicksandTextTheme(
-          //   Theme.of(context).textTheme,
-          // ),
-          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            backgroundColor: Colors.transparent,
-          ),
-          fontFamily: GoogleFonts.quicksand().fontFamily,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: SplashScreen(),
-      ),
-    );
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              // textTheme: GoogleFonts.quicksandTextTheme(
+              //   Theme.of(context).textTheme,
+              // ),
+              fontFamily: GoogleFonts.quicksand().fontFamily,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: EventsScreen()));
   }
 }
-
+// //VendorHomeScreen(vendorName: "techstore", vid: 9))
 // class FeedStoryWidget extends ConsumerWidget {
 //   @override
 //   Widget build(BuildContext context, WidgetRef ref) {

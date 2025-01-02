@@ -16,6 +16,7 @@ import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/home_story_api.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
@@ -225,7 +226,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     _searchController.dispose();
     super.dispose();
     _scrollController.dispose();
-    // super.dispose();
+    // super.dispose();s
   }
 
   @override
@@ -233,6 +234,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
     final randomstory = ref.watch(fetchStoryHomeProvider);
+    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
+
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
@@ -242,7 +245,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
+
     // category.when(
     //   data: (data) {
     //     print("bibash ${data.jobs.first.id}");
@@ -654,9 +657,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             "https://example.com/default-image.png",
                                         storyCount: story['story_count'] ?? 0,
                                         showGift:
-                                            story['has_sponsored_gifts'] ?? false,
+                                            story['has_sponsored_gifts'] ??
+                                                false,
                                         feedStoryContent: storyObject,
-                                        userId: story['vendor_id'] ,
+                                        userId: story['vendor_id'],
                                       );
                                     } else {
                                       return Container(); // Return an empty container if the post doesn't match the expected format
@@ -905,6 +909,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
+
                                                     return InkWell(
                                                       onTap: () {
                                                         Navigator.push(
@@ -967,7 +972,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   },
                                                 )),
                                           )
-                                        : nolistingfound(),
+                                        : Padding(
+                                            padding: EdgeInsets.only(top: 50.h),
+                                            child: nolistingfound()),
                                   ],
                                 ),
                               );
@@ -1040,16 +1047,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          if (data.global.isNotEmpty)
-                                            ...data.global.map((e) {
-                                              return NotStoryWidget(
-                                                vImage: e
-                                                    .brandLogo, // Use the correct variable name
-                                                index: data.global.indexOf(
-                                                    e), // Get the index
-                                                brandname: e.brandName,
-                                              );
-                                            }).toList(),
+                                          Row(
+                                            children: [
+                                              if (data.global.isNotEmpty)
+                                                ...data.global.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e
+                                                        .brandLogo, // Use the correct variable name
+                                                    index: data.global.indexOf(
+                                                        e), // Get the index
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                            ],
+                                          ),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
                                                   padding: EdgeInsets.only(
@@ -1478,6 +1489,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   ));
                                             },
                                             child: ProductDetailWidget(
+                                              shortestDistance: prefs
+                                                  .userdetails
+                                                  ?.shortestDistance,
                                               issponsored:
                                                   prefs.userdetails!.sponsored!,
                                               wow: prefs.wow,
@@ -1521,11 +1535,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     //     itemBuilder: (context, index) {
                                     //       SponsoredProduct resp = data[index];
                                     //       return ProductDetailWidget(
-                                    //         Vimage: resp.userdetails!.photo,
+                                    //         Vimage: resp.user!.photo,
                                     //         price: resp.price,
                                     //         productImage: resp.image,
                                     //         title: resp.title,
-                                    //         vendorname: resp.userdetails!.name,
+                                    //         vendorname: resp.user!.name,
                                     //       );
                                     //     },
                                     //   ),
@@ -1575,7 +1589,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 345.9,
+                                  mainAxisExtent: 340.9,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 0.2,
                                   mainAxisSpacing: 0.2,
@@ -1584,6 +1598,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                 itemBuilder: (context, index) {
                                   VProduct res = data.allProducts[index];
+
                                   return Padding(
                                       padding: EdgeInsets.only(bottom: 5.h),
                                       child: InkWell(
@@ -1599,30 +1614,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         child: AllProductDetailWidget(
                                           shortestDistance: data
                                               .allProducts[index]
-                                              .userdetails
+                                              .user
                                               .shortestDistance,
                                           issponsored: data.allProducts[index]
-                                              .userss.sponsored,
-                                          distance: data.allProducts[index]
-                                              .userdetails.shortestDistance,
+                                                  .userDetail.sponsored ??
+                                              false,
+                                          distance: data.allProducts[index].user
+                                              .shortestDistance,
                                           wow: data.allProducts[index].wow
                                               .toString(),
                                           discounttedPrice: data
                                               .allProducts[index]
-                                              .discounted_price,
+                                              .discountedPrice,
                                           comment: data
-                                              .allProducts[index].commentcount
+                                              .allProducts[index].commentCount
                                               .toString(),
                                           avg_rating: data
-                                              .allProducts[index].avg_rating!
+                                              .allProducts[index].avgRating!
                                               .toDouble(),
                                           offer: data.allProducts[index].offers,
                                           productImage:
                                               data.allProducts[index].image,
-                                          Vimage: data
-                                              .allProducts[index].userss.photo,
-                                          vendorname: data
-                                              .allProducts[index].userss.name,
+                                          Vimage: data.allProducts[index]
+                                              .userDetail.photo,
+                                          vendorname: data.allProducts[index]
+                                              .userDetail.name,
                                           title: data.allProducts[index].title,
                                           price: data.allProducts[index].price,
                                           similarproductCount: data
@@ -1630,12 +1646,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .similarProductCount,
                                           membershipColor: data
                                               .allProducts[index]
-                                              .userss
-                                              .membercolor,
+                                              .userDetail
+                                              .membership_color,
                                           membershipTitle: data
                                               .allProducts[index]
-                                              .userss
-                                              .membershipTitle,
+                                              .userDetail
+                                              .membership_title,
                                         ),
                                       ));
                                 },

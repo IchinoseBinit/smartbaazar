@@ -223,7 +223,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getGrocertResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -673,8 +673,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
-                SizedBox(
-                  height: 10.h,
+               SizedBox(
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -781,46 +781,47 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Grocary",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Grocary",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -927,8 +928,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -1006,7 +1007,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               title: hot.title,
                               vendorname: hot.user.name,
                               similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membercolor,
+                              membershipColor: hot.user.membershipColor,
                               membershipTitle: hot.user.membershipTitle,
                             ),
                           );
@@ -1319,18 +1320,18 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     else
                       dynamicHeight = 300;
@@ -1346,20 +1347,27 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (data.global.isNotEmpty)
-                                  ...data.global.map((e) {
-                                    return NotStoryWidget(
-                                      vImage: e
-                                          .brandLogo, // Use the correct variable name
-                                      index: data.global
-                                          .indexOf(e), // Get the index
-                                      brandname: e.brandName,
-                                    );
-                                  }).toList(),
+                                Row(
+                                  children: [
+                                    if (data.global.isNotEmpty)
+                                      ...data.global.map((e) {
+                                        return NotStoryWidget(
+                                          vImage: e
+                                              .brandLogo, // Use the correct variable name
+                                          index: data.global.indexOf(
+                                              e), // Get the index
+                                          brandname: e.brandName,
+                                        );
+                                      }).toList(),
+                                  ],
+                                ),
                                 data.insidearr.first.isNotEmpty ||
                                         data.insidearr.isNotEmpty
                                     ? Center(
-                                        child: nolistingfound(),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
                                       )
                                     : SizedBox(
                                         height: 340.h,
@@ -1398,7 +1406,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1427,7 +1435,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 data.insidearr.isEmpty ||
                                         data.insidearr[0].isEmpty
                                     ? Center(
-                                        child: nolistingfound(),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
                                       )
                                     : SizedBox(
                                         height: 340.h,
@@ -1466,7 +1477,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1495,7 +1506,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 data.insidearr.isEmpty ||
                                         data.insidearr[0].isEmpty
                                     ? Center(
-                                        child: nolistingfound(),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
                                       )
                                     : SizedBox(
                                         height: 340.h,
@@ -1540,7 +1554,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                       similarproductCount: prod
                                                           .similarProductCount,
                                                       membershipColor:
-                                                          prod.user.membercolor,
+                                                          prod.user.membershipColor,
                                                       membershipTitle: prod
                                                           .user.membershipTitle,
                                                     ),
@@ -1580,7 +1594,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //             comment: ref.commentcount.toString(),
                 //             discounttedPrice: ref.discounted_price,
                 //             issponsored: ref.user.sponsored,
-                //             membershipColor: ref.user.membercolor,
+                //             membershipColor: ref.user.membershipColor,
                 //             membershipTitle: ref.user.membershipTitle,
                 //             similarproductCount: ref.similarProductCount,
                 //             wow: ref.wow,
@@ -1821,7 +1835,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor,
+                                                  prod.user.membershipColor,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
                                             ),
@@ -1917,7 +1931,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             similarproductCount:
                                 data.product[index].similarProductCount,
                             membershipColor:
-                                data.product[index].user.membercolor,
+                                data.product[index].user.membershipColor,
                             membershipTitle:
                                 data.product[index].user.membershipTitle,
                           ),

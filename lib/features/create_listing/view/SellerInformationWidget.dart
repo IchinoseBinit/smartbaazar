@@ -182,6 +182,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             Expanded(
               // Wrap the dropdown in Expanded to constrain its width
               child: CustomDropdownButton<ShippingCitiesModel>(
+                optionname: "select location",
                 items: widget.shippingList,
                 dropdownValue: selectedpickup,
                 onChanged: (newValue) {

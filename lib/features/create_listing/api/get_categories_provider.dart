@@ -8,24 +8,22 @@ part 'get_categories_provider.g.dart';
 @riverpod
 Future<FieldsResponse> getCategoryResponse(
     GetCategoryResponseRef ref, int id) async {
-  final SmartClinet client = SmartClinet(); // Assuming this is your API client
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.post,
       url:
-          'https://smartbazaar.jianjun-rnd.com.np/api/categories/$id/fields', // Ensure this is the correct URL
+          'https://smartbazaar.jianjun-rnd.com.np/api/categories/$id/fields',
     );
-    print("lodu ${response.data}");
+    print("API Response: ${response.data}");
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse =
-          response.data; // Parse the response data>
-      return FieldsResponse.fromJson(jsonResponse); // Convert to your model
+          response.data; // Ensure it's a Map
+      return FieldsResponse.fromJson(jsonResponse);
     } else {
-      throw Exception(
-          'Failed to load brandbazar section'); // Handle non-200 responses
+      throw Exception('Failed to load brandbazar section');
     }
   } catch (e) {
-    // Log or handle the error
     print('Error loading brandbazar section: $e');
     throw Exception('Failed to load brandbazar section: $e');
   }

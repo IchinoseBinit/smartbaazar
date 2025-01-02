@@ -146,6 +146,7 @@ _$UserDetailsModelImpl _$$UserDetailsModelImplFromJson(
       sponsored: json['sponsored'] as bool?,
       has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
       nearestBranch: json['nearestBranch'] as List<dynamic>?,
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$UserDetailsModelImplToJson(
@@ -163,6 +164,7 @@ Map<String, dynamic> _$$UserDetailsModelImplToJson(
       'sponsored': instance.sponsored,
       'has_sponsored_gifts': instance.has_sponsored_gifts,
       'nearestBranch': instance.nearestBranch,
+      'shortestDistance': instance.shortestDistance,
     };
 
 _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(

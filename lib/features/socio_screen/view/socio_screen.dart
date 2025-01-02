@@ -218,7 +218,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     final randomstory = ref.watch(fetchStoryHomeProvider);
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('1'));
+            final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
+
 
     final asyncbajarValue = ref.watch(getSocioDataProvider);
     final SearchProductModels =
@@ -653,8 +654,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
-                SizedBox(
-                  height: 10.h,
+                 SizedBox(
+                  height: 20.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -749,7 +750,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   height: 10.h,
                 ),
 
-                  category.when(
+                category.when(
                   data: (data) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -759,46 +760,47 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Brands",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Brands",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -809,9 +811,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           onTap: () {
                                             showMenu(
                                               context: context,
-                                              position: const RelativeRect
-                                                  .fromLTRB(0, 0, 0,
-                                                  0), // Base position; offset is handled by PopupMenuButton
+                                              position:
+                                                  const RelativeRect.fromLTRB(
+                                                      0, 0, 0, 0),
                                               items: [
                                                 PopupMenuItem(
                                                   value: 1,
@@ -829,8 +831,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             );
                                           },
                                           child: PopupMenuButton<int>(
-                                            offset: const Offset(0,
-                                                60), // The offset to position the menu above the widget
+                                            offset: const Offset(0, 60),
                                             itemBuilder: (context) => [
                                               const PopupMenuItem(
                                                 value: 1,
@@ -855,8 +856,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: 0,
                                                 dashCount: 2,
                                                 child: SizedBox(
-                                                  // width: 100.w,
-                                                  // height: 100.h,
                                                   child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -891,33 +890,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, top: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'HOT DEALS',
-                                  style: headerstyle.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: Colors.black),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Image.asset(
-                                  'assets/images/flameIcon.png',
-                                  width: 16.w,
-                                  height: 17.h,
-                                )
-                              ],
-                            ),
-                          ),
-                          nolistingfound(),
                         ],
                       ),
                     );
@@ -927,6 +903,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   },
                   loading: () => const CircularProgressIndicator(),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -981,7 +958,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   ));
                             },
                             child: ProductDetailWidget(
-                              membershipColor: hot.user.membercolor,
+                              wow: hot.wow,
+                              offer: hot.offers,
+                              // shortestDistance: hot.user.shortestDistance.,
+                              avg_rating: hot.avg_rating?.toDouble(),
+                              membershipColor: hot.user.membershipColor,
                               membershipTitle: hot.user.membershipTitle,
                               similarproductCount: hot.similarProductCount,
                               issponsored: hot.user.sponsored,
@@ -1081,7 +1062,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     productImage: pro.image,
                                     similarproductCount:
                                         pro.similarProductCount,
-                                    membershipColor: pro.user.membercolor,
+                                    membershipColor: pro.user.membershipColor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
                                 );
@@ -1163,7 +1144,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     productImage: pro.image,
                                     similarproductCount:
                                         pro.similarProductCount,
-                                    membershipColor: pro.user.membercolor,
+                                    membershipColor: pro.user.membershipColor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
                                 );
@@ -1234,7 +1215,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     productImage: pro.image,
                                     similarproductCount:
                                         pro.similarProductCount,
-                                    membershipColor: pro.user.membercolor,
+                                    membershipColor: pro.user.membershipColor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
                                 );
@@ -1307,7 +1288,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     productImage: pro.image,
                                     similarproductCount:
                                         pro.similarProductCount,
-                                    membershipColor: pro.user.membercolor,
+                                    membershipColor: pro.user.membershipColor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
                                 );
@@ -1377,7 +1358,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     productImage: pro.image,
                                     similarproductCount:
                                         pro.similarProductCount,
-                                    membershipColor: pro.user.membercolor,
+                                    membershipColor: pro.user.membershipColor,
                                     membershipTitle: pro.user.membershipTitle,
                                   ),
                                 );
@@ -1455,6 +1436,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         itemBuilder: (context, index) {
                                           VProduct prod =
                                               data.insidearr[0][index];
+                                          print('pinkyk ${prod.offers}');
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1466,6 +1448,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   ));
                                             },
                                             child: ProductDetailWidget(
+                                              offer: prod.offers,
+                                              avg_rating:
+                                                  prod.avg_rating?.toDouble(),
+                                              shortestDistance:
+                                                  prod.user.shortestDistance,
                                               comment:
                                                   prod.commentcount.toString(),
                                               wow: prod.wow,
@@ -1481,7 +1468,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor,
+                                                  prod.user.membershipColor,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
                                             ),
@@ -1564,7 +1551,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor,
+                                                  prod.user.membershipColor,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
                                             ),
@@ -1640,7 +1627,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor,
+                                                  prod.user.membershipColor,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
                                             ),
@@ -1702,13 +1689,14 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
-                              vendorImage: resp.vendorImage!,
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image ?? '');
+                              proctimage: resp.image);
                         },
                       ),
                     );
@@ -1852,6 +1840,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         itemCount: products.length,
                                         itemBuilder: (context, index) {
                                           VProduct prod = products[index];
+                                          print("kult ${prod}");
 
                                           return InkWell(
                                             onTap: () {
@@ -1864,6 +1853,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   ));
                                             }, // Handle onTap if needed
                                             child: ProductDetailWidget(
+                                              offer: prod.offers,
+                                              // shortestDistance: prod.user.shortestDistance?[0],
+                                              // avg_rating: prod.avg_rating?.toDouble(),
                                               comment:
                                                   prod.commentcount.toString(),
                                               wow: prod.wow,
@@ -1879,7 +1871,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                               similarproductCount:
                                                   prod.similarProductCount,
                                               membershipColor:
-                                                  prod.user.membercolor,
+                                                  prod.user.membershipColor,
                                               membershipTitle:
                                                   prod.user.membershipTitle,
                                             ),
@@ -1946,6 +1938,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   ));
                             },
                             child: AllProductDetailWidget(
+                              offer: data.product[index].offers,
+                              shortestDistance: data.product[index].user.shortestDistance,
+                              avg_rating: data.product[index].avg_rating?.toDouble(),
                               wow: data.product[index].wow,
                               comment:
                                   data.product[index].commentcount.toString(),
@@ -1961,7 +1956,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               similarproductCount:
                                   data.product[index].similarProductCount,
                               membershipColor:
-                                  data.product[index].user.membercolor,
+                                  data.product[index].user.membershipColor,
                               membershipTitle:
                                   data.product[index].user.membershipTitle,
                             ),

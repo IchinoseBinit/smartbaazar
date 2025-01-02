@@ -22,7 +22,7 @@ FieldsResponse _$FieldsResponseFromJson(Map<String, dynamic> json) {
 mixin _$FieldsResponse {
   bool get success => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
-  Map<String, FieldData> get result => throw _privateConstructorUsedError;
+  List<FieldData> get result => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $FieldsResponseCopyWith<$Res> {
           FieldsResponse value, $Res Function(FieldsResponse) then) =
       _$FieldsResponseCopyWithImpl<$Res, FieldsResponse>;
   @useResult
-  $Res call({bool success, String? message, Map<String, FieldData> result});
+  $Res call({bool success, String? message, List<FieldData> result});
 }
 
 /// @nodoc
@@ -68,7 +68,7 @@ class _$FieldsResponseCopyWithImpl<$Res, $Val extends FieldsResponse>
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
-              as Map<String, FieldData>,
+              as List<FieldData>,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$FieldsResponseImplCopyWith<$Res>
       __$$FieldsResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool success, String? message, Map<String, FieldData> result});
+  $Res call({bool success, String? message, List<FieldData> result});
 }
 
 /// @nodoc
@@ -111,7 +111,7 @@ class __$$FieldsResponseImplCopyWithImpl<$Res>
       result: null == result
           ? _value._result
           : result // ignore: cast_nullable_to_non_nullable
-              as Map<String, FieldData>,
+              as List<FieldData>,
     ));
   }
 }
@@ -122,7 +122,7 @@ class _$FieldsResponseImpl implements _FieldsResponse {
   _$FieldsResponseImpl(
       {required this.success,
       this.message,
-      required final Map<String, FieldData> result})
+      required final List<FieldData> result})
       : _result = result;
 
   factory _$FieldsResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -132,12 +132,12 @@ class _$FieldsResponseImpl implements _FieldsResponse {
   final bool success;
   @override
   final String? message;
-  final Map<String, FieldData> _result;
+  final List<FieldData> _result;
   @override
-  Map<String, FieldData> get result {
-    if (_result is EqualUnmodifiableMapView) return _result;
+  List<FieldData> get result {
+    if (_result is EqualUnmodifiableListView) return _result;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_result);
+    return EqualUnmodifiableListView(_result);
   }
 
   @override
@@ -179,7 +179,7 @@ abstract class _FieldsResponse implements FieldsResponse {
   factory _FieldsResponse(
       {required final bool success,
       final String? message,
-      required final Map<String, FieldData> result}) = _$FieldsResponseImpl;
+      required final List<FieldData> result}) = _$FieldsResponseImpl;
 
   factory _FieldsResponse.fromJson(Map<String, dynamic> json) =
       _$FieldsResponseImpl.fromJson;
@@ -189,7 +189,7 @@ abstract class _FieldsResponse implements FieldsResponse {
   @override
   String? get message;
   @override
-  Map<String, FieldData> get result;
+  List<FieldData> get result;
   @override
   @JsonKey(ignore: true)
   _$$FieldsResponseImplCopyWith<_$FieldsResponseImpl> get copyWith =>

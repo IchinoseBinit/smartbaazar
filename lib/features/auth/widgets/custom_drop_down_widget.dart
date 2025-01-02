@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,15 +9,17 @@ class CustomDropdownButton<T> extends StatefulWidget {
   final ValueChanged<T?> onChanged;
   final String Function(T) getItemLabel;
   final Color? color;
+  final String? optionname;
 
-  const CustomDropdownButton({
-    Key? key,
-    required this.items,
-    required this.dropdownValue,
-    required this.onChanged,
-    required this.getItemLabel,
-    this.color,
-  }) : super(key: key);
+  const CustomDropdownButton(
+      {Key? key,
+      required this.items,
+      required this.dropdownValue,
+      required this.onChanged,
+      required this.getItemLabel,
+      this.color,
+      this.optionname = "select option"})
+      : super(key: key);
 
   @override
   _CustomDropdownButtonState<T> createState() =>
@@ -39,7 +40,7 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
             ? widget.dropdownValue
             : null, // Ensure value is in items or reset to null
         hint: Text(
-          'Select option',
+          widget.optionname?? 'select option',
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
@@ -75,7 +76,7 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> {
           setState(() {
             widget.onChanged(newValue);
           });
-                },
+        },
       ),
     );
   }

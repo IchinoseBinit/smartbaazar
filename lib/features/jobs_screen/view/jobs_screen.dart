@@ -213,7 +213,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getjobsResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -650,8 +650,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
+
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -756,46 +757,47 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Jobs",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Jobs",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -902,8 +904,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -973,7 +975,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                 title: hot.title,
                                 vendorname: hot.user.name,
                                 similarproductCount: hot.similarProductCount,
-                                membershipColor: hot.user.membercolor,
+                                membershipColor: hot.user.membershipColor,
                                 membershipTitle: hot.user.membershipTitle,
                               ),
                             );
@@ -981,7 +983,10 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         ),
                       );
                     }
-                    return Center(child: nolistingfound());
+                    return Center(child: Padding(
+                      padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                      child: nolistingfound(),
+                    ),);
                   },
                   error: (error, stackTrace) {
                     return Text(error.toString());
@@ -1030,7 +1035,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               title: hot.title,
                               vendorname: hot.user.name,
                               similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membercolor,
+                              membershipColor: hot.user.membershipColor,
                               membershipTitle: hot.user.membershipTitle,
                             ),
                           );
@@ -1372,16 +1377,20 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (data.global.isNotEmpty)
-                                  ...data.global.map((e) {
-                                    return NotStoryWidget(
-                                      vImage: e
-                                          .brandLogo, // Use the correct variable name
-                                      index: data.global
-                                          .indexOf(e), // Get the index
-                                      brandname: e.brandName,
-                                    );
-                                  }).toList(),
+                                Row(
+                                  children: [
+                                    if (data.global.isNotEmpty)
+                                      ...data.global.map((e) {
+                                        return NotStoryWidget(
+                                          vImage: e
+                                              .brandLogo, // Use the correct variable name
+                                          index: data.global
+                                              .indexOf(e), // Get the index
+                                          brandname: e.brandName,
+                                        );
+                                      }).toList(),
+                                  ],
+                                ),
                                   SizedBox(height: 10.h,),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
@@ -1422,7 +1431,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1431,8 +1440,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                         ),
                                       )
                                     : Center(
-                                        child: nolistingfound(),
-                                      )
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
+                                      ),
                               ],
                             ),
                             Column(
@@ -1494,7 +1506,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1523,7 +1535,10 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                 SizedBox(height: 10.h,),
                                 data.insidearr.isEmpty
                                     ? Center(
-                                        child: nolistingfound(),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
                                       )
                                     : SizedBox(
                                         height: 340.h,
@@ -1562,7 +1577,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1606,7 +1621,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                 //             comment: ref.commentcount.toString(),
                 //             discounttedPrice: ref.discounted_price,
                 //             issponsored: ref.user.sponsored,
-                //             membershipColor: ref.user.membercolor,
+                //             membershipColor: ref.user.membershipColor,
                 //             membershipTitle: ref.user.membershipTitle,
                 //             similarproductCount: ref.similarProductCount,
                 //             wow: ref.wow,
@@ -1848,7 +1863,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           similarproductCount:
                                               prod.similarProductCount,
                                           membershipColor:
-                                              prod.user.membercolor,
+                                              prod.user.membershipColor,
                                           membershipTitle:
                                               prod.user.membershipTitle,
                                         ), // Replace with your actual product widget
@@ -1945,7 +1960,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               similarproductCount:
                                   data.product[index].similarProductCount,
                               membershipColor:
-                                  data.product[index].user.membercolor,
+                                  data.product[index].user.membershipColor,
                               membershipTitle:
                                   data.product[index].user.membershipTitle,
                             ),
