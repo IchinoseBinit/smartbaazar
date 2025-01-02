@@ -660,13 +660,21 @@ class AllProductDetailWidget extends StatelessWidget {
                                       ),
                                       Row(
                                         children: [
-                                          Image.asset("assets/images/mike.png"),
-                                          Text(
-                                            "SPONSORED",
-                                            style: headerstyle.copyWith(
-                                                fontSize: 10.sp,
-                                                fontWeight: FontWeight.w700),
-                                          ),
+                                          issponsored
+                                              ? Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/images/mike.png"),
+                                              Text(
+                                                "SPONSORED",
+                                                style: headerstyle.copyWith(
+                                                    fontSize: 10.sp,
+                                                    fontWeight:
+                                                    FontWeight.w700),
+                                              ),
+                                            ],
+                                          )
+                                              : const SizedBox(),
                                         ],
                                       )
                                     ],

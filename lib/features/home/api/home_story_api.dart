@@ -16,11 +16,12 @@ Future<HomeStoryModel> getHomeStory(GetHomeStoryRef ref) async {
       url: ApiConstants.homeSliderBannerUrl,
     );
     if (response.statusCode == 200) {
-    
-
-      final Map<String, dynamic> jsonResponse = response.data;
-      print(jsonResponse);
-      return HomeStoryModel.fromJson(jsonResponse);
+      final jsonResponse = response.data;
+      if (jsonResponse is Map<String, dynamic>) {
+        return HomeStoryModel.fromJson(jsonResponse);
+      } else {
+        throw Exception('Invalid response format');
+      }
     } else {
       throw Exception('Failed to load story content');
     }

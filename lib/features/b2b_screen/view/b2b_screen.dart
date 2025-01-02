@@ -21,6 +21,7 @@ import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
@@ -37,6 +38,9 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+
+import '../../home/api/post_type_story_api.dart';
+import '../../home/view/home_page_story_container.dart';
 
 class B2bScreen extends ConsumerStatefulWidget {
   const B2bScreen({super.key});
@@ -224,6 +228,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('7'));
     final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final SearchProductModels =
@@ -576,52 +581,59 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ),
                   ),
                 ),
-                randomstory.when(
-                  data: (data) {
-                    return SizedBox(
-                      height: 130.h,
-                      child: SingleChildScrollView(
-                        // Wrapping the Row with SingleChildScrollView
-                        scrollDirection:
-                            Axis.horizontal, // Ensuring it scrolls horizontally
-                        child: Row(
-                          children: [
-                            // First StoryAddWidget with search option
-                            StoryAddWidget(
-                              vImage: data.feedStory?.posts?.first.image,
-                              brandname:
-                                  data.feedStory?.posts?.first.vendorName,
-                              index: 0,
-                              addSearch: true, // First item has search
-                              showgift: false,
-                              onTap: () {
-                                setState(() {
-                                  // _isPopupVisible = true; // Open the popup
-                                });
+                asyncPostTypeContent.when(
+                  data: (feedStoryData) {
+                    final homeStory = feedStoryData.homeStory;
+
+                    if (homeStory != null &&
+                        homeStory is Map<String, dynamic> &&
+                        homeStory.containsKey('story')) {
+                      final story = homeStory['story'];
+
+                      if (story != null &&
+                          story is Map<String, dynamic> &&
+                          story.containsKey('posts')) {
+                        final posts = story['posts'];
+
+                        if (posts != null && posts is List<dynamic>) {
+                          return SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
+
+                                if (story is Map<String, dynamic>) {
+                                  final storyObject =
+                                      Story(posts: [Post.fromJson(story)]);
+
+                                  return HomePageStoryContainer(
+                                    index: index,
+                                    vendorName: story['vendor_name'] ??
+                                        "Unknown Vendor",
+                                    vendorImage: story['vendor_image'] ??
+                                        "https://example.com/default-image.png",
+                                    storyCount: story['story_count'] ?? 0,
+                                    showGift:
+                                        story['has_sponsored_gifts'] ?? false,
+                                    feedStoryContent: storyObject,
+                                    userId: story['vendor_id'],
+                                  );
+                                } else {
+                                  return Container(); // Return an empty container if the post doesn't match the expected format
+                                }
                               },
                             ),
-                            // Expanded is not needed since SingleChildScrollView will handle scrolling
-                            // Now ListView.builder will be added directly to the row
-                            ...data.feedStory!.posts!.map((storyData) {
-                              return StoryAddWidget(
-                                brandname: storyData.vendorName,
-                                vImage: storyData.vendorImage,
-                                index: data.feedStory!.posts!
-                                    .indexOf(storyData),
-                                addSearch:
-                                    false, // For all items other than the first, no search
-                                showgift: storyData.hasSponsoredGifts,
-                                onTap: () {
-                                  // setState(() {
-                                  //   // _isPopupVisible = true; // Open the popup
-                                  // });
-                                },
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      ),
-                    );
+                          );
+                        }
+                      }
+                    }
+                    // If any of the above conditions fail, return a default widget
+                    return Text(
+                        'No stories available.You Need to login for story');
                   },
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => const CircularProgressIndicator(),

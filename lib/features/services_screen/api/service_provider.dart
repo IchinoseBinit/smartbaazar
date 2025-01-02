@@ -310,7 +310,7 @@ part 'service_provider.g.dart';
 
 class PostTypeFetch {
   final List<Advertisement>? sliders;
-  final List<Story> stories;
+  final List<ServiceStory> stories;
   final List<VProduct> hotProducts;
   final List<LogoData> global;
   final List<LogoData> domestic;
@@ -349,19 +349,19 @@ class PostTypeFetch {
   });
 
   factory PostTypeFetch.fromJson(Map<String, dynamic> json) {
-    List<Story> storiesList = [];
+    List<ServiceStory> storiesList = [];
 
     if (json['home_story'] is List) {
       // Handle as a list
       storiesList = (json['home_story'] as List)
           .where((value) => value != null) // Filter out null values
-          .map((value) => Story.fromJson(value)) // Map to Story objects
+          .map((value) => ServiceStory.fromJson(value)) // Map to Story objects
           .toList();
     } else if (json['home_story'] is Map) {
       // Handle as a map
       (json['home_story'] as Map).forEach((key, value) {
         if (value != null) {
-          storiesList.add(Story.fromJson(value));
+          storiesList.add(ServiceStory.fromJson(value));
         }
       });
     } else {
@@ -474,14 +474,14 @@ class FetchCategory {
   }
 }
 
-class Story {
+class ServiceStory {
   final String vendorName;
   final String vendorImage;
   final int storyCount;
   final bool hasSponsoredGifts;
   final List<StoryPost> posts;
 
-  Story({
+  ServiceStory({
     required this.vendorName,
     required this.vendorImage,
     required this.storyCount,
@@ -489,12 +489,12 @@ class Story {
     required this.posts,
   });
 
-  factory Story.fromJson(Map<String, dynamic> json) {
+  factory ServiceStory.fromJson(Map<String, dynamic> json) {
     var postsList = (json['posts'] as List? ?? [])
         .where((post) => post != null)
         .map((post) => StoryPost.fromJson(post))
         .toList();
-    return Story(
+    return ServiceStory(
       vendorName: json['vendor_name'] ?? '',
       vendorImage: json['vendor_image'] ?? '',
       storyCount: json['story_count'] ?? 0,

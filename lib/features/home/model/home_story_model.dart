@@ -6,7 +6,7 @@ part 'home_story_model.g.dart';
 @freezed
 class HomeStoryModel with _$HomeStoryModel {
   const factory HomeStoryModel({
-    @JsonKey(name: 'home_story') HomeStoryData? homeStory,
+    @JsonKey(name: 'home_story') dynamic homeStory,
   }) = _HomeStoryModel;
 
   factory HomeStoryModel.fromJson(Map<String, dynamic> json) => _$HomeStoryModelFromJson(json);

@@ -7,7 +7,8 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'post_type_story_api.g.dart';
 
 @riverpod
-Future<HomeStoryModel> getPostTypeStoryApi(GetPostTypeStoryApiRef ref,String postTypeId) async {
+Future<HomeStoryModel> getPostTypeStoryApi(
+    GetPostTypeStoryApiRef ref, String postTypeId) async {
   final SmartClinet client = SmartClinet();
 
   try {
@@ -16,11 +17,12 @@ Future<HomeStoryModel> getPostTypeStoryApi(GetPostTypeStoryApiRef ref,String pos
       url: '${ApiConstants.producttypeurl}/$postTypeId',
     );
     if (response.statusCode == 200) {
-    
-
-      final Map<String, dynamic> jsonResponse = response.data;
-      print(jsonResponse);
-      return HomeStoryModel.fromJson(jsonResponse);
+      final jsonResponse = response.data;
+      if (jsonResponse is Map<String, dynamic>) {
+        return HomeStoryModel.fromJson(jsonResponse);
+      } else {
+        throw Exception('Invalid response format');
+      }
     } else {
       throw Exception('Failed to load story content');
     }
@@ -29,5 +31,4 @@ Future<HomeStoryModel> getPostTypeStoryApi(GetPostTypeStoryApiRef ref,String pos
     throw Exception('Failed to load story content: $e');
   }
 }
-
 

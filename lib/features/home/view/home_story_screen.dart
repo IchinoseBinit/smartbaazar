@@ -503,7 +503,7 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                 ),
               ),
               Positioned(
-                  bottom: 100,
+                  bottom: 10,
                   child: Container(
                     color: Colors.transparent,
                     child: Row(
@@ -518,7 +518,7 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                               children: [
                                 const Icon(
                                   Icons.whatshot,
-                                  size: 50,
+                                  size: 30,
                                   color: Colors.orange,
                                 ),
                                 CountdownTimer(

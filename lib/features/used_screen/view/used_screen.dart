@@ -5,21 +5,18 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/home_page_story_container.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
@@ -32,7 +29,6 @@ import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -658,32 +654,58 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                 // ),
                 asyncPostTypeContent.when(
                   data: (feedStoryData) {
-                    final feedStoryContent = feedStoryData.homeStory?.story;
-                    return SizedBox(
-                      height: 100.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            feedStoryData.homeStory!.story!.posts!.length,
-                        itemBuilder: (context, index) {
-                          final story =
-                              feedStoryData.homeStory!.story!.posts![index];
-                          return HomePageStoryContainer(
-                            index: index,
-                            vendorName: story.vendorName ?? "Unknown Vendor",
-                            vendorImage: story.vendorImage ??
-                                "https://example.com/default-image.png",
-                            storyCount: story.storyCount ?? 0,
-                            showGift: story.hasSponsoredGifts ?? false,
-                            feedStoryContent: feedStoryContent,
-                            userId: story.vendorId!,
-                            // feedData.data!.feedPost![index].userId ??
+                    final homeStory = feedStoryData.homeStory;
+
+                    if (homeStory != null &&
+                        homeStory is Map<String, dynamic> &&
+                        homeStory.containsKey('story')) {
+                      final story = homeStory['story'];
+
+                      if (story != null &&
+                          story is Map<String, dynamic> &&
+                          story.containsKey('posts')) {
+                        final posts = story['posts'];
+
+                        if (posts != null && posts is List<dynamic>) {
+                          return SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
+
+                                if (story is Map<String, dynamic>) {
+                                  final storyObject =
+                                      Story(posts: [Post.fromJson(story)]);
+
+                                  return HomePageStoryContainer(
+                                    index: index,
+                                    vendorName: story['vendor_name'] ??
+                                        "Unknown Vendor",
+                                    vendorImage: story['vendor_image'] ??
+                                        "https://example.com/default-image.png",
+                                    storyCount: story['story_count'] ?? 0,
+                                    showGift:
+                                        story['has_sponsored_gifts'] ?? false,
+                                    feedStoryContent: storyObject,
+                                    userId: story['vendor_id'],
+                                  );
+                                } else {
+                                  return Container(); // Return an empty container if the post doesn't match the expected format
+                                }
+                              },
+                            ),
                           );
-                        },
-                      ),
-                    );
+                        }
+                      }
+                    }
+
+                    // If any of the above conditions fail, return a default widget
+                    return Text(
+                        'No stories available.You Need to login for story');
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
@@ -1693,7 +1715,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-                             gift_qty: resp.gift_qty!,
+                              gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage!,

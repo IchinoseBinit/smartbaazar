@@ -503,7 +503,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                 ),
               ),
               Positioned(
-                  bottom: 100,
+                  bottom: 10,
                   child: Container(
                     color: Colors.transparent,
                     child: Row(

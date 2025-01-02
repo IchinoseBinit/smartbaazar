@@ -58,7 +58,6 @@ void showCustomBottomSheet(
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -82,8 +81,6 @@ void showCustomBottomSheet(
                                   // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           feedGiftCard
@@ -130,9 +127,6 @@ void showCustomBottomSheet(
                                     ),
                                     SizedBox(height: 20.h),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Column(
                                           children: [
@@ -388,7 +382,8 @@ class PopUpDiscountImageCard extends StatelessWidget {
                                   fontSize: 11,
                                 )),
                             TextSpan(
-                                text: "${feedGiftCard.worth} x${feedGiftCard.giftQty}",
+                                text:
+                                    "${feedGiftCard.worth} x${feedGiftCard.giftQty}",
                                 style: headerstyle.copyWith(
                                     fontSize: 15, fontWeight: FontWeight.bold))
                           ]))
