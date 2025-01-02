@@ -60,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   bool _isPopupVisible = false;
   int currentPageIndex = 0;
-  int selectedIndex = 0; // State variable for selected index
+  int selectedIndexx = 0; // State variable for selected index
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
@@ -429,7 +429,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 20.h,
                           ),
 
-                          SizedBox(
+                         SizedBox(
                             height: 80.h,
                             child: PageView.builder(
                               itemCount: _items.length,
@@ -451,12 +451,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     setState(() {
                                       selectedIndex = index;
                                     });
-                                    _pageController.animateToPage(
-                                      2,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                    );
+                                    // dynamictabController.animateToPage(
+                                    //   2,
+                                    //   duration:
+                                    //       const Duration(milliseconds: 300),
+                                    //   curve: Curves.easeInOut,
+                                    // );
                                   },
                                   child: AnimatedContainer(
                                     padding: EdgeInsets.zero,
@@ -823,7 +823,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
 
                           // Display Products for the selected category
-                          category.when(
+                            category.when(
                             data: (data) {
                               double dynamicHeight;
                               // Define the products list corresponding to each category
@@ -839,7 +839,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                               // Ensure selectedIndex is valid and get products
                               List<CategoryProduct> products =
-                                  productsList[selectedIndex];
+                                  productsList[selectedIndexx];
 
                               if (products.length == 0) {
                                 dynamicHeight =
@@ -860,11 +860,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         itemCount: categories.length,
                                         itemBuilder: (context, index) {
                                           bool isSelected =
-                                              index == selectedIndex;
+                                              index == selectedIndexx;
                                           return GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                selectedIndex =
+                                                selectedIndexx =
                                                     index; // Update selected index
                                               });
                                             },
@@ -909,7 +909,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
-
+                                                  
                                                     return InkWell(
                                                       onTap: () {
                                                         Navigator.push(
@@ -973,8 +973,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 )),
                                           )
                                         : Padding(
-                                            padding: EdgeInsets.only(top: 50.h),
-                                            child: nolistingfound()),
+                                          padding: EdgeInsets.only(top: 50.h),
+                                          child: nolistingfound()),
                                   ],
                                 ),
                               );
