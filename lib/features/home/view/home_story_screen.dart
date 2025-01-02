@@ -503,7 +503,7 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                 ),
               ),
               Positioned(
-                  bottom: 100,
+                  bottom: 10,
                   child: Container(
                     color: Colors.transparent,
                     child: Row(

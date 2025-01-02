@@ -131,20 +131,36 @@ class BuyerAccountDetailsWidget extends ConsumerStatefulWidget {
 class _BuyerAccountDetailsWidgetState
     extends ConsumerState<BuyerAccountDetailsWidget> {
   final _formKey = GlobalKey<FormState>();
-
-  String? fullName, phoneNumber, email, userName, genderID;
+  late TextEditingController _fullNameController;
+  late TextEditingController _phoneNumberController;
+  late TextEditingController _emailController;
+  late TextEditingController _userNameController;
+  late TextEditingController _genderController;
+  late TextEditingController _branchController;
+  // String? fullName, phoneNumber, email, userName, genderID;
 
   String? userId; // Updated to nullable type since we are loading it
   bool isLoading = false;
   Map<String, bool> fieldEdited = {};
 
-  TextEditingController? branchControllers = TextEditingController();
-
   @override
-  void initState() {
-    super.initState();
-    _loadUserId();
-  }
+void initState() {
+  super.initState();
+  
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.ensureVisualUpdate();
+    _initializeControllers();
+    
+    // Initialize controllers here
+    _fullNameController = TextEditingController();
+    _phoneNumberController = TextEditingController();
+    _emailController = TextEditingController();
+    _userNameController = TextEditingController();
+    _genderController = TextEditingController();
+    _branchController = TextEditingController();
+  });
+}
+
 
   // Load userId from SharedPreferences
   Future<void> _loadUserId() async {
@@ -153,6 +169,31 @@ class _BuyerAccountDetailsWidgetState
       userId =
           prefs.getString('userId'); // Fetch userId from shared preferences
     });
+  }
+
+  Future<void> _initializeControllers() async {
+    final userData = ref.watch(getUserDetailsProvider);
+    userData.when(
+      data: (data) {
+        setState(() {
+          final usersLocation =
+              jsonDecode(data.data!.first.usersLocation ?? '{}');
+          final location = usersLocation['location'];
+          _fullNameController.text = data.data!.first.name ?? '';
+          _phoneNumberController.text = data.data!.first.phone ?? '';
+          _emailController.text = data.data!.first.email ?? '';
+          _userNameController.text = data.data!.first.username ?? '';
+          _genderController.text = data.data!.first.genderId ?? '';
+          _branchController.text = location ?? '';
+        });
+        print('Controllers Initialized:');
+        print('Name: ${_fullNameController.text}');
+        print('Phone: ${_phoneNumberController.text}');
+        print('Username: ${_userNameController.text}');
+      },
+      loading: () => print('Loading user details...'),
+      error: (error, stackTrace) => print('Error loading user details: $error'),
+    );
   }
 
   void _submitUpdate(UserData data) {
@@ -178,13 +219,13 @@ class _BuyerAccountDetailsWidgetState
       final location = branchLocation['location'];
       final updateBuyerUserDetail =
           await ref.read(updateBuyerUserDetailsProvider(
-        fullName ?? data.name ?? '',
-        phoneNumber ?? data.phone ?? '',
-        userName ?? data.username ?? '',
-        email ?? data.email ?? '',
+        _fullNameController.text,
+        _phoneNumberController.text,
+        _userNameController.text,
+        _emailController.text,
         userId ?? '',
-        genderID ?? data.genderId ?? '',
-        branchControllers?.text ?? location ?? '',
+        _genderController.text,
+        _branchController.text,
         // openingHours,
         // description,
         //  dob!,
@@ -195,12 +236,13 @@ class _BuyerAccountDetailsWidgetState
         const SnackBar(content: Text('User details updated successfully!')),
       );
       setState(() {
-        fullName = '';
-        phoneNumber = '';
-        email = '';
-        userName = '';
-        genderID = null; // Reset gender selection
-        //  dob = '';
+        _fullNameController.clear();
+        _phoneNumberController.clear();
+        _emailController.clear();
+        _userNameController.clear();
+        _genderController.clear();
+        _branchController.clear();
+        userId = null;
       });
       _formKey.currentState?.reset();
     } catch (error) {
@@ -218,7 +260,8 @@ class _BuyerAccountDetailsWidgetState
   // Method to update genderID based on user selection
   void _updateGender(String? value) {
     setState(() {
-      genderID = value; // value will be '1' for Male and '2' for Female
+      _genderController.text =
+          value ?? ''; // value will be '1' for Male and '2' for Female
     });
   }
 
@@ -275,7 +318,7 @@ class _BuyerAccountDetailsWidgetState
                             ),
                             Radio<String>(
                               value: '1', // Male
-                              groupValue: data.data!.first.genderId ?? genderID,
+                              groupValue: _genderController.text ?? '',
                               onChanged: _updateGender,
                               fillColor: WidgetStateProperty.all(
                                   const Color(0xff362677)),
@@ -290,7 +333,7 @@ class _BuyerAccountDetailsWidgetState
                             ),
                             Radio<String>(
                               value: '2', // Female
-                              groupValue: data.data!.first.genderId ?? genderID,
+                              groupValue: _genderController.text ?? '',
                               onChanged: _updateGender,
                               fillColor: WidgetStateProperty.all(
                                   const Color(0xff362677)),
@@ -305,7 +348,7 @@ class _BuyerAccountDetailsWidgetState
                             ),
                             Radio<String>(
                               value: '3', // Others
-                              groupValue: data.data!.first.genderId ?? genderID,
+                              groupValue: _genderController.text ?? '',
                               onChanged: _updateGender,
                               fillColor: WidgetStateProperty.all(
                                   const Color(0xff362677)),
@@ -323,64 +366,45 @@ class _BuyerAccountDetailsWidgetState
                       ),
                       SizedBox(height: 10.h),
                       CustomTextFieldWidget(
+                        controller: _fullNameController,
                         fill: true,
                         fillColor: const Color(0xFFF6F2F2),
                         icon: Icons.person,
                         textInputType: TextInputAction.next,
-                        hintText: data.data!.first.name ?? 'Name',
-                        onChanged: (value, isEdited) {
-                          // setState(() {
-                          //   fieldEdited[data.data!.first.name!.toLowerCase()] =
-                          //       isEdited;
-                          // });
-                          fullName = value;
-                        },
+                        hintText: '',
+                        // hintText: 'Name',
                         validator: (value) {
-                          // if (value == null || value.isEmpty) {
-                          //   return 'Enter your name';
-                          // }
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your name';
+                          }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.2.h),
                       CustomTextFieldWidget(
+                        controller: _phoneNumberController,
                         fill: true,
                         fillColor: const Color(0xFFF6F2F2),
                         icon: Icons.call,
-                        hintText: data.data!.first.phone ?? "Phone Number",
-                        textInputType: TextInputAction.next,
-                        onChanged: (value, isEdited) {
-                          // setState(() {
-                          //   fieldEdited[data.data!.first.phone!.toLowerCase()] =
-                          //       isEdited;
-                          // });
-                          phoneNumber = value;
-                        },
+                        hintText: "Phone Number",
                         validator: (value) {
-                          // if (value == null || value.isEmpty) {
-                          //   return 'Enter your phone number';
-                          // }
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your phone number';
+                          }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.2.h),
                       CustomTextFieldWidget(
+                        controller: _emailController,
                         fill: true,
                         fillColor: const Color(0xFFF6F2F2),
                         icon: Icons.mail,
-                        textInputType: TextInputAction.next,
-                        hintText: data.data!.first.email ?? "Email",
-                        onChanged: (value, isEdited) {
-                          // setState(() {
-                          //   fieldEdited[data.data!.first.email!.toLowerCase()] =
-                          //       isEdited;
-                          // });
-                          email = value;
-                        },
+                        hintText: "Email",
                         validator: (value) {
-                          // if (value == null || value.isEmpty) {
-                          //   return 'Enter your email';
-                          // }
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your email';
+                          }
                           return null;
                         },
                       ),
@@ -404,51 +428,53 @@ class _BuyerAccountDetailsWidgetState
                         fillColor: const Color(0xFFF6F2F2),
                         icon: Icons.person_outline,
                         textInputType: TextInputAction.next,
-                        hintText: data.data!.first.username ?? "User Name",
-                        onChanged: (value, isEdited) {
-                          // setState(() {
-                          //   fieldEdited[data.data!.first.username!
-                          //       .toLowerCase()] = isEdited;
-                          // });
-                          userName = value;
-                        },
+                        hintText: "User Name",
+                        controller: _userNameController,
                         validator: (value) {
-                          // if (value == null || value.isEmpty) {
-                          //   return 'Enter your username';
-                          // }
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your username';
+                          }
                           return null;
                         },
                       ),
                       SizedBox(height: 10.2.h),
 
+                      // CustomTextFieldWidget(
+                      //   fill: true,
+                      //   fillColor: const Color(0xFFF6F2F2),
+                      //   // fillColor: const Color(0xFFF3F3F3),
+                      //   icon: Icons.location_on,
+                      //   textInputType: TextInputAction.next,
+                      //   hintText: (() {
+                      //     try {
+                      //       // Decode the usersLocation JSON string
+                      //       final usersLocation = jsonDecode(
+                      //           data.data!.first.usersLocation ?? '');
+                      //       return usersLocation['location'] ?? "Your Location";
+                      //     } catch (e) {
+                      //       return "Your Location"; // Fallback in case of an error
+                      //     }
+                      //   })(),
+
+                      //   iconColor: Colors.red,
+                      //   validator: (value) {
+                      //     // if (value == null || value.isEmpty) {
+                      //     //   return 'Enter your  Location",';
+                      //     // }
+                      //     return null;
+                      //   },
+                      // ),
                       CustomTextFieldWidget(
+                        controller: _branchController,
                         fill: true,
                         fillColor: const Color(0xFFF6F2F2),
-                        // fillColor: const Color(0xFFF3F3F3),
                         icon: Icons.location_on,
-                        textInputType: TextInputAction.next,
-                        hintText: (() {
-                          try {
-                            // Decode the usersLocation JSON string
-                            final usersLocation = jsonDecode(
-                                data.data!.first.usersLocation ?? '');
-                            return usersLocation['location'] ?? "Your Location";
-                          } catch (e) {
-                            return "Your Location"; // Fallback in case of an error
-                          }
-                        })(),
-                        onChanged: (value, isEdited) {
-                          // setState(() {
-                          //   fieldEdited[data.data!.first.usersLocation!
-                          //       .toLowerCase()] = isEdited;
-                          // });
-                          branchControllers?.text = value;
-                        },
+                        hintText: "Your Location",
                         iconColor: Colors.red,
                         validator: (value) {
-                          // if (value == null || value.isEmpty) {
-                          //   return 'Enter your  Location",';
-                          // }
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your location';
+                          }
                           return null;
                         },
                       ),

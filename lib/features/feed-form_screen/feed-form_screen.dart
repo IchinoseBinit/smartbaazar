@@ -52,67 +52,26 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
     });
   }
 
-//   void submitForm() {
-//   bool isFormValid = _formKey.currentState!.validate();
-//   setState(() {
-//     isSubmitting = true;
-//   });
-
-//   final captionTitle = captionTitleController.text;
-//   final caption = captionController.text;
-//   final offersId = offersController.text;
-//   final productsIds = selectedValues
-//       .where((element) => element != null)
-//       .map((e) => e.toString())
-//       .toList();
-
-//   _formKey.currentState!.save();
-
-//   final result = ref
-//       .read(postFeedFormProvider(
-//           captionTitle, caption, offersId, productsIds, imageFile!))
-//       .when(
-//         data: (bool success) {
-//           setState(() {
-//             isSubmitting = false;
-//           });
-
-//           if (success) {
-//             _resetForm(); // Reset form fields and image
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               const SnackBar(content: Text('Feed submitted successfully!')),
-//             );
-//           } else {
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               const SnackBar(content: Text('Failed to submit feed.')),
-//             );
-//           }
-//         },
-//         loading: () {
-//           setState(() {
-//             isSubmitting = true;
-//           });
-//         },
-//         error: (error, stack) {
-//           setState(() {
-//             isSubmitting = false;
-//           });
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             SnackBar(content: Text('Error: $error')),
-//           );
-//         },
-//       );
-// }
   void submitForm() async {
-    if (!_formKey.currentState!.validate()) return;
+    bool isFormValid = _formKey.currentState!.validate();
 
     setState(() => isSubmitting = true);
-    if (imageFile == null) {
+    if (!isFormValid || imageFile == null) {
+      // If form is invalid or image is not selected
+      String errorMessage = '';
+      if (!isFormValid) {
+        errorMessage += 'Please fill all fields. ';
+      }
+      if (imageFile == null) {
+        errorMessage += 'Please select an image.';
+      }
+      setState(() => isSubmitting = false); // Ensure to reset the state
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select an image.')),
+        SnackBar(content: Text(errorMessage.trim())),
       );
       return;
     }
+    _formKey.currentState!.save();
 
     final captionTitle = captionTitleController.text.trim();
     final caption = captionController.text.trim();
@@ -122,43 +81,39 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
         .map((e) => e.toString())
         .toList();
 
-    final feedProvider = ref.read(postFeedFormProvider(
+    ref
+        .read(postFeedFormProvider(
       captionTitle,
       caption,
       offersId,
       productsIds,
       imageFile!,
-    ));
-
-    feedProvider.when(
-      data: (success) {
-        setState(() => isSubmitting = false);
-
-        if (success) {
-          _resetForm();
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Success'),
-              content: const Text('Feed submitted successfully!'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
-      },
-      loading: () => setState(() => isSubmitting = true),
-      error: (error, stack) {
-        setState(() => isSubmitting = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $error')),
+    ).future)
+        .then((success) {
+      if (success) {
+        _resetForm();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Feed submitted successfully!'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
         );
-      },
-    );
+      }
+    }).catchError((error) {
+      setState(() => isSubmitting = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
+    }).whenComplete(() {
+      setState(() => isSubmitting = false);
+    });
   }
 
   void _resetForm() {
@@ -168,6 +123,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
     imageFile = null;
     selectedValues = [null];
     selectProductController = [TextEditingController()];
+    setState(() {});
     // _imageWidgetKey.currentState?.resetImage();
   }
 
@@ -503,7 +459,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                       onPressed: isSubmitting ? null : submitForm,
                       marginH: 0,
                       height: 28.h,
-                      width: 100.w,
+                      width: 130.w,
                       isSmallText: true,
                       fgColor: Colors.white,
                       bgColor: const Color(0xff362677),

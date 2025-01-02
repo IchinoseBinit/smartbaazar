@@ -734,7 +734,7 @@ class StorySearchBar extends StatefulWidget {
 
 class _StorySearchBarState extends State<StorySearchBar> {
   String searchQuery = '';
-  List<Story> filteredStories = [];
+  List<StoryList> filteredStories = [];
   bool isLoading = false;
   Timer? debounceTimer;
 
@@ -767,7 +767,7 @@ class _StorySearchBarState extends State<StorySearchBar> {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
-          filteredStories = data.map((story) => Story.fromJson(story)).toList();
+          filteredStories = data.map((story) => StoryList.fromJson(story)).toList();
         });
         if (filteredStories.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -914,19 +914,19 @@ class _StorySearchBarState extends State<StorySearchBar> {
   }
 }
 
-class Story {
+class StoryList {
   final String id;
   final String image;
   final String title;
 
-  Story({
+  StoryList({
     required this.id,
     required this.image,
     required this.title,
   });
 
-  factory Story.fromJson(Map<String, dynamic> json) {
-    return Story(
+  factory StoryList.fromJson(Map<String, dynamic> json) {
+    return StoryList(
       id: json['id'] ?? '',
       image: json['image'] ?? '',
       title: json['title'] ?? '',

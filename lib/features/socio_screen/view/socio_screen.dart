@@ -21,6 +21,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/circle_story_count.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -594,32 +595,58 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 ),
                 asyncPostTypeContent.when(
                   data: (feedStoryData) {
-                    final feedStoryContent = feedStoryData.homeStory?.story;
-                    return SizedBox(
-                      height: 100.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            feedStoryData.homeStory!.story!.posts!.length,
-                        itemBuilder: (context, index) {
-                          final story =
-                              feedStoryData.homeStory!.story!.posts![index];
-                          return HomePageStoryContainer(
-                            index: index,
-                            vendorName: story.vendorName ?? "Unknown Vendor",
-                            vendorImage: story.vendorImage ??
-                                "https://example.com/default-image.png",
-                            storyCount: story.storyCount ?? 0,
-                            showGift: story.hasSponsoredGifts ?? false,
-                            feedStoryContent: feedStoryContent,
-                            userId: story.vendorId!,
-                            // feedData.data!.feedPost![index].userId ??
+                    final homeStory = feedStoryData.homeStory;
+
+                    if (homeStory != null &&
+                        homeStory is Map<String, dynamic> &&
+                        homeStory.containsKey('story')) {
+                      final story = homeStory['story'];
+
+                      if (story != null &&
+                          story is Map<String, dynamic> &&
+                          story.containsKey('posts')) {
+                        final posts = story['posts'];
+
+                        if (posts != null && posts is List<dynamic>) {
+                          return SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
+
+                                if (story is Map<String, dynamic>) {
+                                  final storyObject =
+                                      Story(posts: [Post.fromJson(story)]);
+
+                                  return HomePageStoryContainer(
+                                    index: index,
+                                    vendorName: story['vendor_name'] ??
+                                        "Unknown Vendor",
+                                    vendorImage: story['vendor_image'] ??
+                                        "https://example.com/default-image.png",
+                                    storyCount: story['story_count'] ?? 0,
+                                    showGift:
+                                        story['has_sponsored_gifts'] ?? false,
+                                    feedStoryContent: storyObject,
+                                    userId: story['vendor_id'],
+                                  );
+                                } else {
+                                  return Container(); // Return an empty container if the post doesn't match the expected format
+                                }
+                              },
+                            ),
                           );
-                        },
-                      ),
-                    );
+                        }
+                      }
+                    }
+
+                    // If any of the above conditions fail, return a default widget
+                    return Text(
+                        'No stories available.You Need to login for story');
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

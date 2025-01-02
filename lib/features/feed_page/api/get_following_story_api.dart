@@ -16,8 +16,21 @@ Future<GetFeedStoriesModel> getFollowingStory(GetFollowingStoryRef ref) async {
       url: ApiConstants.getFollowingfeedstory,
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data;
-      return GetFeedStoriesModel.fromJson(jsonResponse);
+      final data = response.data;
+
+      if (data is String && data.isEmpty) {
+        // Handle the case where the session has expired
+        throw Exception('Session has expired. Please log in again.');
+      }
+
+      if (data is Map<String, dynamic>) {
+        // Parse the valid response
+        return GetFeedStoriesModel.fromJson(data);
+      } else {
+        throw Exception('Unexpected response format.');
+      }
+      // final Map<String, dynamic> jsonResponse = response.data;
+      // return GetFeedStoriesModel.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load following content');
     }
