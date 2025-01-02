@@ -62,9 +62,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
-  late TabController tabController;
+  // late TabController tabController;
   int headerIndex = 0;
   int _currentIndex = 0;
+  late TabController dynamictabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -130,6 +131,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
   @override
   void initState() {
+    dynamictabController = TabController(length: 3, vsync: this);
+    dynamictabController.addListener(() {
+      setState(() {});
+    });
+
     _pageController = PageController(
       viewportFraction: 0.3,
       initialPage: selectedIndex!,
@@ -147,7 +153,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       _pageController.jumpToPage(headerIndex);
     });
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    // tabController = TabController(length: 3, vsync: this);
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -206,20 +212,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
   @override
   void dispose() {
-    // dynamictabController.dispose();
+    dynamictabController.dispose();
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
     _scrollController.dispose();
+    // super.dispose();s
   }
 
   @override
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
-            final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
 
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
 
     final asyncbajarValue = ref.watch(getSocioDataProvider);
     final SearchProductModels =
@@ -654,7 +660,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
-                 SizedBox(
+                SizedBox(
                   height: 20.h,
                 ),
                 asyncbajarValue.when(
@@ -1118,7 +1124,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 VProduct pro = data.insidearr[1][index];
-                                print("kolo ${pro.id}");
 
                                 return InkWell(
                                   onTap: () {
@@ -1380,7 +1385,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   height: 50,
                   width: double.infinity,
                   child: TabBar(
-                    controller: tabController,
+                    controller: dynamictabController,
                     tabs: const [
                       Tab(
                         text: ' Global\n Brands',
@@ -1395,12 +1400,33 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 ),
                 asyncbajarValue.when(
                   data: (data) {
+                    // print('pandy ${data.brandbazar_global}');
+                    double dynamicHeight;
+
+                    if (dynamictabController.index == 0) {
+                      dynamicHeight = data.brandbazar_global == null ||
+                              data.brandbazar_global?.length == 0
+                          ? 200
+                          : 500;
+                    } else if (dynamictabController.index == 1) {
+                      // Ensure data.doma[0] is valid and has length
+                      dynamicHeight = data.brandbazar_global == null ||
+                              data.brandbazar_global?.length == 0
+                          ? 200
+                          : 500;
+                    } else if (dynamictabController.index == 2)
+                      dynamicHeight =
+                          data.insidearr.isEmpty || data.insidearr[2].isEmpty
+                              ? 200
+                              : 500;
+                    else
+                      dynamicHeight = 300;
                     return SizedBox(
-                      height: 500.h,
+                      height: dynamicHeight,
                       width: double.infinity,
                       // Use Expanded for better layout management
                       child: TabBarView(
-                        controller: tabController,
+                        controller: dynamictabController,
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1432,11 +1458,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: data.insidearr[0].length,
+                                        itemCount:
+                                            data.brandbazar_global?.length,
                                         itemBuilder: (context, index) {
                                           VProduct prod =
-                                              data.insidearr[0][index];
-                                          print('pinkyk ${prod.offers}');
+                                              data.brandbazar_global![index];
+                                          print('pinkyk ${prod.title}');
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1521,10 +1548,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: data.insidearr[1].length,
+                                        itemCount:
+                                            data.brandbazar_domestic?.length,
                                         itemBuilder: (context, index) {
                                           VProduct prod =
-                                              data.insidearr[1][index];
+                                              data.brandbazar_domestic![index];
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1597,10 +1625,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: data.insidearr[2].length,
+                                        itemCount: data.spotlights?.length,
                                         itemBuilder: (context, index) {
                                           VProduct prod =
-                                              data.insidearr[2][index];
+                                              data.spotlights![index];
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1689,7 +1717,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
-
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
@@ -1939,8 +1966,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             },
                             child: AllProductDetailWidget(
                               offer: data.product[index].offers,
-                              shortestDistance: data.product[index].user.shortestDistance,
-                              avg_rating: data.product[index].avg_rating?.toDouble(),
+                              shortestDistance:
+                                  data.product[index].user.shortestDistance,
+                              avg_rating:
+                                  data.product[index].avg_rating?.toDouble(),
                               wow: data.product[index].wow,
                               comment:
                                   data.product[index].commentcount.toString(),

@@ -318,6 +318,10 @@ class PostTypeFetch {
   final List<VProduct> product;
   final List<Advertisement> ads;
   final List<Buynowmodel>? buynow;
+  final List<VProduct>? brandbazar_global;
+  final List<VProduct>? brandbazar_domestic;
+  final List<VProduct>? spotlights;
+
   final List<FetchCategory> cat;
   final List<List<VProduct>> insidearr;
   final List<VProduct> low_price_guarantee;
@@ -346,6 +350,9 @@ class PostTypeFetch {
     required this.Launch_festival_offer,
     required this.clearance_sale,
     required this.seasonal,
+    required this.brandbazar_global,
+    required this.brandbazar_domestic,
+    required this.spotlights,
   });
 
   factory PostTypeFetch.fromJson(Map<String, dynamic> json) {
@@ -428,12 +435,42 @@ class PostTypeFetch {
     final fes = (json['festival_offer'] as List<dynamic>? ?? [])
         .map((logoJson) => VProduct.fromJson(logoJson))
         .toList();
+
     final clr = (json['clearance_sale'] as List<dynamic>? ?? [])
         .map((logoJson) => VProduct.fromJson(logoJson))
         .toList();
+    final domas =
+        (json['brandbazar_domestic'] as List<dynamic>?)?.expand((innerList) {
+              // Ensure each innerList is properly cast and mapped
+              return (innerList as List<dynamic>).map((item) {
+                return VProduct.fromJson(item as Map<String, dynamic>);
+              });
+            }).toList() ??
+            [];
+
+
+  final glob =
+        (json['brandbazar_global'] as List<dynamic>?)?.expand((innerList) {
+              // Ensure each innerList is properly cast and mapped
+              return (innerList as List<dynamic>).map((item) {
+                return VProduct.fromJson(item as Map<String, dynamic>);
+              });
+            }).toList() ??
+            [];
+  final spots =
+        (json['spotlights'] as List<dynamic>?)?.expand((innerList) {
+              // Ensure each innerList is properly cast and mapped
+              return (innerList as List<dynamic>).map((item) {
+                return VProduct.fromJson(item as Map<String, dynamic>);
+              });
+            }).toList() ??
+            [];
 
     return PostTypeFetch(
         cat: cato,
+        spotlights: spots,
+        brandbazar_global: glob,
+        brandbazar_domestic: domas,
         stories: storiesList,
         hotProducts: hotProductsList,
         sliders: ads,
@@ -545,21 +582,21 @@ class VProduct {
   final String offers;
   final int? avg_rating;
 
-  VProduct(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.user,
-      required this.image,
-      required this.price,
-      required this.wow,
-      required this.stock,
-      required this.commentcount,
-      required this.offers,
-      required this.similarProductCount,
-      required this.discounted_price,
-      required this.avg_rating,
-      });
+  VProduct({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.user,
+    required this.image,
+    required this.price,
+    required this.wow,
+    required this.stock,
+    required this.commentcount,
+    required this.offers,
+    required this.similarProductCount,
+    required this.discounted_price,
+    required this.avg_rating,
+  });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
@@ -575,8 +612,7 @@ class VProduct {
         price: json['price'] ?? '',
         similarProductCount: json['similarProductCount'] ?? 0,
         wow: json['wow'] ?? '',
-        avg_rating: json['avg_rating']
-        );
+        avg_rating: json['avg_rating']);
   }
 }
 

@@ -1759,10 +1759,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[0]?.id != null) {
+                            if (getRoad?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[0].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -1778,7 +1778,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-                if (selectedcategory?.id == 30)
+                if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                       child: Row(
                     children: [

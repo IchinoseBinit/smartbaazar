@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
@@ -82,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const HomeScreen()
+      'screen': const BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -937,7 +938,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
-
+                                                    print("kalu ${prod.image}");
                                                     return InkWell(
                                                       onTap: () {
                                                         Navigator.push(
@@ -964,9 +965,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                     '0'),
                                                         wow: prod.wow,
                                                         comment: prod
-                                                                .commentCount
-                                                                .toString() ??
-                                                            '1',
+                                                            .commentCount
+                                                            .toString(),
+
                                                         avg_rating: prod
                                                             .avgRating
                                                             ?.toDouble(),

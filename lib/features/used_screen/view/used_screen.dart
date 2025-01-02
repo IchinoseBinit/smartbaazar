@@ -1223,7 +1223,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membershipColor,
+                                          membershipColor:
+                                              pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1297,7 +1298,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membershipColor,
+                                          membershipColor:
+                                              pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1371,7 +1373,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membershipColor,
+                                          membershipColor:
+                                              pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1410,6 +1413,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                 ),
                 asyncbajarValue.when(
                   data: (data) {
+                    print('kolot ${data.domestic.first.userId}');
                     double dynamicHeight;
 
                     if (tabController.index == 0) {
@@ -1445,18 +1449,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               children: [
                                 Row(
                                   children: [
-                                if (data.global.isNotEmpty)
-                                  ...data.global.map((e) {
-                                    return NotStoryWidget(
-                                      vImage: e
-                                          .brandLogo, // Use the correct variable name
-                                      index: data.global
-                                          .indexOf(e), // Get the index
-                                      brandname: e.brandName,
-                                    );
-                                  }).toList(),
-                                ],
-                            ),
+                                    if (data.global.isNotEmpty)
+                                      ...data.global.map((e) {
+                                        return NotStoryWidget(
+                                          vImage: e
+                                              .brandLogo, // Use the correct variable name
+                                          index: data.global
+                                              .indexOf(e), // Get the index
+                                          brandname: e.brandName,
+                                        );
+                                      }).toList(),
+                                  ],
+                                ),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1504,13 +1508,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             );
                                           },
                                         ),
-                                      ) : Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 10.0), // Add padding here
-                                    child: nolistingfound(),
-                                  ),
-                                ),
-
+                                      )
+                                    : Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0), // Add padding here
+                                          child: nolistingfound(),
+                                        ),
+                                      ),
                               ],
                             ),
                             Column(
@@ -1530,12 +1535,15 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? Center(child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 28.0), // Add padding here
-                                    child: nolistingfound(),
-                                  ),
-                                ),)
+                                    ? Center(
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 28.0), // Add padding here
+                                            child: nolistingfound(),
+                                          ),
+                                        ),
+                                      )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1609,7 +1617,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     ? Center(
                                         child: Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.only(top: 10.0), // Add padding here
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0), // Add padding here
                                             child: nolistingfound(),
                                           ),
                                         ),
