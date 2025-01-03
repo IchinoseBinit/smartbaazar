@@ -1114,7 +1114,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               )
                             ],
                           ),
-                          Expanded(
+                    Expanded(
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<Option>(
                                 isExpanded: true,
@@ -1686,7 +1686,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-                if (selectedcategory?.id == 1 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 1 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2341,7 +2341,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             dropdownValue: selecteclothsize,
                             onChanged: (newValue) {
                               setState(() {
-                                 selecteclothsize = newValue;
+                                selecteclothsize = newValue;
                                 if (getRoad?.result[0]?.id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
@@ -2499,16 +2499,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
-                          onSubmitted: (value) {
-                                 if (getRoad?.result[12]?.id != null) {
-                              // Ensure the dynamic key is safe to access
-                              cf?.add([
-                                'cf.${getRoad!.result[12]?.id}', // Create the key dynamically
-                                value,
-                              ]);
-                            }
-                          },
-
+                        onSubmitted: (value) {
+                          if (getRoad?.result[12]?.id != null) {
+                            // Ensure the dynamic key is safe to access
+                            cf?.add([
+                              'cf.${getRoad!.result[12]?.id}', // Create the key dynamically
+                              value,
+                            ]);
+                          }
+                        },
                         controller: youtubecontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Enter youtube link',
@@ -2520,7 +2519,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
-                 if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2546,8 +2545,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (getRoad?.result[4]?.id != null) {
+                          onSubmitted: (value) {
+                            if (getRoad?.result[4]?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
                                 'cf.${getRoad!.result[4]?.id}', // Create the key dynamically
@@ -2595,8 +2594,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (getRoad?.result[9]?.id != null) {
+                          onSubmitted: (value) {
+                            if (getRoad?.result[9]?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
                                 'cf.${getRoad!.result[9]?.id}', // Create the key dynamically
@@ -2615,7 +2614,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2810,7 +2809,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     )
                   ],
                 )),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2836,8 +2835,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (laptoprep?.result[10]?.id != null) {
+                          onSubmitted: (value) {
+                            if (laptoprep?.result[10]?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
                                 'cf.${laptoprep!.result[10]?.id}', // Create the key dynamically
@@ -2888,7 +2887,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             height: 10.h), // Add spacing before radio buttons
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: furnitureresresp!.result[4].options.map((option) {
+                          children:
+                              furnitureresresp!.result[4].options.map((option) {
                             return Row(
                               children: [
                                 Radio<Option>(
@@ -2897,14 +2897,14 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   onChanged: (Option? newValue) {
                                     setState(() {
                                       selectedFurnished = newValue;
-                                 if (furnitureresresp?.result[10]?.id != null) {
-                              // Ensure the dynamic key is safe to access
-                              cf?.add([
-                                'cf.${furnitureresresp!.result[10]?.id}', // Create the key dynamically
-                                selectedFurnished?.value,
-                              ]);
-                            }
-                     
+                                      if (furnitureresresp?.result[10]?.id !=
+                                          null) {
+                                        // Ensure the dynamic key is safe to access
+                                        cf?.add([
+                                          'cf.${furnitureresresp!.result[10]?.id}', // Create the key dynamically
+                                          selectedFurnished?.value,
+                                        ]);
+                                      }
                                     });
                                   },
                                 ),
@@ -3027,7 +3027,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
-                if (selectedcategory?.id != 122 || selectedcategory?.id != 73 || selectedcategory?.id != 37 || selectedcategory?.id != 143  )
+                if (selectedcategory?.id != 122 ||
+                    selectedcategory?.id != 73 ||
+                    selectedcategory?.id != 37 ||
+                    selectedcategory?.id != 143)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -3186,8 +3189,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (phoneresp?.result[9]?.id != null) {
+                          onSubmitted: (value) {
+                            if (phoneresp?.result[9]?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
                                 'cf.${phoneresp!.result[9]?.id}', // Create the key dynamically
@@ -3281,7 +3284,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-  if (selectedcategory?.id == 171)
+                if (selectedcategory?.id == 171)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -3295,8 +3298,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (grocerryresp?.result[1]?.id != null) {
+                          onSubmitted: (value) {
+                            if (grocerryresp?.result[1]?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
                                 'cf.${grocerryresp!.result[1]?.id}', // Create the key dynamically
@@ -3465,7 +3468,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
-              
+
                 SizedBox(
                   height: 10.h,
                 ),

@@ -101,7 +101,6 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
 
     final homepage = Homepage1.fromJson(data);
 
-    print("kalu data: ${homepage.allProducts.first.userDetail.membership_title}"); // Log the raw response data
 
 
 

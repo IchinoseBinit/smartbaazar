@@ -872,9 +872,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                               if (products.length == 0) {
                                 dynamicHeight =
-                                    products.isEmpty ? 130.h : 420.h;
+                                    products.isEmpty ? 130.h : 430.h;
                               } else
-                                dynamicHeight = 390.h;
+                                dynamicHeight = 400.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -924,13 +924,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     products.isNotEmpty
                                         ? SizedBox(
                                             child: AnimatedContainer(
+                                                padding: EdgeInsets.zero,
+                                                margin: EdgeInsets.zero,
                                                 duration:
                                                     Duration(microseconds: 400),
-                                                height: 340.h,
+                                                height: 350.h,
                                                 width: double.infinity,
                                                 child: ListView.builder(
-                                                  padding:
-                                                      const EdgeInsets.all(3),
+                                                  padding: EdgeInsets.zero,
+                                                  shrinkWrap: true,
+                                                  // padding:
+                                                  //     const EdgeInsets.all(3),
                                                   scrollDirection:
                                                       Axis.horizontal,
                                                   itemCount: products.length,
@@ -938,64 +942,70 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       (context, index) {
                                                     CategoryProduct prod =
                                                         products[index];
-                                                    print("kalu ${prod.image}");
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductDetailScreen(
-                                                                      productId:
-                                                                          prod.id),
-                                                            ));
-                                                        // Handle product click if needed
-                                                      },
-                                                      child:
-                                                          ProductDetailWidget(
-                                                        distance: prod
-                                                            .shortestDistance,
-                                                        issponsored: prod
-                                                                .userdetails!
-                                                                .sponsored ??
-                                                            false,
-                                                        shortestDistance:
-                                                            double.tryParse(
-                                                                prod.nearestBranch ??
-                                                                    '0'),
-                                                        wow: prod.wow,
-                                                        comment: prod
-                                                            .commentCount
-                                                            .toString(),
+                                                    return Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 5.w),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    ProductDetailScreen(
+                                                                        productId:
+                                                                            prod.id),
+                                                              ));
+                                                          // Handle product click if needed
+                                                        },
+                                                        child:
+                                                            ProductDetailWidget(
+                                                          distance: prod
+                                                              .shortestDistance,
+                                                          issponsored: prod
+                                                                  .userdetails!
+                                                                  .sponsored ??
+                                                              false,
+                                                          shortestDistance:
+                                                              double.tryParse(
+                                                                  prod.nearestBranch ??
+                                                                      '0'),
+                                                          wow: prod.wow,
+                                                          comment: prod
+                                                              .commentCount
+                                                              .toString(),
 
-                                                        avg_rating: prod
-                                                            .avgRating
-                                                            ?.toDouble(),
+                                                          avg_rating: prod
+                                                              .avgRating
+                                                              ?.toDouble(),
 
-                                                        offer: prod.offers,
-                                                        id: int.tryParse(prod
-                                                            .userdetails!.id),
-                                                        lefttile: categories[
-                                                            selectedIndex],
-                                                        vendorname: prod
-                                                            .userdetails!.name,
-                                                        discounttedPrice: prod
-                                                            .discountedPrice,
-                                                        Vimage: prod
-                                                            .userdetails!.photo,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage:
-                                                            prod.image,
-                                                        membershipColor: prod
-                                                            .userdetails!
-                                                            .memberColor,
-                                                        similarproductCount: prod
-                                                            .similarProductCount,
-                                                        membershipTitle: prod
-                                                            .userdetails!
-                                                            .membershipTitle,
-                                                        // avg_rating: prod.average_rating,
+                                                          offer: prod.offers,
+                                                          id: int.tryParse(prod
+                                                              .userdetails!.id),
+                                                          lefttile: categories[
+                                                              selectedIndex],
+                                                          vendorname: prod
+                                                              .userdetails!
+                                                              .name,
+                                                          discounttedPrice: prod
+                                                              .discountedPrice,
+                                                          Vimage: prod
+                                                              .userdetails!
+                                                              .photo,
+                                                          price: prod.price,
+                                                          title: prod.title,
+                                                          productImage:
+                                                              prod.image,
+                                                          membershipColor: prod
+                                                              .userdetails!
+                                                              .memberColor,
+                                                          similarproductCount: prod
+                                                              .similarProductCount,
+                                                          membershipTitle: prod
+                                                              .userdetails!
+                                                              .membershipTitle,
+                                                          // avg_rating: prod.average_rating,
+                                                        ),
                                                       ),
                                                     );
                                                   },
@@ -1098,7 +1108,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       child: nolistingfound()),
                                                 )
                                               : SizedBox(
-                                                  height: 340.h,
+                                                  height: 316.6.h,
                                                   child: ListView.builder(
                                                     clipBehavior:
                                                         Clip.antiAlias,
@@ -1112,6 +1122,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         (context, index) {
                                                       GlobalModel prod = data
                                                           .insidearr[0][index];
+                                                      print(
+                                                          "bibash ${prod.user.first.photo}");
                                                       return InkWell(
                                                         onTap: () {
                                                           Navigator.push(
@@ -1147,7 +1159,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               prod.contactName,
                                                           discounttedPrice:
                                                               prod.discont,
-                                                          Vimage: prod.title,
+                                                          Vimage: prod
+                                                              .user.first.photo,
                                                           price: prod.price,
                                                           title: prod.title,
                                                           productImage:
@@ -1196,8 +1209,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           ),
                                           if (data.domestic.isNotEmpty)
                                             SizedBox(
-                                              height: 340
-                                                  .h, // Adjust to your dynamic height as needed
+                                              height: 316.6.h,
+                                              // Adjust to your dynamic height as needed
                                               child: ListView.builder(
                                                 clipBehavior: Clip.antiAlias,
                                                 padding:
@@ -1221,6 +1234,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
+                                                      Vimage:
+                                                          prod.user.first.photo,
                                                       shortestDistance:
                                                           prod.shortestDistance,
                                                       distance:
@@ -1238,7 +1253,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           prod.contactName,
                                                       discounttedPrice:
                                                           prod.discont,
-                                                      Vimage: prod.title,
                                                       price: prod.price,
                                                       title: prod.title,
                                                       productImage:
@@ -1287,12 +1301,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           ),
                                           if (data.spot[0].isNotEmpty)
                                             SizedBox(
-                                              height: 340
-                                                  .h, // Adjust to your dynamic height as needed
+                                              height: 300.h,
                                               child: ListView.builder(
                                                 clipBehavior: Clip.antiAlias,
-                                                padding:
-                                                    const EdgeInsets.all(3),
+                                                // padding:
+                                                //     const EdgeInsets.all(3),
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 itemCount: data.spot[0].length,
@@ -1312,6 +1325,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
+                                                      Vimage:
+                                                          prod.user.first.photo,
                                                       shortestDistance:
                                                           prod.shortestDistance,
                                                       distance:
@@ -1329,7 +1344,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           prod.contactName,
                                                       discounttedPrice:
                                                           prod.discont,
-                                                      Vimage: prod.title,
                                                       price: prod.price,
                                                       title: prod.title,
                                                       productImage:
@@ -1618,14 +1632,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.allProducts.length,
                                 gridDelegate:
                                     SliverGridDelegateWithMaxCrossAxisExtent(
-                                  
-
                                   maxCrossAxisExtent:
                                       250.w, // Maximum width of each grid item
                                   mainAxisExtent:
                                       308.h, // Fixed height of each grid item
-                                  crossAxisSpacing:
-                                    13, // Space between columns
+                                  crossAxisSpacing: 13, // Space between columns
                                   mainAxisSpacing: 20, // Space between rows
                                 ),
 
@@ -1633,20 +1644,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   VProduct res = data.allProducts[index];
 
                                   return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProductDetailScreen(
-                                                      productId: res.id),
-                                            ));
-                                      },
-                                      child: AllProductDetailWidget(
-                                      shortestDistance: data
-                                          .allProducts[index]
-                                          .user
-                                          .shortestDistance,
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductDetailScreen(
+                                                    productId: res.id),
+                                          ));
+                                    },
+                                    child: AllProductDetailWidget(
+                                      shortestDistance: data.allProducts[index]
+                                          .user.shortestDistance,
                                       issponsored: data.allProducts[index]
                                               .userDetail.sponsored ??
                                           false,
@@ -1655,8 +1664,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       wow: data.allProducts[index].wow
                                           .toString(),
                                       discounttedPrice: data
-                                          .allProducts[index]
-                                          .discountedPrice,
+                                          .allProducts[index].discountedPrice,
                                       comment: data
                                           .allProducts[index].commentCount
                                           .toString(),
@@ -1666,25 +1674,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       offer: data.allProducts[index].offers,
                                       productImage:
                                           data.allProducts[index].image,
-                                      Vimage: data.allProducts[index]
-                                          .userDetail.photo,
-                                      vendorname: data.allProducts[index]
-                                          .userDetail.name,
+                                      Vimage: data
+                                          .allProducts[index].userDetail.photo,
+                                      vendorname: data
+                                          .allProducts[index].userDetail.name,
                                       title: data.allProducts[index].title,
                                       price: data.allProducts[index].price,
                                       similarproductCount: data
                                           .allProducts[index]
                                           .similarProductCount,
-                                      membershipColor: data
-                                          .allProducts[index]
-                                          .userDetail
-                                          .membership_color,
-                                      membershipTitle: data
-                                          .allProducts[index]
-                                          .userDetail
-                                          .membership_title,
+                                      membershipColor: data.allProducts[index]
+                                          .userDetail.membership_color,
+                                      membershipTitle: data.allProducts[index]
+                                          .userDetail.membership_title,
                                     ),
-                                      );
+                                  );
                                 },
                               );
                               // SizedBox(

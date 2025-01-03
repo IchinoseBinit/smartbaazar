@@ -70,6 +70,7 @@ class UserDetailsModel with _$UserDetailsModel {
     String? membership_id,
     String? membership_title,
     String? membership_color,
+    
     String? photo,
     required String name,
     int? storyCount,

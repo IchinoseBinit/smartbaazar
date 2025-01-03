@@ -15,7 +15,6 @@ Future<PostTypeFetch> getjobsResponse(GetjobsResponseRef ref) async {
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.producttypeurl}/4", // API endpoint
     );
-    print("binod ${response.data}");
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
 

@@ -53,12 +53,10 @@ class AllProductDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("billu ${offer?.length}");
     String showRs = "Rs";
     showRs = discounttedPrice == '0' ? '' : '';
 
     return Card(
-      
       clipBehavior: Clip.antiAlias,
       shadowColor: const Color(0xff3D215F).withOpacity(0.5),
       elevation: 9,

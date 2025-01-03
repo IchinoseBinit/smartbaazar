@@ -37,21 +37,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              // textTheme: GoogleFonts.quicksandTextTheme(
-              //   Theme.of(context).textTheme,
-              // ),
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: HomeScreen()
-            ),
-            );
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // textTheme: GoogleFonts.quicksandTextTheme(
+            //   Theme.of(context).textTheme,
+            // ),
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SplashScreen()),
+    );
   }
 }
 // //VendorHomeScreen(vendorName: "techstore", vid: 9))

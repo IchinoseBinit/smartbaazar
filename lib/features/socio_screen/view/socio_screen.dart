@@ -1453,7 +1453,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               data.insidearr.isNotEmpty &&
                                       data.insidearr[0].isNotEmpty
                                   ? SizedBox(
-                                      height: 359.h,
+                                      height: 310.h,
                                       child: ListView.builder(
                                         clipBehavior: Clip.antiAlias,
                                         padding: const EdgeInsets.all(3),
@@ -1463,7 +1463,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         itemBuilder: (context, index) {
                                           VProduct prod =
                                               data.brandbazar_global![index];
-                                          print('pinkyk ${prod.title}');
                                           return InkWell(
                                             onTap: () {
                                               Navigator.push(
@@ -1503,13 +1502,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         },
                                       ),
                                     )
-                                  : Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 100, left: 100.w),
-                                      child: const SizedBox(
-                                        child: Text("No listing available"),
-                                      ),
-                                    ),
+                                  : nolistingfound()
                             ],
                           ),
                           Column(
@@ -1535,56 +1528,60 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 height: 20.h,
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 310.h,
                                 child: data.insidearr.isEmpty
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 100, left: 100.w),
-                                        child: const SizedBox(
-                                          child: Text("No listing available"),
+                                    ? nolistingfound()
+                                    : SizedBox(
+                                        height: 310.h,
+                                        child: ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount:
+                                              data.brandbazar_domestic?.length,
+                                          itemBuilder: (context, index) {
+                                            VProduct prod = data
+                                                .brandbazar_domestic![index];
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
+                                                offer: prod.offers,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                wow: prod.wow,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "Socio-Shop",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      )
-                                    : ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount:
-                                            data.brandbazar_domestic?.length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod =
-                                              data.brandbazar_domestic![index];
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProductDetailScreen(
-                                                            productId: prod.id),
-                                                  ));
-                                            },
-                                            child: ProductDetailWidget(
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              wow: prod.wow,
-                                              issponsored: prod.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.user.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membershipColor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),
-                                          );
-                                        },
                                       ),
                               ),
                             ],
@@ -1612,55 +1609,59 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 height: 20.h,
                               ),
                               SizedBox(
-                                height: 359.h,
+                                height: 310.h,
                                 child: data.insidearr.isEmpty
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 100, left: 100.w),
-                                        child: const SizedBox(
-                                          child: Text("No listing available"),
+                                    ? nolistingfound()
+                                    : SizedBox(
+                                        height: 300.h,
+                                        child: ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: data.spotlights?.length,
+                                          itemBuilder: (context, index) {
+                                            VProduct prod =
+                                                data.spotlights![index];
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                offer: prod.offers,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                wow: prod.wow,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "Socio-Shop",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      )
-                                    : ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: data.spotlights?.length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod =
-                                              data.spotlights![index];
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProductDetailScreen(
-                                                            productId: prod.id),
-                                                  ));
-                                            },
-                                            child: ProductDetailWidget(
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              wow: prod.wow,
-                                              issponsored: prod.user.sponsored,
-                                              lefttile: "Socio-Shop",
-                                              vendorname: prod.title,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.user.photo,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membershipColor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),
-                                          );
-                                        },
                                       ),
                               ),
                             ],
@@ -1943,8 +1944,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       shrinkWrap: true, // Adjust to fit content
                       itemCount: data.product.length,
 
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisExtent: 310.h,
                         crossAxisCount: 2,
                         crossAxisSpacing: 0.6,
