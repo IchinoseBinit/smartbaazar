@@ -34,9 +34,9 @@ class _PromoCardState extends State<PromoCard> {
       elevation: 7,
       child: Center(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             // borderRadius: BorderRadius.circular(),
-            color: const Color.fromARGB(255, 243, 244, 242),
+            color: Color.fromARGB(255, 243, 244, 242),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

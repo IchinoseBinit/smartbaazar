@@ -67,9 +67,7 @@ class Post {
       image: json['image'] ?? '',
       similarProductCount: json['similarproductcount'] ?? 0,
       averageRating: json['average_rating'] ?? 0,
-      discountPercentage: json['discount_percentage'] != null
-          ? json['discount_percentage'].toDouble()
-          : null,
+      discountPercentage: json['discount_percentage']?.toDouble(),
     );
   }
 }

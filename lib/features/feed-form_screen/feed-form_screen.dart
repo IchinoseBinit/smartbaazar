@@ -224,8 +224,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Color(0xFFEDECEC).withOpacity(0.3),
-                                  enabledBorder: OutlineInputBorder(
+                                  fillColor: const Color(0xFFEDECEC).withOpacity(0.3),
+                                  enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Color(0xFFD9D9D9)))),
                               validator: (value) =>
@@ -247,8 +247,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               maxLines: 5,
                               decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Color(0xFFEDECEC).withOpacity(0.3),
-                                  enabledBorder: OutlineInputBorder(
+                                  fillColor: const Color(0xFFEDECEC).withOpacity(0.3),
+                                  enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Color(0xFFD9D9D9)))),
                               validator: (value) => value!.isEmpty
@@ -336,7 +336,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12,
-                                color: const Color(0xff36383C),
+                                color: Color(0xff36383C),
                               ),
                             ),
                             const SizedBox(height: 5),
@@ -357,10 +357,10 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                   Icons.arrow_drop_down),
                                               isExpanded: true,
                                               underline: const SizedBox(),
-                                              hint: Text(
+                                              hint: const Text(
                                                 "Select Product",
                                                 style: TextStyle(
-                                                  color: const Color.fromARGB(
+                                                  color: Color.fromARGB(
                                                       255, 108, 93, 93),
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500,

@@ -256,7 +256,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       event.when(
         data: (data) {},
         error: (error, stackTrace) {},
-        loading: () => CircularProgressIndicator(),
+        loading: () => const CircularProgressIndicator(),
       );
       getCategories.whenData((value) {
         response = value;
@@ -557,10 +557,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           child: TextField(
                             onSubmitted: (value) {
-                              if (getRoad?.result[2]?.id != null) {
+                              if (getRoad?.result[2].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[2]?.id}', // Create the key dynamically
+                                  'cf.${getRoad!.result[2].id}', // Create the key dynamically
                                   whatsintheboxcontroller.text,
                                 ]);
                               }
@@ -663,7 +663,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             if (jobsresp?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${jobsresp!.result[1]?.id}', // Create the key dynamically
+                                'cf.${jobsresp!.result[1].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -709,10 +709,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (jobsresp?.result[2]?.id != null) {
+                            if (jobsresp?.result[2].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[2]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[2].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -803,10 +803,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         TextField(
                           controller: whatsintheboxcontroller,
                           onSubmitted: (value) {
-                            if (phoneresp?.result[1]?.id != null) {
+                            if (phoneresp?.result[1].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[1]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[1].id}', // Create the key dynamically
                                 whatsintheboxcontroller.text,
                               ]);
                             }
@@ -982,10 +982,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               setState(() {
                                 jobtype = newValue;
                               });
-                              if (jobsresp?.result[3]?.id != null) {
+                              if (jobsresp?.result[3].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                  'cf.${getRoad!.result[3].id}', // Create the key dynamically
                                   jobtype?.id,
                                 ]);
                               }
@@ -1554,7 +1554,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   deadlineDate =
                                       pickedDate; // Save the selected date
 
-                                  if (jobsresp?.result[1]?.id != null) {
+                                  if (jobsresp?.result[1].id != null) {
                                     // Ensure the dynamic key is safe to access
                                     cf?.add([
                                       'cf.${jobsresp!.result[1].id}', // Create the key dynamically
@@ -1612,16 +1612,16 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<Option>(
-                            items: phoneresp!.result[7]!.options,
+                            items: phoneresp!.result[7].options,
                             dropdownValue: selectedmobilebrand,
                             onChanged: (newValue) {
                               setState(() {
                                 selectedmobilebrand = newValue;
                               });
-                              if (phoneresp?.result[7]?.id != null) {
+                              if (phoneresp?.result[7].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${phoneresp!.result[7]?.id}', // Create the key dynamically
+                                  'cf.${phoneresp!.result[7].id}', // Create the key dynamically
                                   selectedmobilebrand?.id,
                                 ]);
                               }
@@ -1670,10 +1670,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 setState(() {
                                   selectedmodel = newValue;
                                 });
-                                if (getRoad?.result[3]?.id != null) {
+                                if (getRoad?.result[3].id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
-                                    'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                    'cf.${getRoad!.result[3].id}', // Create the key dynamically
                                     whatsintheboxcontroller.text,
                                   ]);
                                 }
@@ -1713,10 +1713,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[3]?.id != null) {
+                            if (getRoad?.result[3].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[3].id}', // Create the key dynamically
                                 whatsintheboxcontroller.text,
                               ]);
                             }
@@ -1805,10 +1805,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[0]?.id != null) {
+                            if (getRoad?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[0].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -1942,7 +1942,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 // Assign selected year to the controller
                                 yearofregistrationcontroller.text =
                                     selectedDate.year.toString();
-                                if (getRoad?.result[11]?.id != null) {
+                                if (getRoad?.result[11].id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
                                     'cf.${getRoad!.result[11].id}', // Create the key dynamically
@@ -1997,10 +1997,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           child: TextField(
                             onSubmitted: (value) {
-                              if (getRoad?.result[6]?.id != null) {
+                              if (getRoad?.result[6].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[6]?.id}', // Create the key dynamically
+                                  'cf.${getRoad!.result[6].id}', // Create the key dynamically
                                   value,
                                 ]);
                               }
@@ -2146,7 +2146,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                     if (getRoad?.result[7].id != null) {
                                       // Ensure the dynamic key is safe to access
                                       cf?.add([
-                                        'cf.${getRoad!.result[7]?.id}', // Create the key dynamically
+                                        'cf.${getRoad!.result[7].id}', // Create the key dynamically
                                         value,
                                       ]);
                                     }
@@ -2246,10 +2246,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedbuildingtype = newValue;
-                                  if (getRoad?.result[5]?.id != null) {
+                                  if (getRoad?.result[5].id != null) {
                                     // Ensure the dynamic key is safe to access
                                     cf?.add([
-                                      'cf.${getRoad!.result[5]?.id}', // Create the key dynamically
+                                      'cf.${getRoad!.result[5].id}', // Create the key dynamically
                                       selectedbuildingtype?.value,
                                     ]);
                                   }
@@ -2342,10 +2342,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             onChanged: (newValue) {
                               setState(() {
                                 selecteclothsize = newValue;
-                                if (getRoad?.result[0]?.id != null) {
+                                if (getRoad?.result[0].id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
-                                    'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                    'cf.${getRoad!.result[0].id}', // Create the key dynamically
                                     selecteclothsize?.value,
                                   ]);
                                 }
@@ -2500,10 +2500,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     Expanded(
                       child: TextField(
                         onSubmitted: (value) {
-                          if (getRoad?.result[12]?.id != null) {
+                          if (getRoad?.result[12].id != null) {
                             // Ensure the dynamic key is safe to access
                             cf?.add([
-                              'cf.${getRoad!.result[12]?.id}', // Create the key dynamically
+                              'cf.${getRoad!.result[12].id}', // Create the key dynamically
                               value,
                             ]);
                           }
@@ -2546,10 +2546,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[4]?.id != null) {
+                            if (getRoad?.result[4].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[4]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[4].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -2595,10 +2595,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[9]?.id != null) {
+                            if (getRoad?.result[9].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[9]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[9].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -2648,7 +2648,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 value
                               ]);
                             }
-                            print("ninik ${cf}");
+                            print("ninik $cf");
                           },
                           controller: Gbcontroller,
                           decoration: InputDecoration.collapsed(
@@ -2836,10 +2836,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (laptoprep?.result[10]?.id != null) {
+                            if (laptoprep?.result[10].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${laptoprep!.result[10]?.id}', // Create the key dynamically
+                                'cf.${laptoprep!.result[10].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -2897,11 +2897,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   onChanged: (Option? newValue) {
                                     setState(() {
                                       selectedFurnished = newValue;
-                                      if (furnitureresresp?.result[10]?.id !=
+                                      if (furnitureresresp?.result[10].id !=
                                           null) {
                                         // Ensure the dynamic key is safe to access
                                         cf?.add([
-                                          'cf.${furnitureresresp!.result[10]?.id}', // Create the key dynamically
+                                          'cf.${furnitureresresp!.result[10].id}', // Create the key dynamically
                                           selectedFurnished?.value,
                                         ]);
                                       }
@@ -3060,7 +3060,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<CityList>(
-                            items: [],
+                            items: const [],
                             dropdownValue: selectedCity,
                             onChanged: (newValue) {
                               setState(() {
@@ -3190,10 +3190,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (phoneresp?.result[9]?.id != null) {
+                            if (phoneresp?.result[9].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${phoneresp!.result[9]?.id}', // Create the key dynamically
+                                'cf.${phoneresp!.result[9].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -3299,10 +3299,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (grocerryresp?.result[1]?.id != null) {
+                            if (grocerryresp?.result[1].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${grocerryresp!.result[1]?.id}', // Create the key dynamically
+                                'cf.${grocerryresp!.result[1].id}', // Create the key dynamically
                                 value,
                               ]);
                             }

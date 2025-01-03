@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
@@ -15,6 +16,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_search_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -638,6 +640,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           scrollDirection: Axis.horizontal,
                                           itemCount: alldata?.length ?? 0,
                                           itemBuilder: (context, index) {
+                                            print("raju ${data.live_prizes}");
                                             BrandNewModel prod =
                                                 alldata![index];
                                             return GestureDetector(
@@ -710,17 +713,30 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                             data.feedPosts == null
-                                ? const Padding(
-                                    padding: EdgeInsets.all(40.0),
-                                    child: Center(
-                                      child: Text("No Listing available....."),
-                                    ),
-                                  )
+                                ? nolistingfound()
                                 : SizedBox(
                                     height: 295.h,
                                     width: double.infinity,
-                                    child: SwapablePostCard(
-                                        post: data.feedPosts!)),
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: data.feedPosts?.length,
+                                      itemBuilder: (context, index) {
+                                        FeedPost dataz = data.feedPosts![index];
+                                        return PostCard(
+                                          // subscribers: data.subscribers.toString(),
+                                          // isLive: dataz.,
+                                          image: dataz.image!,
+                                          name: dataz.name!,
+                                          caption: dataz.caption!,
+                                          photo: dataz.photo!,
+                                          subscribers:
+                                              dataz.subscribers!.toString(),
+                                        );
+                                      },
+                                    ),
+                                  ),
 
                             Padding(
                               padding: EdgeInsets.only(left: 18.w, top: 10.h),
@@ -735,13 +751,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 ),
                               ),
                             ),
-                            data.live_prizes == null
-                                ? const Padding(
-                                    padding: EdgeInsets.all(20.0),
-                                    child: Center(
-                                      child: Text("No Listing available....."),
-                                    ),
-                                  )
+                            data.live_prizes == null ||
+                                    data.live_prizes?.length == 0
+                                ? nolistingfound()
                                 : SizedBox(
                                     height: 260,
                                     width: double.infinity,
@@ -781,12 +793,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                             data.all_products == null
-                                ? const Padding(
-                                    padding: EdgeInsets.all(40.0),
-                                    child: Center(
-                                      child: Text("No Listing available....."),
-                                    ),
-                                  )
+                                ? nolistingfound()
                                 : SizedBox(
                                     height: 8000.h,
                                     child: GridView.builder(
@@ -794,20 +801,32 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           const NeverScrollableScrollPhysics(), // Disable grid scrolling
                                       shrinkWrap: true, // Adjust to fit content
                                       itemCount: data.all_products?.length,
-
                                       gridDelegate:
                                           SliverGridDelegateWithFixedCrossAxisCount(
-                                        mainAxisExtent: 310.h,
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 0.2,
-                                        mainAxisSpacing: 0.2,
-                                        childAspectRatio: 0.9,
+                                        crossAxisCount:
+                                            MediaQuery.of(context).size.width >
+                                                    600
+                                                ? 3
+                                                : 2, // Adjust column count
+                                        mainAxisExtent:
+                                            MediaQuery.of(context).size.height *
+                                                0.4, // Adjust item height
+                                        crossAxisSpacing:
+                                            8.0, // Add spacing between columns
+                                        mainAxisSpacing:
+                                            8.0, // Add spacing between rows
+                                        childAspectRatio: MediaQuery.of(context)
+                                                .size
+                                                .aspectRatio *
+                                            0.7, // Adjust aspect ratio
                                       ),
                                       itemBuilder: (context, index) {
                                         BrandNewModel res =
                                             data.all_products![index];
                                         return Padding(
-                                          padding: EdgeInsets.only(bottom: 5.h),
+                                          padding: EdgeInsets.only(
+                                              bottom:
+                                                  8.0), // Consistent padding
                                           child: AllProductDetailWidget(
                                             productImage: res.image,
                                             Vimage: res.userdetails!.photo!,
@@ -840,8 +859,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           ),
                                         );
                                       },
-                                    ),
-                                  ),
+                                    )),
 
                             // GridView.builder(
                             //   physics: NeverScrollableScrollPhysics(),
@@ -1152,7 +1170,7 @@ class DottedContainer extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 10.h),
       child: SizedBox(
-        height: 210.h,
+        height: 200.h,
         child: Row(
           children: [
             _buildFirstItem(firstImage!, vname),
@@ -1221,7 +1239,7 @@ class DottedContainer extends StatelessWidget {
         dashPattern: const [6, 5],
         child: Column(
           children: [
-            SizedBox(height: 40.h),
+            SizedBox(height: 30.h),
             Image.network(
               data.image ?? 'https://via.placeholder.com/110',
               height: 109.h,
@@ -1331,7 +1349,6 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
             controller: widget.tabController,
             children: [
               BigContainer(
-
                 memebertitle: widget.data.membership_title!,
                 lat: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
                 long: double.tryParse(widget.data.latitude ?? '0.0') ?? 0.0,
@@ -1655,13 +1672,15 @@ class BigContainer extends StatelessWidget {
                         ),
                       ],
                     ),
-                location=='null'? SizedBox():  Text(
-                      location,
-                      style: TextStyle(
-                        fontSize: 9.sp,
-                        color: const Color(0xFF370C6B),
-                      ),
-                    )
+                    location == 'null'
+                        ? const SizedBox()
+                        : Text(
+                            location,
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                              color: const Color(0xFF370C6B),
+                            ),
+                          )
                   ],
                 ),
                 Column(
@@ -1943,100 +1962,90 @@ class VendorSearchContainer extends StatelessWidget {
                 width: 30,
               ),
               SizedBox(
-                  height: 40,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 125.h,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 5.h),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF46236a),
-                            border: Border.all(color: const Color(0xff6d1a49)),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15.r),
-                              bottomLeft: Radius.circular(15.r),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ClipOval(
-                                child: Image.network(
-                                  img,
-                                  width: 30.w,
-                                  height: 20.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ],
+                  height: 42.h,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                            left: 15.w, top: 3.h, bottom: 3.h, right: 5.w),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.white, width: 0.1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.r),
+                            bottomLeft: Radius.circular(20.r),
                           ),
                         ),
-                        Container(
-                          width: 200.w,
-                          // height: 100.h,
-                          padding: EdgeInsets.only(top: 10.h),
-                          decoration: const BoxDecoration(color: Colors.white),
+                        child: CircleAvatar(
+                          // radius: 10,
+                          // radius: 20,
+                          maxRadius: 15,
+                          backgroundImage: NetworkImage(
+                            scale: 1,
+                            img,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 200.w,
+                        // height: 100.h,
+                        padding: EdgeInsets.symmetric(vertical: 6.h),
+                        decoration: const BoxDecoration(color: Colors.white),
 
-                          child: TextField(
-                            cursorHeight: 18.h,
-                            onChanged: MYonchnage,
-                            //  controller: searchController,
-                            decoration: InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: "Search MyPower BizSpace",
-                              hintStyle: TextStyle(fontSize: 10.sp),
-                              isCollapsed: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.h, horizontal: 10.w),
-                              disabledBorder: InputBorder.none,
-                              isDense: true,
-                              enabled: true,
+                        child: TextField(
+                          cursorHeight: 13.h,
+                          onChanged: MYonchnage,
+                          //  controller: searchController,
+                          decoration: InputDecoration(
+                            enabledBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            hintText: "   Search MyPower BizSpace",
+                            hintStyle: TextStyle(fontSize: 11.sp),
+                            isCollapsed: true,
+                            // contentPadding: EdgeInsets.symmetric(
+                            //     vertical: 18.h, horizontal: 15.w),
+                            disabledBorder: InputBorder.none,
+                            isDense: true,
+                            enabled: true,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BusinessTabScreen(query: controller.text),
+                              ));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 5.h),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 0.1),
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(15.r),
+                              bottomRight: Radius.circular(15.r),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(3.r),
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                              size: 20.sp,
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      BusinessTabScreen(query: controller.text),
-                                ));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.w, vertical: 7.h),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white),
-                              color: const Color(0xFF46236a),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(15.r),
-                                bottomRight: Radius.circular(15.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(3.r),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                                size: 20.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   )),
             ],
           ),
-        
         ],
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
@@ -37,20 +38,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            // textTheme: GoogleFonts.quicksandTextTheme(
-            //   Theme.of(context).textTheme,
-            // ),
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: SplashScreen()),
-    );
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              // textTheme: GoogleFonts.quicksandTextTheme(
+              //   Theme.of(context).textTheme,
+              // ),
+              fontFamily: GoogleFonts.quicksand().fontFamily,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: HomeScreen()));
   }
 }
 // //VendorHomeScreen(vendorName: "techstore", vid: 9))

@@ -652,7 +652,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return Text(
+                    return const Text(
                         'No stories available.You Need to login for story');
                   },
                   loading: () =>
@@ -1868,7 +1868,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         itemCount: products.length,
                                         itemBuilder: (context, index) {
                                           VProduct prod = products[index];
-                                          print("kult ${prod}");
+                                          print("kult $prod");
 
                                           return InkWell(
                                             onTap: () {

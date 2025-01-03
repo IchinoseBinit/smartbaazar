@@ -1027,29 +1027,22 @@ class SwapablePostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return post.isEmpty
-        ? const Padding(
-            padding: EdgeInsets.all(40.0),
-            child: Center(
-              child: Text("No Listing available....."),
-            ),
-          )
-        : ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: post.length,
-            itemBuilder: (context, index) {
-              FeedPost data = post[index];
-              return PostCard(
-                // subscribers: data.subscribers.toString(),
-                isLive: show,
-                image: data.image!,
-                name: data.name!,
-                caption: data.caption!,
-                photo: data.photo!,
-                subscribers: data.subscribers!.toString(),
-              );
-            },
-          );
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: post.length,
+      itemBuilder: (context, index) {
+        FeedPost data = post[index];
+        return PostCard(
+          // subscribers: data.subscribers.toString(),
+          isLive: show,
+          image: data.image!,
+          name: data.name!,
+          caption: data.caption!,
+          photo: data.photo!,
+          subscribers: data.subscribers!.toString(),
+        );
+      },
+    );
   }
 }
 

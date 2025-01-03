@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_api.dart';
 import 'package:smartbazar/features/splash_screen/splash_model.dart';
 
@@ -22,7 +23,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         try {
           final loginProvider = ref.read(loginController.notifier);
           await loginProvider.continueSession(context).catchError((e) {
-            Navigator.pushReplacementNamed(context, '/login');
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ));
           });
         } catch (e) {
           print('Error continuing session: $e');
@@ -60,7 +65,8 @@ class SplashContent extends StatelessWidget {
   final AsyncValue<SplashModel> splashApiResponse;
   final WidgetRef ref;
 
-  const SplashContent({super.key, required this.splashApiResponse, required this.ref});
+  const SplashContent(
+      {super.key, required this.splashApiResponse, required this.ref});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +81,8 @@ class SplashContent extends StatelessWidget {
       error: (error, stack) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('An error occurred!', style: TextStyle(color: Colors.white)),
+          const Text('An error occurred!',
+              style: TextStyle(color: Colors.white)),
           TextButton(
             onPressed: () {
               ref.refresh(getSplashApiProvider);

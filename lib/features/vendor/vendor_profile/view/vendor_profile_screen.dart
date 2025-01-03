@@ -14,7 +14,6 @@ import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';

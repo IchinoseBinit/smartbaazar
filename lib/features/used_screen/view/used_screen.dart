@@ -704,7 +704,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return Text(
+                    return const Text(
                         'No stories available.You Need to login for story');
                   },
                   loading: () =>
@@ -1727,7 +1727,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
-                              vendorImage: resp.vendorImage!,
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image ?? '');
