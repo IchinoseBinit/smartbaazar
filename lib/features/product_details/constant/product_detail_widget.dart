@@ -62,6 +62,7 @@ class ProductDetailWidget extends StatelessWidget {
     String showRs = discounttedPrice == '0' ? '' : '';
 
     return Card(
+      
       clipBehavior: Clip.antiAlias,
       shadowColor: const Color(0xff3D215F).withOpacity(0.5),
       elevation: 9,
@@ -72,6 +73,8 @@ class ProductDetailWidget extends StatelessWidget {
       child: SizedBox(
         width: 260.w,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -681,11 +684,11 @@ class ProductDetailWidget extends StatelessWidget {
                                     // ),e
 
                                     SizedBox(
-                                      width: 78.w,
+                                      width: 65.w,
                                       child: Text(
                                         membershipTitle ?? "Domestic Brand",
                                         style: headerstyle.copyWith(
-                                          fontSize: 10.sp,
+                                          fontSize: 7.sp,
                                           fontFamily: GoogleFonts.quicksand()
                                               .fontFamily,
 

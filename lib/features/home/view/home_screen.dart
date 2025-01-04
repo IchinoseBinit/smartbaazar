@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
@@ -703,10 +704,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                         // If any of the above conditions fail, return a default widget
                         return Text(
-                            'No stories available.You Need to login for story');
+                            'No stories available. You need to log in for stories');
                       },
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
+                      loading: () => SizedBox(
+                        height: 100.h,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5, // Number of shimmer placeholders
+                          itemBuilder: (context, index) => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       error: (error, stack) =>
                           Center(child: Text('Error: $error')),
                     ),
@@ -843,7 +863,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               return Text("Try again: $error");
                             },
                             loading: () {
-                              return const CircularProgressIndicator();
+                              // Shimmer Effect for Loading State
+                              return SizedBox(
+                                height: 130.h,
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
 
@@ -870,11 +904,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               List<CategoryProduct> products =
                                   productsList[selectedIndexx];
 
-                              if (products.length == 0) {
-                                dynamicHeight =
-                                    products.isEmpty ? 130.h : 420.h;
-                              } else
-                                dynamicHeight = 420.h;
+                              dynamicHeight = products.isEmpty ? 130.h : 420.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -921,29 +951,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         },
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
+                                    SizedBox(height: 5.h),
                                     products.isNotEmpty
                                         ? SizedBox(
                                             child: AnimatedContainer(
                                               padding: EdgeInsets.zero,
                                               margin: EdgeInsets.zero,
                                               duration: const Duration(
-                                                  milliseconds:
-                                                      400), // Smoother animation
-                                              height: 350
-                                                  .h, // Adjust the height dynamically
-                                              width: double
-                                                  .infinity, // Ensures full width
+                                                  milliseconds: 400),
+                                              height: 350.h,
+                                              width: double.infinity,
                                               child: SingleChildScrollView(
-                                                scrollDirection: Axis
-                                                    .horizontal, // Horizontal scroll
+                                                scrollDirection:
+                                                    Axis.horizontal,
                                                 child: Wrap(
-                                                  spacing: 3
-                                                      .w, // Horizontal space between items
-                                                  runSpacing: 0
-                                                      .h, // Vertical space between rows (optional)
+                                                  spacing: 3.w,
+                                                  runSpacing: 0.h,
                                                   children: List.generate(
                                                       products.length, (index) {
                                                     CategoryProduct prod =
@@ -1024,15 +1047,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           )
                                         : Padding(
                                             padding: EdgeInsets.only(top: 50.h),
-                                            child: nolistingfound()),
+                                            child: nolistingfound(),
+                                          ),
                                   ],
                                 ),
                               );
                             },
                             error: (error, stackTrace) =>
                                 Center(child: Text("Error: $error")),
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
+                            loading: () {
+                              // Shimmer Effect for Loading State
+                              return SizedBox(
+                                height: 350.h, // Adjust the height dynamically
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount:
+                                        6, // Show placeholder items while loading
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        child: Container(
+                                          width: 150
+                                              .w, // Placeholder width for product item
+                                          height: 250
+                                              .h, // Placeholder height for product item
+                                          color:
+                                              Colors.grey, // Placeholder color
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
                           ),
 
                           // Expanded(
@@ -1135,8 +1186,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         GlobalModel prod =
                                                             data.insidearr[0]
                                                                 [index];
-                                                        print(
-                                                            "bibash ${prod.user.first.photo}");
+                                                       
                                                         return Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(
@@ -1424,7 +1474,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             error: (error, stackTrace) {
                               return Text("Error: $error");
                             },
-                            loading: () => const CircularProgressIndicator(),
+                            loading: () => SizedBox(
+                              height: 350.h, // Adjust the height dynamically
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      6, // Show placeholder items while loading
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      child: Container(
+                                        width: 150
+                                            .w, // Placeholder width for product item
+                                        height: 250
+                                            .h, // Placeholder height for product item
+                                        color: Colors.grey, // Placeholder color
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                           ),
 
                           // buyorwin.when(
@@ -1497,9 +1571,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 10.h,
                           ),
+
                           buyorwin.when(
                             data: (data) {
-                              // print("binod ${data.buynow.first.}");
                               return SizedBox(
                                 height: 310.h,
                                 child: ListView.builder(
@@ -1509,14 +1583,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
                                     return buyorwin_widget(
-                                        gift_qty: resp.gift_qty!,
-                                        worth: resp.worth!,
-                                        productname: "Discount Coupon",
-                                        vendorImage: resp.vendorImage,
-                                        vendorname: resp.name,
-                                        winners: resp.winners.toString(),
-                                        proctimage:
-                                            "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png");
+                                      gift_qty: resp.gift_qty!,
+                                      worth: resp.worth!,
+                                      productname: "Discount Coupon",
+                                      vendorImage: resp.vendorImage,
+                                      vendorname: resp.name,
+                                      winners: resp.winners.toString(),
+                                      proctimage:
+                                          "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png",
+                                    );
                                   },
                                 ),
                               );
@@ -1525,9 +1600,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               return Text("error $error");
                             },
                             loading: () {
-                              return const CircularProgressIndicator();
+                              // Shimmer loading effect
+                              return SizedBox(
+                                height: 310.h,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      5, // Adjust this number for the number of shimmer items
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.w),
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 150.w,
+                                          height: 150.h,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
                             },
                           ),
+
                           SizedBox(
                             height: 10.h,
                           ),
@@ -1559,6 +1659,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 SizedBox(
                                   height: 10.h,
                                 ),
+
+// Inside your getSponsored.when function
+
                                 getSponsored.when(
                                   data: (data) {
                                     return SizedBox(
@@ -1634,9 +1737,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   error: (error, stackTrace) {
                                     return Text("Error: $error");
                                   },
-                                  loading: () =>
-                                      const CircularProgressIndicator(),
-                                )
+                                  loading: () {
+                                    // Shimmer loading effect
+                                    return SizedBox(
+                                      height: 340
+                                          .h, // Adjust as needed for dynamic height
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis
+                                            .horizontal, // Horizontal scroll direction
+                                        child: Wrap(
+                                          spacing: 10
+                                              .w, // Horizontal spacing between items
+                                          runSpacing: 20
+                                              .h, // Vertical spacing between rows
+                                          children: List.generate(5, (index) {
+                                            // Adjust this number for the number of shimmer items
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.w),
+                                              child: Shimmer.fromColors(
+                                                baseColor: Colors.grey[300]!,
+                                                highlightColor:
+                                                    Colors.grey[100]!,
+                                                child: Container(
+                                                  width: 150.w,
+                                                  height: 150.h,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -1665,6 +1800,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           // SizedBox(
                           //   height: 5.h,
                           // ),
+
+// Inside your sliders.when function
+
                           sliders.when(
                             data: (data) {
                               return SingleChildScrollView(
@@ -1698,8 +1836,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       .width -
                                                   30.w) /
                                               2, // Dynamically adjust to fit two items per row
-                                          // height: 318
-                                          //     .h, // Adjust the height as needed
                                           child: Card(
                                             clipBehavior: Clip.antiAlias,
                                             shadowColor: const Color(0xff3D215F)
@@ -1752,9 +1888,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               return Text('Error: $error');
                             },
                             loading: () {
-                              return const CircularProgressIndicator();
+                              // Shimmer loading effect
+                              return SingleChildScrollView(
+                                scrollDirection: Axis
+                                    .vertical, // Scroll vertically if needed
+                                child: Wrap(
+                                  spacing:
+                                      5.w, // Horizontal space between items
+                                  runSpacing:
+                                      15.h, // Vertical space between rows
+                                  children: List.generate(5, (index) {
+                                    // Adjust this number for the number of shimmer items
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  30.w) /
+                                              2,
+                                          height: 250
+                                              .h, // Adjust the height as needed for shimmer items
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              );
                             },
-                          )
+                          ),
                         ],
                       ),
                     ),

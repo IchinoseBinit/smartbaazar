@@ -448,8 +448,7 @@ class PostTypeFetch {
             }).toList() ??
             [];
 
-
-  final glob =
+    final glob =
         (json['brandbazar_global'] as List<dynamic>?)?.expand((innerList) {
               // Ensure each innerList is properly cast and mapped
               return (innerList as List<dynamic>).map((item) {
@@ -457,14 +456,14 @@ class PostTypeFetch {
               });
             }).toList() ??
             [];
-  final spots =
-        (json['spotlights'] as List<dynamic>?)?.expand((innerList) {
-              // Ensure each innerList is properly cast and mapped
-              return (innerList as List<dynamic>).map((item) {
-                return VProduct.fromJson(item as Map<String, dynamic>);
-              });
-            }).toList() ??
-            [];
+    print("ramu ${glob}");
+    final spots = (json['spotlights'] as List<dynamic>?)?.expand((innerList) {
+          // Ensure each innerList is properly cast and mapped
+          return (innerList as List<dynamic>).map((item) {
+            return VProduct.fromJson(item as Map<String, dynamic>);
+          });
+        }).toList() ??
+        [];
 
     return PostTypeFetch(
         cat: cato,

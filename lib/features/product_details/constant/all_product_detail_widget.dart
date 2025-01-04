@@ -616,17 +616,17 @@ class AllProductDetailWidget extends StatelessWidget {
                                   width: 1.w,
                                 ),
                                 SizedBox(
-                                  width: 60.w,
+                                  width: 65.w,
                                   child: Text(
                                     membershipTitle ?? "Domestic Brand",
                                     style: headerstyle.copyWith(
-                                      fontSize: 10.sp,
+                                      fontSize: 8.sp,
                                       // Adjust font size based on length
                                       fontWeight: FontWeight.w700,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
+                                    // overflow: TextOverflow.ellipsis,
                                     // Apply ellipsis for overflow
-                                    maxLines: 1, // Restrict to a single line
+                                    // maxLines: 1, // Restrict to a single line
                                   ),
                                 ),
                                 SizedBox(
