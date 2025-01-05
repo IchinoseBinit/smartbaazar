@@ -13,12 +13,14 @@ import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);

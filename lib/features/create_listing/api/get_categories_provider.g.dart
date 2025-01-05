@@ -7,7 +7,7 @@ part of 'get_categories_provider.dart';
 // **************************************************************************
 
 String _$getCategoryResponseHash() =>
-    r'35c35a5bebaf6267ccb7e21046a95f96a8af1dce';
+    r'9c5e14235765647d976bff245b25a7c686992c02';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,10 +14,12 @@ import 'package:smartbazar/features/create_listing/view/SellerInformationWidget.
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UpdateListing extends StatefulWidget {
-  final String? id;
-   const UpdateListing({super.key,required this.id});
+  final Product? prod;
+  const UpdateListing({super.key, required this.prod});
 
   @override
   State<UpdateListing> createState() => _UpdateListingState();
@@ -50,6 +53,9 @@ class _UpdateListingState extends State<UpdateListing> {
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print("kalu ${widget.prod}");
+    }
     return GenericSafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),

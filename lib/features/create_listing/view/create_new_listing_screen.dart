@@ -55,6 +55,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     }
   }
 
+  String? typeid;
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
   List<Category> subcategoryList = [];
@@ -289,7 +290,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     );
     ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) {
-        print("manis ${value.result}");
         phoneresp = value;
       },
     ); //phone
@@ -462,30 +462,51 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 CategoryField(
-                  onCategorySelected: (Category? category) async {
+                  onCategorySelected: (category, typeId) {
                     if (category != null) {
+                      // Update categoryId and typeId
                       setState(() {
                         selectedcategory = category;
                         categoryId = category.id; // Update categoryId safely
+                        // You can also store the typeId if needed
+                        typeid =
+                            typeId; // Optionally use typeId for other purposes
                       });
+
+                      // Print the selected category ID and typeId for debugging
+                      print(
+                          "Selected Category: ${category.name}, Category ID: ${category.id}, Type ID: $typeid");
                     }
                   },
-                  onSubCategorySelected: (
-                    Category? subCategory,
-                  ) {
-                    categoryId = subCategory?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Subcategory", ref);
+                  onSubCategorySelected: (Category? subCategory) {
+                    // Update categoryId based on subcategory selection
+                    setState(() {
+                      categoryId = subCategory?.id;
+                    });
+
+                    // Print the subcategory ID and typeId for debugging
+                    print(
+                        "Selected Subcategory: ${subCategory?.name}, Subcategory ID: ${subCategory?.id}");
                   },
                   onSubCategorySelected1: (Category? sub1) {
-                    categoryId = sub1?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Sub-subcategory 1", ref);
+                    // Update categoryId for subcategory 1
+                    setState(() {
+                      categoryId = sub1?.id;
+                    });
+
+                    // Print the subcategory 1 ID
+                    print(
+                        "Selected Sub-subcategory 1: ${sub1?.name}, Sub-subcategory 1 ID: ${sub1?.id}");
                   },
                   onSubCategorySelected2: (Category? sub2) {
-                    categoryId = sub2?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Sub-subcategory 2", ref);
+                    // Update categoryId for subcategory 2
+                    setState(() {
+                      categoryId = sub2?.id;
+                    });
+
+                    // Print the subcategory 2 ID
+                    print(
+                        "Selected Sub-subcategory 2: ${sub2?.name}, Sub-subcategory 2 ID: ${sub2?.id}");
                   },
                 ),
 
@@ -530,7 +551,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ],
                   ),
                 ),
-                if (selectedcategory?.id == 122)
+                if (typeid == '5')
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -577,7 +598,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id == 122)
+                if (typeid == '122')
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -633,7 +654,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id == 73)
+                if (typeid == '4')
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1114,7 +1135,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               )
                             ],
                           ),
-                    Expanded(
+                          Expanded(
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<Option>(
                                 isExpanded: true,
@@ -3622,7 +3643,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 15.h,
                 ),
-                if (selectedType?.typeId == 7)
+                if (typeid == '7')
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
@@ -3859,21 +3880,44 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
       ),
       child: Column(
         children: [
+          // Display the "Pieces" and "Rate/piece" labels once
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Pieces",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+              SizedBox(width: 40),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "Rate/piece",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
           // For each discount range in the list
           for (int i = 0; i < discountRanges.length; i++)
             Row(
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Pieces",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(height: 15),
                     Row(
                       children: [
                         _buildDiscountBox(discountRanges[i]["from"]),
@@ -3889,24 +3933,13 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: 40.w,
-                ),
+                SizedBox(width: 40.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Rate/piece",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(height: 15),
                     Row(
                       children: [
                         _buildDiscountBox(discountRanges[i]["rate"]),
-                        // SizedBox(width: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -3931,7 +3964,6 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
                                 ),
                               ),
                             ),
-                            // SizedBox(height: 10),
                             // Delete button to remove a row
                             if (i >
                                 0) // Don't show the delete button on the first row
@@ -3966,21 +3998,33 @@ class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
     );
   }
 
-  // Widget to build discount boxes (pieces and rate)
   Widget _buildDiscountBox(dynamic value) {
     return Material(
       elevation: 2,
       borderRadius: BorderRadius.circular(6),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+        height: 40.0, // Increased height for better visibility
+        width: 40.0, // Adjust width if necessary
+        padding: EdgeInsets.symmetric(
+          horizontal: 10, 
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           color: const Color(0xffFDFDFE),
         ),
-        child: Text(
-          value.toString(),
+        child: TextField(
+          controller: TextEditingController(
+              text: value.toString()), // Pre-fill with value
+          cursorHeight: 3,
           style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey),
+            fontSize: 14, // Ensure the font is large enough to be visible
+            color: Colors.black, // Text color to make it visible
+          ),
+          decoration: const InputDecoration(
+            border: InputBorder.none, // Remove the border for a clean look
+            contentPadding:
+                EdgeInsets.zero, // Adjust padding for better alignment
+          ),
         ),
       ),
     );

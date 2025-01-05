@@ -11,9 +11,8 @@ Future<FieldsResponse> getCategoryResponse(
   final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
-      requestType: RequestType.post,
-      url:
-          'https://smartbazaar.jianjun-rnd.com.np/api/categories/$id/fields',
+      requestType: RequestType.postWithToken,
+      url: 'https://smartbazaar.jianjun-rnd.com.np/api/categories/$id/fields',
     );
     print("API Response: ${response.data}");
     if (response.statusCode == 200) {

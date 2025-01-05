@@ -358,7 +358,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               left: 0,
                               right: 0,
                               child: Container(
-                                width: double.infinity,
+                                // width: double.infinity,
                                 color: Colors.white,
                                 child:
                                     SearchProductModels.when(data: (results) {
@@ -1186,7 +1186,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         GlobalModel prod =
                                                             data.insidearr[0]
                                                                 [index];
-                                                       
+
                                                         return Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(

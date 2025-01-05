@@ -71,26 +71,34 @@ class SplashContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return splashApiResponse.when(
-      data: (splashModel) => FadeInImage.assetNetwork(
-        placeholder: "assets/images/appLogo.png",
-        image: splashModel.logo,
-        color: Colors.white,
-        fit: BoxFit.contain,
-      ),
+      data: (splashModel) => _buildImage(splashModel),
       loading: () => const CircularProgressIndicator(color: Colors.white),
-      error: (error, stack) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('An error occurred!',
-              style: TextStyle(color: Colors.white)),
-          TextButton(
-            onPressed: () {
-              ref.refresh(getSplashApiProvider);
-            },
-            child: const Text('Retry', style: TextStyle(color: Colors.blue)),
-          ),
-        ],
-      ),
+      error: (error, stack) => _buildError(context),
+    );
+  }
+
+  Widget _buildImage(SplashModel splashModel) {
+    return FadeInImage.assetNetwork(
+      placeholder: "assets/images/appLogo.png",
+      image: splashModel.logo,
+      color: Colors.white,
+      fit: BoxFit.contain,
+    );
+  }
+
+  Widget _buildError(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('An error occurred!',
+            style: TextStyle(color: Colors.white)),
+        TextButton(
+          onPressed: () {
+            ref.refresh(getSplashApiProvider);
+          },
+          child: const Text('Retry', style: TextStyle(color: Colors.blue)),
+        ),
+      ],
     );
   }
 }
