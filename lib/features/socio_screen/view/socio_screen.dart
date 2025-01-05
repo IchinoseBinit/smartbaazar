@@ -456,7 +456,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 );
                               },
                               child: AnimatedContainer(
-                                 alignment: Alignment.topLeft,
+                                alignment: Alignment.topLeft,
                                 padding: EdgeInsets.zero,
                                 duration: const Duration(milliseconds: 300),
                                 child: InkWell(
@@ -726,7 +726,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             children: data.sliders!.map((banner) {
                               int index = data.sliders!.indexOf(banner);
                               return AnimatedContainer(
-                                 alignment: Alignment.topLeft,
+                                alignment: Alignment.topLeft,
                                 duration: const Duration(milliseconds: 300),
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 5.0),
@@ -947,49 +947,44 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     return SizedBox(
                       width: double.infinity,
                       child: AnimatedContainer(
-                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.zero,
                         margin: EdgeInsets.zero,
                         duration: const Duration(milliseconds: 400),
                         height: 350.h,
                         child: SingleChildScrollView(
+                          padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
                           child: Wrap(
-                            spacing: 5.w, // Horizontal spacing between items
-                            runSpacing: 15.h, // Vertical spacing between rows
+                            spacing: 0.w, // Horizontal spacing between items
+                            runSpacing: 0.h, // Vertical spacing between rows
                             children:
                                 List.generate(data.hotProducts.length, (index) {
                               VProduct hot = data.hotProducts[index];
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailScreen(
-                                          productId: hot.id,
-                                        ),
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailScreen(
+                                        productId: hot.user.id,
                                       ),
-                                    );
-                                  },
-                                  child: ProductDetailWidget(
-                                    wow: hot.wow,
-                                    comment: hot.commentcount.toString(),
-                                    discounttedPrice: hot.discounted_price,
-                                    issponsored: hot.user.sponsored,
-                                    lefttile: "Socio",
-                                    productImage: hot.image,
-                                    Vimage: hot.user.photo,
-                                    price: hot.price,
-                                    title: hot.title,
-                                    vendorname: hot.user.name,
-                                    similarproductCount:
-                                        hot.similarProductCount,
-                                    membershipColor: hot.user.membershipColor,
-                                    membershipTitle: hot.user.membershipTitle,
-                                  ),
+                                    ),
+                                  );
+                                },
+                                child: ProductDetailWidget(
+                                  wow: hot.wow,
+                                  comment: hot.commentcount.toString(),
+                                  discounttedPrice: hot.discounted_price,
+                                  issponsored: hot.user.sponsored,
+                                  lefttile: "used",
+                                  productImage: hot.image,
+                                  Vimage: hot.user.photo,
+                                  price: hot.price,
+                                  title: hot.title,
+                                  vendorname: hot.user.name,
+                                  similarproductCount: hot.similarProductCount,
+                                  membershipColor: hot.user.membershipColor,
+                                  membershipTitle: hot.user.membershipTitle,
                                 ),
                               );
                             }),
@@ -1071,46 +1066,40 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               scrollDirection: Axis.horizontal,
                               child: Wrap(
                                 spacing:
-                                    5.w, // Horizontal spacing between items
+                                    0.w, // Horizontal spacing between items
                                 runSpacing:
-                                    15.h, // Vertical spacing between rows
+                                    0.h, // Vertical spacing between rows
                                 children: List.generate(
                                     data.insidearr[0].length, (index) {
                                   VProduct pro = data.insidearr[0][index];
-                                  return Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductDetailScreen(
-                                              productId: pro.id,
-                                            ),
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailScreen(
+                                            productId: pro.id,
                                           ),
-                                        );
-                                      },
-                                      child: ProductDetailWidget(
-                                        offer: pro.discounted_price,
-                                        wow: pro.wow,
-                                        comment: pro.commentcount.toString(),
-                                        discounttedPrice: pro.discounted_price,
-                                        issponsored: pro.user.sponsored,
-                                        lefttile: "Socio-Shop",
-                                        Vimage: pro.user.photo,
-                                        price: pro.price,
-                                        title: pro.title,
-                                        vendorname: pro.user.name,
-                                        productImage: pro.image,
-                                        similarproductCount:
-                                            pro.similarProductCount,
-                                        membershipColor:
-                                            pro.user.membershipColor,
-                                        membershipTitle:
-                                            pro.user.membershipTitle,
-                                      ),
+                                        ),
+                                      );
+                                    },
+                                    child: ProductDetailWidget(
+                                      offer: pro.discounted_price,
+                                      wow: pro.wow,
+                                      comment: pro.commentcount.toString(),
+                                      discounttedPrice: pro.discounted_price,
+                                      issponsored: pro.user.sponsored,
+                                      lefttile: "Socio-Shop",
+                                      Vimage: pro.user.photo,
+                                      price: pro.price,
+                                      title: pro.title,
+                                      vendorname: pro.user.name,
+                                      productImage: pro.image,
+                                      similarproductCount:
+                                          pro.similarProductCount,
+                                      membershipColor: pro.user.membershipColor,
+                                      membershipTitle: pro.user.membershipTitle,
                                     ),
                                   );
                                 }),
@@ -1155,15 +1144,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               scrollDirection: Axis.horizontal,
                               child: Wrap(
                                 spacing:
-                                    5.w, // Horizontal spacing between items
+                                    0.w, // Horizontal spacing between items
                                 runSpacing:
-                                    15.h, // Vertical spacing between rows
+                                    0.h, // Vertical spacing between rows
                                 children: List.generate(
                                     data.insidearr[1].length, (index) {
                                   VProduct pro = data.insidearr[1][index];
                                   return Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                        EdgeInsets.symmetric(horizontal: 2.w),
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1236,15 +1225,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               scrollDirection: Axis.horizontal,
                               child: Wrap(
                                 spacing:
-                                    5.w, // Horizontal spacing between items
+                                    0.w, // Horizontal spacing between items
                                 runSpacing:
-                                    15.h, // Vertical spacing between rows
+                                    0.h, // Vertical spacing between rows
                                 children: List.generate(
                                     data.insidearr[2].length, (index) {
                                   VProduct pro = data.insidearr[2][index];
                                   return Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                        EdgeInsets.symmetric(horizontal: 2.w),
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1319,15 +1308,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               scrollDirection: Axis.horizontal,
                               child: Wrap(
                                 spacing:
-                                    5.w, // Horizontal spacing between items
+                                    0.w, // Horizontal spacing between items
                                 runSpacing:
-                                    15.h, // Vertical spacing between rows
+                                    0.h, // Vertical spacing between rows
                                 children: List.generate(
                                     data.insidearr[3].length, (index) {
                                   VProduct pro = data.insidearr[3][index];
                                   return Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                        EdgeInsets.symmetric(horizontal: 2.w),
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1399,15 +1388,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               scrollDirection: Axis.horizontal,
                               child: Wrap(
                                 spacing:
-                                    5.w, // Horizontal spacing between items
+                                    0.w, // Horizontal spacing between items
                                 runSpacing:
-                                    15.h, // Vertical spacing between rows
+                                    0.h, // Vertical spacing between rows
                                 children: List.generate(
                                     data.insidearr[4].length, (index) {
                                   VProduct pro = data.insidearr[4][index];
                                   return Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                        EdgeInsets.symmetric(horizontal: 2.w),
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1948,7 +1937,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   products.isNotEmpty ? 359.h : 100.h;
 
                               return AnimatedContainer(
-                                  alignment: Alignment.topLeft,
+                                alignment: Alignment.topLeft,
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
@@ -1956,9 +1945,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     : SingleChildScrollView(
                                         scrollDirection: Axis.horizontal,
                                         child: Wrap(
-                                          spacing: 5
+                                          spacing: 0
                                               .w, // Horizontal spacing between items
-                                          runSpacing: 15
+                                          runSpacing: 0
                                               .h, // Vertical spacing between rows
                                           children: List.generate(
                                               products.length, (index) {
@@ -1966,7 +1955,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                                             return Padding(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 5.w),
+                                                  horizontal: 2.w),
                                               child: InkWell(
                                                 onTap: () {
                                                   Navigator.push(

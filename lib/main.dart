@@ -14,6 +14,7 @@ import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
@@ -40,45 +41,235 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              // textTheme: GoogleFonts.quicksandTextTheme(
-              //   Theme.of(context).textTheme,
-              // ),
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: SplashScreen()));
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // textTheme: GoogleFonts.quicksandTextTheme(
+            //   Theme.of(context).textTheme,
+            // ),
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SplashScreen()),
+    );
   }
 }
-// //VendorHomeScreen(vendorName: "techstore", vid: 9))
-// class FeedStoryWidget extends ConsumerWidget {
+
+// class DynamicRowExample extends StatefulWidget {
 //   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final randomstory = ref.watch(fetchStoryHomeProvider);
+//   _DynamicRowExampleState createState() => _DynamicRowExampleState();
+// }
+
+// class _DynamicRowExampleState extends State<DynamicRowExample> {
+//   // List to store data for each row
+//   List<Map<String, String>> rows = [{}];
+
+//   @override
+//   Widget build(BuildContext context) {
 //     return Scaffold(
-//       body: Column(
-//         children: [
-//           randomstory.when(
-//             data: (data) {
-//               return Container(
-//                 width: 100,
-//                 height: 100,
-//                 color: Colors.amber,
-//               );
-//             },
-//             error: (error, stackTrace) {
-//               return Text(error.toString());
-//             },
-//             loading: () {
-//               return Text("loading");
-//             },
-//           )
-//         ],
+//       appBar: AppBar(
+//         title: Text('Dynamic Rows Example'),
+//       ),
+//       body: SingleChildScrollView(
+//         child: Container(
+//           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+//           decoration: BoxDecoration(
+//             color: const Color(0xffFDFDFE),
+//             borderRadius: BorderRadius.circular(10),
+//             border: Border.all(color: Colors.grey, width: 1),
+//           ),
+//           child: Column(
+//             children: [
+//               // Header for Pieces, Rate/piece, and Total
+//               Row(
+//                 children: [
+//                   Expanded(
+//                     child: Center(
+//                       child: Text(
+//                         "Pieces",
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.w600,
+//                           fontSize: 12,
+//                           color: Colors.black,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: Center(
+//                       child: Text(
+//                         "Rate/piece",
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.w600,
+//                           fontSize: 12,
+//                           color: Colors.black,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: Center(
+//                       child: Text(
+//                         "Total",
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.w600,
+//                           fontSize: 12,
+//                           color: Colors.black,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 10),
+
+//               // Dynamic Rows
+//               ...rows.asMap().entries.map((entry) {
+//                 int index = entry.key;
+//                 return Padding(
+//                   padding: const EdgeInsets.symmetric(vertical: 5.0),
+//                   child: Row(
+//                     children: [
+//                       // Pieces TextField
+//                       Expanded(
+//                         child: Material(
+//                           elevation: 2,
+//                           borderRadius: BorderRadius.circular(6),
+//                           child: Container(
+//                             height: 30.0,
+//                             padding: const EdgeInsets.symmetric(horizontal: 10),
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(6),
+//                               color: const Color(0xffFDFDFE),
+//                             ),
+//                             child: TextField(
+//                               onChanged: (value) {
+//                                 rows[index]['pieces'] = value;
+//                               },
+//                               style: const TextStyle(
+//                                   fontSize: 14, color: Colors.black),
+//                               decoration: const InputDecoration(
+//                                 border: InputBorder.none,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       const SizedBox(width: 6),
+//                       // Rate/piece TextField
+//                       Expanded(
+//                         child: Material(
+//                           elevation: 2,
+//                           borderRadius: BorderRadius.circular(6),
+//                           child: Container(
+//                             height: 30.0,
+//                             padding: const EdgeInsets.symmetric(horizontal: 10),
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(6),
+//                               color: const Color(0xffFDFDFE),
+//                             ),
+//                             child: TextField(
+//                               onChanged: (value) {
+//                                 rows[index]['rate'] = value;
+//                               },
+//                               style: const TextStyle(
+//                                   fontSize: 14, color: Colors.black),
+//                               decoration: const InputDecoration(
+//                                 border: InputBorder.none,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       const SizedBox(width: 6),
+//                       // Total TextField
+//                       Expanded(
+//                         child: Material(
+//                           elevation: 2,
+//                           borderRadius: BorderRadius.circular(6),
+//                           child: Container(
+//                             height: 30.0,
+//                             padding: const EdgeInsets.symmetric(horizontal: 10),
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(6),
+//                               color: const Color(0xffFDFDFE),
+//                             ),
+//                             child: TextField(
+//                               onChanged: (value) {
+//                                 rows[index]['total'] = value;
+//                               },
+//                               style: const TextStyle(
+//                                   fontSize: 14, color: Colors.black),
+//                               decoration: const InputDecoration(
+//                                 border: InputBorder.none,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       const SizedBox(width: 10),
+//                       // Add/Delete buttons
+//                       Row(
+//                         children: [
+//                           GestureDetector(
+//                             onTap: () {
+//                               setState(() {
+//                                 rows.add({});
+//                               });
+//                             },
+//                             child: Container(
+//                               padding: const EdgeInsets.all(4),
+//                               decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(5),
+//                                 border: Border.all(color: Colors.grey),
+//                               ),
+//                               child: const CircleAvatar(
+//                                 backgroundColor: Color(0xff362677),
+//                                 radius: 12,
+//                                 child: Icon(
+//                                   Icons.add,
+//                                   color: Colors.white,
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                           const SizedBox(width: 10),
+//                           GestureDetector(
+//                             onTap: () {
+//                               setState(() {
+//                                 if (rows.length > 1) {
+//                                   rows.removeAt(index);
+//                                 }
+//                               });
+//                             },
+//                             child: Container(
+//                               padding: const EdgeInsets.all(4),
+//                               decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(5),
+//                                 border: Border.all(color: Colors.grey),
+//                               ),
+//                               child: const CircleAvatar(
+//                                 backgroundColor: Color(0xff362677),
+//                                 radius: 12,
+//                                 child: Icon(
+//                                   Icons.delete,
+//                                   color: Colors.white,
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ],
+//                   ),
+//                 );
+//               }),
+//             ],
+//           ),
+//         ),
 //       ),
 //     );
 //   }

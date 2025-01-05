@@ -11,19 +11,14 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
-import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
-import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/product_details/constant/additional_detailpage.dart';
 import 'package:smartbazar/features/product_details/constant/additional_perks_widget.dart';
 import 'package:smartbazar/features/product_details/constant/discount_box_widget.dart';
-import 'package:smartbazar/features/product_details/constant/dotted_widget.dart';
 import 'package:smartbazar/features/product_details/constant/features_banner.dart';
 import 'package:smartbazar/features/product_details/constant/header_banner.dart';
-import 'package:smartbazar/features/product_details/constant/location_widget.dart';
 import 'package:smartbazar/features/product_details/constant/people_review_widget.dart';
 import 'package:smartbazar/features/product_details/constant/price_banner.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
@@ -51,7 +46,6 @@ class ProductDetailScreen extends ConsumerWidget {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController msgcontroller = TextEditingController();
   final String productId;
-  final int _selectedIndex = 0;
   ProductDetailScreen({super.key, required this.productId});
   final ScrollController _scrollController = ScrollController();
 
@@ -66,7 +60,7 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double sch = MediaQuery.of(context).size.height;
     // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
-    final adsList = ref.watch(fetchAdsProvider);
+    ref.watch(fetchAdsProvider);
     // final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
@@ -453,9 +447,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             second: "Sizes",
                             third: "VARIATIONS",
                           ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
+
                           // LocationWidget(
                           //   latititute:
                           //       double.tryParse(data.result!.latitude!)!,
@@ -1244,15 +1236,13 @@ class TabBarItems extends StatelessWidget {
                           SizedBox(
                             height: 12.h,
                           ),
-                          Container(
-                            child: Text(
-                              maxLines: 10,
-                              description,
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black),
-                            ),
+                          Text(
+                            maxLines: 10,
+                            description,
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -1348,9 +1338,9 @@ class ProductAdditionalDetialsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> items = [
-      {'title': "What's in the box?", 'description': inbox ?? 'N/A'},
-      {'title': "Brand", 'description': brandname ?? 'N/A'},
-      {'title': "Model", 'description': brandname ?? 'N/A'},
+      {'title': "What's in the box?", 'description': inbox},
+      {'title': "Brand", 'description': brandname},
+      {'title': "Model", 'description': brandname},
     ];
     return Padding(
       padding: const EdgeInsets.all(5.0),

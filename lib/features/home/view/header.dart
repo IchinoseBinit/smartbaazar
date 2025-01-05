@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+  final List<Map<String, String>> headeritems = [
+    {'icon': 'assets/icon/loadings.svg', 'label': 'Everything'},
+    {'icon': 'assets/icon/openCartIcon.svg', 'label': 'Products'},
+    {'icon': 'assets/icon/usedIcon.svg', 'label': 'Used'},
+    {'icon': 'assets/icon/b2bIcon.svg', 'label': 'Services'},
+    {'icon': 'assets/icon/eventIcon.svg', 'label': 'Events'},
+    {'icon': 'assets/icon/b2bIcon.svg', 'label': 'B2B'},
+    {'icon': 'assets/icon/Vector.svg', 'label': 'Jobs'},
+    {'icon': 'assets/icon/box.svg', 'label': 'Grocery'},
+  ];
 class NewSearchWidget extends StatefulWidget {
   NewSearchWidget({
     super.key,
@@ -23,16 +32,7 @@ class NewSearchWidget extends StatefulWidget {
 }
 
 class _NewSearchWidgetState extends State<NewSearchWidget> {
-  final List<Map<String, String>> items = [
-    {'icon': 'assets/icon/loadings.svg', 'label': 'Everything'},
-    {'icon': 'assets/icon/openCartIcon.svg', 'label': 'Products'},
-    {'icon': 'assets/icon/usedIcon.svg', 'label': 'Used'},
-    {'icon': 'assets/icon/b2bIcon.svg', 'label': 'Services'},
-    {'icon': 'assets/icon/eventIcon.svg', 'label': 'Events'},
-    {'icon': 'assets/icon/b2bIcon.svg', 'label': 'B2B'},
-    {'icon': 'assets/icon/Vector.svg', 'label': 'Jobs'},
-    {'icon': 'assets/icon/box.svg', 'label': 'Grocery'},
-  ];
+
 
   Map<String, String>? dropdownValue;
 
@@ -64,13 +64,13 @@ class _NewSearchWidgetState extends State<NewSearchWidget> {
         ),
       ),
       child: DropdownButton<Map<String, String>>(
-        value: dropdownValue ?? items[index],
+        value: dropdownValue ?? headeritems[index],
         onChanged: (newValue) {
           setState(() {
             dropdownValue = newValue;
           });
         },
-        items: items.map((item) {
+        items: headeritems.map((item) {
           return DropdownMenuItem(
             value: item,
             child: Column(

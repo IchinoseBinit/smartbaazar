@@ -657,7 +657,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     BorderRadius.circular(5),
                                                 color: const Color(0xff362677)),
                                             child: Text(
-                                              data.services?.toString() ?? '0',
+                                              data.services?.length
+                                                      .toString() ??
+                                                  '0',
                                               style: headerstyle,
                                             ),
                                           )
@@ -672,73 +674,109 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   child: TabBarView(children: [
                                     data.brandNew!.isEmpty
                                         ? nolistingfound()
-                                        : LayoutBuilder(
-                                            builder: (context, constraints) {
-                                            return GridView.builder(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                              shrinkWrap:
-                                                  true, // Adjust to fit content
-                                              itemCount: data.brandNew?.length,
+                                        : SingleChildScrollView(
+                                            scrollDirection: Axis
+                                                .vertical, // Scroll vertically if needed
+                                            child: LayoutBuilder(
+                                              builder: (context, constraints) {
+                                                return Wrap(
+                                                  spacing: 5
+                                                      .w, // Horizontal space between items
+                                                  runSpacing: 15
+                                                      .h, // Vertical space between rows
+                                                  children: List.generate(
+                                                    data.brandNew?.length ?? 0,
+                                                    (index) {
+                                                      GlobalModel res =
+                                                          data.brandNew![index];
 
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                // mainAxisExtent:
-                                                //     constraints.maxWidth > 430
-                                                //         ? 4
-                                                //         : 2,
-                                                // crossAxisCount: 2,
-                                                // crossAxisSpacing: 0.2,
-                                                // mainAxisSpacing: 0.2,
-                                                // childAspectRatio: 0.9,
-                                                mainAxisExtent: 400,
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 0.2,
-                                                mainAxisSpacing: 0.2,
-                                                childAspectRatio: 0.9,
-                                              ),
-                                              itemBuilder: (context, index) {
-                                                GlobalModel res =
-                                                    data.brandNew![index];
-                                                return InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
                                                                 productId:
                                                                     res.id ??
-                                                                        ''),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: AllProductDetailWidget(
-                                                      issponsored: res
-                                                          .user[0].sponsored!,
-                                                      productImage:
-                                                          res.imageUrl,
-                                                      Vimage:
-                                                          res.user[0].photo!,
-                                                      vendorname:
-                                                          res.user[0].name,
-                                                      title: res.title,
-                                                      price: res.price,
-                                                      similarproductCount: res
-                                                          .similarproductCount,
-                                                      membershipColor: res
-                                                          .user[0]
-                                                          .membership_color!,
-                                                      membershipTitle: res
-                                                          .user[0]
-                                                          .membership_title!),
+                                                                        '',
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: SizedBox(
+                                                          width: (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width -
+                                                                  30.w) /
+                                                              2, // Dynamically adjust to fit two items per row
+                                                          child: Card(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            shadowColor:
+                                                                const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                            elevation: 9,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.0),
+                                                            ),
+                                                            child:
+                                                                AllProductDetailWidget(
+                                                              avg_rating: res
+                                                                  .avg_rating,
+                                                              comment: res
+                                                                  .commentnum,
+                                                              discounttedPrice:
+                                                                  res.discont,
+                                                              offer: res.offers,
+                                                              shortestDistance:
+                                                                  res.shortestDistance,
+                                                              wow: res.wow,
+                                                              issponsored: res
+                                                                  .user[0]
+                                                                  .sponsored!,
+                                                              productImage:
+                                                                  res.imageUrl,
+                                                              Vimage: res
+                                                                  .user[0]
+                                                                  .photo!,
+                                                              vendorname: res
+                                                                  .user[0].name,
+                                                              title: res.title,
+                                                              price: res.price,
+                                                              similarproductCount:
+                                                                  res.similarproductCount,
+                                                              membershipColor: res
+                                                                  .user[0]
+                                                                  .membership_color!,
+                                                              membershipTitle: res
+                                                                  .user[0]
+                                                                  .membership_title!,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
                                                 );
                                               },
-                                            );
-                                          }),
+                                            ),
+                                          ),
                                     Column(
                                       children: data.business!.map(
                                         (e) {
+                                          print("king ${e.logo}");
                                           return BigContainer(
                                             memebertitle: e.membershipTitle!,
                                             lat: double.tryParse(
@@ -766,81 +804,206 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                     data.used!.isEmpty
                                         ? nolistingfound()
-                                        : LayoutBuilder(
-                                            builder: (context, constraints) {
-                                            return GridView.builder(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                              shrinkWrap:
-                                                  true, // Adjust to fit content
-                                              padding: EdgeInsets.zero,
-                                              itemCount: data.used?.length,
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                mainAxisExtent: 400,
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 0.2,
-                                                mainAxisSpacing: 0.2,
-                                                childAspectRatio: 0.9,
-                                              ),
+                                        : SingleChildScrollView(
+                                            scrollDirection: Axis
+                                                .vertical, // Scroll vertically if needed
+                                            child: LayoutBuilder(
+                                              builder: (context, constraints) {
+                                                return Wrap(
+                                                  spacing: 5
+                                                      .w, // Horizontal space between items
+                                                  runSpacing: 15
+                                                      .h, // Vertical space between rows
+                                                  children: List.generate(
+                                                    data.used?.length ?? 0,
+                                                    (index) {
+                                                      GlobalModel res =
+                                                          data.used![index];
 
-                                              itemBuilder: (context, index) {
-                                                GlobalModel res =
-                                                    data.used![index];
-                                                return AllProductDetailWidget(
-                                                    issponsored:
-                                                        res.user[0].sponsored!,
-                                                    productImage: res.imageUrl,
-                                                    Vimage: res.user[0].photo!,
-                                                    vendorname:
-                                                        res.user[0].name,
-                                                    title: res.title,
-                                                    price: res.price,
-                                                    similarproductCount:
-                                                        res.similarproductCount,
-                                                    membershipColor: res.user[0]
-                                                        .membership_color!,
-                                                    membershipTitle: res.user[0]
-                                                        .membership_title!);
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                productId:
+                                                                    res.id ??
+                                                                        '',
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: SizedBox(
+                                                          width: (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width -
+                                                                  30.w) /
+                                                              2, // Dynamically adjust to fit two items per row
+                                                          child: Card(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            shadowColor:
+                                                                const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                            elevation: 9,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.0),
+                                                            ),
+                                                            child:
+                                                                AllProductDetailWidget(
+                                                              avg_rating: res
+                                                                  .avg_rating,
+                                                              comment: res
+                                                                  .commentnum,
+                                                              discounttedPrice:
+                                                                  res.discont,
+                                                              offer: res.offers,
+                                                              wow: res.wow,
+                                                              shortestDistance:
+                                                                  res.shortestDistance,
+                                                              issponsored: res
+                                                                  .user[0]
+                                                                  .sponsored!,
+                                                              productImage:
+                                                                  res.imageUrl,
+                                                              Vimage: res
+                                                                  .user[0]
+                                                                  .photo!,
+                                                              vendorname: res
+                                                                  .user[0].name,
+                                                              title: res.title,
+                                                              price: res.price,
+                                                              similarproductCount:
+                                                                  res.similarproductCount,
+                                                              membershipColor: res
+                                                                  .user[0]
+                                                                  .membership_color!,
+                                                              membershipTitle: res
+                                                                  .user[0]
+                                                                  .membership_title!,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
                                               },
-                                            );
-                                          }),
+                                            ),
+                                          ),
                                     data.services!.isEmpty
                                         ? nolistingfound()
-                                        : GridView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                            shrinkWrap:
-                                                true, // Adjust to fit content
-                                            padding: EdgeInsets.zero,
-                                            itemCount: data.services?.length,
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              mainAxisExtent: 400,
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing: 0.2,
-                                              mainAxisSpacing: 0.2,
-                                              childAspectRatio: 0.9,
-                                            ),
+                                        : SingleChildScrollView(
+                                            scrollDirection: Axis
+                                                .vertical, // Scroll vertically if needed
+                                            child: LayoutBuilder(
+                                              builder: (context, constraints) {
+                                                return Wrap(
+                                                  spacing: 5
+                                                      .w, // Horizontal space between items
+                                                  runSpacing: 15
+                                                      .h, // Vertical space between rows
+                                                  children: List.generate(
+                                                    data.services?.length ?? 0,
+                                                    (index) {
+                                                      GlobalModel res =
+                                                          data.services![index];
 
-                                            itemBuilder: (context, index) {
-                                              GlobalModel res =
-                                                  data.services![index];
-                                              return AllProductDetailWidget(
-                                                  issponsored:
-                                                      res.user[0].sponsored!,
-                                                  productImage: res.imageUrl,
-                                                  Vimage: res.user[0].photo!,
-                                                  vendorname: res.user[0].name,
-                                                  title: res.title,
-                                                  price: res.price,
-                                                  similarproductCount:
-                                                      res.similarproductCount,
-                                                  membershipColor: res.user[0]
-                                                      .membership_color!,
-                                                  membershipTitle: res.user[0]
-                                                      .membership_title!);
-                                            },
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                productId:
+                                                                    res.id ??
+                                                                        '',
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: SizedBox(
+                                                          width: (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width -
+                                                                  30.w) /
+                                                              2, // Dynamically adjust to fit two items per row
+                                                          child: Card(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            shadowColor:
+                                                                const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                            elevation: 9,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.0),
+                                                            ),
+                                                            child:
+                                                                AllProductDetailWidget(
+                                                              avg_rating: res
+                                                                  .avg_rating,
+                                                              comment: res
+                                                                  .commentnum,
+                                                              discounttedPrice:
+                                                                  res.discont,
+                                                              offer: res.offers,
+                                                              wow: res.wow,
+                                                              id: int.tryParse(
+                                                                  res.user.first
+                                                                      .user_id),
+                                                              issponsored: res
+                                                                  .user[0]
+                                                                  .sponsored!,
+                                                              productImage:
+                                                                  res.imageUrl,
+                                                              Vimage: res
+                                                                  .user[0]
+                                                                  .photo!,
+                                                              vendorname: res
+                                                                  .user[0].name,
+                                                              title: res.title,
+                                                              price: res.price,
+                                                              similarproductCount:
+                                                                  res.similarproductCount,
+                                                              membershipColor: res
+                                                                  .user[0]
+                                                                  .membership_color!,
+                                                              membershipTitle: res
+                                                                  .user[0]
+                                                                  .membership_title!,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
                                   ]),
                                 ),

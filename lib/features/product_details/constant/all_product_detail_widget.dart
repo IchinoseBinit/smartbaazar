@@ -181,7 +181,7 @@ class AllProductDetailWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(3.0),
+          padding: const EdgeInsets.all(5.0),
           child: Image.network(
             productImage ?? '', // Ensure Vimage is not null or empty
             height: 130.h,
@@ -407,7 +407,9 @@ class AllProductDetailWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              discounttedPrice?.length == 0 || discounttedPrice == null
+              discounttedPrice?.length == 0 ||
+                      discounttedPrice == null ||
+                      discounttedPrice == '0'
                   ? const SizedBox()
                   : Row(
                       children: [
@@ -444,6 +446,9 @@ class AllProductDetailWidget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset('assets/icon/Rectangle.png'),
+                      SizedBox(
+                        width: 3.w,
+                      ),
                       Text(
                         wow != null ? '1' : wow.toString(),
                         style: headerstyle.copyWith(
@@ -460,6 +465,9 @@ class AllProductDetailWidget extends StatelessWidget {
                   Row(
                     children: [
                       Image.asset("assets/icon/Vector.png"),
+                      SizedBox(
+                        width: 3.w,
+                      ),
                       Text(
                         comment ?? '1',
                         style: headerstyle.copyWith(
@@ -478,6 +486,9 @@ class AllProductDetailWidget extends StatelessWidget {
                       Image.asset(
                         "assets/icon/solar.png",
                         color: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 3.w,
                       ),
                       Text(
                         similarproductCount?.toString() ?? '0',

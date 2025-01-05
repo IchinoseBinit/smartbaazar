@@ -1020,43 +1020,39 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         duration: const Duration(milliseconds: 400),
                         height: 350.h,
                         child: SingleChildScrollView(
+                          padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
                           child: Wrap(
-                            spacing: 5.w, // Horizontal spacing between items
-                            runSpacing: 15.h, // Vertical spacing between rows
+                            spacing: 0.w, // Horizontal spacing between items
+                            runSpacing: 0.h, // Vertical spacing between rows
                             children:
                                 List.generate(data.hotProducts.length, (index) {
                               VProduct hot = data.hotProducts[index];
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailScreen(
-                                          productId: hot.id,
-                                        ),
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailScreen(
+                                        productId: hot.user.id,
                                       ),
-                                    );
-                                  },
-                                  child: ProductDetailWidget(
-                                    wow: hot.wow,
-                                    comment: hot.commentcount.toString(),
-                                    discounttedPrice: hot.discounted_price,
-                                    issponsored: hot.user.sponsored,
-                                    lefttile: "used",
-                                    productImage: hot.image,
-                                    Vimage: hot.user.photo,
-                                    price: hot.price,
-                                    title: hot.title,
-                                    vendorname: hot.user.name,
-                                    similarproductCount:
-                                        hot.similarProductCount,
-                                    membershipColor: hot.user.membershipColor,
-                                    membershipTitle: hot.user.membershipTitle,
-                                  ),
+                                    ),
+                                  );
+                                },
+                                child: ProductDetailWidget(
+                                  wow: hot.wow,
+                                  comment: hot.commentcount.toString(),
+                                  discounttedPrice: hot.discounted_price,
+                                  issponsored: hot.user.sponsored,
+                                  lefttile: "used",
+                                  productImage: hot.image,
+                                  Vimage: hot.user.photo,
+                                  price: hot.price,
+                                  title: hot.title,
+                                  vendorname: hot.user.name,
+                                  similarproductCount: hot.similarProductCount,
+                                  membershipColor: hot.user.membershipColor,
+                                  membershipTitle: hot.user.membershipTitle,
                                 ),
                               );
                             }),
@@ -2000,7 +1996,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical, // Scroll vertically
                       child: Wrap(
-                        spacing: 5.w, // Horizontal spacing between items
+                        spacing: 0.w, // Horizontal spacing between items
                         runSpacing: 15.h, // Vertical spacing between rows
                         children: List.generate(data.product.length, (index) {
                           var res = data.product[index];
@@ -2010,38 +2006,44 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ProductDetailScreen(
-                                    productId: res.id,
-                                  ),
+                                      productId: res.user.id),
                                 ),
                               );
                             },
                             child: SizedBox(
-                              width:
-                                  (MediaQuery.of(context).size.width - 30.w) /
-                                      2, // Adjust for two items per row
-                              child: Card(
-                                clipBehavior: Clip.antiAlias,
-                                shadowColor:
-                                    const Color(0xff3D215F).withOpacity(0.5),
-                                elevation: 9,
-                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: AllProductDetailWidget(
-                                  wow: res.wow,
-                                  comment: res.commentcount.toString(),
-                                  issponsored: res.user.sponsored,
-                                  discounttedPrice: res.discounted_price,
-                                  lefttile: "Used",
-                                  productImage: res.image,
-                                  Vimage: res.user.photo,
-                                  vendorname: res.user.name,
-                                  title: res.title,
-                                  price: res.price,
-                                  similarproductCount: res.similarProductCount,
-                                  membershipColor: res.user.membershipColor,
-                                  membershipTitle: res.user.membershipTitle,
+                              width: (MediaQuery.of(context).size.width) /
+                                  2, // Adjust for two items per row
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 2),
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  shadowColor:
+                                      const Color(0xff3D215F).withOpacity(0.5),
+                                  elevation: 9,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: AllProductDetailWidget(
+                                    offer: res.offers,
+                                    shortestDistance: res.user.shortestDistance,
+                                    avg_rating: res.avg_rating?.toDouble(),
+                                    wow: res.wow,
+                                    comment: res.commentcount.toString(),
+                                    issponsored: res.user.sponsored,
+                                    discounttedPrice: res.discounted_price,
+                                    lefttile: "Used",
+                                    productImage: res.image,
+                                    Vimage: res.user.photo,
+                                    vendorname: res.user.name,
+                                    title: res.title,
+                                    price: res.price,
+                                    similarproductCount:
+                                        res.similarProductCount,
+                                    membershipColor: res.user.membershipColor,
+                                    membershipTitle: res.user.membershipTitle,
+                                  ),
                                 ),
                               ),
                             ),

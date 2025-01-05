@@ -987,13 +987,13 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Wrap(
-                            spacing: 5.w, // Horizontal spacing between items
-                            runSpacing: 15.h, // Vertical spacing between rows
+                            spacing: 0.w, // Horizontal spacing between items
+                            runSpacing: 0.h, // Vertical spacing between rows
                             children:
                                 List.generate(data.hotProducts.length, (index) {
                               VProduct hot = data.hotProducts[index];
                               return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                padding: EdgeInsets.symmetric(horizontal: 2.w),
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.push(

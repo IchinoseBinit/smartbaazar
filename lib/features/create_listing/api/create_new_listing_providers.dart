@@ -36,6 +36,9 @@ Future<String> createlisting(
   String? offer,
   String? story,
   String? youtube,
+  int? package,
+   List<Map<String, String>>? pieces,
+
 }) async {
   final SmartClinet client = SmartClinet();
   print("binodo $cf");
@@ -46,6 +49,7 @@ Future<String> createlisting(
       'category_id': category ?? '',
       'post_type_id': posttype ?? '',
       'title': title ?? '',
+      'package_id':package?? '0',
       'description': description ?? '',
       'contact_name': username ?? '',
       'auth_field': 'phone',

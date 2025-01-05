@@ -75,6 +75,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
   final double _currentHeight = 500; // Default height for first tab
+  Map<String, String>? dropdownValue;
+  int? postypeid = 0;
+
   final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/openCartIcon.svg',
@@ -323,85 +326,202 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   child:
                                       Image.asset('assets/images/group.png')),
                               SizedBox(
-                                height: 40,
-                                child: NewSearchWidget(
-                                  onchnage: (p0) {},
-                                  onSearchFocusChanged: _onSearchFocusChanged,
-                                  searchController: _searchController,
-                                  ontapped: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => BusinessTabScreen(
-                                          query: _searchController.text,
+                                  height: 40,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 45.h,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF46236a),
+                                          border:
+                                              Border.all(color: Colors.white),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(19.r),
+                                            bottomLeft: Radius.circular(19.r),
+                                          ),
+                                        ),
+                                        child:
+                                            DropdownButton<Map<String, String>>(
+                                          value: dropdownValue ??
+                                              headeritems[postypeid!],
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                              dropdownValue = newValue;
+                                            });
+                                          },
+                                          items: headeritems.map((item) {
+                                            return DropdownMenuItem(
+                                              value: item,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    alignment: Alignment.center,
+                                                    item['icon']!,
+                                                    height: 10.h,
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(width: 8.w),
+                                                  Text(
+                                                    item['label']!,
+                                                    style: TextStyle(
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                          dropdownColor: const Color(0xff665B6B)
+                                              .withOpacity(0.5),
+                                          underline: const SizedBox(),
+                                          icon: const SizedBox(),
                                         ),
                                       ),
-                                    );
-                                  },
-                                ),
-                              ),
+                                      Container(
+                                        width: 180.w,
+                                        height: 45.h,
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: const BoxDecoration(
+                                            color: Colors.white),
+                                        child: TextField(
+                                          controller: _searchController,
+                                          onTap: () {
+                                            _onSearchFocusChanged(
+                                                _searchController
+                                                    .text.isNotEmpty);
+                                          },
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            prefixIcon: const Icon(
+                                              Icons.search,
+                                              size: 25,
+                                              color: Color(0xffD9D9D9),
+                                            ),
+                                            enabledBorder:
+                                                const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 0.2,
+                                                  color: Colors.white),
+                                            ),
+                                            hintText: "Search Everything",
+                                            hintStyle: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: const Color(0xffD9D9D9)),
+                                            isCollapsed: true,
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 5.h,
+                                                    horizontal: 10.w),
+                                            disabledBorder: InputBorder.none,
+                                            isDense: true,
+                                          ),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BusinessTabScreen(
+                                                  query: _searchController.text,
+                                                ),
+                                              ));
+                                        },
+                                        child: Container(
+                                          height: 45.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w, vertical: 5.h),
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.white),
+                                            color: Colors.transparent,
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(19.r),
+                                              bottomRight:
+                                                  Radius.circular(19.r),
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Colors.white,
+                                            size: 20.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
                             ],
                           ),
-                          if (_showSearchProductModels)
-                            Positioned(
-                              top: 0.h, // Position just below the search bar
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                color: Colors.white,
-                                child: SearchProductModels.when(
-                                  data: (results) {
-                                    if (results.isEmpty) {
-                                      return const SizedBox(
-                                        child: Text('No result found'),
-                                      ); // No results
-                                    }
-                                    return Card(
-                                      elevation: 8,
-                                      child: ListView.separated(
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap: true,
-                                        primary: false,
-                                        itemCount: results.length,
-                                        itemBuilder: (context, index) {
-                                          final product = results[index];
-                                          return ListTile(
-                                            title: Text(product.title),
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BusinessTabScreen(
-                                                    query:
-                                                        _searchController.text,
-                                                  ),
-                                                ),
-                                              );
-                                              setState(() {
-                                                _showSearchProductModels =
-                                                    false;
-                                                FocusScope.of(context)
-                                                    .unfocus();
-                                              });
-                                            },
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) =>
-                                            const Divider(),
-                                      ),
-                                    );
-                                  },
-                                  loading: () {
-                                    return const SizedBox();
-                                  },
-                                  error: (error, stack) {
-                                    return Center(
-                                        child: Text(error.toString()));
-                                  },
-                                ),
-                              ),
-                            ),
+                          // if (_showSearchProductModels)
+                          //   Positioned(
+                          //     top: 0.h, // Position just below the search bar
+                          //     left: 0,
+                          //     right: 0,
+                          //     child: Container(
+                          //       color: Colors.white,
+                          //       child: SearchProductModels.when(
+                          //         data: (results) {
+                          //           if (results.isEmpty) {
+                          //             return const SizedBox(
+                          //               child: Text('No result found'),
+                          //             ); // No results
+                          //           }
+                          //           return Card(
+                          //             elevation: 8,
+                          //             child: ListView.separated(
+                          //               padding: EdgeInsets.zero,
+                          //               shrinkWrap: true,
+                          //               primary: false,
+                          //               itemCount: results.length,
+                          //               itemBuilder: (context, index) {
+                          //                 final product = results[index];
+                          //                 return ListTile(
+                          //                   title: Text(product.title),
+                          //                   onTap: () {
+                          //                     Navigator.push(
+                          //                       context,
+                          //                       MaterialPageRoute(
+                          //                         builder: (context) =>
+                          //                             BusinessTabScreen(
+                          //                           query:
+                          //                               _searchController.text,
+                          //                         ),
+                          //                       ),
+                          //                     );
+                          //                     setState(() {
+                          //                       _showSearchProductModels =
+                          //                           false;
+                          //                       FocusScope.of(context)
+                          //                           .unfocus();
+                          //                     });
+                          //                   },
+                          //                 );
+                          //               },
+                          //               separatorBuilder: (context, index) =>
+                          //                   const Divider(),
+                          //             ),
+                          //           );
+                          //         },
+                          //         loading: () {
+                          //           return const SizedBox();
+                          //         },
+                          //         error: (error, stack) {
+                          //           return Center(
+                          //               child: Text(error.toString()));
+                          //         },
+                          //       ),
+                          //     ),
+                          //   ),
                           SizedBox(
                             height: 20.h,
                           ),
@@ -985,7 +1105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                 ?.id ??
                                                             '0'),
                                                         lefttile: categories[
-                                                            selectedIndex],
+                                                            selectedIndexx],
                                                         vendorname: prod
                                                                 .userdetails
                                                                 ?.name ??
