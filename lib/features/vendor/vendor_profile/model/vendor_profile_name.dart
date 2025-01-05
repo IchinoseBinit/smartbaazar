@@ -76,7 +76,7 @@ class UserDetailsModel with _$UserDetailsModel {
     int? storyCount,
     bool? sponsored,
     bool? has_sponsored_gifts,
-    String? nearestBranch,
+    // String? nearestBranch,
     double? shortestDistance, 
   }) = _UserDetailsModel;
 
@@ -147,7 +147,7 @@ class Vendor with _$Vendor {
     // String? created_at,
     // String? updated_at,
     double? shortestDistance,
-    String? nearestBranch,
+    // String? nearestBranch,
   }) = _Vendor;
 
   factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);

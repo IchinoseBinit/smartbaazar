@@ -323,32 +323,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   child:
                                       Image.asset('assets/images/group.png')),
                               SizedBox(
-                                width: 2.w,
+                                height: 40,
+                                child: NewSearchWidget(
+                                  onchnage: (p0) {},
+                                  onSearchFocusChanged: _onSearchFocusChanged,
+                                  searchController: _searchController,
+                                  ontapped: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BusinessTabScreen(
+                                          query: _searchController.text,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                              SizedBox(
-                                  height: 40,
-                                  child: NewSearchWidget(
-                                    onSearchFocusChanged: _onSearchFocusChanged,
-                                    searchController: _searchController,
-                                    ontapped: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessTabScreen(
-                                              query: _searchController.text,
-                                            ),
-                                          ));
-                                    },
-                                    onchnage: (p0) {
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           const BusinessTabScreen(),
-                                      //     ));
-                                    },
-                                  )),
                             ],
                           ),
                           if (_showSearchProductModels)
@@ -357,28 +348,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               left: 0,
                               right: 0,
                               child: Container(
-                                // width: double.infinity,
                                 color: Colors.white,
-                                child:
-                                    SearchProductModels.when(data: (results) {
-                                  if (results.isEmpty) {
-                                    return const SizedBox(
-                                      child: Text('No result found'),
-                                    ); // No results
-                                  }
-                                  return Card(
-                                    elevation: 8,
-                                    child: ListView.separated(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      itemCount: results.length,
-                                      itemBuilder: (context, index) {
-                                        final product = results[index];
-                                        return ListTile(
-                                          title: Text(product.title),
-                                          onTap: () {
-                                            Navigator.push(
+                                child: SearchProductModels.when(
+                                  data: (results) {
+                                    if (results.isEmpty) {
+                                      return const SizedBox(
+                                        child: Text('No result found'),
+                                      ); // No results
+                                    }
+                                    return Card(
+                                      elevation: 8,
+                                      child: ListView.separated(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        itemCount: results.length,
+                                        itemBuilder: (context, index) {
+                                          final product = results[index];
+                                          return ListTile(
+                                            title: Text(product.title),
+                                            onTap: () {
+                                              Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
@@ -386,44 +376,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     query:
                                                         _searchController.text,
                                                   ),
-                                                ));
-
-                                            setState(() {
-                                              _showSearchProductModels = false;
-
-                                              FocusScope.of(context).unfocus();
-                                            });
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         ProductDetailsScreen(
-                                            //       productId: product.id,
-                                            //     ),
-                                            //   ),
-                                            // );
-                                          },
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) =>
-                                          const Divider(),
-                                    ),
-                                  );
-                                }, loading: () {
-                                  return null;
-
-                                  // return SizedBox(
-                                  //     width: 10.w,
-                                  //     height: 10.h,
-                                  //     child: CircularProgressIndicator());
-                                }, error: (error, stack) {
-                                  return null;
-
-                                  // return SizedBox(
-                                  //     width: 10.w,
-                                  //     height: 10.h,
-                                  //     child: CircularProgressIndicator());
-                                }),
+                                                ),
+                                              );
+                                              setState(() {
+                                                _showSearchProductModels =
+                                                    false;
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              });
+                                            },
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) =>
+                                            const Divider(),
+                                      ),
+                                    );
+                                  },
+                                  loading: () {
+                                    return const SizedBox();
+                                  },
+                                  error: (error, stack) {
+                                    return Center(
+                                        child: Text(error.toString()));
+                                  },
+                                ),
                               ),
                             ),
                           SizedBox(

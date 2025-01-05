@@ -14,7 +14,7 @@ Future<BusinessResponse> getSearchResponse(
   final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
-      requestType: RequestType.post,
+      requestType: RequestType.postWithToken,
       headers: {'X-AppApiToken': 'Yala@Techies_Nepal'},
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections/search',
       queryParameters: {'query': query},

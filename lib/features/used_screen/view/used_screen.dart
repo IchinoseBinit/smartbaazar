@@ -5,6 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/home_page_story_container.dart';
@@ -86,7 +87,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const HomeScreen()
+      'screen': const BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',

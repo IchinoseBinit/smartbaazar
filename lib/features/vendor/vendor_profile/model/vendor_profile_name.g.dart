@@ -145,7 +145,6 @@ _$UserDetailsModelImpl _$$UserDetailsModelImplFromJson(
       storyCount: (json['storyCount'] as num?)?.toInt(),
       sponsored: json['sponsored'] as bool?,
       has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
-      nearestBranch: json['nearestBranch'] as String?,
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
     );
 
@@ -163,7 +162,6 @@ Map<String, dynamic> _$$UserDetailsModelImplToJson(
       'storyCount': instance.storyCount,
       'sponsored': instance.sponsored,
       'has_sponsored_gifts': instance.has_sponsored_gifts,
-      'nearestBranch': instance.nearestBranch,
       'shortestDistance': instance.shortestDistance,
     };
 
@@ -180,7 +178,6 @@ _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
       users_location: json['users_location'] as String?,
       branch_location: json['branch_location'] as String?,
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
-      nearestBranch: json['nearestBranch'] as String?,
     );
 
 Map<String, dynamic> _$$VendorImplToJson(_$VendorImpl instance) =>
@@ -197,7 +194,6 @@ Map<String, dynamic> _$$VendorImplToJson(_$VendorImpl instance) =>
       'users_location': instance.users_location,
       'branch_location': instance.branch_location,
       'shortestDistance': instance.shortestDistance,
-      'nearestBranch': instance.nearestBranch,
     };
 
 _$VendorCardImpl _$$VendorCardImplFromJson(Map<String, dynamic> json) =>

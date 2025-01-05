@@ -1263,8 +1263,8 @@ mixin _$UserDetailsModel {
   String get name => throw _privateConstructorUsedError;
   int? get storyCount => throw _privateConstructorUsedError;
   bool? get sponsored => throw _privateConstructorUsedError;
-  bool? get has_sponsored_gifts => throw _privateConstructorUsedError;
-  String? get nearestBranch => throw _privateConstructorUsedError;
+  bool? get has_sponsored_gifts =>
+      throw _privateConstructorUsedError; // String? nearestBranch,
   double? get shortestDistance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1291,7 +1291,6 @@ abstract class $UserDetailsModelCopyWith<$Res> {
       int? storyCount,
       bool? sponsored,
       bool? has_sponsored_gifts,
-      String? nearestBranch,
       double? shortestDistance});
 }
 
@@ -1319,7 +1318,6 @@ class _$UserDetailsModelCopyWithImpl<$Res, $Val extends UserDetailsModel>
     Object? storyCount = freezed,
     Object? sponsored = freezed,
     Object? has_sponsored_gifts = freezed,
-    Object? nearestBranch = freezed,
     Object? shortestDistance = freezed,
   }) {
     return _then(_value.copyWith(
@@ -1367,10 +1365,6 @@ class _$UserDetailsModelCopyWithImpl<$Res, $Val extends UserDetailsModel>
           ? _value.has_sponsored_gifts
           : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
               as bool?,
-      nearestBranch: freezed == nearestBranch
-          ? _value.nearestBranch
-          : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as String?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
@@ -1399,7 +1393,6 @@ abstract class _$$UserDetailsModelImplCopyWith<$Res>
       int? storyCount,
       bool? sponsored,
       bool? has_sponsored_gifts,
-      String? nearestBranch,
       double? shortestDistance});
 }
 
@@ -1425,7 +1418,6 @@ class __$$UserDetailsModelImplCopyWithImpl<$Res>
     Object? storyCount = freezed,
     Object? sponsored = freezed,
     Object? has_sponsored_gifts = freezed,
-    Object? nearestBranch = freezed,
     Object? shortestDistance = freezed,
   }) {
     return _then(_$UserDetailsModelImpl(
@@ -1473,10 +1465,6 @@ class __$$UserDetailsModelImplCopyWithImpl<$Res>
           ? _value.has_sponsored_gifts
           : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
               as bool?,
-      nearestBranch: freezed == nearestBranch
-          ? _value.nearestBranch
-          : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as String?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
@@ -1500,7 +1488,6 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
       this.storyCount,
       this.sponsored,
       this.has_sponsored_gifts,
-      this.nearestBranch,
       this.shortestDistance});
 
   factory _$UserDetailsModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -1528,14 +1515,13 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
   final bool? sponsored;
   @override
   final bool? has_sponsored_gifts;
-  @override
-  final String? nearestBranch;
+// String? nearestBranch,
   @override
   final double? shortestDistance;
 
   @override
   String toString() {
-    return 'UserDetailsModel(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, nearestBranch: $nearestBranch, shortestDistance: $shortestDistance)';
+    return 'UserDetailsModel(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance)';
   }
 
   @override
@@ -1562,8 +1548,6 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
                 other.sponsored == sponsored) &&
             (identical(other.has_sponsored_gifts, has_sponsored_gifts) ||
                 other.has_sponsored_gifts == has_sponsored_gifts) &&
-            (identical(other.nearestBranch, nearestBranch) ||
-                other.nearestBranch == nearestBranch) &&
             (identical(other.shortestDistance, shortestDistance) ||
                 other.shortestDistance == shortestDistance));
   }
@@ -1583,7 +1567,6 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
       storyCount,
       sponsored,
       has_sponsored_gifts,
-      nearestBranch,
       shortestDistance);
 
   @JsonKey(ignore: true)
@@ -1614,7 +1597,6 @@ abstract class _UserDetailsModel implements UserDetailsModel {
       final int? storyCount,
       final bool? sponsored,
       final bool? has_sponsored_gifts,
-      final String? nearestBranch,
       final double? shortestDistance}) = _$UserDetailsModelImpl;
 
   factory _UserDetailsModel.fromJson(Map<String, dynamic> json) =
@@ -1642,9 +1624,7 @@ abstract class _UserDetailsModel implements UserDetailsModel {
   bool? get sponsored;
   @override
   bool? get has_sponsored_gifts;
-  @override
-  String? get nearestBranch;
-  @override
+  @override // String? nearestBranch,
   double? get shortestDistance;
   @override
   @JsonKey(ignore: true)
@@ -1718,7 +1698,6 @@ mixin _$Vendor {
 // String? created_at,
 // String? updated_at,
   double? get shortestDistance => throw _privateConstructorUsedError;
-  String? get nearestBranch => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1742,8 +1721,7 @@ abstract class $VendorCopyWith<$Res> {
       String? opening_hours,
       String? users_location,
       String? branch_location,
-      double? shortestDistance,
-      String? nearestBranch});
+      double? shortestDistance});
 }
 
 /// @nodoc
@@ -1771,7 +1749,6 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
     Object? users_location = freezed,
     Object? branch_location = freezed,
     Object? shortestDistance = freezed,
-    Object? nearestBranch = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -1822,10 +1799,6 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
               as double?,
-      nearestBranch: freezed == nearestBranch
-          ? _value.nearestBranch
-          : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -1849,8 +1822,7 @@ abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
       String? opening_hours,
       String? users_location,
       String? branch_location,
-      double? shortestDistance,
-      String? nearestBranch});
+      double? shortestDistance});
 }
 
 /// @nodoc
@@ -1876,7 +1848,6 @@ class __$$VendorImplCopyWithImpl<$Res>
     Object? users_location = freezed,
     Object? branch_location = freezed,
     Object? shortestDistance = freezed,
-    Object? nearestBranch = freezed,
   }) {
     return _then(_$VendorImpl(
       id: freezed == id
@@ -1927,10 +1898,6 @@ class __$$VendorImplCopyWithImpl<$Res>
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
               as double?,
-      nearestBranch: freezed == nearestBranch
-          ? _value.nearestBranch
-          : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -1950,8 +1917,7 @@ class _$VendorImpl implements _Vendor {
       this.opening_hours,
       this.users_location,
       this.branch_location,
-      this.shortestDistance,
-      this.nearestBranch});
+      this.shortestDistance});
 
   factory _$VendorImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorImplFromJson(json);
@@ -2028,12 +1994,10 @@ class _$VendorImpl implements _Vendor {
 // String? updated_at,
   @override
   final double? shortestDistance;
-  @override
-  final String? nearestBranch;
 
   @override
   String toString() {
-    return 'Vendor(id: $id, name: $name, photo: $photo, about: $about, phone: $phone, phone_hidden: $phone_hidden, username: $username, email: $email, opening_hours: $opening_hours, users_location: $users_location, branch_location: $branch_location, shortestDistance: $shortestDistance, nearestBranch: $nearestBranch)';
+    return 'Vendor(id: $id, name: $name, photo: $photo, about: $about, phone: $phone, phone_hidden: $phone_hidden, username: $username, email: $email, opening_hours: $opening_hours, users_location: $users_location, branch_location: $branch_location, shortestDistance: $shortestDistance)';
   }
 
   @override
@@ -2058,9 +2022,7 @@ class _$VendorImpl implements _Vendor {
             (identical(other.branch_location, branch_location) ||
                 other.branch_location == branch_location) &&
             (identical(other.shortestDistance, shortestDistance) ||
-                other.shortestDistance == shortestDistance) &&
-            (identical(other.nearestBranch, nearestBranch) ||
-                other.nearestBranch == nearestBranch));
+                other.shortestDistance == shortestDistance));
   }
 
   @JsonKey(ignore: true)
@@ -2078,8 +2040,7 @@ class _$VendorImpl implements _Vendor {
       opening_hours,
       users_location,
       branch_location,
-      shortestDistance,
-      nearestBranch);
+      shortestDistance);
 
   @JsonKey(ignore: true)
   @override
@@ -2108,8 +2069,7 @@ abstract class _Vendor implements Vendor {
       final String? opening_hours,
       final String? users_location,
       final String? branch_location,
-      final double? shortestDistance,
-      final String? nearestBranch}) = _$VendorImpl;
+      final double? shortestDistance}) = _$VendorImpl;
 
   factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
 
@@ -2183,8 +2143,6 @@ abstract class _Vendor implements Vendor {
 // String? created_at,
 // String? updated_at,
   double? get shortestDistance;
-  @override
-  String? get nearestBranch;
   @override
   @JsonKey(ignore: true)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
