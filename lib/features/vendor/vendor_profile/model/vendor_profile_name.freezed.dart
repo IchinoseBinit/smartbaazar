@@ -1264,7 +1264,7 @@ mixin _$UserDetailsModel {
   int? get storyCount => throw _privateConstructorUsedError;
   bool? get sponsored => throw _privateConstructorUsedError;
   bool? get has_sponsored_gifts => throw _privateConstructorUsedError;
-  List<dynamic>? get nearestBranch => throw _privateConstructorUsedError;
+  String? get nearestBranch => throw _privateConstructorUsedError;
   double? get shortestDistance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1291,7 +1291,7 @@ abstract class $UserDetailsModelCopyWith<$Res> {
       int? storyCount,
       bool? sponsored,
       bool? has_sponsored_gifts,
-      List<dynamic>? nearestBranch,
+      String? nearestBranch,
       double? shortestDistance});
 }
 
@@ -1370,7 +1370,7 @@ class _$UserDetailsModelCopyWithImpl<$Res, $Val extends UserDetailsModel>
       nearestBranch: freezed == nearestBranch
           ? _value.nearestBranch
           : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
+              as String?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
@@ -1399,7 +1399,7 @@ abstract class _$$UserDetailsModelImplCopyWith<$Res>
       int? storyCount,
       bool? sponsored,
       bool? has_sponsored_gifts,
-      List<dynamic>? nearestBranch,
+      String? nearestBranch,
       double? shortestDistance});
 }
 
@@ -1474,9 +1474,9 @@ class __$$UserDetailsModelImplCopyWithImpl<$Res>
           : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
               as bool?,
       nearestBranch: freezed == nearestBranch
-          ? _value._nearestBranch
+          ? _value.nearestBranch
           : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
+              as String?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
@@ -1500,9 +1500,8 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
       this.storyCount,
       this.sponsored,
       this.has_sponsored_gifts,
-      final List<dynamic>? nearestBranch,
-      this.shortestDistance})
-      : _nearestBranch = nearestBranch;
+      this.nearestBranch,
+      this.shortestDistance});
 
   factory _$UserDetailsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDetailsModelImplFromJson(json);
@@ -1529,16 +1528,8 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
   final bool? sponsored;
   @override
   final bool? has_sponsored_gifts;
-  final List<dynamic>? _nearestBranch;
   @override
-  List<dynamic>? get nearestBranch {
-    final value = _nearestBranch;
-    if (value == null) return null;
-    if (_nearestBranch is EqualUnmodifiableListView) return _nearestBranch;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
+  final String? nearestBranch;
   @override
   final double? shortestDistance;
 
@@ -1571,8 +1562,8 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
                 other.sponsored == sponsored) &&
             (identical(other.has_sponsored_gifts, has_sponsored_gifts) ||
                 other.has_sponsored_gifts == has_sponsored_gifts) &&
-            const DeepCollectionEquality()
-                .equals(other._nearestBranch, _nearestBranch) &&
+            (identical(other.nearestBranch, nearestBranch) ||
+                other.nearestBranch == nearestBranch) &&
             (identical(other.shortestDistance, shortestDistance) ||
                 other.shortestDistance == shortestDistance));
   }
@@ -1592,7 +1583,7 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
       storyCount,
       sponsored,
       has_sponsored_gifts,
-      const DeepCollectionEquality().hash(_nearestBranch),
+      nearestBranch,
       shortestDistance);
 
   @JsonKey(ignore: true)
@@ -1623,7 +1614,7 @@ abstract class _UserDetailsModel implements UserDetailsModel {
       final int? storyCount,
       final bool? sponsored,
       final bool? has_sponsored_gifts,
-      final List<dynamic>? nearestBranch,
+      final String? nearestBranch,
       final double? shortestDistance}) = _$UserDetailsModelImpl;
 
   factory _UserDetailsModel.fromJson(Map<String, dynamic> json) =
@@ -1652,7 +1643,7 @@ abstract class _UserDetailsModel implements UserDetailsModel {
   @override
   bool? get has_sponsored_gifts;
   @override
-  List<dynamic>? get nearestBranch;
+  String? get nearestBranch;
   @override
   double? get shortestDistance;
   @override

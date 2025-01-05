@@ -76,7 +76,7 @@ class UserDetailsModel with _$UserDetailsModel {
     int? storyCount,
     bool? sponsored,
     bool? has_sponsored_gifts,
-    List<dynamic>? nearestBranch,
+    String? nearestBranch,
     double? shortestDistance, 
   }) = _UserDetailsModel;
 

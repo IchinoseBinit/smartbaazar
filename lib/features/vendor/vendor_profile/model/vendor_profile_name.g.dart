@@ -145,7 +145,7 @@ _$UserDetailsModelImpl _$$UserDetailsModelImplFromJson(
       storyCount: (json['storyCount'] as num?)?.toInt(),
       sponsored: json['sponsored'] as bool?,
       has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
-      nearestBranch: json['nearestBranch'] as List<dynamic>?,
+      nearestBranch: json['nearestBranch'] as String?,
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
     );
 
