@@ -1281,71 +1281,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 scrollDirection: Axis
                                                     .horizontal, // Horizontal scrolling
                                                 child: Wrap(
-                                                  spacing: 13
+                                                  spacing: 3
                                                       .w, // Horizontal space between items
-                                                  runSpacing: 20
+                                                  runSpacing: 0
                                                       .h, // Vertical space between rows
                                                   children: List.generate(
                                                       data.doma[0].length,
                                                       (index) {
                                                     GlobalModel prod =
                                                         data.doma[0][index];
-                                                    return Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5.w),
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductDetailScreen(
-                                                                      productId:
-                                                                          prod.id),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child:
-                                                            ProductDetailWidget(
-                                                          Vimage: prod
-                                                              .user.first.photo,
-                                                          shortestDistance: prod
-                                                              .shortestDistance,
-                                                          distance: prod
-                                                              .shortestDistance,
-                                                          avg_rating:
-                                                              prod.avg_rating,
-                                                          offer: prod.offers,
-                                                          id: int.tryParse(prod
-                                                              .user
-                                                              .first
-                                                              .user_id),
-                                                          comment:
-                                                              prod.commentnum,
-                                                          wow: prod.wow,
-                                                          issponsored: prod
-                                                              .user[0]
-                                                              .sponsored!,
-                                                          vendorname:
-                                                              prod.contactName,
-                                                          discounttedPrice:
-                                                              prod.discont,
-                                                          price: prod.price,
-                                                          title: prod.title,
-                                                          productImage:
-                                                              prod.imageUrl,
-                                                          similarproductCount: prod
-                                                              .similarproductCount,
-                                                          membershipColor: prod
-                                                              .user
-                                                              .first
-                                                              .membership_color,
-                                                          membershipTitle: prod
-                                                              .user
-                                                              .first
-                                                              .membership_title,
-                                                        ),
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetailScreen(
+                                                                    productId:
+                                                                        prod.id),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        Vimage: prod
+                                                            .user.first.photo,
+                                                        shortestDistance: prod
+                                                            .shortestDistance,
+                                                        distance: prod
+                                                            .shortestDistance,
+                                                        avg_rating:
+                                                            prod.avg_rating,
+                                                        offer: prod.offers,
+                                                        id: int.tryParse(prod
+                                                            .user
+                                                            .first
+                                                            .user_id),
+                                                        comment:
+                                                            prod.commentnum,
+                                                        wow: prod.wow,
+                                                        issponsored: prod
+                                                            .user[0].sponsored!,
+                                                        vendorname:
+                                                            prod.contactName,
+                                                        discounttedPrice:
+                                                            prod.discont,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.imageUrl,
+                                                        similarproductCount: prod
+                                                            .similarproductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .first
+                                                            .membership_color,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membership_title,
                                                       ),
                                                     );
                                                   }),
@@ -1387,71 +1381,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 scrollDirection: Axis
                                                     .horizontal, // Horizontal scrolling
                                                 child: Wrap(
-                                                  spacing: 13
+                                                  spacing: 3
                                                       .w, // Horizontal space between items
-                                                  runSpacing: 20
+                                                  runSpacing: 0
                                                       .h, // Vertical space between rows
                                                   children: List.generate(
                                                       data.spot[0].length,
                                                       (index) {
                                                     GlobalModel prod =
                                                         data.spot[0][index];
-                                                    return Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5.w),
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductDetailScreen(
-                                                                      productId:
-                                                                          prod.id),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child:
-                                                            ProductDetailWidget(
-                                                          Vimage: prod
-                                                              .user.first.photo,
-                                                          shortestDistance: prod
-                                                              .shortestDistance,
-                                                          distance: prod
-                                                              .shortestDistance,
-                                                          avg_rating:
-                                                              prod.avg_rating,
-                                                          offer: prod.offers,
-                                                          id: int.tryParse(prod
-                                                              .user
-                                                              .first
-                                                              .user_id),
-                                                          comment:
-                                                              prod.commentnum,
-                                                          wow: prod.wow,
-                                                          issponsored: prod
-                                                              .user[0]
-                                                              .sponsored!,
-                                                          vendorname:
-                                                              prod.contactName,
-                                                          discounttedPrice:
-                                                              prod.discont,
-                                                          price: prod.price,
-                                                          title: prod.title,
-                                                          productImage:
-                                                              prod.imageUrl,
-                                                          similarproductCount: prod
-                                                              .similarproductCount,
-                                                          membershipColor: prod
-                                                              .user
-                                                              .first
-                                                              .membership_color,
-                                                          membershipTitle: prod
-                                                              .user
-                                                              .first
-                                                              .membership_title,
-                                                        ),
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetailScreen(
+                                                                    productId:
+                                                                        prod.id),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child:
+                                                          ProductDetailWidget(
+                                                        Vimage: prod
+                                                            .user.first.photo,
+                                                        shortestDistance: prod
+                                                            .shortestDistance,
+                                                        distance: prod
+                                                            .shortestDistance,
+                                                        avg_rating:
+                                                            prod.avg_rating,
+                                                        offer: prod.offers,
+                                                        id: int.tryParse(prod
+                                                            .user
+                                                            .first
+                                                            .user_id),
+                                                        comment:
+                                                            prod.commentnum,
+                                                        wow: prod.wow,
+                                                        issponsored: prod
+                                                            .user[0].sponsored!,
+                                                        vendorname:
+                                                            prod.contactName,
+                                                        discounttedPrice:
+                                                            prod.discont,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.imageUrl,
+                                                        similarproductCount: prod
+                                                            .similarproductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .first
+                                                            .membership_color,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membership_title,
                                                       ),
                                                     );
                                                   }),
@@ -1834,7 +1822,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   BorderRadius.circular(15.0),
                                             ),
                                             child: AllProductDetailWidget(
-                                              id: int.tryParse(res.userDetail.user_id!),
+                                              id: int.tryParse(
+                                                  res.userDetail.user_id!),
                                               shortestDistance:
                                                   res.user.shortestDistance,
                                               issponsored:
