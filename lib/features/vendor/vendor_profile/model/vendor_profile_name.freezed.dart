@@ -677,7 +677,7 @@ mixin _$BrandNewModel {
   String? get city => throw _privateConstructorUsedError;
   int? get similarProductCount => throw _privateConstructorUsedError;
   int? get discounted_price => throw _privateConstructorUsedError;
-  String? get shortestDistance => throw _privateConstructorUsedError;
+  double? get shortestDistance => throw _privateConstructorUsedError;
   int? get commentcount => throw _privateConstructorUsedError;
   int? get avg_rating => throw _privateConstructorUsedError;
   UserDetailsModel? get userdetails => throw _privateConstructorUsedError;
@@ -712,7 +712,7 @@ abstract class $BrandNewModelCopyWith<$Res> {
       String? city,
       int? similarProductCount,
       int? discounted_price,
-      String? shortestDistance,
+      double? shortestDistance,
       int? commentcount,
       int? avg_rating,
       UserDetailsModel? userdetails});
@@ -827,7 +827,7 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       commentcount: freezed == commentcount
           ? _value.commentcount
           : commentcount // ignore: cast_nullable_to_non_nullable
@@ -882,7 +882,7 @@ abstract class _$$BrandNewModelImplCopyWith<$Res>
       String? city,
       int? similarProductCount,
       int? discounted_price,
-      String? shortestDistance,
+      double? shortestDistance,
       int? commentcount,
       int? avg_rating,
       UserDetailsModel? userdetails});
@@ -996,7 +996,7 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       commentcount: freezed == commentcount
           ? _value.commentcount
           : commentcount // ignore: cast_nullable_to_non_nullable
@@ -1077,7 +1077,7 @@ class _$BrandNewModelImpl implements _BrandNewModel {
   @override
   final int? discounted_price;
   @override
-  final String? shortestDistance;
+  final double? shortestDistance;
   @override
   final int? commentcount;
   @override
@@ -1191,7 +1191,7 @@ abstract class _BrandNewModel implements BrandNewModel {
       required final String? city,
       required final int? similarProductCount,
       required final int? discounted_price,
-      required final String? shortestDistance,
+      required final double? shortestDistance,
       required final int? commentcount,
       required final int? avg_rating,
       required final UserDetailsModel? userdetails}) = _$BrandNewModelImpl;
@@ -1234,7 +1234,7 @@ abstract class _BrandNewModel implements BrandNewModel {
   @override
   int? get discounted_price;
   @override
-  String? get shortestDistance;
+  double? get shortestDistance;
   @override
   int? get commentcount;
   @override
@@ -1717,7 +1717,7 @@ mixin _$Vendor {
 // String? deleted_at,
 // String? created_at,
 // String? updated_at,
-  String? get shortestDistance => throw _privateConstructorUsedError;
+  double? get shortestDistance => throw _privateConstructorUsedError;
   String? get nearestBranch => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1742,7 +1742,7 @@ abstract class $VendorCopyWith<$Res> {
       String? opening_hours,
       String? users_location,
       String? branch_location,
-      String? shortestDistance,
+      double? shortestDistance,
       String? nearestBranch});
 }
 
@@ -1821,7 +1821,7 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       nearestBranch: freezed == nearestBranch
           ? _value.nearestBranch
           : nearestBranch // ignore: cast_nullable_to_non_nullable
@@ -1849,7 +1849,7 @@ abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
       String? opening_hours,
       String? users_location,
       String? branch_location,
-      String? shortestDistance,
+      double? shortestDistance,
       String? nearestBranch});
 }
 
@@ -1926,7 +1926,7 @@ class __$$VendorImplCopyWithImpl<$Res>
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       nearestBranch: freezed == nearestBranch
           ? _value.nearestBranch
           : nearestBranch // ignore: cast_nullable_to_non_nullable
@@ -2027,7 +2027,7 @@ class _$VendorImpl implements _Vendor {
 // String? created_at,
 // String? updated_at,
   @override
-  final String? shortestDistance;
+  final double? shortestDistance;
   @override
   final String? nearestBranch;
 
@@ -2108,7 +2108,7 @@ abstract class _Vendor implements Vendor {
       final String? opening_hours,
       final String? users_location,
       final String? branch_location,
-      final String? shortestDistance,
+      final double? shortestDistance,
       final String? nearestBranch}) = _$VendorImpl;
 
   factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
@@ -2182,7 +2182,7 @@ abstract class _Vendor implements Vendor {
 // String? deleted_at,
 // String? created_at,
 // String? updated_at,
-  String? get shortestDistance;
+  double? get shortestDistance;
   @override
   String? get nearestBranch;
   @override

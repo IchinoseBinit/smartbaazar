@@ -201,6 +201,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    print('popo ${widget.vendorName} and ${{widget.vid}}');
     // final adsList = ref.watch(fetchAdsProvider);
 
     // final SearchProductModels = ref.watch(searchProvider(_searchController.text));
@@ -664,9 +665,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                     .discounted_price
                                                     .toString(),
                                                 distance: double.tryParse(
-                                                        prod.shortestDistance ??
-                                                            '0') ??
-                                                    0,
+                                                        prod.shortestDistance.toString(),),
+                                                            
+                                                  
                                                 issponsored: prod.userdetails
                                                         ?.sponsored ??
                                                     false,
@@ -681,10 +682,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 offer: prod.wow,
                                                 price: prod.price ?? "",
                                                 productImage: prod.image ?? "",
-                                                shortestDistance: double.tryParse(
-                                                        prod.shortestDistance ??
-                                                            '0') ??
-                                                    0,
+                                                shortestDistance: prod.shortestDistance
+                                                    ,
                                                 similarproductCount:
                                                     prod.similarProductCount ??
                                                         0,
@@ -836,10 +835,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 res.commentcount.toString(),
                                             discounttedPrice:
                                                 res.discounted_price.toString(),
-                                            distance: double.tryParse(
-                                                    res.shortestDistance ??
-                                                        "0") ??
-                                                0,
+                                            distance: res.shortestDistance,
+                                                
                                             issponsored:
                                                 res.userdetails!.sponsored!,
                                             lefttile: "All Products",
@@ -849,8 +846,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 .userdetails!.membership_title,
                                             offer: res.offers,
                                             price: res.price,
-                                            shortestDistance: double.tryParse(
-                                                res.shortestDistance ?? '0'),
+                                            shortestDistance: res.shortestDistance,
                                             similarproductCount:
                                                 res.similarProductCount,
                                             title: res.title,

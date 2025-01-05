@@ -51,7 +51,7 @@ class BrandNewModel with _$BrandNewModel {
     required String? city,
     required int? similarProductCount,
     required int? discounted_price,
-    required String? shortestDistance,
+    required double? shortestDistance,
     required int? commentcount,
     required int? avg_rating,
     required UserDetailsModel? userdetails,
@@ -146,7 +146,7 @@ class Vendor with _$Vendor {
     // String? deleted_at,
     // String? created_at,
     // String? updated_at,
-    String? shortestDistance,
+    double? shortestDistance,
     String? nearestBranch,
   }) = _Vendor;
 

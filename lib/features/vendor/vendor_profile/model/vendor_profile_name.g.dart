@@ -97,7 +97,7 @@ _$BrandNewModelImpl _$$BrandNewModelImplFromJson(Map<String, dynamic> json) =>
       city: json['city'] as String?,
       similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
       discounted_price: (json['discounted_price'] as num?)?.toInt(),
-      shortestDistance: json['shortestDistance'] as String?,
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
       commentcount: (json['commentcount'] as num?)?.toInt(),
       avg_rating: (json['avg_rating'] as num?)?.toInt(),
       userdetails: json['userdetails'] == null
@@ -179,7 +179,7 @@ _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
       opening_hours: json['opening_hours'] as String?,
       users_location: json['users_location'] as String?,
       branch_location: json['branch_location'] as String?,
-      shortestDistance: json['shortestDistance'] as String?,
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
       nearestBranch: json['nearestBranch'] as String?,
     );
 

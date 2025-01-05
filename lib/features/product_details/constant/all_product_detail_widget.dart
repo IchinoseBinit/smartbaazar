@@ -180,29 +180,33 @@ class AllProductDetailWidget extends StatelessWidget {
             ],
           ),
         ),
-        Image.network(
-          productImage ?? '', // Ensure Vimage is not null or empty
-          height: 130.h,
-          // Adjust size accordingly
-          width: 200.w,
-          fit: BoxFit.fill,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              return child; // If no loading, show the image
-            } else {
-              return const Center(
-                  child: CircularProgressIndicator()); // Show loading indicator
-            }
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return SizedBox(
-              height: 130.h,
-              // Adjust size accordingly
+        Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: Image.network(
+            productImage ?? '', // Ensure Vimage is not null or empty
+            height: 130.h,
+            // Adjust size accordingly
+            // width: 200.w,
+            fit: BoxFit.fill,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child; // If no loading, show the image
+              } else {
+                return const Center(
+                    child:
+                        CircularProgressIndicator()); // Show loading indicator
+              }
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox(
+                height: 130.h,
+                // Adjust size accordingly
 
-              width: 200.w,
-              child: const Icon(Icons.error),
-            ); // Show error icon if image fails to load
-          },
+                width: 200.w,
+                child: const Icon(Icons.error),
+              ); // Show error icon if image fails to load
+            },
+          ),
         ),
         SizedBox(
           height: 5.h,
@@ -232,32 +236,55 @@ class AllProductDetailWidget extends StatelessWidget {
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w800),
                   ),
+                  SizedBox(
+                    width: 3.h,
+                  ),
                   offer != null && offer?.length != 0
-                      ? Row(
-                          children: [
-                            SizedBox(
-                              width: 5.w,
-                            ),
-                            if (offer != null ||
-                                discounttedPrice != null ||
-                                offer?.length != 0)
-                              const Icon(
-                                Icons.track_changes_sharp,
-                                color: Color(0xff901B41),
-                                size: 12,
+                      ? SizedBox(
+                          width: 65
+                              .w, // Ensures the content takes up the defined width
+                          child: Wrap(
+                            spacing: 3.w, // Spacing between items
+                            runSpacing:
+                                3.h, // Spacing between lines when wrapping
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize
+                                    .min, // Shrinks the row to fit content
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // Aligns icon and text
+                                children: [
+                                  if (offer != null ||
+                                      discounttedPrice != null ||
+                                      offer?.length != 0)
+                                    const Icon(
+                                      Icons.track_changes_sharp,
+                                      color: Color(0xff901B41),
+                                      size: 12,
+                                    ),
+                                  if (offer != null)
+                                    SizedBox(
+                                        width: 5
+                                            .w), // Adds spacing between icon and text
+                                  if (offer != null)
+                                    Flexible(
+                                      child: Text(
+                                        offer!,
+                                        style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xff901B41),
+                                          fontSize: 7.sp,
+                                        ),
+                                        overflow: TextOverflow
+                                            .visible, // Ensure the text wraps
+                                      ),
+                                    ),
+                                ],
                               ),
-                            if (offer != null)
-                              Text(
-                                offer!,
-                                style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xff901B41),
-                                  fontSize: 7.sp,
-                                ),
-                              ),
-                          ],
+                            ],
+                          ),
                         )
-                      : const SizedBox(),
+                      : const SizedBox.shrink(),
 
                   // discounttedPrice != "0"
                   //     ?
