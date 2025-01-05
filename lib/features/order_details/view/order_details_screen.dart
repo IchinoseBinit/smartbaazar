@@ -34,6 +34,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   String? selectedCoupon = '';
   String selectedCity = '';
   String selectedStreet = '';
+  List<double> itemRates = [];
+  List<double> itemTotalPayments = [];
   void clearSelectedCoupon() {
     setState(() {
       selectedCoupon = null;
@@ -62,105 +64,6 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
     setState(() {
       selectedDeliveryOption = value;
     });
-  }
-
-  Future<void> submitForm(
-      BuildContext context, CheckoutDetailsModel checkoutDetails) async {
-    try {
-      final userName = checkoutDetails.data!.user?.first.name ?? 'N/A';
-      final email = checkoutDetails.data!.user?.first.email ?? 'N/A';
-      final address = checkoutDetails.data!.user?.first.phone ?? 'N/A';
-      final total = checkoutDetails.data!.cartTotal?.toString() ?? '0';
-      final postIds =
-          checkoutDetails.data!.items?.map((e) => e.postId).toList() ?? [];
-      final prices =
-          checkoutDetails.data!.items?.map((e) => e.price).toList() ?? [];
-      final quantities =
-          checkoutDetails.data!.items?.map((e) => e.qty).toList() ?? [];
-      final postName =
-          checkoutDetails.data!.items?.map((e) => e.name!).toList() ?? [];
-
-      ref
-          .read(postCheckoutFormProvider(
-        userName,
-        address,
-        email,
-        selectedPaymentMethod,
-        selectedDeliveryOption,
-        "Standard",
-        selectedCity,
-        selectedStreet,
-        selectedCoupon,
-        postIds,
-        widget.selectedProductIds,
-        postName,
-        quantities,
-        prices,
-        total,
-      ).future)
-          .then((success) {
-        if (success) {
-          const message =
-              "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
-          showDialog(
-            context: context,
-            barrierDismissible: false, // Prevents dismissal on outside tap
-            builder: (_) => AlertDialog(
-              title: Center(
-                child: Text(
-                  'Successfull!',
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF362677)),
-                ),
-              ),
-              content: Text(
-                message,
-                style: TextStyle(fontSize: 12.sp),
-              ),
-              actions: [
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      // Navigate to the BottomNavigationScreen when the user clicks "OK"
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const BottomNavigationScreen()),
-                        (route) => false, // Remove all previous routes
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('OK'),
-                        SizedBox(width: 8.w),
-                        const Icon(
-                          Icons.check_circle,
-                          color: Color(0xFF362677),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Failed to place order. Please try again.')),
-          );
-        }
-      });
-    } catch (e) {
-      // Handle any error that occurred during submission
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Failed to submit the order. Please try again.')),
-      );
-    }
   }
 
   @override
@@ -444,94 +347,18 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   //   color: Color(0xffD9D9D9),
                   // ),
                   OrderSummaryWidget(
-                      items: checkoutDetails.data!.items ?? [],
-                      discounts:
-                          checkoutDetails.data!.items!.first.discountOnBulks ??
-                              []),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RichTextWidget(
-                        title:
-                            'By proceeding with the this order, you acknowledge to accept our  ',
-                        titleStyle: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff36383C)),
-                        subtitle: ' Terms & Condtions',
-                        subtitleStyle: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff36383C)),
-                        onPressed: () {}),
+                    items: checkoutDetails.data!.items ?? [],
+                    discounts:
+                        checkoutDetails.data!.items!.first.discountOnBulks ??
+                            [],
+                    selectedPaymentMethod: selectedPaymentMethod,
+                    selectedDeliveryOption: selectedDeliveryOption,
+                    selectedCity: selectedCity,
+                    selectedStreet: selectedStreet,
+                    selectedCoupon: selectedCoupon,
+                    selectedProductIds: widget.selectedProductIds,
+                    checkoutDetails: checkoutDetails,
                   ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      SvgPicture.asset(contactSellerIcon),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '24x7 Helpline',
-                            style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff36383C)),
-                          ),
-                          Text(
-                            '9840714218',
-                            style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xff36383C)),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      Column(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Delivery Partner',
-                            style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff36383C)),
-                          ),
-                          Image.asset(ImageConstant.upayaImage)
-                        ],
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  GeneralTextButton(
-                    width: MediaQuery.of(context).size.width,
-                    bgColor: const Color(0xff362677),
-                    fgColor: Colors.white,
-                    title: 'Place Order',
-                    onPressed: () async {
-                      await submitForm(context, checkoutDetails);
-
-                      // final image = checkoutDetails.data!.items
-                      //         ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
-                      //         .toList() ??
-                      //     [];
-                    },
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  )
                 ],
               );
             },
@@ -546,19 +373,192 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   }
 }
 
-class OrderSummaryWidget extends StatelessWidget {
+class OrderSummaryWidget extends ConsumerStatefulWidget {
   final List<Item> items;
   final List<DiscountOnBulk>? discounts;
+  final String selectedPaymentMethod;
+  final String selectedDeliveryOption;
+  final String? selectedCoupon;
+  final String selectedCity;
+  final String selectedStreet;
+
+  final List<String> selectedProductIds;
+  final CheckoutDetailsModel checkoutDetails;
   // final String? pieceFrom;
   // final String? pieceTo;
   // final String? rateFromBulkDiscount;
 
-  const OrderSummaryWidget({Key? key, required this.items, this.discounts
-      //  this.pieceFrom,
-      //  this.pieceTo,
-      //   this.rateFromBulkDiscount,
-      })
-      : super(key: key);
+  const OrderSummaryWidget({
+    Key? key,
+    required this.items,
+    this.discounts,
+    required this.selectedPaymentMethod,
+    required this.selectedDeliveryOption,
+    required this.selectedCoupon,
+    required this.selectedCity,
+    required this.selectedStreet,
+    required this.selectedProductIds,
+    required this.checkoutDetails,
+    //  this.pieceFrom,
+    //  this.pieceTo,
+    //   this.rateFromBulkDiscount,
+  }) : super(key: key);
+
+  @override
+  ConsumerState<OrderSummaryWidget> createState() => _OrderSummaryWidgetState();
+}
+
+class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
+  late double totalAmount;
+  late double finalTotal;
+  late double finallyRate;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.items.map((item) => calculateTotals(item)).toList();
+  }
+
+  void calculateTotals(Item item) {
+    DiscountOnBulk? matchingDiscount =
+        findMatchingDiscount(int.tryParse(item.qty) ?? 0, widget.discounts);
+
+    double originalPrice = double.tryParse(item.price) ?? 0.0;
+    double discountedPrice = originalPrice;
+
+    // Determine the final rate (discounted or original)
+    if (matchingDiscount != null &&
+        matchingDiscount.rate != null &&
+        matchingDiscount.rate!.isNotEmpty) {
+      double discountPercentage =
+          double.tryParse(matchingDiscount.rate!) ?? 0.0;
+      if (discountPercentage > 0) {
+        discountedPrice = discountPercentage;
+      }
+    }
+
+    double finalRate = discountedPrice;
+    finallyRate = discountedPrice;
+    totalAmount = finallyRate * int.parse(item.qty);
+
+    // totalAmount = 0.0;
+    // finalTotal = 0.0;
+
+    // for (var item in widget.items) {
+    //   var itemTotal = double.parse(item.price);
+    //   var matchingDiscount =
+    //       findMatchingDiscount(int.tryParse(item.qty) ?? 0, widget.discounts);
+    //   if (matchingDiscount != null &&
+    //       matchingDiscount.rate != null &&
+    //       matchingDiscount.rate!.isNotEmpty) {
+    //     double discountPercentage = double.parse(matchingDiscount.rate!);
+    //     itemTotal *= (discountPercentage);
+    //   }
+    //   totalAmount += itemTotal;
+    //   finalTotal += itemTotal;
+    // }
+  }
+
+  Future<void> submitForm(
+      BuildContext context, CheckoutDetailsModel checkoutDetails) async {
+    try {
+      final userName = checkoutDetails.data!.user?.first.name ?? 'N/A';
+      final email = checkoutDetails.data!.user?.first.email ?? 'N/A';
+      final address = checkoutDetails.data!.user?.first.phone ?? 'N/A';
+      // final total = checkoutDetails.data!.cartTotal?.toString() ?? '0';
+      final postIds =
+          checkoutDetails.data!.items?.map((e) => e.postId).toList() ?? [];
+      final prices =
+          checkoutDetails.data!.items?.map((e) => e.price).toList() ?? [];
+      final quantities =
+          checkoutDetails.data!.items?.map((e) => e.qty).toList() ?? [];
+      final postName =
+          checkoutDetails.data!.items?.map((e) => e.name!).toList() ?? [];
+      print(
+          '--------------------------------$prices,$totalAmount, $finallyRate');
+      print('--------------------------------');
+      ref
+          .read(postCheckoutFormProvider(
+        userName,
+        address,
+        email,
+        widget.selectedPaymentMethod,
+        widget.selectedDeliveryOption,
+        "Standard",
+        widget.selectedCity,
+        widget.selectedStreet,
+        widget.selectedCoupon,
+        postIds,
+        widget.selectedProductIds,
+        postName,
+        quantities,
+        [finallyRate.toStringAsFixed(2)],
+        totalAmount.toStringAsFixed(2),
+      ).future)
+          .then((success) {
+        if (success) {
+          const message =
+              "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
+          showDialog(
+            context: context,
+            barrierDismissible: false, // Prevents dismissal on outside tap
+            builder: (_) => AlertDialog(
+              title: Center(
+                child: Text(
+                  'Successfull!',
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF362677)),
+                ),
+              ),
+              content: Text(
+                message,
+                style: TextStyle(fontSize: 12.sp),
+              ),
+              actions: [
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      // Navigate to the BottomNavigationScreen when the user clicks "OK"
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const BottomNavigationScreen()),
+                        (route) => false, // Remove all previous routes
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('OK'),
+                        SizedBox(width: 8.w),
+                        const Icon(
+                          Icons.check_circle,
+                          color: Color(0xFF362677),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Failed to place order. Please try again.')),
+          );
+        }
+      });
+    } catch (e) {
+      // Handle any error that occurred during submission
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to submit the order. Please try again.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -576,25 +576,107 @@ class OrderSummaryWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: items.map((item) => buildItemRow(item)).toList(),
+            children: widget.items.map((item) => buildItemRow(item)).toList(),
           ),
         ),
         // const Divider(thickness: 2, color: Color(0xffD9D9D9)),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RichTextWidget(
+              title:
+                  'By proceeding with the this order, you acknowledge to accept our  ',
+              titleStyle: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff36383C)),
+              subtitle: ' Terms & Condtions',
+              subtitleStyle: TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff36383C)),
+              onPressed: () {}),
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Spacer(),
+            SvgPicture.asset(contactSellerIcon),
+            SizedBox(
+              width: 10.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '24x7 Helpline',
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff36383C)),
+                ),
+                Text(
+                  '9840714218',
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xff36383C)),
+                )
+              ],
+            ),
+            const Spacer(),
+            Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Delivery Partner',
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff36383C)),
+                ),
+                Image.asset(ImageConstant.upayaImage)
+              ],
+            ),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: 30.h,
+        ),
+        GeneralTextButton(
+          width: MediaQuery.of(context).size.width,
+          bgColor: const Color(0xff362677),
+          fgColor: Colors.white,
+          title: 'Place Order',
+          onPressed: () async {
+            await submitForm(context, widget.checkoutDetails);
+
+            // final image = checkoutDetails.data!.items
+            //         ?.map((e) => '${ApiConstants.imgUrl}${e.image}')
+            //         .toList() ??
+            //     [];
+          },
+        ),
+        SizedBox(
+          height: 20.h,
+        )
       ],
     );
   }
 
+  // Widget buildItemRow(Item item) {
   Widget buildItemRow(Item item) {
     DiscountOnBulk? matchingDiscount =
-        findMatchingDiscount(int.tryParse(item.qty) ?? 0, discounts);
+        findMatchingDiscount(int.tryParse(item.qty) ?? 0, widget.discounts);
 
     double originalPrice = double.tryParse(item.price) ?? 0.0;
     double discountedPrice = originalPrice;
-    String discountText = 'No discount';
 
-    debugPrint('Item: ${item.name}, Qty: ${item.qty}, Price: $originalPrice');
-    debugPrint('Matching Discount: $matchingDiscount');
-
+    // Determine the final rate (discounted or original)
     if (matchingDiscount != null &&
         matchingDiscount.rate != null &&
         matchingDiscount.rate!.isNotEmpty) {
@@ -602,14 +684,10 @@ class OrderSummaryWidget extends StatelessWidget {
           double.tryParse(matchingDiscount.rate!) ?? 0.0;
       if (discountPercentage > 0) {
         discountedPrice = discountPercentage;
-        // discountedPrice = originalPrice * (1 - discountPercentage / 100);
-        // discountText = '$discountPercentage%';
       }
     }
 
-    debugPrint(
-        'Original Price: $originalPrice, Discounted Price: $discountedPrice');
-    debugPrint('Discounts List: $discounts');
+    double finalRate = discountedPrice;
 
     return Column(
       children: [
@@ -637,18 +715,9 @@ class OrderSummaryWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Original Rate',
+            Text('Rate',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-            Text('Rs $originalPrice')
-          ],
-        ),
-        SizedBox(height: 5.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Discounted Rate',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-            Text('Rs ${discountedPrice.toStringAsFixed(2)} ')
+            Text('Rs ${finalRate.toStringAsFixed(2)}')
           ],
         ),
         SizedBox(height: 5.h),
@@ -658,7 +727,7 @@ class OrderSummaryWidget extends StatelessWidget {
             Text('Total Payment',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
             Text(
-                'Rs ${(discountedPrice * int.parse(item.qty)).toStringAsFixed(2)}')
+                'Rs ${(finalRate * int.tryParse(item.qty)!).toStringAsFixed(2)}')
           ],
         ),
         SizedBox(height: 5.h),

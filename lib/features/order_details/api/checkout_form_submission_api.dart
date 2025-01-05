@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -47,9 +46,11 @@ Future<bool> postCheckoutForm(
   try {
     FormData formData = FormData.fromMap({
       'name': userName,
+      // 'address': address,
       'address': address,
       'email': email,
-      'pay_method': payMethod,
+      'pay_method': "cod",
+      // 'pay_method': payMethod,
       'delivery': delivery,
       'delivery_type': deliveryType,
       'city': city,
@@ -61,9 +62,8 @@ Future<bool> postCheckoutForm(
       'qty[]': qty,
       'price[]': price,
       'total': total,
-      'del_cost': 100
+      'del_cost': "100"
     });
-
 
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
@@ -71,7 +71,8 @@ Future<bool> postCheckoutForm(
       parameter: formData,
     );
 
-if (response.statusCode == 200 && response.data['msg'] != null) {      print('Order placed successfully!');
+    if (response.statusCode == 200 && response.data['msg'] != null) {
+      print('Order placed successfully!');
       return true;
     } else {
       print('Error: ${response.data}');
@@ -79,6 +80,6 @@ if (response.statusCode == 200 && response.data['msg'] != null) {      print('Or
     }
   } catch (e) {
     print('Error on placing Order: $e');
-    return false; 
+    return false;
   }
 }

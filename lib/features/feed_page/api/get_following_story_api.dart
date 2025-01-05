@@ -36,6 +36,6 @@ Future<GetFeedStoriesModel> getFollowingStory(GetFollowingStoryRef ref) async {
     }
   } catch (e) {
     print('Error loading following :$e');
-    throw Exception('Failed to load following content: $e');
+    rethrow;
   }
 }

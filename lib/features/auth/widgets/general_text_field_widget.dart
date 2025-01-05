@@ -51,7 +51,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         setState(() {
           _isEdited = true;
         });
-        widget.onChanged?.call(newValue, _isEdited);
+        widget.onChanged?.call(newValue);
       },
       obscureText: widget.obscureText,
       validator: (value) => widget.validator(value),

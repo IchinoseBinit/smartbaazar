@@ -138,29 +138,64 @@ class _BuyerAccountDetailsWidgetState
   late TextEditingController _genderController;
   late TextEditingController _branchController;
   // String? fullName, phoneNumber, email, userName, genderID;
-
+  UserData? userData;
   String? userId; // Updated to nullable type since we are loading it
   bool isLoading = false;
   Map<String, bool> fieldEdited = {};
 
   @override
-void initState() {
-  super.initState();
-  
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    WidgetsBinding.instance.ensureVisualUpdate();
-    _initializeControllers();
-    
-    // Initialize controllers here
-    _fullNameController = TextEditingController();
-    _phoneNumberController = TextEditingController();
-    _emailController = TextEditingController();
-    _userNameController = TextEditingController();
-    _genderController = TextEditingController();
-    _branchController = TextEditingController();
-  });
-}
+  void initState() {
+    super.initState();
+    _initControllers();
+    // _fetchInitialData();
+  }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fetchInitialData();
+  }
+
+  void _initControllers() {
+    _fullNameController = TextEditingController(text: '');
+    _phoneNumberController = TextEditingController(text: '');
+    _emailController = TextEditingController(text: '');
+    _userNameController = TextEditingController(text: '');
+    _genderController = TextEditingController(text: '');
+    _branchController = TextEditingController(text: '');
+  }
+
+  void _fetchInitialData() async {
+    final userDataAsync = ref.watch(getUserDetailsProvider);
+
+    userDataAsync.when(
+      data: (data) {
+        setState(() {
+          userData = data.data?.first;
+          _setInitialValues();
+        });
+      },
+      error: (error, stackTrace) {
+        print('Error loading user details: $error');
+      },
+      loading: () {
+        print('Loading user details...');
+      },
+    );
+  }
+
+  void _setInitialValues() {
+    if (userData != null) {
+      _fullNameController.text = userData!.name ?? '';
+      _phoneNumberController.text = userData!.phone ?? '';
+      _emailController.text = userData!.email ?? '';
+      _userNameController.text = userData!.username ?? '';
+      _genderController.text = userData!.genderId ?? '';
+      _branchController.text = userData!.usersLocation != null
+          ? jsonDecode(userData!.usersLocation!)['location'] ?? ''
+          : '';
+    }
+  }
 
   // Load userId from SharedPreferences
   Future<void> _loadUserId() async {
@@ -171,30 +206,30 @@ void initState() {
     });
   }
 
-  Future<void> _initializeControllers() async {
-    final userData = ref.watch(getUserDetailsProvider);
-    userData.when(
-      data: (data) {
-        setState(() {
-          final usersLocation =
-              jsonDecode(data.data!.first.usersLocation ?? '{}');
-          final location = usersLocation['location'];
-          _fullNameController.text = data.data!.first.name ?? '';
-          _phoneNumberController.text = data.data!.first.phone ?? '';
-          _emailController.text = data.data!.first.email ?? '';
-          _userNameController.text = data.data!.first.username ?? '';
-          _genderController.text = data.data!.first.genderId ?? '';
-          _branchController.text = location ?? '';
-        });
-        print('Controllers Initialized:');
-        print('Name: ${_fullNameController.text}');
-        print('Phone: ${_phoneNumberController.text}');
-        print('Username: ${_userNameController.text}');
-      },
-      loading: () => print('Loading user details...'),
-      error: (error, stackTrace) => print('Error loading user details: $error'),
-    );
-  }
+  // Future<void> _initializeControllers() async {
+  //   final userData = ref.watch(getUserDetailsProvider);
+  //   userData.when(
+  //     data: (data) {
+  //       setState(() {
+  //         final usersLocation =
+  //             jsonDecode(data.data!.first.usersLocation ?? '{}');
+  //         final location = usersLocation['location'];
+  //         _fullNameController.text = data.data!.first.name ?? '';
+  //         _phoneNumberController.text = data.data!.first.phone ?? '';
+  //         _emailController.text = data.data!.first.email ?? '';
+  //         _userNameController.text = data.data!.first.username ?? '';
+  //         _genderController.text = data.data!.first.genderId ?? '';
+  //         _branchController.text = location ?? '';
+  //       });
+  //       print('Controllers Initialized:');
+  //       print('Name: ${_fullNameController.text}');
+  //       print('Phone: ${_phoneNumberController.text}');
+  //       print('Username: ${_userNameController.text}');
+  //     },
+  //     loading: () => print('Loading user details...'),
+  //     error: (error, stackTrace) => print('Error loading user details: $error'),
+  //   );
+  // }
 
   void _submitUpdate(UserData data) {
     if (_formKey.currentState!.validate()) {
@@ -267,244 +302,256 @@ void initState() {
 
   @override
   Widget build(BuildContext context) {
-    final asyncUserDetails = ref.watch(getUserDetailsProvider);
+    //  final asyncUserDetails = ref.watch(getUserDetailsProvider);
 
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(bottom: 18.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(width: 1, color: const Color(0xffADADAD)),
-      ),
-      child: asyncUserDetails.when(
-        data: (data) {
-          return Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 17.h, left: 12.w),
-                  child: Text(
-                    'Account Details',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                const Divider(color: Color(0xffADADAD)),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Gender Selection Radio Buttons
-                      Padding(
-                        padding: EdgeInsets.only(top: 10.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Gender',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Radio<String>(
-                              value: '1', // Male
-                              groupValue: _genderController.text ?? '',
-                              onChanged: _updateGender,
-                              fillColor: WidgetStateProperty.all(
-                                  const Color(0xff362677)),
-                            ),
-                            Text(
-                              'Male',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Radio<String>(
-                              value: '2', // Female
-                              groupValue: _genderController.text ?? '',
-                              onChanged: _updateGender,
-                              fillColor: WidgetStateProperty.all(
-                                  const Color(0xff362677)),
-                            ),
-                            Text(
-                              'Female',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Radio<String>(
-                              value: '3', // Others
-                              groupValue: _genderController.text ?? '',
-                              onChanged: _updateGender,
-                              fillColor: WidgetStateProperty.all(
-                                  const Color(0xff362677)),
-                            ),
-                            Text(
-                              'Others',
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+    return ref.watch(getUserDetailsProvider).when(
+          data: (data) {
+            if (data.data == null || data.data!.isEmpty) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(bottom: 18.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(width: 1, color: const Color(0xffADADAD)),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 17.h, left: 12.w),
+                      child: Text(
+                        'Account Details',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 10.h),
-                      CustomTextFieldWidget(
-                        controller: _fullNameController,
-                        fill: true,
-                        fillColor: const Color(0xFFF6F2F2),
-                        icon: Icons.person,
-                        textInputType: TextInputAction.next,
-                        hintText: '',
-                        // hintText: 'Name',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your name';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.2.h),
-                      CustomTextFieldWidget(
-                        controller: _phoneNumberController,
-                        fill: true,
-                        fillColor: const Color(0xFFF6F2F2),
-                        icon: Icons.call,
-                        hintText: "Phone Number",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your phone number';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.2.h),
-                      CustomTextFieldWidget(
-                        controller: _emailController,
-                        fill: true,
-                        fillColor: const Color(0xFFF6F2F2),
-                        icon: Icons.mail,
-                        hintText: "Email",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      // SizedBox(height: 10.2.h),
-                      // CustomTextFieldWidget(
-                      //   fill: true,
-                      //   fillColor: const Color(0xffF3F3F3),
-                      //   icon: Icons.calendar_today,
-                      //   hintText: "Date of Birth",
-                      //   onChanged: (value) => dob = value,
-                      //   validator: (value) {
-                      //     if (value == null || value.isEmpty) {
-                      //       return 'Enter your date of birth';
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
-                      SizedBox(height: 10.2.h),
-                      CustomTextFieldWidget(
-                        fill: true,
-                        fillColor: const Color(0xFFF6F2F2),
-                        icon: Icons.person_outline,
-                        textInputType: TextInputAction.next,
-                        hintText: "User Name",
-                        controller: _userNameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your username';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10.2.h),
+                    ),
+                    SizedBox(height: 10.h),
+                    const Divider(color: Color(0xffADADAD)),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Gender Selection Radio Buttons
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Gender',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Radio<String>(
+                                  value: '1', // Male
+                                  groupValue: _genderController.text ?? '',
+                                  onChanged: _updateGender,
+                                  fillColor: WidgetStateProperty.all(
+                                      const Color(0xff362677)),
+                                ),
+                                Text(
+                                  'Male',
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Radio<String>(
+                                  value: '2', // Female
+                                  groupValue: _genderController.text ?? '',
+                                  onChanged: _updateGender,
+                                  fillColor: WidgetStateProperty.all(
+                                      const Color(0xff362677)),
+                                ),
+                                Text(
+                                  'Female',
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Radio<String>(
+                                  value: '3', // Others
+                                  groupValue: _genderController.text ?? '',
+                                  onChanged: _updateGender,
+                                  fillColor: WidgetStateProperty.all(
+                                      const Color(0xff362677)),
+                                ),
+                                Text(
+                                  'Others',
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          CustomTextFieldWidget(
+                            controller: _fullNameController,
+                            fill: true,
+                            fillColor: const Color(0xFFF6F2F2),
+                            icon: Icons.person,
+                            textInputType: TextInputAction.next,
+                            hintText: '',
+                            // hintText: 'Name',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your name';
+                              }
+                              return null;
+                            },
+                            onChanged: (newValue) {
+                              setState(() {
+                                _fullNameController.text = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.2.h),
+                          CustomTextFieldWidget(
+                            controller: _phoneNumberController,
+                            fill: true,
+                            fillColor: const Color(0xFFF6F2F2),
+                            icon: Icons.call,
+                            hintText: "Phone Number",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your phone number';
+                              }
+                              return null;
+                            },
+                            onChanged: (newValue) {
+                              setState(() {
+                                _phoneNumberController.text = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.2.h),
+                          CustomTextFieldWidget(
+                            controller: _emailController,
+                            fill: true,
+                            fillColor: const Color(0xFFF6F2F2),
+                            icon: Icons.mail,
+                            hintText: "Email",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your email';
+                              }
+                              return null;
+                            },
+                            onChanged: (newValue) {
+                              setState(() {
+                                _emailController.text = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.2.h),
+                          CustomTextFieldWidget(
+                            fill: true,
+                            fillColor: const Color(0xFFF6F2F2),
+                            icon: Icons.person_outline,
+                            textInputType: TextInputAction.next,
+                            hintText: "User Name",
+                            controller: _userNameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your username';
+                              }
+                              return null;
+                            },
+                            onChanged: (newValue) {
+                              setState(() {
+                                _userNameController.text = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.2.h),
 
-                      // CustomTextFieldWidget(
-                      //   fill: true,
-                      //   fillColor: const Color(0xFFF6F2F2),
-                      //   // fillColor: const Color(0xFFF3F3F3),
-                      //   icon: Icons.location_on,
-                      //   textInputType: TextInputAction.next,
-                      //   hintText: (() {
-                      //     try {
-                      //       // Decode the usersLocation JSON string
-                      //       final usersLocation = jsonDecode(
-                      //           data.data!.first.usersLocation ?? '');
-                      //       return usersLocation['location'] ?? "Your Location";
-                      //     } catch (e) {
-                      //       return "Your Location"; // Fallback in case of an error
-                      //     }
-                      //   })(),
+                          // CustomTextFieldWidget(
+                          //   fill: true,
+                          //   fillColor: const Color(0xFFF6F2F2),
+                          //   // fillColor: const Color(0xFFF3F3F3),
+                          //   icon: Icons.location_on,
+                          //   textInputType: TextInputAction.next,
+                          //   hintText: (() {
+                          //     try {
+                          //       // Decode the usersLocation JSON string
+                          //       final usersLocation = jsonDecode(
+                          //           data.data!.first.usersLocation ?? '');
+                          //       return usersLocation['location'] ?? "Your Location";
+                          //     } catch (e) {
+                          //       return "Your Location"; // Fallback in case of an error
+                          //     }
+                          //   })(),
 
-                      //   iconColor: Colors.red,
-                      //   validator: (value) {
-                      //     // if (value == null || value.isEmpty) {
-                      //     //   return 'Enter your  Location",';
-                      //     // }
-                      //     return null;
-                      //   },
-                      // ),
-                      CustomTextFieldWidget(
-                        controller: _branchController,
-                        fill: true,
-                        fillColor: const Color(0xFFF6F2F2),
-                        icon: Icons.location_on,
-                        hintText: "Your Location",
-                        iconColor: Colors.red,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter your location';
-                          }
-                          return null;
-                        },
+                          //   iconColor: Colors.red,
+                          //   validator: (value) {
+                          //     // if (value == null || value.isEmpty) {
+                          //     //   return 'Enter your  Location",';
+                          //     // }
+                          //     return null;
+                          //   },
+                          // ),
+                          CustomTextFieldWidget(
+                            controller: _branchController,
+                            fill: true,
+                            fillColor: const Color(0xFFF6F2F2),
+                            icon: Icons.location_on,
+                            hintText: "Your Location",
+                            iconColor: Colors.red,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Enter your location';
+                              }
+                              return null;
+                            },
+                            onChanged: (newValue) {
+                              setState(() {
+                                _branchController.text = newValue;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.2.h),
+                          SizedBox(height: 10.h),
+                          GeneralTextButton(
+                            marginH: 0,
+                            height: 25.h,
+                            width: 100.w,
+                            title: 'Update',
+                            fgColor: Colors.white,
+                            bgColor: const Color(0xff362677),
+                            isSmallText: true,
+                            onPressed: () => _submitUpdate(data.data!.first),
+                            // onPressed: isLoading ? null : _submitUpdate(asyncUserDetails),
+                          ),
+                        ],
                       ),
-
-                      SizedBox(height: 10.2.h),
-
-                      SizedBox(height: 10.h),
-                      GeneralTextButton(
-                        marginH: 0,
-                        height: 25.h,
-                        width: 100.w,
-                        title: 'Update',
-                        fgColor: Colors.white,
-                        bgColor: const Color(0xff362677),
-                        isSmallText: true,
-                        onPressed: () => _submitUpdate(data.data!.first),
-                        // onPressed: isLoading ? null : _submitUpdate(asyncUserDetails),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(
-          child: Text('Error loading checkout details: $error'),
-        ),
-      ),
-    );
+              ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Text('Error: $error'),
+        );
   }
 }
