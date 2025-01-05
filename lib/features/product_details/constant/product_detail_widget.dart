@@ -253,7 +253,7 @@ class ProductDetailWidget extends StatelessWidget {
                           // height: 20.h,
                           width: 100.w,
                           child: Text(
-                            'Rs ${price!}',
+                            'Rs ${price ?? 0}',
                             style: headerstyle.copyWith(
                                 color: ColorConstant.blackColor,
                                 fontSize: 12.sp,
@@ -351,9 +351,8 @@ class ProductDetailWidget extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating: avg_rating == null
-                                ? 0.0
-                                : avg_rating!,
+                            initialRating:
+                                avg_rating == null ? 0.0 : avg_rating!,
                             // Default to 1 when avg_rating is null
                             minRating: 1,
                             direction: Axis.horizontal,
@@ -611,32 +610,24 @@ class ProductDetailWidget extends StatelessWidget {
                                       SizedBox(
                                         width: 52.w,
                                       ),
-                                    if(shortestDistance!=null)  Row(
-                                        children: [
-                                          shortestDistance != null
-                                              ? Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.location_on,
-                                                      color: Colors.white,
-                                                      size: 12,
-                                                    ),
-                                                    Text(
-                                                      "${shortestDistance == 0.0 ? 2.0 : shortestDistance} km",
-                                                      style:
-                                                          headerstyle.copyWith(
-                                                              fontSize: 8.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                    ),
-                                                  ],
-                                                )
-                                              : SizedBox(
-                                                  height: 5.h,
-                                                ),
-                                        ],
-                                      )
+                                      if (shortestDistance != null &&
+                                          shortestDistance != 0.0)
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            Text(
+                                              "${shortestDistance ?? 2.0} km",
+                                              style: headerstyle.copyWith(
+                                                fontSize: 8.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                     ],
                                   ),
                                   Row(
@@ -651,7 +642,6 @@ class ProductDetailWidget extends StatelessWidget {
                                         "assets/images/nepalFlag.png",
                                         height: 9.h,
                                       ),
-
 
                                       SizedBox(
                                         width: 1.w,
@@ -702,7 +692,8 @@ class ProductDetailWidget extends StatelessWidget {
                                                           FontWeight.w700),
                                                 ),
                                               ],
-                                            ) : const SizedBox(),
+                                            )
+                                          : const SizedBox(),
                                     ],
                                   ),
                                 ],

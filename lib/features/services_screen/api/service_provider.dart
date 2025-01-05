@@ -543,6 +543,7 @@ class VProduct {
   final String? discounted_price;
   final int? similarProductCount;
   final String offers;
+  final int? avg_rating;
 
   VProduct(
       {required this.id,
@@ -556,7 +557,9 @@ class VProduct {
       required this.commentcount,
       required this.offers,
       required this.similarProductCount,
-      required this.discounted_price});
+      required this.discounted_price,
+      required this.avg_rating,
+      });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
@@ -571,7 +574,9 @@ class VProduct {
         image: json['image'] ?? '',
         price: json['price'] ?? '',
         similarProductCount: json['similarProductCount'] ?? 0,
-        wow: json['wow'] ?? '');
+        wow: json['wow'] ?? '',
+        avg_rating: json['avg_rating']
+        );
   }
 }
 
@@ -582,10 +587,10 @@ class VendorUser {
   final bool hasSponsoredGifts;
   final bool sponsored;
   final String membershipStatus;
-  final String? membercolor;
+  final String? membershipColor; // Renamed to match proper camel case
   final String? membershipTitle;
+  final double? shortestDistance; // Assuming it holds numeric data
 
-  // Constructor to initialize the properties
   VendorUser({
     required this.id,
     required this.name,
@@ -593,22 +598,24 @@ class VendorUser {
     required this.hasSponsoredGifts,
     required this.sponsored,
     required this.membershipStatus,
-    required this.membercolor,
+    required this.shortestDistance,
+    required this.membershipColor,
     required this.membershipTitle,
   });
 
-  // Factory constructor to create a VendorUser from JSON
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',
-      hasSponsoredGifts:
-          json['has_sponsored_gifts'] ?? false, // Set to false by default
-      sponsored: json['sponsored'] ?? false, // Set to false by default
-      membershipStatus: json['membership_status'] ?? '0', // Default to '0'
-      membercolor: json['membership_color'] ?? '', // Default to '0'
-      membershipTitle: json['membership_title'] ?? '', // Default to '0'
+      hasSponsoredGifts: json['has_sponsored_gifts'] ?? false,
+      sponsored: json['sponsored'] ?? false,
+      membershipStatus: json['membership_status'] ?? '0',
+      membershipColor: json['membership_color'], // Updated key
+      membershipTitle: json['membership_title'],
+      shortestDistance: json['shortestDistance'] != null
+          ? double.tryParse(json['shortestDistance'].toString())
+          : null,
     );
   }
 }

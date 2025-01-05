@@ -3723,17 +3723,18 @@ VendorUserDetail _$VendorUserDetailFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VendorUserDetail {
-  @JsonKey(name: 'shortestDistance')
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get membership_plan_id => throw _privateConstructorUsedError;
+  String? get membership_status => throw _privateConstructorUsedError;
+  String? get membership_id => throw _privateConstructorUsedError;
+  String? get membership_title => throw _privateConstructorUsedError;
+  String? get membership_color => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  int? get storyCount => throw _privateConstructorUsedError;
+  bool? get sponsored => throw _privateConstructorUsedError;
+  bool? get has_sponsored_gifts => throw _privateConstructorUsedError;
   double? get shortestDistance => throw _privateConstructorUsedError;
-  @JsonKey(name: 'nearestBranch')
-  String? get nearestBranch =>
-      throw _privateConstructorUsedError; // String? id,
-// String? name,
-// String? photo,
-  @JsonKey(name: 'membership_color')
-  String? get memberColor => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3748,10 +3749,18 @@ abstract class $VendorUserDetailCopyWith<$Res> {
       _$VendorUserDetailCopyWithImpl<$Res, VendorUserDetail>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'shortestDistance') double? shortestDistance,
-      @JsonKey(name: 'nearestBranch') String? nearestBranch,
-      @JsonKey(name: 'membership_color') String? memberColor,
-      @JsonKey(name: 'membership_title') String? membershipTitle});
+      {String? user_id,
+      String? membership_plan_id,
+      String? membership_status,
+      String? membership_id,
+      String? membership_title,
+      String? membership_color,
+      String? photo,
+      String? name,
+      int? storyCount,
+      bool? sponsored,
+      bool? has_sponsored_gifts,
+      double? shortestDistance});
 }
 
 /// @nodoc
@@ -3767,28 +3776,68 @@ class _$VendorUserDetailCopyWithImpl<$Res, $Val extends VendorUserDetail>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user_id = freezed,
+    Object? membership_plan_id = freezed,
+    Object? membership_status = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
+    Object? photo = freezed,
+    Object? name = freezed,
+    Object? storyCount = freezed,
+    Object? sponsored = freezed,
+    Object? has_sponsored_gifts = freezed,
     Object? shortestDistance = freezed,
-    Object? nearestBranch = freezed,
-    Object? memberColor = freezed,
-    Object? membershipTitle = freezed,
   }) {
     return _then(_value.copyWith(
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_plan_id: freezed == membership_plan_id
+          ? _value.membership_plan_id
+          : membership_plan_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_status: freezed == membership_status
+          ? _value.membership_status
+          : membership_status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      has_sponsored_gifts: freezed == has_sponsored_gifts
+          ? _value.has_sponsored_gifts
+          : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
               as double?,
-      nearestBranch: freezed == nearestBranch
-          ? _value.nearestBranch
-          : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as String?,
-      memberColor: freezed == memberColor
-          ? _value.memberColor
-          : memberColor // ignore: cast_nullable_to_non_nullable
-              as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -3802,10 +3851,18 @@ abstract class _$$VendorUserDetailImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'shortestDistance') double? shortestDistance,
-      @JsonKey(name: 'nearestBranch') String? nearestBranch,
-      @JsonKey(name: 'membership_color') String? memberColor,
-      @JsonKey(name: 'membership_title') String? membershipTitle});
+      {String? user_id,
+      String? membership_plan_id,
+      String? membership_status,
+      String? membership_id,
+      String? membership_title,
+      String? membership_color,
+      String? photo,
+      String? name,
+      int? storyCount,
+      bool? sponsored,
+      bool? has_sponsored_gifts,
+      double? shortestDistance});
 }
 
 /// @nodoc
@@ -3819,28 +3876,68 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user_id = freezed,
+    Object? membership_plan_id = freezed,
+    Object? membership_status = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
+    Object? photo = freezed,
+    Object? name = freezed,
+    Object? storyCount = freezed,
+    Object? sponsored = freezed,
+    Object? has_sponsored_gifts = freezed,
     Object? shortestDistance = freezed,
-    Object? nearestBranch = freezed,
-    Object? memberColor = freezed,
-    Object? membershipTitle = freezed,
   }) {
     return _then(_$VendorUserDetailImpl(
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_plan_id: freezed == membership_plan_id
+          ? _value.membership_plan_id
+          : membership_plan_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_status: freezed == membership_status
+          ? _value.membership_status
+          : membership_status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      has_sponsored_gifts: freezed == has_sponsored_gifts
+          ? _value.has_sponsored_gifts
+          : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
               as double?,
-      nearestBranch: freezed == nearestBranch
-          ? _value.nearestBranch
-          : nearestBranch // ignore: cast_nullable_to_non_nullable
-              as String?,
-      memberColor: freezed == memberColor
-          ? _value.memberColor
-          : memberColor // ignore: cast_nullable_to_non_nullable
-              as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -3849,33 +3946,50 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorUserDetailImpl implements _VendorUserDetail {
   const _$VendorUserDetailImpl(
-      {@JsonKey(name: 'shortestDistance') this.shortestDistance,
-      @JsonKey(name: 'nearestBranch') this.nearestBranch,
-      @JsonKey(name: 'membership_color') this.memberColor,
-      @JsonKey(name: 'membership_title') this.membershipTitle});
+      {this.user_id,
+      this.membership_plan_id,
+      this.membership_status,
+      this.membership_id,
+      this.membership_title,
+      this.membership_color,
+      this.photo,
+      this.name,
+      this.storyCount,
+      this.sponsored,
+      this.has_sponsored_gifts,
+      this.shortestDistance});
 
   factory _$VendorUserDetailImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorUserDetailImplFromJson(json);
 
   @override
-  @JsonKey(name: 'shortestDistance')
+  final String? user_id;
+  @override
+  final String? membership_plan_id;
+  @override
+  final String? membership_status;
+  @override
+  final String? membership_id;
+  @override
+  final String? membership_title;
+  @override
+  final String? membership_color;
+  @override
+  final String? photo;
+  @override
+  final String? name;
+  @override
+  final int? storyCount;
+  @override
+  final bool? sponsored;
+  @override
+  final bool? has_sponsored_gifts;
+  @override
   final double? shortestDistance;
-  @override
-  @JsonKey(name: 'nearestBranch')
-  final String? nearestBranch;
-// String? id,
-// String? name,
-// String? photo,
-  @override
-  @JsonKey(name: 'membership_color')
-  final String? memberColor;
-  @override
-  @JsonKey(name: 'membership_title')
-  final String? membershipTitle;
 
   @override
   String toString() {
-    return 'VendorUserDetail(shortestDistance: $shortestDistance, nearestBranch: $nearestBranch, memberColor: $memberColor, membershipTitle: $membershipTitle)';
+    return 'VendorUserDetail(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance)';
   }
 
   @override
@@ -3883,20 +3997,45 @@ class _$VendorUserDetailImpl implements _VendorUserDetail {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VendorUserDetailImpl &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.membership_plan_id, membership_plan_id) ||
+                other.membership_plan_id == membership_plan_id) &&
+            (identical(other.membership_status, membership_status) ||
+                other.membership_status == membership_status) &&
+            (identical(other.membership_id, membership_id) ||
+                other.membership_id == membership_id) &&
+            (identical(other.membership_title, membership_title) ||
+                other.membership_title == membership_title) &&
+            (identical(other.membership_color, membership_color) ||
+                other.membership_color == membership_color) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount) &&
+            (identical(other.sponsored, sponsored) ||
+                other.sponsored == sponsored) &&
+            (identical(other.has_sponsored_gifts, has_sponsored_gifts) ||
+                other.has_sponsored_gifts == has_sponsored_gifts) &&
             (identical(other.shortestDistance, shortestDistance) ||
-                other.shortestDistance == shortestDistance) &&
-            (identical(other.nearestBranch, nearestBranch) ||
-                other.nearestBranch == nearestBranch) &&
-            (identical(other.memberColor, memberColor) ||
-                other.memberColor == memberColor) &&
-            (identical(other.membershipTitle, membershipTitle) ||
-                other.membershipTitle == membershipTitle));
+                other.shortestDistance == shortestDistance));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, shortestDistance, nearestBranch,
-      memberColor, membershipTitle);
+  int get hashCode => Object.hash(
+      runtimeType,
+      user_id,
+      membership_plan_id,
+      membership_status,
+      membership_id,
+      membership_title,
+      membership_color,
+      photo,
+      name,
+      storyCount,
+      sponsored,
+      has_sponsored_gifts,
+      shortestDistance);
 
   @JsonKey(ignore: true)
   @override
@@ -3915,29 +4054,46 @@ class _$VendorUserDetailImpl implements _VendorUserDetail {
 
 abstract class _VendorUserDetail implements VendorUserDetail {
   const factory _VendorUserDetail(
-          {@JsonKey(name: 'shortestDistance') final double? shortestDistance,
-          @JsonKey(name: 'nearestBranch') final String? nearestBranch,
-          @JsonKey(name: 'membership_color') final String? memberColor,
-          @JsonKey(name: 'membership_title') final String? membershipTitle}) =
-      _$VendorUserDetailImpl;
+      {final String? user_id,
+      final String? membership_plan_id,
+      final String? membership_status,
+      final String? membership_id,
+      final String? membership_title,
+      final String? membership_color,
+      final String? photo,
+      final String? name,
+      final int? storyCount,
+      final bool? sponsored,
+      final bool? has_sponsored_gifts,
+      final double? shortestDistance}) = _$VendorUserDetailImpl;
 
   factory _VendorUserDetail.fromJson(Map<String, dynamic> json) =
       _$VendorUserDetailImpl.fromJson;
 
   @override
-  @JsonKey(name: 'shortestDistance')
+  String? get user_id;
+  @override
+  String? get membership_plan_id;
+  @override
+  String? get membership_status;
+  @override
+  String? get membership_id;
+  @override
+  String? get membership_title;
+  @override
+  String? get membership_color;
+  @override
+  String? get photo;
+  @override
+  String? get name;
+  @override
+  int? get storyCount;
+  @override
+  bool? get sponsored;
+  @override
+  bool? get has_sponsored_gifts;
+  @override
   double? get shortestDistance;
-  @override
-  @JsonKey(name: 'nearestBranch')
-  String? get nearestBranch;
-  @override // String? id,
-// String? name,
-// String? photo,
-  @JsonKey(name: 'membership_color')
-  String? get memberColor;
-  @override
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle;
   @override
   @JsonKey(ignore: true)
   _$$VendorUserDetailImplCopyWith<_$VendorUserDetailImpl> get copyWith =>

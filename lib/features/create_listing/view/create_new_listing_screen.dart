@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
@@ -37,7 +38,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   TypeList? selectedType;
   ProductType? selectedProductType;
   List<ShippingCitiesModel> shippingcities = [];
-  ShippingCitiesModel? selectedpickup;
+  // ShippingCitiesModel? selectedpickup;
   // bool _isChecked = false;
   bool _acceptterms = false;
   bool trending = false;
@@ -45,7 +46,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   String _inputText = "";
   DateTime? timeAndMonth;
   List<List<dynamic>>? cf = [];
-
+  Option? selecteclothsize;
   void _onDateSelected(DateTime? date) {
     if (date != null) {
       setState(() {
@@ -136,12 +137,17 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   int? categoryId2;
   FieldsResponse? response;
+  FieldsResponse? grocerryresp;
+
   FieldsResponse? phoneresp;
+  FieldsResponse? jobsresp;
   List<Offer>? getoffer;
   Offer? selectedoffer;
   bool? _isselected;
   FieldsResponse? furnitureresresp;
   FieldsResponse? laptoprep;
+  FieldsResponse? clothresp;
+
   FieldsResponse? getRoad;
   FieldsResponse? getcloth;
   Category? childcategory;
@@ -241,6 +247,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
       // Watch provider and fetch data
       final getCategories = ref.watch(GetCategoryResponseProvider(categoryId));
+      ref.watch(GetCategoryResponseProvider(171)).whenData(
+        (value) {
+          grocerryresp = value;
+        },
+      );
       final event = ref.watch(GetCategoryResponseProvider(217));
       event.when(
         data: (data) {},
@@ -253,17 +264,40 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     } else {}
   }
 
+  List<Category>? categoryListItems;
+  Future<void> _fetchCategoryList(String typeId) async {
+    try {
+      NewListingRepository repository = NewListingRepository();
+      final categories = await repository.fetchCategoryList(parentId: typeId);
+      setState(() {
+        categoryListItems = categories;
+      });
+    } catch (e) {
+      print('Failed to load categories: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
     final getCategories =
         ref.watch(GetCategoryResponseProvider(categoryId ?? 1)); //car
+    ref.watch(GetCategoryResponseProvider(73)).whenData(
+      (value) {
+        jobsresp = value;
+      },
+    );
     ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) {
-        print("manis ${value.result['6']?.id}");
+        print("manis ${value.result}");
         phoneresp = value;
       },
     ); //phone
+    // ref.watch(GetCategoryResponseProvider(56)).whenData(
+    //   (value) {
+    //      = value;
+    //   },
+    // );
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
       (value) {
         laptoprep = value;
@@ -279,7 +313,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
         getRoad = getRoad;
       },
     ); //car
-    final cloth = ref.watch(GetCategoryResponseProvider(54)).whenData(
+    final clothfirst = ref.watch(GetCategoryResponseProvider(54)).whenData(
       (value) {
         getcloth = value;
       },
@@ -422,81 +456,38 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             ),
                           )
                         : const SizedBox(),
+
                 SizedBox(
                   height: 10.h,
                 ),
-             CreateListingCardWidget(
-  child: Row(
-    mainAxisSize: MainAxisSize.max,
-    children: [
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Type',
-            style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.black),
-          ),
-          Text(
-            ' *',
-            style: TextStyle(
-                color: const Color(0xffD33636),
-                fontWeight: FontWeight.w500,
-                fontSize: 14.sp),
-          )
-        ],
-      ),
-      Expanded(
-        child: CustomDropdownButton<TypeList>(
-          items: typeListItems,
-          dropdownValue: selectedType,
-          onChanged: (TypeList? newValue) async {
-            setState(() {
-              selectedType = newValue!;
-              // Update the category list based on selectedType
-              // Example: Assuming you have a method to get categories based on type
-              selectedcategory = null; // Reset selected category
-              categoryId = null; // Reset category ID
-              // Fetch or update category list based on selectedType
-              // e.g., categories = fetchCategories(selectedType);
-            });
-          },
-          getItemLabel: (TypeList item) => item.typeName,
-        ),
-      ),
-    ],
-  ),
-),
 
-SizedBox(
-  height: 10.h,
-),
-
-CategoryField(
-  id: selectedcategory?.id.toString(),
-  onCategorySelected: (Category? category) async {
-    if (category != null) {
-      setState(() {
-        selectedcategory = category;
-        categoryId = category.id; // Update categoryId safely
-      });
-    }
-  },
-  onSubCategorySelected: (Category? subCategory,) {
-    categoryId = subCategory?.id;
-    _handleCategorySelection(selectedcategory, "Subcategory", ref);
-  },
-  onSubCategorySelected1: (Category? sub1) {
-    categoryId = sub1?.id;
-    _handleCategorySelection(selectedcategory, "Sub-subcategory 1", ref);
-  },
-  onSubCategorySelected2: (Category? sub2) {
-    categoryId = sub2?.id;
-    _handleCategorySelection(selectedcategory, "Sub-subcategory 2", ref);
-  },
-),
+                CategoryField(
+                  onCategorySelected: (Category? category) async {
+                    if (category != null) {
+                      setState(() {
+                        selectedcategory = category;
+                        categoryId = category.id; // Update categoryId safely
+                      });
+                    }
+                  },
+                  onSubCategorySelected: (
+                    Category? subCategory,
+                  ) {
+                    categoryId = subCategory?.id;
+                    _handleCategorySelection(
+                        selectedcategory, "Subcategory", ref);
+                  },
+                  onSubCategorySelected1: (Category? sub1) {
+                    categoryId = sub1?.id;
+                    _handleCategorySelection(
+                        selectedcategory, "Sub-subcategory 1", ref);
+                  },
+                  onSubCategorySelected2: (Category? sub2) {
+                    categoryId = sub2?.id;
+                    _handleCategorySelection(
+                        selectedcategory, "Sub-subcategory 2", ref);
+                  },
+                ),
 
                 SizedBox(
                   height: 10.h,
@@ -565,6 +556,15 @@ CategoryField(
                         const Spacer(),
                         Expanded(
                           child: TextField(
+                            onSubmitted: (value) {
+                              if (getRoad?.result[2]?.id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${getRoad!.result[2]?.id}', // Create the key dynamically
+                                  whatsintheboxcontroller.text,
+                                ]);
+                              }
+                            },
                             controller: addresscontroller,
                             decoration: InputDecoration.collapsed(
                                 hintText: 'Enter address',
@@ -609,11 +609,10 @@ CategoryField(
                                     builder: (BuildContext context) {
                                       return AdoptiveCalendar(
                                         onSelection: (p0) {
-                                          if (phoneresp?.result['5']?.id !=
-                                              null) {
+                                          if (phoneresp?.result != null) {
                                             // Ensure the dynamic key is safe to access
                                             cf?.add([
-                                              'cf.${phoneresp!.result['16']?.id}', // Create the key dynamically
+                                              'cf.${phoneresp!.result[4].id}', // Create the key dynamically
                                               p0
                                             ]);
                                           }
@@ -660,6 +659,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          onSubmitted: (value) {
+                            if (jobsresp?.result[0].id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${jobsresp!.result[1]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: experiencecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter experience',
@@ -700,6 +708,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          onSubmitted: (value) {
+                            if (jobsresp?.result[2]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[2]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: comapnycontroller,
                           decoration: InputDecoration.collapsed(
                               hintText:
@@ -786,10 +803,10 @@ CategoryField(
                         TextField(
                           controller: whatsintheboxcontroller,
                           onSubmitted: (value) {
-                            if (getRoad?.result['59']?.id != null) {
+                            if (phoneresp?.result[1]?.id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result['59']?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[1]?.id}', // Create the key dynamically
                                 whatsintheboxcontroller.text,
                               ]);
                             }
@@ -916,7 +933,7 @@ CategoryField(
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<Option>(
-                            items: getRoad!.result['4']!.options,
+                            items: getRoad!.result[3].options,
                             dropdownValue: selectedRoom,
                             onChanged: (newValue) {
                               setState(() {
@@ -953,118 +970,124 @@ CategoryField(
                             )
                           ],
                         ),
-                        // SizedBox(
-                        //   width: 10.w,
-                        // ),
-                        // Expanded(
-                        //   // Wrap the dropdown in Expanded to constrain its width
-                        //   child: CustomDropdownButton<Option>(
-                        //     items: getRoad!.result.w
-
-                        //     dropdownValue: jobtype,
-                        //     onChanged: (newValue) {
-                        //       setState(() {
-                        //         jobtype = newValue;
-                        //       });
-                        //     },
-                        //     getItemLabel: (Option item) => item.value,
-                        //   ),
-                        // ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: jobsresp?.result[3].options ?? [],
+                            dropdownValue: jobtype,
+                            onChanged: (newValue) {
+                              setState(() {
+                                jobtype = newValue;
+                              });
+                              if (jobsresp?.result[3]?.id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                  jobtype?.id,
+                                ]);
+                              }
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
                       ],
                     ),
                   ),
 
-                if (selectedcategory?.id != 30 && selectedcategory?.id != 1)
-                  if (phoneresp != null)
-                    CreateListingCardWidget(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Return Policy',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // First Checkbox option
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _isselected ==
-                                          true, // The first checkbox is selected if _isselected is true
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _isselected =
-                                              true; // Set _isselected to true when the first checkbox is selected
-                                        });
-                                        cf?.add([
-                                          'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
-                                          phoneresp!.result['8']!.options[0].id,
-                                        ]);
-                                      },
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        phoneresp!
-                                            .result['8']!.options[0].value,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                // Second Checkbox option
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _isselected ==
-                                          false, // The second checkbox is selected if _isselected is false
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _isselected =
-                                              false; // Set _isselected to false when the second checkbox is selected
-                                        });
-                                        cf?.add([
-                                          'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
-                                          phoneresp!.result['8']!.options[1].id,
-                                        ]);
-                                      },
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        phoneresp!
-                                            .result['8']!.options[1].value,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                // if (selectedcategory?.id != 30 && selectedcategory?.id != 1)
+                //   if (phoneresp != null)
+                //     CreateListingCardWidget(
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Text(
+                //                 'Return Policy',
+                //                 style: TextStyle(
+                //                     fontSize: 14.sp,
+                //                     fontWeight: FontWeight.w600,
+                //                     color: Colors.black),
+                //               ),
+                //             ],
+                //           ),
+                //           Expanded(
+                //             child: Column(
+                //               mainAxisAlignment: MainAxisAlignment.start,
+                //               crossAxisAlignment: CrossAxisAlignment.center,
+                //               children: [
+                //                 // First Checkbox option
+                //                 Row(
+                //                   children: [
+                //                     Checkbox(
+                //                       value: _isselected ==
+                //                           true, // The first checkbox is selected if _isselected is true
+                //                       onChanged: (value) {
+                //                         setState(() {
+                //                           _isselected =
+                //                               true; // Set _isselected to true when the first checkbox is selected
+                //                         });
+                //                         cf?.add([
+                //                           'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
+                //                           phoneresp!.result['8']!.options[0].id,
+                //                         ]);
+                //                       },
+                //                     ),
+                //                     Flexible(
+                //                       child: Text(
+                //                         phoneresp!
+                //                             .result['8']!.options[0].value,
+                //                         style: TextStyle(
+                //                           fontSize: 14.sp,
+                //                           fontWeight: FontWeight.w600,
+                //                           color: Colors.black,
+                //                         ),
+                //                       ),
+                //                     )
+                //                   ],
+                //                 ),
+                //                 // Second Checkbox option
+                //                 Row(
+                //                   children: [
+                //                     Checkbox(
+                //                       value: _isselected ==
+                //                           false, // The second checkbox is selected if _isselected is false
+                //                       onChanged: (value) {
+                //                         setState(() {
+                //                           _isselected =
+                //                               false; // Set _isselected to false when the second checkbox is selected
+                //                         });
+                //                         cf?.add([
+                //                           'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
+                //                           phoneresp!.result['8']!.options[1].id,
+                //                         ]);
+                //                       },
+                //                     ),
+                //                     Flexible(
+                //                       child: Text(
+                //                         phoneresp!
+                //                             .result['8']!.options[1].value,
+                //                         style: TextStyle(
+                //                           fontSize: 14.sp,
+                //                           fontWeight: FontWeight.w600,
+                //                           color: Colors.black,
+                //                         ),
+                //                       ),
+                //                     )
+                //                   ],
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
 
                 if (getRoad?.result != null)
                   if (selectedcategory?.id == 1)
@@ -1102,8 +1125,7 @@ CategoryField(
                                       : selectedFeatures!.first.value,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items:
-                                    getRoad!.result['17']!.options.map((color) {
+                                items: getRoad!.result[10].options.map((color) {
                                   return DropdownMenuItem<Option>(
                                     value: color,
                                     child: Row(
@@ -1126,7 +1148,7 @@ CategoryField(
                                                   }
 
                                                   final cfKey =
-                                                      'cf.${getRoad!.result['17']!.id}';
+                                                      'cf.${getRoad!.result[10].id}';
                                                   final cfValue = selectedFeatures!
                                                       .map((feature) =>
                                                           feature.id)
@@ -1169,7 +1191,10 @@ CategoryField(
                 SizedBox(
                   height: 5.h,
                 ),
-                if (selectedcategory?.id == 1 || selectedcategory?.id == 9)
+                if (selectedcategory?.id == 1 ||
+                    selectedcategory?.id == 9 ||
+                    selectedcategory?.id == 14 ||
+                    selectedcategory?.id == 54)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1208,8 +1233,8 @@ CategoryField(
                                       : selectedColors!.first.value,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items: phoneresp!.result['9']!.options
-                                    .map((color) {
+                                items:
+                                    phoneresp!.result[5].options.map((color) {
                                   return DropdownMenuItem<Option>(
                                     value: color,
                                     child: Row(
@@ -1231,7 +1256,7 @@ CategoryField(
                                                   }
 
                                                   final cfKey =
-                                                      'cf.${getRoad!.result['8']!.id}';
+                                                      'cf.${getRoad!.result[5].id}';
                                                   final cfValue = selectedColors!
                                                       .map((feature) =>
                                                           feature.id)
@@ -1318,6 +1343,13 @@ CategoryField(
                                   selectedStartDate =
                                       pickedDate; // Save the selected date
                                 });
+                                if (jobsresp?.result[4].id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${jobsresp!.result[4].id}', // Create the key dynamically
+                                    selectedStartDate,
+                                  ]);
+                                }
                               }
                             },
                             child: Text(
@@ -1381,6 +1413,13 @@ CategoryField(
                                   selectmanufacturingdate =
                                       pickedDate; // Save the selected date
                                 });
+                                if (grocerryresp?.result[0].id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${grocerryresp!.result[0].id}', // Create the key dynamically
+                                    selectmanufacturingdate,
+                                  ]);
+                                }
                               }
                             },
                             child: Text(
@@ -1444,6 +1483,13 @@ CategoryField(
                                   grocceryexpiraydate =
                                       pickedDate; // Save the selected date
                                 });
+                                if (grocerryresp?.result[6].id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${grocerryresp!.result[6].id}', // Create the key dynamically
+                                    whatsintheboxcontroller.text,
+                                  ]);
+                                }
                               }
                             },
                             child: Text(
@@ -1507,6 +1553,14 @@ CategoryField(
                                 setState(() {
                                   deadlineDate =
                                       pickedDate; // Save the selected date
+
+                                  if (jobsresp?.result[1]?.id != null) {
+                                    // Ensure the dynamic key is safe to access
+                                    cf?.add([
+                                      'cf.${jobsresp!.result[1].id}', // Create the key dynamically
+                                      deadlineDate
+                                    ]);
+                                  }
                                 });
                               }
                             },
@@ -1558,16 +1612,16 @@ CategoryField(
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<Option>(
-                            items: phoneresp!.result['13']!.options,
+                            items: phoneresp!.result[7]!.options,
                             dropdownValue: selectedmobilebrand,
                             onChanged: (newValue) {
                               setState(() {
                                 selectedmobilebrand = newValue;
                               });
-                              if (phoneresp?.result['13']?.id != null) {
+                              if (phoneresp?.result[7]?.id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${phoneresp!.result['13']?.id}', // Create the key dynamically
+                                  'cf.${phoneresp!.result[7]?.id}', // Create the key dynamically
                                   selectedmobilebrand?.id,
                                 ]);
                               }
@@ -1610,12 +1664,19 @@ CategoryField(
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<Option>(
-                              items: getRoad!.result['10']!.options,
+                              items: getRoad!.result[3].options,
                               dropdownValue: selectedmodel,
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedmodel = newValue;
                                 });
+                                if (getRoad?.result[3]?.id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                    whatsintheboxcontroller.text,
+                                  ]);
+                                }
                               },
                               getItemLabel: (Option item) =>
                                   item.value.toString(),
@@ -1625,7 +1686,7 @@ CategoryField(
                     ),
                   ),
 
-                if (selectedcategory?.id == 1)
+                if (selectedcategory?.id == 1 || selectedcategory?.id == 14 )
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1651,7 +1712,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                          onSubmitted: (value) {},
+                          onSubmitted: (value) {
+                            if (getRoad?.result[3]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                whatsintheboxcontroller.text,
+                              ]);
+                            }
+                          },
                           controller: auomobilecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter model',
@@ -1689,6 +1758,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          onSubmitted: (value) {
+                            if (getRoad?.result[0]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: streetsizecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Size of road in feet',
@@ -1708,7 +1786,7 @@ CategoryField(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Size',
+                            'Size of road ',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -1726,6 +1804,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          onSubmitted: (value) {
+                            if (getRoad?.result[0]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: sizecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Anna or ropani',
@@ -1738,41 +1825,43 @@ CategoryField(
                     ],
                   )),
                 CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Enter address',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: addresscontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter address',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
+                  child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Enter address',
+                            style: TextStyle(
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                )),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: addresscontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter address',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
                 CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -1780,7 +1869,7 @@ CategoryField(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Automobile stock',
+                          'Available stock',
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
@@ -1853,6 +1942,13 @@ CategoryField(
                                 // Assign selected year to the controller
                                 yearofregistrationcontroller.text =
                                     selectedDate.year.toString();
+                                if (getRoad?.result[11]?.id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${getRoad!.result[11].id}', // Create the key dynamically
+                                    yearofregistrationcontroller.text,
+                                  ]);
+                                }
                               }
                             },
                             child: AbsorbPointer(
@@ -1900,6 +1996,15 @@ CategoryField(
                         const Spacer(),
                         Expanded(
                           child: TextField(
+                            onSubmitted: (value) {
+                              if (getRoad?.result[6]?.id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${getRoad!.result[6]?.id}', // Create the key dynamically
+                                  value,
+                                ]);
+                              }
+                            },
                             controller: kilometerscontroller,
                             decoration: InputDecoration.collapsed(
                                 hintText: 'kilometers',
@@ -1913,50 +2018,50 @@ CategoryField(
                     ),
                   ),
 
-                if (selectedcategory?.id == 54)
-                  CreateListingCardWidget(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Size',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        if (getRoad?.result != null)
-                          Expanded(
-                            // Wrap the dropdown in Expanded to constrain its width
-                            child: CustomDropdownButton<Option>(
-                              items: getRoad!.result['12']!.options,
-                              dropdownValue: selecetedWarrenty,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selecetedWarrenty = newValue;
-                                });
-                              },
-                              getItemLabel: (Option item) => item.value,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+                // if (selectedcategory?.id == 54)
+                //   CreateListingCardWidget(
+                //     child: Row(
+                //       mainAxisSize: MainAxisSize.max,
+                //       children: [
+                //         Row(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               'Size',
+                //               style: TextStyle(
+                //                   fontSize: 14.sp,
+                //                   fontWeight: FontWeight.w500,
+                //                   color: Colors.black),
+                //             ),
+                //             Text(
+                //               ' *',
+                //               style: TextStyle(
+                //                   color: const Color(0xffD33636),
+                //                   fontWeight: FontWeight.w500,
+                //                   fontSize: 14.sp),
+                //             )
+                //           ],
+                //         ),
+                //         SizedBox(
+                //           width: 10.w,
+                //         ),
+                //         if (getRoad?.result != null)
+                //           Expanded(
+                //             // Wrap the dropdown in Expanded to constrain its width
+                //             child: CustomDropdownButton<Option>(
+                //               items: getRoad!.result['12']!.options,
+                //               dropdownValue: selecetedWarrenty,
+                //               onChanged: (newValue) {
+                //                 setState(() {
+                //                   selecetedWarrenty = newValue;
+                //                 });
+                //               },
+                //               getItemLabel: (Option item) => item.value,
+                //             ),
+                //           ),
+                //       ],
+                //     ),
+                //   ),
                 CreateListingCardWidget(
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -2030,12 +2135,22 @@ CategoryField(
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<Option>(
-                                items: getRoad!.result['14']!.options,
+                                items: getRoad!.result[7].options,
                                 dropdownValue: fuelType,
                                 onChanged: (newValue) {
                                   setState(() {
                                     fuelType = newValue;
                                   });
+
+                                  (value) {
+                                    if (getRoad?.result[7].id != null) {
+                                      // Ensure the dynamic key is safe to access
+                                      cf?.add([
+                                        'cf.${getRoad!.result[7]?.id}', // Create the key dynamically
+                                        value,
+                                      ]);
+                                    }
+                                  };
                                 },
                                 getItemLabel: (Option item) => item.value),
                           ),
@@ -2047,49 +2162,51 @@ CategoryField(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Warranty',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            )
-                          ],
-                        ),
+                        if (getRoad != null)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Warranty',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                ' *',
+                                style: TextStyle(
+                                    color: const Color(0xffD33636),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp),
+                              )
+                            ],
+                          ),
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<Option>(
-                            items: getRoad!.result['19']?.options ?? [],
-                            dropdownValue: selecetedWarrenty,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selecetedWarrenty = newValue;
+                        if (getRoad != null)
+                          Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: CustomDropdownButton<Option>(
+                              items: getRoad!.result[11].options ?? [],
+                              dropdownValue: selecetedWarrenty,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selecetedWarrenty = newValue;
 
-                                // Initialize cf if null and add the new entry
+                                  // Initialize cf if null and add the new entry
 
-                                cf?.add([
-                                  'cf.${getRoad!.result['19']?.id}', // Create the key dynamically
-                                  selecetedWarrenty
-                                      ?.id // Get the selected warranty ID
-                                ]);
-                              });
-                            },
-                            getItemLabel: (Option item) => item.value,
+                                  cf?.add([
+                                    'cf.${getRoad!.result[11].id}', // Create the key dynamically
+                                    selecetedWarrenty
+                                        ?.id // Get the selected warranty ID
+                                  ]);
+                                });
+                              },
+                              getItemLabel: (Option item) => item.value,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -2124,11 +2241,18 @@ CategoryField(
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<Option>(
-                              items: getRoad!.result['6']!.options,
+                              items: getRoad!.result[5].options,
                               dropdownValue: selectedbuildingtype,
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedbuildingtype = newValue;
+                                  if (getRoad?.result[5]?.id != null) {
+                                    // Ensure the dynamic key is safe to access
+                                    cf?.add([
+                                      'cf.${getRoad!.result[5]?.id}', // Create the key dynamically
+                                      selectedbuildingtype?.value,
+                                    ]);
+                                  }
                                 });
                               },
                               getItemLabel: (Option item) => item.value,
@@ -2167,7 +2291,7 @@ CategoryField(
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<Option>(
-                            items: laptoprep!.result['10']!.options,
+                            items: laptoprep!.result[5].options,
                             dropdownValue: selectedElecModel,
                             onChanged: (newValue) {
                               setState(() {
@@ -2192,7 +2316,7 @@ CategoryField(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Size',
+                              'Cloth size',
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w500,
@@ -2212,15 +2336,22 @@ CategoryField(
                         ),
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<CityList>(
-                            items: citylistsitems!,
-                            dropdownValue: selectedCity,
+                          child: CustomDropdownButton<Option>(
+                            items: clothresp!.result[7].options,
+                            dropdownValue: selecteclothsize,
                             onChanged: (newValue) {
                               setState(() {
-                                selectedCity = newValue;
+                                 selecteclothsize = newValue;
+                                if (getRoad?.result[0]?.id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                    selecteclothsize?.value,
+                                  ]);
+                                }
                               });
                             },
-                            getItemLabel: (CityList item) => item.name,
+                            getItemLabel: (Option item) => item.value,
                           ),
                         ),
                       ],
@@ -2269,79 +2400,79 @@ CategoryField(
                 //       ],
                 //     ),
                 //   ),
-                if (selectedcategory?.id != 1 && selectedcategory?.id != 9)
-                  CreateListingCardWidget(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Transmission Type',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        if (getRoad?.result != null)
-                          Column(
-                            children: getRoad!.result['15']!.options
-                                .map<Widget>((option) {
-                              return RadioListTile<Option>(
-                                value: option,
-                                groupValue: trasnmsissiontype,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    trasnmsissiontype = newValue;
+                // if (selectedcategory?.id != 1 || selectedcategory?.id != 9 || selectedcategory?.id!=97)
+                //   CreateListingCardWidget(
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Row(
+                //           children: [
+                //             Text(
+                //               'Transmission Type',
+                //               style: TextStyle(
+                //                   fontSize: 14.sp,
+                //                   fontWeight: FontWeight.w500,
+                //                   color: Colors.black),
+                //             ),
+                //             Text(
+                //               ' *',
+                //               style: TextStyle(
+                //                   color: const Color(0xffD33636),
+                //                   fontWeight: FontWeight.w500,
+                //                   fontSize: 14.sp),
+                //             ),
+                //           ],
+                //         ),
+                //         SizedBox(
+                //           height: 10.h,
+                //         ),
+                //         if (getRoad?.result != null)
+                //           Column(
+                //             children: getRoad!.result[8].options
+                //                 .map<Widget>((option) {
+                //               return RadioListTile<Option>(
+                //                 value: option,
+                //                 groupValue: trasnmsissiontype,
+                //                 onChanged: (newValue) {
+                //                   setState(() {
+                //                     trasnmsissiontype = newValue;
 
-                                    // Create dynamic cf key
-                                    final cfKey =
-                                        'cf.${getRoad!.result['15']!.id}';
-                                    final cfValue = [trasnmsissiontype!.id];
+                //                     // Create dynamic cf key
+                //                     final cfKey =
+                //                         'cf.${getRoad!.result[8].id}';
+                //                     final cfValue = [trasnmsissiontype!.id];
 
-                                    // Check if cf already contains this key
-                                    int index = cf?.indexWhere(
-                                            (entry) => entry[0] == cfKey) ??
-                                        -1;
+                //                     // Check if cf already contains this key
+                //                     int index = cf?.indexWhere(
+                //                             (entry) => entry[0] == cfKey) ??
+                //                         -1;
 
-                                    if (index >= 0) {
-                                      // Update existing entry
-                                      cf?[index][1] = cfValue;
-                                    } else {
-                                      // Add a new entry
-                                      cf?.add([cfKey, cfValue]);
-                                    }
-                                  });
+                //                     if (index >= 0) {
+                //                       // Update existing entry
+                //                       cf?[index][1] = cfValue;
+                //                     } else {
+                //                       // Add a new entry
+                //                       cf?.add([cfKey, cfValue]);
+                //                     }
+                //                   });
 
-                                  // Debug: Print the updated cf list
-                                },
-                                title: Text(
-                                  option
-                                      .value, // Display the label for each radio button
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                      ],
-                    ),
-                  ),
+                //                   // Debug: Print the updated cf list
+                //                 },
+                //                 title: Text(
+                //                   option
+                //                       .value, // Display the label for each radio button
+                //                   style: TextStyle(
+                //                     fontSize: 14.sp,
+                //                     fontWeight: FontWeight.w500,
+                //                     color: Colors.black,
+                //                   ),
+                //                 ),
+                //               );
+                //             }).toList(),
+                //           ),
+                //       ],
+                //     ),
+                //   ),
 
                 CreateListingCardWidget(
                     child: Row(
@@ -2368,6 +2499,16 @@ CategoryField(
                     const Spacer(),
                     Expanded(
                       child: TextField(
+                          onSubmitted: (value) {
+                                 if (getRoad?.result[12]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[12]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
+
                         controller: youtubecontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Enter youtube link',
@@ -2379,7 +2520,7 @@ CategoryField(
                     ),
                   ],
                 )),
-                if (selectedcategory?.id != 1)
+                 if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2405,6 +2546,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                            onSubmitted: (value) {
+                                 if (getRoad?.result[4]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[4]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: modelcontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter model',
@@ -2445,6 +2595,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                            onSubmitted: (value) {
+                                 if (getRoad?.result[9]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[9]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: milagecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Mileage',
@@ -2456,7 +2615,7 @@ CategoryField(
                       ),
                     ],
                   )),
-                if (selectedcategory?.id != 1)
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2483,10 +2642,10 @@ CategoryField(
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (phoneresp?.result['16']?.id != null) {
+                            if (phoneresp?.result[10].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${phoneresp!.result['16']?.id}', // Create the key dynamically
+                                'cf.${phoneresp!.result[10].id}', // Create the key dynamically
                                 value
                               ]);
                             }
@@ -2571,10 +2730,10 @@ CategoryField(
                         child: TextField(
                           controller: storagecontroller,
                           onSubmitted: (value) {
-                            if (getRoad?.result['32']?.id != null) {
+                            if (getRoad?.result[9].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result['32']?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[9].id}', // Create the key dynamically
                                 storagecontroller.text,
                               ]);
                             }
@@ -2651,7 +2810,7 @@ CategoryField(
                     )
                   ],
                 )),
-                if (selectedcategory?.id != 9 || selectedcategory?.id == 14)
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2677,6 +2836,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                            onSubmitted: (value) {
+                                 if (laptoprep?.result[10]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${laptoprep!.result[10]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           controller: screensizecontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter Screen Size (inches)',
@@ -2720,7 +2888,7 @@ CategoryField(
                             height: 10.h), // Add spacing before radio buttons
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: getRoad!.result['5']!.options.map((option) {
+                          children: furnitureresresp!.result[4].options.map((option) {
                             return Row(
                               children: [
                                 Radio<Option>(
@@ -2729,6 +2897,14 @@ CategoryField(
                                   onChanged: (Option? newValue) {
                                     setState(() {
                                       selectedFurnished = newValue;
+                                 if (furnitureresresp?.result[10]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${furnitureresresp!.result[10]?.id}', // Create the key dynamically
+                                selectedFurnished?.value,
+                              ]);
+                            }
+                     
                                     });
                                   },
                                 ),
@@ -2851,7 +3027,7 @@ CategoryField(
                 SizedBox(
                   height: 5.h,
                 ),
-                if (selectedcategory?.id == 14)
+                if (selectedcategory?.id != 122 || selectedcategory?.id != 73 || selectedcategory?.id != 37 || selectedcategory?.id != 143  )
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -2881,7 +3057,7 @@ CategoryField(
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<CityList>(
-                            items: citylistsitems!,
+                            items: [],
                             dropdownValue: selectedCity,
                             onChanged: (newValue) {
                               setState(() {
@@ -3010,6 +3186,15 @@ CategoryField(
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                            onSubmitted: (value) {
+                                 if (phoneresp?.result[9]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${phoneresp!.result[9]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
                           decoration: InputDecoration.collapsed(
                               hintText: 'Brand name',
                               hintStyle: TextStyle(
@@ -3050,7 +3235,7 @@ CategoryField(
                           height: 10.h,
                         ),
                         Column(
-                          children: phoneresp!.result['4']!.options
+                          children: phoneresp!.result[0].options
                               .map<Widget>((option) {
                             return RadioListTile<Option>(
                               value: option,
@@ -3060,8 +3245,7 @@ CategoryField(
                                   selecctedProductTYpe = newValue;
 
                                   // Create dynamic cf key
-                                  final cfKey =
-                                      'cf.${getRoad!.result['4']!.id}';
+                                  final cfKey = 'cf.${getRoad!.result[0].id}';
                                   final cfValue = [selecctedProductTYpe!.id];
 
                                   // Check if cf already contains this key
@@ -3097,6 +3281,40 @@ CategoryField(
                     ),
                   ),
 
+  if (selectedcategory?.id == 171)
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Text(
+                        'Grocery Brand',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: Colors.black),
+                      ),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                            onSubmitted: (value) {
+                                 if (grocerryresp?.result[1]?.id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${grocerryresp!.result[1]?.id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
+                          controller: weightcontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Grocery Brand',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 // const ReturnPolicyCardWidget(),
                 // SizedBox(
                 //   height: 10.h,
@@ -3247,31 +3465,7 @@ CategoryField(
                     ),
                   ],
                 )),
-                if (selectedcategory?.id == 171)
-                  CreateListingCardWidget(
-                      child: Row(
-                    children: [
-                      Text(
-                        'Grocery Brand',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.sp,
-                            color: Colors.black),
-                      ),
-                      const Spacer(),
-                      Expanded(
-                        child: TextField(
-                          controller: weightcontroller,
-                          decoration: InputDecoration.collapsed(
-                              hintText: 'Grocery Brand',
-                              hintStyle: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp,
-                                  color: const Color(0xffADADAD))),
-                        ),
-                      ),
-                    ],
-                  )),
+              
                 SizedBox(
                   height: 10.h,
                 ),

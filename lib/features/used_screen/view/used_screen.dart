@@ -225,7 +225,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final randomstory = ref.watch(fetchStoryHomeProvider);
+    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('2'));
 
     final asyncbajarValue = ref.watch(getUsedResponseProvider);
@@ -713,7 +713,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                 ),
 
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -821,46 +821,47 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Used",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Used",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -964,8 +965,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -1041,7 +1042,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               title: hot.title,
                               vendorname: hot.user.name,
                               similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membercolor,
+                              membershipColor: hot.user.membershipColor,
                               membershipTitle: hot.user.membershipTitle,
                             ),
                           );
@@ -1138,7 +1139,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     pro.similarProductCount,
                                                 membershipColor:
-                                                    pro.user.membercolor,
+                                                    pro.user.membershipColor,
                                                 membershipTitle:
                                                     pro.user.membershipTitle,
                                               ),
@@ -1222,7 +1223,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1296,7 +1297,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1370,7 +1371,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1442,6 +1443,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  children: [
                                 if (data.global.isNotEmpty)
                                   ...data.global.map((e) {
                                     return NotStoryWidget(
@@ -1452,6 +1455,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       brandname: e.brandName,
                                     );
                                   }).toList(),
+                                ],
+                            ),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1492,17 +1497,20 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
                                             );
                                           },
                                         ),
-                                      )
-                                    : Center(
-                                        child: nolistingfound(),
-                                      ),
+                                      ) : Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 10.0), // Add padding here
+                                    child: nolistingfound(),
+                                  ),
+                                ),
+
                               ],
                             ),
                             Column(
@@ -1522,7 +1530,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? Center(child: nolistingfound())
+                                    ? Center(child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 28.0), // Add padding here
+                                    child: nolistingfound(),
+                                  ),
+                                ),)
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1566,7 +1579,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1594,7 +1607,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                 ),
                                 data.insidearr.isEmpty
                                     ? Center(
-                                        child: nolistingfound(),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(top: 10.0), // Add padding here
+                                            child: nolistingfound(),
+                                          ),
+                                        ),
                                       )
                                     : SizedBox(
                                         height: 340.h,
@@ -1634,7 +1652,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1872,7 +1890,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   similarproductCount:
                                                       prod.similarProductCount,
                                                   membershipColor:
-                                                      prod.user.membercolor,
+                                                      prod.user.membershipColor,
                                                   membershipTitle:
                                                       prod.user.membershipTitle,
                                                 ),
@@ -1981,7 +1999,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               similarproductCount:
                                   data.product[index].similarProductCount,
                               membershipColor:
-                                  data.product[index].user.membercolor,
+                                  data.product[index].user.membershipColor,
                               membershipTitle:
                                   data.product[index].user.membershipTitle,
                             ),

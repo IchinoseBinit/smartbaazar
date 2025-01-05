@@ -21,6 +21,7 @@ Future<VendorProfile> getVendorProfileData(
       url:
           '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
     );
+    print("pinkyv ${response.realUri}");
     print("ramu ${VendorProfile.fromJson(response.data['data']).vendor_card}");
     return VendorProfile.fromJson(response.data['data']);
   } catch (e) {

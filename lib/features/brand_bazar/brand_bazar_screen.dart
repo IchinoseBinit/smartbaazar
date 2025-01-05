@@ -21,15 +21,18 @@ import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
@@ -60,8 +63,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   // bool _showSearchProductModels = false;
   late TabController dynamictabController;
   bool _showSearchProductModels = false;
-   final List<Map<String, dynamic>> _items = [
-
+  final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
@@ -87,7 +89,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       'label': 'TradeHub',
       'screen': const B2bScreen()
     },
-    
     {
       'icon': 'assets/icon/box.svg',
       'label': 'ServiceHub',
@@ -225,6 +226,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
+        final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('1'));
 
     final asyncbajarValue = ref.watch(getBrandBazaarResponseProvider);
     final SearchProductModels =
@@ -397,101 +399,97 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       SizedBox(
                         height: 20.h,
                       ),
-                  
-                          SizedBox(
-                            height: 80.h,
-                            child: PageView.builder(
-                              itemCount: _items.length,
-                              padEnds: false,
-                              controller: _pageController,
-                              onPageChanged: (value) {
-                                setState(() {
-                                  selectedIndex =
-                                      value; // Update selectedIndex based on page change
-                                });
-                              },
-                              itemBuilder: (context, index) {
-                                Map<String, dynamic> data = _items[index];
 
-                                // Highlight only when index == 4
-                                bool isActive = index == 1;
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedIndex = index;
-                                    });
-                                    _pageController.animateToPage(
-                                      2,
-                                      duration:
-                                      const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  },
-                                  child: AnimatedContainer(
-                                    padding: EdgeInsets.zero,
-                                    duration: const Duration(milliseconds: 300),
-                                    alignment: Alignment.center,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                              data['screen']),
-                                        );
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        children: [
-                                          if (data['icon']
-                                              .toString()
-                                              .endsWith('.svg'))
-                                            SvgPicture.asset(
-                                              data['icon'],
-                                              alignment: Alignment.center,
-                                              fit: BoxFit.contain,
-                                              theme: const SvgTheme(
-                                                  currentColor:
-                                                  Color(0xffdd9d9d9)),
-                                              color: isActive
-                                                  ? Colors.amber
-                                                  : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                              width: 20,
-                                              height: 20,
-                                            )
-                                          else
-                                            Image.asset(
-                                              data['icon'],
-                                              color: isActive
-                                                  ? Colors.amber
-                                                  : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            data['label'],
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: isActive
-                                                  ? Colors.amber
-                                                  : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                      SizedBox(
+                        height: 80.h,
+                        child: PageView.builder(
+                          itemCount: _items.length,
+                          padEnds: false,
+                          controller: _pageController,
+                          onPageChanged: (value) {
+                            setState(() {
+                              selectedIndex =
+                                  value; // Update selectedIndex based on page change
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> data = _items[index];
+
+                            // Highlight only when index == 4
+                            bool isActive = index == 1;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                                _pageController.animateToPage(
+                                  2,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
                                 );
                               },
-                            ),
-                          ),
+                              child: AnimatedContainer(
+                                padding: EdgeInsets.zero,
+                                duration: const Duration(milliseconds: 300),
+                                alignment: Alignment.center,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => data['screen']),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (data['icon']
+                                          .toString()
+                                          .endsWith('.svg'))
+                                        SvgPicture.asset(
+                                          data['icon'],
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.contain,
+                                          theme: const SvgTheme(
+                                              currentColor: Color(0xffdd9d9d9)),
+                                          color: isActive
+                                              ? Colors.amber
+                                              : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                          width: 20,
+                                          height: 20,
+                                        )
+                                      else
+                                        Image.asset(
+                                          data['icon'],
+                                          color: isActive
+                                              ? Colors.amber
+                                              : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        data['label'],
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: isActive
+                                              ? Colors.amber
+                                              : const Color(0xffD9D9D9)
+                                                  .withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -576,55 +574,39 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     ),
                   ),
                 ),
-                randomstory.when(
-                  data: (data) {
+               asyncPostTypeContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.homeStory?.story;
                     return SizedBox(
-                      height: 130.h,
-                      child: SingleChildScrollView(
-                        // Wrapping the Row with SingleChildScrollView
-                        scrollDirection:
-                            Axis.horizontal, // Ensuring it scrolls horizontally
-                        child: Row(
-                          children: [
-                            // First StoryAddWidget with search option
-                            StoryAddWidget(
-                              vImage: data!.feedStory?.posts?.first.image,
-                              brandname:
-                                  data!.feedStory?.posts?.first.vendorName,
-                              index: 0,
-                              addSearch: true, // First item has search
-                              showgift: false,
-                              onTap: () {
-                                setState(() {
-                                  // _isPopupVisible = true; // Open the popup
-                                });
-                              },
-                            ),
-                            // Expanded is not needed since SingleChildScrollView will handle scrolling
-                            // Now ListView.builder will be added directly to the row
-                            ...data!.feedStory!.posts!.map((storyData) {
-                              return StoryAddWidget(
-                                brandname: storyData.vendorName,
-                                vImage: storyData.vendorImage,
-                                index: data!.feedStory!.posts!
-                                    .indexOf(storyData),
-                                addSearch:
-                                    false, // For all items other than the first, no search
-                                showgift: storyData.hasSponsoredGifts,
-                                onTap: () {
-                                  // setState(() {
-                                  //   // _isPopupVisible = true; // Open the popup
-                                  // });
-                                },
-                              );
-                            }).toList(),
-                          ],
-                        ),
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            feedStoryData.homeStory!.story!.posts!.length,
+                        itemBuilder: (context, index) {
+                          print("kala ${feedStoryData.homeStory}");
+                          final story =
+                              feedStoryData.homeStory!.story!.posts![index];
+                          return HomePageStoryContainer(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                            // feedData.data!.feedPost![index].userId ??
+                          );
+                        },
                       ),
                     );
                   },
-                  error: (error, stackTrace) => Text(error.toString()),
-                  loading: () => const CircularProgressIndicator(),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
                 SizedBox(
                   height: 20.h,
@@ -735,46 +717,47 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "Brands",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "Brands",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -867,8 +850,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           Padding(
@@ -893,7 +876,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               ],
                             ),
                           ),
-                          nolistingfound(),
+                          Center(child: nolistingfound()),
                         ],
                       ),
                     );
@@ -904,7 +887,238 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
-                  height: 200.h,
+                  height: 50,
+                  width: double.infinity,
+                  child: TabBar(
+                    controller: dynamictabController,
+                    tabs: const [
+                      Tab(
+
+                        text: ' Global\n Brands',
+                      ),
+                      Tab(text: ' Domestic\n Brands'),
+                      Tab(
+                          text:
+                              ' Spotlight\n Sellers'), // Changed label for clarity
+                    ],
+                    labelColor: const Color(0xff909090),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                SizedBox(
+                  height: 150,
+                  width: double.infinity,
+
+                  child:
+                      TabBarView(controller: dynamictabController, children: [
+                    Center(child: nolistingfound()),
+                    Center(child: nolistingfound()),
+                    Center(child: nolistingfound()),
+                  ]),
+                ),
+                  Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "BuyOrWin",
+                        textAlign: TextAlign.center,
+                        style: headerstyle.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: const Color(0xff551b55)),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Center(
+                        child: Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          margin: EdgeInsets.only(bottom: 5.h),
+                          height: 5.h,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                              color: const Color(0xFF681b4e),
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                      ),
+                      nolistingfound(),
+                      SizedBox(height: 5.h,),
+                       asyncbajarValue.when(
+                  data: (data) {
+                    List<List<VProduct>> productsList = [
+                      // data.low_price_guarantee, // Corresponds to SHOPZONE
+                      // data.Launch_offer, // Corresponds to HOB
+
+                      // data.seasonal, // Corresponds to SERVICES
+
+                      // data.promotional, // Corresponds to TRADEHUB
+                      // data.clearance_sale,
+                      // data.Launch_festival_offer, // Corresponds to USED
+                    ];
+
+                    return SizedBox(
+                      width: double.infinity,
+                      height:150,
+                          
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: selectedIndexNotifier,
+                        builder: (context, selectedIndex, child) {
+                          // Map category labels to their respective product lists
+                          List<String> categories = services
+                              .map((e) => e['label'] as String)
+                              .toList();
+
+                          return Column(
+                            children: [
+                              // Category Selector Row
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50.h,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: categories.length,
+                                  itemBuilder: (context, index) {
+                                    bool isSelected = index == selectedIndex;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // Update the selected index
+                                        selectedIndexNotifier.value = index;
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.all(5),
+                                        width: 150.w,
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? const Color(0xFF681b4e)
+                                              : const Color(0xffA5A5A5),
+                                        ),
+                                        child: Text(
+                                          categories[index],
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: ColorConstant.whiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+
+                              // Spacer
+                              SizedBox(height: 5.h),
+                                 Center(child: nolistingfound()),
+                                 
+
+                              // Display Products for the selected category
+                              // asyncbajarValue.when(
+                              //   data: (data) {
+                              //     // Define the products list corresponding to each category
+
+                              //     // Ensure the index is valid
+                              //     if (selectedIndex < 0 ||
+                              //         selectedIndex >= productsList.length) {
+                              //       selectedIndex =
+                              //           0; // Default to the first category if index is out of bounds
+                              //     }
+
+                              //     List<VProduct> products =
+                              //         [];
+
+                              //     return data.data?.newProducts==0
+                              //         ? nolistingfound()
+                              //         : SizedBox(
+                              //             height: 340.h,
+                              //             child: ListView.builder(
+                              //               clipBehavior: Clip.antiAlias,
+                              //               padding: const EdgeInsets.all(3),
+                              //               scrollDirection: Axis.horizontal,
+                              //               itemCount: products.length,
+                              //               itemBuilder: (context, index) {
+                              //                 VProduct prod = products[index];
+
+                              //                 return InkWell(
+                              //                   onTap: () {
+                              //                     Navigator.push(
+                              //                         context,
+                              //                         MaterialPageRoute(
+                              //                           builder: (context) =>
+                              //                               ProductDetailScreen(
+                              //                                   productId:
+                              //                                       prod.id),
+                              //                         ));
+                              //                   },
+                              //                   child: ProductDetailWidget(
+                              //                     comment: prod.commentcount
+                              //                         .toString(),
+                              //                     wow: prod.wow,
+                              //                     lefttile: "B2b-Shop",
+                              //                     vendorname: prod.user.name,
+                              //                     issponsored:
+                              //                         prod.user.sponsored,
+                              //                     discounttedPrice:
+                              //                         prod.discounted_price,
+                              //                     Vimage: prod.user.photo,
+                              //                     price: prod.price,
+                              //                     title: prod.title,
+                              //                     productImage: prod.image,
+                              //                     similarproductCount:
+                              //                         prod.similarProductCount,
+                              //                     membershipColor:
+                              //                         prod.user.membershipColor,
+                              //                     membershipTitle:
+                              //                         prod.user.membershipTitle,
+                              //                   ),
+                              //                 );
+                              //               },
+                              //             ),
+                              //           );
+
+                              //     // SizedBox(
+                              //     //    height: 340.h,
+                              //     //   child: ListView.builder(
+                              //     //     scrollDirection: Axis.horizontal,
+                              //     //     itemCount: products.length,
+                              //     //     itemBuilder: (context, index) {
+                              //     //       return InkWell(
+                              //     //         onTap: () {}, // Handle onTap if needed
+                              //     //         child: ProductDetailWidget(
+                              //     //           vendorname: prod.user.name,
+                              //     //           discounttedPrice: "0",
+                              //     //           Vimage: prod.user.photo,
+                              //     //           price: prod.price,
+                              //     //           title: prod.title,
+                              //     //           productImage: prod.image,
+                              //     //         ), // Replace with your actual product widget
+                              //     //       );
+                              //     //     },
+                              //     //   ),
+                              //     // );
+                              //   },
+                              //   error: (error, stackTrace) =>
+                              //       Text("Error: $error"),
+                              //   loading: () =>
+                              //       const CircularProgressIndicator(),
+                              // ),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text("$error");
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator();
+                  },
+                ),
+                    ],
+                  ),
                 ),
               ],
             ),

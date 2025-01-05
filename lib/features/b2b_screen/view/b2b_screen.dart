@@ -632,12 +632,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                 ),
 
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
 
-                SizedBox(
-                  height: 10.h,
-                ),
+              
                 asyncbajarValue.when(
                   data: (data) {
                     return Stack(
@@ -740,46 +738,47 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           SizedBox(
                             height: 100.h, // Adjust height as necessary
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                // "ALL" Services (Standalone)
-                                DottedBorder(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [15, 15],
-                                  child: SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "ALL",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  // "ALL" Services (Standalone)
+                                  DottedBorder(
+                                    strokeWidth: 2,
+                                    color: Colors.grey,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(10),
+                                    dashPattern: const [15, 15],
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "ALL",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          "B2b",
-                                          style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                          Text(
+                                            "B2b",
+                                            style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Other Services List
-                                Expanded(
-                                  child: ListView(
+                                  // Other Services List
+                                  ListView(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
@@ -886,8 +885,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       );
                                     }).toList(),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -964,7 +963,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               title: hot.title,
                               vendorname: hot.user.name,
                               similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membercolor,
+                              membershipColor: hot.user.membershipColor,
                               membershipTitle: hot.user.membershipTitle,
                             ),
                           );
@@ -1062,7 +1061,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 similarproductCount:
                                                     pro.similarProductCount,
                                                 membershipColor:
-                                                    pro.user.membercolor,
+                                                    pro.user.membershipColor,
                                                 membershipTitle:
                                                     pro.user.membershipTitle,
                                               ),
@@ -1146,7 +1145,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1220,7 +1219,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1294,7 +1293,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           productImage: pro.image,
                                           similarproductCount:
                                               pro.similarProductCount,
-                                          membershipColor: pro.user.membercolor,
+                                          membershipColor: pro.user.membershipColor,
                                           membershipTitle:
                                               pro.user.membershipTitle,
                                         ),
@@ -1315,7 +1314,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                   },
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 50.h,
                   width: double.infinity,
                   child: TabBar(
                     controller: dynamictabController,
@@ -1338,18 +1337,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     else
                       dynamicHeight = 300;
@@ -1367,16 +1366,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (data.global.isNotEmpty)
-                                  ...data.global.map((e) {
-                                    return NotStoryWidget(
-                                      vImage: e
-                                          .brandLogo, // Use the correct variable name
-                                      index: data.global
-                                          .indexOf(e), // Get the index
-                                      brandname: e.brandName,
-                                    );
-                                  }).toList(),
+                                Row(
+                                  children: [
+                                    if (data.global.isNotEmpty)
+                                      ...data.global.map((e) {
+                                        return NotStoryWidget(
+                                          vImage: e
+                                              .brandLogo, // Use the correct variable name
+                                          index: data.global.indexOf(
+                                              e), // Get the index
+                                          brandname: e.brandName,
+                                        );
+                                      }).toList(),
+                                  ],
+                                ),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
@@ -1417,7 +1420,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1425,7 +1428,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           },
                                         ),
                                       )
-                                    : const SizedBox(),
+                                    : Center(child: nolistingfound())
                               ],
                             ),
                             Column(
@@ -1444,8 +1447,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                 SizedBox(height: 5.h,),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 20.0), // Add padding here
+                                    child: nolistingfound(),
+                                  ),
+                                )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1489,7 +1498,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1515,8 +1524,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     }).toList(),
                                   ),
                                 ),
+                                 SizedBox(height: 5.h,),
                                 data.insidearr.isEmpty
-                                    ? nolistingfound()
+                                    ? Center(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 20.0), // Add padding here
+                                      child: nolistingfound(),
+                                    ),
+                                  ),
+                                )
                                     : SizedBox(
                                         height: 340.h,
                                         child: ListView.builder(
@@ -1555,7 +1572,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 similarproductCount:
                                                     prod.similarProductCount,
                                                 membershipColor:
-                                                    prod.user.membercolor,
+                                                    prod.user.membershipColor,
                                                 membershipTitle:
                                                     prod.user.membershipTitle,
                                               ),
@@ -1636,6 +1653,39 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
+                  Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Sponsored",
+                                  textAlign: TextAlign.center,
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: const Color(0xff551b55)),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Center(
+                                  child: Container(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    margin: EdgeInsets.only(bottom: 5.h),
+                                    height: 5.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xff901B41),
+                                        borderRadius: BorderRadius.circular(5)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                             nolistingfound(),
+                             SizedBox(height: 5.h,)
+                              ],
+                            ),
+                          ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -1765,7 +1815,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             itemCount: products.length,
                                             itemBuilder: (context, index) {
                                               VProduct prod = products[index];
-
                                               return InkWell(
                                                 onTap: () {
                                                   Navigator.push(
@@ -1778,6 +1827,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  offer: prod.offers,
+                                                  shortestDistance: prod.user.shortestDistance,
+                                                  avg_rating: prod.avg_rating?.toDouble(),
+
                                                   comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,
@@ -1794,7 +1847,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   similarproductCount:
                                                       prod.similarProductCount,
                                                   membershipColor:
-                                                      prod.user.membercolor,
+                                                      prod.user.membershipColor,
                                                   membershipTitle:
                                                       prod.user.membershipTitle,
                                                 ),
@@ -1857,7 +1910,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ],
                   ),
                 ),
-
                 asyncbajarValue.when(
                   data: (data) {
                     return GridView.builder(
@@ -1903,7 +1955,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               similarproductCount:
                                   data.product[index].similarProductCount,
                               membershipColor:
-                                  data.product[index].user.membercolor,
+                                  data.product[index].user.membershipColor,
                               membershipTitle:
                                   data.product[index].user.membershipTitle,
                             ),

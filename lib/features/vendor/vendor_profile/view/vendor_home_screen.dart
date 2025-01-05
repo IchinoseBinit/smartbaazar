@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -236,14 +238,16 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           children: [
                             Stack(
                               children: [
-                           if(data.vendor_card!=null)     Positioned(
-                                  child: VendorSearchContainer(
-                                    img: data.vendor_card!.photo!,
-                                    controller: _searchController,
-                                    onSearchFocusChanged: _onSearchFocusChanged,
-                                    MYonchnage: (p0) {},
+                                if (data.vendor_card != null)
+                                  Positioned(
+                                    child: VendorSearchContainer(
+                                      img: data.vendor_card!.photo!,
+                                      controller: _searchController,
+                                      onSearchFocusChanged:
+                                          _onSearchFocusChanged,
+                                      MYonchnage: (p0) {},
+                                    ),
                                   ),
-                                ),
                                 if (_showSearchProductModels)
                                   Positioned(
                                     left: 0,
@@ -332,7 +336,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             data.deals == null
                                 ? const SizedBox()
                                 : DottedContainer(
-                                  vname: data.vendor_card!.name!,
+                                    vname: data.vendor_card!.name!,
                                     deals: data.deals!,
                                     firstImage: data.vendor!.photo,
                                   ),
@@ -1138,7 +1142,10 @@ class DottedContainer extends StatelessWidget {
   final String vname;
 
   const DottedContainer(
-      {super.key, required this.firstImage, required this.deals,required this.vname});
+      {super.key,
+      required this.firstImage,
+      required this.deals,
+      required this.vname});
 
   @override
   Widget build(BuildContext context) {
@@ -1148,7 +1155,7 @@ class DottedContainer extends StatelessWidget {
         height: 210.h,
         child: Row(
           children: [
-            _buildFirstItem(firstImage!,vname),
+            _buildFirstItem(firstImage!, vname),
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -1352,12 +1359,9 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Opening hours : ${widget.vabout.opening_hours}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
-                          ),
-                        ),
+                            "Opening hours:\n${(jsonDecode(widget.vabout.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 12.sp)),
                         SizedBox(height: 10.h),
                         Row(
                           children: [
@@ -1528,7 +1532,7 @@ class BigContainer extends StatelessWidget {
                   color: const Color(0xff6d1a49),
                   strokeWidth: 2,
                   borderPadding: const EdgeInsets.all(3),
-                  dashPattern: const [9,5],
+                  dashPattern: const [9, 5],
                   borderType: BorderType.Circle,
                   child: Padding(
                       padding: const EdgeInsets.all(10.0),
