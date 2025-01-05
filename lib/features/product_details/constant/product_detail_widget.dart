@@ -62,7 +62,6 @@ class ProductDetailWidget extends StatelessWidget {
     String showRs = discounttedPrice == '0' ? '' : '';
 
     return Card(
-      
       clipBehavior: Clip.antiAlias,
       shadowColor: const Color(0xff3D215F).withOpacity(0.5),
       elevation: 9,
@@ -73,7 +72,7 @@ class ProductDetailWidget extends StatelessWidget {
       child: SizedBox(
         width: 260.w,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,6 +83,8 @@ class ProductDetailWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SvgPicture.asset(

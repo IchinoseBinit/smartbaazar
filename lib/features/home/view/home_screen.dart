@@ -235,7 +235,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
-    // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
 
     // final adsList = ref.watch(fetchAdsProvider);
@@ -1132,6 +1131,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 dynamicHeight = 440;
                               return SizedBox(
                                 child: AnimatedContainer(
+                             
                                   duration: const Duration(milliseconds: 300),
                                   height: dynamicHeight, // Main dynamic height
                                   width: double.infinity,
