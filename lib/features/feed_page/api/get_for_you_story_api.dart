@@ -21,7 +21,13 @@ Future<GetFeedStoriesModel> getForYouStory(GetForYouStoryRef ref) async {
       final jsonResponse = response.data;
       // Ensure the data field is handled correctly
       if (jsonResponse is Map<String, dynamic>) {
-        return GetFeedStoriesModel.fromJson(jsonResponse);
+        if (jsonResponse['data'] is List<dynamic> &&
+            jsonResponse['data'].isEmpty) {
+          return GetFeedStoriesModel(
+              data: FeedStoryData(feedstory: FeedStory()));
+        } else {
+          return GetFeedStoriesModel.fromJson(jsonResponse);
+        }
       } else {
         throw Exception('Unexpected API response structure');
       }

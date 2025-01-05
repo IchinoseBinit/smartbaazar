@@ -17,7 +17,7 @@ class GetFeedOfFollowingModel with _$GetFeedOfFollowingModel {
 class Data with _$Data {
   const factory Data({
     @JsonKey(name: 'feed_post') List<FeedPost>? feedPost,
-    @JsonKey(name: 'story') Story? story,
+    // @JsonKey(name: 'story') Story? story,
   }) = _Data;
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
@@ -96,41 +96,41 @@ class UserDetail with _$UserDetail {
   factory UserDetail.fromJson(Map<String, dynamic> json) => _$UserDetailFromJson(json);
 }
 
-@freezed
-class Story with _$Story {
-  const factory Story({
-    @JsonKey(name: 'feed_story') List<FeedStory>? feedStory,
-  }) = _Story;
+// @freezed
+// class Story with _$Story {
+//   const factory Story({
+//     @JsonKey(name: 'feed_story') List<FeedStory>? feedStory,
+//   }) = _Story;
 
-  factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
-}
+//   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
+// }
 
-@freezed
-class FeedStory with _$FeedStory {
-  const factory FeedStory({
-    @JsonKey(name: 'id') String? id,
-    @JsonKey(name: 'vendor_name') String? vendorName,
-    @JsonKey(name: 'vendor_image') String? vendorImage,
-    @JsonKey(name: 'story_count') int? storyCount,
-    @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
-    @JsonKey(name: 'posts') List<Post>? posts,
-  }) = _FeedStory;
+// @freezed
+// class FeedStory with _$FeedStory {
+//   const factory FeedStory({
+//     @JsonKey(name: 'id') String? id,
+//     @JsonKey(name: 'vendor_name') String? vendorName,
+//     @JsonKey(name: 'vendor_image') String? vendorImage,
+//     @JsonKey(name: 'story_count') int? storyCount,
+//     @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+//     @JsonKey(name: 'posts') List<Post>? posts,
+//   }) = _FeedStory;
 
-  factory FeedStory.fromJson(Map<String, dynamic> json) => _$FeedStoryFromJson(json);
-}
+//   factory FeedStory.fromJson(Map<String, dynamic> json) => _$FeedStoryFromJson(json);
+// }
 
-@freezed
-class Post with _$Post {
-  const factory Post({
-    @JsonKey(name: 'id') String? id,
-    @JsonKey(name: 'title') String? title,
-    @JsonKey(name: 'image') String? image,
-    @JsonKey(name: 'similarproductcount') int? similarProductCount,
-    @JsonKey(name: 'comment_count') String? commentCount,
-    @JsonKey(name: 'average_rating') dynamic averageRating,
-    @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
-    @JsonKey(name: 'wow') dynamic wow,
-  }) = _Post;
+// @freezed
+// class Post with _$Post {
+//   const factory Post({
+//     @JsonKey(name: 'id') String? id,
+//     @JsonKey(name: 'title') String? title,
+//     @JsonKey(name: 'image') String? image,
+//     @JsonKey(name: 'similarproductcount') int? similarProductCount,
+//     @JsonKey(name: 'comment_count') String? commentCount,
+//     @JsonKey(name: 'average_rating') dynamic averageRating,
+//     @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
+//     @JsonKey(name: 'wow') dynamic wow,
+//   }) = _Post;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-}
+//   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+// }

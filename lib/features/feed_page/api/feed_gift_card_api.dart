@@ -20,6 +20,9 @@ Future<FeedGiftCardModel> getFeedGiftCard(
       final jsonResponse = response.data;
       if (jsonResponse is Map<String, dynamic>) {
         return FeedGiftCardModel.fromJson(jsonResponse);
+      } else if (jsonResponse is List<dynamic>) {
+        // Handle the case where the response is an empty array
+        return FeedGiftCardModel();
       } else {
         throw Exception('Invalid response format');
       }

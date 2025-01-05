@@ -26,15 +26,11 @@ _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
       feedPost: (json['feed_post'] as List<dynamic>?)
           ?.map((e) => FeedPost.fromJson(e as Map<String, dynamic>))
           .toList(),
-      story: json['story'] == null
-          ? null
-          : Story.fromJson(json['story'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
     <String, dynamic>{
       'feed_post': instance.feedPost,
-      'story': instance.story,
     };
 
 _$FeedPostImpl _$$FeedPostImplFromJson(Map<String, dynamic> json) =>
@@ -149,60 +145,4 @@ Map<String, dynamic> _$$UserDetailImplToJson(_$UserDetailImpl instance) =>
       'membership_id': instance.membershipId,
       'membership_title': instance.membershipTitle,
       'membership_color': instance.membershipColor,
-    };
-
-_$StoryImpl _$$StoryImplFromJson(Map<String, dynamic> json) => _$StoryImpl(
-      feedStory: (json['feed_story'] as List<dynamic>?)
-          ?.map((e) => FeedStory.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
-    <String, dynamic>{
-      'feed_story': instance.feedStory,
-    };
-
-_$FeedStoryImpl _$$FeedStoryImplFromJson(Map<String, dynamic> json) =>
-    _$FeedStoryImpl(
-      id: json['id'] as String?,
-      vendorName: json['vendor_name'] as String?,
-      vendorImage: json['vendor_image'] as String?,
-      storyCount: (json['story_count'] as num?)?.toInt(),
-      hasSponsoredGifts: json['has_sponsored_gifts'] as bool?,
-      posts: (json['posts'] as List<dynamic>?)
-          ?.map((e) => Post.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$FeedStoryImplToJson(_$FeedStoryImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'vendor_name': instance.vendorName,
-      'vendor_image': instance.vendorImage,
-      'story_count': instance.storyCount,
-      'has_sponsored_gifts': instance.hasSponsoredGifts,
-      'posts': instance.posts,
-    };
-
-_$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      image: json['image'] as String?,
-      similarProductCount: (json['similarproductcount'] as num?)?.toInt(),
-      commentCount: json['comment_count'] as String?,
-      averageRating: json['average_rating'],
-      discountPercentage: json['discount_percentage'],
-      wow: json['wow'],
-    );
-
-Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'image': instance.image,
-      'similarproductcount': instance.similarProductCount,
-      'comment_count': instance.commentCount,
-      'average_rating': instance.averageRating,
-      'discount_percentage': instance.discountPercentage,
-      'wow': instance.wow,
     };
