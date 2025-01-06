@@ -55,6 +55,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     }
   }
 
+  String? typeid;
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
   List<Category> subcategoryList = [];
@@ -90,6 +91,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   Offer? selectedOffer;
   Option? selectedFurnished;
   Option? selecctedProductTYpe;
+  List<Map<String, String>> rows = [{}];
 
   List<ProductType> productTypeListItems = [];
   TextEditingController titlecontroller = TextEditingController();
@@ -256,7 +258,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       event.when(
         data: (data) {},
         error: (error, stackTrace) {},
-        loading: () => CircularProgressIndicator(),
+        loading: () => const CircularProgressIndicator(),
       );
       getCategories.whenData((value) {
         response = value;
@@ -289,7 +291,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     );
     ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) {
-        print("manis ${value.result}");
         phoneresp = value;
       },
     ); //phone
@@ -462,30 +463,51 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 CategoryField(
-                  onCategorySelected: (Category? category) async {
+                  onCategorySelected: (category, typeId) {
                     if (category != null) {
+                      // Update categoryId and typeId
                       setState(() {
                         selectedcategory = category;
                         categoryId = category.id; // Update categoryId safely
+                        // You can also store the typeId if needed
+                        typeid =
+                            typeId; // Optionally use typeId for other purposes
                       });
+
+                      // Print the selected category ID and typeId for debugging
+                      print(
+                          "Selected Category: ${category.name}, Category ID: ${category.id}, Type ID: $typeid");
                     }
                   },
-                  onSubCategorySelected: (
-                    Category? subCategory,
-                  ) {
-                    categoryId = subCategory?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Subcategory", ref);
+                  onSubCategorySelected: (Category? subCategory) {
+                    // Update categoryId based on subcategory selection
+                    setState(() {
+                      categoryId = subCategory?.id;
+                    });
+
+                    // Print the subcategory ID and typeId for debugging
+                    print(
+                        "Selected Subcategory: ${subCategory?.name}, Subcategory ID: ${subCategory?.id}");
                   },
                   onSubCategorySelected1: (Category? sub1) {
-                    categoryId = sub1?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Sub-subcategory 1", ref);
+                    // Update categoryId for subcategory 1
+                    setState(() {
+                      categoryId = sub1?.id;
+                    });
+
+                    // Print the subcategory 1 ID
+                    print(
+                        "Selected Sub-subcategory 1: ${sub1?.name}, Sub-subcategory 1 ID: ${sub1?.id}");
                   },
                   onSubCategorySelected2: (Category? sub2) {
-                    categoryId = sub2?.id;
-                    _handleCategorySelection(
-                        selectedcategory, "Sub-subcategory 2", ref);
+                    // Update categoryId for subcategory 2
+                    setState(() {
+                      categoryId = sub2?.id;
+                    });
+
+                    // Print the subcategory 2 ID
+                    print(
+                        "Selected Sub-subcategory 2: ${sub2?.name}, Sub-subcategory 2 ID: ${sub2?.id}");
                   },
                 ),
 
@@ -530,7 +552,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ],
                   ),
                 ),
-                if (selectedcategory?.id == 122)
+                if (typeid == '5')
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -557,10 +579,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           child: TextField(
                             onSubmitted: (value) {
-                              if (getRoad?.result[2]?.id != null) {
+                              if (getRoad?.result[2].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[2]?.id}', // Create the key dynamically
+                                  'cf.${getRoad!.result[2].id}', // Create the key dynamically
                                   whatsintheboxcontroller.text,
                                 ]);
                               }
@@ -577,7 +599,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id == 122)
+                if (typeid == '122')
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -633,7 +655,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id == 73)
+                if (typeid == '4')
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -663,7 +685,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             if (jobsresp?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${jobsresp!.result[1]?.id}', // Create the key dynamically
+                                'cf.${jobsresp!.result[1].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -709,10 +731,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (jobsresp?.result[2]?.id != null) {
+                            if (jobsresp?.result[2].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[2]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[2].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -803,10 +825,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         TextField(
                           controller: whatsintheboxcontroller,
                           onSubmitted: (value) {
-                            if (phoneresp?.result[1]?.id != null) {
+                            if (phoneresp?.result[1].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[1]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[1].id}', // Create the key dynamically
                                 whatsintheboxcontroller.text,
                               ]);
                             }
@@ -982,10 +1004,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               setState(() {
                                 jobtype = newValue;
                               });
-                              if (jobsresp?.result[3]?.id != null) {
+                              if (jobsresp?.result[3].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                  'cf.${getRoad!.result[3].id}', // Create the key dynamically
                                   jobtype?.id,
                                 ]);
                               }
@@ -1554,7 +1576,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   deadlineDate =
                                       pickedDate; // Save the selected date
 
-                                  if (jobsresp?.result[1]?.id != null) {
+                                  if (jobsresp?.result[1].id != null) {
                                     // Ensure the dynamic key is safe to access
                                     cf?.add([
                                       'cf.${jobsresp!.result[1].id}', // Create the key dynamically
@@ -1612,16 +1634,16 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<Option>(
-                            items: phoneresp!.result[7]!.options,
+                            items: phoneresp!.result[7].options,
                             dropdownValue: selectedmobilebrand,
                             onChanged: (newValue) {
                               setState(() {
                                 selectedmobilebrand = newValue;
                               });
-                              if (phoneresp?.result[7]?.id != null) {
+                              if (phoneresp?.result[7].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${phoneresp!.result[7]?.id}', // Create the key dynamically
+                                  'cf.${phoneresp!.result[7].id}', // Create the key dynamically
                                   selectedmobilebrand?.id,
                                 ]);
                               }
@@ -1670,10 +1692,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 setState(() {
                                   selectedmodel = newValue;
                                 });
-                                if (getRoad?.result[3]?.id != null) {
+                                if (getRoad?.result[3].id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
-                                    'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                    'cf.${getRoad!.result[3].id}', // Create the key dynamically
                                     whatsintheboxcontroller.text,
                                   ]);
                                 }
@@ -1686,7 +1708,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-                if (selectedcategory?.id == 1 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 1 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1713,10 +1735,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[3]?.id != null) {
+                            if (getRoad?.result[3].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[3]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[3].id}', // Create the key dynamically
                                 whatsintheboxcontroller.text,
                               ]);
                             }
@@ -1759,10 +1781,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[0]?.id != null) {
+                            if (getRoad?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[0].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -1778,7 +1800,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-                if (selectedcategory?.id == 30)
+                if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -1805,10 +1827,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
-                            if (getRoad?.result[0]?.id != null) {
+                            if (getRoad?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[0].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -1942,7 +1964,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 // Assign selected year to the controller
                                 yearofregistrationcontroller.text =
                                     selectedDate.year.toString();
-                                if (getRoad?.result[11]?.id != null) {
+                                if (getRoad?.result[11].id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
                                     'cf.${getRoad!.result[11].id}', // Create the key dynamically
@@ -1997,10 +2019,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           child: TextField(
                             onSubmitted: (value) {
-                              if (getRoad?.result[6]?.id != null) {
+                              if (getRoad?.result[6].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[6]?.id}', // Create the key dynamically
+                                  'cf.${getRoad!.result[6].id}', // Create the key dynamically
                                   value,
                                 ]);
                               }
@@ -2146,7 +2168,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                     if (getRoad?.result[7].id != null) {
                                       // Ensure the dynamic key is safe to access
                                       cf?.add([
-                                        'cf.${getRoad!.result[7]?.id}', // Create the key dynamically
+                                        'cf.${getRoad!.result[7].id}', // Create the key dynamically
                                         value,
                                       ]);
                                     }
@@ -2246,10 +2268,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               onChanged: (newValue) {
                                 setState(() {
                                   selectedbuildingtype = newValue;
-                                  if (getRoad?.result[5]?.id != null) {
+                                  if (getRoad?.result[5].id != null) {
                                     // Ensure the dynamic key is safe to access
                                     cf?.add([
-                                      'cf.${getRoad!.result[5]?.id}', // Create the key dynamically
+                                      'cf.${getRoad!.result[5].id}', // Create the key dynamically
                                       selectedbuildingtype?.value,
                                     ]);
                                   }
@@ -2341,11 +2363,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             dropdownValue: selecteclothsize,
                             onChanged: (newValue) {
                               setState(() {
-                                 selecteclothsize = newValue;
-                                if (getRoad?.result[0]?.id != null) {
+                                selecteclothsize = newValue;
+                                if (getRoad?.result[0].id != null) {
                                   // Ensure the dynamic key is safe to access
                                   cf?.add([
-                                    'cf.${getRoad!.result[0]?.id}', // Create the key dynamically
+                                    'cf.${getRoad!.result[0].id}', // Create the key dynamically
                                     selecteclothsize?.value,
                                   ]);
                                 }
@@ -2499,16 +2521,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     const Spacer(),
                     Expanded(
                       child: TextField(
-                          onSubmitted: (value) {
-                                 if (getRoad?.result[12]?.id != null) {
-                              // Ensure the dynamic key is safe to access
-                              cf?.add([
-                                'cf.${getRoad!.result[12]?.id}', // Create the key dynamically
-                                value,
-                              ]);
-                            }
-                          },
-
+                        onSubmitted: (value) {
+                          if (getRoad?.result[12].id != null) {
+                            // Ensure the dynamic key is safe to access
+                            cf?.add([
+                              'cf.${getRoad!.result[12].id}', // Create the key dynamically
+                              value,
+                            ]);
+                          }
+                        },
                         controller: youtubecontroller,
                         decoration: InputDecoration.collapsed(
                             hintText: 'Enter youtube link',
@@ -2520,7 +2541,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
-                 if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2546,11 +2567,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (getRoad?.result[4]?.id != null) {
+                          onSubmitted: (value) {
+                            if (getRoad?.result[4].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[4]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[4].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -2595,11 +2616,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (getRoad?.result[9]?.id != null) {
+                          onSubmitted: (value) {
+                            if (getRoad?.result[9].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${getRoad!.result[9]?.id}', // Create the key dynamically
+                                'cf.${getRoad!.result[9].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -2615,7 +2636,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ),
                     ],
                   )),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2649,7 +2670,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 value
                               ]);
                             }
-                            print("ninik ${cf}");
+                            print("ninik $cf");
                           },
                           controller: Gbcontroller,
                           decoration: InputDecoration.collapsed(
@@ -2810,7 +2831,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     )
                   ],
                 )),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14 )
+                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -2836,11 +2857,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (laptoprep?.result[10]?.id != null) {
+                          onSubmitted: (value) {
+                            if (laptoprep?.result[10].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${laptoprep!.result[10]?.id}', // Create the key dynamically
+                                'cf.${laptoprep!.result[10].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -2888,7 +2909,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             height: 10.h), // Add spacing before radio buttons
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: furnitureresresp!.result[4].options.map((option) {
+                          children:
+                              furnitureresresp!.result[4].options.map((option) {
                             return Row(
                               children: [
                                 Radio<Option>(
@@ -2897,14 +2919,14 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   onChanged: (Option? newValue) {
                                     setState(() {
                                       selectedFurnished = newValue;
-                                 if (furnitureresresp?.result[10]?.id != null) {
-                              // Ensure the dynamic key is safe to access
-                              cf?.add([
-                                'cf.${furnitureresresp!.result[10]?.id}', // Create the key dynamically
-                                selectedFurnished?.value,
-                              ]);
-                            }
-                     
+                                      if (furnitureresresp?.result[10].id !=
+                                          null) {
+                                        // Ensure the dynamic key is safe to access
+                                        cf?.add([
+                                          'cf.${furnitureresresp!.result[10].id}', // Create the key dynamically
+                                          selectedFurnished?.value,
+                                        ]);
+                                      }
                                     });
                                   },
                                 ),
@@ -3027,49 +3049,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
-                if (selectedcategory?.id != 122 || selectedcategory?.id != 73 || selectedcategory?.id != 37 || selectedcategory?.id != 143  )
-                  CreateListingCardWidget(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Delivery Options',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<CityList>(
-                            items: [],
-                            dropdownValue: selectedCity,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedCity = newValue;
-                              });
-                            },
-                            getItemLabel: (CityList item) => item.name,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -3186,11 +3166,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (phoneresp?.result[9]?.id != null) {
+                          onSubmitted: (value) {
+                            if (phoneresp?.result[9].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${phoneresp!.result[9]?.id}', // Create the key dynamically
+                                'cf.${phoneresp!.result[9].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -3281,7 +3261,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-  if (selectedcategory?.id == 171)
+                if (selectedcategory?.id == 171)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -3295,11 +3275,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
-                            onSubmitted: (value) {
-                                 if (grocerryresp?.result[1]?.id != null) {
+                          onSubmitted: (value) {
+                            if (grocerryresp?.result[1].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${grocerryresp!.result[1]?.id}', // Create the key dynamically
+                                'cf.${grocerryresp!.result[1].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -3465,7 +3445,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ],
                 )),
-              
+
                 SizedBox(
                   height: 10.h,
                 ),
@@ -3619,7 +3599,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 15.h,
                 ),
-                if (selectedType?.typeId == 7)
+                if (typeid == '7')
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(
@@ -3643,7 +3623,273 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           height: 15.h,
                         ),
-                        const BulkDiscountWidget()
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffFDFDFE),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey, width: 1),
+                          ),
+                          child: Column(
+                            children: [
+                              // Display the "Pieces" and "Rate/piece" labels once
+                              Row(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 80.w,
+                                      ),
+                                      Text(
+                                        "Pieces",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 100.w),
+                                  Column(
+                                    // crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: const [
+                                      Text(
+                                        "Rate/piece",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              ...rows.asMap().entries.map(
+                                (entry) {
+                                  int index = entry.key;
+                                  return Row(
+                                    children: [
+                                      Material(
+                                        elevation: 2,
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: Container(
+                                          height:
+                                              30.0, // Increased height for better visibility
+                                          width:
+                                              30.0, // Adjust width if necessary
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 1.h),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            color: const Color(0xffFDFDFE),
+                                          ),
+                                          child: TextField(
+                                            onChanged: (value) {
+                                              rows[index]['pieces'] = value;
+                                            },
+                                            cursorHeight: 3,
+                                            style: const TextStyle(
+                                              fontSize:
+                                                  14, // Ensure the font is large enough to be visible
+                                              color: Colors
+                                                  .black, // Text color to make it visible
+                                            ),
+                                            decoration: const InputDecoration(
+                                              border: InputBorder
+                                                  .none, // Remove the border for a clean look
+                                              contentPadding: EdgeInsets.only(
+                                                  bottom:
+                                                      15), // Adjust padding for better alignment
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      const Text('to',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black)),
+                                      const SizedBox(width: 6),
+                                      Material(
+                                        elevation: 2,
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: Container(
+                                          height:
+                                              30.0, // Increased height for better visibility
+                                          width:
+                                              30.0, // Adjust width if necessary
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 1.h),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            color: const Color(0xffFDFDFE),
+                                          ),
+                                          child: TextField(
+                                            onChanged: (value) {
+                                              rows[index]['rate'] = value;
+                                            },
+                                            cursorHeight: 3,
+                                            style: const TextStyle(
+                                              fontSize:
+                                                  14, // Ensure the font is large enough to be visible
+                                              color: Colors
+                                                  .black, // Text color to make it visible
+                                            ),
+                                            decoration: const InputDecoration(
+                                              border: InputBorder
+                                                  .none, // Remove the border for a clean look
+                                              contentPadding: EdgeInsets.only(
+                                                  bottom:
+                                                      15), // Adjust padding for better alignment
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 40.w),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  // Plus button to add a new row
+                                                  Material(
+                                                    elevation: 2,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6),
+                                                    child: Container(
+                                                      height:
+                                                          30.0, // Increased height for better visibility
+                                                      width:
+                                                          80.0, // Adjust width if necessary
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10,
+                                                              vertical: 1.h),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6),
+                                                        color: const Color(
+                                                            0xffFDFDFE),
+                                                      ),
+                                                      child: TextField(
+                                                        onChanged: (value) {
+                                                          rows[index]['total'] =
+                                                              value;
+                                                        },
+                                                        cursorHeight: 3,
+                                                        style: const TextStyle(
+                                                          fontSize:
+                                                              14, // Ensure the font is large enough to be visible
+                                                          color: Colors
+                                                              .black, // Text color to make it visible
+                                                        ),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          border: InputBorder
+                                                              .none, // Remove the border for a clean look
+                                                          contentPadding:
+                                                              EdgeInsets.only(
+                                                                  bottom:
+                                                                      15), // Adjust padding for better alignment
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        rows.add({});
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                      ),
+                                                      child: const CircleAvatar(
+                                                        backgroundColor:
+                                                            Color(0xff362677),
+                                                        radius: 12,
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  InkWell(
+                                                    onTap: () {
+                                                      if (rows.length > 1) {
+                                                        rows.removeAt(index);
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                      ),
+                                                      child: const CircleAvatar(
+                                                        backgroundColor:
+                                                            Color(0xff362677),
+                                                        radius: 12,
+                                                        child: Icon(
+                                                          Icons.delete,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   )
@@ -3734,6 +3980,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       value: _acceptterms,
                       onChanged: (bool newValue) {
                         setState(() {
+                          print("pinky ${rows}");
                           _acceptterms = newValue;
                         });
                         accept = (_acceptterms) ? '1' : '0';
@@ -3758,7 +4005,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 SellerInformationWidget(
+                  pieces: rows,
                   stock: stockcontroller.text,
+
                   story: selectedStoryDisplayDays,
 
                   cfvalue: cf,
@@ -3806,178 +4055,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class BulkDiscountWidget extends StatefulWidget {
-  const BulkDiscountWidget({super.key});
-
-  @override
-  _BulkDiscountWidgetState createState() => _BulkDiscountWidgetState();
-}
-
-class _BulkDiscountWidgetState extends State<BulkDiscountWidget> {
-  List<Map<String, dynamic>> discountRanges = [
-    {"from": 2, "to": 5, "rate": "Rs 50"}, // Initial discount range
-  ];
-
-  // Function to add a new range
-  void _addDiscountRange() {
-    setState(() {
-      // Add the next range to the list, for simplicity using incremental ranges
-      int nextFrom = discountRanges.length * 5 + 6;
-      int nextTo = nextFrom + 4;
-      discountRanges.add({
-        "from": nextFrom,
-        "to": nextTo,
-        "rate": "Rs ${50 - (discountRanges.length * 5)}"
-      });
-    });
-  }
-
-  // Function to delete a range
-  void _deleteDiscountRange(int index) {
-    setState(() {
-      discountRanges.removeAt(index);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      decoration: BoxDecoration(
-        color: const Color(0xffFDFDFE),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey, width: 1),
-      ),
-      child: Column(
-        children: [
-          // For each discount range in the list
-          for (int i = 0; i < discountRanges.length; i++)
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Pieces",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        _buildDiscountBox(discountRanges[i]["from"]),
-                        const SizedBox(width: 6),
-                        const Text('to',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black)),
-                        const SizedBox(width: 6),
-                        _buildDiscountBox(discountRanges[i]["to"]),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 40.w,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Rate/piece",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        _buildDiscountBox(discountRanges[i]["rate"]),
-                        // SizedBox(width: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Plus button to add a new row
-                            GestureDetector(
-                              onTap: _addDiscountRange,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10.w),
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(color: Colors.grey),
-                                ),
-                                child: const CircleAvatar(
-                                  backgroundColor: Color(0xff362677),
-                                  radius: 12,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // SizedBox(height: 10),
-                            // Delete button to remove a row
-                            if (i >
-                                0) // Don't show the delete button on the first row
-                              GestureDetector(
-                                onTap: () => _deleteDiscountRange(i),
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(color: Colors.grey),
-                                  ),
-                                  child: const CircleAvatar(
-                                    backgroundColor: Color(0xff362677),
-                                    radius: 12,
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-
-  // Widget to build discount boxes (pieces and rate)
-  Widget _buildDiscountBox(dynamic value) {
-    return Material(
-      elevation: 2,
-      borderRadius: BorderRadius.circular(6),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          color: const Color(0xffFDFDFE),
-        ),
-        child: Text(
-          value.toString(),
-          style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey),
         ),
       ),
     );

@@ -69,7 +69,7 @@ class buyorwin_widget extends StatelessWidget {
                                   fontSize: 11,
                                 )),
                             TextSpan(
-                                text: "$worth x${gift_qty}",
+                                text: "$worth x$gift_qty",
                                 style: headerstyle.copyWith(
                                     fontSize: 15, fontWeight: FontWeight.bold))
                           ]))
@@ -103,7 +103,7 @@ class buyorwin_widget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("x ${gift_qty}",
+                            Text("x $gift_qty",
                                 style: headerstyle.copyWith(
                                     fontSize: 8,
                                     fontWeight: FontWeight.bold,

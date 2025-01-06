@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
@@ -69,7 +71,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
-  late TabController tabController;
 
   bool _showSearchProductModels = false;
 
@@ -77,7 +78,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const HomeScreen()
+      'screen': const BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/box.svg',
@@ -120,6 +121,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
       'screen': const EventsScreen()
     },
   ];
+  late TabController dynamictabController;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
@@ -142,15 +144,16 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
       viewportFraction: 0.3,
       initialPage: headerIndex,
     );
+    dynamictabController = TabController(length: 3, vsync: this);
+    dynamictabController.addListener(() {
+      setState(() {});
+    });
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
         _currentPage++;
       } else {
         _currentPage = 0;
       }
-      tabController.addListener(() {
-        setState(() {});
-      });
 
       _pageController.animateToPage(
         _currentPage,
@@ -164,7 +167,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
       _pageController.jumpToPage(headerIndex);
     });
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
 
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
@@ -215,6 +217,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
   @override
   void dispose() {
+    dynamictabController.dispose();
+
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
@@ -661,14 +665,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return Text(
+                    return const Text(
                         'No stories available.You Need to login for story');
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
-                  SizedBox(
+                SizedBox(
                   height: 15.h,
                 ),
                 asyncbajarValue.when(
@@ -969,50 +973,80 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     return SizedBox(
-                      height: 359.h,
                       width: double.infinity,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(3),
-                        clipBehavior: Clip.antiAlias,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.hotProducts.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          VProduct hot = data.hotProducts[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailScreen(productId: hot.id),
-                                  ));
-                            },
-                            child: ProductDetailWidget(
-                              wow: hot.wow,
-                              comment: hot.commentcount.toString(),
-                              discounttedPrice: hot.discounted_price,
-                              issponsored: hot.user.sponsored,
-                              lefttile: "Services",
-                              productImage: hot.image,
-                              Vimage: hot.user.photo,
-                              price: hot.price,
-                              title: hot.title,
-                              vendorname: hot.user.name,
-                              similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membershipColor,
-                              membershipTitle: hot.user.membershipTitle,
-                            ),
-                          );
-                        },
+                      child: AnimatedContainer(
+                        padding: EdgeInsets.zero,
+                        margin: EdgeInsets.zero,
+                        duration: const Duration(milliseconds: 400),
+                        height: 350.h,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Wrap(
+                            spacing: 0.w, // Horizontal spacing between items
+                            runSpacing: 0.h, // Vertical spacing between rows
+                            children:
+                                List.generate(data.hotProducts.length, (index) {
+                              VProduct hot = data.hotProducts[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProductDetailScreen(
+                                          productId: hot.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: ProductDetailWidget(
+                                    wow: hot.wow,
+                                    comment: hot.commentcount.toString(),
+                                    discounttedPrice: hot.discounted_price,
+                                    issponsored: hot.user.sponsored,
+                                    lefttile: "Socio",
+                                    productImage: hot.image,
+                                    Vimage: hot.user.photo,
+                                    price: hot.price,
+                                    title: hot.title,
+                                    vendorname: hot.user.name,
+                                    similarproductCount:
+                                        hot.similarProductCount,
+                                    membershipColor: hot.user.membershipColor,
+                                    membershipTitle: hot.user.membershipTitle,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
                       ),
                     );
                   },
-                  error: (error, stackTrace) {
-                    return Text(error.toString());
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => SizedBox(
+                    height: 340.h,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(3),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5, // Number of shimmer placeholders
+                      itemBuilder: (context, index) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          width: 200.w,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
 
                 // Expanded(
@@ -1400,7 +1434,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   height: 50,
                   width: double.infinity,
                   child: TabBar(
-                    controller: tabController,
+                    controller: dynamictabController,
                     tabs: const [
                       Tab(
                         text: ' Global\n Brands',
@@ -1417,266 +1451,292 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   data: (data) {
                     double dynamicHeight;
 
-                    if (tabController.index == 0) {
+                    if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
-                    } else if (tabController.index == 1) {
+                    } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
-                    } else if (tabController.index == 2)
+                    } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                              ? 200
+                              ? 150
                               : 500;
                     else
                       dynamicHeight = 300;
-
                     return SizedBox(
+                      height: dynamicHeight,
+                      width: double.infinity,
                       // Use Expanded for better layout management
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        height: dynamicHeight,
-                        width: double.infinity,
-                        child: TabBarView(
-                          controller: tabController,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    if (data.global.isNotEmpty)
-                                      ...data.global.map((e) {
-                                        return NotStoryWidget(
-                                          vImage: e
-                                              .brandLogo, // Use the correct variable name
-                                          index: data.global
-                                              .indexOf(e), // Get the index
-                                          brandname: e.brandName,
-                                        );
-                                      }).toList(),
-                                  ],
+                      child: TabBarView(
+                        controller: dynamictabController,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.global.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.global.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
                                 ),
-                                data.insidearr.isNotEmpty &&
-                                        data.insidearr[0].isNotEmpty
-                                    ? SizedBox(
-                                        height: 340.h,
-                                        child: ListView.builder(
-                                          clipBehavior: Clip.antiAlias,
-                                          padding: const EdgeInsets.all(3),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: data.insidearr[0].length,
-                                          itemBuilder: (context, index) {
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              data.insidearr.isNotEmpty &&
+                                      data.insidearr[0].isNotEmpty
+                                  ? SizedBox(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Wrap(
+                                          spacing: 5
+                                              .w, // Horizontal spacing between items
+                                          runSpacing: 15
+                                              .h, // Vertical spacing between rows
+                                          children: List.generate(
+                                              data.brandbazar_global?.length ??
+                                                  0, (index) {
                                             VProduct prod =
-                                                data.insidearr[0][index];
-                                            return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
+                                                data.brandbazar_global![index];
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.w),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ProductDetailScreen(
-                                                              productId:
-                                                                  prod.id),
-                                                    ));
-                                              },
-                                              child: ProductDetailWidget(
-                                                wow: prod.wow,
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                lefttile: "B2b",
-                                                vendorname: prod.user.name,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.title,
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
+                                                        productId: prod.id,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: ProductDetailWidget(
+                                                  offer: prod.offers,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  shortestDistance: prod
+                                                      .user.shortestDistance,
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  wow: prod.wow,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  lefttile: "Socio-Shop",
+                                                  vendorname: prod.title,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.user.photo,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
+                                                ),
                                               ),
                                             );
-                                          },
-                                        ),
-                                      )
-                                    : Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 20.0.h), // Add padding here
-                                          child: nolistingfound(),
+                                          }),
                                         ),
                                       ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.domestic.map((e) {
-                                      return NotStoryWidget(
-                                        vImage: e.brandLogo,
-                                        index: data.domestic.indexOf(e),
-                                        brandname: e.brandName,
-                                      );
-                                    }).toList(),
-                                  ),
+                                    )
+                                  : nolistingfound()
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.domestic.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.domestic.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
                                 ),
-                                data.insidearr.isNotEmpty
-                                    ? Center(
-                                        child: Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top:
-                                                    25.0.h), // Add padding here
-                                            child: nolistingfound(),
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: 140.h,
-                                        child: ListView.builder(
-                                          clipBehavior: Clip.antiAlias,
-                                          padding: const EdgeInsets.all(3),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: data.insidearr[1].length,
-                                          itemBuilder: (context, index) {
-                                            dynamicsize =
-                                                data.insidearr[1].isEmpty
-                                                    ? 100
-                                                    : 500;
-                                            VProduct prod =
-                                                data.insidearr[1][index];
-
-                                            return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              data.insidearr.isEmpty
+                                  ? nolistingfound()
+                                  : SizedBox(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Wrap(
+                                          spacing: 5
+                                              .w, // Horizontal spacing between items
+                                          runSpacing: 15
+                                              .h, // Vertical spacing between rows
+                                          children: List.generate(
+                                              data.brandbazar_domestic
+                                                      ?.length ??
+                                                  0, (index) {
+                                            VProduct prod = data
+                                                .brandbazar_domestic![index];
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.w),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ProductDetailScreen(
-                                                              productId:
-                                                                  prod.id),
-                                                    ));
-                                              },
-                                              child: ProductDetailWidget(
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                wow: prod.wow,
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "B2b-Shop",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
+                                                        productId: prod.id,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: ProductDetailWidget(
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  shortestDistance: prod
+                                                      .user.shortestDistance,
+                                                  offer: prod.offers,
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  wow: prod.wow,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  lefttile: "Socio-Shop",
+                                                  vendorname: prod.title,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.user.photo,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
+                                                ),
                                               ),
                                             );
-                                          },
+                                          }),
                                         ),
                                       ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.spotlight.map((e) {
-                                      return NotStoryWidget(
-                                        vImage: e.brandLogo,
-                                        index: data.spotlight.indexOf(e),
-                                        brandname: e.brandName,
-                                      );
-                                    }).toList(),
-                                  ),
+                                    ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.spotlight.map((e) {
+                                    return NotStoryWidget(
+                                      vImage: e.brandLogo,
+                                      index: data.spotlight.indexOf(e),
+                                      brandname: e.brandName,
+                                    );
+                                  }).toList(),
                                 ),
-                                data.insidearr.isNotEmpty
-                                    ? Center(
-                                        child: Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top:
-                                                    20.0.h), // Add padding here
-                                            child: nolistingfound(),
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: 340.h,
-                                        child: ListView.builder(
-                                          clipBehavior: Clip.antiAlias,
-                                          padding: const EdgeInsets.all(3),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: data.insidearr[2].length,
-                                          itemBuilder: (context, index) {
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              data.insidearr.isEmpty
+                                  ? nolistingfound()
+                                  : SizedBox(
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Wrap(
+                                          spacing: 5
+                                              .w, // Horizontal spacing between items
+                                          runSpacing: 15
+                                              .h, // Vertical spacing between rows
+                                          children: List.generate(
+                                              data.spotlights?.length ?? 0,
+                                              (index) {
                                             VProduct prod =
-                                                data.insidearr[2][index];
-                                            return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
+                                                data.spotlights![index];
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.w),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           ProductDetailScreen(
-                                                              productId:
-                                                                  prod.id),
-                                                    ));
-                                              },
-                                              child: ProductDetailWidget(
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                wow: prod.wow,
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "B2b-Shop",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
+                                                        productId: prod.id,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: ProductDetailWidget(
+                                                  offer: prod.offers,
+                                                  shortestDistance: prod
+                                                      .user.shortestDistance,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  wow: prod.wow,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  lefttile: "Socio-Shop",
+                                                  vendorname: prod.title,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.user.photo,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
+                                                ),
                                               ),
                                             );
-                                          },
+                                          }),
                                         ),
                                       ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                    ),
+                            ],
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -1731,7 +1791,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
-                              vendorImage: resp.vendorImage!,
+                              vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
                               proctimage: resp.image ?? '');
@@ -1777,8 +1837,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   error: (error, stackTrace) {
                     return Text(error.toString());
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -1863,52 +1922,65 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   products.isNotEmpty ? 359.h : 100.h;
 
                               return AnimatedContainer(
+                                alignment: Alignment.topLeft,
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
-                                    ? Center(
-                                        child: nolistingfound(),
-                                      )
-                                    : ListView.builder(
-                                        clipBehavior: Clip.antiAlias,
-                                        padding: const EdgeInsets.all(3),
+                                    ? nolistingfound()
+                                    : SingleChildScrollView(
+                                        padding: EdgeInsets.zero,
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: products.length,
-                                        itemBuilder: (context, index) {
-                                          VProduct prod = products[index];
+                                        child: Wrap(
+                                          alignment: WrapAlignment.start,
+                                          spacing: 5
+                                              .w, // Horizontal spacing between items
+                                          runSpacing: 15
+                                              .h, // Vertical spacing between rows
+                                          children: List.generate(
+                                              products.length, (index) {
+                                            VProduct prod = products[index];
 
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProductDetailScreen(
-                                                            productId: prod.id),
-                                                  ));
-                                            }, // Handle onTap if needed
-                                            child: ProductDetailWidget(
-                                              wow: prod.wow,
-                                              comment:
-                                                  prod.commentcount.toString(),
-                                              lefttile: "B2b",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.title,
-                                              issponsored: prod.user.sponsored,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membershipColor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            ),
-                                          );
-                                        },
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 5.w),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                        productId: prod.id,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: ProductDetailWidget(
+                                                  offer: prod.offers,
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  wow: prod.wow,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  lefttile: "Socio-Shop",
+                                                  vendorname: prod.title,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.user.photo,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
                                       ),
                               );
                             },
@@ -1943,65 +2015,59 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return GridView.builder(
-                      physics:
-                          const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                      shrinkWrap: true, // Adjust to fit content
-                      itemCount: data.product.length,
-
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 340.9,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0.6,
-                        mainAxisSpacing: 0.2,
-                        childAspectRatio: 0.5,
-                      ),
-                      itemBuilder: (context, index) {
-                        // VProduct res = data.allProducts[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: InkWell(
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.vertical, // Scroll vertically
+                      child: Wrap(
+                        runSpacing: 15.h, // Vertical spacing between rows
+                        children: List.generate(data.product.length, (index) {
+                          var res = data.product[index];
+                          return InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetailScreen(
-                                        productId: data.product[index].id),
-                                  ));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetailScreen(
+                                    productId: res.id,
+                                  ),
+                                ),
+                              );
                             },
-                            child: AllProductDetailWidget(
-                              offer: data.product[index].offers,
-                              shortestDistance:
-                                  data.product[index].user.shortestDistance,
-                              avg_rating:
-                                  data.product[index].avg_rating?.toDouble(),
-                              wow: data.product[index].wow,
-                              comment:
-                                  data.product[index].commentcount.toString(),
-                              issponsored: data.product[index].user.sponsored,
-                              discounttedPrice:
-                                  data.product[index].discounted_price,
-                              lefttile: "Services",
-                              productImage: data.product[index].image,
-                              Vimage: data.product[index].user.photo,
-                              vendorname: data.product[index].user.name,
-                              title: data.product[index].title,
-                              price: data.product[index].price,
-                              similarproductCount:
-                                  data.product[index].similarProductCount,
-                              membershipColor:
-                                  data.product[index].user.membershipColor,
-                              membershipTitle:
-                                  data.product[index].user.membershipTitle,
+                            child: SizedBox(
+                              width: (MediaQuery.of(context).size.width) /
+                                  2, // Adjust for two items per row
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shadowColor:
+                                    const Color(0xff3D215F).withOpacity(0.5),
+                                elevation: 9,
+                                // margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: AllProductDetailWidget(
+                                  wow: res.wow,
+                                  comment: res.commentcount.toString(),
+                                  issponsored: res.user.sponsored,
+                                  discounttedPrice: res.discounted_price,
+                                  lefttile: "Socio",
+                                  productImage: res.image,
+                                  Vimage: res.user.photo,
+                                  vendorname: res.user.name,
+                                  title: res.title,
+                                  price: res.price,
+                                  similarproductCount: res.similarProductCount,
+                                  membershipColor: res.user.membershipColor,
+                                  membershipTitle: res.user.membershipTitle,
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        }),
+                      ),
                     );
 
                     // SizedBox(
-                    //    height: 359.h,
+                    //    height: 340.h,
                     //   width: double.infinity,
                     //   child: ListView.builder(
                     //     padding: EdgeInsets.zero,
@@ -2030,7 +2096,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     return Text('error is $error');
                   },
                   loading: () {
-                    return const Center(child: CircularProgressIndicator());
+                    return const CircularProgressIndicator();
                   },
                 ),
 

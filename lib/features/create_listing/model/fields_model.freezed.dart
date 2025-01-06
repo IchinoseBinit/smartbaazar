@@ -207,7 +207,6 @@ mixin _$FieldData {
   String get belongsTo => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
-  int? get max => throw _privateConstructorUsedError;
   @JsonKey(name: 'default_value')
   String? get defaultValue => throw _privateConstructorUsedError;
   String get required => throw _privateConstructorUsedError;
@@ -231,7 +230,6 @@ abstract class $FieldDataCopyWith<$Res> {
       @JsonKey(name: 'belongs_to') String belongsTo,
       String name,
       String type,
-      int? max,
       @JsonKey(name: 'default_value') String? defaultValue,
       String required,
       @JsonKey(name: 'use_as_filter') String useAsFilter,
@@ -255,7 +253,6 @@ class _$FieldDataCopyWithImpl<$Res, $Val extends FieldData>
     Object? belongsTo = null,
     Object? name = null,
     Object? type = null,
-    Object? max = freezed,
     Object? defaultValue = freezed,
     Object? required = null,
     Object? useAsFilter = null,
@@ -278,10 +275,6 @@ class _$FieldDataCopyWithImpl<$Res, $Val extends FieldData>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
       defaultValue: freezed == defaultValue
           ? _value.defaultValue
           : defaultValue // ignore: cast_nullable_to_non_nullable
@@ -315,7 +308,6 @@ abstract class _$$FieldDataImplCopyWith<$Res>
       @JsonKey(name: 'belongs_to') String belongsTo,
       String name,
       String type,
-      int? max,
       @JsonKey(name: 'default_value') String? defaultValue,
       String required,
       @JsonKey(name: 'use_as_filter') String useAsFilter,
@@ -337,7 +329,6 @@ class __$$FieldDataImplCopyWithImpl<$Res>
     Object? belongsTo = null,
     Object? name = null,
     Object? type = null,
-    Object? max = freezed,
     Object? defaultValue = freezed,
     Object? required = null,
     Object? useAsFilter = null,
@@ -360,10 +351,6 @@ class __$$FieldDataImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
       defaultValue: freezed == defaultValue
           ? _value.defaultValue
           : defaultValue // ignore: cast_nullable_to_non_nullable
@@ -392,7 +379,6 @@ class _$FieldDataImpl implements _FieldData {
       @JsonKey(name: 'belongs_to') required this.belongsTo,
       required this.name,
       required this.type,
-      this.max,
       @JsonKey(name: 'default_value') this.defaultValue,
       required this.required,
       @JsonKey(name: 'use_as_filter') required this.useAsFilter,
@@ -412,8 +398,6 @@ class _$FieldDataImpl implements _FieldData {
   @override
   final String type;
   @override
-  final int? max;
-  @override
   @JsonKey(name: 'default_value')
   final String? defaultValue;
   @override
@@ -431,7 +415,7 @@ class _$FieldDataImpl implements _FieldData {
 
   @override
   String toString() {
-    return 'FieldData(id: $id, belongsTo: $belongsTo, name: $name, type: $type, max: $max, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, options: $options)';
+    return 'FieldData(id: $id, belongsTo: $belongsTo, name: $name, type: $type, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, options: $options)';
   }
 
   @override
@@ -444,7 +428,6 @@ class _$FieldDataImpl implements _FieldData {
                 other.belongsTo == belongsTo) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.max, max) || other.max == max) &&
             (identical(other.defaultValue, defaultValue) ||
                 other.defaultValue == defaultValue) &&
             (identical(other.required, required) ||
@@ -462,7 +445,6 @@ class _$FieldDataImpl implements _FieldData {
       belongsTo,
       name,
       type,
-      max,
       defaultValue,
       required,
       useAsFilter,
@@ -488,7 +470,6 @@ abstract class _FieldData implements FieldData {
       @JsonKey(name: 'belongs_to') required final String belongsTo,
       required final String name,
       required final String type,
-      final int? max,
       @JsonKey(name: 'default_value') final String? defaultValue,
       required final String required,
       @JsonKey(name: 'use_as_filter') required final String useAsFilter,
@@ -506,8 +487,6 @@ abstract class _FieldData implements FieldData {
   String get name;
   @override
   String get type;
-  @override
-  int? get max;
   @override
   @JsonKey(name: 'default_value')
   String? get defaultValue;

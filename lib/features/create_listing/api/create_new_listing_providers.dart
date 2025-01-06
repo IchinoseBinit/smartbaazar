@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -37,6 +36,9 @@ Future<String> createlisting(
   String? offer,
   String? story,
   String? youtube,
+  int? package,
+   List<Map<String, String>>? pieces,
+
 }) async {
   final SmartClinet client = SmartClinet();
   print("binodo $cf");
@@ -47,6 +49,7 @@ Future<String> createlisting(
       'category_id': category ?? '',
       'post_type_id': posttype ?? '',
       'title': title ?? '',
+      'package_id':package?? '0',
       'description': description ?? '',
       'contact_name': username ?? '',
       'auth_field': 'phone',

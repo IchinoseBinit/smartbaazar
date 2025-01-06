@@ -5,26 +5,35 @@ import 'package:smartbazar/constant/color_constant.dart';
 class PostCard extends StatelessWidget {
   final String photo, image, subscribers, caption, name;
   bool? isLive;
-  PostCard(
-      {super.key,
-      required this.image,
-      required this.photo,
-      required this.caption,
-      required this.name,
-      this.isLive = false,
-      required this.subscribers});
+  PostCard({
+    super.key,
+    required this.image,
+    required this.photo,
+    required this.caption,
+    required this.name,
+    this.isLive = false,
+    required this.subscribers,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 10.h,
-      // padding: const EdgeInsets.all(2),
       margin: EdgeInsets.only(left: 5.w),
       width: MediaQuery.sizeOf(context).width * 0.65,
       decoration: BoxDecoration(
-          border: Border.all(width: 3, color: const Color(0x0fd9d9d9)),
-          color: ColorConstant.whiteColor,
-          borderRadius: BorderRadius.circular(6)),
+        border: Border.all(
+            width: 1,
+            color: Colors.grey.shade400), // Updated border color and width
+        color: ColorConstant.whiteColor,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1), // Subtle shadow for depth
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,18 +56,24 @@ class PostCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name ?? 'name',
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          color: ColorConstant.blackColor)),
+                  Text(
+                    name,
+                    style: headerstyle.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: ColorConstant.blackColor,
+                    ),
+                  ),
                   Row(
                     children: [
-                      Text("$subscribers subscribers",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              color: const Color(0xff808080))),
+                      Text(
+                        "$subscribers subscribers",
+                        style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
+                          color: const Color(0xff808080),
+                        ),
+                      ),
                       const SizedBox(width: 15),
                       const Text(
                         "•",
@@ -67,7 +82,8 @@ class PostCard extends StatelessWidget {
                       const SizedBox(width: 5),
                       Text(
                         "${subscribers}h",
-                        style: const TextStyle(fontSize: 10, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 10, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -75,18 +91,14 @@ class PostCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            height: 5.h,
-          ),
+          SizedBox(height: 5.h),
           Image.network(
             image,
             height: 150,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
-          SizedBox(
-            height: 5.h,
-          ),
+          SizedBox(height: 5.h),
           Text.rich(
             textDirection: TextDirection.ltr,
             TextSpan(
@@ -108,24 +120,18 @@ class PostCard extends StatelessWidget {
             width: MediaQuery.sizeOf(context).width * 0.65,
             child: Row(
               children: [
-                SizedBox(
-                  width: 9.w,
-                ),
+                SizedBox(width: 9.w),
                 Icon(Icons.favorite_border,
                     color: ColorConstant.blackColor.withOpacity(0.7)),
-                SizedBox(
-                  width: 9.w,
-                ),
+                SizedBox(width: 9.w),
                 Icon(Icons.comment_outlined,
                     color: ColorConstant.blackColor.withOpacity(0.7)),
-                SizedBox(
-                  width: 9.w,
-                ),
+                SizedBox(width: 9.w),
                 Icon(Icons.share_outlined,
                     color: ColorConstant.blackColor.withOpacity(0.7)),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

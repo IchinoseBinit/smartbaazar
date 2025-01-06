@@ -21,7 +21,6 @@ class FieldData with _$FieldData {
     @JsonKey(name: 'belongs_to') required String belongsTo,
     required String name,
     required String type,
-    int? max,
     @JsonKey(name: 'default_value') String? defaultValue,
     required String required,
     @JsonKey(name: 'use_as_filter') required String useAsFilter,

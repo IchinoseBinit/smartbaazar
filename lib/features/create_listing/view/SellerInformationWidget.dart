@@ -54,6 +54,7 @@ class SellerInformationWidget extends StatefulWidget {
       this.address,
       this.stock,
       this.story,
+      this.pieces,
       required this.shippingList});
 
   String? type;
@@ -66,6 +67,7 @@ class SellerInformationWidget extends StatefulWidget {
   String? width;
   String? height;
   String? weight;
+  List<Map<String, String>>? pieces;
   List<List<dynamic>>? parentchild;
   TextEditingController? phonecoontroller;
   String? terms;
@@ -101,6 +103,8 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
       selectedImages = images;
     });
   }
+
+  int? _selectedpackage = 0;
 
   Future<String> convertFileToBase64(File file) async {
     // Read the file as bytes
@@ -422,33 +426,91 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
         SizedBox(
           height: 10.h,
         ),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10.w,
-            vertical: 20.h,
-          ),
-          decoration: BoxDecoration(
+        InkWell(
+          onTap: () {
+            setState(() {
+              _selectedpackage = 0;
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.w,
+              vertical: 20.h,
+            ),
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),
-              color: const Color(0xff362677)),
-          child: Row(
-            children: [
-              Text(
-                'Smart Boost',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+              color: _selectedpackage == 0
+                  ? const Color(0xff362677)
+                  : Colors.white,
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Regular(Free)',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: _selectedpackage != 0
+                        ? const Color(0xff362677)
+                        : Colors.white,
+                  ),
                 ),
-              ),
-              Text(
-                'Rs. 50',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+                Text(
+                  'Rs. 00',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: _selectedpackage != 0
+                        ? const Color(0xff362677)
+                        : Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Text("keep online ofr 60 days"),
+        InkWell(
+          onTap: () {
+            setState(() {
+              _selectedpackage = 1;
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.w,
+              vertical: 20.h,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              color: _selectedpackage == 1
+                  ? const Color(0xff362677)
+                  : Colors.white,
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Smart Boost',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: _selectedpackage != 1
+                        ? const Color(0xff362677)
+                        : Colors.white,
+                  ),
                 ),
-              )
-            ],
+                Text(
+                  'Rs. 50',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: _selectedpackage != 1
+                        ? const Color(0xff362677)
+                        : Colors.white,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         SizedBox(
@@ -471,15 +533,14 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             : Center(
                 child: GeneralEelevatedButton(
                     text: 'Submit',
-                    onPresssed: ()async {
-                        // setState(() {
+                    onPresssed: () async {
+                      // setState(() {
                       //   isloading = true;
                       // });
                       if (widget.category != null &&
                           widget.title != null &&
                           widget.city != null &&
                           widget.description != null &&
-                          widget.type != null &&
                           widget.phonecoontroller?.text.isNotEmpty == true &&
                           selectedpickup!.name.isNotEmpty &&
                           selectedImages.isNotEmpty &&
@@ -487,12 +548,14 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                         try {
                           // Dummy data
                           await createlisting(
-
+                            
+                            package: _selectedpackage,
+                            pieces: widget.pieces,
                             null, // ref
                             cf: widget.cfvalue,
                             tags: widget.tags,
                             category: widget.category?.trim(), // category
-                           
+
                             stock: widget.stock?.trim(), // stock
                             mileage: widget.mileage?.trim(), // mileage
                             warrenty: widget.warrenty?.value, // warranty
@@ -513,8 +576,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                                 widget.phonecoontroller?.text.trim(), // phone
                             username:
                                 widget.nameconroller?.text.trim(), // username
-                            pickup:
-                                selectedpickup?.name.trim() ?? '', // pickup
+                            pickup: selectedpickup?.name.trim() ?? '', // pickup
                             images: selectedImages, // images
                             accept: widget.terms?.trim() ?? '0', // accept terms
                             address:
@@ -608,7 +670,6 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                           },
                         );
                       }
-
                     })),
         SizedBox(
           height: 20.h,

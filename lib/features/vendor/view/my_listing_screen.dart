@@ -126,7 +126,7 @@ class MyListinDetails extends ConsumerWidget {
                   // print("niko ${product.id}");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) =>  UpdateListing(id: product.id,)),
+                    MaterialPageRoute(builder: (_) =>  UpdateListing(prod: product)),
                   );
                 },
                 child: const Icon(

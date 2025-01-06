@@ -7,7 +7,6 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'service_provider.g.dart';
 
-
 @riverpod
 Future<PostTypeFetch> getSocioData(GetSocioDataRef ref) async {
   final SmartClinet client = SmartClinet();
@@ -19,7 +18,9 @@ Future<PostTypeFetch> getSocioData(GetSocioDataRef ref) async {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-      
+          print("bikash ${PostTypeFetch.fromJson(jsonResponse)}");
+
+
       return PostTypeFetch.fromJson(jsonResponse);
     } else {
       throw Exception(
