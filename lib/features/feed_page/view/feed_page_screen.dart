@@ -385,8 +385,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                             scrollDirection: Axis.horizontal,
                             itemCount: feedStoryContent.posts?.length ?? 0,
                             itemBuilder: (context, index) {
-                              final story = feedStoryContent.posts?[index];
-                              if (story != null) {
+                              final story = feedStoryContent.posts![index];
+                              if (story is Map<String, dynamic>) {
                                 return FeedStoryAddWidget(
                                   index: index,
                                   vendorName:
