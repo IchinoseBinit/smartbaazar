@@ -2495,7 +2495,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //       ],
                 //     ),
                 //   ),
-
+              
                 CreateListingCardWidget(
                     child: Row(
                   children: [

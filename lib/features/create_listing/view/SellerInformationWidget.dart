@@ -159,7 +159,9 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            const Spacer(),
+            SizedBox(
+              width: 20.w,
+            ),
             Expanded(
               child: TextField(
                 controller: widget.emailcontroller,
@@ -548,7 +550,6 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                         try {
                           // Dummy data
                           await createlisting(
-                            
                             package: _selectedpackage,
                             pieces: widget.pieces,
                             null, // ref
