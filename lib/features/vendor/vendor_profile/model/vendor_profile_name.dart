@@ -51,7 +51,7 @@ class BrandNewModel with _$BrandNewModel {
     required String? city,
     required int? similarProductCount,
     required int? discounted_price,
-    required String? shortestDistance,
+    required double? shortestDistance,
     required int? commentcount,
     required int? avg_rating,
     required UserDetailsModel? userdetails,
@@ -70,12 +70,13 @@ class UserDetailsModel with _$UserDetailsModel {
     String? membership_id,
     String? membership_title,
     String? membership_color,
+    
     String? photo,
     required String name,
     int? storyCount,
     bool? sponsored,
     bool? has_sponsored_gifts,
-    List<dynamic>? nearestBranch,
+    // String? nearestBranch,
     double? shortestDistance, 
   }) = _UserDetailsModel;
 
@@ -145,8 +146,8 @@ class Vendor with _$Vendor {
     // String? deleted_at,
     // String? created_at,
     // String? updated_at,
-    String? shortestDistance,
-    String? nearestBranch,
+    double? shortestDistance,
+    // String? nearestBranch,
   }) = _Vendor;
 
   factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);

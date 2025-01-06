@@ -1,91 +1,164 @@
-import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// class HomeScreen extends ConsumerStatefulWidget {
+//   const HomeScreen({super.key});
 
-class ImageCarousel extends StatefulWidget {
-  final List<dynamic> sliders; // Example: Replace dynamic with your actual data model
+//   @override
+//   ConsumerState<HomeScreen> createState() => _HomeScreenState();
+// }
 
-  const ImageCarousel({Key? key, required this.sliders}) : super(key: key);
+// class _HomeScreenState extends ConsumerState<HomeScreen>
+//     with SingleTickerProviderStateMixin {
+//   bool _isPopupVisible = false;
+//   int currentPageIndex = 0;
+//   int selectedIndexx = 0;
+//   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
+//   final GlobalKey<ScaffoldState> _key = GlobalKey();
+//   final TextEditingController _searchController = TextEditingController();
+//   final _debouncer = BehaviorSubject<String>();
+//   bool _showSearchProductModels = false;
+//   late TabController dynamictabController;
+//   final ScrollController _scrollController = ScrollController();
+//   bool _isSectionsVisible = true;
+//   double _lastScrollOffset = 1;
+//   Offset _initialDragPosition = Offset.zero; // Track initial drag position
+//   PageController _pageController = PageController(viewportFraction: 0.3);
+//   final List<Map<String, dynamic>> _items = [
+//     // Add the screen items here
+//   ];
 
-  @override
-  _ImageCarouselState createState() => _ImageCarouselState();
-}
+//   @override
+//   void initState() {
+//     super.initState();
+//     dynamictabController = TabController(length: 3, vsync: this);
 
-class _ImageCarouselState extends State<ImageCarousel> {
-  int _currentIndex = 0;
+//     // Initialize the PageController with the selected page
+//     _pageController = PageController(
+//       viewportFraction: 0.3,
+//       initialPage: selectedIndex,
+//     );
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 130.0,
-          width: double.infinity,
-          child: CarouselSlider(
-            items: widget.sliders.map((banner) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const B2bScreen(),
-                    ),
-                  );
-                },
-                child: CachedNetworkImage(
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                  imageUrl: banner.image!, // Assuming banner.image is the image URL
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
-              );
-            }).toList(),
-            options: CarouselOptions(
-              aspectRatio: 0.1,
-              reverse: true,
-              viewportFraction: 1,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-          ),
-        ),
-        // Dots indicator
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: widget.sliders.map((banner) {
-            int index = widget.sliders.indexOf(banner);
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              height: 8.0,
-              width: 8.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentIndex == index
-                    ? Colors.blue // Active dot color
-                    : Colors.grey, // Inactive dot color
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-}
+//     // Search debounce listener
+//     _searchController.addListener(() {
+//       _debouncer.add(_searchController.text);
+//     });
 
-class B2bScreen extends StatelessWidget {
-  const B2bScreen({Key? key}) : super(key: key);
+//     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+//       debugPrint("Search query: $query");
+//       ref.refresh(searchProvider(query));
+//       setState(() {
+//         _showSearchProductModels = query.isNotEmpty;
+//       });
+//     });
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("B2B Screen")),
-      body: const Center(child: Text("B2B Screen Content")),
-    );
-  }
-}
+//     _scrollController.addListener(_handleScroll);
+//   }
+
+//   void _handleScroll() {
+//     final scrollOffset = _scrollController.offset;
+
+//     if (scrollOffset > _lastScrollOffset && scrollOffset > 100) {
+//       setState(() {
+//         _isSectionsVisible = false;
+//       });
+//     } else if (scrollOffset < _lastScrollOffset && scrollOffset < 50) {
+//       setState(() {
+//         _isSectionsVisible = true;
+//       });
+//     }
+
+//     _lastScrollOffset = scrollOffset;
+//   }
+
+//   void _onDragStart(DragStartDetails details) {
+//     _initialDragPosition = details.globalPosition;
+//   }
+
+//   @override
+//   void dispose() {
+//     dynamictabController.dispose();
+//     _debouncer.close();
+//     _searchController.dispose();
+//     _scrollController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final SearchProductModels = ref.watch(searchProvider(_searchController.text));
+//     return Scaffold(
+//       extendBody: true,
+//       key: _key,
+//       resizeToAvoidBottomInset: false,
+//       backgroundColor: ColorConstant.whiteColor,
+//       body: Stack(
+//         children: [
+//           Positioned.fill(
+//             child: SingleChildScrollView(
+//               controller: _scrollController,
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Container(
+//                     decoration: const BoxDecoration(
+//                       borderRadius: BorderRadius.only(
+//                           bottomLeft: Radius.circular(50),
+//                           bottomRight: Radius.circular(50)),
+//                       gradient: LinearGradient(
+//                         colors: [
+//                           Color(0xFF392574),
+//                           Color(0xFF681b4e),
+//                         ],
+//                         begin: Alignment.topLeft,
+//                         end: Alignment.bottomRight,
+//                       ),
+//                     ),
+//                     child: Column(
+//                       children: [
+//                         const SizedBox(height: 40),
+//                         Row(
+//                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                           children: [
+//                             InkWell(
+//                               onTap: () {
+//                                 Navigator.push(
+//                                   context,
+//                                   MaterialPageRoute(
+//                                     builder: (context) =>
+//                                         const VendorProfileScreen(),
+//                                   ),
+//                                 );
+//                               },
+//                               child: Image.asset('assets/images/group.png'),
+//                             ),
+//                             SizedBox(width: 2.w),
+//                             SizedBox(
+//                               height: 40,
+//                               child: NewSearchWidget(
+//                                 onSearchFocusChanged: _onSearchFocusChanged,
+//                                 searchController: _searchController,
+//                                 onTapped: () {
+//                                   Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (context) => BusinessTabScreen(
+//                                         query: _searchController.text,
+//                                       ),
+//                                     ),
+//                                   );
+//                                 },
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+                
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

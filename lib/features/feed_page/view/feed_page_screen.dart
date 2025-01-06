@@ -232,34 +232,49 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                 asyncFollowingStoryContent.when(
                   data: (feedStoryData) {
                     final feedStoryContent = feedStoryData.data?.feedstory;
-                    return Expanded(
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: feedStoryData.data!.feedstory!.posts!.length,
-                        itemBuilder: (context, index) {
-                          final story =
-                              feedStoryData.data!.feedstory!.posts![index];
-                          return FeedStoryAddWidget(
-                            index: index,
-                            vendorName: story.vendorName ?? "Unknown Vendor",
-                            vendorImage: story.vendorImage ??
-                                "https://example.com/default-image.png",
-                            storyCount: story.storyCount ?? 0,
-                            showGift: story.hasSponsoredGifts ?? false,
-                            feedStoryContent: feedStoryContent,
-                            userId: story.vendorId!,
-                            // feedData.data!.feedPost![index].userId ??
-                          );
-                        },
-                      ),
-                    );
+
+                    if (feedStoryContent != null &&
+                        feedStoryContent.posts != null) {
+                      if (feedStoryContent.posts!.isNotEmpty) {
+                        return Expanded(
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: feedStoryContent.posts!.length,
+                            itemBuilder: (context, index) {
+                              final story = feedStoryContent.posts![index];
+
+                              if (story is Map<String, dynamic>) {
+                                return FeedStoryAddWidget(
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                  feedStoryContent: feedStoryContent,
+                                  userId: story.vendorId ?? "",
+                                );
+                              } else {
+                                return Container(); // Return an empty container if story is null
+                              }
+                            },
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                            child: Text("No stories available"));
+                      }
+                    } else {
+                      return const Center(child: Text("No stories available"));
+                    }
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
-                )
+                ),
               ],
             ),
           ),
@@ -357,83 +372,55 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             height: 100,
             child: Row(
               children: [
-                // Stack(
-                //   children: [
-                //     Positioned(
-                //       child: Image.asset(
-                //         fit: BoxFit.cover,
-                //         height: 120,
-                //         "assets/images/subscribe.png",
-                //       ),
-                //     ),
-                //     Positioned(
-                //       bottom: 12,
-                //       right: 1,
-                //       left: 1,
-                //       child: Container(
-                //         decoration: const BoxDecoration(
-                //           color: Colors.white,
-                //           shape: BoxShape.circle,
-                //         ),
-                //         child: const Icon(Icons.add),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                asyncForYouFeedContent.when(
-                  data: (feedData) {
-                    if (feedData.data != null && feedData.data!.story != null) {
-                      final feedStoryItems = feedData.data!.story!;
-                      return asyncForYouStoryContent.when(
-                        data: (feedStoryData) {
-                          final feedStoryContent =
-                              feedStoryData.data?.feedstory;
-                          return Expanded(
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: feedStoryContent?.posts?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                final story = feedStoryContent?.posts?[index];
-                                if (story != null) {
-                                  return FeedStoryAddWidget(
-                                    index: index,
-                                    vendorName:
-                                        story.vendorName ?? "Unknown Vendor",
-                                    vendorImage: story.vendorImage ??
-                                        "https://example.com/default-image.png",
-                                    storyCount: story.storyCount ?? 0,
-                                    showGift: story.hasSponsoredGifts ?? false,
-                                    feedStoryContent: feedStoryContent,
-                                    userId: story.vendorId!,
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            ),
-                          );
-                        },
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (error, stack) {
-                          if (error
-                              .toString()
-                              .contains('Session has expired')) {
-                            return Center(child: Text('Please log in again.'));
-                          }
-                          return Center(child: Text('Error: $error'));
-                        },
-                      );
+                asyncForYouStoryContent.when(
+                  data: (feedStoryData) {
+                    final feedStoryContent = feedStoryData.data?.feedstory;
+                    if (feedStoryContent != null &&
+                        feedStoryContent.posts != null) {
+                      if (feedStoryContent.posts!.isNotEmpty) {
+                        return Expanded(
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: feedStoryContent.posts?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final story = feedStoryContent.posts![index];
+                              if (story is Map<String, dynamic>) {
+                                return FeedStoryAddWidget(
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                  feedStoryContent: feedStoryContent,
+                                  userId: story.vendorId!,
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                            child: Text("No stories available"));
+                      }
                     } else {
-                      return const Center(child: Text('No story available'));
+                      return const Center(child: Text("No stories available"));
                     }
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                )
+                  error: (error, stack) {
+                    if (error.toString().contains('Session has expired')) {
+                      return Center(child: Text('Please log in again.'));
+                    }
+                    return Center(child: Text('Error: $error'));
+                  },
+                ),
 
                 // Expanded(
                 //   child: ListView.builder(

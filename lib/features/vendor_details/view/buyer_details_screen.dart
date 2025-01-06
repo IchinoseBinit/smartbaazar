@@ -137,23 +137,16 @@ class _BuyerAccountDetailsWidgetState
   late TextEditingController _userNameController;
   late TextEditingController _genderController;
   late TextEditingController _branchController;
-  // String? fullName, phoneNumber, email, userName, genderID;
   UserData? userData;
-  String? userId; // Updated to nullable type since we are loading it
+  String? userId;
   bool isLoading = false;
-  Map<String, bool> fieldEdited = {};
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _initControllers();
-    // _fetchInitialData();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _fetchInitialData();
+    _loadUserId();
   }
 
   void _initControllers() {
@@ -165,35 +158,38 @@ class _BuyerAccountDetailsWidgetState
     _branchController = TextEditingController(text: '');
   }
 
-  void _fetchInitialData() async {
-    final userDataAsync = ref.watch(getUserDetailsProvider);
+  // void _fetchInitialData() async {
+  //   final userDataAsync = ref.watch(getUserDetailsProvider);
 
-    userDataAsync.when(
-      data: (data) {
-        setState(() {
-          userData = data.data?.first;
-          _setInitialValues();
-        });
-      },
-      error: (error, stackTrace) {
-        print('Error loading user details: $error');
-      },
-      loading: () {
-        print('Loading user details...');
-      },
-    );
-  }
+  //   userDataAsync.when(
+  //     data: (data) {
+  //       setState(() {
+  //         userData = data.data?.first;
+  //         _setInitialValues(userData);
+  //       });
+  //     },
+  //     error: (error, stackTrace) {
+  //       print('Error loading user details: $error');
+  //     },
+  //     loading: () {
+  //       print('Loading user details...');
+  //     },
+  //   );
+  // }
 
-  void _setInitialValues() {
-    if (userData != null) {
-      _fullNameController.text = userData!.name ?? '';
-      _phoneNumberController.text = userData!.phone ?? '';
-      _emailController.text = userData!.email ?? '';
-      _userNameController.text = userData!.username ?? '';
-      _genderController.text = userData!.genderId ?? '';
-      _branchController.text = userData!.usersLocation != null
-          ? jsonDecode(userData!.usersLocation!)['location'] ?? ''
-          : '';
+  void _setInitialValues(UserData? userData) {
+    if (userData != null && !_isInitialized) {
+      setState(() {
+        _fullNameController.text = userData.name ?? '';
+        _phoneNumberController.text = userData.phone ?? '';
+        _emailController.text = userData.email ?? '';
+        _userNameController.text = userData.username ?? '';
+        _genderController.text = userData.genderId ?? '';
+        _branchController.text = userData.usersLocation != null
+            ? jsonDecode(userData.usersLocation!)['location'] ?? ''
+            : '';
+        _isInitialized = true;
+      });
     }
   }
 
@@ -201,9 +197,19 @@ class _BuyerAccountDetailsWidgetState
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userId =
-          prefs.getString('userId'); // Fetch userId from shared preferences
+      userId = prefs.getString('userId');
     });
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _phoneNumberController.dispose();
+    _emailController.dispose();
+    _userNameController.dispose();
+    _genderController.dispose();
+    _branchController.dispose();
+    super.dispose();
   }
 
   // Future<void> _initializeControllers() async {
@@ -234,8 +240,17 @@ class _BuyerAccountDetailsWidgetState
   void _submitUpdate(UserData data) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      final updatedData = UserData(
+        name: _fullNameController.text,
+        phone: _phoneNumberController.text,
+        email: _emailController.text,
+        username: _userNameController.text,
+        genderId: _genderController.text,
+        usersLocation: jsonEncode({'location': _branchController.text}),
+      );
       if (userId != null) {
-        _updateUserDetails(data); // Call update method if userId is available
+        _updateUserDetails(
+            updatedData); // Call update method if userId is available
       } else {
         // Handle error: userId not available
         ScaffoldMessenger.of(context).showSnackBar(
@@ -250,17 +265,15 @@ class _BuyerAccountDetailsWidgetState
       isLoading = true;
     });
     try {
-      final branchLocation = jsonDecode(data.usersLocation ?? '');
-      final location = branchLocation['location'];
       final updateBuyerUserDetail =
           await ref.read(updateBuyerUserDetailsProvider(
-        _fullNameController.text,
-        _phoneNumberController.text,
-        _userNameController.text,
-        _emailController.text,
+        data.name ?? '',
+        data.phone ?? '',
+        data.username ?? '',
+        data.email ?? '',
         userId ?? '',
-        _genderController.text,
-        _branchController.text,
+        data.genderId ?? '',
+        jsonDecode(data.usersLocation ?? '{}')['location'] ?? '',
         // openingHours,
         // description,
         //  dob!,
@@ -270,6 +283,7 @@ class _BuyerAccountDetailsWidgetState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User details updated successfully!')),
       );
+
       setState(() {
         _fullNameController.clear();
         _phoneNumberController.clear();
@@ -278,6 +292,7 @@ class _BuyerAccountDetailsWidgetState
         _genderController.clear();
         _branchController.clear();
         userId = null;
+        _isInitialized = false;
       });
       _formKey.currentState?.reset();
     } catch (error) {
@@ -309,7 +324,8 @@ class _BuyerAccountDetailsWidgetState
             if (data.data == null || data.data!.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
-
+            final userData = data.data!.first;
+            _setInitialValues(userData);
             return Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(bottom: 18.w),

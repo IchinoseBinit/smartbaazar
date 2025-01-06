@@ -7,7 +7,7 @@ part of 'home_slider_provider.dart';
 // **************************************************************************
 
 String _$fetchAdvertisementsHash() =>
-    r'16965d2001b686571435f183fc48a3fa6a127bc8';
+    r'ffb231ab0f189b945d2dca8334ab4170c3ee8f8b';
 
 /// See also [fetchAdvertisements].
 @ProviderFor(fetchAdvertisements)

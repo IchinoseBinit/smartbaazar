@@ -20,7 +20,7 @@ class AccountDetailsWidget extends ConsumerStatefulWidget {
 
 class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   final _formKey = GlobalKey<FormState>();
-  String weekDayName = '';
+
   UserData? userData;
   late TextEditingController _fullNameController;
   late TextEditingController _phoneNumberController;
@@ -28,23 +28,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   late TextEditingController _userNameController;
   late TextEditingController _genderController;
   String? description;
-  // fullName,
-  //     phoneNumber,
-  //     email,
-  //     userName,
-  //     genderID,
-
-  //  dob,
-  // openingHours,
-
-  String? userId; // Updated to nullable type since we are loading it
+  String? userId;
   bool isLoading = false;
-  // List<String>? day;
-  List<String?> from = [];
-  List<String?> to = [];
-  List<bool> closed = [];
-
-  List<TextEditingController> branchControllers = [TextEditingController()];
+  bool _isInitialized = false;
+  late List<TextEditingController> branchControllers;
   final Map<String, Map<String, dynamic>> openingHours = {
     'Sun': {'from': null, 'to': null, 'closed': false},
     'Mon': {'from': null, 'to': null, 'closed': false},
@@ -58,13 +45,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   void initState() {
     super.initState();
     _initControllers();
-    _loadUserId(); // Load userId when widget initializes
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _fetchInitialData();
+    _loadUserId();
   }
 
   void _initControllers() {
@@ -73,6 +54,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     _emailController = TextEditingController(text: '');
     _userNameController = TextEditingController(text: '');
     _genderController = TextEditingController(text: '');
+    branchControllers = [TextEditingController()];
     // _branchController = TextEditingController(text: '');
   }
 
@@ -80,9 +62,65 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userId =
-          prefs.getString('userId'); // Fetch userId from shared preferences
+      userId = prefs.getString('userId');
     });
+  }
+
+  void _setInitialValues(UserData? userData) {
+    if (userData != null && !_isInitialized) {
+      setState(() {
+        _fullNameController.text = userData.name ?? '';
+        _phoneNumberController.text = userData.phone ?? '';
+        _emailController.text = userData.email ?? '';
+        _userNameController.text = userData.username ?? '';
+        _genderController.text = userData.genderId ?? '';
+        description = userData.about ?? '';
+        _isInitialized = true;
+        // Parse branch locations
+        List<Map<String, dynamic>>? branchLocations;
+        if (userData.branchLocation != null) {
+          try {
+            final decodedData = json.decode(userData.branchLocation!);
+            if (decodedData is List) {
+              branchLocations = decodedData.cast<Map<String, dynamic>>();
+            } else {
+              print(
+                  'Error: Expected a List but got ${decodedData.runtimeType}');
+            }
+          } catch (e) {
+            print('Error parsing branch locations: $e');
+          }
+        } else {
+          branchLocations = [];
+        }
+        // Clear existing controllers
+        setState(() {
+          branchControllers.clear();
+
+          // Add new controllers
+          for (var i = 0; i < branchLocations!.length; i++) {
+            TextEditingController controller =
+                TextEditingController(text: branchLocations[i]['location']);
+            branchControllers.add(controller);
+          }
+        });
+        List<String> branchLocationsText = branchLocations!.map((location) {
+          return location['location'] as String;
+        }).toList();
+
+        // Parse opening hours
+        if (userData.openingHours != null) {
+          List<dynamic> openingHoursData =
+              jsonDecode(userData.openingHours ?? '');
+          for (var hour in openingHoursData) {
+            String day = hour['day'];
+            openingHours[day]!['from'] = hour['from'];
+            openingHours[day]!['to'] = hour['to'];
+            openingHours[day]!['closed'] = hour['closed'];
+          }
+        }
+      });
+    }
   }
 
   void _fetchInitialData() async {
@@ -92,7 +130,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       data: (data) {
         setState(() {
           userData = data.data?.first;
-          _setInitialValues();
+          _setInitialValues(userData!);
         });
       },
       error: (error, stackTrace) {
@@ -102,19 +140,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         print('Loading user details...');
       },
     );
-  }
-
-  void _setInitialValues() {
-    if (userData != null) {
-      _fullNameController.text = userData!.name ?? '';
-      _phoneNumberController.text = userData!.phone ?? '';
-      _emailController.text = userData!.email ?? '';
-      _userNameController.text = userData!.username ?? '';
-      _genderController.text = userData!.genderId ?? '';
-      // _branchController.text = userData!.usersLocation != null
-      //     ? jsonDecode(userData!.usersLocation!)['location'] ?? ''
-      //     : '';
-    }
   }
 
   void _addBranchField() {
@@ -132,8 +157,16 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   void _submitUpdate() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      final updatedData = UserData(
+        name: _fullNameController.text,
+        phone: _phoneNumberController.text,
+        email: _emailController.text,
+        username: _userNameController.text,
+        genderId: _genderController.text,
+        // usersLocation: jsonEncode({'location': _branchController.text}),
+      );
       if (userId != null) {
-        _updateUserDetails(); // Call update method if userId is available
+        _updateUserDetails(updatedData);
       } else {
         // Handle error: userId not available
         ScaffoldMessenger.of(context).showSnackBar(
@@ -143,7 +176,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     }
   }
 
-  Future<void> _updateUserDetails() async {
+  Future<void> _updateUserDetails(UserData data) async {
     setState(() {
       isLoading = true;
     });
@@ -161,26 +194,21 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         to.add(openingHours[dayNames[i]]!['to'] ?? '');
         closed.add(openingHours[dayNames[i]]!['closed']);
       }
-      // Map<String, Map<String, dynamic>> openingHours = {};
-      // final openingHoursWidget =
-      //     context.findAncestorStateOfType<_OpeningHoursWidgetState>();
-      // if (openingHoursWidget != null) {
-      //   openingHours = openingHoursWidget.openingHours;
-      // }
 
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
-        _fullNameController.text,
-        _phoneNumberController.text,
-        _userNameController.text,
-        _emailController.text,
-        userId!,
-        _genderController.text,
+        data.name ?? '',
+        data.phone ?? '',
+        data.username ?? '',
+        data.email ?? '',
+        userId ?? '',
+        data.genderId ?? '',
         branchLocations,
         description!,
-        dayNames ?? [],
-        from,
-        to,
-        closed,
+
+        openingHours.keys.toList(),
+        openingHours.values.map((v) => v['from']).toList().cast<String>(),
+        openingHours.values.map((v) => v['to']).toList().cast<String>(),
+        openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
 
         // description,
         //  dob!,
@@ -198,10 +226,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _genderController.clear();
         branchControllers.clear();
         description = '';
-        dayNames = [];
-        from = [];
-        to = [];
-        closed = [];
+        // dayNames = [];
+        // from = [];
+        // to = [];
+        // closed = [];
       });
       _formKey.currentState?.reset();
     } catch (error) {
@@ -223,84 +251,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     });
   }
 
-  Future<void> _loadData() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      final asyncUserDetails = ref.watch(getUserDetailsProvider);
-
-      switch (asyncUserDetails.runtimeType) {
-        case AsyncLoading:
-          break;
-        case AsyncError:
-          throw Exception(asyncUserDetails.error.toString());
-        case AsyncData:
-          final userData =
-              (asyncUserDetails as AsyncData<UserDataModel>).value.data?.first;
-
-          if (userData != null) {
-            setState(() {
-              _fullNameController.text = userData.name!;
-              _phoneNumberController.text = userData.phone!;
-              _emailController.text = userData.email!;
-              _userNameController.text = userData.username!;
-              _genderController.text = userData.genderId!;
-              description = userData.about ?? '';
-
-              // Parse branch locations
-              List<dynamic> branchLocations;
-              if (userData.branchLocation != null) {
-                branchLocations =
-                    jsonDecode(jsonDecode(userData.branchLocation!));
-              } else {
-                branchLocations = [];
-              }
-
-              // Clear existing controllers
-              branchControllers.clear();
-
-              // Add new controllers
-              for (var i = 0; i < branchLocations.length; i++) {
-                TextEditingController controller =
-                    TextEditingController(text: branchLocations[i]['location']);
-                branchControllers.add(controller);
-              }
-              List<String> branchLocationsText =
-                  branchLocations.map((location) {
-                return location['location'] as String;
-              }).toList();
-
-              print('Printed locations: $branchLocationsText');
-
-              // Parse opening hours
-              if (userData.openingHours != null) {
-                List<dynamic> openingHoursData =
-                    jsonDecode(userData.openingHours ?? '');
-                for (var hour in openingHoursData) {
-                  String day = hour['day'];
-                  openingHours[day]!['from'] = hour['from'];
-                  openingHours[day]!['to'] = hour['to'];
-                  openingHours[day]!['closed'] = hour['closed'];
-                }
-              }
-            });
-
-            // Store printed locations
-          }
-          break;
-      }
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading user details: $error')),
-      );
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ref.watch(getUserDetailsProvider).when(
@@ -308,13 +258,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             if (data.data == null || data.data!.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
-            // if (data.data != null && data.data!.isNotEmpty) {
-            //   _loadData();
-            // }
+            final userData = data.data!.first;
+            _setInitialValues(userData);
+
             List<dynamic> branchLocations =
                 jsonDecode(data.data!.first.branchLocation!);
-
-// // If you need to extract specific fields (e.g., `location`):
             List<String> branchLocationsText = branchLocations.map((location) {
               return location['location']
                   as String; // Assuming each location is a Map with a 'location' key

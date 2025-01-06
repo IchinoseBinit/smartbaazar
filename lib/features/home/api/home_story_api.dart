@@ -12,7 +12,7 @@ Future<HomeStoryModel> getHomeStory(GetHomeStoryRef ref) async {
 
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url: ApiConstants.homeSliderBannerUrl,
     );
     if (response.statusCode == 200) {

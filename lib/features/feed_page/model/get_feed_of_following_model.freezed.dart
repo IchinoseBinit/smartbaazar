@@ -208,8 +208,6 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 mixin _$Data {
   @JsonKey(name: 'feed_post')
   List<FeedPost>? get feedPost => throw _privateConstructorUsedError;
-  @JsonKey(name: 'story')
-  Story? get story => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -221,11 +219,7 @@ abstract class $DataCopyWith<$Res> {
   factory $DataCopyWith(Data value, $Res Function(Data) then) =
       _$DataCopyWithImpl<$Res, Data>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'feed_post') List<FeedPost>? feedPost,
-      @JsonKey(name: 'story') Story? story});
-
-  $StoryCopyWith<$Res>? get story;
+  $Res call({@JsonKey(name: 'feed_post') List<FeedPost>? feedPost});
 }
 
 /// @nodoc
@@ -242,30 +236,13 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   @override
   $Res call({
     Object? feedPost = freezed,
-    Object? story = freezed,
   }) {
     return _then(_value.copyWith(
       feedPost: freezed == feedPost
           ? _value.feedPost
           : feedPost // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
-      story: freezed == story
-          ? _value.story
-          : story // ignore: cast_nullable_to_non_nullable
-              as Story?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $StoryCopyWith<$Res>? get story {
-    if (_value.story == null) {
-      return null;
-    }
-
-    return $StoryCopyWith<$Res>(_value.story!, (value) {
-      return _then(_value.copyWith(story: value) as $Val);
-    });
   }
 }
 
@@ -276,12 +253,7 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
       __$$DataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'feed_post') List<FeedPost>? feedPost,
-      @JsonKey(name: 'story') Story? story});
-
-  @override
-  $StoryCopyWith<$Res>? get story;
+  $Res call({@JsonKey(name: 'feed_post') List<FeedPost>? feedPost});
 }
 
 /// @nodoc
@@ -295,17 +267,12 @@ class __$$DataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? feedPost = freezed,
-    Object? story = freezed,
   }) {
     return _then(_$DataImpl(
       feedPost: freezed == feedPost
           ? _value._feedPost
           : feedPost // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
-      story: freezed == story
-          ? _value.story
-          : story // ignore: cast_nullable_to_non_nullable
-              as Story?,
     ));
   }
 }
@@ -313,9 +280,7 @@ class __$$DataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$DataImpl implements _Data {
-  const _$DataImpl(
-      {@JsonKey(name: 'feed_post') final List<FeedPost>? feedPost,
-      @JsonKey(name: 'story') this.story})
+  const _$DataImpl({@JsonKey(name: 'feed_post') final List<FeedPost>? feedPost})
       : _feedPost = feedPost;
 
   factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
@@ -333,12 +298,8 @@ class _$DataImpl implements _Data {
   }
 
   @override
-  @JsonKey(name: 'story')
-  final Story? story;
-
-  @override
   String toString() {
-    return 'Data(feedPost: $feedPost, story: $story)';
+    return 'Data(feedPost: $feedPost)';
   }
 
   @override
@@ -346,14 +307,13 @@ class _$DataImpl implements _Data {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DataImpl &&
-            const DeepCollectionEquality().equals(other._feedPost, _feedPost) &&
-            (identical(other.story, story) || other.story == story));
+            const DeepCollectionEquality().equals(other._feedPost, _feedPost));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_feedPost), story);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_feedPost));
 
   @JsonKey(ignore: true)
   @override
@@ -371,17 +331,14 @@ class _$DataImpl implements _Data {
 
 abstract class _Data implements Data {
   const factory _Data(
-      {@JsonKey(name: 'feed_post') final List<FeedPost>? feedPost,
-      @JsonKey(name: 'story') final Story? story}) = _$DataImpl;
+          {@JsonKey(name: 'feed_post') final List<FeedPost>? feedPost}) =
+      _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 
   @override
   @JsonKey(name: 'feed_post')
   List<FeedPost>? get feedPost;
-  @override
-  @JsonKey(name: 'story')
-  Story? get story;
   @override
   @JsonKey(ignore: true)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -1840,741 +1797,5 @@ abstract class _UserDetail implements UserDetail {
   @override
   @JsonKey(ignore: true)
   _$$UserDetailImplCopyWith<_$UserDetailImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Story _$StoryFromJson(Map<String, dynamic> json) {
-  return _Story.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Story {
-  @JsonKey(name: 'feed_story')
-  List<FeedStory>? get feedStory => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $StoryCopyWith<Story> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $StoryCopyWith<$Res> {
-  factory $StoryCopyWith(Story value, $Res Function(Story) then) =
-      _$StoryCopyWithImpl<$Res, Story>;
-  @useResult
-  $Res call({@JsonKey(name: 'feed_story') List<FeedStory>? feedStory});
-}
-
-/// @nodoc
-class _$StoryCopyWithImpl<$Res, $Val extends Story>
-    implements $StoryCopyWith<$Res> {
-  _$StoryCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? feedStory = freezed,
-  }) {
-    return _then(_value.copyWith(
-      feedStory: freezed == feedStory
-          ? _value.feedStory
-          : feedStory // ignore: cast_nullable_to_non_nullable
-              as List<FeedStory>?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$StoryImplCopyWith<$Res> implements $StoryCopyWith<$Res> {
-  factory _$$StoryImplCopyWith(
-          _$StoryImpl value, $Res Function(_$StoryImpl) then) =
-      __$$StoryImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({@JsonKey(name: 'feed_story') List<FeedStory>? feedStory});
-}
-
-/// @nodoc
-class __$$StoryImplCopyWithImpl<$Res>
-    extends _$StoryCopyWithImpl<$Res, _$StoryImpl>
-    implements _$$StoryImplCopyWith<$Res> {
-  __$$StoryImplCopyWithImpl(
-      _$StoryImpl _value, $Res Function(_$StoryImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? feedStory = freezed,
-  }) {
-    return _then(_$StoryImpl(
-      feedStory: freezed == feedStory
-          ? _value._feedStory
-          : feedStory // ignore: cast_nullable_to_non_nullable
-              as List<FeedStory>?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$StoryImpl implements _Story {
-  const _$StoryImpl(
-      {@JsonKey(name: 'feed_story') final List<FeedStory>? feedStory})
-      : _feedStory = feedStory;
-
-  factory _$StoryImpl.fromJson(Map<String, dynamic> json) =>
-      _$$StoryImplFromJson(json);
-
-  final List<FeedStory>? _feedStory;
-  @override
-  @JsonKey(name: 'feed_story')
-  List<FeedStory>? get feedStory {
-    final value = _feedStory;
-    if (value == null) return null;
-    if (_feedStory is EqualUnmodifiableListView) return _feedStory;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  String toString() {
-    return 'Story(feedStory: $feedStory)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$StoryImpl &&
-            const DeepCollectionEquality()
-                .equals(other._feedStory, _feedStory));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_feedStory));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$StoryImplCopyWith<_$StoryImpl> get copyWith =>
-      __$$StoryImplCopyWithImpl<_$StoryImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$StoryImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Story implements Story {
-  const factory _Story(
-          {@JsonKey(name: 'feed_story') final List<FeedStory>? feedStory}) =
-      _$StoryImpl;
-
-  factory _Story.fromJson(Map<String, dynamic> json) = _$StoryImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'feed_story')
-  List<FeedStory>? get feedStory;
-  @override
-  @JsonKey(ignore: true)
-  _$$StoryImplCopyWith<_$StoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-FeedStory _$FeedStoryFromJson(Map<String, dynamic> json) {
-  return _FeedStory.fromJson(json);
-}
-
-/// @nodoc
-mixin _$FeedStory {
-  @JsonKey(name: 'id')
-  String? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vendor_name')
-  String? get vendorName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vendor_image')
-  String? get vendorImage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'story_count')
-  int? get storyCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'has_sponsored_gifts')
-  bool? get hasSponsoredGifts => throw _privateConstructorUsedError;
-  @JsonKey(name: 'posts')
-  List<Post>? get posts => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $FeedStoryCopyWith<FeedStory> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $FeedStoryCopyWith<$Res> {
-  factory $FeedStoryCopyWith(FeedStory value, $Res Function(FeedStory) then) =
-      _$FeedStoryCopyWithImpl<$Res, FeedStory>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'vendor_name') String? vendorName,
-      @JsonKey(name: 'vendor_image') String? vendorImage,
-      @JsonKey(name: 'story_count') int? storyCount,
-      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
-      @JsonKey(name: 'posts') List<Post>? posts});
-}
-
-/// @nodoc
-class _$FeedStoryCopyWithImpl<$Res, $Val extends FeedStory>
-    implements $FeedStoryCopyWith<$Res> {
-  _$FeedStoryCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? vendorName = freezed,
-    Object? vendorImage = freezed,
-    Object? storyCount = freezed,
-    Object? hasSponsoredGifts = freezed,
-    Object? posts = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      vendorName: freezed == vendorName
-          ? _value.vendorName
-          : vendorName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      vendorImage: freezed == vendorImage
-          ? _value.vendorImage
-          : vendorImage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      storyCount: freezed == storyCount
-          ? _value.storyCount
-          : storyCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      hasSponsoredGifts: freezed == hasSponsoredGifts
-          ? _value.hasSponsoredGifts
-          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      posts: freezed == posts
-          ? _value.posts
-          : posts // ignore: cast_nullable_to_non_nullable
-              as List<Post>?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$FeedStoryImplCopyWith<$Res>
-    implements $FeedStoryCopyWith<$Res> {
-  factory _$$FeedStoryImplCopyWith(
-          _$FeedStoryImpl value, $Res Function(_$FeedStoryImpl) then) =
-      __$$FeedStoryImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'vendor_name') String? vendorName,
-      @JsonKey(name: 'vendor_image') String? vendorImage,
-      @JsonKey(name: 'story_count') int? storyCount,
-      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
-      @JsonKey(name: 'posts') List<Post>? posts});
-}
-
-/// @nodoc
-class __$$FeedStoryImplCopyWithImpl<$Res>
-    extends _$FeedStoryCopyWithImpl<$Res, _$FeedStoryImpl>
-    implements _$$FeedStoryImplCopyWith<$Res> {
-  __$$FeedStoryImplCopyWithImpl(
-      _$FeedStoryImpl _value, $Res Function(_$FeedStoryImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? vendorName = freezed,
-    Object? vendorImage = freezed,
-    Object? storyCount = freezed,
-    Object? hasSponsoredGifts = freezed,
-    Object? posts = freezed,
-  }) {
-    return _then(_$FeedStoryImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      vendorName: freezed == vendorName
-          ? _value.vendorName
-          : vendorName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      vendorImage: freezed == vendorImage
-          ? _value.vendorImage
-          : vendorImage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      storyCount: freezed == storyCount
-          ? _value.storyCount
-          : storyCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      hasSponsoredGifts: freezed == hasSponsoredGifts
-          ? _value.hasSponsoredGifts
-          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      posts: freezed == posts
-          ? _value._posts
-          : posts // ignore: cast_nullable_to_non_nullable
-              as List<Post>?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$FeedStoryImpl implements _FeedStory {
-  const _$FeedStoryImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'vendor_name') this.vendorName,
-      @JsonKey(name: 'vendor_image') this.vendorImage,
-      @JsonKey(name: 'story_count') this.storyCount,
-      @JsonKey(name: 'has_sponsored_gifts') this.hasSponsoredGifts,
-      @JsonKey(name: 'posts') final List<Post>? posts})
-      : _posts = posts;
-
-  factory _$FeedStoryImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FeedStoryImplFromJson(json);
-
-  @override
-  @JsonKey(name: 'id')
-  final String? id;
-  @override
-  @JsonKey(name: 'vendor_name')
-  final String? vendorName;
-  @override
-  @JsonKey(name: 'vendor_image')
-  final String? vendorImage;
-  @override
-  @JsonKey(name: 'story_count')
-  final int? storyCount;
-  @override
-  @JsonKey(name: 'has_sponsored_gifts')
-  final bool? hasSponsoredGifts;
-  final List<Post>? _posts;
-  @override
-  @JsonKey(name: 'posts')
-  List<Post>? get posts {
-    final value = _posts;
-    if (value == null) return null;
-    if (_posts is EqualUnmodifiableListView) return _posts;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  String toString() {
-    return 'FeedStory(id: $id, vendorName: $vendorName, vendorImage: $vendorImage, storyCount: $storyCount, hasSponsoredGifts: $hasSponsoredGifts, posts: $posts)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FeedStoryImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.vendorName, vendorName) ||
-                other.vendorName == vendorName) &&
-            (identical(other.vendorImage, vendorImage) ||
-                other.vendorImage == vendorImage) &&
-            (identical(other.storyCount, storyCount) ||
-                other.storyCount == storyCount) &&
-            (identical(other.hasSponsoredGifts, hasSponsoredGifts) ||
-                other.hasSponsoredGifts == hasSponsoredGifts) &&
-            const DeepCollectionEquality().equals(other._posts, _posts));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      vendorName,
-      vendorImage,
-      storyCount,
-      hasSponsoredGifts,
-      const DeepCollectionEquality().hash(_posts));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FeedStoryImplCopyWith<_$FeedStoryImpl> get copyWith =>
-      __$$FeedStoryImplCopyWithImpl<_$FeedStoryImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$FeedStoryImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _FeedStory implements FeedStory {
-  const factory _FeedStory(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'vendor_name') final String? vendorName,
-      @JsonKey(name: 'vendor_image') final String? vendorImage,
-      @JsonKey(name: 'story_count') final int? storyCount,
-      @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
-      @JsonKey(name: 'posts') final List<Post>? posts}) = _$FeedStoryImpl;
-
-  factory _FeedStory.fromJson(Map<String, dynamic> json) =
-      _$FeedStoryImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'id')
-  String? get id;
-  @override
-  @JsonKey(name: 'vendor_name')
-  String? get vendorName;
-  @override
-  @JsonKey(name: 'vendor_image')
-  String? get vendorImage;
-  @override
-  @JsonKey(name: 'story_count')
-  int? get storyCount;
-  @override
-  @JsonKey(name: 'has_sponsored_gifts')
-  bool? get hasSponsoredGifts;
-  @override
-  @JsonKey(name: 'posts')
-  List<Post>? get posts;
-  @override
-  @JsonKey(ignore: true)
-  _$$FeedStoryImplCopyWith<_$FeedStoryImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Post _$PostFromJson(Map<String, dynamic> json) {
-  return _Post.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Post {
-  @JsonKey(name: 'id')
-  String? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'title')
-  String? get title => throw _privateConstructorUsedError;
-  @JsonKey(name: 'image')
-  String? get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'similarproductcount')
-  int? get similarProductCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'comment_count')
-  String? get commentCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'average_rating')
-  dynamic get averageRating => throw _privateConstructorUsedError;
-  @JsonKey(name: 'discount_percentage')
-  dynamic get discountPercentage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'wow')
-  dynamic get wow => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $PostCopyWith<Post> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PostCopyWith<$Res> {
-  factory $PostCopyWith(Post value, $Res Function(Post) then) =
-      _$PostCopyWithImpl<$Res, Post>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'title') String? title,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'similarproductcount') int? similarProductCount,
-      @JsonKey(name: 'comment_count') String? commentCount,
-      @JsonKey(name: 'average_rating') dynamic averageRating,
-      @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
-      @JsonKey(name: 'wow') dynamic wow});
-}
-
-/// @nodoc
-class _$PostCopyWithImpl<$Res, $Val extends Post>
-    implements $PostCopyWith<$Res> {
-  _$PostCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? image = freezed,
-    Object? similarProductCount = freezed,
-    Object? commentCount = freezed,
-    Object? averageRating = freezed,
-    Object? discountPercentage = freezed,
-    Object? wow = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-      similarProductCount: freezed == similarProductCount
-          ? _value.similarProductCount
-          : similarProductCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      commentCount: freezed == commentCount
-          ? _value.commentCount
-          : commentCount // ignore: cast_nullable_to_non_nullable
-              as String?,
-      averageRating: freezed == averageRating
-          ? _value.averageRating
-          : averageRating // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      discountPercentage: freezed == discountPercentage
-          ? _value.discountPercentage
-          : discountPercentage // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      wow: freezed == wow
-          ? _value.wow
-          : wow // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
-  factory _$$PostImplCopyWith(
-          _$PostImpl value, $Res Function(_$PostImpl) then) =
-      __$$PostImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'title') String? title,
-      @JsonKey(name: 'image') String? image,
-      @JsonKey(name: 'similarproductcount') int? similarProductCount,
-      @JsonKey(name: 'comment_count') String? commentCount,
-      @JsonKey(name: 'average_rating') dynamic averageRating,
-      @JsonKey(name: 'discount_percentage') dynamic discountPercentage,
-      @JsonKey(name: 'wow') dynamic wow});
-}
-
-/// @nodoc
-class __$$PostImplCopyWithImpl<$Res>
-    extends _$PostCopyWithImpl<$Res, _$PostImpl>
-    implements _$$PostImplCopyWith<$Res> {
-  __$$PostImplCopyWithImpl(_$PostImpl _value, $Res Function(_$PostImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? title = freezed,
-    Object? image = freezed,
-    Object? similarProductCount = freezed,
-    Object? commentCount = freezed,
-    Object? averageRating = freezed,
-    Object? discountPercentage = freezed,
-    Object? wow = freezed,
-  }) {
-    return _then(_$PostImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-      similarProductCount: freezed == similarProductCount
-          ? _value.similarProductCount
-          : similarProductCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      commentCount: freezed == commentCount
-          ? _value.commentCount
-          : commentCount // ignore: cast_nullable_to_non_nullable
-              as String?,
-      averageRating: freezed == averageRating
-          ? _value.averageRating
-          : averageRating // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      discountPercentage: freezed == discountPercentage
-          ? _value.discountPercentage
-          : discountPercentage // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      wow: freezed == wow
-          ? _value.wow
-          : wow // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PostImpl implements _Post {
-  const _$PostImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'title') this.title,
-      @JsonKey(name: 'image') this.image,
-      @JsonKey(name: 'similarproductcount') this.similarProductCount,
-      @JsonKey(name: 'comment_count') this.commentCount,
-      @JsonKey(name: 'average_rating') this.averageRating,
-      @JsonKey(name: 'discount_percentage') this.discountPercentage,
-      @JsonKey(name: 'wow') this.wow});
-
-  factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PostImplFromJson(json);
-
-  @override
-  @JsonKey(name: 'id')
-  final String? id;
-  @override
-  @JsonKey(name: 'title')
-  final String? title;
-  @override
-  @JsonKey(name: 'image')
-  final String? image;
-  @override
-  @JsonKey(name: 'similarproductcount')
-  final int? similarProductCount;
-  @override
-  @JsonKey(name: 'comment_count')
-  final String? commentCount;
-  @override
-  @JsonKey(name: 'average_rating')
-  final dynamic averageRating;
-  @override
-  @JsonKey(name: 'discount_percentage')
-  final dynamic discountPercentage;
-  @override
-  @JsonKey(name: 'wow')
-  final dynamic wow;
-
-  @override
-  String toString() {
-    return 'Post(id: $id, title: $title, image: $image, similarProductCount: $similarProductCount, commentCount: $commentCount, averageRating: $averageRating, discountPercentage: $discountPercentage, wow: $wow)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PostImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.image, image) || other.image == image) &&
-            (identical(other.similarProductCount, similarProductCount) ||
-                other.similarProductCount == similarProductCount) &&
-            (identical(other.commentCount, commentCount) ||
-                other.commentCount == commentCount) &&
-            const DeepCollectionEquality()
-                .equals(other.averageRating, averageRating) &&
-            const DeepCollectionEquality()
-                .equals(other.discountPercentage, discountPercentage) &&
-            const DeepCollectionEquality().equals(other.wow, wow));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      title,
-      image,
-      similarProductCount,
-      commentCount,
-      const DeepCollectionEquality().hash(averageRating),
-      const DeepCollectionEquality().hash(discountPercentage),
-      const DeepCollectionEquality().hash(wow));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
-      __$$PostImplCopyWithImpl<_$PostImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PostImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Post implements Post {
-  const factory _Post(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'title') final String? title,
-      @JsonKey(name: 'image') final String? image,
-      @JsonKey(name: 'similarproductcount') final int? similarProductCount,
-      @JsonKey(name: 'comment_count') final String? commentCount,
-      @JsonKey(name: 'average_rating') final dynamic averageRating,
-      @JsonKey(name: 'discount_percentage') final dynamic discountPercentage,
-      @JsonKey(name: 'wow') final dynamic wow}) = _$PostImpl;
-
-  factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'id')
-  String? get id;
-  @override
-  @JsonKey(name: 'title')
-  String? get title;
-  @override
-  @JsonKey(name: 'image')
-  String? get image;
-  @override
-  @JsonKey(name: 'similarproductcount')
-  int? get similarProductCount;
-  @override
-  @JsonKey(name: 'comment_count')
-  String? get commentCount;
-  @override
-  @JsonKey(name: 'average_rating')
-  dynamic get averageRating;
-  @override
-  @JsonKey(name: 'discount_percentage')
-  dynamic get discountPercentage;
-  @override
-  @JsonKey(name: 'wow')
-  dynamic get wow;
-  @override
-  @JsonKey(ignore: true)
-  _$$PostImplCopyWith<_$PostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

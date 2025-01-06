@@ -11,7 +11,6 @@ Future<String> deletegift(String id) async {
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.sponsorshipDestroy}/$id", // Use id in URL
     );
-    print("binod $response");
 
     if (response.statusCode == 200 && response.data != null) {
       // Extract "message" from the nested data field

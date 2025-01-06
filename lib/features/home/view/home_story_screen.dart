@@ -194,7 +194,7 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
     _startAutoScroll();
   }
 
-  Set<int> _displayedStoryIndices = {};
+  final Set<int> _displayedStoryIndices = {};
 
   void _onTap(bool forward) {
     if (forward) {
@@ -536,8 +536,8 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                           width: MediaQuery.sizeOf(context).width * 0.2,
                           height: 70.h,
                           color: Colors.orange,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -547,7 +547,7 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
                                       color: Colors.white, fontSize: 9),
                                 ),
                                 // SizedBox(height: 6),
-                                const Row(
+                                Row(
                                   children: [
                                     Icon(
                                       Icons.check_box_outlined,

@@ -105,8 +105,7 @@ class MySubscriptionScreen extends ConsumerWidget {
                       fgColor: Colors.white,
                       title: 'Profile',
                       onPressed: () {
-                        print(
-                            "binod ${subscription.vendor!.id} and $subscription");
+                      
                         Navigator.push(
                             context,
                             MaterialPageRoute(

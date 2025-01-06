@@ -6,7 +6,7 @@ import 'package:smartbazar/features/create_listing/model/dropdown_value_model.da
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 
 class CategoryField extends StatefulWidget {
-  final Function(Category?) onCategorySelected;
+  final Function(Category?, String?) onCategorySelected;
   final Function(Category?) onSubCategorySelected;
   final Function(Category?)? onSubCategorySelected1;
   final Function(Category?)? onSubCategorySelected2;
@@ -128,7 +128,7 @@ class _CategoryFieldState extends State<CategoryField> {
             ),
           ),
           Expanded(
-            child: CustomDropdownButton<T>(
+            child: CustomDropdownButton<T>( 
               items: items,
               dropdownValue: selectedValue,
               onChanged: onChanged,
@@ -167,7 +167,7 @@ class _CategoryFieldState extends State<CategoryField> {
             onChanged: (newValue) {
               setState(() {
                 selectedCategory = newValue;
-                widget.onCategorySelected(newValue);
+                widget.onCategorySelected(newValue, selectedType!.typeId.toString());
               });
               if (newValue != null) {
                 _fetchSubCategoryList(newValue, 1);
