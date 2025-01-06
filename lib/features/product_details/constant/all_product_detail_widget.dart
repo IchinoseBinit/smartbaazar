@@ -31,6 +31,7 @@ class AllProductDetailWidget extends StatelessWidget {
       this.issponsored = false,
       this.shortestDistance,
       this.membershipTitle,
+      this.discountpercentage,
       this.avg_rating});
 
   String? title;
@@ -39,6 +40,7 @@ class AllProductDetailWidget extends StatelessWidget {
   int? similarproductCount;
   String? views, comment, share;
   String? vendorname;
+  int? discountpercentage;
 
   // String? membership_title;
   double? distance;
@@ -410,7 +412,8 @@ class AllProductDetailWidget extends StatelessWidget {
               ),
               discounttedPrice?.length == 0 ||
                       discounttedPrice == null ||
-                      discounttedPrice == '0'
+                      discounttedPrice == '0' ||
+                      discountpercentage == null
                   ? const SizedBox()
                   : Row(
                       children: [
@@ -421,7 +424,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           color: const Color(0xff901B41),
                         ),
                         Text(
-                          "30%",
+                          "${discountpercentage}%",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff901B41),

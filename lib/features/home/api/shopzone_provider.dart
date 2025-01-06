@@ -105,6 +105,7 @@ class CategoryProduct {
   final String? offers;
   final String? wow;
   final int? commentCount;
+  final int? discount_percentage;
   final int? avgRating;
   final double? shortestDistance;
   final String? nearestBranch;
@@ -124,10 +125,13 @@ class CategoryProduct {
     this.avgRating,
     this.shortestDistance,
     this.nearestBranch,
+
+    this.discount_percentage
   });
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) {
     return CategoryProduct(
+      discount_percentage: json['discount_percentage'],
       id: json['id'] ?? '',
       price: json['price'] ?? '0.0',
       title: json['title'] ?? '',
@@ -179,14 +183,12 @@ class VendorUser {
       photo: json['photo'] ?? '',
       memberColor: json['membership_color'],
       shortestDistance: (json['shortestDistance']),
-         
       nearestBranch: json['nearestBranch'],
       sponsored: json['sponsored'] ?? false,
       membershipTitle: json['membership_title'],
     );
   }
 }
-
 
 // Fixed ShopZone model to be consistent
 class ShopZone {

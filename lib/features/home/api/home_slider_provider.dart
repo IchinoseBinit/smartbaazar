@@ -7,6 +7,7 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part "home_slider_provider.g.dart";
+
 class VProduct {
   final String id;
   final String price;
@@ -21,6 +22,7 @@ class VProduct {
   final int? avgRating;
   final int? commentCount;
   final String? wow;
+  final int? discount_percentage;
 
   VProduct({
     required this.id,
@@ -36,11 +38,12 @@ class VProduct {
     required this.price,
     required this.offers,
     required this.userDetail,
+    this.discount_percentage,
   });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
-    
     return VProduct(
+      discount_percentage: json['discount_percentage'],
       wow: json['wow'],
       discountedPrice: json['discounted_price'],
       commentCount: json['commentcount'],
@@ -100,9 +103,6 @@ Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
     }
 
     final homepage = Homepage1.fromJson(data);
-
-
-
 
     return homepage;
   } catch (e) {

@@ -33,6 +33,7 @@ class ProductDetailWidget extends StatelessWidget {
     this.issponsored = false,
     this.shortestDistance,
     this.membershipTitle,
+    this.didcountpercentage,
     this.avg_rating = 1,
   });
 
@@ -42,6 +43,7 @@ class ProductDetailWidget extends StatelessWidget {
   int? similarproductCount;
   String? views, comment, share;
   String? vendorname;
+  int? didcountpercentage;
 
   // String? membership_title;
   double? distance;
@@ -62,7 +64,6 @@ class ProductDetailWidget extends StatelessWidget {
     String showRs = discounttedPrice == '0' ? '' : '';
 
     return Card(
-      
       clipBehavior: Clip.antiAlias,
       shadowColor: const Color(0xff3D215F).withOpacity(0.5),
       elevation: 9,
@@ -398,7 +399,9 @@ class ProductDetailWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  discounttedPrice == '0' || discounttedPrice?.length == 0
+                  discounttedPrice == '0' ||
+                          discounttedPrice?.length == 0 ||
+                          didcountpercentage == 0
                       ? const SizedBox()
                       : Row(
                           children: [
@@ -409,7 +412,7 @@ class ProductDetailWidget extends StatelessWidget {
                               color: const Color(0xff901B41),
                             ),
                             Text(
-                              "30%",
+                              "${didcountpercentage}%",
                               style: headerstyle.copyWith(
                                   fontWeight: FontWeight.w600,
                                   color: const Color(0xff901B41),
@@ -566,7 +569,6 @@ class ProductDetailWidget extends StatelessWidget {
                     ),
                     // ),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -583,7 +585,6 @@ class ProductDetailWidget extends StatelessWidget {
                         Row(
                           children: [
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
@@ -656,8 +657,8 @@ class ProductDetailWidget extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.spaceBetween,
                                   // crossAxisAlignment: CrossAxisAlignment.s,
                                   children: [
                                     Row(
@@ -669,30 +670,14 @@ class ProductDetailWidget extends StatelessWidget {
                                           "assets/images/nepalFlag.png",
                                           height: 9.h,
                                         ),
-
                                         SizedBox(
                                           width: 1.w,
                                         ),
-                                        // SizedBox(
-                                        //   width: 75.w,
-                                        //   child: Text(
-                                        //     membershipTitle ?? "Domestic Brand",
-                                        //     style: headerstyle.copyWith(
-                                        //       fontSize: (membershipTitle != null &&
-                                        //               membershipTitle!.length > 15)
-                                        //           ? 8.sp
-                                        //           : 10.sp,
-                                        //       // Adjust font size based on length
-                                        //       fontWeight: FontWeight.w700,
-                                        //     ),
-                                        //   ),
-                                        // ),e
-
                                         SizedBox(
                                           child: Text(
                                             membershipTitle ?? "Domestic Brand",
                                             style: headerstyle.copyWith(
-                                              fontSize: 9.sp,
+                                              fontSize: 10.sp,
                                               fontFamily:
                                                   GoogleFonts.quicksand()
                                                       .fontFamily,
@@ -707,6 +692,9 @@ class ProductDetailWidget extends StatelessWidget {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                    SizedBox(
+                                      width: 70.w,
                                     ),
 
                                     if (issponsored)
