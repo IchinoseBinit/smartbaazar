@@ -1192,89 +1192,87 @@ class TabBarItems extends StatelessWidget {
                 ],
               ),
               // SizedBox(height: 10), // Adjust as needed
-              Expanded(
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 11.w, vertical: 13.h),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xff000000))),
-                  constraints: const BoxConstraints.expand(),
-                  child: TabBarView(
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              RichTextWidget(
-                                  subtitle: "$weight kg",
-                                  subtitleStyle: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12.sp,
-                                      color: Colors.black),
-                                  title: 'Net Weight: ',
-                                  titleStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color: Colors.black),
-                                  onPressed: () {}),
-                              RichTextWidget(
-                                  subtitle: stock,
-                                  subtitleStyle: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12.sp,
-                                      color: Colors.black),
-                                  title: 'Available Quantity: ',
-                                  titleStyle: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14.sp,
-                                      color: Colors.black),
-                                  onPressed: () {})
-                            ],
-                          ),
-                          SizedBox(
-                            height: 12.h,
-                          ),
-                          Text(
-                            maxLines: 10,
-                            description,
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
+              Container(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 11.w, vertical: 13.h),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 1.w, color: const Color(0xff000000))),
+                constraints: const BoxConstraints.expand(),
+                child: TabBarView(
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [Text('0 comments'), Text('sort by')],
-                            ),
-                            const Divider(),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TextField(
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 10.h),
-                                hintText: 'Add comment...',
-                                border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        width: 1.0, color: Colors.black),
-                                    borderRadius: BorderRadius.circular(10.r)),
-                              ),
-                            )
-                            // CustomTextFieldWidget(icon: , hintText: hintText)
+                            RichTextWidget(
+                                subtitle: "$weight kg",
+                                subtitleStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.sp,
+                                    color: Colors.black),
+                                title: 'Net Weight: ',
+                                titleStyle: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.sp,
+                                    color: Colors.black),
+                                onPressed: () {}),
+                            RichTextWidget(
+                                subtitle: stock,
+                                subtitleStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.sp,
+                                    color: Colors.black),
+                                title: 'Available Quantity: ',
+                                titleStyle: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.sp,
+                                    color: Colors.black),
+                                onPressed: () {})
                           ],
                         ),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        Text(
+                          maxLines: 10,
+                          description,
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [Text('0 comments'), Text('sort by')],
+                          ),
+                          const Divider(),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 10.h),
+                              hintText: 'Add comment...',
+                              border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      width: 1.0, color: Colors.black),
+                                  borderRadius: BorderRadius.circular(10.r)),
+                            ),
+                          )
+                          // CustomTextFieldWidget(icon: , hintText: hintText)
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

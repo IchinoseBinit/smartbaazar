@@ -23,11 +23,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         try {
           final loginProvider = ref.read(loginController.notifier);
           await loginProvider.continueSession(context).catchError((e) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
-                ));
+            // Navigator.pushReplacementNamed(context, MaterialPageRoute(builder: ));
           });
         } catch (e) {
           print('Error continuing session: $e');
@@ -90,8 +86,7 @@ class SplashContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('An error occurred!',
-            style: TextStyle(color: Colors.white)),
+        const Text('An error occurred!', style: TextStyle(color: Colors.white)),
         TextButton(
           onPressed: () {
             ref.refresh(getSplashApiProvider);

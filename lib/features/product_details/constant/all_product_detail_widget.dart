@@ -57,7 +57,7 @@ class AllProductDetailWidget extends StatelessWidget {
     showRs = discounttedPrice == '0' ? '' : '';
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      // mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
@@ -181,13 +181,14 @@ class AllProductDetailWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: EdgeInsets.symmetric(horizontal: 2.w),
           child: Image.network(
             productImage ?? '', // Ensure Vimage is not null or empty
-            height: 130.h,
+            height: 100.h,
             // Adjust size accordingly
             // width: 200.w,
             fit: BoxFit.fill,
+            alignment: Alignment.center,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) {
                 return child; // If no loading, show the image
@@ -209,7 +210,7 @@ class AllProductDetailWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 5.h,
+          height: 3.h,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -583,29 +584,25 @@ class AllProductDetailWidget extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           backgroundImage: NetworkImage(Vimage!),
-                          radius: 13.sp,
+                          radius: 15.sp,
                         ),
                         Column(
+                          mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
                                 SizedBox(
-                                  width: 3.5.w,
+                                  width: 3.w,
                                 ),
                                 Text(
                                   vendorname != null && vendorname!.length > 15
                                       ? '${vendorname!.substring(0, 12)}...'
                                       : vendorname ?? '',
                                   style: headerstyle.copyWith(
-                                    // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
                                     fontSize: 12.sp,
-                                    // (vendorname != null && vendorname!.length > 10)
-                                    //     ? 8.sp
-                                    //     : (vendorname != null && vendorname!.length > 12)
-                                    //     ? 7.5.sp
-                                    //     : 11.5.sp, // Default font size
+                                    // Adjust font size based on length
                                     fontWeight: FontWeight.w700,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -640,6 +637,7 @@ class AllProductDetailWidget extends StatelessWidget {
                               ],
                             ),
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -658,7 +656,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                   child: Text(
                                     membershipTitle ?? "Domestic Brand",
                                     style: headerstyle.copyWith(
-                                      fontSize: 8.sp,
+                                      fontSize: 9.sp,
                                       // Adjust font size based on length
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -680,7 +678,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                               Text(
                                                 "SPONSORED",
                                                 style: headerstyle.copyWith(
-                                                    fontSize: 10.sp,
+                                                    fontSize: 9.sp,
                                                     fontWeight:
                                                         FontWeight.w700),
                                               ),

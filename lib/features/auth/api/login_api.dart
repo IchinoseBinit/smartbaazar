@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
@@ -8,7 +9,7 @@ import 'package:smartbazar/utils/request_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApi {
-  final SmartClinet _client = SmartClinet();
+  final SmartClinet _client = SmartClinet(); // Ensure consistent naming
 
   Future<LoginData?> login(String email, String password) async {
     final loginBody = {
@@ -22,17 +23,17 @@ class LoginApi {
         url: ApiConstants.loginUrl,
         parameter: loginBody,
       );
+      print("ram $response");
 
-      print("Login Response: $response");  // Debugging the response
-
+      // Check for successful response
       if (response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300) {
         if (response.data != null) {
           // Parse user data from response
           final user = LoginData.fromJson(response.data);
-
-          // Extract and store tokens
+          // final name = user.result.name;
+          // Update tokens
           SmartClinet.token = user.extra.authToken;
           SmartClinet.refresh = user.extra.refreshToken;
 
@@ -51,7 +52,7 @@ class LoginApi {
           if (kDebugMode) {
             print("Login successful: $response");
           }
-          return user;  // Return the logged-in user
+          return user; // Return logged-in user
         } else {
           throw Exception("No user data found in response");
         }
@@ -71,9 +72,9 @@ class LoginApi {
       } else {
         errorMessage = 'Something went wrong. Please check your connection.';
       }
-      throw Exception(errorMessage);
+      throw Exception(e.response?.data['message'] ?? errorMessage);
     } catch (e) {
-      throw Exception('Error during login: $e');
+      throw Exception(' $e');
     }
   }
 }

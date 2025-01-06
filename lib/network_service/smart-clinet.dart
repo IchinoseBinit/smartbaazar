@@ -38,28 +38,27 @@ class SmartClinet {
     _client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
-          print('Adding token to request: Bearer $token'); // Debugging token
           options.headers['Authorization'] = 'Bearer $token';
           return handler.next(options);
         },
-        onError: (DioException error, handler) async {
-          if (error.response != null && error.response!.statusCode! >= 400) {
-            print("Error: Status Code >= 400, trying to refresh token...");
-            final success = await _refreshToken();
-            if (success) {
-              RequestOptions requestOptions = error.requestOptions;
-              requestOptions.headers['Authorization'] = 'Bearer $token';
-              try {
-                final response = await _retry(requestOptions);
-                return handler.resolve(response);
-              } on DioException catch (retryError) {
-                return handler.next(retryError);
-              }
-            }
-            return handler.next(error);
-          }
-          return handler.next(error);
-        },
+      onError: (DioException error, handler) async {
+  if (error.response != null && error.response!.statusCode! >= 400) {
+    final success = await _refreshToken();
+    if (success) {
+      RequestOptions requestOptions = error.requestOptions;
+      requestOptions.headers['Authorization'] = 'Bearer $token';
+      try {
+        final response = await _retry(requestOptions);
+        return handler.resolve(response); // Return successful retry response
+      } on DioException catch (retryError) {
+        return handler.next(retryError); // Handle retry failure properly
+      }
+    }
+    return handler.next(error); // If token refresh fails, return original error
+  }
+  return handler.next(error); // Forward any other error
+},
+
         onResponse: (options, handler) {
           return handler.next(options);
         },
@@ -76,11 +75,11 @@ class SmartClinet {
       SmartClinet.token = refreshTokenResponse.authToken;
       SmartClinet.refresh = refreshTokenResponse.refreshToken;
 
+      // Update the SharedPreferences with the new tokens
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('accessToken', refreshTokenResponse.authToken);
       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-      print("Token refreshed successfully: ${SmartClinet.token}"); // Debugging token refresh
       return true;
     } catch (e) {
       print("Error refreshing token using API: $e");
@@ -112,6 +111,7 @@ class SmartClinet {
     dynamic headers,
   }) async {
     try {
+      // Create default headers
       Map<String, String> defaultHeaders = {
         'Content-Type': 'application/json',
         'accept': '*/*',
@@ -119,9 +119,9 @@ class SmartClinet {
         'X-AppApiToken': 'Yala@Techies_Nepal',
       };
 
-      Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);
-
-      print('Merged Headers before request: $mergedHeaders'); // Debugging merged headers
+      // Merge headers with token if needed
+      Map<String, String> mergedHeaders =
+          _mergeHeaders(defaultHeaders, headers);
 
       switch (requestType) {
         case RequestType.get:
@@ -134,7 +134,6 @@ class SmartClinet {
               .timeout(timeOutDuration);
 
         case RequestType.getWithToken:
-          print('Sending GET request with token to URL: $url');
           return await _client
               .get(
                 url,
@@ -153,12 +152,35 @@ class SmartClinet {
               )
               .timeout(timeOutDuration);
 
+        case RequestType.postWithHeaders:
+          return await _client
+              .post(
+                url.trim(),
+                data: jsonEncode(parameter),
+                options: Options(headers: {...defaultHeaders, ...headers}),
+              )
+              .timeout(timeOutDuration);
+
         case RequestType.postWithToken:
           return await _client
               .post(
                 url,
                 data: jsonEncode(parameter),
                 options: Options(headers: mergedHeaders),
+              )
+              .timeout(timeOutDuration);
+
+        case RequestType.postWithTokenFormData:
+          return await _client
+              .post(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
               )
               .timeout(timeOutDuration);
 
@@ -180,14 +202,44 @@ class SmartClinet {
               )
               .timeout(timeOutDuration);
 
+        case RequestType.putWithTokenFormData:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
+        case RequestType.putWithTokenEncoded:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
+
         default:
           throw Exception("Unsupported request type");
       }
     } catch (e) {
       if (e is DioException) {
+        // Log the response if available
         if (e.response != null) {
           print('API Error: ${e.response?.statusCode}');
-          print('Error Response: ${e.response?.data}');
+          print(
+              'Error Response: ${e.response?.data}'); // Show the error data from the API
+          // If the error contains a message or details from the API, you can extract it
           final errorMessage = e.response?.data['message'] ?? 'Unknown error';
           throw Exception(' $errorMessage');
         } else {
@@ -201,6 +253,7 @@ class SmartClinet {
     }
   }
 
+  // Method to merge headers
   Map<String, String> _mergeHeaders(
       Map<String, String> defaultHeaders, dynamic additionalHeaders) {
     if (additionalHeaders != null) {

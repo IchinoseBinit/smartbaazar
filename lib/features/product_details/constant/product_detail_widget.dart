@@ -62,6 +62,7 @@ class ProductDetailWidget extends StatelessWidget {
     String showRs = discounttedPrice == '0' ? '' : '';
 
     return Card(
+      
       clipBehavior: Clip.antiAlias,
       shadowColor: const Color(0xff3D215F).withOpacity(0.5),
       elevation: 9,
@@ -655,56 +656,59 @@ class ProductDetailWidget extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  // crossAxisAlignment: CrossAxisAlignment.s,
                                   children: [
-                                    SizedBox(
-                                      width: 3.5.w,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/nepalFlag.png",
-                                      height: 9.h,
-                                    ),
-
-                                    SizedBox(
-                                      width: 1.w,
-                                    ),
-                                    // SizedBox(
-                                    //   width: 75.w,
-                                    //   child: Text(
-                                    //     membershipTitle ?? "Domestic Brand",
-                                    //     style: headerstyle.copyWith(
-                                    //       fontSize: (membershipTitle != null &&
-                                    //               membershipTitle!.length > 15)
-                                    //           ? 8.sp
-                                    //           : 10.sp,
-                                    //       // Adjust font size based on length
-                                    //       fontWeight: FontWeight.w700,
-                                    //     ),
-                                    //   ),
-                                    // ),e
-
-                                    SizedBox(
-                                      width: 65.w,
-                                      child: Text(
-                                        membershipTitle ?? "Domestic Brand",
-                                        style: headerstyle.copyWith(
-                                          fontSize: 7.sp,
-                                          fontFamily: GoogleFonts.quicksand()
-                                              .fontFamily,
-
-                                          // Adjust font size based on length
-                                          fontWeight: FontWeight.w700,
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 3.5.w,
                                         ),
-                                        // overflow: TextOverflow.ellipsis,
-                                        // Apply ellipsis for overflow
-                                        // maxLines:
-                                        //     1, // Restrict to a single line
-                                      ),
+                                        Image.asset(
+                                          "assets/images/nepalFlag.png",
+                                          height: 9.h,
+                                        ),
+
+                                        SizedBox(
+                                          width: 1.w,
+                                        ),
+                                        // SizedBox(
+                                        //   width: 75.w,
+                                        //   child: Text(
+                                        //     membershipTitle ?? "Domestic Brand",
+                                        //     style: headerstyle.copyWith(
+                                        //       fontSize: (membershipTitle != null &&
+                                        //               membershipTitle!.length > 15)
+                                        //           ? 8.sp
+                                        //           : 10.sp,
+                                        //       // Adjust font size based on length
+                                        //       fontWeight: FontWeight.w700,
+                                        //     ),
+                                        //   ),
+                                        // ),e
+
+                                        SizedBox(
+                                          child: Text(
+                                            membershipTitle ?? "Domestic Brand",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9.sp,
+                                              fontFamily:
+                                                  GoogleFonts.quicksand()
+                                                      .fontFamily,
+
+                                              // Adjust font size based on length
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            // overflow: TextOverflow.ellipsis,
+                                            // Apply ellipsis for overflow
+                                            // maxLines:
+                                            //     1, // Restrict to a single line
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
+
                                     if (issponsored)
                                       Row(
                                         children: [

@@ -288,6 +288,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         body: Stack(children: [
           Positioned.fill(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               controller: _scrollController,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -999,7 +1000,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               List<CategoryProduct> products =
                                   productsList[selectedIndexx];
 
-                              dynamicHeight = products.isEmpty ? 130.h : 405.h;
+                              dynamicHeight = products.isEmpty ? 130.h : 370.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -1055,9 +1056,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               margin: EdgeInsets.zero,
                                               duration: const Duration(
                                                   milliseconds: 400),
-                                              height: 350.h,
+                                              // height: 300.h,
                                               width: double.infinity,
                                               child: SingleChildScrollView(
+                                                padding: EdgeInsets.zero,
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 child: Wrap(
@@ -1148,7 +1150,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             loading: () {
                               // Shimmer Effect for Loading State
                               return SizedBox(
-                                height: 350.h, // Adjust the height dynamically
                                 child: Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
                                   highlightColor: Colors.grey[100]!,
@@ -1184,6 +1185,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 50,
                             width: double.infinity,
                             child: TabBar(
+                              padding: EdgeInsets.zero,
                               controller: dynamictabController,
                               tabs: const [
                                 Tab(
@@ -1260,8 +1262,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       child: nolistingfound()),
                                                 )
                                               : SizedBox(
-                                                  height: 330.6
-                                                      .h, // You can adjust the height as needed
                                                   child: SingleChildScrollView(
                                                     scrollDirection: Axis
                                                         .horizontal, // Horizontal scrolling
@@ -1367,7 +1367,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ),
                                             ),
                                           SizedBox(
-                                            height: 20.h,
+                                            height: 25.h,
                                           ),
                                           if (data.domestic.isNotEmpty)
                                             SizedBox(
@@ -1737,13 +1737,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 SizedBox(
                                   height: 10.h,
                                 ),
-
-// Inside your getSponsored.when function
-
                                 getSponsored.when(
                                   data: (data) {
                                     return SizedBox(
-                                      height: 340
+                                      height: 320
                                           .h, // Adjust as needed for dynamic height
                                       child: SingleChildScrollView(
                                         padding: EdgeInsets.zero,
@@ -1845,12 +1842,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
+
                           Padding(
                             padding: EdgeInsets.only(
-                                left: 10.w, right: 10.w, top: 10.h),
+                              bottom: 10.h,
+                              left: 10.w,
+                              right: 10.w,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1876,6 +1874,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           sliders.when(
                             data: (data) {
                               return SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis
                                     .vertical, // Scroll vertically if needed
                                 child: Wrap(
@@ -1994,8 +1993,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             },
                           ),
+                          SizedBox(
+                            height: 50.h,
+                          ),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 35.h,
                     ),
                   ]),
             ),
