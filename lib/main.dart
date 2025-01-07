@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_places_flutter/model/place_type.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
@@ -53,224 +56,121 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: CreateNewListinScreen()),
+          home: SplashScreen()),
     );
   }
 }
 
-// class DynamicRowExample extends StatefulWidget {
-//   @override
-//   _DynamicRowExampleState createState() => _DynamicRowExampleState();
-// }
+class AutoCompleteExample extends StatefulWidget {
+  @override
+  _AutoCompleteExampleState createState() => _AutoCompleteExampleState();
+}
 
-// class _DynamicRowExampleState extends State<DynamicRowExample> {
-//   // List to store data for each row
-//   List<Map<String, String>> rows = [{}];
+class _AutoCompleteExampleState extends State<AutoCompleteExample> {
+  TextEditingController controller = TextEditingController();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Dynamic Rows Example'),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Container(
-//           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-//           decoration: BoxDecoration(
-//             color: const Color(0xffFDFDFE),
-//             borderRadius: BorderRadius.circular(10),
-//             border: Border.all(color: Colors.grey, width: 1),
-//           ),
-//           child: Column(
-//             children: [
-//               // Header for Pieces, Rate/piece, and Total
-//               Row(
-//                 children: [
-//                   Expanded(
-//                     child: Center(
-//                       child: Text(
-//                         "Pieces",
-//                         style: TextStyle(
-//                           fontWeight: FontWeight.w600,
-//                           fontSize: 12,
-//                           color: Colors.black,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Expanded(
-//                     child: Center(
-//                       child: Text(
-//                         "Rate/piece",
-//                         style: TextStyle(
-//                           fontWeight: FontWeight.w600,
-//                           fontSize: 12,
-//                           color: Colors.black,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Expanded(
-//                     child: Center(
-//                       child: Text(
-//                         "Total",
-//                         style: TextStyle(
-//                           fontWeight: FontWeight.w600,
-//                           fontSize: 12,
-//                           color: Colors.black,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(height: 10),
-
-//               // Dynamic Rows
-//               ...rows.asMap().entries.map((entry) {
-//                 int index = entry.key;
-//                 return Padding(
-//                   padding: const EdgeInsets.symmetric(vertical: 5.0),
-//                   child: Row(
-//                     children: [
-//                       // Pieces TextField
-//                       Expanded(
-//                         child: Material(
-//                           elevation: 2,
-//                           borderRadius: BorderRadius.circular(6),
-//                           child: Container(
-//                             height: 30.0,
-//                             padding: const EdgeInsets.symmetric(horizontal: 10),
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(6),
-//                               color: const Color(0xffFDFDFE),
-//                             ),
-//                             child: TextField(
-//                               onChanged: (value) {
-//                                 rows[index]['pieces'] = value;
-//                               },
-//                               style: const TextStyle(
-//                                   fontSize: 14, color: Colors.black),
-//                               decoration: const InputDecoration(
-//                                 border: InputBorder.none,
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                       const SizedBox(width: 6),
-//                       // Rate/piece TextField
-//                       Expanded(
-//                         child: Material(
-//                           elevation: 2,
-//                           borderRadius: BorderRadius.circular(6),
-//                           child: Container(
-//                             height: 30.0,
-//                             padding: const EdgeInsets.symmetric(horizontal: 10),
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(6),
-//                               color: const Color(0xffFDFDFE),
-//                             ),
-//                             child: TextField(
-//                               onChanged: (value) {
-//                                 rows[index]['rate'] = value;
-//                               },
-//                               style: const TextStyle(
-//                                   fontSize: 14, color: Colors.black),
-//                               decoration: const InputDecoration(
-//                                 border: InputBorder.none,
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                       const SizedBox(width: 6),
-//                       // Total TextField
-//                       Expanded(
-//                         child: Material(
-//                           elevation: 2,
-//                           borderRadius: BorderRadius.circular(6),
-//                           child: Container(
-//                             height: 30.0,
-//                             padding: const EdgeInsets.symmetric(horizontal: 10),
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(6),
-//                               color: const Color(0xffFDFDFE),
-//                             ),
-//                             child: TextField(
-//                               onChanged: (value) {
-//                                 rows[index]['total'] = value;
-//                               },
-//                               style: const TextStyle(
-//                                   fontSize: 14, color: Colors.black),
-//                               decoration: const InputDecoration(
-//                                 border: InputBorder.none,
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                       const SizedBox(width: 10),
-//                       // Add/Delete buttons
-//                       Row(
-//                         children: [
-//                           GestureDetector(
-//                             onTap: () {
-//                               setState(() {
-//                                 rows.add({});
-//                               });
-//                             },
-//                             child: Container(
-//                               padding: const EdgeInsets.all(4),
-//                               decoration: BoxDecoration(
-//                                 borderRadius: BorderRadius.circular(5),
-//                                 border: Border.all(color: Colors.grey),
-//                               ),
-//                               child: const CircleAvatar(
-//                                 backgroundColor: Color(0xff362677),
-//                                 radius: 12,
-//                                 child: Icon(
-//                                   Icons.add,
-//                                   color: Colors.white,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                           const SizedBox(width: 10),
-//                           GestureDetector(
-//                             onTap: () {
-//                               setState(() {
-//                                 if (rows.length > 1) {
-//                                   rows.removeAt(index);
-//                                 }
-//                               });
-//                             },
-//                             child: Container(
-//                               padding: const EdgeInsets.all(4),
-//                               decoration: BoxDecoration(
-//                                 borderRadius: BorderRadius.circular(5),
-//                                 border: Border.all(color: Colors.grey),
-//                               ),
-//                               child: const CircleAvatar(
-//                                 backgroundColor: Color(0xff362677),
-//                                 radius: 12,
-//                                 child: Icon(
-//                                   Icons.delete,
-//                                   color: Colors.white,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 );
-//               }),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Search Location"),
+        backgroundColor: Colors.blue,
+        elevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Search for a Location in Nepal',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
+            // TextField for Location Search
+            GooglePlaceAutoCompleteTextField(
+              textEditingController: controller,
+              googleAPIKey:
+                  "AIzaSyDFBSV8xaOPkKKf7xTaw7xEE1KqClJ5OFI", // Replace with your actual API key
+              debounceTime: 800, // Default debounce time
+              inputDecoration: InputDecoration(
+                hintText: "Type to search...",
+                hintStyle: TextStyle(color: Colors.grey),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.blue, width: 2),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.blue, width: 2),
+                ),
+              ),
+              countries: ["np"], // Filter for Nepal locations
+              isLatLngRequired: true, // Fetch latitude and longitude
+              getPlaceDetailWithLatLng: (Prediction prediction) {
+                // Print latitude and longitude of the selected place
+                print(
+                    "Place Details: Latitude: ${prediction.lat}, Longitude: ${prediction.lng}");
+              },
+              itemClick: (Prediction prediction) {
+                setState(() {
+                  controller.text = prediction.description ?? "";
+                  controller.selection = TextSelection.fromPosition(
+                    TextPosition(offset: controller.text.length),
+                  );
+                });
+              },
+              itemBuilder: (context, index, Prediction prediction) {
+                return Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border:
+                        Border(bottom: BorderSide(color: Colors.grey.shade300)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.location_on, color: Colors.blue),
+                      SizedBox(width: 10),
+                      Expanded(
+                          child: Text(prediction.description ?? "",
+                              style: TextStyle(fontSize: 16))),
+                    ],
+                  ),
+                );
+              },
+              seperatedBuilder: const Divider(), // Optional separator
+              isCrossBtnShown: true, // Show a close button in the search field
+              containerHorizontalPadding: 10,
+              placeType: PlaceType.address, // Place type filter
+            ),
+            SizedBox(height: 20),
+            // Display selected location info
+            if (controller.text.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on, color: Colors.blue),
+                        SizedBox(width: 10),
+                        Expanded(
+                            child: Text(controller.text,
+                                style: TextStyle(fontSize: 16))),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

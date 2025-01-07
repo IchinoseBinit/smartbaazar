@@ -202,11 +202,13 @@ class AllProductDetailWidget extends StatelessWidget {
             },
             errorBuilder: (context, error, stackTrace) {
               return SizedBox(
-                height: 130.h,
+                height: 100.h,
                 // Adjust size accordingly
 
-                width: 200.w,
-                child: const Icon(Icons.error),
+                child: const Icon(
+                  Icons.error,
+                  fill: 1,
+                ),
               ); // Show error icon if image fails to load
             },
           ),

@@ -1000,7 +1000,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               List<CategoryProduct> products =
                                   productsList[selectedIndexx];
 
-                              dynamicHeight = products.isEmpty ? 130.h : 370.h;
+                              dynamicHeight = products.isEmpty ? 130.h : 390.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -1211,7 +1211,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                               if (dynamictabController.index == 0) {
                                 dynamicHeight =
-                                    data.insidearr[0].isEmpty ? 200.h : 410.h;
+                                    data.insidearr[0].isEmpty ? 200.h : 430.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
@@ -1221,10 +1221,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               } else if (dynamictabController.index == 2)
                                 dynamicHeight = (data.spotlight.isNotEmpty &&
                                         data.spot[0].isNotEmpty)
-                                    ? 420.h
+                                    ? 430.h
                                     : 200.h;
                               else
-                                dynamicHeight = 410;
+                                dynamicHeight = 420;
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),

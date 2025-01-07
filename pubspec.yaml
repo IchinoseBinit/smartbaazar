@@ -75,6 +75,8 @@ dependencies:
   collection: ^1.18.0
   lottie: ^3.2.0
   shimmer: ^3.0.0
+  google_maps_flutter: ^2.10.0
+  google_places_flutter: ^2.0.9
   
 
 
