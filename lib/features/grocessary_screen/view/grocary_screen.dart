@@ -666,8 +666,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Text(
-                        'No stories available.You Need to login for story');
+                    return const Center(
+                      child: Text(
+                          'No stories available.'),
+                    );
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

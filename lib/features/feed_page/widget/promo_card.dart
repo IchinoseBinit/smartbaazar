@@ -188,6 +188,20 @@ class _PromoCardState extends State<PromoCard> {
               imagePath,
               fit: BoxFit.fill,
               width: double.infinity,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox(
+                  width: 130.w,
+                  height: 70.h,
+                  child: const Icon(Icons.error),
+                );
+              },
             ),
           ),
 
@@ -248,7 +262,7 @@ class _PromoCardState extends State<PromoCard> {
           // Product Image
           Container(
             width: 135.w,
-            height: 90.h,
+            height: 75.h,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
@@ -259,6 +273,20 @@ class _PromoCardState extends State<PromoCard> {
               imagePath,
               fit: BoxFit.fill,
               width: double.infinity,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox(
+                  width: 130.w,
+                  height: 70.h,
+                  child: const Icon(Icons.error),
+                );
+              },
             ),
           ),
 
@@ -275,9 +303,9 @@ class _PromoCardState extends State<PromoCard> {
                 children: [
                   Text(
                     'Rs $price',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                      fontSize: 11.sp,
                       color: Colors.white,
                     ),
                   ),

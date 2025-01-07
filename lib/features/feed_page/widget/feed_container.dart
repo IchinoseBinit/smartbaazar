@@ -83,7 +83,7 @@ class FeedContainer extends ConsumerWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(0),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -301,6 +301,23 @@ class FeedContainer extends ConsumerWidget {
                   width: double.infinity,
                   height: double.infinity, // Make the image take full height
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child; // If no loading, show the image
+                        } else {
+                          return const Center(
+                              child:
+                                  CircularProgressIndicator()); // Show loading indicator
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return SizedBox(
+                          width: 130.w,
+                          height: 70.h,
+                          child: const Icon(Icons
+                              .error),
+                        ); // Show error icon if image fails to load
+                      },
                 ),
               ),
               Positioned(

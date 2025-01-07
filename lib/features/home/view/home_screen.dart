@@ -798,8 +798,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         }
 
                         // If any of the above conditions fail, return a default widget
-                        return Text(
-                            'No stories available. You need to log in for stories');
+                        return const Center(
+                          child: Text(
+                              'No stories available. '),
+                        );
                       },
                       loading: () => SizedBox(
                         height: 100.h,
