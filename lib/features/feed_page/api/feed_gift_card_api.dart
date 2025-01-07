@@ -9,7 +9,7 @@ part 'feed_gift_card_api.g.dart';
 @riverpod
 Future<FeedGiftCardModel> getFeedGiftCard(
     GetFeedGiftCardRef ref, String userId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

@@ -4,11 +4,12 @@ import 'package:smartbazar/features/feed-form_screen/model/products_feed_dropdow
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'products_feed_dropdown_api.g.dart';
+part 'products_feed_dropdown_api.g.dart';
 
 @riverpod
-Future<ProductsFeedDropdown> getProductsFeedDropdown(GetProductsFeedDropdownRef ref) async {
-  final SmartClinet client = SmartClinet();
+Future<ProductsFeedDropdown> getProductsFeedDropdown(
+    GetProductsFeedDropdownRef ref) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

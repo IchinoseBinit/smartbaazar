@@ -4,12 +4,13 @@ import 'package:smartbazar/features/online_transaction_record/model/online_trans
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'online_transaction_api.g.dart';
+part 'online_transaction_api.g.dart';
 
 @riverpod
-Future<OnlineTransactionModel> getOnlineTransactionResponse(GetOnlineTransactionResponseRef ref)async {
-   final SmartClinet client = SmartClinet();
-   try {
+Future<OnlineTransactionModel> getOnlineTransactionResponse(
+    GetOnlineTransactionResponseRef ref) async {
+  final SmartClient client = SmartClient();
+  try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getOnlineTransactionResponseUrl,

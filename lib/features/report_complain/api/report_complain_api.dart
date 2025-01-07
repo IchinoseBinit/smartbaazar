@@ -7,8 +7,9 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'report_complain_api.g.dart';
 
 @riverpod
-Future<bool> reportComplain(ReportComplainRef ref, ReportComplainModel report, String productId) async {
-  final SmartClinet client = SmartClinet();
+Future<bool> reportComplain(
+    ReportComplainRef ref, ReportComplainModel report, String productId) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

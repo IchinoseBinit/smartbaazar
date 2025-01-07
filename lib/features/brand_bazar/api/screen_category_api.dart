@@ -7,8 +7,9 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'screen_category_api.g.dart';
 
 @riverpod
-Future<List<CategoryModel>> getCategories(GetCategoriesRef ref, int parentId) async {
-  final SmartClinet client = SmartClinet(); // Your custom API client
+Future<List<CategoryModel>> getCategories(
+    GetCategoriesRef ref, int parentId) async {
+  final SmartClient client = SmartClient(); // Your custom API client
 
   try {
     // Make the API call
@@ -18,13 +19,15 @@ Future<List<CategoryModel>> getCategories(GetCategoriesRef ref, int parentId) as
         'parentId': parentId,
         'nestedIncluded': 1, // Ensure nested categories are included
       },
-      url: "https://smartbazaar.jianjun-rnd.com.np/api/categories", // Use the dynamic URL"
+      url:
+          "https://smartbazaar.jianjun-rnd.com.np/api/categories", // Use the dynamic URL"
     );
 
     print("Request URL: ${response.realUri}");
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data; // Parse JSON response
+      final Map<String, dynamic> jsonResponse =
+          response.data; // Parse JSON response
       print("JSON Response: $jsonResponse");
 
       // Extract the 'data' array from the response
@@ -39,7 +42,8 @@ Future<List<CategoryModel>> getCategories(GetCategoriesRef ref, int parentId) as
         throw Exception('No categories data found in response');
       }
     } else {
-      throw Exception('Failed to load categories. Status code: ${response.statusCode}');
+      throw Exception(
+          'Failed to load categories. Status code: ${response.statusCode}');
     }
   } catch (e) {
     print('Error loading categories: $e');

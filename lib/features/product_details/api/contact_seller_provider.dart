@@ -10,12 +10,13 @@ part 'contact_seller_provider.g.dart';
 Future<bool> contactSeller(
   ContactSellerRef? ref1, // Optional ref for Riverpod state
   String username,
-  String phoneNumber, // Assuming phone number is an int, will convert to string later
+  String
+      phoneNumber, // Assuming phone number is an int, will convert to string later
   String body,
   int postId,
-   String email,
+  String email,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     // Check that mandatory fields are not empty

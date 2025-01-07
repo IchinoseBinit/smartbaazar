@@ -6,6 +6,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
@@ -93,8 +96,7 @@ class SellerInformationWidget extends StatefulWidget {
 }
 
 class _SellerInformationWidgetState extends State<SellerInformationWidget> {
-  TextEditingController? pickupcontroller = TextEditingController();
-  ShippingCitiesModel? selectedpickup;
+  TextEditingController? mapcontrolleer = TextEditingController();
   List<File?> selectedImages = [];
   bool isloading = false;
 
@@ -103,6 +105,8 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
       selectedImages = images;
     });
   }
+
+  String selectedpickup = ''; // Store the selected pickup location
 
   int? _selectedpackage = 0;
 
@@ -159,7 +163,9 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            const Spacer(),
+            SizedBox(
+              width: 20.w,
+            ),
             Expanded(
               child: TextField(
                 controller: widget.emailcontroller,
@@ -173,32 +179,21 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            Text(
-              'Pickup Location',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            Expanded(
-              // Wrap the dropdown in Expanded to constrain its width
-              child: CustomDropdownButton<ShippingCitiesModel>(
-                optionname: "select location",
-                items: widget.shippingList,
-                dropdownValue: selectedpickup,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedpickup = newValue;
-                  });
-                },
-                getItemLabel: (ShippingCitiesModel item) => item.name,
-              ),
-            ),
-          ],
-        )),
+        GooglePlaceAutoCompleteTextField(
+           
+          textEditingController: mapcontrolleer!,
+          googleAPIKey:
+              "AIzaSyDFBSV8xaOPkKKf7xTaw7xEE1KqClJ5OFI", // Replace with actual API key
+          debounceTime: 800,
+          countries: ["np"],
+          isLatLngRequired: true,
+          itemClick: (Prediction prediction) {
+            setState(() {
+              mapcontrolleer?.text = prediction.description ?? "";
+              selectedpickup = prediction.description ?? "";
+            });
+          },
+        ),
         CreateListingCardWidget(
             child: Row(
           children: [
@@ -542,13 +537,12 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                           widget.city != null &&
                           widget.description != null &&
                           widget.phonecoontroller?.text.isNotEmpty == true &&
-                          selectedpickup!.name.isNotEmpty &&
+                          selectedpickup.isNotEmpty &&
                           selectedImages.isNotEmpty &&
                           widget.terms != null) {
                         try {
                           // Dummy data
                           await createlisting(
-                            
                             package: _selectedpackage,
                             pieces: widget.pieces,
                             null, // ref
@@ -576,11 +570,11 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                                 widget.phonecoontroller?.text.trim(), // phone
                             username:
                                 widget.nameconroller?.text.trim(), // username
-                            pickup: selectedpickup?.name.trim() ?? '', // pickup
+                            pickup: selectedpickup.trim() ?? '', // pickup
                             images: selectedImages, // images
                             accept: widget.terms?.trim() ?? '0', // accept terms
                             address:
-                                pickupcontroller?.text.trim() ?? '', // address
+                                mapcontrolleer?.text.trim() ?? '', // address
                             offer: widget.offer?.offers.trim(), // offer
                             story: widget.story?.toString().trim(), // story
                             youtube: widget.youtube?.trim(), // YouTube link

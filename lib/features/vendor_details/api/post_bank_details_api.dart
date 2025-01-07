@@ -10,7 +10,7 @@ part 'post_bank_details_api.g.dart';
 @riverpod
 Future<bool> postUserBankDetails(PostUserBankDetailsRef ref, String bankName,
     String bankBranch, String acHolder, String acNumber, File imageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     FormData formData = FormData.fromMap({
       'bank_name': bankName,

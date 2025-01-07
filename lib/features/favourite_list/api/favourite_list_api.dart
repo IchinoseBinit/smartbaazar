@@ -8,7 +8,7 @@ part 'favourite_list_api.g.dart';
 
 @riverpod
 Future<FavouriteProductList> getFavouriteList(GetFavouriteListRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
@@ -18,7 +18,7 @@ Future<FavouriteProductList> getFavouriteList(GetFavouriteListRef ref) async {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-        final favouriteProductList = FavouriteProductList.fromJson(jsonResponse);
+      final favouriteProductList = FavouriteProductList.fromJson(jsonResponse);
 
       return favouriteProductList;
     } else {
@@ -30,11 +30,10 @@ Future<FavouriteProductList> getFavouriteList(GetFavouriteListRef ref) async {
   }
 }
 
-
 @riverpod
 Future<void> deleteFavouriteProduct(
     DeleteFavouriteProductRef ref, String productItemId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

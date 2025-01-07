@@ -8,14 +8,14 @@ part 'my_return_api.g.dart';
 
 @riverpod
 Future<MyReturnModel> getMyReturns(GetMyReturnsRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getMyReturnsUrl,
     );
-   
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
       print('Raw JSON Response: $jsonResponse');

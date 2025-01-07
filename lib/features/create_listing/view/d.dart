@@ -1,50 +1,68 @@
-// class CalendarWithTime extends StatefulWidget {
-//   const CalendarWithTime({super.key});
-
+// class AutoCompleteExample extends StatefulWidget {
 //   @override
-//   _CalendarWithTimeState createState() => _CalendarWithTimeState();
+//   _AutoCompleteExampleState createState() => _AutoCompleteExampleState();
 // }
 
-// class _CalendarWithTimeState extends State<CalendarWithTime> {
-//   DateTime? selectedDateTime;
-
-//   void _onDateSelected(DateTime? date) {
-//     if (date != null) {
-//       setState(() {
-//         selectedDateTime = date;
-//       });
-//     }
-//   }
+// class _AutoCompleteExampleState extends State<AutoCompleteExample> {
+//   String selectedpickup = '';
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Text(
-//             selectedDateTime != null
-//                 ? "Selected Date & Time: $selectedDateTime"
-//                 : "No Date Selected",
-//             style: const TextStyle(fontSize: 18),
-//           ),
-//           const SizedBox(height: 20),
-//           ElevatedButton(
-//             onPressed: () async {
-//               final pickedDate = await showDialog<DateTime>(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return AdoptiveCalendar(
-//                     initialDate: DateTime.now(), // Default current date
-//                     action: true, // Enable action buttons (Confirm/Cancel)
-//                   );
-//                 },
-//               );
-//               _onDateSelected(pickedDate);
-//             },
-//             child: const Text("Open Calendar"),
-//           ),
-//         ],
+//     return Scaffold(
+//       appBar: AppBar(title: const Text("Search Location"), backgroundColor: Colors.blue),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             GooglePlaceAutoCompleteTextField(
+//               textEditingController: controller,
+//               googleAPIKey: "YOUR_API_KEY", // Replace with actual API key
+//               debounceTime: 800,
+//               countries: ["np"],
+//               isLatLngRequired: true,
+//               itemClick: (Prediction prediction) {
+//                 setState(() {
+//                   controller.text = prediction.description ?? "";
+//                   selectedpickup = prediction.description ?? "";
+//                 });
+//               },
+//             ),
+//             if (selectedpickup.isNotEmpty) ...[
+//               Padding(
+//                 padding: const EdgeInsets.all(8.0),
+//                 child: Card(
+//                   elevation: 3,
+//                   child: Row(
+//                     children: [
+//                       Icon(Icons.location_on, color: Colors.blue),
+//                       SizedBox(width: 10),
+//                       Expanded(child: Text(selectedpickup)),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//             CreateListingCardWidget(
+//               child: Row(
+//                 children: [
+//                   Text('Pickup Location', style: TextStyle(fontSize: 14)),
+//                   Expanded(
+//                     child: CustomDropdownButton<String>(
+//                       optionname: "Select location",
+//                       items: [selectedpickup],
+//                       dropdownValue: selectedpickup,
+//                       onChanged: (newValue) {
+//                         setState(() => selectedpickup = newValue ?? '');
+//                       },
+//                       getItemLabel: (item) => item,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
 //       ),
 //     );
 //   }

@@ -9,7 +9,7 @@ part 'service_provider.g.dart';
 
 @riverpod
 Future<PostTypeFetch> getSocioData(GetSocioDataRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,
@@ -18,8 +18,7 @@ Future<PostTypeFetch> getSocioData(GetSocioDataRef ref) async {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-          print("bikash ${PostTypeFetch.fromJson(jsonResponse)}");
-
+      print("bikash ${PostTypeFetch.fromJson(jsonResponse)}");
 
       return PostTypeFetch.fromJson(jsonResponse);
     } else {

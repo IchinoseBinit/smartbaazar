@@ -9,8 +9,8 @@ part 'last_message_api.g.dart';
 @riverpod
 Future<MessageData?> getLastMessage(
     GetLastMessageRef ref, String threadId) async {
-  final SmartClinet client = SmartClinet();
-  
+  final SmartClient client = SmartClient();
+
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

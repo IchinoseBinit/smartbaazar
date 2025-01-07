@@ -13,7 +13,7 @@ part 'reply_message_model_api.g.dart';
 @riverpod
 Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
     String threadId, String? body, File? imageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   // Prepare the form data
   // FormData formData = FormData();

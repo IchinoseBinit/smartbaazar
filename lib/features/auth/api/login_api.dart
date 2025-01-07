@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
@@ -8,7 +9,7 @@ import 'package:smartbazar/utils/request_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApi {
-  final SmartClinet _client = SmartClinet();
+  final SmartClient _client = SmartClient(); // Ensure consistent naming
 
   Future<LoginData?> login(String email, String password) async {
     final loginBody = {
@@ -22,25 +23,25 @@ class LoginApi {
         url: ApiConstants.loginUrl,
         parameter: loginBody,
       );
+      print("ram $response");
 
-      print("Login Response: $response");  // Debugging the response
-
+      // Check for successful response
       if (response.statusCode != null &&
           response.statusCode! >= 200 &&
           response.statusCode! < 300) {
         if (response.data != null) {
           // Parse user data from response
           final user = LoginData.fromJson(response.data);
-
-          // Extract and store tokens
-          SmartClinet.token = user.extra.authToken;
-          SmartClinet.refresh = user.extra.refreshToken;
+          // final name = user.result.name;
+          // Update tokens
+          SmartClient.token = user.extra.authToken;
+          SmartClient.refresh = user.extra.refreshToken;
 
           // Store session and tokens in SharedPreferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString("session", json.encode(user.toJson()));
-          await prefs.setString("accessToken", SmartClinet.token);
-          await prefs.setString("refreshToken", SmartClinet.refresh);
+          await prefs.setString("accessToken", SmartClient.token);
+          await prefs.setString("refreshToken", SmartClient.refresh);
           await prefs.setString('userName', user.result.username);
           await prefs.setString('name', user.result.name);
           await prefs.setString('userId', user.result.id.toString());
@@ -51,7 +52,7 @@ class LoginApi {
           if (kDebugMode) {
             print("Login successful: $response");
           }
-          return user;  // Return the logged-in user
+          return user; // Return logged-in user
         } else {
           throw Exception("No user data found in response");
         }
@@ -71,9 +72,9 @@ class LoginApi {
       } else {
         errorMessage = 'Something went wrong. Please check your connection.';
       }
-      throw Exception(errorMessage);
+      throw Exception(e.response?.data['message'] ?? errorMessage);
     } catch (e) {
-      throw Exception('Error during login: $e');
+      throw Exception(' $e');
     }
   }
 }

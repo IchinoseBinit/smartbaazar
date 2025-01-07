@@ -6,9 +6,8 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'delete_listing_api.g.dart';
 
 @riverpod
-Future<void> deleteListing(
-    DeleteListingRef ref, String productItemId) async {
-  final SmartClinet client = SmartClinet();
+Future<void> deleteListing(DeleteListingRef ref, String productItemId) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

@@ -10,7 +10,7 @@ part 'post_profile_bg_and_desc.api.g.dart';
 @riverpod
 Future<bool> postProfileBGAndDesc(PostProfileBGAndDescRef ref, File? imageFile,
     String? desc, File? profileImageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     FormData formData = FormData();

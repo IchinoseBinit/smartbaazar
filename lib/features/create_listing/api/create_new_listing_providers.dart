@@ -37,10 +37,9 @@ Future<String> createlisting(
   String? story,
   String? youtube,
   int? package,
-   List<Map<String, String>>? pieces,
-
+  List<Map<String, String>>? pieces,
 }) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   print("binodo $cf");
   try {
     // Create FormData to handle text fields and file uploads together
@@ -49,7 +48,7 @@ Future<String> createlisting(
       'category_id': category ?? '',
       'post_type_id': posttype ?? '',
       'title': title ?? '',
-      'package_id':package?? '0',
+      'package_id': package ?? '0',
       'description': description ?? '',
       'contact_name': username ?? '',
       'auth_field': 'phone',
@@ -100,7 +99,7 @@ Future<String> createlisting(
         }
       }
     }
-     // Print all data being sent to the API
+    // Print all data being sent to the API
     print("i sent Fields:");
     for (var field in formData.fields) {
       print("${field.key}: ${field.value}");

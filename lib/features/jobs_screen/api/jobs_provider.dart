@@ -9,7 +9,7 @@ part 'jobs_provider.g.dart';
 
 @riverpod
 Future<PostTypeFetch> getjobsResponse(GetjobsResponseRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

@@ -8,8 +8,9 @@ part 'message_thread_api.g.dart';
 
 // Assuming getMessageThread has a Family
 @riverpod
-Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref, {required String? filter}) async {
-  final SmartClinet client = SmartClinet();
+Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref,
+    {required String? filter}) async {
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

@@ -9,7 +9,7 @@ part 'get_feed_of_following_api.g.dart';
 @riverpod
 Future<GetFeedOfFollowingModel> getFeedOfFollowing(
     GetFeedOfFollowingRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

@@ -6,9 +6,9 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'saved_search_api.g.dart';
 
-@riverpod 
-Future<SavedSearchModel> getSavedSearches(GetSavedSearchesRef ref)async{
-  final SmartClinet client = SmartClinet();
+@riverpod
+Future<SavedSearchModel> getSavedSearches(GetSavedSearchesRef ref) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

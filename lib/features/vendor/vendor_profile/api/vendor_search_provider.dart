@@ -9,7 +9,7 @@ part 'vendor_search_provider.g.dart';
 @riverpod
 Future<List<GetOnlyData>> geDataBySearchvendor(
     GeDataBySearchvendorRef ref, String id) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.get,

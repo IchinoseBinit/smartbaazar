@@ -9,7 +9,7 @@ part 'post_type_story_api.g.dart';
 @riverpod
 Future<HomeStoryModel> getPostTypeStoryApi(
     GetPostTypeStoryApiRef ref, String postTypeId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
@@ -31,4 +31,3 @@ Future<HomeStoryModel> getPostTypeStoryApi(
     throw Exception('Failed to load story content: $e');
   }
 }
-

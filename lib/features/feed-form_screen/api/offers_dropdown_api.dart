@@ -7,8 +7,9 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'offers_dropdown_api.g.dart';
 
 @riverpod
-Future<OffersModelDropdown> getOffersModelDropdown(GetOffersModelDropdownRef ref) async {
-  final SmartClinet client = SmartClinet();
+Future<OffersModelDropdown> getOffersModelDropdown(
+    GetOffersModelDropdownRef ref) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

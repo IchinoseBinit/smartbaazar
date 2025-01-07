@@ -11,9 +11,9 @@ class SponsoredProduct {
   final String title;
   final String description;
   final String price;
-   double? shortestDistance;
+  double? shortestDistance;
   final String? image;
-   String? wow;
+  String? wow;
   final int? commentcount;
   final int? similarProductCount;
   final UserDetailsModel? userdetails;
@@ -22,7 +22,7 @@ class SponsoredProduct {
   final String? discounted_price;
 
   SponsoredProduct({
-     this.wow,
+    this.wow,
     required this.shortestDistance,
     required this.discounted_price,
     required this.id,
@@ -44,7 +44,7 @@ class SponsoredProduct {
       shortestDistance: json['shortestDistance'] ?? 0.0,
       commentcount: json['commentcount'] as int,
       avg_rating: json['avg_rating'] as int,
-      discounted_price: json['discounted_price']?? '',
+      discounted_price: json['discounted_price'] ?? '',
       offers: json['offers'] as String,
       id: json['id'] as String,
       title: json['title'] as String,
@@ -61,7 +61,7 @@ class SponsoredProduct {
 
 @riverpod
 Future<List<SponsoredProduct>> fetchSponsored(FetchSponsoredRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

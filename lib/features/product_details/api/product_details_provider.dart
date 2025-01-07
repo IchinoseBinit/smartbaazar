@@ -11,7 +11,7 @@ Future<PostModel> productDetails(ProductDetailsRef ref, String id) async {
   // final client = Dio();
 //
 
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
@@ -24,7 +24,10 @@ Future<PostModel> productDetails(ProductDetailsRef ref, String id) async {
   } catch (e) {
     print("errork is $e");
     return const PostModel(
-      widgetSimilarPosts:null ,
-        success: true, message: 'message', result: null, extra: null);
+        widgetSimilarPosts: null,
+        success: true,
+        message: 'message',
+        result: null,
+        extra: null);
   }
 }

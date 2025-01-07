@@ -9,8 +9,8 @@ part 'hot_deals_provider.g.dart';
 
 @riverpod
 Future<List<GlobalModel>> getHotDeals(GetHotDealsRef ref, String header) async {
-  final SmartClinet client = SmartClinet();
-  
+  final SmartClient client = SmartClient();
+
   try {
     // Determine the correct endpoint based on the header
     final String endpoint = header == 'hotdeals'
@@ -26,7 +26,7 @@ Future<List<GlobalModel>> getHotDeals(GetHotDealsRef ref, String header) async {
     // Handle the response
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-      
+
       // Extract the relevant posts based on the header type
       final List<dynamic> hotProductsList = header == 'hotdeals'
           ? jsonResponse['hot_products'] ?? []

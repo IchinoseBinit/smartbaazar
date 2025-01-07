@@ -9,7 +9,7 @@ part 'cart_item_api.g.dart';
 
 @riverpod
 Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
@@ -27,8 +27,10 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
       final cartList = data['cart'] as List?;
       final vendorList = data['vendors'] as List?;
 
-      final cartItems = cartList?.map((item) => CartItem.fromJson(item)).toList() ?? [];
-      final vendors = vendorList?.map((item) => Vendor.fromJson(item)).toList() ?? [];
+      final cartItems =
+          cartList?.map((item) => CartItem.fromJson(item)).toList() ?? [];
+      final vendors =
+          vendorList?.map((item) => Vendor.fromJson(item)).toList() ?? [];
 
       return {
         'cart': cartItems,
@@ -38,16 +40,15 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
       throw Exception('Failed to load cart items.');
     }
   } catch (e) {
- //   final customException = getCustomException(e);
-    print('Error fetching cart items: $e');  // Log specific message
+    //   final customException = getCustomException(e);
+    print('Error fetching cart items: $e'); // Log specific message
     throw e.toString(); // Rethrow with specific message
   }
 }
 
-
 class CartItemApi {
   static Future<Response> incrementQuantity(String itemId) async {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
 
     final response = await client.request(
         requestType: RequestType.postWithToken,
@@ -58,7 +59,7 @@ class CartItemApi {
   }
 
   static Future<Response> decrementQuantity(String itemId) async {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
     FormData formData = FormData.fromMap({
       'id': itemId,
     });
@@ -74,7 +75,7 @@ class CartItemApi {
 
 @riverpod
 Future<void> deleteCartItem(DeleteCartItemRef ref, String cartItemId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   FormData formData = FormData.fromMap({
     'id': cartItemId,
   });

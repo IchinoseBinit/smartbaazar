@@ -9,7 +9,7 @@ part 'message_list_api.g.dart';
 @riverpod
 Future<MessageListModel> getMessageList(
     GetMessageListRef ref, String threadId, int page) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

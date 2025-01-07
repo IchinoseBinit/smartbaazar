@@ -8,7 +8,7 @@ part 'get_subscription_api.g.dart';
 
 @riverpod
 Future<GetSubscriptionModel> getSubscription(GetSubscriptionRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

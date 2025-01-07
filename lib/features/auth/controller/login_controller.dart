@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,54 +36,56 @@ class LoginController extends StateNotifier<GenericState> {
       state = LoadedState<LoginData>(response: loginData);
 
       final prefs = await SharedPreferences.getInstance();
-      // Save user data in SmartClinet for global access
-      _saveUserDataToSmartClinet(loginData!);
+      SmartClient.userId = loginData!.result.id.toString();
+      SmartClient.userName = loginData.result.name;
+      SmartClient.userEmail = loginData.result.email ?? '';
 
-      // Save user data in SharedPreferences for persistence
-      await _saveUserDataToPreferences(prefs, loginData);
+      await prefs.setString('userId', SmartClient.userId);
+      await prefs.setString('userName', SmartClient.userName);
+      await prefs.setString('userEmail', SmartClient.userEmail);
 
-      // Navigate to the bottom navigation screen
-      _navigateToScreen(context, const BottomNavigationScreen());
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const BottomNavigationScreen()),
+      );
     } catch (e) {
-      print("Login error: $e");
+      print("lol $e");
       String errorMessage = _getErrorMessage(e);
       state = ErrorState(errorMessage);
     }
   }
 
-Future<void> continueSession(BuildContext context) async {
-  final pref = await SharedPreferences.getInstance();
-  final sessionString = pref.getString('session');
-  SmartClinet.token = pref.getString('accessToken') ?? '';
-  SmartClinet.refresh = pref.getString('refreshToken') ?? '';
-  state = LoadingState();
+  Future<void> continueSession(BuildContext context) async {
+    final pref = await SharedPreferences.getInstance();
+    final sessionString = pref.getString('session');
+    SmartClient.token = pref.getString('accessToken') ?? '';
+    SmartClient.refresh = pref.getString('refreshToken') ?? '';
+    state = LoadingState();
 
-  if (sessionString == null) {
-    _navigateToLoginScreen(context);
-    return;
-  }
+    if (sessionString == null) {
+      _navigateToLoginScreen(context);
+      return;
+    }
 
-  try {
-    final session = json.decode(sessionString);
-    final userId = session['result']?['id']?.toString() ?? '';
-    if (userId.isNotEmpty) {
-      state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-      SmartClinet.userId = userId;
-      await pref.setString('userId', userId);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AdSplashScreen()),
-      );
-    } else {
+    try {
+      final session = json.decode(sessionString);
+      final userId = session['result']?['id']?.toString() ?? '';
+      if (userId.isNotEmpty) {
+        state = LoadedState<LoginData>(response: LoginData.fromJson(session));
+        SmartClient.userId = userId;
+        await pref.setString('userId', userId);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdSplashScreen()),
+        );
+      } else {
+        _navigateToLoginScreen(context);
+      }
+    } catch (e) {
+      print("Error during session continuation: $e");
       _navigateToLoginScreen(context);
     }
-  } catch (e) {
-    print("Error during session continuation: $e");
-    _navigateToLoginScreen(context);
   }
-}
-
-
 
   String _getErrorMessage(dynamic e) {
     if (e is DioException) {
@@ -95,25 +98,6 @@ Future<void> continueSession(BuildContext context) async {
           : 'An unexpected error occurred.';
     }
     return e.toString();
-  }
-
-  void _saveUserDataToSmartClinet(LoginData loginData) {
-    SmartClinet.userId = loginData.result.id.toString();
-    SmartClinet.userName = loginData.result.name;
-    SmartClinet.userEmail = loginData.result.email ?? '';
-  }
-
-  Future<void> _saveUserDataToPreferences(SharedPreferences prefs, LoginData loginData) async {
-    await prefs.setString('userId', SmartClinet.userId);
-    await prefs.setString('userName', SmartClinet.userName);
-    await prefs.setString('userEmail', SmartClinet.userEmail);
-  }
-
-  void _navigateToScreen(BuildContext context, Widget screen) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => screen),
-    );
   }
 
   void _navigateToLoginScreen(BuildContext context) {

@@ -8,7 +8,7 @@ part 'scratch_and_win_provider.g.dart';
 @riverpod
 Future<String> getScratchAndWinResponse(GetScratchAndWinResponseRef ref) async {
   try {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
 
     // Make the request with the payload
     final response = await client.request(

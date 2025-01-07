@@ -3,12 +3,11 @@ import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'delete_message_api.g.dart';
+part 'delete_message_api.g.dart';
 
 @riverpod
-Future<void> deleteMessage(
-    DeleteMessageRef ref, String threadId) async {
-  final SmartClinet client = SmartClinet();
+Future<void> deleteMessage(DeleteMessageRef ref, String threadId) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

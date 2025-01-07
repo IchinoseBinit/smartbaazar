@@ -5,7 +5,7 @@ import 'package:smartbazar/utils/request_type.dart';
 
 @riverpod
 Future<String> deletegift(String id) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

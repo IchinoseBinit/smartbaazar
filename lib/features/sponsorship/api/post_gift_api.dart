@@ -11,7 +11,7 @@ part 'post_gift_api.g.dart';
 @riverpod
 Future<bool> postgift(PostgiftRef ref, String gift, String giftWorth,
     String giftType, String giftQty, File imageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     FormData formData = FormData.fromMap({
       'gift': gift,
@@ -26,7 +26,9 @@ Future<bool> postgift(PostgiftRef ref, String gift, String giftWorth,
       url: ApiConstants.postGiftStoreUrl,
       parameter: formData,
     );
-    if (response.statusCode == 200 && response.data['msg'] != null && response.data['msg'].contains('Successfully')) {
+    if (response.statusCode == 200 &&
+        response.data['msg'] != null &&
+        response.data['msg'].contains('Successfully')) {
       print('Gift posted successfully!');
       return true;
     } else {

@@ -4,11 +4,11 @@ import 'package:smartbazar/features/offline_listing/model/offline_listing_model.
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'offline_listing_api.g.dart';
+part 'offline_listing_api.g.dart';
 
-@riverpod 
-Future<OfflineListingModel> getOfflineListing(GetOfflineListingRef ref)async{
-final SmartClinet client = SmartClinet();
+@riverpod
+Future<OfflineListingModel> getOfflineListing(GetOfflineListingRef ref) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

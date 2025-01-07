@@ -6,9 +6,10 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'advertisment_api.g.dart';
 
-@riverpod 
-Future<AdvertisementResponse> getUsersAdvertisement(GetUsersAdvertisementRef ref)async{
-  final SmartClinet client = SmartClinet();
+@riverpod
+Future<AdvertisementResponse> getUsersAdvertisement(
+    GetUsersAdvertisementRef ref) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

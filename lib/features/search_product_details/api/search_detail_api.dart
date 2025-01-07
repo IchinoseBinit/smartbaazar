@@ -16,7 +16,7 @@ Future<SearchDetails> getSearchDetails(
 }) async {
   print("Query: $query, Order By: $orderby"); // More informative logging
 
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   // Return a default SearchDetails if the query is empty
   if (query.isEmpty) {

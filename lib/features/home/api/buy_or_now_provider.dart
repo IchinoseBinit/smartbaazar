@@ -221,7 +221,7 @@ class Home1GlobalModel {
 // Riverpod Provider
 @riverpod
 Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
@@ -299,7 +299,7 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
     //         ?.map((key, value) => MapEntry(
     //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
     //     {};
-                                      print("Mapping spot: ${spotd.length}"); // Debug each item
+    print("Mapping spot: ${spotd.length}"); // Debug each item
 
     // final Map<String, VendorModel> homestory = (data['home_story']
     //             as Map<String, dynamic>?)
@@ -336,6 +336,7 @@ class GlobalModel {
   final String commentnum;
   final String stock;
   final String offers;
+  final int? discount_percentage;
 
   final double? avg_rating;
   final double? shortestDistance;
@@ -357,11 +358,13 @@ class GlobalModel {
       required this.similarproductCount,
       required this.shortestDistance,
       required this.avg_rating,
+      this.discount_percentage,
       required this.discont});
 
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
+      discount_percentage: json['discount_percentage'],
       offers: json['offers'] ?? '',
       shortestDistance: json['shortestDistance'] ?? 0.0,
       avg_rating: json['average_rating'] ?? 0,

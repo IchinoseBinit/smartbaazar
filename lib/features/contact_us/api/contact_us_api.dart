@@ -11,7 +11,7 @@ Future<void> postContactUs(
   PostContactUsRef ref,
   ContactUsModel contactUsModel,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.postWithToken,

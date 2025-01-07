@@ -5,9 +5,10 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 part 'my_subscribe_and_win_api.g.dart';
 
-@riverpod 
-Future<MySubscribeAndWinModel> getMySubscribeAndWinResponse(GetMySubscribeAndWinResponseRef ref)async{
-final SmartClinet client = SmartClinet();
+@riverpod
+Future<MySubscribeAndWinModel> getMySubscribeAndWinResponse(
+    GetMySubscribeAndWinResponseRef ref) async {
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

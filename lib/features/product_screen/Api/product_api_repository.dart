@@ -9,13 +9,12 @@ part 'product_api_repository.g.dart';
 
 @riverpod
 Future<B2bModel> getprodwuctResposne(GetprodwuctResposneRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.producttypeurl}/1", // Consider moving to a constant
     );
-
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;

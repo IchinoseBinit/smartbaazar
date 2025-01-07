@@ -4,11 +4,12 @@ import 'package:smartbazar/features/faq/model/faq_model.dart';
 import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'faq_api.g.dart';
+part 'faq_api.g.dart';
+
 @riverpod
-Future<FAQModel >getFAQ(GetFAQRef ref ) async{
-   final SmartClinet client = SmartClinet();
-   try{
+Future<FAQModel> getFAQ(GetFAQRef ref) async {
+  final SmartClient client = SmartClient();
+  try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getFAQUrl,
@@ -19,8 +20,7 @@ Future<FAQModel >getFAQ(GetFAQRef ref ) async{
     } else {
       throw Exception('Failed to load FAQ');
     }
-   } catch (e){
-     throw Exception('Failed to load FAQ: $e');
-   }
-
+  } catch (e) {
+    throw Exception('Failed to load FAQ: $e');
+  }
 }

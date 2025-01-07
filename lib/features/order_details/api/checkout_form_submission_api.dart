@@ -41,7 +41,7 @@ Future<bool> postCheckoutForm(
   String total,
   // List<String?> imagePath,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     FormData formData = FormData.fromMap({

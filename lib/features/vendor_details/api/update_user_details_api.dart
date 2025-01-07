@@ -22,11 +22,10 @@ Future<UpdateUserDetail> updateUserDetails(
   List<String?> fromList,
   List<String?> toList,
   List<bool> closed,
-  
 
   // String dob,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     Map<String, dynamic> formData = {
@@ -45,10 +44,10 @@ Future<UpdateUserDetail> updateUserDetails(
       'accept_marketing_offers': 1,
       'bio': bio,
       'location[]': branchLocations,
-      'day[]': day ,
-      'from[]': fromList ,
-      'to[]': toList ,
-      'closed[]': closed ,
+      'day[]': day,
+      'from[]': fromList,
+      'to[]': toList,
+      'closed[]': closed,
       // 'opening_hours[]': openingHours.entries.map((entry) {
       //   return {
       //     'day[]': entry.key,
@@ -79,6 +78,7 @@ Future<UpdateUserDetail> updateUserDetails(
     rethrow; // Re-throw the exception to propagate it up the call stack
   }
 }
+
 @riverpod
 Future<UpdateUserDetail> updateBuyerUserDetails(
   UpdateBuyerUserDetailsRef ref,
@@ -89,12 +89,10 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
   String userId,
   String genderID,
   String branchLocations,
- 
-  
 
   // String dob,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     Map<String, dynamic> formData = {
@@ -111,10 +109,7 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
       'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
-    
       'user_location': branchLocations,
-
-
     };
 
     final response = await client.request(

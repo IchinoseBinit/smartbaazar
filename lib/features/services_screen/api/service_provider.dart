@@ -657,7 +657,7 @@ class VendorUser {
 
 @riverpod
 Future<PostTypeFetch> getServiceProvider(GetServiceProviderRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

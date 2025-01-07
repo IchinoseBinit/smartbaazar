@@ -5,7 +5,7 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class SponsoredApi {
-  final SmartClinet _clinet = SmartClinet();
+  final SmartClient _clinet = SmartClient();
   Future<SponsoredModel?> getsponsoredData() async {
     try {
       final response = await _clinet.request(

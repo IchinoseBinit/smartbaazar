@@ -9,7 +9,7 @@ part 'street_address_api.g.dart';
 @riverpod
 Future<List<StreetAddressModel>> getStreetAddress(
     GetStreetAddressRef ref, String query) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

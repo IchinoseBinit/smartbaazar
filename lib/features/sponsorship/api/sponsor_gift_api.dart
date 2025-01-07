@@ -9,7 +9,7 @@ part 'sponsor_gift_api.g.dart';
 @riverpod
 Future<SponsorGiftModel> getSponsorGiftModelResponse(
     GetSponsorGiftModelResponseRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

@@ -288,6 +288,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         body: Stack(children: [
           Positioned.fill(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               controller: _scrollController,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1001,7 +1002,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               List<CategoryProduct> products =
                                   productsList[selectedIndexx];
 
-                              dynamicHeight = products.isEmpty ? 130.h : 405.h;
+                              dynamicHeight = products.isEmpty ? 130.h : 390.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -1057,9 +1058,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               margin: EdgeInsets.zero,
                                               duration: const Duration(
                                                   milliseconds: 400),
-                                              height: 350.h,
+                                              // height: 300.h,
                                               width: double.infinity,
                                               child: SingleChildScrollView(
+                                                padding: EdgeInsets.zero,
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 child: Wrap(
@@ -1084,6 +1086,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       },
                                                       child:
                                                           ProductDetailWidget(
+                                                        didcountpercentage: prod
+                                                            .discount_percentage,
                                                         distance: prod
                                                             .shortestDistance,
                                                         issponsored: prod
@@ -1150,7 +1154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             loading: () {
                               // Shimmer Effect for Loading State
                               return SizedBox(
-                                height: 350.h, // Adjust the height dynamically
+                                height: 200.h,
                                 child: Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
                                   highlightColor: Colors.grey[100]!,
@@ -1186,6 +1190,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 50,
                             width: double.infinity,
                             child: TabBar(
+                              padding: EdgeInsets.zero,
                               controller: dynamictabController,
                               tabs: const [
                                 Tab(
@@ -1208,20 +1213,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                               if (dynamictabController.index == 0) {
                                 dynamicHeight =
-                                    data.insidearr[0].isEmpty ? 200.h : 440.h;
+                                    data.insidearr[0].isEmpty ? 200.h : 430.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
                                         data.doma[0].isNotEmpty)
-                                    ? 440.h
+                                    ? 420.h
                                     : 200.h;
                               } else if (dynamictabController.index == 2)
                                 dynamicHeight = (data.spotlight.isNotEmpty &&
                                         data.spot[0].isNotEmpty)
-                                    ? 440.h
+                                    ? 430.h
                                     : 200.h;
                               else
-                                dynamicHeight = 440;
+                                dynamicHeight = 420;
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -1252,7 +1257,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 20.h,
+                                            height: 25.h,
                                           ),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
@@ -1262,13 +1267,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       child: nolistingfound()),
                                                 )
                                               : SizedBox(
-                                                  height: 330.6
-                                                      .h, // You can adjust the height as needed
                                                   child: SingleChildScrollView(
                                                     scrollDirection: Axis
                                                         .horizontal, // Horizontal scrolling
                                                     child: Wrap(
-                                                      spacing: 13
+                                                      spacing: 0
                                                           .w, // Horizontal space between items
                                                       runSpacing: 20
                                                           .h, // Vertical space between rows
@@ -1298,6 +1301,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             },
                                                             child:
                                                                 ProductDetailWidget(
+                                                              didcountpercentage:
+                                                                  prod.discount_percentage,
                                                               shortestDistance:
                                                                   prod.shortestDistance,
                                                               distance: prod
@@ -1369,12 +1374,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ),
                                             ),
                                           SizedBox(
-                                            height: 20.h,
+                                            height: 25.h,
                                           ),
                                           if (data.domestic.isNotEmpty)
                                             SizedBox(
-                                              height: 330.6
-                                                  .h, // Adjust the height as needed
                                               child: SingleChildScrollView(
                                                 scrollDirection: Axis
                                                     .horizontal, // Horizontal scrolling
@@ -1402,6 +1405,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       },
                                                       child:
                                                           ProductDetailWidget(
+                                                        didcountpercentage: prod
+                                                            .discount_percentage,
                                                         Vimage: prod
                                                             .user.first.photo,
                                                         shortestDistance: prod
@@ -1617,9 +1622,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           //     return const CircularProgressIndicator();
                           //   },
                           // ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
+
                           Center(
                             child: Column(
                               children: [
@@ -1739,13 +1742,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 SizedBox(
                                   height: 10.h,
                                 ),
-
-// Inside your getSponsored.when function
-
                                 getSponsored.when(
                                   data: (data) {
                                     return SizedBox(
-                                      height: 340
+                                      height: 320
                                           .h, // Adjust as needed for dynamic height
                                       child: SingleChildScrollView(
                                         padding: EdgeInsets.zero,
@@ -1847,12 +1847,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
+
                           Padding(
                             padding: EdgeInsets.only(
-                                left: 10.w, right: 10.w, top: 10.h),
+                              bottom: 10.h,
+                              left: 10.w,
+                              right: 10.w,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1878,6 +1879,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           sliders.when(
                             data: (data) {
                               return SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis
                                     .vertical, // Scroll vertically if needed
                                 child: Wrap(
@@ -1889,7 +1891,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     data.allProducts.length,
                                     (index) {
                                       VProduct res = data.allProducts[index];
-                                      // print("tinku ${res.userDetail.user_id}");
+                                      print("tinku ${res.discount_percentage}");
                                       return InkWell(
                                         onTap: () {
                                           Navigator.push(
@@ -1920,6 +1922,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   BorderRadius.circular(15.0),
                                             ),
                                             child: AllProductDetailWidget(
+                                              discountpercentage:
+                                                  res.discount_percentage,
                                               id: int.tryParse(
                                                   res.userDetail.user_id!),
                                               shortestDistance:
@@ -1996,8 +2000,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             },
                           ),
+                          SizedBox(
+                            height: 50.h,
+                          ),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 35.h,
                     ),
                   ]),
             ),
