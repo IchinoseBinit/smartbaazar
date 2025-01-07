@@ -80,7 +80,8 @@ class SmartClinet {
       await prefs.setString('accessToken', refreshTokenResponse.authToken);
       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-      print("Token refreshed successfully: ${SmartClinet.token}"); // Debugging token refresh
+      print(
+          "Token refreshed successfully: ${SmartClinet.token}"); // Debugging token refresh
       return true;
     } catch (e) {
       print("Error refreshing token using API: $e");
@@ -119,9 +120,11 @@ class SmartClinet {
         'X-AppApiToken': 'Yala@Techies_Nepal',
       };
 
-      Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);
+      Map<String, String> mergedHeaders =
+          _mergeHeaders(defaultHeaders, headers);
 
-      print('Merged Headers before request: $mergedHeaders'); // Debugging merged headers
+      print(
+          'Merged Headers before request: $mergedHeaders'); // Debugging merged headers
 
       switch (requestType) {
         case RequestType.get:
@@ -152,7 +155,19 @@ class SmartClinet {
                 options: Options(headers: mergedHeaders),
               )
               .timeout(timeOutDuration);
-
+        case RequestType.postWithTokenFormData:
+          return await _client
+              .post(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
         case RequestType.postWithToken:
           return await _client
               .post(
@@ -177,6 +192,32 @@ class SmartClinet {
                 url,
                 options: Options(headers: mergedHeaders),
                 data: parameter,
+              )
+              .timeout(timeOutDuration);
+        case RequestType.putWithTokenFormData:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
+        case RequestType.putWithTokenEncoded:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  },
+                ),
               )
               .timeout(timeOutDuration);
 

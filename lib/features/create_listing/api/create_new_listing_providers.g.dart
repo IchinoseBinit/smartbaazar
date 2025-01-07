@@ -6,7 +6,7 @@ part of 'create_new_listing_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createlistingHash() => r'15924f105aa0f904812af207f40fedfc78371da9';
+String _$createlistingHash() => r'0a5ebe1dfed1165a1b4ea298b73e48973c0fb97c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -66,6 +66,8 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
     String? offer,
     String? story,
     String? youtube,
+    int? package,
+    List<Map<String, String>>? pieces,
   }) {
     return CreatelistingProvider(
       cf: cf,
@@ -94,6 +96,8 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
       offer: offer,
       story: story,
       youtube: youtube,
+      package: package,
+      pieces: pieces,
     );
   }
 
@@ -128,6 +132,8 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
       offer: provider.offer,
       story: provider.story,
       youtube: provider.youtube,
+      package: provider.package,
+      pieces: provider.pieces,
     );
   }
 
@@ -176,6 +182,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     String? offer,
     String? story,
     String? youtube,
+    int? package,
+    List<Map<String, String>>? pieces,
   }) : this._internal(
           (ref) => createlisting(
             ref as CreatelistingRef,
@@ -205,6 +213,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
             offer: offer,
             story: story,
             youtube: youtube,
+            package: package,
+            pieces: pieces,
           ),
           from: createlistingProvider,
           name: r'createlistingProvider',
@@ -241,6 +251,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
           offer: offer,
           story: story,
           youtube: youtube,
+          package: package,
+          pieces: pieces,
         );
 
   CreatelistingProvider._internal(
@@ -276,6 +288,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     required this.offer,
     required this.story,
     required this.youtube,
+    required this.package,
+    required this.pieces,
   }) : super.internal();
 
   final List<List<dynamic>>? cf;
@@ -304,6 +318,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
   final String? offer;
   final String? story;
   final String? youtube;
+  final int? package;
+  final List<Map<String, String>>? pieces;
 
   @override
   Override overrideWith(
@@ -344,6 +360,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         offer: offer,
         story: story,
         youtube: youtube,
+        package: package,
+        pieces: pieces,
       ),
     );
   }
@@ -381,7 +399,9 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         other.address == address &&
         other.offer == offer &&
         other.story == story &&
-        other.youtube == youtube;
+        other.youtube == youtube &&
+        other.package == package &&
+        other.pieces == pieces;
   }
 
   @override
@@ -413,6 +433,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     hash = _SystemHash.combine(hash, offer.hashCode);
     hash = _SystemHash.combine(hash, story.hashCode);
     hash = _SystemHash.combine(hash, youtube.hashCode);
+    hash = _SystemHash.combine(hash, package.hashCode);
+    hash = _SystemHash.combine(hash, pieces.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -496,6 +518,12 @@ mixin CreatelistingRef on AutoDisposeFutureProviderRef<String> {
 
   /// The parameter `youtube` of this provider.
   String? get youtube;
+
+  /// The parameter `package` of this provider.
+  int? get package;
+
+  /// The parameter `pieces` of this provider.
+  List<Map<String, String>>? get pieces;
 }
 
 class _CreatelistingProviderElement
@@ -554,6 +582,11 @@ class _CreatelistingProviderElement
   String? get story => (origin as CreatelistingProvider).story;
   @override
   String? get youtube => (origin as CreatelistingProvider).youtube;
+  @override
+  int? get package => (origin as CreatelistingProvider).package;
+  @override
+  List<Map<String, String>>? get pieces =>
+      (origin as CreatelistingProvider).pieces;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -562,7 +562,23 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                                       ),
                                     ),
                                     SizedBox(width: 10.w),
-                                    if (index == branchControllers.length - 1)
+                                    if (index == 0)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xFFADADAD)),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: _addBranchField,
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(
+                                                4.0), // Adjust padding to control the gap
+                                            child: Icon(Icons.add_circle,
+                                                color: Color(0xFF362677)),
+                                          ),
+                                        ),
+                                      )
+                                    else if (index == branchControllers.length)
                                       Container(
                                         decoration: BoxDecoration(
                                           border: Border.all(
