@@ -799,8 +799,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                         // If any of the above conditions fail, return a default widget
                         return const Center(
-                          child: Text(
-                              'No stories available. '),
+                          child: Text('No stories available. '),
                         );
                       },
                       loading: () => SizedBox(
