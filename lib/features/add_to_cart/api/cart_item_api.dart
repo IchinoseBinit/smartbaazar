@@ -9,7 +9,7 @@ part 'cart_item_api.g.dart';
 
 @riverpod
 Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(
@@ -48,7 +48,7 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
 
 class CartItemApi {
   static Future<Response> incrementQuantity(String itemId) async {
-    final SmartClient client = SmartClient();
+    final SmartClinet client = SmartClinet();
 
     final response = await client.request(
         requestType: RequestType.postWithToken,
@@ -59,7 +59,7 @@ class CartItemApi {
   }
 
   static Future<Response> decrementQuantity(String itemId) async {
-    final SmartClient client = SmartClient();
+    final SmartClinet client = SmartClinet();
     FormData formData = FormData.fromMap({
       'id': itemId,
     });
@@ -75,7 +75,7 @@ class CartItemApi {
 
 @riverpod
 Future<void> deleteCartItem(DeleteCartItemRef ref, String cartItemId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   FormData formData = FormData.fromMap({
     'id': cartItemId,
   });

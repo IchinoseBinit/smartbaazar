@@ -16,7 +16,7 @@ Future<bool> postBrandMember(
     String panVatNo,
     File taxFile,
     File brandCertificate) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'brand_name': brandName,

@@ -11,7 +11,7 @@ Future<BusinessResponse> getSearchResponse(
   GetSearchResponseRef ref,
   String query,
 ) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.postWithToken,
@@ -36,3 +36,7 @@ Future<BusinessResponse> getSearchResponse(
     throw Exception('Failed to fetch PostTypeFetch: $e');
   }
 }
+
+
+
+

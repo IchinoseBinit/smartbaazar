@@ -9,7 +9,7 @@ part 'hot_deals_provider.g.dart';
 
 @riverpod
 Future<List<GlobalModel>> getHotDeals(GetHotDealsRef ref, String header) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     // Determine the correct endpoint based on the header

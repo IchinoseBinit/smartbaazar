@@ -9,7 +9,7 @@ import 'package:smartbazar/utils/request_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApi {
-  final SmartClient _client = SmartClient(); // Ensure consistent naming
+  final SmartClinet _client = SmartClinet(); // Ensure consistent naming
 
   Future<LoginData?> login(String email, String password) async {
     final loginBody = {
@@ -34,14 +34,14 @@ class LoginApi {
           final user = LoginData.fromJson(response.data);
           // final name = user.result.name;
           // Update tokens
-          SmartClient.token = user.extra.authToken;
-          SmartClient.refresh = user.extra.refreshToken;
+          SmartClinet.token = user.extra.authToken;
+          SmartClinet.refresh = user.extra.refreshToken;
 
           // Store session and tokens in SharedPreferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString("session", json.encode(user.toJson()));
-          await prefs.setString("accessToken", SmartClient.token);
-          await prefs.setString("refreshToken", SmartClient.refresh);
+          await prefs.setString("accessToken", SmartClinet.token);
+          await prefs.setString("refreshToken", SmartClinet.refresh);
           await prefs.setString('userName', user.result.username);
           await prefs.setString('name', user.result.name);
           await prefs.setString('userId', user.result.id.toString());

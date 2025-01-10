@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -33,29 +35,60 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
     return Container(
         child: Stack(
       children: [
-        Positioned(
-          child: CarouselSlider(
-            options: CarouselOptions(
-              height: 300.0.h, // Responsive height
-              viewportFraction: 1.0,
-              initialPage: 0,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
+   Positioned(
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 300.0, // Set height of carousel
+                viewportFraction: 1.0,
+                initialPage: 0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+              ),
+              items: widget.items.map((item) {
+                return GestureDetector(
+                  onTap: () {
+                    // Open full-screen zoomable image on tap
+                    showDialog(
+                      context: context,
+                      builder: (_) => Dialog(
+                        insetPadding: EdgeInsets.zero, // Remove dialog padding
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: PhotoViewGallery.builder(
+                            itemCount: widget.items.length,
+                            builder: (context, index) {
+                              return PhotoViewGalleryPageOptions(
+                                imageProvider: NetworkImage(
+                                    widget.items[index].image_url!),
+                                minScale: PhotoViewComputedScale.contained,
+                                maxScale: PhotoViewComputedScale.covered,
+                              );
+                            },
+                            scrollPhysics: const BouncingScrollPhysics(),
+                            backgroundDecoration: const BoxDecoration(
+                              color: Colors.black,
+                            ),
+                            pageController: PageController(initialPage: currentIndex),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Image.network(
+                      item.image_url!,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
-            items: widget.items.map((item) {
-              return SizedBox(
-                width: double.infinity,
-                child: Image.network(
-                  item.image_url!,
-                  fit: BoxFit.fill,
-                ),
-              );
-            }).toList(),
           ),
-        ),
         Positioned(
           left: 200.w,
           bottom: 50,

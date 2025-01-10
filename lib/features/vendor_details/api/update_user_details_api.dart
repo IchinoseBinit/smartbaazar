@@ -25,7 +25,7 @@ Future<UpdateUserDetail> updateUserDetails(
 
   // String dob,
 ) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     Map<String, dynamic> formData = {
@@ -92,7 +92,7 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
 
   // String dob,
 ) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     Map<String, dynamic> formData = {

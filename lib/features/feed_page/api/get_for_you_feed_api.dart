@@ -8,7 +8,7 @@ part 'get_for_you_feed_api.g.dart';
 
 @riverpod
 Future<GetForYouFeedModel> getForYouFeedApi(GetForYouFeedApiRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

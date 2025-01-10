@@ -9,7 +9,7 @@ part 'feed_gift_card_api.g.dart';
 @riverpod
 Future<FeedGiftCardModel> getFeedGiftCard(
     GetFeedGiftCardRef ref, String userId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(
@@ -22,7 +22,7 @@ Future<FeedGiftCardModel> getFeedGiftCard(
         return FeedGiftCardModel.fromJson(jsonResponse);
       } else if (jsonResponse is List<dynamic>) {
         // Handle the case where the response is an empty array
-        return FeedGiftCardModel();
+        return const FeedGiftCardModel();
       } else {
         throw Exception('Invalid response format');
       }

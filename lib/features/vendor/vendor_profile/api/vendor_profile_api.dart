@@ -13,7 +13,7 @@ Future<VendorProfile> getVendorProfileData(
   int postType = 1,
   String category = "brandnew",
 }) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

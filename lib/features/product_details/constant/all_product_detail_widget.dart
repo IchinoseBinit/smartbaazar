@@ -82,11 +82,6 @@ class AllProductDetailWidget extends StatelessWidget {
                 ],
               ),
               PopupMenuButton(
-                child: Icon(
-                  size: 20,
-                  color: ColorConstant.grayColor,
-                  Icons.more_vert,
-                ),
                 onSelected: (value) {},
 
                 padding: EdgeInsets.symmetric(horizontal: 5.h),
@@ -178,6 +173,11 @@ class AllProductDetailWidget extends StatelessWidget {
                         )),
                   ];
                 },
+                child: const Icon(
+                  size: 20,
+                  color: ColorConstant.grayColor,
+                  Icons.more_vert,
+                ),
               ),
             ],
           ),
@@ -426,7 +426,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           color: const Color(0xff901B41),
                         ),
                         Text(
-                          "${discountpercentage}%",
+                          "$discountpercentage%",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff901B41),
@@ -661,7 +661,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                   child: Text(
                                     membershipTitle ?? "Domestic Brand",
                                     style: headerstyle.copyWith(
-                                      fontSize: 9.sp,
+                                      fontSize: 8.sp,
                                       // Adjust font size based on length
                                       fontWeight: FontWeight.w700,
                                     ),

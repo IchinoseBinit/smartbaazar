@@ -11,7 +11,7 @@ part 'post_gift_api.g.dart';
 @riverpod
 Future<bool> postgift(PostgiftRef ref, String gift, String giftWorth,
     String giftType, String giftQty, File imageFile) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'gift': gift,

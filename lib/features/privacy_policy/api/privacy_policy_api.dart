@@ -8,7 +8,7 @@ part 'privacy_policy_api.g.dart';
 
 @riverpod
 Future<PrivacyPolicyModel> getPrivacyPolicy(GetPrivacyPolicyRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

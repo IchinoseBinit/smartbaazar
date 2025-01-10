@@ -634,64 +634,82 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         ),
                                       )
                                     : SizedBox(
-                                        height: 340.h,
-                                        child: ListView.builder(
-                                          clipBehavior: Clip.antiAlias,
-                                          padding: const EdgeInsets.all(3),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: alldata?.length ?? 0,
-                                          itemBuilder: (context, index) {
-                                            print("raju ${data.live_prizes}");
-                                            BrandNewModel prod =
-                                                alldata![index];
-                                            return GestureDetector(
-                                              onTap: () {
-                                                // You can add onTap functionality if needed
-                                              },
-                                              child: ProductDetailWidget(
-                                                lefttile: "TradeHUb",
-                                                vendorname:
-                                                    prod.userdetails?.name ??
+                                        child: AnimatedContainer(
+                                          padding: EdgeInsets.zero,
+                                          margin: EdgeInsets.zero,
+                                          duration:
+                                              const Duration(milliseconds: 400),
+                                          child: SingleChildScrollView(
+                                            padding: EdgeInsets.zero,
+                                            scrollDirection: Axis
+                                                .horizontal, // Scroll horizontally
+                                            child: Wrap(
+                                              spacing: 3
+                                                  .w, // Horizontal space between items
+                                              runSpacing: 0
+                                                  .h, // Vertical space between rows
+                                              children: List.generate(
+                                                  alldata?.length ?? 0,
+                                                  (index) {
+                                                BrandNewModel prod =
+                                                    alldata![index];
+                                                
+
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    // Add onTap functionality if needed
+                                                  },
+                                                  child: ProductDetailWidget(
+                                                    lefttile:
+                                                        "TradeHub", // Product section label
+                                                    vendorname: prod.userdetails
+                                                            ?.name ??
                                                         "",
-                                                Vimage:
-                                                    prod.userdetails?.photo ??
+                                                    Vimage: prod.userdetails
+                                                            ?.photo ??
                                                         "",
-                                                avg_rating: prod.avg_rating
-                                                        ?.toDouble() ??
-                                                    0,
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                discounttedPrice: prod
-                                                    .discounted_price
-                                                    .toString(),
-                                                distance: double.tryParse(
-                                                        prod.shortestDistance.toString(),),
-                                                            
-                                                  
-                                                issponsored: prod.userdetails
-                                                        ?.sponsored ??
-                                                    false,
-                                                membershipColor: prod
-                                                        .userdetails
-                                                        ?.membership_color ??
-                                                    "",
-                                                membershipTitle: prod
-                                                        .userdetails
-                                                        ?.membership_title ??
-                                                    "",
-                                                offer: prod.wow,
-                                                price: prod.price ?? "",
-                                                productImage: prod.image ?? "",
-                                                shortestDistance: prod.shortestDistance
-                                                    ,
-                                                similarproductCount:
-                                                    prod.similarProductCount ??
+                                                    avg_rating: prod.avg_rating
+                                                            ?.toDouble() ??
                                                         0,
-                                                title: prod.title ?? "",
-                                                wow: prod.wow,
-                                              ),
-                                            );
-                                          },
+                                                    comment: prod.commentcount
+                                                            ?.toString() ??
+                                                        "0",
+                                                    discounttedPrice: prod
+                                                            .discounted_price
+                                                            ?.toString() ??
+                                                        "0",
+                                                    distance: double.tryParse(
+                                                        prod.shortestDistance
+                                                                ?.toString() ??
+                                                            "0"),
+                                                    issponsored: prod
+                                                            .userdetails
+                                                            ?.sponsored ??
+                                                        false,
+                                                    membershipColor: prod
+                                                            .userdetails
+                                                            ?.membership_color ??
+                                                        "",
+                                                    membershipTitle: prod
+                                                            .userdetails
+                                                            ?.membership_title ??
+                                                        "",
+                                                    offer: prod.wow ?? "",
+                                                    price: prod.price ?? "",
+                                                    productImage: prod.image,
+                                                    shortestDistance:
+                                                        prod.shortestDistance ??
+                                                            0.0,
+                                                    similarproductCount:
+                                                        prod.similarProductCount ??
+                                                            0,
+                                                    title: prod.title ?? "",
+                                                    wow: prod.wow ?? "",
+                                                  ),
+                                                );
+                                              }),
+                                            ),
+                                          ),
                                         ),
                                       ),
                               ],
@@ -774,7 +792,11 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             // ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 10.w, right: 10.w, top: 10.h),
+                                top: 10.h,
+                                bottom: 10.h,
+                                left: 10.w,
+                                right: 10.w,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -792,70 +814,94 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                             data.all_products == null
-                                ? nolistingfound()
-                                : SizedBox(
-                                    height: 8000.h,
-                                    child: GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                      shrinkWrap: true, // Adjust to fit content
-                                      itemCount: data.all_products?.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount:
-                                            MediaQuery.of(context).size.width >
-                                                    600
-                                                ? 3
-                                                : 2, // Adjust column count
-                                        mainAxisExtent:
-                                            MediaQuery.of(context).size.height *
-                                                0.4, // Adjust item height
-                                        crossAxisSpacing:
-                                            8.0, // Add spacing between columns
-                                        mainAxisSpacing:
-                                            8.0, // Add spacing between rows
-                                        childAspectRatio: MediaQuery.of(context)
-                                                .size
-                                                .aspectRatio *
-                                            0.7, // Adjust aspect ratio
+                                ? nolistingfound() // Show this widget when products are null
+                                : SingleChildScrollView(
+                                    physics:
+                                        const BouncingScrollPhysics(), // Enable scrolling with a bounce effect
+                                    scrollDirection: Axis
+                                        .vertical, // Scroll vertically if needed
+                                    child: Wrap(
+                                      spacing:
+                                          5.w, // Horizontal space between items
+                                      runSpacing:
+                                          15.h, // Vertical space between rows
+                                      children: List.generate(
+                                        data.all_products?.length ??
+                                            0, // Safely handle null length
+                                        (index) {
+                                          BrandNewModel res =
+                                              data.all_products![index];
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailScreen(
+                                                    productId: res.id,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: SizedBox(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      30.w) /
+                                                  2, // Dynamically adjust to fit two items per row
+                                              child: Card(
+                                                clipBehavior: Clip.antiAlias,
+                                                shadowColor:
+                                                    const Color(0xff3D215F)
+                                                        .withOpacity(0.5),
+                                                elevation: 9,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 5.w),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                ),
+                                                child: AllProductDetailWidget(
+                                                  productImage: res.image,
+                                                  Vimage:
+                                                      res.userdetails!.photo!,
+                                                  avg_rating: res.avg_rating
+                                                      ?.toDouble(),
+                                                  comment: res.commentcount
+                                                      .toString(),
+                                                  discounttedPrice: res
+                                                      .discounted_price
+                                                      .toString(),
+                                                  distance:
+                                                      res.shortestDistance,
+                                                  issponsored: res
+                                                      .userdetails!.sponsored!,
+                                                  lefttile: "All Products",
+                                                  membershipColor: res
+                                                      .userdetails!
+                                                      .membership_color,
+                                                  membershipTitle: res
+                                                      .userdetails!
+                                                      .membership_title,
+                                                  offer: res.offers,
+                                                  price: res.price,
+                                                  shortestDistance:
+                                                      res.shortestDistance,
+                                                  similarproductCount:
+                                                      res.similarProductCount,
+                                                  title: res.title,
+                                                  vendorname:
+                                                      res.userdetails!.name,
+                                                  wow: res.wow,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                      itemBuilder: (context, index) {
-                                        BrandNewModel res =
-                                            data.all_products![index];
-                                        return Padding(
-                                          padding: EdgeInsets.only(
-                                              bottom:
-                                                  8.0), // Consistent padding
-                                          child: AllProductDetailWidget(
-                                            productImage: res.image,
-                                            Vimage: res.userdetails!.photo!,
-                                            avg_rating:
-                                                res.avg_rating?.toDouble(),
-                                            comment:
-                                                res.commentcount.toString(),
-                                            discounttedPrice:
-                                                res.discounted_price.toString(),
-                                            distance: res.shortestDistance,
-                                                
-                                            issponsored:
-                                                res.userdetails!.sponsored!,
-                                            lefttile: "All Products",
-                                            membershipColor: res
-                                                .userdetails!.membership_color,
-                                            membershipTitle: res
-                                                .userdetails!.membership_title,
-                                            offer: res.offers,
-                                            price: res.price,
-                                            shortestDistance: res.shortestDistance,
-                                            similarproductCount:
-                                                res.similarProductCount,
-                                            title: res.title,
-                                            vendorname: res.userdetails!.name,
-                                            wow: res.wow,
-                                          ),
-                                        );
-                                      },
-                                    )),
+                                    ),
+                                  ),
 
                             // GridView.builder(
                             //   physics: NeverScrollableScrollPhysics(),

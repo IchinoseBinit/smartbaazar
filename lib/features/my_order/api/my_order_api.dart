@@ -8,7 +8,7 @@ part 'my_order_api.g.dart';
 
 @riverpod
 Future<OrderResponse> getOrderDetails(GetOrderDetailsRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

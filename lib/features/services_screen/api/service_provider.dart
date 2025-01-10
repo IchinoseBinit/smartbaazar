@@ -456,7 +456,7 @@ class PostTypeFetch {
               });
             }).toList() ??
             [];
-    print("ramu ${glob}");
+    print("ramu $glob");
     final spots = (json['spotlights'] as List<dynamic>?)?.expand((innerList) {
           // Ensure each innerList is properly cast and mapped
           return (innerList as List<dynamic>).map((item) {
@@ -580,6 +580,7 @@ class VProduct {
   final int? similarProductCount;
   final String offers;
   final int? avg_rating;
+  final int? discount_percentage;
 
   VProduct({
     required this.id,
@@ -595,10 +596,12 @@ class VProduct {
     required this.similarProductCount,
     required this.discounted_price,
     required this.avg_rating,
+    this.discount_percentage,
   });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
+      discount_percentage: json['discount_percentage'],
         offers: json["offers"] ?? '',
         discounted_price: json['discounted_price'] ?? '',
         commentcount: json['commentcount'] ?? 0,
@@ -657,7 +660,7 @@ class VendorUser {
 
 @riverpod
 Future<PostTypeFetch> getServiceProvider(GetServiceProviderRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

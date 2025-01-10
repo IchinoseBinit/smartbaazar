@@ -8,7 +8,7 @@ part 'delete_saved_search_api.g.dart';
 @riverpod
 Future<void> deleteSavedSearch(
     DeleteSavedSearchRef ref, String productItemId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

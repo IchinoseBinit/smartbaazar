@@ -9,7 +9,7 @@ part 'used_provider.g.dart';
 
 @riverpod
 Future<PostTypeFetch> getUsedResponse(GetUsedResponseRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

@@ -8,7 +8,7 @@ part 'splash_api.g.dart';
 
 @riverpod
 Future<SplashModel> getSplashApi(GetSplashApiRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.get,

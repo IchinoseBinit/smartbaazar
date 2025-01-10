@@ -10,7 +10,7 @@ part 'add_dispute_api.g.dart';
 @riverpod
 Future<bool> postDispute(PostDisputeRef ref, String vendorName, String issue,
     String message, File imageFile) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'vendor_name': vendorName,

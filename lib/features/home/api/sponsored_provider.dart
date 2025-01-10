@@ -20,6 +20,7 @@ class SponsoredProduct {
   final String? offers;
   final int? avg_rating;
   final String? discounted_price;
+  final int? discount_percentage;
 
   SponsoredProduct({
     this.wow,
@@ -35,11 +36,13 @@ class SponsoredProduct {
     this.userdetails,
     this.offers,
     this.avg_rating,
+    this.discount_percentage,
   });
 
   factory SponsoredProduct.fromJson(Map<String, dynamic> json) {
     print("lama ${json['wow']}");
     return SponsoredProduct(
+      discount_percentage: json['discount_percentage'],
       wow: json['wow'] ?? '0',
       shortestDistance: json['shortestDistance'] ?? 0.0,
       commentcount: json['commentcount'] as int,
@@ -61,7 +64,7 @@ class SponsoredProduct {
 
 @riverpod
 Future<List<SponsoredProduct>> fetchSponsored(FetchSponsoredRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

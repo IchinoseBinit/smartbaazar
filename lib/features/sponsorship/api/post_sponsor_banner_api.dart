@@ -10,7 +10,7 @@ part 'post_sponsor_banner_api.g.dart';
 
 @riverpod
 Future<bool> postSponsorBanner(PostSponsorBannerRef ref, File imageFile) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'image': await MultipartFile.fromFile(imageFile.path,

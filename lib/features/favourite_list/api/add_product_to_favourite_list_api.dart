@@ -8,7 +8,7 @@ part 'add_product_to_favourite_list_api.g.dart';
 @riverpod
 Future<String> addToFavorites(
     AddToFavoritesRef ref, String userId, String postId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

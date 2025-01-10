@@ -41,7 +41,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
       if (mounted) {
         setState(() {
           _dotsCount = (_dotsCount + 1) % 4;
-          _loadingText = 'Loading' + '.' * _dotsCount;
+          _loadingText = 'Loading${'.' * _dotsCount}';
         });
       }
     });

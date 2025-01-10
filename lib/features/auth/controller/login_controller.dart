@@ -36,13 +36,13 @@ class LoginController extends StateNotifier<GenericState> {
       state = LoadedState<LoginData>(response: loginData);
 
       final prefs = await SharedPreferences.getInstance();
-      SmartClient.userId = loginData!.result.id.toString();
-      SmartClient.userName = loginData.result.name;
-      SmartClient.userEmail = loginData.result.email ?? '';
+      SmartClinet.userId = loginData!.result.id.toString();
+      SmartClinet.userName = loginData.result.name;
+      SmartClinet.userEmail = loginData.result.email ?? '';
 
-      await prefs.setString('userId', SmartClient.userId);
-      await prefs.setString('userName', SmartClient.userName);
-      await prefs.setString('userEmail', SmartClient.userEmail);
+      await prefs.setString('userId', SmartClinet.userId);
+      await prefs.setString('userName', SmartClinet.userName);
+      await prefs.setString('userEmail', SmartClinet.userEmail);
 
       Navigator.pushReplacement(
         context,
@@ -58,8 +58,8 @@ class LoginController extends StateNotifier<GenericState> {
   Future<void> continueSession(BuildContext context) async {
     final pref = await SharedPreferences.getInstance();
     final sessionString = pref.getString('session');
-    SmartClient.token = pref.getString('accessToken') ?? '';
-    SmartClient.refresh = pref.getString('refreshToken') ?? '';
+    SmartClinet.token = pref.getString('accessToken') ?? '';
+    SmartClinet.refresh = pref.getString('refreshToken') ?? '';
     state = LoadingState();
 
     if (sessionString == null) {
@@ -72,7 +72,7 @@ class LoginController extends StateNotifier<GenericState> {
       final userId = session['result']?['id']?.toString() ?? '';
       if (userId.isNotEmpty) {
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-        SmartClient.userId = userId;
+        SmartClinet.userId = userId;
         await pref.setString('userId', userId);
         Navigator.pushReplacement(
           context,

@@ -5,7 +5,7 @@ import 'package:smartbazar/utils/request_type.dart';
 
 @riverpod
 Future<String> checkuserverified() async {
-  SmartClient client = SmartClient();
+  SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

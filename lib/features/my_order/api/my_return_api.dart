@@ -8,7 +8,7 @@ part 'my_return_api.g.dart';
 
 @riverpod
 Future<MyReturnModel> getMyReturns(GetMyReturnsRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

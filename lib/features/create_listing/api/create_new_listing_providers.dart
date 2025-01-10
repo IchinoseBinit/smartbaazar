@@ -12,80 +12,91 @@ Future<String> createlisting(
   CreatelistingRef? ref, {
   List<List<dynamic>>? cf,
   List<String>? tags,
-  required String? category,
-  required String? stock,
+  required String category,
+  required String stock,
   String? mileage,
   String? warrenty,
-  required String? title,
-  required String? city,
-  required String? price,
-  required String? description,
+  required String title,
+  required String city,
+  required String price,
+  required String description,
   String? length,
   String? width,
   String? height,
   String? weight,
   String? disprice,
-  required String? posttype,
-  required String? email,
-  required String? phone,
-  required String? username,
-  required String? pickup,
+  required String posttype,
+  required String email,
+  required String phone,
+  required String username,
+  required String pickup,
   List<File?>? images,
-  required String? accept,
-  required String? address,
+  required String accept,
+  required String address,
   String? offer,
   String? story,
   String? youtube,
   int? package,
   List<Map<String, String>>? pieces,
+  double? lat,
+  double? long,
 }) async {
-  final SmartClient client = SmartClient();
-  print("binodo $cf");
-  try {
-    // Create FormData to handle text fields and file uploads together
-    FormData formData = FormData.fromMap({
-      'tags': tags?.isEmpty ?? true ? [] : tags,
-      'category_id': category ?? '',
-      'post_type_id': posttype ?? '',
-      'title': title ?? '',
-      'package_id': package ?? '0',
-      'description': description ?? '',
-      'contact_name': username ?? '',
-      'auth_field': 'phone',
-      'phone': phone ?? '',
-      'phone_country': 'NP',
-      'city_id': city ?? '',
-      'accept_terms': accept ?? '',
-      'offers': offer ?? '',
-      'accept_marketing_offers': accept ?? '',
-      'story_display_days': story?.isEmpty ?? true ? '' : '0',
-      'email': email ?? '',
-      'youtube': youtube ?? '',
-      'address': address ?? '',
-      'price': price ?? '',
-      'discounted_price': disprice ?? '',
-      'pickup_address': pickup ?? '',
-      'length': length?.isNotEmpty ?? false ? length : '0',
-      'width': width?.isNotEmpty ?? false ? width : '0',
-      'height': height?.isNotEmpty ?? false ? height : '0',
-      'weight': weight?.isNotEmpty ?? false ? weight : '0',
-      'stock': stock?.isNotEmpty ?? false ? stock : '0',
-      'pickup': pickup?.isNotEmpty ?? false ? pickup : ''
-    });
+  final SmartClinet client = SmartClinet();
 
-    // Dynamically add cf values based on the list
-    if (cf != null && cf.isNotEmpty) {
-      for (int i = 0; i < cf.length; i++) {
-        final entry = cf[i];
-        if (entry.length == 2) {
-          final key = entry[0].toString(); // e.g., 'cf.3'
-          final value = entry[1].toString(); // e.g., '4'
-          formData.fields.add(MapEntry(key, value));
-        }
-      }
+  try {
+    // Create FormData to handle text fields and file uploads dynamically
+    Map<String, dynamic> formDataMap = {
+      'category_id': category,
+      'post_type_id': posttype,
+      'title': title,
+      'description': description,
+      'contact_name': username,
+      'auth_field': "phone",
+      'phone': phone,
+      'phone_country': "NP",
+      'city_id': city,
+      'accept_terms': accept,
+      'email': email,
+      'country_code': "NP",
+      'price': price,
+      'discounted_price': disprice,
+      'negotiable': "0",
+      'phone_hidden': "1",
+      'captcha': "embed",
+      'ip_addr': "127.0.0.1",
+      'accept_marketing_offers': "1",
+      'is_permanent': "0",
+      'package_id': "1",
+      'payment_method_id': "1",
+      'trending': "1",
+      'stock': stock?? 0,
+      'address': address ?? "null",
+      'length': length ?? "1",
+      'width': width ?? "1",
+      'height': height ?? "1",
+      'weight': weight ?? "1",
+      'pickup': pickup,
+      'longitude': long?.toString() ?? "75",
+      'latitude': lat?.toString() ?? "85",
+      'hyper_del': "1",
+      'seller_del': "0",
+      'story_display_days': "1",
+      'offers': offer ?? "Seasonal Offers",
+      'youtube': youtube ?? "jbhjbh",
+      'piece_from[]': pieces?.map((e) => e['from']).toList() ?? [],
+      'piece_to[]': pieces?.map((e) => e['to']).toList() ?? [],
+      'rate[]': pieces?.map((e) => e['rate']).toList() ?? [],
+    };
+
+    // Handle dynamic tags
+    if (tags != null && tags.isNotEmpty) {
+      formDataMap['tags[]'] = tags;
     }
 
-    // Add images to FormData if they are not null
+    // Create FormData
+    FormData formData = FormData.fromMap(formDataMap);
+
+    // Handle images
     if (images != null) {
       for (var file in images) {
         if (file != null) {
@@ -99,16 +110,19 @@ Future<String> createlisting(
         }
       }
     }
-    // Print all data being sent to the API
-    print("i sent Fields:");
-    for (var field in formData.fields) {
-      print("${field.key}: ${field.value}");
+
+    // Generate cURL command from formData for debugging (if needed)
+    String curlCommand = 'curl -X POST <API_URL> \\ \n';
+    for (var entry in formData.fields) {
+      curlCommand += '--form \'${entry.key}=${entry.value}\' \\ \n';
     }
 
-    print("\nFormData Files:");
     for (var file in formData.files) {
-      print("${file.key}: ${file.value.filename}");
+      curlCommand += '--form \'${file.key}=@${file.value.filename}\' \\ \n';
     }
+
+    // Print cURL command
+    print("rembo\n $curlCommand");
 
     // Send the request
     final response = await client.request(

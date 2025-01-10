@@ -8,7 +8,7 @@ part 'get_following_story_api.g.dart';
 
 @riverpod
 Future<GetFeedStoriesModel> getFollowingStory(GetFollowingStoryRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(
@@ -20,7 +20,7 @@ Future<GetFeedStoriesModel> getFollowingStory(GetFollowingStoryRef ref) async {
       if (jsonResponse is Map<String, dynamic>) {
         if (jsonResponse['data'] is List<dynamic> &&
             jsonResponse['data'].isEmpty) {
-          return GetFeedStoriesModel(
+          return const GetFeedStoriesModel(
               data: FeedStoryData(feedstory: FeedStory()));
         } else {
           return GetFeedStoriesModel.fromJson(jsonResponse);

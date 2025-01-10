@@ -27,7 +27,7 @@ class HomeProductType {
 
 @riverpod
 Future<HomeProductType> homeCategory(HomeCategoryRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     // Make the request
     final response = await client.request(

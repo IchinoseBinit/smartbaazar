@@ -10,7 +10,7 @@ part 'refresh_token_api.g.dart';
 
 @riverpod
 Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final prefs = await SharedPreferences.getInstance();
     final refreshToken = prefs.getString('refreshToken');
@@ -28,8 +28,8 @@ Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
       final tokenData = RefreshTokenResponse.fromJson(response.data);
 
       // Update tokens in SmartClinet and SharedPreferences
-      SmartClient.token = tokenData.authToken;
-      SmartClient.refresh = tokenData.refreshToken;
+      SmartClinet.token = tokenData.authToken;
+      SmartClinet.refresh = tokenData.refreshToken;
 
       await prefs.setString('accessToken', tokenData.authToken);
       await prefs.setString('refreshToken', tokenData.refreshToken);

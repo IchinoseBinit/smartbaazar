@@ -9,7 +9,7 @@ part 'post_type_story_api.g.dart';
 @riverpod
 Future<HomeStoryModel> getPostTypeStoryApi(
     GetPostTypeStoryApiRef ref, String postTypeId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

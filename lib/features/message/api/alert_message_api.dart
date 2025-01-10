@@ -8,7 +8,7 @@ part 'alert_message_api.g.dart';
 
 @riverpod
 Future<AlertModel> getAlertMessage(GetAlertMessageRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

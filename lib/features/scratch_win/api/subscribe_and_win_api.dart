@@ -9,7 +9,7 @@ part 'subscribe_and_win_api.g.dart';
 @riverpod
 Future<SubscribeAndWinModel> getSubscribeAndWin(
     GetSubscribeAndWinRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

@@ -8,7 +8,7 @@ part 'get_categories_provider.g.dart';
 @riverpod
 Future<FieldsResponse> getCategoryResponse(
     GetCategoryResponseRef ref, int id) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.postWithToken,

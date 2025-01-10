@@ -8,7 +8,7 @@ part 'faq_api.g.dart';
 
 @riverpod
 Future<FAQModel> getFAQ(GetFAQRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

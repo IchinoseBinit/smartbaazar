@@ -9,7 +9,7 @@ part 'event_provider.g.dart';
 
 @riverpod
 Future<PostTypeFetch> geteventResponse(GeteventResponseRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

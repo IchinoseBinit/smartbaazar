@@ -10,7 +10,7 @@ part 'post_advertisement_api.g.dart';
 @riverpod
 Future<bool> postAdvertisement(
     PostAdvertisementRef ref, File imageFile, String link) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     // var formData = FormData.fromMap({

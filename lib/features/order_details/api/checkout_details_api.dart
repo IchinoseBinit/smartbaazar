@@ -13,7 +13,7 @@ Future<CheckoutDetailsModel> postSelectedItemOfCart(
   List<String?> vendorId,
   List<String> selectedProduct,
 ) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'vendor_id': vendorId,

@@ -8,7 +8,7 @@ part 'ad_api.g.dart';
 
 @riverpod
 Future<List<LoadingAd>> fetchAds(FetchAdsRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

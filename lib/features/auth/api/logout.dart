@@ -8,7 +8,7 @@ import 'package:smartbazar/utils/request_type.dart';
 class LogoutApi {
   Future<void> logout(String userId, BuildContext context) async {
     try {
-      final SmartClient client = SmartClient();
+      final SmartClinet client = SmartClinet();
 
       // Logout endpoint with the user ID appended to the URL
       final url = '${ApiConstants.logoutUrl}/$userId';
@@ -28,11 +28,11 @@ class LogoutApi {
         await prefs.clear(); // Clear all preferences
 
         // Reset tokens in the client
-        SmartClient.token = '';
-        SmartClient.refresh = '';
-        SmartClient.userId = '';
-        SmartClient.userName = '';
-        SmartClient.userEmail = '';
+        SmartClinet.token = '';
+        SmartClinet.refresh = '';
+        SmartClinet.userId = '';
+        SmartClinet.userName = '';
+        SmartClinet.userEmail = '';
 
         print('SharedPreferences cleared and tokens reset.');
 

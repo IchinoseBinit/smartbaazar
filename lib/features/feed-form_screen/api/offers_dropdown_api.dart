@@ -9,7 +9,7 @@ part 'offers_dropdown_api.g.dart';
 @riverpod
 Future<OffersModelDropdown> getOffersModelDropdown(
     GetOffersModelDropdownRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

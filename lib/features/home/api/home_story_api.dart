@@ -8,7 +8,7 @@ part 'home_story_api.g.dart';
 
 @riverpod
 Future<HomeStoryModel> getHomeStory(GetHomeStoryRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

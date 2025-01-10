@@ -89,7 +89,7 @@ class Homepage1 {
 
 @riverpod
 Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

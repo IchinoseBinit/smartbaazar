@@ -6,16 +6,15 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
-import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
+import 'package:smartbazar/features/create_listing/view/google_api_helper.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
@@ -99,7 +98,7 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
   TextEditingController? mapcontrolleer = TextEditingController();
   List<File?> selectedImages = [];
   bool isloading = false;
-
+  double? latitute, long;
   void onImagesSelected(List<File?> images) {
     setState(() {
       selectedImages = images;
@@ -179,21 +178,80 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-        GooglePlaceAutoCompleteTextField(
-           
-          textEditingController: mapcontrolleer!,
-          googleAPIKey:
-              "AIzaSyDFBSV8xaOPkKKf7xTaw7xEE1KqClJ5OFI", // Replace with actual API key
-          debounceTime: 800,
-          countries: ["np"],
-          isLatLngRequired: true,
-          itemClick: (Prediction prediction) {
-            setState(() {
-              mapcontrolleer?.text = prediction.description ?? "";
-              selectedpickup = prediction.description ?? "";
-            });
-          },
+        CreateListingCardWidget(
+          child: Row(
+            children: [
+              SizedBox(
+                width: 5.w,
+              ),
+              Text(
+                'select pickup',
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14.sp,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                width: 5.w,
+              ),
+              Text(
+                '*',
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14.sp,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                width: 20.w,
+              ),
+              Expanded(
+                child: GooglePlaceAutoCompleteTextField(
+                  showError: false,
+                  inputDecoration: const InputDecoration(
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                  boxDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.zero,
+                    border: Border.all(style: BorderStyle.none),
+                  ),
+                  textEditingController: mapcontrolleer!,
+                  countries: const ["np"],
+                  isLatLngRequired: true,
+                  debounceTime: 800,
+                  itemClick: (Prediction prediction) async {
+                    setState(() {
+                      mapcontrolleer?.text = prediction.description ?? "";
+                      selectedpickup = prediction.description ?? "";
+                    });
+
+                    // Fetch place details to get latitude and longitude
+                    if (prediction.placeId != null) {
+                      try {
+                        var placeDetails =
+                            await GooglePlaceApiHelper.getPlaceDetails(
+                          prediction.placeId!,
+                          'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
+                        );
+                        if (placeDetails != null) {
+                          latitute =
+                              placeDetails['geometry']['location']['lat'];
+                          long = placeDetails['geometry']['location']['lng'];
+
+                          // Print the latitude and longitude
+                        }
+                      } catch (e) {
+                        print('Error fetching place details: $e');
+                      }
+                    }
+                  },
+                  googleAPIKey: 'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
+                ),
+              ),
+            ],
+          ),
         ),
+
         CreateListingCardWidget(
             child: Row(
           children: [
@@ -464,7 +522,16 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ),
         ),
-        Text("keep online ofr 60 days"),
+        SizedBox(
+          height: 4.h,
+        ),
+        const Text(
+          "keep online ofr 60 days",
+          style: TextStyle(fontSize: 10),
+        ),
+        SizedBox(
+          height: 4.h,
+        ),
         InkWell(
           onTap: () {
             setState(() {
@@ -523,137 +590,96 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
           height: 30.h,
         ),
 
-        isloading
-            ? const Center(child: CircularProgressIndicator())
-            : Center(
-                child: GeneralEelevatedButton(
-                    text: 'Submit',
-                    onPresssed: () async {
-                      // setState(() {
-                      //   isloading = true;
-                      // });
-                      if (widget.category != null &&
-                          widget.title != null &&
-                          widget.city != null &&
-                          widget.description != null &&
-                          widget.phonecoontroller?.text.isNotEmpty == true &&
-                          selectedpickup.isNotEmpty &&
-                          selectedImages.isNotEmpty &&
-                          widget.terms != null) {
-                        try {
-                          // Dummy data
-                          await createlisting(
+        Center(
+          child: isloading
+              ? const Center(child: CircularProgressIndicator())
+              : GeneralEelevatedButton(
+                  text: isloading ? 'Submitting...' : 'Submit',
+                  onPresssed: () async {
+                    if (
+                      widget.category != null 
+                      //   widget.title != null &&
+                      //   widget.city != null &&
+                      //   widget.description != null &&
+                      //   widget.phonecoontroller?.text.isNotEmpty == true &&
+                      //   selectedpickup.isNotEmpty &&
+                      //   selectedImages.isNotEmpty &&
+                      //   widget.terms != null
+                        ) {
+                      setState(() {
+                        isloading = true; // Start loading
+                      });
+                      try {
+                        // Call your API
+                        String responseMessage = await createlisting(
+                          
                             package: _selectedpackage,
                             pieces: widget.pieces,
                             null, // ref
                             cf: widget.cfvalue,
                             tags: widget.tags,
-                            category: widget.category?.trim(), // category
+                            category: widget.category!.trim(),
+                            stock: widget.stock!.trim(),
+                            mileage: widget.mileage?.trim(),
+                            warrenty: widget.warrenty?.value,
+                            title: widget.title!.trim(),
+                            city: widget.city!.trim(),
+                            price: widget.price!.trim(),
+                            description: widget.description!.trim(),
+                            length: widget.length?.trim() ?? '0',
+                            width: widget.width?.trim() ?? '0',
+                            height: widget.height?.trim() ?? '0',
+                            weight: widget.weight?.trim() ?? '0',
+                            disprice: widget.discount?.trim(),
+                            posttype: widget.posttype.toString() ?? '0',
+                            email: widget.emailcontroller!.text.trim(),
+                            phone: widget.phonecoontroller!.text.trim(),
+                            username: widget.nameconroller!.text.trim(),
+                            pickup: selectedpickup.trim(),
+                            images: selectedImages,
+                            accept: widget.terms?.trim() ?? '0',
+                            address: mapcontrolleer?.text.trim() ?? '',
+                            offer: widget.offer?.offers.trim(),
+                            story: widget.story?.toString().trim(),
+                            youtube: widget.youtube?.trim(),
+                            lat: latitute,
+                            long: long);
 
-                            stock: widget.stock?.trim(), // stock
-                            mileage: widget.mileage?.trim(), // mileage
-                            warrenty: widget.warrenty?.value, // warranty
-                            title: widget.title?.trim(), // title
-                            city: widget.city?.trim(), // city
-                            price: widget.price?.trim(), // price
-                            description:
-                                widget.description?.trim(), // description
-                            length: widget.length?.trim() ?? '0', // length
-                            width: widget.width?.trim() ?? '0', // width
-                            height: widget.height?.trim() ?? '0', // height
-                            weight: widget.weight?.trim() ?? '0', // weight
-                            disprice:
-                                widget.discount?.trim(), // discounted price
-                            posttype: widget.posttype.toString() ?? '0', // type
-                            email: widget.emailcontroller?.text.trim(), // email
-                            phone:
-                                widget.phonecoontroller?.text.trim(), // phone
-                            username:
-                                widget.nameconroller?.text.trim(), // username
-                            pickup: selectedpickup.trim() ?? '', // pickup
-                            images: selectedImages, // images
-                            accept: widget.terms?.trim() ?? '0', // accept terms
-                            address:
-                                mapcontrolleer?.text.trim() ?? '', // address
-                            offer: widget.offer?.offers.trim(), // offer
-                            story: widget.story?.toString().trim(), // story
-                            youtube: widget.youtube?.trim(), // YouTube link
-                          ).then(
-                            (value) async {
-                              setState(() {
-                                isloading = false;
-                              });
-                              return await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    child: AlertDialog(
-                                      shape: BeveledRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      content: Builder(
-                                        builder: (context) {
-                                          return SizedBox(
-                                            height: 300.h,
-                                            width: 900.w,
-                                            child: Column(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        const Text(
-                                                          "Message",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 19),
-                                                        ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            icon: const Icon(
-                                                                Icons.close)),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 30.h,
-                                                    ),
-                                                    Text(
-                                                      value,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 19),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        } catch (e) {}
-                      } else {
+                        // Stop loading and show dialog
+                        setState(() {
+                          isloading = false; // End loading
+                        });
+
                         await showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text("Missing Fields"),
-                              content: const Text(
-                                  "Please fill in all required fields to create a listing."),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              title: const Text("Response"),
+                              content: Text(responseMessage),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } catch (e) {
+                        setState(() {
+                          isloading = false; // End loading
+                        });
+
+                        // Show error message
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Error"),
+                              content: Text(e.toString()),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
@@ -664,7 +690,28 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                           },
                         );
                       }
-                    })),
+                    } else {
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Missing Fields"),
+                            content: const Text(
+                                "Please fill in all required fields to create a listing."),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+        ),
+
         SizedBox(
           height: 20.h,
         )

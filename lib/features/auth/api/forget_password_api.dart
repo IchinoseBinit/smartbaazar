@@ -4,7 +4,7 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class ForgetPasswordApi {
-  final SmartClient _clinet = SmartClient();
+  final SmartClinet _clinet = SmartClinet();
 
   foergetPassword({
     required int phone,

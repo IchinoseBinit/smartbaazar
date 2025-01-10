@@ -55,7 +55,7 @@ class _PerksWidgetState extends State<PerksWidget> {
                 child: Text(
                   options[index],
                   style: headerstyle.copyWith(
-                      fontSize: 13, color: Color.fromARGB(255, 78, 76, 76)),
+                      fontSize: 13, color: const Color.fromARGB(255, 78, 76, 76)),
                 ),
               );
             }),

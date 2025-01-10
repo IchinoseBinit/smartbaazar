@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
@@ -299,6 +298,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     //      = value;
     //   },
     // );
+
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
       (value) {
         laptoprep = value;
@@ -473,6 +473,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         typeid =
                             typeId; // Optionally use typeId for other purposes
                       });
+                      print("raju $typeId");
 
                       // Print the selected category ID and typeId for debugging
                       print(
@@ -507,7 +508,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
                     // Print the subcategory 2 ID
                     print(
-                        "Selected Sub-subcategory 2: ${sub2?.name}, Sub-subcategory 2 ID: ${sub2?.id}");
+                        "maka $categoryId Sub-subcategory 2: ${sub2?.name}, Sub-subcategory 2 ID: ${sub2?.id}");
                   },
                 ),
 
@@ -2495,52 +2496,52 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 //       ],
                 //     ),
                 //   ),
-              
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Youtube link',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        onSubmitted: (value) {
-                          if (getRoad?.result[12].id != null) {
-                            // Ensure the dynamic key is safe to access
-                            cf?.add([
-                              'cf.${getRoad!.result[12].id}', // Create the key dynamically
-                              value,
-                            ]);
-                          }
-                        },
-                        controller: youtubecontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter youtube link',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
+                if (typeid == '1')
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Youtube link',
+                            style: TextStyle(
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                )),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          onSubmitted: (value) {
+                            if (getRoad?.result[12].id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${getRoad!.result[12].id}', // Create the key dynamically
+                                value,
+                              ]);
+                            }
+                          },
+                          controller: youtubecontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter youtube link',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
                 if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
                       child: Row(
@@ -3188,78 +3189,78 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (selectedcategory?.id == 1 || selectedcategory?.id == 9)
-                  CreateListingCardWidget(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Product Type',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Column(
-                          children: phoneresp!.result[0].options
-                              .map<Widget>((option) {
-                            return RadioListTile<Option>(
-                              value: option,
-                              groupValue: selecctedProductTYpe,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selecctedProductTYpe = newValue;
+                // if (selectedcategory?.id == 1 || selectedcategory?.id == 9)
+                //   CreateListingCardWidget(
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Row(
+                //           children: [
+                //             Text(
+                //               'Product Type',
+                //               style: TextStyle(
+                //                   fontSize: 14.sp,
+                //                   fontWeight: FontWeight.w500,
+                //                   color: Colors.black),
+                //             ),
+                //             Text(
+                //               ' *',
+                //               style: TextStyle(
+                //                   color: const Color(0xffD33636),
+                //                   fontWeight: FontWeight.w500,
+                //                   fontSize: 14.sp),
+                //             ),
+                //           ],
+                //         ),
+                //         SizedBox(
+                //           height: 10.h,
+                //         ),
+                //         Column(
+                //           children: phoneresp!.result[0].options
+                //               .map<Widget>((option) {
+                //             return RadioListTile<Option>(
+                //               value: option,
+                //               groupValue: selecctedProductTYpe,
+                //               onChanged: (newValue) {
+                //                 setState(() {
+                //                   selecctedProductTYpe = newValue;
 
-                                  // Create dynamic cf key
-                                  final cfKey = 'cf.${getRoad!.result[0].id}';
-                                  final cfValue = [selecctedProductTYpe!.id];
+                //                   // Create dynamic cf key
+                //                   final cfKey = 'cf.${getRoad!.result[0].id}';
+                //                   final cfValue = [selecctedProductTYpe!.id];
 
-                                  // Check if cf already contains this key
-                                  int index = cf?.indexWhere(
-                                          (entry) => entry[0] == cfKey) ??
-                                      -1;
+                //                   // Check if cf already contains this key
+                //                   int index = cf?.indexWhere(
+                //                           (entry) => entry[0] == cfKey) ??
+                //                       -1;
 
-                                  if (index >= 0) {
-                                    // Update existing entry
-                                    cf?[index][1] = cfValue;
-                                  } else {
-                                    // Add a new entry
-                                    cf?.add([cfKey, cfValue]);
-                                  }
-                                });
+                //                   if (index >= 0) {
+                //                     // Update existing entry
+                //                     cf?[index][1] = cfValue;
+                //                   } else {
+                //                     // Add a new entry
+                //                     cf?.add([cfKey, cfValue]);
+                //                   }
+                //                 });
 
-                                // Debug: Print the updated cf list
-                                print("Updated cf: $cf");
-                              },
-                              title: Text(
-                                option
-                                    .value, // Display the label for each radio button
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  ),
+                //                 // Debug: Print the updated cf list
+                //                 print("Updated cf: $cf");
+                //               },
+                //               title: Text(
+                //                 option
+                //                     .value, // Display the label for each radio button
+                //                 style: TextStyle(
+                //                   fontSize: 14.sp,
+                //                   fontWeight: FontWeight.w500,
+                //                   color: Colors.black,
+                //                 ),
+                //               ),
+                //             );
+                //           }).toList(),
+                //         ),
+                //       ],
+                //     ),
+                // ),
 
                 if (selectedcategory?.id == 171)
                   CreateListingCardWidget(
@@ -3644,7 +3645,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                       SizedBox(
                                         width: 80.w,
                                       ),
-                                      Text(
+                                      const Text(
                                         "Pieces",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -3654,9 +3655,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                     ],
                                   ),
                                   SizedBox(width: 100.w),
-                                  Column(
+                                  const Column(
                                     // crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: const [
+                                    children: [
                                       Text(
                                         "Rate/piece",
                                         style: TextStyle(
@@ -3698,7 +3699,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             cursorHeight: 3,
                                             style: const TextStyle(
                                               fontSize:
-                                                  14, // Ensure the font is large enough to be visible
+                                                  10, // Ensure the font is large enough to be visible
                                               color: Colors
                                                   .black, // Text color to make it visible
                                             ),
@@ -3728,7 +3729,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                           width:
                                               30.0, // Adjust width if necessary
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 1.h),
+                                              horizontal: 10, vertical: 0.h),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(6),
@@ -3741,7 +3742,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             cursorHeight: 3,
                                             style: const TextStyle(
                                               fontSize:
-                                                  14, // Ensure the font is large enough to be visible
+                                                  10, // Ensure the font is large enough to be visible
                                               color: Colors
                                                   .black, // Text color to make it visible
                                             ),
@@ -3785,7 +3786,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                       padding:
                                                           EdgeInsets.symmetric(
                                                               horizontal: 10,
-                                                              vertical: 1.h),
+                                                              vertical: 0.h),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -3801,7 +3802,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                         cursorHeight: 3,
                                                         style: const TextStyle(
                                                           fontSize:
-                                                              14, // Ensure the font is large enough to be visible
+                                                              12, // Ensure the font is large enough to be visible
                                                           color: Colors
                                                               .black, // Text color to make it visible
                                                         ),
@@ -3812,7 +3813,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                           contentPadding:
                                                               EdgeInsets.only(
                                                                   bottom:
-                                                                      15), // Adjust padding for better alignment
+                                                                      19), // Adjust padding for better alignment
                                                         ),
                                                       ),
                                                     ),
@@ -3979,8 +3980,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
+                        print('kalu $categoryId');
                         setState(() {
-                          print("pinky ${rows}");
                           _acceptterms = newValue;
                         });
                         accept = (_acceptterms) ? '1' : '0';
@@ -4012,7 +4013,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
                   cfvalue: cf,
                   address: addresscontroller.text,
-                  posttype: selectedType?.typeId,
+                  posttype: categoryId,
 
                   childid: childcategory?.id.toString(),
                   parentid: categoryId.toString(),

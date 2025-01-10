@@ -312,91 +312,80 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         ),
                                       ));
                                 },
-                                onchnage: (value) {
-                                  // print("babuk ${value}");
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           const BusinessTabScreen(),
-                                  //     ));
-                                },
-                              )),
+                                onchnage: (value) {},
+                              ))
                         ],
                       ),
-                      if (_showSearchProductModels)
-                        Positioned(
-                          top: 0.h, // Position just below the search bar
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            color: Colors.white,
-                            child: SearchProductModels.when(data: (results) {
-                              if (results.isEmpty) {
-                                return const SizedBox(
-                                  child: Text('No result found'),
-                                ); // No results
-                              }
-                              return Card(
-                                elevation: 8,
-                                child: ListView.separated(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    final product = results[index];
-                                    return ListTile(
-                                      title: Text(product.title),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BusinessTabScreen(
-                                                query: _searchController.text,
-                                              ),
-                                            ));
+                      //if (_showSearchProductModels)
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(left: 70.w),
+                        width: 320.w,
+                        color: Colors.white,
+                        child: SearchProductModels.when(data: (results) {
+                          if (results.isEmpty) {
+                            return const SizedBox(
+                              child: Text('No result found'),
+                            ); // No results
+                          }
+                          return Card(
+                            elevation: 8,
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: results.length,
+                              itemBuilder: (context, index) {
+                                final product = results[index];
+                                return ListTile(
+                                  title: Text(product.title),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BusinessTabScreen(
+                                            query: _searchController.text,
+                                          ),
+                                        ));
 
-                                        setState(() {
-                                          _showSearchProductModels = false;
+                                    setState(() {
+                                      _showSearchProductModels = false;
 
-                                          FocusScope.of(context).unfocus();
-                                        });
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) =>
-                                        //         ProductDetailsScreen(
-                                        //       productId: product.id,
-                                        //     ),
-                                        //   ),
-                                        // );
-                                      },
-                                    );
+                                      FocusScope.of(context).unfocus();
+                                    });
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         ProductDetailsScreen(
+                                    //       productId: product.id,
+                                    //     ),
+                                    //   ),
+                                    // );
                                   },
-                                  separatorBuilder: (context, index) =>
-                                      const Divider(),
-                                ),
-                              );
-                            }, loading: () {
-                              return null;
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const Divider(),
+                            ),
+                          );
+                        }, loading: () {
+                          return null;
 
-                              // return SizedBox(
-                              //     width: 10.w,
-                              //     height: 10.h,
-                              //     child: CircularProgressIndicator());
-                            }, error: (error, stack) {
-                              return null;
+                          // return SizedBox(
+                          //     width: 10.w,
+                          //     height: 10.h,
+                          //     child: CircularProgressIndicator());
+                        }, error: (error, stack) {
+                          return null;
 
-                              // return SizedBox(
-                              //     width: 10.w,
-                              //     height: 10.h,
-                              //     child: CircularProgressIndicator());
-                            }),
-                          ),
-                        ),
+                          // return SizedBox(
+                          //     width: 10.w,
+                          //     height: 10.h,
+                          //     child: CircularProgressIndicator());
+                        }),
+                      ),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -707,8 +696,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                     // If any of the above conditions fail, return a default widget
                     return const Center(
-                      child: Text(
-                          'No stories available.'),
+                      child: Text('No stories available.'),
                     );
                   },
                   loading: () =>
@@ -1042,6 +1030,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   );
                                 },
                                 child: ProductDetailWidget(
+                                  didcountpercentage: hot.discount_percentage,
+                                  offer: hot.offers,
+                                  shortestDistance: hot.user.shortestDistance,
+                                  avg_rating: hot.avg_rating?.toDouble(),
                                   wow: hot.wow,
                                   comment: hot.commentcount.toString(),
                                   discounttedPrice: hot.discounted_price,
@@ -2028,6 +2020,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
+                                    discountpercentage: res.discount_percentage,
                                     offer: res.offers,
                                     shortestDistance: res.user.shortestDistance,
                                     avg_rating: res.avg_rating?.toDouble(),

@@ -15,7 +15,7 @@ Future<bool> postCoupon(
     String couponQty,
     String discountupto,
     String couponImpression) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'coupon_percentage': couponPercentage,

@@ -16,7 +16,7 @@ Future<bool> contactSeller(
   int postId,
   String email,
 ) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     // Check that mandatory fields are not empty

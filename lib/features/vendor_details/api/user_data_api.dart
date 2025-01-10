@@ -8,7 +8,7 @@ part 'user_data_api.g.dart';
 
 @riverpod
 Future<UserDataModel> getUserDetails(GetUserDetailsRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

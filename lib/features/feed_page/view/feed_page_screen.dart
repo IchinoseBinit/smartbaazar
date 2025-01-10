@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/api/get_feed_of_following_api.dart';
 import 'package:smartbazar/features/feed_page/api/get_following_story_api.dart';
@@ -376,7 +375,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           })),
                   error: (error, stack) {
                     if (error.toString().contains('Session has expired')) {
-                      return Center(child: Text('Please log in again.'));
+                      return const Center(child: Text('Please log in again.'));
                     }
                     return Center(child: Text('Error: $error'));
                   },

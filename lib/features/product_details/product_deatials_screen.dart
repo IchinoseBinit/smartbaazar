@@ -4,21 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:scratcher/widgets.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
+import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/product_details/constant/additional_detailpage.dart';
 import 'package:smartbazar/features/product_details/constant/additional_perks_widget.dart';
 import 'package:smartbazar/features/product_details/constant/discount_box_widget.dart';
+import 'package:smartbazar/features/product_details/constant/dotted_widget.dart';
 import 'package:smartbazar/features/product_details/constant/features_banner.dart';
 import 'package:smartbazar/features/product_details/constant/header_banner.dart';
+import 'package:smartbazar/features/product_details/constant/location_widget.dart';
 import 'package:smartbazar/features/product_details/constant/people_review_widget.dart';
 import 'package:smartbazar/features/product_details/constant/price_banner.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
@@ -42,10 +49,15 @@ class ProductDetailScreen extends ConsumerWidget {
   // List<Ad>? preloadAds;
   // final _formKey = GlobalKey<FormState>();
   final tabs = ['Details', 'Shop', 'POSTS', 'LIVE PRIZES'];
+  String _removeHtmlTags(String htmlString) {
+    final regExp = RegExp(r'<[^>]*>');
+    return htmlString.replaceAll(regExp, '');
+  }
 
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController msgcontroller = TextEditingController();
   final String productId;
+  final int _selectedIndex = 0;
   ProductDetailScreen({super.key, required this.productId});
   final ScrollController _scrollController = ScrollController();
 
@@ -60,7 +72,7 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double sch = MediaQuery.of(context).size.height;
     // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
-    ref.watch(fetchAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
     // final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
@@ -181,8 +193,7 @@ class ProductDetailScreen extends ConsumerWidget {
             ),
             // backgroundColor: const Color(0xffF6F1F1),
 
-            body:
-                SingleChildScrollView(
+            body: SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.vertical,
               child: Column(
@@ -388,10 +399,466 @@ class ProductDetailScreen extends ConsumerWidget {
                             ),
                           ),
 
-                         
-                       
-                         
-                          
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            height: 50,
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                              Color(0xFF888888),
+                              Color(0xffd571e5b)
+                            ])),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("Rs ${data.result?.price} ",
+                                        style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15,
+                                        )),
+                                    // Text("Rs 90,000",
+                                    //     style: headerstyle.copyWith(
+                                    //       fontWeight: FontWeight.w700,
+                                    //       fontSize: 15,
+                                    //     ))
+                                  ],
+                                ),
+                                data.result?.discountedPrice == null
+                                    ? const SizedBox()
+                                    : const PriceRowWidget(),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          if (data.result != null) const FeaturesBannerWidget(),
+                          if (data.result?.postTypeId == "7")
+                            const DiscountBoxWidget(),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          const PerksWidget(
+                            first: "COLORS",
+                            fourth: "MODELS",
+                            second: "Sizes",
+                            third: "VARIATIONS",
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          // LocationWidget(
+                          //   latititute:
+                          //       double.tryParse(data.result!.latitude!)!,
+                          //   longitute:
+                          //       double.tryParse(data.result!.longitude!)!,
+                          // ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24.w, vertical: 5.h),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/images/shield.png'),
+                                    const Text("WARRANTY\n DETAILS"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/undo.png'),
+                                    const Text("RETURN\n POLICY"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset('assets/images/undo.png'),
+                                    const Text("EXCHANGE\n POLICY"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 30.w),
+                            padding: const EdgeInsets.all(5),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Row(
+                              children: [
+                                if (data.result?.stock != null)
+                                  Row(
+                                    children: [
+                                      Image.asset('assets/images/box.png'),
+                                      SizedBox(
+                                        width: 3.w,
+                                      ),
+                                      Text(
+                                        "${data.result?.stock!} IN STOCK",
+                                        style: headerstyle.copyWith(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: ColorConstant.blackColor),
+                                      ),
+                                    ],
+                                  ),
+                                SizedBox(
+                                  width: 15.w,
+                                ),
+                                data.result?.weight != null
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/weight.png'),
+                                          Text(
+                                            "${data.result?.weight}KG",
+                                            style: headerstyle.copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    ColorConstant.blackColor),
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "DESCRIPTION",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Text(
+                              "SAMBA OFFICIAL",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 20.w),
+                            child: Text(
+                              _removeHtmlTags(data.result?.description ?? ''),
+                              style: TextStyle(
+                                color: ColorConstant.blackColor,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              softWrap:
+                                  true, // Ensures the text wraps to the next line
+                              overflow: TextOverflow
+                                  .clip, // Clips the text if it exceeds available space
+                            ),
+                          ),
+
+// Helper function to remove HTML tags
+
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10.w),
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "ADDITIONAL DETAILS",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "Ugreen USB\n Bluetooth 5.3\n Adopter for PC",
+                            title: "What in the Box?",
+                          ),
+                          if (data.extra != null)
+                            AdditonalDetailsWidget(
+                              desp: data.extra!.fields!.original!.result!
+                                  .field4!.name,
+                              title: "Brand",
+                            ),
+                          if (data.result != null)
+                            AdditonalDetailsWidget(
+                              desp: data.result!.postType!.name,
+                              title: "Product type",
+                            ),
+                          const AdditonalDetailsWidget(
+                            desp: "Other",
+                            title: "Electric Brand",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "5.3 BR+EDR,BLE",
+                            title: "Model",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "No Warranty",
+                            title: "Warranty",
+                          ),
+                          const AdditonalDetailsWidget(
+                            desp: "",
+                            title: "Availabel Colors:\n Black",
+                          ),
+                          SizedBox(
+                            height: 5.w,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "REVIEWS & RATINGS",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  if (data.result?.ratings != null)
+                                    Text(
+                                      data.result!.ratings!.averageRating
+                                          .toString(),
+                                      style: headerstyle.copyWith(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black87),
+                                    ),
+                                  if (data.result?.ratings != null)
+                                    Text(
+                                      "${data.result!.ratings!.averageRating} ratings",
+                                      style: headerstyle.copyWith(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black45),
+                                    )
+                                ],
+                              ),
+                              if (data.result?.ratings != null)
+                                Column(
+                                  children: [
+                                    StarWidget(
+                                      staryouwant: 5,
+
+                                      star: data
+                                          .result!.ratings!.ratingCounts.five!,
+                                      value:
+                                          0.2, // Adjust progress bar value as needed
+                                      width: 100, // Progress bar width
+                                      numStar: data
+                                          .result!.ratings!.ratingCounts.five!,
+                                    ),
+                                    StarWidget(
+                                        staryouwant: 4,
+                                        star: data.result!.ratings!.ratingCounts
+                                            .four!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.four!),
+                                    StarWidget(
+                                        staryouwant: 3,
+                                        star: data.result!.ratings!.ratingCounts
+                                            .three!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.three!),
+                                    StarWidget(
+                                        staryouwant: 2,
+                                        star: data.result!.ratings!.ratingCounts
+                                            .two!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.two!),
+                                    StarWidget(
+                                        staryouwant: 1,
+                                        star: data.result!.ratings!.ratingCounts
+                                            .one!, // Only 1 star highlighted
+                                        value:
+                                            0.2, // Adjust progress bar value as needed
+                                        width: 100, // Progress bar width
+                                        numStar: data.result!.ratings!
+                                            .ratingCounts.one!),
+                                  ],
+                                )
+                            ],
+                          ),
+                          data.result?.rating_comment == null ||
+                                  data.result!.rating_comment.isEmpty
+                              ? const SizedBox()
+                              : PeopleReviewsWidget(
+                                  rate: data.result!.rating_comment),
+
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  10,
+                                ),
+                                border:
+                                    Border.all(color: Colors.black, width: 1)),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                      child: Text(
+                                    "Write a Review",
+                                    style: headerstyle.copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                        color: Colors.black),
+                                  )),
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
+                                  const TextField(
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.black)),
+                                        hintText: "Write your comment"),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: const Color(0xFF362677)),
+                                    child: Text(
+                                      "Submit Review",
+                                      style: headerstyle,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  const chat_review_widget(),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 30.w),
+                                    child: const chat_review_widget(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          //  AdsWidget(
+                          //   user: data.result!.userDetails!,
+                          //  ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(tabs.length, (index) {
+                              // Read the selected index value
+                              final selectedIndex =
+                                  ref.watch(selectedIndexProvider);
+
+                              // Check if the current index is selected
+                              final isSelected = (index + 1) == selectedIndex;
+
+                              return InkWell(
+                                onTap: () => ref
+                                    .read(selectedIndexProvider.notifier)
+                                    .state = index + 1,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: const Color(0xffD9D9D9)),
+                                    color: isSelected
+                                        ? const Color(0xffD9D9D9)
+                                            .withOpacity(0.2)
+                                            .withOpacity(0.9)
+                                        : Colors.white,
+                                  ),
+                                  child: Text(
+                                    tabs[index],
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
 
                           if (data.result?.deals != null)
                             Padding(
@@ -438,11 +905,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               )),
                           data.widgetSimilarPosts?.posts.data[0].userPhotoUrl ==
                                   null
-                              ? const Padding(
-                                  padding: EdgeInsets.only(top: 40, left: 20),
-                                  child:
-                                      SizedBox(child: Text("No listing found")),
-                                )
+                              ? Center(child: nolistingfound())
                               : GridView.builder(
                                   physics:
                                       const NeverScrollableScrollPhysics(), // Disable grid scrolling
@@ -532,8 +995,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           //   ],
                           // ),
                         ],
-                      ),
-                      )
+                      ))
                 ],
               ),
             ),
@@ -543,9 +1005,11 @@ class ProductDetailScreen extends ConsumerWidget {
           return Text("error $error");
         },
         loading: () => SizedBox(
-            height: 30.h,
-            width: 50.w,
-            child: const Center(child: CircularProgressIndicator())),
+            width: 30.w,
+            height: 10.h,
+            child: Lottie.asset(
+              'assets/images/loading.json',
+            )),
       ),
     );
   }
@@ -564,22 +1028,24 @@ class SwapablePostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: post.length,
-      itemBuilder: (context, index) {
-        FeedPost data = post[index];
-        return PostCard(
-          // subscribers: data.subscribers.toString(),
-          isLive: show,
-          image: data.image!,
-          name: data.name!,
-          caption: data.caption!,
-          photo: data.photo!,
-          subscribers: data.subscribers!.toString(),
-        );
-      },
-    );
+    return post.isEmpty
+        ? Center(child: nolistingfound())
+        : ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: post.length,
+            itemBuilder: (context, index) {
+              FeedPost data = post[index];
+              return PostCard(
+                // subscribers: data.subscribers.toString(),
+                isLive: show,
+                image: data.image!,
+                name: data.name!,
+                caption: data.caption!,
+                photo: data.photo!,
+                subscribers: data.subscribers!.toString(),
+              );
+            },
+          );
   }
 }
 
@@ -597,7 +1063,7 @@ class LiveSwapble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return post.isEmpty
-        ? const Text("Listing empty")
+        ? Center(child: nolistingfound())
         : ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: post.length,
@@ -626,7 +1092,7 @@ class CardWidget extends StatelessWidget {
       height: 100,
       width: double.infinity,
       child: deal.isEmpty
-          ? const Text("Listing empty")
+          ? Center(child: nolistingfound())
           : ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: deal.length,
@@ -717,8 +1183,8 @@ class TabBarItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
+    return const Padding(
+      padding: EdgeInsets.all(4.0),
       child: SizedBox(
         width: double.infinity, // Adjust width as needed
         height: 370, // Adjust height as needed
@@ -726,7 +1192,7 @@ class TabBarItems extends StatelessWidget {
           length: 2,
           child: Column(
             children: [
-              const TabBar(
+              TabBar(
                 tabs: [
                   Tab(
                     text: 'Listing Details',
@@ -737,89 +1203,93 @@ class TabBarItems extends StatelessWidget {
                 ],
               ),
               // SizedBox(height: 10), // Adjust as needed
-              Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 11.w, vertical: 13.h),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 1.w, color: const Color(0xff000000))),
-                constraints: const BoxConstraints.expand(),
-                child: TabBarView(
-                  children: [
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichTextWidget(
-                                subtitle: "$weight kg",
-                                subtitleStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12.sp,
-                                    color: Colors.black),
-                                title: 'Net Weight: ',
-                                titleStyle: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.sp,
-                                    color: Colors.black),
-                                onPressed: () {}),
-                            RichTextWidget(
-                                subtitle: stock,
-                                subtitleStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12.sp,
-                                    color: Colors.black),
-                                title: 'Available Quantity: ',
-                                titleStyle: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.sp,
-                                    color: Colors.black),
-                                onPressed: () {})
-                          ],
-                        ),
-                        SizedBox(
-                          height: 12.h,
-                        ),
-                        Text(
-                          maxLines: 10,
-                          description,
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [Text('0 comments'), Text('sort by')],
-                          ),
-                          const Divider(),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          TextField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 10.h),
-                              hintText: 'Add comment...',
-                              border: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      width: 1.0, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(10.r)),
-                            ),
-                          )
-                          // CustomTextFieldWidget(icon: , hintText: hintText)
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Expanded(
+              //   child: Container(
+              //     padding:
+              //         EdgeInsets.symmetric(horizontal: 11.w, vertical: 13.h),
+              //     decoration: BoxDecoration(
+              //         border: Border.all(
+              //             width: 1.w, color: const Color(0xff000000))),
+              //     constraints: const BoxConstraints.expand(),
+              //     child: TabBarView(
+              //       children: [
+              //         Column(
+              //           children: [
+              //             Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 RichTextWidget(
+              //                     subtitle: "$weight kg",
+              //                     subtitleStyle: TextStyle(
+              //                         fontWeight: FontWeight.w400,
+              //                         fontSize: 12.sp,
+              //                         color: Colors.black),
+              //                     title: 'Net Weight: ',
+              //                     titleStyle: TextStyle(
+              //                         fontWeight: FontWeight.w700,
+              //                         fontSize: 14.sp,
+              //                         color: Colors.black),
+              //                     onPressed: () {}),
+              //                 RichTextWidget(
+              //                     subtitle: stock,
+              //                     subtitleStyle: TextStyle(
+              //                         fontWeight: FontWeight.w400,
+              //                         fontSize: 12.sp,
+              //                         color: Colors.black),
+              //                     title: 'Available Quantity: ',
+              //                     titleStyle: TextStyle(
+              //                         fontWeight: FontWeight.w700,
+              //                         fontSize: 14.sp,
+              //                         color: Colors.black),
+              //                     onPressed: () {})
+              //               ],
+              //             ),
+              //             SizedBox(
+              //               height: 12.h,
+              //             ),
+              //             Container(
+              //               child: Text(
+              //                 maxLines: 10,
+              //                 description,
+              //                 style: TextStyle(
+              //                     fontSize: 14.sp,
+              //                     fontWeight: FontWeight.w400,
+              //                     color: Colors.black),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: Column(
+              //             children: [
+              //               const Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                 children: [Text('0 comments'), Text('sort by')],
+              //               ),
+              //               const Divider(),
+              //               SizedBox(
+              //                 height: 10.h,
+              //               ),
+              //               TextField(
+              //                 decoration: InputDecoration(
+              //                   contentPadding: EdgeInsets.symmetric(
+              //                       horizontal: 10.w, vertical: 10.h),
+              //                   hintText: 'Add comment...',
+              //                   border: OutlineInputBorder(
+              //                       borderSide: const BorderSide(
+              //                           width: 1.0, color: Colors.black),
+              //                       borderRadius: BorderRadius.circular(10.r)),
+              //                 ),
+              //               )
+              //               // CustomTextFieldWidget(icon: , hintText: hintText)
+              //             ],
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -850,19 +1320,19 @@ class ScratchWinContainer extends StatelessWidget {
               Image.asset(
                 ImageConstant.scartchWinImage,
               ),
-              Expanded(
-                child: RichTextWidget(
-                    title: "Visit our virtual store ",
-                    // titleStyle: TextStyle(
-                    //     fontSize: 10.sp,
-                    //     fontWeight: FontWeight.w700),
-                    subtitle: "Subscribe us to win FREE prizes & get our deals",
-                    subtitleStyle: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400),
-                    onPressed: () {}),
-              )
+              // Expanded(
+              //   child: RichTextWidget(
+              //       title: "Visit our virtual store ",
+              //       // titleStyle: TextStyle(
+              //       //     fontSize: 10.sp,
+              //       //     fontWeight: FontWeight.w700),
+              //       subtitle: "Subscribe us to win FREE prizes & get our deals",
+              //       subtitleStyle: TextStyle(
+              //           fontSize: 12.sp,
+              //           color: Colors.black,
+              //           fontWeight: FontWeight.w400),
+              //       onPressed: () {}),
+              // )
             ],
           ),
         ),
@@ -881,9 +1351,9 @@ class ProductAdditionalDetialsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> items = [
-      {'title': "What's in the box?", 'description': inbox},
-      {'title': "Brand", 'description': brandname},
-      {'title': "Model", 'description': brandname},
+      {'title': "What's in the box?", 'description': inbox ?? 'N/A'},
+      {'title': "Brand", 'description': brandname ?? 'N/A'},
+      {'title': "Model", 'description': brandname ?? 'N/A'},
     ];
     return Padding(
       padding: const EdgeInsets.all(5.0),

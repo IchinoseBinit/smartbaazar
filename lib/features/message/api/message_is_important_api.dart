@@ -14,7 +14,7 @@ final isMessageImportantProvider =
 @riverpod
 Future<bool> markMessageIsImportant(
     MarkMessageIsImportantRef ref, String threadId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

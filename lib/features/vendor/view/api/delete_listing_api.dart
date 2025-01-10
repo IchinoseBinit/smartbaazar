@@ -7,7 +7,7 @@ part 'delete_listing_api.g.dart';
 
 @riverpod
 Future<void> deleteListing(DeleteListingRef ref, String productItemId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

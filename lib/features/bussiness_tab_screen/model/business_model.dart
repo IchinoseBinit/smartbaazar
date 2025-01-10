@@ -26,30 +26,33 @@ class BusinessResponse {
       business: (json['business'] as List?)
           ?.map((e) => Business.fromJson(e))
           .toList(),
-      brandNew: (json['brand_new'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
-      used: (json['used'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
-      services: (json['services'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
-      jobs: (json['jobs'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
-      events: (json['events'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
-      b2b: (json['b2b'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
-      grocery: (json['grocery'] as List?)
-          ?.map((e) => GlobalModel.fromJson(e))
-          .toList(),
+      brandNew: (json['brand_new'] != null && json['brand_new']['data'] != null)
+          ? (json['brand_new']['data'] as List?)
+              ?.map((e) => GlobalModel.fromJson(e))
+              .toList()
+          : null, // Extract the 'data' from 'brand_new'
+      used: json['used'] != null && json['used']['data'] != null
+          ? (json['used']['data'] as List)
+              .map((e) => GlobalModel.fromJson(e))
+              .toList()
+          : [], // Handle 'used' as an object with 'data' field
+      services: _deserializeGlobalModelList(json['services']),
+      jobs: _deserializeGlobalModelList(json['jobs']),
+      events: _deserializeGlobalModelList(json['events']),
+      b2b: _deserializeGlobalModelList(json['b2b']),
+      grocery: _deserializeGlobalModelList(json['grocery']),
     );
   }
+
+  // Helper function to handle the deserialization of a List<GlobalModel> from a JSON list
+  static List<GlobalModel> _deserializeGlobalModelList(dynamic jsonData) {
+    if (jsonData != null && jsonData is List) {
+      return jsonData.map((e) => GlobalModel.fromJson(e)).toList();
+    }
+    return [];
+  }
 }
+
 
 class Business {
   final String? vendorId;

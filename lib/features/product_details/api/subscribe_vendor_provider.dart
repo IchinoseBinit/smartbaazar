@@ -10,7 +10,7 @@ part 'subscribe_vendor_provider.g.dart';
 Future<String> subscribevendor(SubscribevendorRef ref,
     {required String vendorid}) async {
   try {
-    final SmartClient clinet = SmartClient();
+    final SmartClinet clinet = SmartClinet();
     final response = await clinet.request(
       requestType: RequestType.postWithToken,
       url: ApiConstants.followunfollowvendorurl,

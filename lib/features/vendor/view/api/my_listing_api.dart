@@ -7,7 +7,7 @@ part 'my_listing_api.g.dart';
 
 @riverpod
 Future<MyListingModel> getMyListingResponse(GetMyListingResponseRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

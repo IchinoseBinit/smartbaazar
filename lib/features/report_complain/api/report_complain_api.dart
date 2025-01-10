@@ -9,7 +9,7 @@ part 'report_complain_api.g.dart';
 @riverpod
 Future<bool> reportComplain(
     ReportComplainRef ref, ReportComplainModel report, String productId) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

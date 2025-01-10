@@ -9,7 +9,7 @@ part 'screen_category_api.g.dart';
 @riverpod
 Future<List<CategoryModel>> getCategories(
     GetCategoriesRef ref, int parentId) async {
-  final SmartClient client = SmartClient(); // Your custom API client
+  final SmartClinet client = SmartClinet(); // Your custom API client
 
   try {
     // Make the API call

@@ -14,7 +14,7 @@ Future<UpdateUserDetail> changePassword(
     String userId,
     String email,
     String userName) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     Map<String, dynamic> formData = {

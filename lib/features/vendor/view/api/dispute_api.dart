@@ -8,7 +8,7 @@ part 'dispute_api.g.dart';
 
 @riverpod
 Future<DisputeModel> getDisputeResponse(GetDisputeResponseRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

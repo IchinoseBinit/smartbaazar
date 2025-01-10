@@ -209,7 +209,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
   @override
   void dispose() {
-    
     dynamictabController.dispose();
     _debouncer.close();
     _searchController.dispose();
@@ -620,8 +619,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     }
                     // If any of the above conditions fail, return a default widget
                     return const Center(
-                      child:  Text(
-                          'No stories available. '),
+                      child: Text('No stories available. '),
                     );
                   },
                   error: (error, stackTrace) => Text(error.toString()),
@@ -929,10 +927,12 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                 asyncbajarValue.when(
                   data: (data) {
                     print("ram ${data.data?.newProducts}");
-                    return Container();
+                    return Container(
+                      
+                    );
                   },
-                  error: (error, stackTrace) => Text("Please try again"),
-                  loading: () => CircularProgressIndicator(),
+                  error: (error, stackTrace) => const Text("Please try again"),
+                  loading: () => const CircularProgressIndicator(),
                 ),
                 SizedBox(
                   height: 50,

@@ -6,36 +6,34 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
-import 'package:smartbazar/features/scratch_win/model/subscribe_and_win_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class ProductDetailWidget extends StatelessWidget {
-  ProductDetailWidget({
-    super.key,
-    // this.membership_title,
-    this.id,
-    this.offer = '',
-    this.title = "Trade",
-    this.discounttedPrice = '0',
-    this.comment = '0',
-    this.price = '1',
-    this.vendorname = 'John',
-    this.distance = 2,
-    this.Vimage = '',
-    this.productImage = '',
-    this.lefttile = 'TradeHub',
-    this.similarproductCount,
-    this.membershipColor,
-    this.wow,
-    this.issponsored = false,
-    this.shortestDistance,
-    this.membershipTitle,
-    this.didcountpercentage,
-    this.avg_rating = 1,
-  });
+  ProductDetailWidget(
+      {super.key,
+      // this.membership_title,
+      this.id,
+      this.offer = '',
+      this.title = "Trade",
+      this.discounttedPrice = '0',
+      this.comment = '0',
+      this.price = '1',
+      this.vendorname = 'John',
+      this.distance = 2,
+      this.Vimage = '',
+      this.productImage = '',
+      this.lefttile = 'TradeHub',
+      this.similarproductCount,
+      this.membershipColor,
+      this.wow,
+      this.issponsored = false,
+      this.shortestDistance,
+      this.membershipTitle,
+      this.didcountpercentage,
+      this.avg_rating = 1,
+      this.tradeImage});
 
   String? title;
   String? price;
@@ -55,6 +53,7 @@ class ProductDetailWidget extends StatelessWidget {
   double? avg_rating;
   double? shortestDistance;
   int? id;
+  String? tradeImage;
 
   @override
   Widget build(BuildContext context) {
@@ -89,24 +88,25 @@ class ProductDetailWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset(
-                        b2bIcon,
-                        height: 10,
-                        color: Colors.grey,
-                      ),
+                      tradeImage == null
+                          ? SvgPicture.asset(
+                              b2bIcon,
+                              height: 10,
+                              color: Colors.grey,
+                            )
+                          : Image.asset(
+                              height: 10,
+                              tradeImage!,
+                              color: Colors.grey,
+                            ),
                       Text(
-                        lefttile!,
+                        lefttile?? 'Trade-Hub',
                         style: headerstyle.copyWith(
                             fontSize: 9.sp, color: Colors.grey),
                       ),
                     ],
                   ),
                   PopupMenuButton(
-                    child: Icon(
-                      size: 20,
-                      color: ColorConstant.grayColor,
-                      Icons.more_vert,
-                    ),
                     onSelected: (value) {},
 
                     padding: EdgeInsets.symmetric(horizontal: 5.h),
@@ -198,6 +198,11 @@ class ProductDetailWidget extends StatelessWidget {
                             )),
                       ];
                     },
+                    child: const Icon(
+                      size: 20,
+                      color: ColorConstant.grayColor,
+                      Icons.more_vert,
+                    ),
                   ),
                 ],
               ),
@@ -209,7 +214,9 @@ class ProductDetailWidget extends StatelessWidget {
                     width: 200.2,
                     fit: BoxFit.fill,
                   )
-                : Image.network(
+                : 
+                
+                Image.network(
                     productImage ?? '', // Ensure Vimage is not null or empty
                     height: 130.h,
                     // Adjust size accordingly
@@ -412,7 +419,7 @@ class ProductDetailWidget extends StatelessWidget {
                               color: const Color(0xff901B41),
                             ),
                             Text(
-                              "${didcountpercentage}%",
+                              "$didcountpercentage%",
                               style: headerstyle.copyWith(
                                   fontWeight: FontWeight.w600,
                                   color: const Color(0xff901B41),
@@ -694,7 +701,7 @@ class ProductDetailWidget extends StatelessWidget {
                                       ],
                                     ),
                                     SizedBox(
-                                      width: 70.w,
+                                      width: 65.w,
                                     ),
 
                                     if (issponsored)
@@ -709,6 +716,7 @@ class ProductDetailWidget extends StatelessWidget {
                                           ),
                                         ],
                                       )
+
                                     // : const SizedBox(),
                                   ],
                                 ),

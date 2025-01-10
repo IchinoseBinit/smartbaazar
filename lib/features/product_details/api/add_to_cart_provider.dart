@@ -5,7 +5,7 @@ import 'package:smartbazar/utils/request_type.dart';
 class ApiService {
   Future<void> addToCart(String myid) async {
     try {
-      final SmartClient client = SmartClient();
+      final SmartClinet client = SmartClinet();
 
       // Prepare the request payload with the user ID
       final payload = {

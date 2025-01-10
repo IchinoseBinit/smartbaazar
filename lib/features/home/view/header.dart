@@ -12,7 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
     {'icon': 'assets/icon/box.svg', 'label': 'Grocery'},
   ];
 class NewSearchWidget extends StatefulWidget {
-  NewSearchWidget({
+  const NewSearchWidget({
     super.key,
     required this.onchnage,
     required this.ontapped,

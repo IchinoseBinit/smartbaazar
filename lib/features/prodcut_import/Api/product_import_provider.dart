@@ -8,7 +8,7 @@ import 'package:smartbazar/utils/request_type.dart';
 
 @riverpod
 Future<String> storeProductImport(File myfile) async {
-  SmartClient client = SmartClient();
+  SmartClinet client = SmartClinet();
 
   try {
     FormData formData = FormData.fromMap({

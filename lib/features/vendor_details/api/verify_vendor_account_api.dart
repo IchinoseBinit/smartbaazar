@@ -11,7 +11,7 @@ part 'verify_vendor_account_api.g.dart';
 @riverpod
 Future<String?> verifyVendorAccount(VerifyVendorAccountRef ref, File panVat,
     File taxCertificate, File registerCertificate) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'pan_vat': await MultipartFile.fromFile(panVat.path,

@@ -8,7 +8,7 @@ part 'offline_listing_api.g.dart';
 
 @riverpod
 Future<OfflineListingModel> getOfflineListing(GetOfflineListingRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   try {
     final response = await client.request(

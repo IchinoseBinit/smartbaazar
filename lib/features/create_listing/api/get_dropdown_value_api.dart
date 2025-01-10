@@ -4,7 +4,7 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class NewListingRepository {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
 
   Future<List<TypeList>> fetchTypeList() async {
     final response = await client.request(

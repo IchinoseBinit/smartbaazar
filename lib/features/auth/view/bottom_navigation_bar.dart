@@ -142,7 +142,7 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int _selectedTab = 0;
+  int _selectedTab = 1;
 
   final List<Widget> _pages = [
     const HomeScreen(),

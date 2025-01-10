@@ -9,7 +9,7 @@ part 'online_transaction_api.g.dart';
 @riverpod
 Future<OnlineTransactionModel> getOnlineTransactionResponse(
     GetOnlineTransactionResponseRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

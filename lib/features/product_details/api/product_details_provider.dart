@@ -11,7 +11,7 @@ Future<PostModel> productDetails(ProductDetailsRef ref, String id) async {
   // final client = Dio();
 //
 
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

@@ -99,6 +99,7 @@ class MessageViewScreen extends ConsumerWidget {
                                       return lastMessageAsync.when(
                                         data: (lastMessage) {
                                           return ListOfMessages(
+                                            
                                             threadId: message.id.toString(),
                                             postId: message.postId.toString(),
                                             subject: message.subject!,

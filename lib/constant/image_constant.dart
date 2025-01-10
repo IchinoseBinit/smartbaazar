@@ -82,6 +82,12 @@ const String servicesIcon = "$baseAsset/servicesIcon.svg";
 const String usedIcon = "$baseAsset/usedIcon.svg";
 const String groceryIcon = "$baseAsset/groceryIcon.svg";
 const String jobIcon = "$baseAsset/jobIcon.svg";
+   const String domesticicon = '$baseAsset/domestic_brand.png';
+  const String globalicon = '$baseAsset/global_brand.png';
+  const String spotlighticon = '$baseAsset/spotlight_seller.png';
+  const String vendorprofile = '$baseAsset/vendor.png';
+
+
 
 const String eventIcon = "$baseAsset/eventIcon.svg";
 const String contactSellerIcon = "$baseAsset/contactSellerIcon.svg";
@@ -126,6 +132,8 @@ class ImageConstant {
   static String pageNotFound = '$basePath/pageNotFoundImage.png';
   static String facebookShareImage = '$basePath/facebookShare.png';
   static String subscribeImage = '$basePath/subscribe.png';
+ 
+
 }
 
 

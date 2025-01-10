@@ -65,6 +65,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
   late TabController dynamictabController;
+  Map<String, String>? dropdownValue = headeritems.firstWhere(
+    (item) => item['label'] == 'B2B',
+    orElse: () => headeritems.first, // Fallback to the first item if not found
+  );
+  int? postypeid = 0;
   final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/openCartIcon.svg',
@@ -297,30 +302,132 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                             width: 2.w,
                           ),
                           SizedBox(
-                              height: 40,
-                              child: NewSearchWidget(
-                                index: 3,
-                                onSearchFocusChanged: _onSearchFocusChanged,
-                                searchController: _searchController,
-                                ontapped: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => BusinessTabScreen(
-                                          query: _searchController.text,
+                            height: 40,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 45.h,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF46236a),
+                                    border: Border.all(color: Colors.white),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(19.r),
+                                      bottomLeft: Radius.circular(19.r),
+                                    ),
+                                  ),
+                                  child: DropdownButton<Map<String, String>>(
+                                    alignment: Alignment.center,
+                                    value: dropdownValue ??
+                                        headeritems[postypeid!],
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue;
+                                      });
+                                    },
+                                    items: headeritems.map((item) {
+                                      return DropdownMenuItem(
+                                        value: item,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              alignment: Alignment.center,
+                                              item['icon']!,
+                                              height: 10.h,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(width: 8.w),
+                                            Text(
+                                              item['label']!,
+                                              style: TextStyle(
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white),
+                                            ),
+                                          ],
                                         ),
-                                      ));
-                                },
-                                onchnage: (value) {
-                                  // print("babuk ${value}");
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           const BusinessTabScreen(),
-                                  //     ));
-                                },
-                              )),
+                                      );
+                                    }).toList(),
+                                    dropdownColor: const Color(0xff665B6B)
+                                        .withOpacity(0.5),
+                                    underline: const SizedBox(),
+                                    icon: const SizedBox(),
+                                  ),
+                                ),
+                                Container(
+                                  width: 180.w,
+                                  height: 45.h,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration:
+                                      const BoxDecoration(color: Colors.white),
+                                  child: TextField(
+                                    controller: _searchController,
+                                    onTap: () {
+                                      _onSearchFocusChanged(
+                                          _searchController.text.isNotEmpty);
+                                    },
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      prefixIcon: const Icon(
+                                        Icons.search,
+                                        size: 25,
+                                        color: Color(0xffD9D9D9),
+                                      ),
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 0.2, color: Colors.white),
+                                      ),
+                                      hintText: "Search Everything",
+                                      hintStyle: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: const Color(0xffD9D9D9)),
+                                      isCollapsed: true,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 5.h, horizontal: 10.w),
+                                      disabledBorder: InputBorder.none,
+                                      isDense: true,
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BusinessTabScreen(
+                                            query: _searchController.text,
+                                          ),
+                                        ));
+                                  },
+                                  child: Container(
+                                    height: 45.h,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w, vertical: 5.h),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white),
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(19.r),
+                                        bottomRight: Radius.circular(19.r),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.search,
+                                      color: Colors.white,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       if (_showSearchProductModels)
@@ -626,8 +733,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     }
                     // If any of the above conditions fail, return a default widget
                     return const Center(
-                      child: Text(
-                          'No stories available.'),
+                      child: Text('No stories available.'),
                     );
                   },
                   error: (error, stackTrace) => Text(error.toString()),
@@ -765,7 +871,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
 
                           // Shimmer placeholder for the dots indicator
                           Padding(
-                            padding: EdgeInsets.only(top: 8.0),
+                            padding: const EdgeInsets.only(top: 8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: List.generate(
@@ -2060,21 +2166,28 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 15.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'All Products',
-                        style: headerstyle.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
+               Padding(
+                          padding: EdgeInsets.only(
+                            top: 10.h,
+                            bottom: 10.h,
+                            left: 10.w,
+                            right: 10.w,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "All Products",
+                                textAlign: TextAlign.left,
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
+                                    color: ColorConstant.blackColor),
+                              ),
+                              // SizedBox(height: 5.h,)
+                            ],
+                          ),
+                        ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -2084,7 +2197,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         spacing: 5.w, // Horizontal spacing between items
                         runSpacing: 15.h, // Vertical spacing between rows
                         children: List.generate(data.product.length, (index) {
-                          var res = data.product[index];
+                          VProduct res = data.product[index];
                           return InkWell(
                             onTap: () {
                               Navigator.push(
@@ -2110,6 +2223,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: AllProductDetailWidget(
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  offer: res.offers,
+                                  shortestDistance: res.user.shortestDistance,
+                                  discountpercentage: res.discount_percentage,
+
                                   wow: res.wow,
                                   comment: res.commentcount.toString(),
                                   issponsored: res.user.sponsored,

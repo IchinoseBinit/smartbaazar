@@ -10,7 +10,7 @@ part 'message_thread_api.g.dart';
 @riverpod
 Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref,
     {required String? filter}) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

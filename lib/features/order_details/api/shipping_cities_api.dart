@@ -9,7 +9,7 @@ part 'shipping_cities_api.g.dart';
 @riverpod
 Future<List<ShippingCitiesModel>> getShippingCities(
     GetShippingCitiesRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

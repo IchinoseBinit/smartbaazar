@@ -16,7 +16,7 @@ Future<bool> postFeedForm(
     String offers,
     List<String> products,
     File imageFile) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     FormData formData = FormData.fromMap({
       'image': await MultipartFile.fromFile(imageFile.path,

@@ -9,7 +9,7 @@ part 'product_api_repository.g.dart';
 
 @riverpod
 Future<B2bModel> getprodwuctResposne(GetprodwuctResposneRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

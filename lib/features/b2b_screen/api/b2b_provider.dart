@@ -9,7 +9,7 @@ part 'b2b_provider.g.dart';
 
 @riverpod
 Future<PostTypeFetch> getB2bResponse(GetB2bResponseRef ref) async {
-  final SmartClient client = SmartClient();
+  final SmartClinet client = SmartClinet();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,
