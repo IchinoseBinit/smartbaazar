@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
+// import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_places_flutter/model/place_type.dart';
-import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
@@ -49,9 +47,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             // textTheme: GoogleFonts.quicksandTextTheme(
@@ -61,9 +59,14 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home:SplashScreen()
-        ),
-        );
+          home: SplashScreen(),
+          // home: BrandBazarScreen(),
+          // home: GrocarysScreen(),
+          // home: JobssScreen(),
+          // home: ServicesScreen(),
+          // home: SocioShopScreen(),
+          ),
+    );
   }
 }
-
+// 239 dollars

@@ -247,7 +247,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
     return Scaffold(
 
-        // bottomNavigationBar: const BottomNavigationScreen(),
+        // bottomNavigationBar:  ,
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
@@ -695,9 +695,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text('No stories available.'),
-                    );
+                    return SizedBox();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
@@ -1008,7 +1006,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         padding: EdgeInsets.zero,
                         margin: EdgeInsets.zero,
                         duration: const Duration(milliseconds: 400),
-                        height: 350.h,
+                        // height: 350.h,
                         child: SingleChildScrollView(
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
@@ -1024,7 +1022,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ProductDetailScreen(
-                                        productId: hot.user.id,
+                                        productId: hot.id,
                                       ),
                                     ),
                                   );
@@ -1418,6 +1416,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                   },
                 ),
                 SizedBox(
+                  height: 5.h,
+                ),
+                SizedBox(
                   height: 50,
                   width: double.infinity,
                   child: TabBar(
@@ -1441,21 +1442,21 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     if (tabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
-                              : 500;
+                              ? 150
+                              : 430;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                              ? 200
-                              : 500;
+                              ? 150
+                              : 430;
                     } else if (tabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                              ? 200
-                              : 500;
+                              ? 150
+                              : 430;
                     else
-                      dynamicHeight = 300;
+                      dynamicHeight = 200;
                     return SizedBox(
                       // Use Expanded for better layout management
                       child: AnimatedContainer(
@@ -1469,24 +1470,27 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    if (data.global.isNotEmpty)
-                                      ...data.global.map((e) {
-                                        return NotStoryWidget(
-                                          vImage: e
-                                              .brandLogo, // Use the correct variable name
-                                          index: data.global
-                                              .indexOf(e), // Get the index
-                                          brandname: e.brandName,
-                                        );
-                                      }).toList(),
-                                  ],
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10.h),
+                                  child: Row(
+                                    children: [
+                                      if (data.global.isNotEmpty)
+                                        ...data.global.map((e) {
+                                          return NotStoryWidget(
+                                            vImage: e
+                                                .brandLogo, // Use the correct variable name
+                                            index: data.global
+                                                .indexOf(e), // Get the index
+                                            brandname: e.brandName,
+                                          );
+                                        }).toList(),
+                                    ],
+                                  ),
                                 ),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
-                                        height: 340.h,
+                                        height: 330.h,
                                         child: ListView.builder(
                                           clipBehavior: Clip.antiAlias,
                                           padding: const EdgeInsets.all(3),
@@ -1531,10 +1535,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           },
                                         ),
                                       )
-                                    : Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10.0), // Add padding here
+                                    : Padding(
+                                        padding: EdgeInsets.only(top: 10.h),
+                                        child: Center(
                                           child: nolistingfound(),
                                         ),
                                       ),
@@ -1557,13 +1560,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? Center(
+                                    ? Padding(
+                                        padding: EdgeInsets.only(top: 10.h),
                                         child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 28.0), // Add padding here
-                                            child: nolistingfound(),
-                                          ),
+                                          child: nolistingfound(),
                                         ),
                                       )
                                     : SizedBox(
@@ -1636,13 +1636,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                 ),
                                 data.insidearr.isEmpty
-                                    ? Center(
+                                    ? Padding(
+                                        padding: EdgeInsets.only(top: 5.h),
                                         child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0), // Add padding here
-                                            child: nolistingfound(),
-                                          ),
+                                          child: nolistingfound(),
                                         ),
                                       )
                                     : SizedBox(
@@ -1746,6 +1743,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
@@ -1815,7 +1813,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                     return SizedBox(
                       width: double.infinity,
-                      height: productsList[selectedTab!].isEmpty ? 200 : 420.h,
+                      height: productsList[selectedTab!].isEmpty ? 150 : 420.h,
                       child: ValueListenableBuilder<int>(
                         valueListenable: selectedIndexNotifier,
                         builder: (context, selectedTab, child) {
@@ -1883,51 +1881,50 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                                   return data.insidearr.isEmpty
                                       ? nolistingfound()
-                                      : SizedBox(
-                                          height: 340.h,
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: products.length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod = products[index];
+                                      : ListView.builder(
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: const EdgeInsets.all(3),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: products.length,
+                                          itemBuilder: (context, index) {
+                                            VProduct prod = products[index];
 
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    prod.id),
-                                                      ));
-                                                },
-                                                child: ProductDetailWidget(
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  wow: prod.wow,
-                                                  lefttile: "Used",
-                                                  vendorname: prod.user.name,
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.user.photo,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetailScreen(
+                                                              productId:
+                                                                  prod.id),
+                                                    ));
+                                              },
+                                              child: ProductDetailWidget(
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                wow: prod.wow,
+                                                lefttile: "Used",
+                                                vendorname: prod.user.name,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              ),
+                                            );
+                                          },
                                         );
 
                                   // SizedBox(
@@ -1970,7 +1967,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                   },
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 10.w),
+                  padding: EdgeInsets.only(left: 10.w, bottom: 8.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -1978,7 +1975,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         'All Products',
                         style: headerstyle.copyWith(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize: 15,
                             color: Colors.black),
                       ),
                     ],
@@ -1999,8 +1996,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProductDetailScreen(
-                                      productId: res.user.id),
+                                  builder: (context) =>
+                                      ProductDetailScreen(productId: res.id),
                                 ),
                               );
                             },
@@ -2020,6 +2017,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
+                                    
                                     discountpercentage: res.discount_percentage,
                                     offer: res.offers,
                                     shortestDistance: res.user.shortestDistance,

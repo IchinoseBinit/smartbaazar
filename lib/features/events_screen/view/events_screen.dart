@@ -260,6 +260,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -655,10 +656,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text(
-                          'No stories available.'),
-                    );
+                    return SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
@@ -666,7 +664,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                 ),
 
                 SizedBox(
-                  height: 15.h,
+                  height: 6.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -1747,6 +1745,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,

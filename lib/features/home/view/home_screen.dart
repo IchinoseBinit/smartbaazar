@@ -716,7 +716,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: EdgeInsets.only(top: 5.h),
                         child: Center(
                           child: Container(
                             alignment: AlignmentDirectional.centerStart,
@@ -730,9 +730,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
+                    // SizedBox(
+                    //   height: 5.h,
+                    // ),
                     if (_isPopupVisible)
                       Center(
                         child: StorySearchBar(
@@ -749,15 +749,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                         if (homeStory != null &&
                             homeStory is Map<String, dynamic> &&
+                            homeStory.length == 0 &&
                             homeStory.containsKey('story')) {
                           final story = homeStory['story'];
 
                           if (story != null &&
                               story is Map<String, dynamic> &&
                               story.containsKey('posts')) {
-                            final posts = story['posts'];
+                            var posts = story['posts'];
 
                             if (posts != null && posts is List<dynamic>) {
+                              posts = (posts).where((e) => e != null).toList();
+                              // if (posts.isNotEmpty)
                               return SizedBox(
                                 height: 100.h,
                                 child: ListView.builder(
@@ -767,7 +770,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemCount: posts.length,
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
-
                                     if (story is Map<String, dynamic>) {
                                       final storyObject =
                                           Story(posts: [Post.fromJson(story)]);
@@ -796,9 +798,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         }
 
                         // If any of the above conditions fail, return a default widget
-                        return const Center(
-                          child: Text('No stories available. '),
-                        );
+                        return SizedBox.shrink();
                       },
                       loading: () => SizedBox(
                         height: 100.h,
@@ -1598,9 +1598,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         Center(
                           child: Column(
                             children: [
-                              SizedBox(
-                                height: 10.h,
-                              ),
                               Text(
                                 "BuyOrWin",
                                 textAlign: TextAlign.center,
@@ -1641,6 +1638,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemBuilder: (context, index) {
                                   Buynowmodel resp = data.buynow[index];
                                   return buyorwin_widget(
+                                  wow: resp.wow?? '0',
+
                                     gift_qty: resp.gift_qty!,
                                     worth: resp.worth!,
                                     productname: "Discount Coupon",

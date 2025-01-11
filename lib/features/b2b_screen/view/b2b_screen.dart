@@ -250,8 +250,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-
-        // bottomNavigationBar: const BottomNavigationScreen(),
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
@@ -732,9 +730,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       }
                     }
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text('No stories available.'),
-                    );
+                    return SizedBox();
                   },
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => SizedBox(
@@ -1131,6 +1127,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     );
                                   },
                                   child: ProductDetailWidget(
+                                    offer: hot.offers,
+                                    shortestDistance: hot.user.shortestDistance,
+                                    didcountpercentage: hot.discount_percentage,
+                                    avg_rating: hot.avg_rating?.toDouble(),
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
                                     discounttedPrice: hot.discounted_price,
@@ -1902,6 +1902,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
@@ -2166,28 +2167,28 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-               Padding(
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                            bottom: 10.h,
-                            left: 10.w,
-                            right: 10.w,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "All Products",
-                                textAlign: TextAlign.left,
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    color: ColorConstant.blackColor),
-                              ),
-                              // SizedBox(height: 5.h,)
-                            ],
-                          ),
-                        ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 10.h,
+                    bottom: 10.h,
+                    left: 10.w,
+                    right: 10.w,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "All Products",
+                        textAlign: TextAlign.left,
+                        style: headerstyle.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                            color: ColorConstant.blackColor),
+                      ),
+                      // SizedBox(height: 5.h,)
+                    ],
+                  ),
+                ),
 
                 asyncbajarValue.when(
                   data: (data) {
@@ -2227,7 +2228,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   offer: res.offers,
                                   shortestDistance: res.user.shortestDistance,
                                   discountpercentage: res.discount_percentage,
-
                                   wow: res.wow,
                                   comment: res.commentcount.toString(),
                                   issponsored: res.user.sponsored,

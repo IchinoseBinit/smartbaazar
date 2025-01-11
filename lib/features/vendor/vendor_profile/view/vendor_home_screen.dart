@@ -251,7 +251,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                       MYonchnage: (p0) {},
                                     ),
                                   ),
-                                if (_showSearchProductModels)
                                   Positioned(
                                     left: 0,
                                     right: 0,

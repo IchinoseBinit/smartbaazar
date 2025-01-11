@@ -356,8 +356,8 @@ class AllProductDetailWidget extends StatelessWidget {
                       style: headerstyle.copyWith(fontSize: 8.sp),
                     ),
                   ),
-                  const SizedBox(
-                    width: 5,
+                  SizedBox(
+                    width: 1.w,
                   ),
                   Container(
                     decoration: BoxDecoration(

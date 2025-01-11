@@ -618,9 +618,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       }
                     }
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text('No stories available. '),
-                    );
+                    return SizedBox.shrink();
                   },
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => SizedBox(
@@ -648,7 +646,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   ),
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 6.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -928,7 +926,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   data: (data) {
                     print("ram ${data.data?.newProducts}");
                     return Container(
-                      
+                      // child: Text(data.data.),
                     );
                   },
                   error: (error, stackTrace) => const Text("Please try again"),

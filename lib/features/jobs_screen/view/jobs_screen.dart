@@ -218,8 +218,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(73));
-        final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('4'));
-
+    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('4'));
 
     // asyncbajarValue.when(data: (data) {
 
@@ -248,6 +247,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -642,19 +642,15 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text(
-                          'No stories available.'),
-                    );
+                    return SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
-
                 SizedBox(
-                  height: 15.h,
+                  height: 6.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -870,7 +866,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 dashCount:
                                                     1, // Number of dashes in the border
                                                 child: SizedBox(
-                                                  width: 200
+                                                  width: 150
                                                       .w, // Fixed width for the container
                                                   child: Column(
                                                     mainAxisAlignment:
@@ -985,10 +981,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         ),
                       );
                     }
-                    return Center(child: Padding(
-                      padding: EdgeInsets.only(top: 10.0.h), // Add padding here
-                      child: nolistingfound(),
-                    ),);
+                    return Center(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(top: 10.0.h), // Add padding here
+                        child: nolistingfound(),
+                      ),
+                    );
                   },
                   error: (error, stackTrace) {
                     return Text(error.toString());
@@ -1350,21 +1349,21 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     if (tabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 200
-                              : 500;
+                              ? 150
+                              : 430;
                     } else if (tabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                              ? 200
-                              : 500;
+                              ? 150
+                              : 430;
                     } else if (tabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                              ? 200
-                              : 500;
+                              ? 150
+                              : 430;
                     else
-                      dynamicHeight = 500;
+                      dynamicHeight = 430;
 
                     return SizedBox(
                       // Use Expanded for better layout management
@@ -1393,11 +1392,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       }).toList(),
                                   ],
                                 ),
-                                  SizedBox(height: 10.h,),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 data.insidearr.isNotEmpty &&
                                         data.insidearr[0].isNotEmpty
                                     ? SizedBox(
-                                        height: 340.h,
                                         child: ListView.builder(
                                           clipBehavior: Clip.antiAlias,
                                           padding: const EdgeInsets.all(3),
@@ -1441,9 +1441,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                           },
                                         ),
                                       )
-                                    : Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                    : Padding(
+                                        padding: EdgeInsets.only(top: 3.h),
+                                        child: Center(
                                           child: nolistingfound(),
                                         ),
                                       ),
@@ -1465,7 +1465,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     }).toList(),
                                   ),
                                 ),
-                                SizedBox(height: 10.h,),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 data.insidearr.isEmpty
                                     ? Center(
                                         child: nolistingfound(),
@@ -1534,11 +1536,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     }).toList(),
                                   ),
                                 ),
-                                SizedBox(height: 10.h,),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 data.insidearr.isEmpty
                                     ? Center(
                                         child: Padding(
-                                          padding: EdgeInsets.only(top: 10.0.h), // Add padding here
+                                          padding: EdgeInsets.only(
+                                              top: 10.0.h), // Add padding here
                                           child: nolistingfound(),
                                         ),
                                       )
@@ -1602,50 +1607,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   },
                 ),
 
-                SizedBox(
-                  height: 5.h,
-                ),
-
-                // asyncbajarValue.when(
-                //   data: (data) {
-                //     return SizedBox(
-                //       height: 100.h,
-                //       width: double.infinity,
-                //       child: ListView.builder(
-                //         padding: const EdgeInsets.all(3),
-                //         clipBehavior: Clip.antiAlias,
-                //         scrollDirection: Axis.horizontal,
-                //         itemCount: data.product.length,
-                //         shrinkWrap: true,
-                //         itemBuilder: (context, index) {
-                //           VProduct ref = data.product[index];
-                //           return ProductDetailWidget(
-                //             comment: ref.commentcount.toString(),
-                //             discounttedPrice: ref.discounted_price,
-                //             issponsored: ref.user.sponsored,
-                //             membershipColor: ref.user.membershipColor,
-                //             membershipTitle: ref.user.membershipTitle,
-                //             similarproductCount: ref.similarProductCount,
-                //             wow: ref.wow,
-                //             lefttile: "Jobs",
-                //             productImage: ref.image,
-                //             price: ref.price,
-                //             Vimage: ref.user.photo,
-                //             title: ref.title,
-                //             vendorname: ref.user.name,
-                //           );
-                //         },
-                //       ),
-                //     );
-                //   },
-                //   error: (error, stackTrace) {
-                //     return Text(error.toString());
-                //   },
-                //   loading: () {
-                //     return const CircularProgressIndicator();
-                //   },
-                // ),
-
                 Center(
                   child: Column(
                     children: [
@@ -1686,13 +1647,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
                               vendorImage: resp.vendorImage,
                               vendorname: resp.name,
                               winners: resp.winners.toString(),
-                              proctimage: resp.image?? '');
+                              proctimage: resp.image ?? '');
                         },
                       ),
                     );
@@ -2002,6 +1964,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   loading: () {
                     return const CircularProgressIndicator();
                   },
+                ),
+                SizedBox(
+                  height: 10.h,
                 ),
 
                 // Container(

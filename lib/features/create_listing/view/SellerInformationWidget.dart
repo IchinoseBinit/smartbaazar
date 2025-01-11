@@ -6,8 +6,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
-import 'package:google_places_flutter/model/prediction.dart';
+// import 'package:google_places_flutter/google_places_flutter.dart';
+// import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
@@ -204,50 +204,50 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
               SizedBox(
                 width: 20.w,
               ),
-              Expanded(
-                child: GooglePlaceAutoCompleteTextField(
-                  showError: false,
-                  inputDecoration: const InputDecoration(
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                  ),
-                  boxDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.zero,
-                    border: Border.all(style: BorderStyle.none),
-                  ),
-                  textEditingController: mapcontrolleer!,
-                  countries: const ["np"],
-                  isLatLngRequired: true,
-                  debounceTime: 800,
-                  itemClick: (Prediction prediction) async {
-                    setState(() {
-                      mapcontrolleer?.text = prediction.description ?? "";
-                      selectedpickup = prediction.description ?? "";
-                    });
+              // Expanded(
+              //   child: GooglePlaceAutoCompleteTextField(
+              //     showError: false,
+              //     inputDecoration: const InputDecoration(
+              //       enabledBorder: InputBorder.none,
+              //       focusedBorder: InputBorder.none,
+              //     ),
+              //     boxDecoration: BoxDecoration(
+              //       borderRadius: BorderRadius.zero,
+              //       border: Border.all(style: BorderStyle.none),
+              //     ),
+              //     textEditingController: mapcontrolleer!,
+              //     countries: const ["np"],
+              //     isLatLngRequired: true,
+              //     debounceTime: 800,
+              //     itemClick: (Prediction prediction) async {
+              //       setState(() {
+              //         mapcontrolleer?.text = prediction.description ?? "";
+              //         selectedpickup = prediction.description ?? "";
+              //       });
 
-                    // Fetch place details to get latitude and longitude
-                    if (prediction.placeId != null) {
-                      try {
-                        var placeDetails =
-                            await GooglePlaceApiHelper.getPlaceDetails(
-                          prediction.placeId!,
-                          'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
-                        );
-                        if (placeDetails != null) {
-                          latitute =
-                              placeDetails['geometry']['location']['lat'];
-                          long = placeDetails['geometry']['location']['lng'];
+              //       // Fetch place details to get latitude and longitude
+              //       if (prediction.placeId != null) {
+              //         try {
+              //           var placeDetails =
+              //               await GooglePlaceApiHelper.getPlaceDetails(
+              //             prediction.placeId!,
+              //             'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
+              //           );
+              //           if (placeDetails != null) {
+              //             latitute =
+              //                 placeDetails['geometry']['location']['lat'];
+              //             long = placeDetails['geometry']['location']['lng'];
 
-                          // Print the latitude and longitude
-                        }
-                      } catch (e) {
-                        print('Error fetching place details: $e');
-                      }
-                    }
-                  },
-                  googleAPIKey: 'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
-                ),
-              ),
+              //             // Print the latitude and longitude
+              //           }
+              //         } catch (e) {
+              //           print('Error fetching place details: $e');
+              //         }
+              //       }
+              //     },
+              //     googleAPIKey: 'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
+              //   ),
+              // ),
             ],
           ),
         ),

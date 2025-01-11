@@ -611,9 +611,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                 //         borderRadius: BorderRadius.circular(5)),
                 //   ),
                 // ),
-                SizedBox(
-                  height: 10.h,
-                ),
+
                 asyncPostTypeContent.when(
                   data: (feedStoryData) {
                     final homeStory = feedStoryData.homeStory;
@@ -666,19 +664,13 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text(
-                          'No stories available.'),
-                    );
+                    return SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
 
-                SizedBox(
-                  height: 15.h,
-                ),
                 asyncbajarValue.when(
                   data: (data) {
                     if (data.sliders?.length != 0) {
@@ -1009,6 +1001,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     );
                                   },
                                   child: ProductDetailWidget(
+                                    offer: hot.offers,
+                                    didcountpercentage: hot.discount_percentage,
+                                    avg_rating: hot.avg_rating?.toDouble(),
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
                                     discounttedPrice: hot.discounted_price,
@@ -1695,6 +1690,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name ?? '',
@@ -1712,6 +1708,42 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   loading: () {
                     return const CircularProgressIndicator();
                   },
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                asyncbajarValue.when(
+                  data: (data) {
+                    return SizedBox(
+                      height: 70.h,
+                      width: double.infinity,
+                      child: PageView.builder(
+                        controller: _adscontroller,
+                        reverse: true,
+                        allowImplicitScrolling: true,
+                        itemCount: data.ads.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            data.ads[index].image!,
+                            // height: 150.h,
+                            width: double.infinity,
+                            // fit: BoxFit.fill,
+                          );
+                          // Image.asset(
+                          //     height: 150.h,
+                          //     width: double.infinity,
+                          //     fit: BoxFit.fill,
+                          //     );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Text(error.toString());
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 ),
 
                 SizedBox(
@@ -1801,7 +1833,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
-                                    ? nolistingfound()
+                                    ? Padding(
+                                        padding: EdgeInsets.only(top: 3.h),
+                                        child: Center(
+                                          child: nolistingfound(),
+                                        ),
+                                      )
                                     : SingleChildScrollView(
                                         padding: EdgeInsets.zero,
                                         scrollDirection: Axis.horizontal,
@@ -1920,11 +1957,14 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: AllProductDetailWidget(
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  discountpercentage: res.discount_percentage,
+                                  offer: res.offers,
                                   wow: res.wow,
                                   comment: res.commentcount.toString(),
                                   issponsored: res.user.sponsored,
                                   discounttedPrice: res.discounted_price,
-                                  lefttile: "Socio",
+                                  lefttile: "geocary",
                                   productImage: res.image,
                                   Vimage: res.user.photo,
                                   vendorname: res.user.name,

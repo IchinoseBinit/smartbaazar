@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -15,9 +14,7 @@ class AdSplashScreen extends ConsumerStatefulWidget {
 }
 
 class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
-  int _countDown = 5;
-  String _loadingText = 'Loading';
-  int _dotsCount = 0;
+  int _countDown = 6;
   Timer? _timer;
 
   void _startCountdown() {
@@ -38,12 +35,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
 
   void _startDotsAnimation() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        setState(() {
-          _dotsCount = (_dotsCount + 1) % 4;
-          _loadingText = 'Loading${'.' * _dotsCount}';
-        });
-      }
+   
     });
   }
 
@@ -67,15 +59,14 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Lottie.asset('assets/images/loading.json', width: 150.w, height: 150.h),
-                        Text(_loadingText, style: const TextStyle(fontSize: 20)),
+                        Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
                       ],
                     )
                   : adsList.value?.isNotEmpty == true
                       ? CachedNetworkImage(
                           imageUrl: adsList.value!.first.image!,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Lottie.asset('assets/images/loading.json', width: 150.w, height: 150.h),
+                          placeholder: (context, url) => Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
                           errorWidget: (context, url, error) => const Text("Error loading ad"),
                           imageBuilder: (context, imageProvider) {
                             _startCountdown();

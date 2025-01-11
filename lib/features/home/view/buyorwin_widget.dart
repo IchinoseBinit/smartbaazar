@@ -14,11 +14,12 @@ class buyorwin_widget extends StatelessWidget {
         required this.productname,
         required this.worth,
         required this.gift_qty,
+        required this.wow,
 
 
   });
 
-  final String vendorname, winners, proctimage, vendorImage,productname,worth,gift_qty;
+  final String vendorname, winners, proctimage, vendorImage,productname,worth,gift_qty,wow;
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +237,7 @@ class buyorwin_widget extends StatelessWidget {
                                 width: 5.w,
                               ),
                               Text(
-                                "13.5K",
+                                "${wow}",
                                 style: headerstyle.copyWith(
                                     color: const Color(0xff831F67),
                                     fontSize: 10,

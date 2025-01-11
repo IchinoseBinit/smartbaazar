@@ -6,7 +6,7 @@ part of 'get_following_story_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getFollowingStoryHash() => r'2607af28bf1571cb1b00ced1da1ad44123b46832';
+String _$getFollowingStoryHash() => r'0597515b77878220dfb7711e118dc71a7af75688';
 
 /// See also [getFollowingStory].
 @ProviderFor(getFollowingStory)
@@ -21,7 +21,9 @@ final getFollowingStoryProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetFollowingStoryRef
     = AutoDisposeFutureProviderRef<GetFeedStoriesModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

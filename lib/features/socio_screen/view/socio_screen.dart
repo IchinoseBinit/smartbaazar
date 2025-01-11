@@ -653,19 +653,16 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text(
-                          'No stories available.'),
-                    );
+                    return SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
-
                 SizedBox(
-                  height: 20.h,
+                  height: 6.h,
                 ),
+
                 asyncbajarValue.when(
                   data: (data) {
                     return Stack(
@@ -968,12 +965,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ProductDetailScreen(
-                                        productId: hot.user.id,
+                                        productId: hot.id,
                                       ),
                                     ),
                                   );
                                 },
                                 child: ProductDetailWidget(
+                                  avg_rating: hot.avg_rating?.toDouble(),
+                                  didcountpercentage: hot.discount_percentage,
+                                  offer: hot.offers,
                                   wow: hot.wow,
                                   comment: hot.commentcount.toString(),
                                   discounttedPrice: hot.discounted_price,
@@ -1087,6 +1087,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       );
                                     },
                                     child: ProductDetailWidget(
+                                      avg_rating: pro.avg_rating?.toDouble(),
+                                      didcountpercentage:
+                                          pro.discount_percentage,
                                       offer: pro.discounted_price,
                                       wow: pro.wow,
                                       comment: pro.commentcount.toString(),
@@ -1168,6 +1171,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         );
                                       },
                                       child: ProductDetailWidget(
+                                        didcountpercentage:
+                                            pro.discount_percentage,
+                                        avg_rating: pro.avg_rating?.toDouble(),
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
@@ -1249,6 +1255,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         );
                                       },
                                       child: ProductDetailWidget(
+                                        avg_rating: pro.avg_rating?.toDouble(),
+                                        didcountpercentage:
+                                            pro.discount_percentage,
+                                        shortestDistance:
+                                            pro.user.shortestDistance,
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
@@ -1332,6 +1343,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         );
                                       },
                                       child: ProductDetailWidget(
+                                        avg_rating: pro.avg_rating?.toDouble(),
+                                        didcountpercentage:
+                                            pro.discount_percentage,
+                                        shortestDistance:
+                                            pro.user.shortestDistance,
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
@@ -1412,6 +1428,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         );
                                       },
                                       child: ProductDetailWidget(
+                                        shortestDistance:
+                                            pro.user.shortestDistance,
+                                        didcountpercentage:
+                                            pro.discount_percentage,
+                                        avg_rating: pro.avg_rating?.toDouble(),
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
@@ -1471,21 +1492,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     if (dynamictabController.index == 0) {
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                              ? 150
-                              : 500;
+                              ? 130
+                              : 450;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                              ? 150
-                              : 500;
+                              ? 130
+                              : 450;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                              ? 150
-                              : 500;
+                              ? 130
+                              : 450;
                     else
-                      dynamicHeight = 300;
+                      dynamicHeight = 450;
                     return SizedBox(
                       height: dynamicHeight,
                       width: double.infinity,
@@ -1546,6 +1567,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   );
                                                 },
                                                 child: ProductDetailWidget(
+                                                  tradeImage: globalicon,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
@@ -1634,6 +1658,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   );
                                                 },
                                                 child: ProductDetailWidget(
+                                                  tradeImage: domesticicon,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   shortestDistance: prod
@@ -1720,6 +1747,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   );
                                                 },
                                                 child: ProductDetailWidget(
+                                                  tradeImage: spotlighticon,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
@@ -1805,6 +1835,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
@@ -1936,7 +1967,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                               // Calculate height dynamically
                               double calculatedHeight =
-                                  products.isNotEmpty ? 359.h : 100.h;
+                                  products.isNotEmpty ? 340.h : 100.h;
 
                               return AnimatedContainer(
                                 alignment: Alignment.topLeft,
@@ -1971,6 +2002,10 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   );
                                                 },
                                                 child: ProductDetailWidget(
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
                                                   offer: prod.offers,
                                                   comment: prod.commentcount
                                                       .toString(),
@@ -2012,7 +2047,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.only(left: 5, bottom: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -2062,6 +2097,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: AllProductDetailWidget(
+                                  discountpercentage: res.discount_percentage,
+                                  avg_rating: res.avg_rating?.toDouble(),
                                   wow: res.wow,
                                   comment: res.commentcount.toString(),
                                   issponsored: res.user.sponsored,

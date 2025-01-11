@@ -17,9 +17,9 @@ Future<VendorProfile> getVendorProfileData(
 
   try {
     final response = await client.request(
-      requestType: RequestType.getWithToken,
+      requestType: RequestType.get,
       url:
-          '${ApiConstants.getVendorProfileDataByUserName}/$vendorName?posttype=$postType',
+          '${ApiConstants.getVendorProfileDataByUserName}/$vendorName',
     );
     return VendorProfile.fromJson(response.data['data']);
   } catch (e) {

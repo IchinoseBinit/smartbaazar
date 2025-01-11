@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:scratcher/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/api_constant.dart';
@@ -1005,11 +1004,17 @@ class ProductDetailScreen extends ConsumerWidget {
           return Text("error $error");
         },
         loading: () => SizedBox(
-            width: 30.w,
-            height: 10.h,
-            child: Lottie.asset(
-              'assets/images/loading.json',
-            )),
+          width: 100.w,
+          height: 100.h,
+          child: Center(
+            child: Image.asset(
+              'assets/images/preloader.gif',
+              width: 100.w,
+              height: 100.h,
+              fit: BoxFit.contain, // Ensures the image fits within its bounds
+            ),
+          ),
+        ),
       ),
     );
   }

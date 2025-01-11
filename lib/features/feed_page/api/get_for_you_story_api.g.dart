@@ -6,7 +6,7 @@ part of 'get_for_you_story_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getForYouStoryHash() => r'c71677d912d720c126587d01f04aa38ae30af64f';
+String _$getForYouStoryHash() => r'fb5fbc5a6fadb12008996e777e578f428e0371df';
 
 /// See also [getForYouStory].
 @ProviderFor(getForYouStory)
@@ -21,6 +21,8 @@ final getForYouStoryProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetForYouStoryRef = AutoDisposeFutureProviderRef<GetFeedStoriesModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

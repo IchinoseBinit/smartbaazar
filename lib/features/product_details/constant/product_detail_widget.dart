@@ -100,7 +100,7 @@ class ProductDetailWidget extends StatelessWidget {
                               color: Colors.grey,
                             ),
                       Text(
-                        lefttile?? 'Trade-Hub',
+                        lefttile ?? 'Trade-Hub',
                         style: headerstyle.copyWith(
                             fontSize: 9.sp, color: Colors.grey),
                       ),
@@ -214,9 +214,7 @@ class ProductDetailWidget extends StatelessWidget {
                     width: 200.2,
                     fit: BoxFit.fill,
                   )
-                : 
-                
-                Image.network(
+                : Image.network(
                     productImage ?? '', // Ensure Vimage is not null or empty
                     height: 130.h,
                     // Adjust size accordingly
@@ -449,7 +447,7 @@ class ProductDetailWidget extends StatelessWidget {
                             width: 5.w,
                           ),
                           Text(
-                            wow ?? '0',
+                            wow == null || wow?.length == 0 ? '0' : wow!,
                             style: headerstyle.copyWith(
                                 fontSize: 10,
                                 color: const Color(0xff807C7C),

@@ -665,17 +665,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return const Center(
-                      child: Text(
-                          'No stories available.'),
-                    );
+                    return SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
                 SizedBox(
-                  height: 15.h,
+                  height: 6.h,
                 ),
                 asyncbajarValue.when(
                   data: (data) {
@@ -1004,11 +1001,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     );
                                   },
                                   child: ProductDetailWidget(
+                                    avg_rating: hot.avg_rating?.toDouble(),
+                                    didcountpercentage: hot.discount_percentage,
+                                    offer: hot.offers,
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
                                     discounttedPrice: hot.discounted_price,
                                     issponsored: hot.user.sponsored,
-                                    lefttile: "Socio",
+                                    lefttile: "Service",
                                     productImage: hot.image,
                                     Vimage: hot.user.photo,
                                     price: hot.price,
@@ -1457,20 +1457,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[0].isEmpty
                               ? 150
-                              : 500;
+                              : 430;
                     } else if (dynamictabController.index == 1) {
                       // Ensure data.doma[0] is valid and has length
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[1].isEmpty
                               ? 150
-                              : 500;
+                              : 430;
                     } else if (dynamictabController.index == 2)
                       dynamicHeight =
                           data.insidearr.isEmpty || data.insidearr[2].isEmpty
                               ? 150
-                              : 500;
+                              : 430;
                     else
-                      dynamicHeight = 300;
+                      dynamicHeight = 430;
                     return SizedBox(
                       height: dynamicHeight,
                       width: double.infinity,
@@ -1562,7 +1562,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         ),
                                       ),
                                     )
-                                  : nolistingfound()
+                                  : Padding(
+                                      padding: EdgeInsets.only(top: 3.h),
+                                      child: Center(
+                                        child: nolistingfound(),
+                                      ),
+                                    ),
                             ],
                           ),
                           Column(
@@ -1587,8 +1592,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               SizedBox(
                                 height: 20.h,
                               ),
-                              data.insidearr.isEmpty
-                                  ? nolistingfound()
+                              data.brandbazar_domestic?.length == 0
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 3.h),
+                                      child: Center(
+                                        child: nolistingfound(),
+                                      ),
+                                    )
                                   : SizedBox(
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.horizontal,
@@ -1674,8 +1684,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               SizedBox(
                                 height: 20.h,
                               ),
-                              data.insidearr.isEmpty
-                                  ? nolistingfound()
+                              data.insidearr.isNotEmpty
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 3.h),
+                                      child: Center(
+                                        child: nolistingfound(),
+                                      ),
+                                    )
                                   : SizedBox(
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.horizontal,
@@ -1790,6 +1805,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           Buynowmodel resp = data.buynow![index];
 
                           return buyorwin_widget(
+                              wow: resp.wow ?? '0',
                               gift_qty: resp.gift_qty!,
                               worth: resp.worth!,
                               productname: resp.name,
@@ -1928,7 +1944,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 duration: const Duration(milliseconds: 300),
                                 height: calculatedHeight,
                                 child: products.isEmpty
-                                    ? nolistingfound()
+                                    ? Padding(
+                                        padding: EdgeInsets.only(top: 3.h),
+                                        child: Center(
+                                          child: nolistingfound(),
+                                        ),
+                                      )
                                     : SingleChildScrollView(
                                         padding: EdgeInsets.zero,
                                         scrollDirection: Axis.horizontal,
@@ -1958,13 +1979,17 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   );
                                                 },
                                                 child: ProductDetailWidget(
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,
                                                   issponsored:
                                                       prod.user.sponsored,
-                                                  lefttile: "Socio-Shop",
+                                                  lefttile: "Services",
                                                   vendorname: prod.title,
                                                   discounttedPrice:
                                                       prod.discounted_price,
@@ -2042,16 +2067,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 shadowColor:
                                     const Color(0xff3D215F).withOpacity(0.5),
                                 elevation: 9,
-                                // margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                // margin: EdgeInsets.symmetric(x horizontal: 5.w),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: AllProductDetailWidget(
+                                  shortestDistance: res.user.shortestDistance,
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  discountpercentage: res.discount_percentage,
+                                  offer: res.offers,
                                   wow: res.wow,
                                   comment: res.commentcount.toString(),
                                   issponsored: res.user.sponsored,
                                   discounttedPrice: res.discounted_price,
-                                  lefttile: "Socio",
+                                  lefttile: "Services",
                                   productImage: res.image,
                                   Vimage: res.user.photo,
                                   vendorname: res.user.name,

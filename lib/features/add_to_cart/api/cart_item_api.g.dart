@@ -20,6 +20,8 @@ final getCartItemProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetCartItemRef
     = AutoDisposeFutureProviderRef<Map<String, List<Object>>>;
 String _$deleteCartItemHash() => r'd98f9b5daa07b43f0c7159cfb716161b9f70a404';
@@ -158,6 +160,8 @@ class DeleteCartItemProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin DeleteCartItemRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `cartItemId` of this provider.
   String get cartItemId;
@@ -171,4 +175,4 @@ class _DeleteCartItemProviderElement
   String get cartItemId => (origin as DeleteCartItemProvider).cartItemId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

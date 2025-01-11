@@ -126,20 +126,22 @@ class Buynowmodel {
   final String? worth;
   final String name;
   final String? gift_qty;
+   String? wow;
 
-  final int winners;
+  final int? winners;
 
-  Buynowmodel({
-    required this.worth,
-    required this.image,
-    required this.vendorImage,
-    required this.name,
-    required this.winners,
-    required this.gift_qty,
-  });
+  Buynowmodel(
+      {required this.worth,
+      required this.image,
+      required this.vendorImage,
+      required this.name,
+      required this.winners,
+      required this.gift_qty,
+      required this.wow});
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+         wow: json['wow']?.toString() ?? '0', // Safely handle null values
       gift_qty: json['gift_qty'] as String,
       worth: json['worth'] as String,
       image: json['image'] as String,
