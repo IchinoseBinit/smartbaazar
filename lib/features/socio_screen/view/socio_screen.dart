@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
@@ -233,6 +234,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(0));
     // asyncbajarValue.when(data: (data) {
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     // }, error: (error, stackTrace) {
 
@@ -243,9 +245,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-
-        // bottomNavigationBar: const BottomNavigationScreen(),
-        key: _key,
+        extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: pselectedIndex,
+          onTabChanged: (index) {
+            ref.read(bottomNavIndexProvider.notifier).state = index;
+          },
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -259,6 +265,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

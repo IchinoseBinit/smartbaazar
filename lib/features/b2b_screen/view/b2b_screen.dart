@@ -84,7 +84,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -232,6 +232,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   @override
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+
     //     final adsList = ref.watch(fetchAdsProvider);
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('7'));
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
@@ -250,7 +252,13 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-        key: _key,
+        extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: pselectedIndex,
+          onTabChanged: (index) {
+            ref.read(bottomNavIndexProvider.notifier).state = index;
+          },
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -264,6 +272,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -730,7 +739,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       }
                     }
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox();
+                    return SizedBox.shrink();
                   },
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => SizedBox(
@@ -756,10 +765,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       },
                     ),
                   ),
-                ),
-
-                SizedBox(
-                  height: 10.h,
                 ),
 
                 SizedBox(
@@ -2282,7 +2287,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
-                SizedBox(height: 5.h),
+                SizedBox(height: 50.h),
 
                 // Container(
                 //   margin: const EdgeInsets.only(top: 2),

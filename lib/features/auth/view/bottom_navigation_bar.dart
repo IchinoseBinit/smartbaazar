@@ -1,58 +1,43 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class BottomNavigationScreen extends StatefulWidget {
-  const BottomNavigationScreen({super.key});
-
+class BottomNavigationScreen extends ConsumerWidget {
   @override
-  State<BottomNavigationScreen> createState() => _BottomNavigationScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(bottomNavIndexProvider);
 
-class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int _selectedTab = 0;
-
-  // List of pages to display
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    const FeedScreen(),
-    const MessageViewScreen(),
-    const VendorProfileScreen(),
-  ];
-
-  void _changeTab(int index) {
-    setState(() {
-      _selectedTab = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GenericSafeArea(
-      child: Scaffold(
-        extendBody: true,
-        backgroundColor: Colors.transparent,
-        body: _pages[_selectedTab], // Display selected page
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: AnimatedBottomBar(
-          selectedIndex: _selectedTab,
-          onTabChanged: _changeTab,
-        ),
+    return Scaffold(
+      extendBody: true,
+      body: IndexedStack(
+        index: selectedIndex,
+        children: [
+          const HomeScreen(),
+          const FeedScreen(),
+          const MessageViewScreen(),
+          const VendorProfileScreen(),
+        ],
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        selectedIndex: selectedIndex,
+        onTabChanged: (index) {
+          ref.read(bottomNavIndexProvider.notifier).state = index;
+        },
       ),
     );
   }
 }
 
-class AnimatedBottomBar extends StatelessWidget {
+class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
 
-  const AnimatedBottomBar({
+  const CustomBottomNavigationBar({
     required this.selectedIndex,
     required this.onTabChanged,
     super.key,
@@ -61,7 +46,7 @@ class AnimatedBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 70.w),
+      padding: EdgeInsets.symmetric(horizontal: 70.w, vertical: 8.h),
       child: Card(
         elevation: 5,
         shape: const StadiumBorder(),

@@ -524,7 +524,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const BottomNavigationScreen()),
+                            builder: (_) =>  BottomNavigationScreen()),
                         (route) => false, // Remove all previous routes
                       );
                     },

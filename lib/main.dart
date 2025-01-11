@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
@@ -17,6 +19,7 @@ import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -50,22 +53,23 @@ class _MyAppState extends State<MyApp> {
       designSize: const Size(430, 690),
       splitScreenMode: true,
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            // textTheme: GoogleFonts.quicksandTextTheme(
-            //   Theme.of(context).textTheme,
-            // ),
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: SplashScreen(),
-          // home: BrandBazarScreen(),
-          // home: GrocarysScreen(),
-          // home: JobssScreen(),
-          // home: ServicesScreen(),
-          // home: SocioShopScreen(),
-          ),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          // textTheme: GoogleFonts.quicksandTextTheme(
+          //   Theme.of(context).textTheme,
+          // ),
+          fontFamily: GoogleFonts.quicksand().fontFamily,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        // home: UsedScreen()
+        home: HomeScreen(),
+        // home: BrandBazarScreen(),
+        // home: GrocarysScreen(),
+        // home: JobssScreen(),
+        // home: ServicesScreen(),
+        // home: SocioShopScreen(),
+      ),
     );
   }
 }

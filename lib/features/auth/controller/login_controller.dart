@@ -46,7 +46,7 @@ class LoginController extends StateNotifier<GenericState> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const BottomNavigationScreen()),
+        MaterialPageRoute(builder: (_) =>  BottomNavigationScreen()),
       );
     } catch (e) {
       print("lol $e");

@@ -12,6 +12,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
@@ -220,6 +221,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('1'));
 
     final asyncbajarValue = ref.watch(getBrandBazaarResponseProvider);
@@ -237,9 +240,13 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-
-        // bottomNavigationBar: const BottomNavigationScreen(),
-        key: _key,
+        extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: pselectedIndex,
+          onTabChanged: (index) {
+            ref.read(bottomNavIndexProvider.notifier).state = index;
+          },
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -926,8 +933,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   data: (data) {
                     print("ram ${data.data?.newProducts}");
                     return Container(
-                      // child: Text(data.data.),
-                    );
+                        // child: Text(data.data.),
+                        );
                   },
                   error: (error, stackTrace) => const Text("Please try again"),
                   loading: () => const CircularProgressIndicator(),

@@ -78,7 +78,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/box.svg',
@@ -243,6 +243,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
         ref.watch(searchProvider(_searchController.text));
     final asyncbajarValue = ref.watch(getServiceProviderProvider);
     final category = ref.watch(getCategoriesProvider(97));
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     // asyncbajarValue.when(data: (data) {
 
@@ -255,9 +256,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-
-        // bottomNavigationBar: const BottomNavigationScreen(),
-        key: _key,
+        extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: pselectedIndex,
+          onTabChanged: (index) {
+            ref.read(bottomNavIndexProvider.notifier).state = index;
+          },
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -271,6 +276,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -2129,6 +2135,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   loading: () {
                     return const CircularProgressIndicator();
                   },
+                ),
+                SizedBox(
+                  height: 40.h,
                 ),
 
                 // Container(

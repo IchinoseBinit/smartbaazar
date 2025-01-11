@@ -87,7 +87,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -280,12 +280,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
 
     return Scaffold(
+        
         extendBody: true,
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.whiteColor,
         // drawer: const CustomDrawer(),
-        body: Stack(children: [
+        body: Stack(
+          children: [
           Positioned.fill(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -1638,8 +1640,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemBuilder: (context, index) {
                                   Buynowmodel resp = data.buynow[index];
                                   return buyorwin_widget(
-                                  wow: resp.wow?? '0',
-
+                                    wow: resp.wow ?? '0',
                                     gift_qty: resp.gift_qty!,
                                     worth: resp.worth!,
                                     productname: "Discount Coupon",

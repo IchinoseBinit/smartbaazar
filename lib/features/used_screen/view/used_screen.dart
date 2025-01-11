@@ -87,7 +87,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -225,6 +225,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
   @override
   Widget build(BuildContext context) {
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
@@ -246,8 +248,13 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-
-        // bottomNavigationBar:  ,
+        extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: pselectedIndex,
+          onTabChanged: (index) {
+            ref.read(bottomNavIndexProvider.notifier).state = index;
+          },
+        ),
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
@@ -262,6 +269,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1984,92 +1992,60 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                 asyncbajarValue.when(
                   data: (data) {
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.vertical, // Scroll vertically
-                      child: Wrap(
-                        spacing: 0.w, // Horizontal spacing between items
-                        runSpacing: 15.h, // Vertical spacing between rows
-                        children: List.generate(data.product.length, (index) {
-                          var res = data.product[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProductDetailScreen(productId: res.id),
+                    return ListView.builder(
+                      itemCount: data.product.length,
+                      itemBuilder: (context, index) {
+                        var res = data.product[index];
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductDetailScreen(productId: res.id),
+                              ),
+                            );
+                          },
+                          child: SizedBox(
+                            width: (MediaQuery.of(context).size.width) /
+                                2, // Adjust for two items per row
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 2),
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shadowColor:
+                                    const Color(0xff3D215F).withOpacity(0.5),
+                                elevation: 9,
+                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
                                 ),
-                              );
-                            },
-                            child: SizedBox(
-                              width: (MediaQuery.of(context).size.width) /
-                                  2, // Adjust for two items per row
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 2),
-                                child: Card(
-                                  clipBehavior: Clip.antiAlias,
-                                  shadowColor:
-                                      const Color(0xff3D215F).withOpacity(0.5),
-                                  elevation: 9,
-                                  margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: AllProductDetailWidget(
-                                    
-                                    discountpercentage: res.discount_percentage,
-                                    offer: res.offers,
-                                    shortestDistance: res.user.shortestDistance,
-                                    avg_rating: res.avg_rating?.toDouble(),
-                                    wow: res.wow,
-                                    comment: res.commentcount.toString(),
-                                    issponsored: res.user.sponsored,
-                                    discounttedPrice: res.discounted_price,
-                                    lefttile: "Used",
-                                    productImage: res.image,
-                                    Vimage: res.user.photo,
-                                    vendorname: res.user.name,
-                                    title: res.title,
-                                    price: res.price,
-                                    similarproductCount:
-                                        res.similarProductCount,
-                                    membershipColor: res.user.membershipColor,
-                                    membershipTitle: res.user.membershipTitle,
-                                  ),
+                                child: AllProductDetailWidget(
+                                  discountpercentage: res.discount_percentage,
+                                  offer: res.offers,
+                                  shortestDistance: res.user.shortestDistance,
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  wow: res.wow,
+                                  comment: res.commentcount.toString(),
+                                  issponsored: res.user.sponsored,
+                                  discounttedPrice: res.discounted_price,
+                                  lefttile: "Used",
+                                  productImage: res.image,
+                                  Vimage: res.user.photo,
+                                  vendorname: res.user.name,
+                                  title: res.title,
+                                  price: res.price,
+                                  similarproductCount: res.similarProductCount,
+                                  membershipColor: res.user.membershipColor,
+                                  membershipTitle: res.user.membershipTitle,
                                 ),
                               ),
                             ),
-                          );
-                        }),
-                      ),
+                          ),
+                        );
+                      },
                     );
-
-                    // SizedBox(
-                    //    height: 340.h,
-                    //   width: double.infinity,
-                    //   child: ListView.builder(
-                    //     padding: EdgeInsets.zero,
-                    //     clipBehavior: Clip.antiAlias,
-                    //     scrollDirection: Axis.horizontal,
-                    //     itemCount: data.allProducts.length,
-                    //     shrinkWrap: true,
-                    //     itemBuilder: (context, index) {
-                    //       // print(
-                    //       //     "ram ${}");
-                    //       return ProductDetailWidget(
-                    //         // productImage: data.allProducts[index].image,
-                    //         Vimage:
-                    //             data.allProducts[index].user.photo,
-
-                    //         vendorname:
-                    //             data.allProducts[index].user.name,
-                    //         title: data.allProducts[index].title,
-                    //         price: data.allProducts[index].price,
-                    //       );
-                    //     },
-                    //   ),
-                    // );
                   },
                   error: (error, stackTrace) {
                     return Text('error is $error');
@@ -2078,6 +2054,10 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     return const CircularProgressIndicator();
                   },
                 ),
+                SizedBox(
+                  height: 10.w,
+                )
+
                 // Container(
                 //   margin: const EdgeInsets.only(top: 2),
                 //   height: 40.h,

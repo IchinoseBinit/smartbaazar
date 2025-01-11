@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
@@ -71,6 +72,7 @@ final List<Map<String, dynamic>> items = [
     'screen': const EventsScreen()
   },
 ];
+final bottomNavIndexProvider = StateProvider<int>((ref) => 0);
 
 const String baseAsset = "assets/icon";
 const String drawerIcon = "$baseAsset/drawerIcon.svg";

@@ -209,7 +209,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen": const BottomNavigationScreen(),
+      "screen":  BottomNavigationScreen(),
     },
     {
       "icon": Icons.feed,
@@ -400,7 +400,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                 ),
                 const VendorProfileExtraLinkWidget(),
                 SizedBox(
-                  height: 40.h,
+                  height: 240.h,
                 ),
               ],
             ),

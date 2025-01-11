@@ -14,6 +14,8 @@ class SmartClinet {
   static String userName = '';
   static String userEmail = '';
   static final SmartClinet _instance = SmartClinet._internal();
+  int _retryCount = 0; // Variable to track the number of retries
+  final int _maxRetries = 3; // Max retries before failing
 
   factory SmartClinet() {
     return _instance;
@@ -38,13 +40,15 @@ class SmartClinet {
     _client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
-          print('Adding token to request: Bearer $token'); // Debugging token
+          print('Adding token to request: Bearer $token');
           options.headers['Authorization'] = 'Bearer $token';
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
           if (error.response != null && error.response!.statusCode! >= 400) {
             print("Error: Status Code >= 400, trying to refresh token...");
+
+            // Only attempt to refresh if we haven't exceeded max retries
             final success = await _refreshToken();
             if (success) {
               RequestOptions requestOptions = error.requestOptions;
@@ -56,6 +60,10 @@ class SmartClinet {
                 return handler.next(retryError);
               }
             }
+
+            // If refresh failed, handle error gracefully (e.g., log out or notify user)
+            print("Failed to refresh token. Logging out or redirecting...");
+            // Add logout logic here if needed
             return handler.next(error);
           }
           return handler.next(error);
@@ -68,10 +76,23 @@ class SmartClinet {
   }
 
   Future<bool> _refreshToken() async {
+    if (_retryCount >= _maxRetries) {
+      print("Max retries reached, cannot refresh token anymore.");
+      return false; // Return false if retry count exceeds limit
+    }
+
+    _retryCount++; // Increment retry count each time
     try {
       final container = ProviderContainer(); // Create a Riverpod container
-      final refreshTokenResponse =
-          await container.read(getRefreshTokenProvider.future);
+      final refreshTokenResponse = await container
+          .read(getRefreshTokenProvider.future)
+          .timeout(Duration(seconds: 120));
+
+      // Check if the refresh token was successfully retrieved
+      if (refreshTokenResponse == null) {
+        print("Failed to refresh token.");
+        return false;
+      }
 
       SmartClinet.token = refreshTokenResponse.authToken;
       SmartClinet.refresh = refreshTokenResponse.refreshToken;
@@ -80,11 +101,10 @@ class SmartClinet {
       await prefs.setString('accessToken', refreshTokenResponse.authToken);
       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-      print(
-          "Token refreshed successfully: ${SmartClinet.token}"); // Debugging token refresh
+      print("Token refreshed successfully: ${SmartClinet.token}");
       return true;
     } catch (e) {
-      print("Error refreshing token using API: $e");
+      print("Error refreshing token: $e");
       return false;
     }
   }

@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
@@ -240,11 +241,17 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     // },)
     // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     return Scaffold(
 
-        // bottomNavigationBar: const BottomNavigationScreen(),
-        key: _key,
+  extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: pselectedIndex,
+          onTabChanged: (index) {
+            ref.read(bottomNavIndexProvider.notifier).state = index;
+          },
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(

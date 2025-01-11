@@ -127,4 +127,5 @@ class ApiConstants {
   static String getFeedProductDropDownUrl = '$baseUrl/users/products_feed';
   static String postFeedForm = '$baseUrl/users/storefeed';
   static String getOffersUrl = '$baseUrl/posts/getoffers';
+  static String postFeedWOwUrl = '$baseUrl/users/feed_wow';
 }

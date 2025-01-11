@@ -56,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const BottomNavigationScreen(),
+                          builder: (context) =>  BottomNavigationScreen(),
                         ));
                   },
                   child: const Icon(Icons.clear),
