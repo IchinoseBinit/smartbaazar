@@ -400,7 +400,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                 ),
                 const VendorProfileExtraLinkWidget(),
                 SizedBox(
-                  height: 40.h,
+                  height: 240.h,
                 ),
               ],
             ),
