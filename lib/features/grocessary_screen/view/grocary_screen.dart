@@ -671,7 +671,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

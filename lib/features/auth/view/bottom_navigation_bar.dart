@@ -8,6 +8,8 @@ import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class BottomNavigationScreen extends ConsumerWidget {
+  const BottomNavigationScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(bottomNavIndexProvider);
@@ -16,11 +18,11 @@ class BottomNavigationScreen extends ConsumerWidget {
       extendBody: true,
       body: IndexedStack(
         index: selectedIndex,
-        children: [
-          const HomeScreen(),
-          const FeedScreen(),
-          const MessageViewScreen(),
-          const VendorProfileScreen(),
+        children: const [
+          HomeScreen(),
+          FeedScreen(),
+          MessageViewScreen(),
+          VendorProfileScreen(),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(

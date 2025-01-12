@@ -187,7 +187,7 @@ void _onDragUpdate(DragUpdateDetails details) {
     {'label': 'Event', 'id': 6},
     {'label': 'Grocery', 'id': 7},
   ];
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {

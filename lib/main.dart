@@ -14,6 +14,7 @@ import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
+import 'package:smartbazar/features/home/view/fake.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         // home: UsedScreen()
-        home: HomeScreen(),
+        home: const HomeScreen(),
         // home: BrandBazarScreen(),
         // home: GrocarysScreen(),
         // home: JobssScreen(),

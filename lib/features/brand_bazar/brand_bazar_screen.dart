@@ -625,7 +625,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       }
                     }
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => SizedBox(

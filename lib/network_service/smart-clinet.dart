@@ -86,13 +86,7 @@ class SmartClinet {
       final container = ProviderContainer(); // Create a Riverpod container
       final refreshTokenResponse = await container
           .read(getRefreshTokenProvider.future)
-          .timeout(Duration(seconds: 120));
-
-      // Check if the refresh token was successfully retrieved
-      if (refreshTokenResponse == null) {
-        print("Failed to refresh token.");
-        return false;
-      }
+          .timeout(const Duration(seconds: 120));
 
       SmartClinet.token = refreshTokenResponse.authToken;
       SmartClinet.refresh = refreshTokenResponse.refreshToken;

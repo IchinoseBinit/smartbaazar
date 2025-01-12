@@ -254,7 +254,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -649,7 +649,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

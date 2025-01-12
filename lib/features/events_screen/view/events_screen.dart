@@ -268,7 +268,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -664,7 +664,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

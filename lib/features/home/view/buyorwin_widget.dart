@@ -237,7 +237,7 @@ class buyorwin_widget extends StatelessWidget {
                                 width: 5.w,
                               ),
                               Text(
-                                "${wow}",
+                                wow,
                                 style: headerstyle.copyWith(
                                     color: const Color(0xff831F67),
                                     fontSize: 10,

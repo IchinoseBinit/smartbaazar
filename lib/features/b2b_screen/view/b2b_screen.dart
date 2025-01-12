@@ -272,7 +272,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -739,7 +739,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       }
                     }
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                   error: (error, stackTrace) => Text(error.toString()),
                   loading: () => SizedBox(

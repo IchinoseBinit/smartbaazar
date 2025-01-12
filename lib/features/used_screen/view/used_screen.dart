@@ -269,7 +269,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
         // ),
         body: Stack(children: [
           SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -703,7 +703,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     }
 
                     // If any of the above conditions fail, return a default widget
-                    return SizedBox();
+                    return const SizedBox();
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
