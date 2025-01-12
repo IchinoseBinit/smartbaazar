@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
@@ -211,28 +212,35 @@ class ProductDetailWidget extends StatelessWidget {
                 ? Image.asset(
                     'assets/images/shoppingimages.png',
                     height: 130.h,
-                    width: 200.2,
+                    width: 200.w,
                     fit: BoxFit.fill,
                   )
                 : Image.network(
-                    productImage ?? '', // Ensure Vimage is not null or empty
+                    productImage ??
+                        '', // Ensure productImage is not null or empty
                     height: 130.h,
-                    // Adjust size accordingly
                     width: 200.w,
                     fit: BoxFit.fill,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {
                         return child; // If no loading, show the image
                       } else {
-                        return const Center(
-                            child:
-                                CircularProgressIndicator()); // Show loading indicator
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: 200.w,
+                            height: 130.h,
+                            color:
+                                Colors.white, // Placeholder shimmer container
+                          ),
+                        );
                       }
                     },
                     errorBuilder: (context, error, stackTrace) {
                       return SizedBox(
                         width: 200.w,
-                        height: 129.h,
+                        height: 130.h,
                         child: const Icon(Icons.error),
                       ); // Show error icon if image fails to load
                     },

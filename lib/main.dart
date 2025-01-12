@@ -68,13 +68,13 @@ class _MyAppState extends State<MyApp> {
         ),
         // home: UsedScreen()
         // home: const HomeScreen(),
-        home: VendorProfileScreen(),
+        // home: UsedScreen(),
         // home: VendorHomeScreen(vendorName: 'techstore', vid: 9),
         // home: ProductDetailScreen(productId: '896')
         // home: GrocarysScreen(),
         // home: JobssScreen(),
         // home: ServicesScreen(),
-        // home: SocioShopScreen(),
+        home: SplashScreen(),
       ),
     );
   }

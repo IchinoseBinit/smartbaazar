@@ -40,6 +40,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
   Offset _initialDragPosition = Offset.zero;
   // final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   late TabController tabController;
+  int? postypeid = 0;
+  Map<String, String>? mydropdown = headeritems.firstWhere(
+    (item) => item['label'] == 'Everything',
+    orElse: () => headeritems.first, // Fallback to the first item if not found
+  );
 
   // final List<String> _services = [
   //   'SHOPZONE',
@@ -140,80 +145,397 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  // height: 170,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50)),
-                    gradient: LinearGradient(colors: [
-                      Color(0xFF392574),
-                      Color(0xFF681b4e),
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                  ),
-                  child: Column(
+                SizedBox(
+                  // height: 300.h,
+                  child: Stack(
                     children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const VendorProfileScreen(),
-                                    ));
-                              },
-                              child: Image.asset('assets/images/group.png')),
-                          SizedBox(
-                            width: 2.w,
+                      Positioned(
+                        child: Container(
+                          // height: 170,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(50),
+                                bottomRight: Radius.circular(50)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFF392574),
+                                  Color(0xFF681b4e),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
                           ),
-                          SizedBox(
-                              height: 50,
-                              child: NewSearchWidget(
-                                onSearchFocusChanged: _onSearchFocusChanged,
-                                searchController: _searchController,
-                                ontapped: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => BusinessTabScreen(
-                                          query: _searchController.text,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: Image.asset(
+                                          'assets/images/group.png')),
+                                  SizedBox(
+                                    height: 40,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 45.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.w),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF46236a),
+                                            border:
+                                                Border.all(color: Colors.white),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(19.r),
+                                              bottomLeft: Radius.circular(19.r),
+                                            ),
+                                          ),
+                                          child: DropdownButton<
+                                              Map<String, String>>(
+                                            alignment: Alignment.center,
+                                            value: mydropdown ??
+                                                headeritems[postypeid!],
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                mydropdown = newValue;
+                                              });
+                                            },
+                                            items: headeritems.map((item) {
+                                              return DropdownMenuItem(
+                                                alignment: Alignment.center,
+                                                value: item,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      item['icon']!,
+                                                      height: 10.h,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(width: 8.w),
+                                                    Text(
+                                                      item['label']!,
+                                                      style: TextStyle(
+                                                          fontSize: 10.sp,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList(),
+                                            dropdownColor:
+                                                const Color(0xff665B6B)
+                                                    .withOpacity(0.5),
+                                            underline: const SizedBox(),
+                                            icon: const SizedBox(),
+                                          ),
                                         ),
-                                      ));
-                                },
-                                onchnage: (p0) {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           const BusinessTabScreen(),
-                                  //     ));
-                                },
-                              )),
-                        ],
+                                        Container(
+                                          width: 180.w,
+                                          height: 45.h,
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: const BoxDecoration(
+                                              color: Colors.white),
+                                          child: TextField(
+                                            controller: _searchController,
+                                            onTap: () {
+                                              _onSearchFocusChanged(
+                                                  _searchController
+                                                      .text.isNotEmpty);
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              prefixIcon: const Icon(
+                                                Icons.search,
+                                                size: 25,
+                                                color: Color(0xffD9D9D9),
+                                              ),
+                                              enabledBorder:
+                                                  const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    width: 0.2,
+                                                    color: Colors.white),
+                                              ),
+                                              hintText: "Search Everything",
+                                              hintStyle: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  color:
+                                                      const Color(0xffD9D9D9)),
+                                              isCollapsed: true,
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 5.h,
+                                                      horizontal: 10.w),
+                                              disabledBorder: InputBorder.none,
+                                              isDense: true,
+                                            ),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            if (_searchController.text
+                                                    .trim()
+                                                    .length !=
+                                                0)
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BusinessTabScreen(
+                                                      query: _searchController
+                                                          .text,
+                                                    ),
+                                                  ));
+                                          },
+                                          child: Container(
+                                            height: 45.h,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.w,
+                                                vertical: 5.h),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white),
+                                              color: Colors.transparent,
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(19.r),
+                                                bottomRight:
+                                                    Radius.circular(19.r),
+                                              ),
+                                            ),
+                                            child: Icon(
+                                              Icons.search,
+                                              color: Colors.white,
+                                              size: 20.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(4, (index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedIndex = index;
+                                      });
+                                      _pageController.animateToPage(
+                                        index,
+                                        duration:
+                                            const Duration(milliseconds: 50),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 5.h,
+                                      width: 5.w,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      decoration: BoxDecoration(
+                                        color: selectedIndex == index
+                                            ? Colors.amber
+                                            : Colors.grey,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+
+                              SizedBox(
+                                height: 80.h,
+                                child: PageView.builder(
+                                  itemCount: items.length,
+                                  padEnds: false,
+                                  controller: _pageController,
+                                  onPageChanged: (value) {
+                                    setState(() {
+                                      selectedIndex =
+                                          value; // Update selectedIndex based on page change
+                                    });
+                                  },
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> data = items[index];
+
+                                    // Highlight only when index == 4
+                                    bool isActive = index == 1;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedIndex = index;
+                                        });
+                                      },
+                                      child: AnimatedContainer(
+                                        padding: EdgeInsets.zero,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      data['screen']),
+                                            );
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (data['icon']
+                                                  .toString()
+                                                  .endsWith('.svg'))
+                                                SvgPicture.asset(
+                                                  data['icon'],
+                                                  alignment: Alignment.center,
+                                                  fit: BoxFit.contain,
+                                                  theme: const SvgTheme(
+                                                      currentColor:
+                                                          Color(0xffdd9d9d9)),
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                )
+                                              else
+                                                Image.asset(
+                                                  data['icon'],
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                data['label'],
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: const Divider(
+                                  thickness: 0.4,
+                                  height: 1,
+                                  color: ColorConstant.grayColor,
+                                ),
+                              ),
+                              if (_isSectionsVisible)
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const BrandBazarScreen(),
+                                              ));
+                                        },
+                                        child: const Text(
+                                          "Brandbazaar",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFFD9D9D9),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MySubscribeAndWinPage(),
+                                              ));
+                                        },
+                                        child: const Text(
+                                          "BuyOrWin",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFFD9D9D9),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
+                        ),
                       ),
                       if (_showSearchProductModels)
                         Positioned(
-                          top: 0.h, // Position just below the search bar
-                          left: 0,
-                          right: 0,
+                          top: 80.h, // Position just below the search bar
+                          left: 10,
+                          right: 10,
                           child: Container(
-                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(horizontal: 5.w),
                             color: Colors.white,
-                            child: SearchProductModels.when(data: (results) {
-                              if (results.isEmpty) {
-                                return const SizedBox(
-                                  child: Text('No result found'),
-                                ); // No results
-                              }
-                              return Card(
-                                elevation: 8,
-                                child: ListView.separated(
+                            child: SearchProductModels.when(
+                              data: (results) {
+                                if (results.isEmpty) {
+                                  return const SizedBox(
+                                    child: Text('No result found'),
+                                  ); // No results
+                                }
+                                return ListView.separated(
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
                                   primary: false,
@@ -221,225 +543,44 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   itemBuilder: (context, index) {
                                     final product = results[index];
                                     return ListTile(
-                                      title: Text(product.title),
+                                      dense: true,
+                                      title: Text(
+                                        softWrap: true,
+                                        product.title,
+                                        style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 10),
+                                      ),
                                       onTap: () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BusinessTabScreen(
-                                                query: _searchController.text,
-                                              ),
-                                            ));
-
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BusinessTabScreen(
+                                              query: _searchController.text,
+                                            ),
+                                          ),
+                                        );
                                         setState(() {
                                           _showSearchProductModels = false;
-
                                           FocusScope.of(context).unfocus();
                                         });
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) =>
-                                        //         ProductDetailsScreen(
-                                        //       productId: product.id,
-                                        //     ),
-                                        //   ),
-                                        // );
                                       },
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
                                       const Divider(),
-                                ),
-                              );
-                            }, loading: () {
-                              return null;
-
-                              // return SizedBox(
-                              //     width: 10.w,
-                              //     height: 10.h,
-                              //     child: CircularProgressIndicator());
-                            }, error: (error, stack) {
-                              return null;
-
-                              // return SizedBox(
-                              //     width: 10.w,
-                              //     height: 10.h,
-                              //     child: CircularProgressIndicator());
-                            }),
-                          ),
-                        ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(items.length, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                              });
-                              _pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 50),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              decoration: BoxDecoration(
-                                color: selectedIndex == index
-                                    ? Colors.amber
-                                    : Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      SizedBox(
-                        height: 80.h,
-                        child: PageView.builder(
-                          itemCount: items.length,
-                          padEnds: false,
-                          controller: _pageController,
-                          //  // onPageChanged: _onPageChanged,
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = items[index];
-
-                            // Highlight only when index == 4
-                            bool isActive = index == 1;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                                _pageController.animateToPage(
-                                  2,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
                                 );
                               },
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.center,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => data['screen']),
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (data['icon']
-                                          .toString()
-                                          .endsWith('.svg'))
-                                        SvgPicture.asset(
-                                          data['icon'],
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
-                                          theme: const SvgTheme(
-                                              currentColor: Color(0xffdd9d9d9)),
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        )
-                                      else
-                                        Image.asset(
-                                          data['icon'],
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        data['label'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-
-                      const Divider(
-                        height: 0.1,
-                        color: ColorConstant.grayColor,
-                      ),
-
-                      if (_isSectionsVisible)
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BrandBazarScreen(),
-                                      ));
-                                },
-                                child: const Text(
-                                  "Brandbazaar",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFFD9D9D9),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MySubscribeAndWinPage(),
-                                      ));
-                                },
-                                child: const Text(
-                                  "BuyOrWin",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFFD9D9D9),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
+                              loading: () {
+                                return const SizedBox();
+                              },
+                              error: (error, stack) {
+                                return Center(child: Text(error.toString()));
+                              },
+                            ),
                           ),
                         ),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),

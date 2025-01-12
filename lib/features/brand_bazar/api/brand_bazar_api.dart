@@ -7,7 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'brand_bazar_api.g.dart';
 
 @riverpod
-Future<BrandBazarModel> getBrandBazaarResponse(GetBrandBazaarResponseRef ref) async {
+Future<BrandBazarModel> getBrandBazaarResponse( ref) async {
   final SmartClinet client = SmartClinet(); // Assuming this is your API client
   try {
     

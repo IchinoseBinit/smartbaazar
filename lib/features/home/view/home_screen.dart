@@ -1115,6 +1115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
+                                                      
                                                       didcountpercentage: prod
                                                           .discount_percentage,
                                                       distance:

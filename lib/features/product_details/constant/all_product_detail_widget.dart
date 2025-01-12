@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
@@ -182,37 +183,36 @@ class AllProductDetailWidget extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.w),
-          child: Image.network(
-            productImage ?? '', // Ensure Vimage is not null or empty
-            height: 100.h,
-            // Adjust size accordingly
-            // width: 200.w,
-            fit: BoxFit.fill,
-            alignment: Alignment.center,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                return child; // If no loading, show the image
-              } else {
-                return const Center(
-                    child:
-                        CircularProgressIndicator()); // Show loading indicator
-              }
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return SizedBox(
-                height: 100.h,
-                // Adjust size accordingly
 
-                child: const Icon(
-                  Icons.error,
-                  fill: 1,
-                ),
-              ); // Show error icon if image fails to load
-            },
-          ),
+Padding(
+  padding: EdgeInsets.symmetric(horizontal: 2.w),
+  child: Image.network(
+    productImage ?? '',
+    height: 100.h,
+    fit: BoxFit.fill,
+    alignment: Alignment.center,
+    loadingBuilder: (context, child, loadingProgress) {
+      if (loadingProgress == null) {
+        return child; // If the image has loaded, display it
+      }
+      return Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          height: 100.h,
+          color: Colors.white, // Placeholder for shimmer effect
         ),
+      );
+    },
+    errorBuilder: (context, error, stackTrace) {
+      return SizedBox(
+        height: 100.h,
+        child: const Icon(Icons.error),
+      ); // Show error icon if image fails to load
+    },
+  ),
+),
+
         SizedBox(
           height: 3.h,
         ),
