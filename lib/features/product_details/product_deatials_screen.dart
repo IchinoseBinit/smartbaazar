@@ -11,6 +11,7 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
@@ -47,7 +48,7 @@ class ProductDetailScreen extends ConsumerWidget {
 
   // List<Ad>? preloadAds;
   // final _formKey = GlobalKey<FormState>();
-  final tabs = ['Details', 'Shop', 'POSTS', 'LIVE PRIZES'];
+  final tabs = ['Deals', 'Shop', 'POSTS', 'LIVE PRIZES'];
   String _removeHtmlTags(String htmlString) {
     final regExp = RegExp(r'<[^>]*>');
     return htmlString.replaceAll(regExp, '');
@@ -622,7 +623,8 @@ class ProductDetailScreen extends ConsumerWidget {
                             AdditonalDetailsWidget(
                               desp: data.extra!.fields!.original!.result!
                                   .field4!.name,
-                              title: "Brand",
+                              title: data.extra!.fields!.original!.result!
+                                  .field4!.name,
                             ),
                           if (data.result != null)
                             AdditonalDetailsWidget(
@@ -863,15 +865,43 @@ class ProductDetailScreen extends ConsumerWidget {
                             Padding(
                               padding: const EdgeInsets.all(10),
                               child: SizedBox(
-                                height: 300,
                                 child: selectedIndex == 1
-                                    ? CardWidget(
-                                        deal: data.result!.deals ??
-                                            []) // Show deals content for selectedIndex 1
+                                    ? Row(
+                                        children: data.result!.deals!.map(
+                                        (e) {
+                                          return buildDealItemWidget(
+                                              data: Deal(
+                                                  discount_percentage:
+                                                      e.discountPercentage
+                                                                  .toString() ==
+                                                              'null'
+                                                          ? '0'
+                                                          : e.discountPercentage
+                                                              .toString(),
+                                                  id: e.id,
+                                                  image: e.image));
+                                        },
+                                      ).toList())
+                                    // ? CardWidget(
+                                    //     deal: data.result!.deals ??
+                                    //         []) // Show deals content for selectedIndex 1
                                     : selectedIndex == 2
-                                        ? CardWidget(
-                                            deal: data.result!.shop ??
-                                                []) // Show shop content for selectedIndex 2
+                                        ? Row(
+                                            children: data.result!.shop!.map(
+                                            (e) {
+                                              return buildDealItemWidget(
+                                                  data: Deal(
+                                                      discount_percentage: e
+                                                                  .discountPercentage
+                                                                  .toString() ==
+                                                              'null'
+                                                          ? '0'
+                                                          : e.discountPercentage
+                                                              .toString(),
+                                                      id: e.id,
+                                                      image: e.image));
+                                            },
+                                          ).toList())
                                         : selectedIndex == 3
                                             ? SwapablePostCard(
                                                 post: data.result!.feed_post!)
@@ -902,65 +932,58 @@ class ProductDetailScreen extends ConsumerWidget {
                                     fontSize: 17,
                                     color: Colors.black87),
                               )),
-                          data.widgetSimilarPosts?.posts.data[0].userPhotoUrl ==
-                                  null
-                              ? Center(child: nolistingfound())
-                              : GridView.builder(
-                                  physics:
-                                      const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                  shrinkWrap: true, // Adjust to fit content
-                                  itemCount: data
-                                      .widgetSimilarPosts?.posts.data.length,
+                          // data.widgetSimilarPosts?.posts.data.length==0
 
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisExtent: 430,
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 0.2,
-                                    mainAxisSpacing: 0.2,
-                                    childAspectRatio: 0.9,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    // VProduct res = data.allProducts[index];
-                                    return Padding(
-                                      padding: EdgeInsets.only(bottom: 5.h),
-                                      child: ProductDetailWidget(
-                                        productImage: data
-                                                .widgetSimilarPosts
-                                                ?.posts
-                                                .data[index]
-                                                .userPhotoUrl ??
-                                            "0",
-                                        Vimage: data.widgetSimilarPosts?.posts
-                                            .data[index].user_details!.photo,
-                                        vendorname: data
-                                            .widgetSimilarPosts
-                                            ?.posts
-                                            .data[index]
-                                            .user_details!
-                                            .name,
-                                        title: data.widgetSimilarPosts?.posts
-                                            .data[index].title,
-                                        price: data.widgetSimilarPosts?.posts
-                                            .data[index].price,
-                                        similarproductCount: 0,
-                                        membershipColor: "#3D215F",
-                                        membershipTitle: "",
-                                        avg_rating: data
-                                            .result!.ratings!.avg_rating!
-                                            .toDouble(),
-                                        comment: data.result!.commentCount!
-                                            .toString(),
-                                        discounttedPrice:
-                                            data.result!.discountedPrice!,
-                                        issponsored: false,
-                                        lefttile: "Trade-Hub",
-                                        offer: data.result!.offer!,
-                                        wow: data.result!.wow,
-                                      ),
-                                    );
-                                  },
-                                ),
+                          //     ? Center(child: nolistingfound())
+                          //     : GridView.builder(
+                          //         physics:
+                          //             const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                          //         shrinkWrap: true, // Adjust to fit content
+                          //         itemCount: data
+                          //             .widgetSimilarPosts?.posts.data.length,
+
+                          //         gridDelegate:
+                          //             const SliverGridDelegateWithFixedCrossAxisCount(
+                          //           mainAxisExtent: 430,
+                          //           crossAxisCount: 2,
+                          //           crossAxisSpacing: 0.2,
+                          //           mainAxisSpacing: 0.2,
+                          //           childAspectRatio: 0.9,
+                          //         ),
+                          //         itemBuilder: (context, index) {
+                          //           PostResult res = data.widgetSimilarPosts!.posts.data[index];
+                          //           return Padding(
+                          //             padding: EdgeInsets.only(bottom: 5.h),
+                          //             child: ProductDetailWidget(
+                          //               productImage: "https://smartbazaar.jianjun-rnd.com.np/storage/${res.pictures![0].filename}}",
+                          //                Vimage: res.user_photo_url,
+
+                          //               // vendorname: data
+                          //               //     .widgetSimilarPosts
+                          //               //     ?.posts
+                          //               //     .data[index]
+                          //               //     .user_details!
+                          //               //     .name,
+                          //               title:res.title,
+                          //               price: res.price,
+                          //               // similarproductCount: 0,
+                          //               // membershipColor: "#3D215F",
+                          //               // membershipTitle: "",
+                          //               // avg_rating: data
+                          //               //     .result!.ratings!.avg_rating!
+                          //               //     .toDouble(),
+                          //               // comment: data.result!.commentCount!
+                          //               //     .toString(),
+                          //               // discounttedPrice:
+                          //               //     data.result!.discountedPrice!,
+                          //               // issponsored: false,
+                          //               // lefttile: "Trade-Hub",
+                          //               // offer: data.result!.offer!,
+                          //               // wow: data.result!.wow,
+                          //             ),
+                          //           );
+                          //         },
+                          //       ),
 
                           // Container(
                           //   width: double.infinity,
@@ -994,7 +1017,10 @@ class ProductDetailScreen extends ConsumerWidget {
                           //   ],
                           // ),
                         ],
-                      ))
+                      )),
+                  SizedBox(
+                    height: 30.h,
+                  )
                 ],
               ),
             ),
@@ -1035,21 +1061,21 @@ class SwapablePostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return post.isEmpty
         ? Center(child: nolistingfound())
-        : ListView.builder(
+        : SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            itemCount: post.length,
-            itemBuilder: (context, index) {
-              FeedPost data = post[index];
-              return PostCard(
-                // subscribers: data.subscribers.toString(),
-                isLive: show,
-                image: data.image!,
-                name: data.name!,
-                caption: data.caption!,
-                photo: data.photo!,
-                subscribers: data.subscribers!.toString(),
-              );
-            },
+            child: Row(
+              children: post.map((data) {
+                return PostCard(
+                  // subscribers: data.subscribers.toString(),
+                  isLive: show,
+                  image: data.image!,
+                  name: data.name!,
+                  caption: data.caption!,
+                  photo: data.photo!,
+                  subscribers: data.subscribers!.toString(),
+                );
+              }).toList(),
+            ),
           );
   }
 }
@@ -1069,20 +1095,20 @@ class LiveSwapble extends StatelessWidget {
   Widget build(BuildContext context) {
     return post.isEmpty
         ? Center(child: nolistingfound())
-        : ListView.builder(
+        : SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            itemCount: post.length,
-            itemBuilder: (context, index) {
-              LivePrize data = post[index];
-              return PostCard(
-                isLive: show,
-                image: data.image!,
-                name: data.name,
-                caption: '',
-                photo: data.photo!,
-                subscribers: data.subscribers!.toString(),
-              );
-            },
+            child: Row(
+              children: post.map((data) {
+                return PostCard(
+                  isLive: show,
+                  image: data.image!,
+                  name: data.name,
+                  caption: '',
+                  photo: data.photo!,
+                  subscribers: data.subscribers!.toString(),
+                );
+              }).toList(),
+            ),
           );
   }
 }
@@ -1094,35 +1120,33 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
       width: double.infinity,
       child: deal.isEmpty
           ? Center(child: nolistingfound())
-          : ListView.builder(
+          : SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              itemCount: deal.length,
-              itemBuilder: (context, index) {
-                Shop data = deal[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: DottedBorder(
-                    color: Colors.black,
-                    strokeWidth: 2,
-                    borderType: BorderType.RRect,
-                    radius: const Radius.circular(12),
-                    dashPattern: const [6, 5],
-                    child: SizedBox(
+              child: Row(
+                children: deal.map((data) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: DottedBorder(
+                      color: Colors.black,
+                      strokeWidth: 2,
+                      borderType: BorderType.RRect,
+                      radius: const Radius.circular(12),
+                      dashPattern: const [6, 5],
+                      child: SizedBox(
                         width: 120,
                         height: 260,
-                        //  padding: const EdgeInsets.all(10),
                         child: Image.network(
                           data.image,
                           fit: BoxFit.cover,
-                          // height: 200,
-                        )),
-                  ),
-                );
-              },
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
     );
   }

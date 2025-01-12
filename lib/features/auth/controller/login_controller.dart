@@ -86,19 +86,17 @@ class LoginController extends StateNotifier<GenericState> {
       _navigateToLoginScreen(context);
     }
   }
-
-  String _getErrorMessage(dynamic e) {
-    if (e is DioException) {
-      final responseData = e.response?.data;
-      if (responseData is Map<String, dynamic>) {
-        return responseData['message'] ?? 'An unexpected error occurred.';
-      }
-      return responseData is String
-          ? responseData
-          : 'An unexpected error occurred.';
+String _getErrorMessage(dynamic e) {
+  if (e is DioException) {
+    final responseData = e.response?.data;
+    if (responseData is Map<String, dynamic>) {
+      return responseData['message'] ?? 'An unexpected error occurred.';
     }
-    return e.toString();
+    return responseData is String ? responseData : 'An unexpected error occurred.';
   }
+  return 'An unexpected error occurred.';
+}
+
 
   void _navigateToLoginScreen(BuildContext context) {
     Navigator.pushReplacement(

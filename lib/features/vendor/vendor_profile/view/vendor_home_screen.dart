@@ -251,84 +251,82 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                       MYonchnage: (p0) {},
                                     ),
                                   ),
-                                  Positioned(
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: double.infinity,
-                                      color: Colors.white,
-                                      child: SearchProductModels.when(
-                                          data: (results) {
-                                        if (results.isEmpty) {
-                                          return const SizedBox(
-                                            child: Text('No result found'),
-                                          ); // No results
-                                        }
-                                        return Card(
-                                          elevation: 8,
-                                          child: ListView.separated(
-                                            padding: EdgeInsets.zero,
-                                            shrinkWrap: true,
-                                            primary: false,
-                                            itemCount: results.length,
-                                            itemBuilder: (context, index) {
-                                              final product = results[index];
-                                              return ListTile(
-                                                title: Text(product.title),
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            BusinessTabScreen(
-                                                          query:
-                                                              _searchController
-                                                                  .text,
-                                                        ),
-                                                      ));
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                    child: SearchProductModels.when(
+                                        data: (results) {
+                                      if (results.isEmpty) {
+                                        return const SizedBox(
+                                          child: Text('No result found'),
+                                        ); // No results
+                                      }
+                                      return Card(
+                                        elevation: 8,
+                                        child: ListView.separated(
+                                          padding: EdgeInsets.zero,
+                                          shrinkWrap: true,
+                                          primary: false,
+                                          itemCount: results.length,
+                                          itemBuilder: (context, index) {
+                                            final product = results[index];
+                                            return ListTile(
+                                              title: Text(product.title),
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BusinessTabScreen(
+                                                        query: _searchController
+                                                            .text,
+                                                      ),
+                                                    ));
 
-                                                  setState(() {
-                                                    _showSearchProductModels =
-                                                        false;
+                                                setState(() {
+                                                  _showSearchProductModels =
+                                                      false;
 
-                                                    FocusScope.of(context)
-                                                        .unfocus();
-                                                  });
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) =>
-                                                  //         ProductDetailsScreen(
-                                                  //       productId: product.id,
-                                                  //     ),
-                                                  //   ),
-                                                  // );
-                                                },
-                                              );
-                                            },
-                                            separatorBuilder:
-                                                (context, index) =>
-                                                    const Divider(),
-                                          ),
-                                        );
-                                      }, loading: () {
-                                        return null;
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                });
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         ProductDetailsScreen(
+                                                //       productId: product.id,
+                                                //     ),
+                                                //   ),
+                                                // );
+                                              },
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              const Divider(),
+                                        ),
+                                      );
+                                    }, loading: () {
+                                      return null;
 
-                                        // return SizedBox(
-                                        //     width: 10.w,
-                                        //     height: 10.h,
-                                        //     child: CircularProgressIndicator());
-                                      }, error: (error, stack) {
-                                        return null;
+                                      // return SizedBox(
+                                      //     width: 10.w,
+                                      //     height: 10.h,
+                                      //     child: CircularProgressIndicator());
+                                    }, error: (error, stack) {
+                                      return null;
 
-                                        // return SizedBox(
-                                        //     width: 10.w,
-                                        //     height: 10.h,
-                                        //     child: CircularProgressIndicator());
-                                      }),
-                                    ),
+                                      // return SizedBox(
+                                      //     width: 10.w,
+                                      //     height: 10.h,
+                                      //     child: CircularProgressIndicator());
+                                    }),
                                   ),
+                                ),
                               ],
                             ),
 
@@ -652,7 +650,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                   (index) {
                                                 BrandNewModel prod =
                                                     alldata![index];
-                                                
 
                                                 return GestureDetector(
                                                   onTap: () {
@@ -1221,7 +1218,7 @@ class DottedContainer extends StatelessWidget {
                 itemCount: deals?.length ?? 0,
                 itemBuilder: (context, index) {
                   final data = deals![index];
-                  return _buildDealItem(data);
+                  return buildDealItemWidget(data: data);
                 },
               ),
             ),
@@ -1267,8 +1264,18 @@ class DottedContainer extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildDealItem(Deal data) {
+class buildDealItemWidget extends StatelessWidget {
+  const buildDealItemWidget({
+    super.key,
+    required this.data,
+  });
+
+  final Deal data;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       // padding: EdgeInsets.symmetric(horizontal: 2.w),
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -1305,7 +1312,9 @@ class DottedContainer extends StatelessWidget {
                 ),
                 onPressed: () {},
                 child: Text(
-                  data.discount_percentage ?? '0%',
+                  data.discount_percentage == null
+                      ? '0%'
+                      : '${data.discount_percentage}%',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 12.sp,

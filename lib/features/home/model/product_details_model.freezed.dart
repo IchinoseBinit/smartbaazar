@@ -6504,7 +6504,9 @@ AvailableColor _$AvailableColorFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AvailableColor {
   String get name => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError; // int? max,
+  String get type =>
+      throw _privateConstructorUsedError; // required String? default_value,
+// int? max,
 // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
 // required String active,
   List<Option>? get options => throw _privateConstructorUsedError;
@@ -6623,10 +6625,12 @@ class _$AvailableColorImpl implements _AvailableColor {
   final String name;
   @override
   final String type;
+// required String? default_value,
 // int? max,
 // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
 // required String active,
   final List<Option>? _options;
+// required String? default_value,
 // int? max,
 // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
 // required String active,
@@ -6688,7 +6692,8 @@ abstract class _AvailableColor implements AvailableColor {
   @override
   String get name;
   @override
-  String get type; // int? max,
+  String get type; // required String? default_value,
+// int? max,
 // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
 // required String active,
   @override

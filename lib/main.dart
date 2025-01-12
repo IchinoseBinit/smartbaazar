@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
@@ -21,6 +22,7 @@ import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -30,6 +32,7 @@ import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/model/my_subscribe_and_win_model.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
 
@@ -65,7 +68,9 @@ class _MyAppState extends State<MyApp> {
         ),
         // home: UsedScreen()
         // home: const HomeScreen(),
-        home: BrandBazarScreen(),
+        home: VendorProfileScreen(),
+        // home: VendorHomeScreen(vendorName: 'techstore', vid: 9),
+        // home: ProductDetailScreen(productId: '896')
         // home: GrocarysScreen(),
         // home: JobssScreen(),
         // home: ServicesScreen(),

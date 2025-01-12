@@ -16,6 +16,8 @@ import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/offline_listing/offline_lisiting_screen.dart';
@@ -131,11 +133,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": '',
       "screen": const LeftArrowScreen(),
     },
-     {
+    {
       "icon": Icons.settings_applications_rounded,
       "title": 'Sponsored',
       "subtitle": '',
-      "screen":  HotViewScreen(header: 'sponsored',),
+      "screen": HotViewScreen(
+        header: 'sponsored',
+      ),
     },
   ];
   final List<Map<String, dynamic>> sellerCenterListing = [
@@ -209,13 +213,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen":  BottomNavigationScreen(),
+      "screen": const BottomNavigationScreen(),
     },
     {
       "icon": Icons.feed,
       "title": 'Create',
       "subtitle": 'Feed',
-      "screen":  const FeedFormScreen(),
+      "screen": const FeedFormScreen(),
     },
   ];
 
@@ -223,18 +227,22 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     {
       "icon": Icons.mail,
       "title": 'Messenger',
+      "screen": const MessageViewScreen()
     },
     {
       "icon": Icons.money,
       "title": 'Transaction',
+      "screen": const MessageViewScreen()
     },
     {
       "icon": Icons.notifications,
       "title": 'Log Out',
+      "screen": const MessageViewScreen()
     },
     {
       "icon": Icons.volume_down,
       "title": 'Close account',
+      "screen": const MessageViewScreen()
     },
   ];
   @override
@@ -318,6 +326,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                   profileData: profileList,
                 ),
                 Container(
+                  margin: EdgeInsets.only(top: 15.h),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       border: Border.all(
@@ -333,7 +342,8 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                         color: Color(0xffADADAD),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 4.h),
                         child: BuyerCenterWidget(
                           buyerData: buyerListing,
                         ),
@@ -564,62 +574,56 @@ class VendorProfileGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero, // Ensure no extra padding
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 4.0, // Adjusted spacing between columns
-        mainAxisSpacing: 4.0, // Adjusted spacing between rows
-      ),
-      itemCount: profileData.length,
-      itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.zero, // Removed horizontal padding
+    return Wrap(
+      direction: Axis.horizontal, // Arrange children horizontally
+      spacing: 8.0, // Space between items horizontally
+      runSpacing: 20.0, // Space between rows vertically
+      children: profileData.map((data) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0.w),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // Minimize the Row width
             children: [
               CircleAvatar(
-                radius: 14.r, // Adjusted radius
+                radius: 14, // Adjusted radius
                 backgroundColor: const Color(0xff362677),
                 child: Icon(
-                  profileData[index]['icon'],
+                  data['icon'],
                   color: Colors.white,
-                  size: 14.sp, // Adjusted icon size
+                  size: 14, // Adjusted icon size
                 ),
               ),
               const SizedBox(
-                width: 4.0, // Reduced space between CircleAvatar and Column
+                width: 8.0, // Space between avatar and text
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      profileData[index]['title'],
-                      style: TextStyle(
-                        fontSize: 12.sp, // Adjusted font size
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                      overflow: TextOverflow.ellipsis, // Handle overflow
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data['title'],
+                    style: const TextStyle(
+                      fontSize: 12, // Adjusted font size
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
                     ),
-                    Text(
-                      profileData[index]['subtitle'],
-                      style: TextStyle(
-                        fontSize: 10.sp, // Adjusted font size
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                      overflow: TextOverflow.ellipsis, // Handle overflow
+                    overflow: TextOverflow.ellipsis, // Handle overflow
+                  ),
+                  Text(
+                    data['subtitle'],
+                    style: const TextStyle(
+                      fontSize: 10, // Adjusted font size
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
                     ),
-                  ],
-                ),
+                    overflow: TextOverflow.ellipsis, // Handle overflow
+                  ),
+                ],
               ),
             ],
           ),
         );
-      },
+      }).toList(),
     );
   }
 }
@@ -631,53 +635,54 @@ class BuyerCenterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 2.0,
-      ),
-      itemCount: buyerData.length,
-      itemBuilder: (context, index) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => buyerData[index]['screen'] as Widget,
-                  ),
-                );
-              },
-              child: Column(
-                children: [
-                  Icon(
-                    buyerData[index]['icon'],
-                    color: Colors.black,
-                    size: 20.sp,
-                  ),
-                  Text(
-                    buyerData[index]['title'],
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    buyerData[index]['subtitle'],
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                  )
-                ],
-              ),
-            )
-          ],
+    return Wrap(
+      alignment: WrapAlignment.start, // Align items to the start
+      spacing: 2.0, // Horizontal space between items
+      runSpacing: 15.0, // Vertical space between rows
+      children: List.generate(buyerData.length, (index) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width / 4 -
+              15, // Fit 4 items in a row
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => buyerData[index]['screen'] as Widget,
+                ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Center items within the column
+              children: [
+                Icon(
+                  buyerData[index]['icon'],
+                  color: Colors.black,
+                  size: 20.sp,
+                ),
+                const SizedBox(height: 8.0), // Space between icon and text
+                Text(
+                  buyerData[index]['title'],
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
+                Text(
+                  buyerData[index]['subtitle'],
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+              ],
+            ),
+          ),
         );
-      },
+      }),
     );
   }
 }
@@ -687,71 +692,57 @@ class MyAccountWidget extends StatelessWidget {
 
   const MyAccountWidget({super.key, required this.accountData});
 
+  Future<void> _handleAction(BuildContext context, String title) async {
+    if (title == 'Log Out') {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.clear();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } else if (title == 'Messenger') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MessageViewScreen()),
+      );
+    } else if (title == 'Transaction') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const OnlineTransactionRecordScreen(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> logout(BuildContext context) async {
-      final prefs = await SharedPreferences.getInstance();
-      final String? userId = prefs.getString("userId");
-
-      if (userId != null) {
-        LogoutApi logoutApi = LogoutApi(); // Create an instance of LogoutApi
-        await logoutApi.logout(userId, context); // Call the logout method
-
-        // After logout, navigate to the login screen or home
-      } else {
-        // Handle case where userId is not found in SharedPreferences
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logged out succesfully !')),
-        );
-      }
-    }
-
-    return GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 4.0,
-        ),
-        itemCount: accountData.length,
-        itemBuilder: (context, index) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: accountData.map((data) {
+        return InkWell(
+          onTap: () => _handleAction(context, data['title']),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              InkWell(
-                onTap: () async {
-                  if (accountData[index]['title'] == 'Log Out') {
-                    logout(context);
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    await preferences.clear();
-
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ));
-                  }
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      accountData[index]['icon'],
-                      color: Colors.black,
-                      size: 20.sp,
-                    ),
-                    Text(
-                      accountData[index]['title'],
-                      style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                    ),
-                  ],
+              Icon(
+                data['icon'],
+                color: Colors.black,
+                size: 20.0,
+              ),
+              const SizedBox(height: 4.0),
+              Text(
+                data['title'],
+                style: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
-              )
+              ),
             ],
-          );
-        });
+          ),
+        );
+      }).toList(),
+    );
   }
 }

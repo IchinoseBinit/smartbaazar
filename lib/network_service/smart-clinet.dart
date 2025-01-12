@@ -14,11 +14,30 @@ class SmartClinet {
   static String userName = '';
   static String userEmail = '';
   static final SmartClinet _instance = SmartClinet._internal();
-  int _retryCount = 0; // Variable to track the number of retries
-  final int _maxRetries = 3; // Max retries before failing
 
   factory SmartClinet() {
     return _instance;
+  }
+
+  bool _isTokenExpired(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) {
+        return true; // Invalid token format
+      }
+      final payload = jsonDecode(
+        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
+      ) as Map<String, dynamic>;
+      final exp = payload['exp'] as int?;
+      if (exp == null) {
+        return true; // No expiry information, assume expired
+      }
+      final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+      return expiryDate.isBefore(DateTime.now());
+    } catch (e) {
+      print('Error checking token expiry: $e');
+      return true; // Assume expired on error
+    }
   }
 
   late Dio _client;
@@ -40,53 +59,42 @@ class SmartClinet {
     _client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
-          print('Adding token to request: Bearer $token');
-          options.headers['Authorization'] = 'Bearer $token';
+          if (SmartClinet.token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer ${SmartClinet.token}';
+          }
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          if (error.response != null && error.response!.statusCode! >= 400) {
-            print("Error: Status Code >= 400, trying to refresh token...");
-
-            // Only attempt to refresh if we haven't exceeded max retries
-            final success = await _refreshToken();
-            if (success) {
-              RequestOptions requestOptions = error.requestOptions;
-              requestOptions.headers['Authorization'] = 'Bearer $token';
-              try {
-                final response = await _retry(requestOptions);
-                return handler.resolve(response);
-              } on DioException catch (retryError) {
-                return handler.next(retryError);
+          if (error.response != null && error.response!.statusCode == 401) {
+            if (SmartClinet.token.isEmpty || _isTokenExpired(SmartClinet.token)) {
+              final success = await _refreshToken();
+              if (success) {
+                final RequestOptions requestOptions = error.requestOptions;
+                requestOptions.headers['Authorization'] =
+                    'Bearer ${SmartClinet.token}';
+                try {
+                  final response = await _retry(requestOptions);
+                  return handler.resolve(response);
+                } on DioException catch (retryError) {
+                  return handler.next(retryError);
+                }
               }
             }
-
-            // If refresh failed, handle error gracefully (e.g., log out or notify user)
-            print("Failed to refresh token. Logging out or redirecting...");
-            // Add logout logic here if needed
-            return handler.next(error);
           }
           return handler.next(error);
         },
-        onResponse: (options, handler) {
-          return handler.next(options);
+        onResponse: (Response response, handler) {
+          return handler.next(response);
         },
       ),
     );
   }
 
   Future<bool> _refreshToken() async {
-    if (_retryCount >= _maxRetries) {
-      print("Max retries reached, cannot refresh token anymore.");
-      return false; // Return false if retry count exceeds limit
-    }
-
-    _retryCount++; // Increment retry count each time
     try {
-      final container = ProviderContainer(); // Create a Riverpod container
-      final refreshTokenResponse = await container
-          .read(getRefreshTokenProvider.future)
-          .timeout(const Duration(seconds: 120));
+      final container = ProviderContainer();
+      final refreshTokenResponse =
+          await container.read(getRefreshTokenProvider.future);
 
       SmartClinet.token = refreshTokenResponse.authToken;
       SmartClinet.refresh = refreshTokenResponse.refreshToken;
@@ -98,25 +106,30 @@ class SmartClinet {
       print("Token refreshed successfully: ${SmartClinet.token}");
       return true;
     } catch (e) {
-      print("Error refreshing token: $e");
+      print("Error refreshing token using API: $e");
       return false;
     }
   }
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
-    var options = Options(
-      method: requestOptions.method,
-      headers: {
-        ...requestOptions.headers,
-        'Authorization': 'Bearer $token', // Ensure the new token is used
-      },
-    );
-    return _client.request<dynamic>(
-      requestOptions.path,
-      data: requestOptions.data,
-      queryParameters: requestOptions.queryParameters,
-      options: options,
-    );
+    try {
+      final options = Options(
+        method: requestOptions.method,
+        headers: {
+          ...requestOptions.headers,
+          'Authorization': 'Bearer $token',
+        },
+      );
+      return await _client.request<dynamic>(
+        requestOptions.path,
+        data: requestOptions.data,
+        queryParameters: requestOptions.queryParameters,
+        options: options,
+      );
+    } catch (e) {
+      print('Retry failed: $e');
+      rethrow;
+    }
   }
 
   Future<Response> request({
@@ -137,8 +150,7 @@ class SmartClinet {
       Map<String, String> mergedHeaders =
           _mergeHeaders(defaultHeaders, headers);
 
-      print(
-          'Merged Headers before request: $mergedHeaders'); // Debugging merged headers
+      print('Merged Headers before request: $mergedHeaders');
 
       switch (requestType) {
         case RequestType.get:
@@ -151,7 +163,6 @@ class SmartClinet {
               .timeout(timeOutDuration);
 
         case RequestType.getWithToken:
-          print('Sending GET request with token to URL: $url');
           return await _client
               .get(
                 url,
@@ -169,6 +180,7 @@ class SmartClinet {
                 options: Options(headers: mergedHeaders),
               )
               .timeout(timeOutDuration);
+
         case RequestType.postWithTokenFormData:
           return await _client
               .post(
@@ -182,6 +194,16 @@ class SmartClinet {
                 ),
               )
               .timeout(timeOutDuration);
+
+        case RequestType.postWithHeaders:
+          return await _client
+              .post(
+                url.trim(),
+                data: jsonEncode(parameter),
+                options: Options(headers: {...defaultHeaders, ...headers}),
+              )
+              .timeout(timeOutDuration);
+
         case RequestType.postWithToken:
           return await _client
               .post(
@@ -208,6 +230,7 @@ class SmartClinet {
                 data: parameter,
               )
               .timeout(timeOutDuration);
+
         case RequestType.putWithTokenFormData:
           return await _client
               .put(
@@ -221,6 +244,7 @@ class SmartClinet {
                 ),
               )
               .timeout(timeOutDuration);
+
         case RequestType.putWithTokenEncoded:
           return await _client
               .put(
@@ -229,14 +253,11 @@ class SmartClinet {
                 options: Options(
                   headers: {
                     ...mergedHeaders,
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    "Content-Type": "application/x-www-form-urlencoded",
                   },
                 ),
               )
               .timeout(timeOutDuration);
-
-        default:
-          throw Exception("Unsupported request type");
       }
     } catch (e) {
       if (e is DioException) {
@@ -257,10 +278,7 @@ class SmartClinet {
   }
 
   Map<String, String> _mergeHeaders(
-      Map<String, String> defaultHeaders, dynamic additionalHeaders) {
-    if (additionalHeaders != null) {
-      return {...defaultHeaders, ...additionalHeaders};
-    }
-    return defaultHeaders;
+      Map<String, String> defaultHeaders, Map<String, String>? additionalHeaders) {
+    return {...defaultHeaders, if (additionalHeaders != null) ...additionalHeaders};
   }
 }

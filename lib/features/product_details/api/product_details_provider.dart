@@ -7,7 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'product_details_provider.g.dart';
 
 @riverpod
-Future<PostModel> productDetails(ProductDetailsRef ref, String id) async {
+Future<PostModel> productDetails(ref, String id) async {
   // final client = Dio();
 //
 

@@ -370,6 +370,7 @@ class AvailableColor with _$AvailableColor {
   const factory AvailableColor({
     required String name,
     required String type,
+    // required String? default_value,
     // int? max,
     // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
     // required String active,
