@@ -3665,7 +3665,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             color: Colors.black),
                                       ),
                                     ],
-                                  ),
+                                  ), 
                                 ],
                               ),
                               SizedBox(

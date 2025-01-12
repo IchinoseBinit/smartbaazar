@@ -20,12 +20,12 @@ Future<UserDataModel> getUserDetails(GetUserDetailsRef ref) async {
       final Map<String, dynamic> jsonResponse = response.data;
       return UserDataModel.fromJson(jsonResponse);
     } else {
-      throw Exception('Failed to load order details');
+      throw Exception('Failed to load user details');
     }
   } catch (e) {
     // Handle or log the error here
-    print('Error loading order details: $e');
-    throw Exception('Failed to load order details: $e');
+    print('Error loading user details: $e');
+    throw Exception('Failed to load user details: $e');
   }
 }
 

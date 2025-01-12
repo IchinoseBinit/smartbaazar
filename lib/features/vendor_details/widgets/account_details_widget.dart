@@ -9,6 +9,7 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
 import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
+import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 
 class AccountDetailsWidget extends ConsumerStatefulWidget {
   const AccountDetailsWidget({super.key});
@@ -451,6 +452,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           ),
                           SizedBox(height: 10.2.h),
 
+                          BranchWidget(
+                            branchControllers: branchControllers,
+                            addBranchField: _addBranchField,
+                            removeBranchField: _removeBranchField,
+                          ),
                           // ...List.generate(
                           //   branchControllers.length,
                           //   (index) => Column(
@@ -464,15 +470,18 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           //               icon: Icons.location_on,
                           //               iconColor: Colors.red,
                           //               textInputType: TextInputAction.next,
-                          //               hintText: index == 0
-                          //                   ? data.data!.first.branchLocation ??
-                          //                       "Primary Branch Location"
-                          //                   : "Additional Branch Location",
+                          //               hintText: 'Your Location',
+                          //               // hintText: branchLocationsText.isNotEmpty
+                          //               //     ? branchLocationsText[index]
+                          //               //     : 'Your Location',
+                          //               hintTextColor: Colors.black,
                           //               controller: branchControllers[index],
                           //               validator: (value) {
                           //                 if (value == null || value.isEmpty) {
                           //                   return 'Enter branch location';
                           //                 }
+                          //                 print(branchLocationsText[index]);
+
                           //                 return null;
                           //               },
                           //             ),
@@ -494,7 +503,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           //                 ),
                           //               ),
                           //             )
-                          //           else ...[
+                          //           else if (index == branchControllers.length)
                           //             Container(
                           //               decoration: BoxDecoration(
                           //                 border: Border.all(
@@ -503,8 +512,22 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           //               child: GestureDetector(
                           //                 onTap: _addBranchField,
                           //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(
-                          //                       4.0), // Adjust padding to control the gap
+                          //                   padding: EdgeInsets.all(4.0),
+                          //                   child: Icon(Icons.add_circle,
+                          //                       color: Color(0xFF362677)),
+                          //                 ),
+                          //               ),
+                          //             )
+                          //           else if (index > 0) ...[
+                          //             Container(
+                          //               decoration: BoxDecoration(
+                          //                 border: Border.all(
+                          //                     color: const Color(0xFFADADAD)),
+                          //               ),
+                          //               child: GestureDetector(
+                          //                 onTap: _addBranchField,
+                          //                 child: const Padding(
+                          //                   padding: EdgeInsets.all(4.0),
                           //                   child: Icon(Icons.add_circle,
                           //                       color: Color(0xFF362677)),
                           //                 ),
@@ -517,7 +540,8 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           //                     color: const Color(0xFFADADAD)),
                           //               ),
                           //               child: GestureDetector(
-                          //                 onTap: () => _removeBranchField(index),
+                          //                 onTap: () =>
+                          //                     _removeBranchField(index),
                           //                 child: const Padding(
                           //                   padding: EdgeInsets.all(4.0),
                           //                   child: Icon(Icons.delete,
@@ -532,105 +556,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                           //     ],
                           //   ),
                           // ),
-                          ...List.generate(
-                            branchControllers.length,
-                            (index) => Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: CustomTextFieldWidget(
-                                        fill: true,
-                                        fillColor: const Color(0xFFF6F2F2),
-                                        icon: Icons.location_on,
-                                        iconColor: Colors.red,
-                                        textInputType: TextInputAction.next,
-                                        hintText: 'Your Location',
-                                        // hintText: branchLocationsText.isNotEmpty
-                                        //     ? branchLocationsText[index]
-                                        //     : 'Your Location',
-                                        hintTextColor: Colors.black,
-                                        controller: branchControllers[index],
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Enter branch location';
-                                          }
-                                          print(branchLocationsText[index]);
-
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(width: 10.w),
-                                    if (index == 0)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xFFADADAD)),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: _addBranchField,
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(
-                                                4.0), // Adjust padding to control the gap
-                                            child: Icon(Icons.add_circle,
-                                                color: Color(0xFF362677)),
-                                          ),
-                                        ),
-                                      )
-                                    else if (index == branchControllers.length)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xFFADADAD)),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: _addBranchField,
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(4.0),
-                                            child: Icon(Icons.add_circle,
-                                                color: Color(0xFF362677)),
-                                          ),
-                                        ),
-                                      )
-                                    else if (index > 0) ...[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xFFADADAD)),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: _addBranchField,
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(4.0),
-                                            child: Icon(Icons.add_circle,
-                                                color: Color(0xFF362677)),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xFFADADAD)),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () =>
-                                              _removeBranchField(index),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(4.0),
-                                            child: Icon(Icons.delete,
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                                SizedBox(height: 10.2.h),
-                              ],
-                            ),
-                          ),
 
                           SizedBox(height: 10.2.h),
                           SizedBox(
@@ -687,6 +612,143 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stackTrace) => Text('Error: $error'),
         );
+  }
+}
+
+class BranchWidget extends StatefulWidget {
+  final List<TextEditingController> branchControllers;
+  final Function(int) removeBranchField;
+  final Function() addBranchField;
+
+  const BranchWidget({
+    Key? key,
+    required this.branchControllers,
+    required this.removeBranchField,
+    required this.addBranchField,
+  }) : super(key: key);
+
+  @override
+  State<BranchWidget> createState() => _BranchWidgetState();
+}
+
+class _BranchWidgetState extends State<BranchWidget> {
+  List<LocationFieldWidget> locationWidgets = [];
+  List<String> branchLocations = [];
+  @override
+  void initState() {
+    super.initState();
+    initializeLocationWidgets();
+  }
+
+  void initializeLocationWidgets() {
+    locationWidgets = widget.branchControllers.map((controller) {
+      return LocationFieldWidget(
+        streetController: controller,
+        onSelected: (selectedLocation) {
+          print("Selected location: $selectedLocation");
+          int index = widget.branchControllers.indexOf(controller);
+          if (index >= 0 && index < branchLocations.length) {
+            branchLocations[index] = selectedLocation;
+          }
+        },
+      );
+    }).toList();
+    branchLocations =
+        List.filled(widget.branchControllers.length, "Your Location");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: List.generate(
+        widget.branchControllers.length,
+        (index) => Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: locationWidgets.length > index
+                      ? locationWidgets[index]
+                      : branchLocations.length > index
+                          // ? Text(branchLocations[index])
+                          // : const Text("Your location"),
+
+                          ? const Text("Your location")
+                          : LocationFieldWidget(
+                              streetController: widget.branchControllers[index],
+                              onSelected: (selectedLocation) {
+                                print("Selected location: $selectedLocation");
+                                int currentIndex = widget.branchControllers
+                                    .indexOf(widget.branchControllers[index]);
+                                if (currentIndex >= 0 &&
+                                    currentIndex < branchLocations.length) {
+                                  branchLocations[currentIndex] =
+                                      selectedLocation;
+                                }
+                              },
+                            ),
+                ),
+                SizedBox(width: 10.w),
+                if (index == 0)
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFADADAD)),
+                    ),
+                    child: GestureDetector(
+                      onTap: widget.addBranchField,
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(Icons.add_circle, color: Color(0xFF362677)),
+                      ),
+                    ),
+                  )
+                else if (index == widget.branchControllers.length)
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFADADAD)),
+                    ),
+                    child: GestureDetector(
+                      onTap: widget.addBranchField,
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(Icons.add_circle, color: Color(0xFF362677)),
+                      ),
+                    ),
+                  )
+                else if (index > 0) ...[
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFADADAD)),
+                    ),
+                    child: GestureDetector(
+                      onTap: widget.addBranchField,
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(Icons.add_circle, color: Color(0xFF362677)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFADADAD)),
+                    ),
+                    child: GestureDetector(
+                      onTap: () => widget.removeBranchField(index),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(Icons.delete, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            SizedBox(height: 10.2.h),
+          ],
+        ),
+      ),
+    );
   }
 }
 

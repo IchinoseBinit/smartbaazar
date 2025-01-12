@@ -138,33 +138,32 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   }
 
   void _handleScroll() {
-  final scrollOffset = _scrollController.offset;
+    final scrollOffset = _scrollController.offset;
 
-  SchedulerBinding.instance.addPostFrameCallback((_) {
-    setState(() {
-      if (scrollOffset > _lastScrollOffset && scrollOffset > 100) {
-        _isSectionsVisible = false;
-      } else if (scrollOffset < _lastScrollOffset && scrollOffset < 50) {
-        _isSectionsVisible = true;
-      }
-      _lastScrollOffset = scrollOffset;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        if (scrollOffset > _lastScrollOffset && scrollOffset > 100) {
+          _isSectionsVisible = false;
+        } else if (scrollOffset < _lastScrollOffset && scrollOffset < 50) {
+          _isSectionsVisible = true;
+        }
+        _lastScrollOffset = scrollOffset;
+      });
     });
-  });
-}
+  }
 
-void _onDragUpdate(DragUpdateDetails details) {
-  final dragDistance = details.globalPosition.dy - _initialDragPosition.dy;
-  SchedulerBinding.instance.addPostFrameCallback((_) {
-    setState(() {
-      if (dragDistance > 50 && !_isSectionsVisible) {
-        _isSectionsVisible = true;
-      } else if (dragDistance < -50 && _isSectionsVisible) {
-        _isSectionsVisible = false;
-      }
+  void _onDragUpdate(DragUpdateDetails details) {
+    final dragDistance = details.globalPosition.dy - _initialDragPosition.dy;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        if (dragDistance > 50 && !_isSectionsVisible) {
+          _isSectionsVisible = true;
+        } else if (dragDistance < -50 && _isSectionsVisible) {
+          _isSectionsVisible = false;
+        }
+      });
     });
-  });
-}
-
+  }
 
   void _onDragStart(DragStartDetails details) {
     _initialDragPosition = details.globalPosition;
@@ -928,8 +927,6 @@ void _onDragUpdate(DragUpdateDetails details) {
             error: (error, stack) => Center(child: Text('Error: $error')),
           ),
           SizedBox(height: 70.h),
-          // const FeedContainer(),
-          // const PromoCard(),
         ],
       ),
     );
