@@ -64,8 +64,8 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         // home: UsedScreen()
-        home: const HomeScreen(),
-        // home: BrandBazarScreen(),
+        // home: const HomeScreen(),
+        home: BrandBazarScreen(),
         // home: GrocarysScreen(),
         // home: JobssScreen(),
         // home: ServicesScreen(),

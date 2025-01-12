@@ -6,7 +6,7 @@ part of 'post_feed_wow_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postFeedWowHash() => r'cb57b44e21dbbeca31e751c4800a7d02ce750fea';
+String _$postFeedWowHash() => r'dbe87f59bbc9252a2ffcfc3e92163c8796a8fbf8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class PostFeedWowProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostFeedWowRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `feedId` of this provider.
   String get feedId;
@@ -155,4 +157,4 @@ class _PostFeedWowProviderElement
   String get feedId => (origin as PostFeedWowProvider).feedId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

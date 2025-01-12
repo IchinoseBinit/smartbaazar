@@ -9,32 +9,42 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
+import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
+import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
+import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
-import 'package:smartbazar/features/home/api/home_slider_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
+import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 
 class BrandBazarScreen extends ConsumerStatefulWidget {
   const BrandBazarScreen({super.key});
@@ -667,7 +677,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                 height: 130.h,
                                 width: double.infinity,
                                 child: CarouselSlider(
-                                  items: data.data!.trandBanners?.map((banner) {
+                                  items:
+                                      data.data!.trand_banners?.map((banner) {
                                     return InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -714,9 +725,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           bottom: 10.h,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: data.data!.trandBanners!.map((banner) {
+                            children: data.data!.trand_banners.map((banner) {
                               int index =
-                                  data.data!.trandBanners!.indexOf(banner);
+                                  data.data!.trand_banners.indexOf(banner);
                               return AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
                                 margin:
@@ -929,15 +940,93 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     ],
                   ),
                 ),
+
                 asyncbajarValue.when(
                   data: (data) {
-                    print("ram ${data.data?.newProducts}");
-                    return Container(
-                        // child: Text(data.data.),
-                        );
+                    return SizedBox(
+                      width: double.infinity,
+                      child: AnimatedContainer(
+                        padding: EdgeInsets.zero,
+                        margin: EdgeInsets.zero,
+                        duration: const Duration(milliseconds: 400),
+                        height: 350.h,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Wrap(
+                            spacing: 5.w, // Horizontal spacing between items
+                            runSpacing: 15.h, // Vertical spacing between rows
+                            children: List.generate(
+                                data.data!.new_products.length, (index) {
+                              BrandNewModel hot =
+                                  data.data!.new_products[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProductDetailScreen(
+                                          productId: hot.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: ProductDetailWidget(
+                                    offer: hot.offers,
+                                    shortestDistance: hot.shortestDistance,
+                                    // didcountpercentage: ,
+                                    avg_rating: hot.avg_rating?.toDouble(),
+                                    wow: hot.wow,
+                                    comment: hot.commentcount.toString(),
+                                    discounttedPrice:
+                                        hot.discounted_price.toString(),
+                                    issponsored:
+                                        hot.userdetails?.sponsored ?? false,
+                                    lefttile: "BrandBajar",
+                                    productImage: hot.image,
+                                    Vimage: hot.userdetails?.photo,
+                                    price: hot.price,
+                                    title: hot.title,
+                                    vendorname: hot.username,
+                                    similarproductCount:
+                                        hot.similarProductCount,
+                                    membershipColor:
+                                        hot.userdetails?.membership_color,
+                                    membershipTitle:
+                                        hot.userdetails?.membership_title,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                    );
                   },
-                  error: (error, stackTrace) => const Text("Please try again"),
-                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => SizedBox(
+                    height: 340.h,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(3),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5, // Number of shimmer placeholders
+                      itemBuilder: (context, index) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          width: 200.w,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 50,
@@ -956,11 +1045,11 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     labelColor: const Color(0xff909090),
                   ),
                 ),
+                // SizedBox(
+                //   height: 10.h,
+                // ),
                 SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  height: 150,
+                  height: 100,
                   width: double.infinity,
                   child:
                       TabBarView(controller: dynamictabController, children: [
@@ -997,6 +1086,38 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       nolistingfound(),
                       SizedBox(
                         height: 5.h,
+                      ),
+                      asyncbajarValue.when(
+                        data: (data) {
+                          return SizedBox(
+                            height: 70.h,
+                            width: double.infinity,
+                            child: PageView.builder(
+                              controller: _adscontroller,
+                              reverse: true,
+                              allowImplicitScrolling: true,
+                              itemCount: data.data?.advertisements.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Image.network(
+                                  data.data!.advertisements[index].image!,
+                                  // height: 150.h,
+                                  width: double.infinity,
+                                  // fit: BoxFit.fill,
+                                );
+                                // Image.asset(
+                                //     height: 150.h,
+                                //     width: double.infinity,
+                                //     fit: BoxFit.fill,
+                                //     );
+                              },
+                            ),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return Text(error.toString());
+                        },
+                        loading: () => const CircularProgressIndicator(),
                       ),
                       asyncbajarValue.when(
                         data: (data) {
@@ -1162,6 +1283,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 50.h,
                 ),
               ],
             ),

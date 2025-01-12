@@ -206,22 +206,10 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Data {
-  @JsonKey(name: "new_products")
-  List<dynamic>? get newProducts => throw _privateConstructorUsedError;
-  @JsonKey(name: "services")
-  List<dynamic>? get services => throw _privateConstructorUsedError;
-  @JsonKey(name: "jobs")
-  List<dynamic>? get jobs => throw _privateConstructorUsedError;
-  @JsonKey(name: "events")
-  List<dynamic>? get events => throw _privateConstructorUsedError;
-  @JsonKey(name: "grocery")
-  List<dynamic>? get grocery => throw _privateConstructorUsedError;
-  @JsonKey(name: "advertisements")
-  List<Advertisement>? get advertisements => throw _privateConstructorUsedError;
-  @JsonKey(name: "trand_banners")
-  List<TrendBanner>? get trandBanners => throw _privateConstructorUsedError;
-  @JsonKey(name: "brandbazarLogos")
-  List<BrandbazarLogo>? get brandbazarLogos =>
+  List<BrandNewModel> get new_products => throw _privateConstructorUsedError;
+  List<Advertisement> get advertisements => throw _privateConstructorUsedError;
+  List<TrandBanner> get trand_banners => throw _privateConstructorUsedError;
+  List<BrandbazarLogo> get brandbazarLogos =>
       throw _privateConstructorUsedError;
 
   /// Serializes this Data to a JSON map.
@@ -239,14 +227,10 @@ abstract class $DataCopyWith<$Res> {
       _$DataCopyWithImpl<$Res, Data>;
   @useResult
   $Res call(
-      {@JsonKey(name: "new_products") List<dynamic>? newProducts,
-      @JsonKey(name: "services") List<dynamic>? services,
-      @JsonKey(name: "jobs") List<dynamic>? jobs,
-      @JsonKey(name: "events") List<dynamic>? events,
-      @JsonKey(name: "grocery") List<dynamic>? grocery,
-      @JsonKey(name: "advertisements") List<Advertisement>? advertisements,
-      @JsonKey(name: "trand_banners") List<TrendBanner>? trandBanners,
-      @JsonKey(name: "brandbazarLogos") List<BrandbazarLogo>? brandbazarLogos});
+      {List<BrandNewModel> new_products,
+      List<Advertisement> advertisements,
+      List<TrandBanner> trand_banners,
+      List<BrandbazarLogo> brandbazarLogos});
 }
 
 /// @nodoc
@@ -264,48 +248,28 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? newProducts = freezed,
-    Object? services = freezed,
-    Object? jobs = freezed,
-    Object? events = freezed,
-    Object? grocery = freezed,
-    Object? advertisements = freezed,
-    Object? trandBanners = freezed,
-    Object? brandbazarLogos = freezed,
+    Object? new_products = null,
+    Object? advertisements = null,
+    Object? trand_banners = null,
+    Object? brandbazarLogos = null,
   }) {
     return _then(_value.copyWith(
-      newProducts: freezed == newProducts
-          ? _value.newProducts
-          : newProducts // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      services: freezed == services
-          ? _value.services
-          : services // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      jobs: freezed == jobs
-          ? _value.jobs
-          : jobs // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      events: freezed == events
-          ? _value.events
-          : events // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      grocery: freezed == grocery
-          ? _value.grocery
-          : grocery // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      advertisements: freezed == advertisements
+      new_products: null == new_products
+          ? _value.new_products
+          : new_products // ignore: cast_nullable_to_non_nullable
+              as List<BrandNewModel>,
+      advertisements: null == advertisements
           ? _value.advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
-              as List<Advertisement>?,
-      trandBanners: freezed == trandBanners
-          ? _value.trandBanners
-          : trandBanners // ignore: cast_nullable_to_non_nullable
-              as List<TrendBanner>?,
-      brandbazarLogos: freezed == brandbazarLogos
+              as List<Advertisement>,
+      trand_banners: null == trand_banners
+          ? _value.trand_banners
+          : trand_banners // ignore: cast_nullable_to_non_nullable
+              as List<TrandBanner>,
+      brandbazarLogos: null == brandbazarLogos
           ? _value.brandbazarLogos
           : brandbazarLogos // ignore: cast_nullable_to_non_nullable
-              as List<BrandbazarLogo>?,
+              as List<BrandbazarLogo>,
     ) as $Val);
   }
 }
@@ -318,14 +282,10 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "new_products") List<dynamic>? newProducts,
-      @JsonKey(name: "services") List<dynamic>? services,
-      @JsonKey(name: "jobs") List<dynamic>? jobs,
-      @JsonKey(name: "events") List<dynamic>? events,
-      @JsonKey(name: "grocery") List<dynamic>? grocery,
-      @JsonKey(name: "advertisements") List<Advertisement>? advertisements,
-      @JsonKey(name: "trand_banners") List<TrendBanner>? trandBanners,
-      @JsonKey(name: "brandbazarLogos") List<BrandbazarLogo>? brandbazarLogos});
+      {List<BrandNewModel> new_products,
+      List<Advertisement> advertisements,
+      List<TrandBanner> trand_banners,
+      List<BrandbazarLogo> brandbazarLogos});
 }
 
 /// @nodoc
@@ -340,48 +300,28 @@ class __$$DataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? newProducts = freezed,
-    Object? services = freezed,
-    Object? jobs = freezed,
-    Object? events = freezed,
-    Object? grocery = freezed,
-    Object? advertisements = freezed,
-    Object? trandBanners = freezed,
-    Object? brandbazarLogos = freezed,
+    Object? new_products = null,
+    Object? advertisements = null,
+    Object? trand_banners = null,
+    Object? brandbazarLogos = null,
   }) {
     return _then(_$DataImpl(
-      newProducts: freezed == newProducts
-          ? _value._newProducts
-          : newProducts // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      services: freezed == services
-          ? _value._services
-          : services // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      jobs: freezed == jobs
-          ? _value._jobs
-          : jobs // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      events: freezed == events
-          ? _value._events
-          : events // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      grocery: freezed == grocery
-          ? _value._grocery
-          : grocery // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
-      advertisements: freezed == advertisements
+      new_products: null == new_products
+          ? _value._new_products
+          : new_products // ignore: cast_nullable_to_non_nullable
+              as List<BrandNewModel>,
+      advertisements: null == advertisements
           ? _value._advertisements
           : advertisements // ignore: cast_nullable_to_non_nullable
-              as List<Advertisement>?,
-      trandBanners: freezed == trandBanners
-          ? _value._trandBanners
-          : trandBanners // ignore: cast_nullable_to_non_nullable
-              as List<TrendBanner>?,
-      brandbazarLogos: freezed == brandbazarLogos
+              as List<Advertisement>,
+      trand_banners: null == trand_banners
+          ? _value._trand_banners
+          : trand_banners // ignore: cast_nullable_to_non_nullable
+              as List<TrandBanner>,
+      brandbazarLogos: null == brandbazarLogos
           ? _value._brandbazarLogos
           : brandbazarLogos // ignore: cast_nullable_to_non_nullable
-              as List<BrandbazarLogo>?,
+              as List<BrandbazarLogo>,
     ));
   }
 }
@@ -390,120 +330,53 @@ class __$$DataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DataImpl implements _Data {
   const _$DataImpl(
-      {@JsonKey(name: "new_products") required final List<dynamic>? newProducts,
-      @JsonKey(name: "services") required final List<dynamic>? services,
-      @JsonKey(name: "jobs") required final List<dynamic>? jobs,
-      @JsonKey(name: "events") required final List<dynamic>? events,
-      @JsonKey(name: "grocery") required final List<dynamic>? grocery,
-      @JsonKey(name: "advertisements")
-      required final List<Advertisement>? advertisements,
-      @JsonKey(name: "trand_banners")
-      required final List<TrendBanner>? trandBanners,
-      @JsonKey(name: "brandbazarLogos")
-      required final List<BrandbazarLogo>? brandbazarLogos})
-      : _newProducts = newProducts,
-        _services = services,
-        _jobs = jobs,
-        _events = events,
-        _grocery = grocery,
+      {required final List<BrandNewModel> new_products,
+      required final List<Advertisement> advertisements,
+      required final List<TrandBanner> trand_banners,
+      required final List<BrandbazarLogo> brandbazarLogos})
+      : _new_products = new_products,
         _advertisements = advertisements,
-        _trandBanners = trandBanners,
+        _trand_banners = trand_banners,
         _brandbazarLogos = brandbazarLogos;
 
   factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
       _$$DataImplFromJson(json);
 
-  final List<dynamic>? _newProducts;
+  final List<BrandNewModel> _new_products;
   @override
-  @JsonKey(name: "new_products")
-  List<dynamic>? get newProducts {
-    final value = _newProducts;
-    if (value == null) return null;
-    if (_newProducts is EqualUnmodifiableListView) return _newProducts;
+  List<BrandNewModel> get new_products {
+    if (_new_products is EqualUnmodifiableListView) return _new_products;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_new_products);
   }
 
-  final List<dynamic>? _services;
+  final List<Advertisement> _advertisements;
   @override
-  @JsonKey(name: "services")
-  List<dynamic>? get services {
-    final value = _services;
-    if (value == null) return null;
-    if (_services is EqualUnmodifiableListView) return _services;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  final List<dynamic>? _jobs;
-  @override
-  @JsonKey(name: "jobs")
-  List<dynamic>? get jobs {
-    final value = _jobs;
-    if (value == null) return null;
-    if (_jobs is EqualUnmodifiableListView) return _jobs;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  final List<dynamic>? _events;
-  @override
-  @JsonKey(name: "events")
-  List<dynamic>? get events {
-    final value = _events;
-    if (value == null) return null;
-    if (_events is EqualUnmodifiableListView) return _events;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  final List<dynamic>? _grocery;
-  @override
-  @JsonKey(name: "grocery")
-  List<dynamic>? get grocery {
-    final value = _grocery;
-    if (value == null) return null;
-    if (_grocery is EqualUnmodifiableListView) return _grocery;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  final List<Advertisement>? _advertisements;
-  @override
-  @JsonKey(name: "advertisements")
-  List<Advertisement>? get advertisements {
-    final value = _advertisements;
-    if (value == null) return null;
+  List<Advertisement> get advertisements {
     if (_advertisements is EqualUnmodifiableListView) return _advertisements;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_advertisements);
   }
 
-  final List<TrendBanner>? _trandBanners;
+  final List<TrandBanner> _trand_banners;
   @override
-  @JsonKey(name: "trand_banners")
-  List<TrendBanner>? get trandBanners {
-    final value = _trandBanners;
-    if (value == null) return null;
-    if (_trandBanners is EqualUnmodifiableListView) return _trandBanners;
+  List<TrandBanner> get trand_banners {
+    if (_trand_banners is EqualUnmodifiableListView) return _trand_banners;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_trand_banners);
   }
 
-  final List<BrandbazarLogo>? _brandbazarLogos;
+  final List<BrandbazarLogo> _brandbazarLogos;
   @override
-  @JsonKey(name: "brandbazarLogos")
-  List<BrandbazarLogo>? get brandbazarLogos {
-    final value = _brandbazarLogos;
-    if (value == null) return null;
+  List<BrandbazarLogo> get brandbazarLogos {
     if (_brandbazarLogos is EqualUnmodifiableListView) return _brandbazarLogos;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_brandbazarLogos);
   }
 
   @override
   String toString() {
-    return 'Data(newProducts: $newProducts, services: $services, jobs: $jobs, events: $events, grocery: $grocery, advertisements: $advertisements, trandBanners: $trandBanners, brandbazarLogos: $brandbazarLogos)';
+    return 'Data(new_products: $new_products, advertisements: $advertisements, trand_banners: $trand_banners, brandbazarLogos: $brandbazarLogos)';
   }
 
   @override
@@ -512,15 +385,11 @@ class _$DataImpl implements _Data {
         (other.runtimeType == runtimeType &&
             other is _$DataImpl &&
             const DeepCollectionEquality()
-                .equals(other._newProducts, _newProducts) &&
-            const DeepCollectionEquality().equals(other._services, _services) &&
-            const DeepCollectionEquality().equals(other._jobs, _jobs) &&
-            const DeepCollectionEquality().equals(other._events, _events) &&
-            const DeepCollectionEquality().equals(other._grocery, _grocery) &&
+                .equals(other._new_products, _new_products) &&
             const DeepCollectionEquality()
                 .equals(other._advertisements, _advertisements) &&
             const DeepCollectionEquality()
-                .equals(other._trandBanners, _trandBanners) &&
+                .equals(other._trand_banners, _trand_banners) &&
             const DeepCollectionEquality()
                 .equals(other._brandbazarLogos, _brandbazarLogos));
   }
@@ -529,13 +398,9 @@ class _$DataImpl implements _Data {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_newProducts),
-      const DeepCollectionEquality().hash(_services),
-      const DeepCollectionEquality().hash(_jobs),
-      const DeepCollectionEquality().hash(_events),
-      const DeepCollectionEquality().hash(_grocery),
+      const DeepCollectionEquality().hash(_new_products),
       const DeepCollectionEquality().hash(_advertisements),
-      const DeepCollectionEquality().hash(_trandBanners),
+      const DeepCollectionEquality().hash(_trand_banners),
       const DeepCollectionEquality().hash(_brandbazarLogos));
 
   /// Create a copy of Data
@@ -556,50 +421,212 @@ class _$DataImpl implements _Data {
 
 abstract class _Data implements Data {
   const factory _Data(
-      {@JsonKey(name: "new_products") required final List<dynamic>? newProducts,
-      @JsonKey(name: "services") required final List<dynamic>? services,
-      @JsonKey(name: "jobs") required final List<dynamic>? jobs,
-      @JsonKey(name: "events") required final List<dynamic>? events,
-      @JsonKey(name: "grocery") required final List<dynamic>? grocery,
-      @JsonKey(name: "advertisements")
-      required final List<Advertisement>? advertisements,
-      @JsonKey(name: "trand_banners")
-      required final List<TrendBanner>? trandBanners,
-      @JsonKey(name: "brandbazarLogos")
-      required final List<BrandbazarLogo>? brandbazarLogos}) = _$DataImpl;
+      {required final List<BrandNewModel> new_products,
+      required final List<Advertisement> advertisements,
+      required final List<TrandBanner> trand_banners,
+      required final List<BrandbazarLogo> brandbazarLogos}) = _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 
   @override
-  @JsonKey(name: "new_products")
-  List<dynamic>? get newProducts;
+  List<BrandNewModel> get new_products;
   @override
-  @JsonKey(name: "services")
-  List<dynamic>? get services;
+  List<Advertisement> get advertisements;
   @override
-  @JsonKey(name: "jobs")
-  List<dynamic>? get jobs;
+  List<TrandBanner> get trand_banners;
   @override
-  @JsonKey(name: "events")
-  List<dynamic>? get events;
-  @override
-  @JsonKey(name: "grocery")
-  List<dynamic>? get grocery;
-  @override
-  @JsonKey(name: "advertisements")
-  List<Advertisement>? get advertisements;
-  @override
-  @JsonKey(name: "trand_banners")
-  List<TrendBanner>? get trandBanners;
-  @override
-  @JsonKey(name: "brandbazarLogos")
-  List<BrandbazarLogo>? get brandbazarLogos;
+  List<BrandbazarLogo> get brandbazarLogos;
 
   /// Create a copy of Data
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TrandBanner _$TrandBannerFromJson(Map<String, dynamic> json) {
+  return _TrandBanner.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TrandBanner {
+  String get id => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+  String get bazar => throw _privateConstructorUsedError;
+
+  /// Serializes this TrandBanner to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TrandBannerCopyWith<TrandBanner> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TrandBannerCopyWith<$Res> {
+  factory $TrandBannerCopyWith(
+          TrandBanner value, $Res Function(TrandBanner) then) =
+      _$TrandBannerCopyWithImpl<$Res, TrandBanner>;
+  @useResult
+  $Res call({String id, String image, String bazar});
+}
+
+/// @nodoc
+class _$TrandBannerCopyWithImpl<$Res, $Val extends TrandBanner>
+    implements $TrandBannerCopyWith<$Res> {
+  _$TrandBannerCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? image = null,
+    Object? bazar = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+      bazar: null == bazar
+          ? _value.bazar
+          : bazar // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TrandBannerImplCopyWith<$Res>
+    implements $TrandBannerCopyWith<$Res> {
+  factory _$$TrandBannerImplCopyWith(
+          _$TrandBannerImpl value, $Res Function(_$TrandBannerImpl) then) =
+      __$$TrandBannerImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String id, String image, String bazar});
+}
+
+/// @nodoc
+class __$$TrandBannerImplCopyWithImpl<$Res>
+    extends _$TrandBannerCopyWithImpl<$Res, _$TrandBannerImpl>
+    implements _$$TrandBannerImplCopyWith<$Res> {
+  __$$TrandBannerImplCopyWithImpl(
+      _$TrandBannerImpl _value, $Res Function(_$TrandBannerImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? image = null,
+    Object? bazar = null,
+  }) {
+    return _then(_$TrandBannerImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+      bazar: null == bazar
+          ? _value.bazar
+          : bazar // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TrandBannerImpl implements _TrandBanner {
+  const _$TrandBannerImpl(
+      {required this.id, required this.image, required this.bazar});
+
+  factory _$TrandBannerImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TrandBannerImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String image;
+  @override
+  final String bazar;
+
+  @override
+  String toString() {
+    return 'TrandBanner(id: $id, image: $image, bazar: $bazar)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TrandBannerImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.bazar, bazar) || other.bazar == bazar));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, image, bazar);
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TrandBannerImplCopyWith<_$TrandBannerImpl> get copyWith =>
+      __$$TrandBannerImplCopyWithImpl<_$TrandBannerImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TrandBannerImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TrandBanner implements TrandBanner {
+  const factory _TrandBanner(
+      {required final String id,
+      required final String image,
+      required final String bazar}) = _$TrandBannerImpl;
+
+  factory _TrandBanner.fromJson(Map<String, dynamic> json) =
+      _$TrandBannerImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get image;
+  @override
+  String get bazar;
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TrandBannerImplCopyWith<_$TrandBannerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
