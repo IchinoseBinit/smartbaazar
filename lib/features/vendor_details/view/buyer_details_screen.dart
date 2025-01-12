@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +9,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
 import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
@@ -158,25 +159,6 @@ class _BuyerAccountDetailsWidgetState
     _branchController = TextEditingController(text: '');
   }
 
-  // void _fetchInitialData() async {
-  //   final userDataAsync = ref.watch(getUserDetailsProvider);
-
-  //   userDataAsync.when(
-  //     data: (data) {
-  //       setState(() {
-  //         userData = data.data?.first;
-  //         _setInitialValues(userData);
-  //       });
-  //     },
-  //     error: (error, stackTrace) {
-  //       print('Error loading user details: $error');
-  //     },
-  //     loading: () {
-  //       print('Loading user details...');
-  //     },
-  //   );
-  // }
-
   void _setInitialValues(UserData? userData) {
     if (userData != null && !_isInitialized) {
       setState(() {
@@ -212,31 +194,6 @@ class _BuyerAccountDetailsWidgetState
     super.dispose();
   }
 
-  // Future<void> _initializeControllers() async {
-  //   final userData = ref.watch(getUserDetailsProvider);
-  //   userData.when(
-  //     data: (data) {
-  //       setState(() {
-  //         final usersLocation =
-  //             jsonDecode(data.data!.first.usersLocation ?? '{}');
-  //         final location = usersLocation['location'];
-  //         _fullNameController.text = data.data!.first.name ?? '';
-  //         _phoneNumberController.text = data.data!.first.phone ?? '';
-  //         _emailController.text = data.data!.first.email ?? '';
-  //         _userNameController.text = data.data!.first.username ?? '';
-  //         _genderController.text = data.data!.first.genderId ?? '';
-  //         _branchController.text = location ?? '';
-  //       });
-  //       print('Controllers Initialized:');
-  //       print('Name: ${_fullNameController.text}');
-  //       print('Phone: ${_phoneNumberController.text}');
-  //       print('Username: ${_userNameController.text}');
-  //     },
-  //     loading: () => print('Loading user details...'),
-  //     error: (error, stackTrace) => print('Error loading user details: $error'),
-  //   );
-  // }
-
   void _submitUpdate(UserData data) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -258,6 +215,12 @@ class _BuyerAccountDetailsWidgetState
         );
       }
     }
+  }
+
+  void updateStreet(String street) {
+    setState(() {
+      _branchController.text = street;
+    });
   }
 
   Future<void> _updateUserDetails(UserData data) async {
@@ -502,49 +465,29 @@ class _BuyerAccountDetailsWidgetState
                           SizedBox(height: 10.2.h),
 
                           // CustomTextFieldWidget(
+                          //   controller: _branchController,
                           //   fill: true,
                           //   fillColor: const Color(0xFFF6F2F2),
-                          //   // fillColor: const Color(0xFFF3F3F3),
                           //   icon: Icons.location_on,
-                          //   textInputType: TextInputAction.next,
-                          //   hintText: (() {
-                          //     try {
-                          //       // Decode the usersLocation JSON string
-                          //       final usersLocation = jsonDecode(
-                          //           data.data!.first.usersLocation ?? '');
-                          //       return usersLocation['location'] ?? "Your Location";
-                          //     } catch (e) {
-                          //       return "Your Location"; // Fallback in case of an error
-                          //     }
-                          //   })(),
-
+                          //   hintText: "Your Location",
                           //   iconColor: Colors.red,
                           //   validator: (value) {
-                          //     // if (value == null || value.isEmpty) {
-                          //     //   return 'Enter your  Location",';
-                          //     // }
+                          //     if (value == null || value.isEmpty) {
+                          //       return 'Enter your location';
+                          //     }
                           //     return null;
                           //   },
+                          //   onChanged: (newValue) {
+                          //     setState(() {
+                          //       _branchController.text = newValue;
+                          //     });
+                          //   },
                           // ),
-                          CustomTextFieldWidget(
-                            controller: _branchController,
-                            fill: true,
-                            fillColor: const Color(0xFFF6F2F2),
-                            icon: Icons.location_on,
-                            hintText: "Your Location",
-                            iconColor: Colors.red,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Enter your location';
-                              }
-                              return null;
-                            },
-                            onChanged: (newValue) {
-                              setState(() {
-                                _branchController.text = newValue;
-                              });
-                            },
+                          LocationFieldWidget(
+                            onSelected: updateStreet,
+                            streetController: _branchController,
                           ),
+
                           SizedBox(height: 10.2.h),
                           SizedBox(height: 10.h),
                           GeneralTextButton(
@@ -569,5 +512,113 @@ class _BuyerAccountDetailsWidgetState
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stackTrace) => Text('Error: $error'),
         );
+  }
+}
+
+class LocationFieldWidget extends ConsumerStatefulWidget {
+  const LocationFieldWidget({
+    super.key,
+    this.onSelected,
+    required this.streetController,
+  });
+  final Function(String)? onSelected;
+  final TextEditingController streetController;
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LocationFieldWidgetState();
+}
+
+class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
+  String query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          controller: widget.streetController,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+            hintText: "Your Location",
+            hintStyle: TextStyle(
+              color: const Color(0xffADADAD),
+              fontSize: 14.sp,
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            filled: true,
+            fillColor: const Color.fromARGB(255, 241, 234, 234),
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(
+                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+              child: Container(
+                height: 50,
+                width: 52,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: const Color(0xffAEC5FF),
+                ),
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          onChanged: (value) {
+            setState(() {
+              query = value; // Update query when text changes
+            });
+          },
+        ),
+        const SizedBox(height: 10),
+        if (query.isNotEmpty)
+          streetSuggestionsAsync.when(
+            data: (addresses) {
+              if (addresses.isEmpty) {
+                return const Text('No street address found.');
+              }
+
+              return Flexible(
+                fit: FlexFit.loose,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: addresses.length,
+                  itemBuilder: (context, index) {
+                    final address = addresses[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: ListTile(
+                        title: Text(
+                          address.description,
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
+                        onTap: () {
+                          widget.streetController.text = address.description;
+                          setState(() {
+                            query = ''; // Clear the query to hide suggestions
+
+                            widget.onSelected!(address.description);
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+            loading: () => const CircularProgressIndicator(),
+            error: (error, stackTrace) => Text('Error: $error'),
+          ),
+      ],
+    );
   }
 }
