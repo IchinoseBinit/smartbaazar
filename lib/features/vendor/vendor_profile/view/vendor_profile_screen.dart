@@ -142,6 +142,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       ),
     },
   ];
+  
   final List<Map<String, dynamic>> sellerCenterListing = [
     {
       "icon": Icons.mail,
@@ -213,7 +214,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen": const BottomNavigationScreen(),
+      "screen":  BottomNavigationScreen(),
     },
     {
       "icon": Icons.feed,
@@ -247,8 +248,10 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    
     return GenericSafeArea(
       child: Scaffold(
+        
         extendBody: true,
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppBar(

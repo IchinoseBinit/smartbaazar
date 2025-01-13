@@ -19,27 +19,6 @@ class SmartClinet {
     return _instance;
   }
 
-  bool _isTokenExpired(String token) {
-    try {
-      final parts = token.split('.');
-      if (parts.length != 3) {
-        return true; // Invalid token format
-      }
-      final payload = jsonDecode(
-        utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
-      ) as Map<String, dynamic>;
-      final exp = payload['exp'] as int?;
-      if (exp == null) {
-        return true; // No expiry information, assume expired
-      }
-      final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
-      return expiryDate.isBefore(DateTime.now());
-    } catch (e) {
-      print('Error checking token expiry: $e');
-      return true; // Assume expired on error
-    }
-  }
-
   late Dio _client;
   final timeOutDuration = const Duration(seconds: kDebugMode ? 30 : 60);
 
@@ -59,32 +38,30 @@ class SmartClinet {
     _client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
-          if (SmartClinet.token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer ${SmartClinet.token}';
-          }
+          print('Adding token to request: Bearer $token'); // Debugging token
+          options.headers['Authorization'] = 'Bearer $token';
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          if (error.response != null && error.response!.statusCode == 401) {
-            if (SmartClinet.token.isEmpty || _isTokenExpired(SmartClinet.token)) {
-              final success = await _refreshToken();
-              if (success) {
-                final RequestOptions requestOptions = error.requestOptions;
-                requestOptions.headers['Authorization'] =
-                    'Bearer ${SmartClinet.token}';
-                try {
-                  final response = await _retry(requestOptions);
-                  return handler.resolve(response);
-                } on DioException catch (retryError) {
-                  return handler.next(retryError);
-                }
+          if (error.response != null && error.response!.statusCode! >= 400) {
+            print("Error: Status Code >= 400, trying to refresh token...");
+            final success = await _refreshToken();
+            if (success) {
+              RequestOptions requestOptions = error.requestOptions;
+              requestOptions.headers['Authorization'] = 'Bearer $token';
+              try {
+                final response = await _retry(requestOptions);
+                return handler.resolve(response);
+              } on DioException catch (retryError) {
+                return handler.next(retryError);
               }
             }
+            return handler.next(error);
           }
           return handler.next(error);
         },
-        onResponse: (Response response, handler) {
-          return handler.next(response);
+        onResponse: (options, handler) {
+          return handler.next(options);
         },
       ),
     );
@@ -92,7 +69,7 @@ class SmartClinet {
 
   Future<bool> _refreshToken() async {
     try {
-      final container = ProviderContainer();
+      final container = ProviderContainer(); // Create a Riverpod container
       final refreshTokenResponse =
           await container.read(getRefreshTokenProvider.future);
 
@@ -103,7 +80,8 @@ class SmartClinet {
       await prefs.setString('accessToken', refreshTokenResponse.authToken);
       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-      print("Token refreshed successfully: ${SmartClinet.token}");
+      print(
+          "Token refreshed successfully: ${SmartClinet.token}"); // Debugging token refresh
       return true;
     } catch (e) {
       print("Error refreshing token using API: $e");
@@ -112,24 +90,19 @@ class SmartClinet {
   }
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
-    try {
-      final options = Options(
-        method: requestOptions.method,
-        headers: {
-          ...requestOptions.headers,
-          'Authorization': 'Bearer $token',
-        },
-      );
-      return await _client.request<dynamic>(
-        requestOptions.path,
-        data: requestOptions.data,
-        queryParameters: requestOptions.queryParameters,
-        options: options,
-      );
-    } catch (e) {
-      print('Retry failed: $e');
-      rethrow;
-    }
+    var options = Options(
+      method: requestOptions.method,
+      headers: {
+        ...requestOptions.headers,
+        'Authorization': 'Bearer $token', // Ensure the new token is used
+      },
+    );
+    return _client.request<dynamic>(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
   }
 
   Future<Response> request({
@@ -150,7 +123,8 @@ class SmartClinet {
       Map<String, String> mergedHeaders =
           _mergeHeaders(defaultHeaders, headers);
 
-      print('Merged Headers before request: $mergedHeaders');
+      print(
+          'Merged Headers before request: $mergedHeaders'); // Debugging merged headers
 
       switch (requestType) {
         case RequestType.get:
@@ -163,6 +137,7 @@ class SmartClinet {
               .timeout(timeOutDuration);
 
         case RequestType.getWithToken:
+          print('Sending GET request with token to URL: $url');
           return await _client
               .get(
                 url,
@@ -180,7 +155,6 @@ class SmartClinet {
                 options: Options(headers: mergedHeaders),
               )
               .timeout(timeOutDuration);
-
         case RequestType.postWithTokenFormData:
           return await _client
               .post(
@@ -194,16 +168,6 @@ class SmartClinet {
                 ),
               )
               .timeout(timeOutDuration);
-
-        case RequestType.postWithHeaders:
-          return await _client
-              .post(
-                url.trim(),
-                data: jsonEncode(parameter),
-                options: Options(headers: {...defaultHeaders, ...headers}),
-              )
-              .timeout(timeOutDuration);
-
         case RequestType.postWithToken:
           return await _client
               .post(
@@ -230,7 +194,6 @@ class SmartClinet {
                 data: parameter,
               )
               .timeout(timeOutDuration);
-
         case RequestType.putWithTokenFormData:
           return await _client
               .put(
@@ -244,7 +207,6 @@ class SmartClinet {
                 ),
               )
               .timeout(timeOutDuration);
-
         case RequestType.putWithTokenEncoded:
           return await _client
               .put(
@@ -253,11 +215,14 @@ class SmartClinet {
                 options: Options(
                   headers: {
                     ...mergedHeaders,
-                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Type": "application/x-www-form-urlencoded"
                   },
                 ),
               )
               .timeout(timeOutDuration);
+
+        default:
+          throw Exception("Unsupported request type");
       }
     } catch (e) {
       if (e is DioException) {
@@ -278,7 +243,10 @@ class SmartClinet {
   }
 
   Map<String, String> _mergeHeaders(
-      Map<String, String> defaultHeaders, Map<String, String>? additionalHeaders) {
-    return {...defaultHeaders, if (additionalHeaders != null) ...additionalHeaders};
+      Map<String, String> defaultHeaders, dynamic additionalHeaders) {
+    if (additionalHeaders != null) {
+      return {...defaultHeaders, ...additionalHeaders};
+    }
+    return defaultHeaders;
   }
 }

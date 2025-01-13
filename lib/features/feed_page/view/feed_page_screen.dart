@@ -63,7 +63,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen':  BottomNavigationScreen()
+      'screen': BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -191,6 +191,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: 1,
       length: 2, // Two tabs: "Following" and "For You"
       child: GenericSafeArea(
         child: Scaffold(
@@ -771,7 +772,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stack) => Center(child: Text('Error: $error')),
           ),
-          SizedBox(height: 70.h),
+          // SizedBox(height: 70.h),
         ],
       ),
     );
@@ -784,83 +785,71 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 20.h),
-          SizedBox(
-            height: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                asyncForYouStoryContent.when(
-                  data: (feedStoryData) {
-                    final feedStoryContent = feedStoryData.data?.feedstory;
-                    if (feedStoryContent != null &&
-                        feedStoryContent.posts != null) {
-                      return Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: feedStoryContent.posts?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            final Post story = feedStoryContent.posts![index];
-
-                            return FeedStoryAddWidget(
-                              index: index,
-                              vendorName: story.vendorName ?? "Unknown Vendor",
-                              vendorImage: story.vendorImage ??
-                                  "https://example.com/default-image.png",
-                              storyCount: story.storyCount ?? 0,
-                              showGift: story.hasSponsoredGifts ?? false,
-                              feedStoryContent: feedStoryContent,
-                              userId: story.vendorId!,
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      return const Center(
-                          child: Text(
-                        "No stories available",
-                        textAlign: TextAlign.center,
-                      ));
-                    }
-                  },
-                  loading: () => Expanded(
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              asyncForYouStoryContent.when(
+                data: (feedStoryData) {
+                  final feedStoryContent = feedStoryData.data?.feedstory;
+                  if (feedStoryContent != null &&
+                      feedStoryContent.posts != null) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: feedStoryContent.posts!.map((story) {
+                          return FeedStoryAddWidget(
+                            index: feedStoryContent.posts!.indexOf(story),
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent,
+                            userId: story.vendorId!,
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+                loading: () => Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(5, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 80,
+                              height: 80,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
                               ),
-                            );
-                          })),
-                  error: (error, stack) {
-                    if (error.toString().contains('Session has expired')) {
-                      return const Center(child: Text('Please log in again.'));
-                    }
-                    return Center(child: Text('Error: $error'));
-                  },
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
                 ),
-              ],
-            ),
+                error: (error, stack) {
+                  if (error.toString().contains('Session has expired')) {
+                    return const Center(child: Text('Please log in again.'));
+                  }
+                  return Center(child: Text('Error: $error'));
+                },
+              ),
+            ],
           ),
-          SizedBox(height: 20.h),
+          // SizedBox(height: 20.h),
           asyncForYouFeedContent.when(
             data: (feedData) {
               if (feedData.data != null && feedData.data!.feedPost != null) {

@@ -5,31 +5,43 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
-class BottomNavigationScreen extends ConsumerWidget {
-  const BottomNavigationScreen({super.key});
+class BottomNavigationScreen extends StatefulWidget {
+  @override
+  _BottomNavigationScreenState createState() => _BottomNavigationScreenState();
+}
+
+class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
+  int _selectedIndex = 1;
+
+  // List of screens for navigation
+  final List<Widget> _screens = [
+    HomeScreen(),
+    FeedScreen(),
+    MessageViewScreen(),
+    UsedScreen(),
+  ];
+
+  void _onTabChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(bottomNavIndexProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: IndexedStack(
-        index: selectedIndex,
-        children: const [
-          HomeScreen(),
-          FeedScreen(),
-          MessageViewScreen(),
-          VendorProfileScreen(),
-        ],
+        index: _selectedIndex,
+        children: _screens,
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: selectedIndex,
-        onTabChanged: (index) {
-          ref.read(bottomNavIndexProvider.notifier).state = index;
-        },
+        selectedIndex: _selectedIndex,
+        onTabChanged: _onTabChanged,
       ),
     );
   }
@@ -66,7 +78,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 'assets/icon/wifi.png',
               ];
               return GestureDetector(
-                onTap: () => onTabChanged(index),
+                onTap: () => onTabChanged(index), // Trigger the callback
                 child: Container(
                   height: 40.h,
                   decoration: BoxDecoration(
