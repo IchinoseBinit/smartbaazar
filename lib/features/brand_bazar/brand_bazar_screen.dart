@@ -269,26 +269,26 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
               case 0:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
                 break;
               case 1:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FeedScreen()),
+                  MaterialPageRoute(builder: (context) => const FeedScreen()),
                 );
                 break;
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MessageViewScreen()),
+                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VendorProfileScreen()),
+                      builder: (context) => const VendorProfileScreen()),
                 );
                 break;
             }
@@ -465,9 +465,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim()
-                                                      .length !=
-                                                  0)
+                                                      .trim().isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -477,6 +475,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                             .text,
                                                       ),
                                                     ));
+                                              }
                                             },
                                             child: Container(
                                               height: 45.h,
@@ -879,7 +878,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                   width: double.infinity,
                                   child: CarouselSlider(
                                     items:
-                                        data.data!.trand_banners?.map((banner) {
+                                        data.data!.trand_banners.map((banner) {
                                       return InkWell(
                                         onTap: () {
                                           Navigator.push(
@@ -893,7 +892,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                         child: CachedNetworkImage(
                                           width: double.infinity,
                                           fit: BoxFit.fill,
-                                          imageUrl: banner.image!,
+                                          imageUrl: banner.image,
                                           errorWidget: (context, url, error) =>
                                               const Icon(Icons.error),
                                         ),
@@ -1146,8 +1145,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
                   asyncbajarValue.when(
                     data: (data) {
-                      if (data.data?.new_products.length == 0)
+                      if (data.data!.new_products.isEmpty) {
                         return Center(child: nolistingfound());
+                      }
 
                       return SizedBox(
                         width: double.infinity,

@@ -60,7 +60,7 @@ class _BecomeBrandbazaarMemberScreenState
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) =>  BottomNavigationScreen()),
+        MaterialPageRoute(builder: (_) =>  const BottomNavigationScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -221,7 +221,7 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        BottomNavigationScreen(),
+                                        const BottomNavigationScreen(),
                                   ));
                             },
                             child: Row(

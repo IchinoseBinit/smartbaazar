@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
+  const BottomNavigationScreen({super.key});
+
   @override
   _BottomNavigationScreenState createState() => _BottomNavigationScreenState();
 }
@@ -19,10 +17,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   // List of screens for navigation
   final List<Widget> _screens = [
-    HomeScreen(),
-    FeedScreen(),
-    MessageViewScreen(),
-    UsedScreen(),
+    const HomeScreen(),
+    const FeedScreen(),
+    const MessageViewScreen(),
+    const UsedScreen(),
   ];
 
   void _onTabChanged(int index) {

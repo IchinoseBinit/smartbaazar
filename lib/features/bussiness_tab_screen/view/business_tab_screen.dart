@@ -293,9 +293,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         InkWell(
                                           onTap: () {
                                             if (_searchController.text
-                                                    .trim()
-                                                    .length !=
-                                                0)
+                                                    .trim().isNotEmpty) {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -305,6 +303,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                           .text,
                                                     ),
                                                   ));
+                                            }
                                           },
                                           child: Container(
                                             height: 45.h,

@@ -16,7 +16,6 @@ import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
-import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
@@ -28,7 +27,6 @@ import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
-import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -214,7 +212,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen":  BottomNavigationScreen(),
+      "screen":  const BottomNavigationScreen(),
     },
     {
       "icon": Icons.feed,

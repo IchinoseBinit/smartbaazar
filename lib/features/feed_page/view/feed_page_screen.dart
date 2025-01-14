@@ -63,7 +63,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': BottomNavigationScreen()
+      'screen': const BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -813,7 +813,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       ),
                     );
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 },
                 loading: () => Expanded(

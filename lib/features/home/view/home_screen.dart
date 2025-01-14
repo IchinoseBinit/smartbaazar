@@ -89,7 +89,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': BottomNavigationScreen()
+      'screen': const BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -295,26 +295,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               case 0:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
                 break;
               case 1:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FeedScreen()),
+                  MaterialPageRoute(builder: (context) => const FeedScreen()),
                 );
                 break;
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MessageViewScreen()),
+                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VendorProfileScreen()),
+                      builder: (context) => const VendorProfileScreen()),
                 );
                 break;
             }
@@ -486,9 +486,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             InkWell(
                                               onTap: () {
                                                 if (_searchController.text
-                                                        .trim()
-                                                        .length !=
-                                                    0)
+                                                        .trim().isNotEmpty) {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -499,6 +497,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                   .text,
                                                         ),
                                                       ));
+                                                }
                                               },
                                               child: Container(
                                                 height: 45.h,
@@ -831,7 +830,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                         if (homeStory != null &&
                             homeStory is Map<String, dynamic> &&
-                            homeStory.length == 0 &&
+                            homeStory.isEmpty &&
                             homeStory.containsKey('story')) {
                           final story = homeStory['story'];
 
@@ -880,7 +879,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         }
 
                         // If any of the above conditions fail, return a default widget
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       },
                       loading: () => SizedBox(
                         height: 100.h,

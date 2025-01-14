@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_api.dart';
 import 'package:smartbazar/features/splash_screen/splash_model.dart';
 
@@ -16,19 +17,22 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     super.initState();
     // Start the timer to continue the session after 3 seconds
-    Future.delayed(
-      const Duration(seconds: 3),
-      () async {
-        try {
-          final loginProvider = ref.read(loginController.notifier);
-          await loginProvider.continueSession(context).catchError((e) {
-            // Navigator.pushReplacementNamed(context, MaterialPageRoute(builder: ));
-          });
-        } catch (e) {
-          print('Error continuing session: $e');
-        }
-      },
-    );
+  Future.delayed(
+  const Duration(seconds: 3),
+  () async {
+    try {
+      final loginProvider = ref.read(loginController.notifier);
+      await loginProvider.continueSession(context);
+    } catch (e) {
+      // Fallback: Navigate to LoginScreen if any error occurs
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    }
+  },
+);
+
   }
 
   @override

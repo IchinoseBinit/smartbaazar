@@ -74,9 +74,9 @@ class _MyAppState extends State<MyApp> {
         // home: GrocarysScreen(),
         // home: JobssScreen(),
         // home: ServicesScreen(),
-        home: SplashScreen(),
+        home:  SplashScreen()
       ),
     );
   }
 }
-// 239 dollars
+

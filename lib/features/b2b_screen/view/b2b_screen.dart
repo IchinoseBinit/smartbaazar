@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +18,8 @@ import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_scree
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
@@ -35,7 +32,6 @@ import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -61,7 +57,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   int? selectedIndex = 3;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
-  double _lastScrollOffset = 0;
   Offset _initialDragPosition = Offset.zero;
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
@@ -86,7 +81,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': BottomNavigationScreen()
+      'screen': const BottomNavigationScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -181,21 +176,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     });
   }
 
-  void _handleScroll() {
-    final scrollOffset = _scrollController.offset;
-
-    if (scrollOffset > _lastScrollOffset && scrollOffset > 100) {
-      setState(() {
-        _isSectionsVisible = false;
-      });
-    } else if (scrollOffset < _lastScrollOffset && scrollOffset < 50) {
-      setState(() {
-        _isSectionsVisible = true;
-      });
-    }
-
-    _lastScrollOffset = scrollOffset;
-  }
 
   void _onDragUpdate(DragUpdateDetails details) {
     final dragDistance = details.globalPosition.dy - _initialDragPosition.dy;
@@ -265,26 +245,26 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
               case 0:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
                 break;
               case 1:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FeedScreen()),
+                  MaterialPageRoute(builder: (context) => const FeedScreen()),
                 );
                 break;
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MessageViewScreen()),
+                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VendorProfileScreen()),
+                      builder: (context) => const VendorProfileScreen()),
                 );
                 break;
             }
@@ -461,9 +441,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim()
-                                                      .length !=
-                                                  0)
+                                                      .trim().isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -473,6 +451,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                             .text,
                                                       ),
                                                     ));
+                                              }
                                             },
                                             child: Container(
                                               height: 45.h,

@@ -17,6 +17,7 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/product_details/constant/additional_detailpage.dart';
@@ -56,8 +57,10 @@ class ProductDetailScreen extends ConsumerWidget {
 
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController msgcontroller = TextEditingController();
+  final TextEditingController _reviewcontroller = TextEditingController();
+
   final String productId;
-  final int _selectedIndex = 0;
+  // final int _selectedIndex = 0;
   ProductDetailScreen({super.key, required this.productId});
   final ScrollController _scrollController = ScrollController();
 
@@ -72,7 +75,7 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double sch = MediaQuery.of(context).size.height;
     // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
-    final adsList = ref.watch(fetchAdsProvider);
+    // final adsList = ref.watch(fetchAdsProvider);
     // final scratchAndWinResponse = ref.watch(getScratchAndWinResponseProvider);
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
@@ -776,9 +779,10 @@ class ProductDetailScreen extends ConsumerWidget {
                                   SizedBox(
                                     height: 4.h,
                                   ),
-                                  const TextField(
+                                  TextField(
+                                    controller: _reviewcontroller,
                                     maxLines: 5,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.black)),
@@ -787,15 +791,21 @@ class ProductDetailScreen extends ConsumerWidget {
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: const Color(0xFF362677)),
-                                    child: Text(
-                                      "Submit Review",
-                                      style: headerstyle,
+                                  InkWell(
+                                    onTap: () async {
+                                      ref.watch(postreviewProvider(int.tryParse(productId)!,_reviewcontroller.text,'2'));
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: const Color(0xFF362677)),
+                                      child: Text(
+                                        "Submit Review",
+                                        style: headerstyle,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(

@@ -26,7 +26,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) =>  BottomNavigationScreen()),
+            MaterialPageRoute(builder: (_) =>  const BottomNavigationScreen()),
           );
         }
       }

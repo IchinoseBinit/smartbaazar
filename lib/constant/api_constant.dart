@@ -11,6 +11,7 @@ class ApiConstants {
   static String getcontactSellerUrl = '$baseUrl/threads';
   static String getHotDealScreen = '$baseUrl/homeSections';
   static String getStoryHome = '$baseUrl/users/getrandomstory';
+  static String postreview = '$baseUrl/posts/reviewcomment';
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';

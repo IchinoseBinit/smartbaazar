@@ -265,26 +265,26 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
               case 0:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
                 break;
               case 1:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FeedScreen()),
+                  MaterialPageRoute(builder: (context) => const FeedScreen()),
                 );
                 break;
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MessageViewScreen()),
+                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VendorProfileScreen()),
+                      builder: (context) => const VendorProfileScreen()),
                 );
                 break;
             }
@@ -461,9 +461,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim()
-                                                      .length !=
-                                                  0)
+                                                      .trim().isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -473,6 +471,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                             .text,
                                                       ),
                                                     ));
+                                              }
                                             },
                                             child: Container(
                                               height: 45.h,

@@ -135,7 +135,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                 BottomNavigationScreen()));
+                                 const BottomNavigationScreen()));
                   },
                 ),
                 SizedBox(
