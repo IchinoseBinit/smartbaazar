@@ -6,15 +6,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-class SmartClinet {
+class SmartClient {
   static String token = '';
   static String refresh = '';
   static String userId = '';
   static String userName = '';
   static String userEmail = '';
-  static final SmartClinet _instance = SmartClinet._internal();
+  static final SmartClient _instance = SmartClient._internal();
 
-  factory SmartClinet() {
+  factory SmartClient() {
     return _instance;
   }
 
@@ -22,7 +22,7 @@ class SmartClinet {
   final timeOutDuration = const Duration(seconds: kDebugMode ? 30 : 60);
   bool _isRefreshingToken = false; // Flag to avoid multiple refresh attempts
 
-  SmartClinet._internal() {
+  SmartClient._internal() {
     _client = Dio();
     _loadToken(); // Load the token at initialization
 
@@ -41,24 +41,27 @@ class SmartClinet {
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
           // Ensure the token is correctly set in headers
-          if (SmartClinet.token.isNotEmpty) {
-            print('Sending request with token: ${SmartClinet.token}');
-            options.headers['Authorization'] = 'Bearer ${SmartClinet.token}';
+          if (SmartClient.token.isNotEmpty) {
+            print('Sending request with token: ${SmartClient.token}');
+            options.headers['Authorization'] = 'Bearer ${SmartClient.token}';
           } else {
             print('No token found!');
           }
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          if (error.response != null && error.response!.statusCode! == 400) {
+          if (error.response != null && error.response!.statusCode! == 401) {
             if (error.response?.data['success'] == false) {
               print('Token expired, attempting refresh');
               // Avoid multiple refresh token requests by using the flag
               if (!_isRefreshingToken) {
                 _isRefreshingToken = true;
                 final refreshed = await _refreshToken();
+
                 _isRefreshingToken = false;
                 if (refreshed) {
+                  error.requestOptions.headers['Authorization'] =
+                      'Bearer ${SmartClient.token}';
                   final response = await _retry(error.requestOptions);
                   return handler.resolve(response);
                 }
@@ -74,9 +77,9 @@ class SmartClinet {
   // Load token from SharedPreferences
   Future<void> _loadToken() async {
     final prefs = await SharedPreferences.getInstance();
-    SmartClinet.token = prefs.getString('accessToken') ?? '';
-    SmartClinet.refresh = prefs.getString('refreshToken') ?? '';
-    print("Token loaded: ${SmartClinet.token}");
+    SmartClient.token = prefs.getString('accessToken') ?? '';
+    SmartClient.refresh = prefs.getString('refreshToken') ?? '';
+    print("Token loaded: ${SmartClient.token}");
   }
 
   // Token Refresh Logic
@@ -86,14 +89,14 @@ class SmartClinet {
       final refreshTokenResponse =
           await container.read(getRefreshTokenProvider.future);
 
-      SmartClinet.token = refreshTokenResponse.authToken;
-      SmartClinet.refresh = refreshTokenResponse.refreshToken;
+      SmartClient.token = refreshTokenResponse.authToken;
+      SmartClient.refresh = refreshTokenResponse.refreshToken;
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('accessToken', refreshTokenResponse.authToken);
       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-      print("Token refreshed successfully: ${SmartClinet.token}");
+      print("Token refreshed successfully: ${SmartClient.token}");
       return true;
     } catch (e) {
       print("Error refreshing token using API: $e");
@@ -125,7 +128,7 @@ class SmartClinet {
     dynamic headers,
   }) async {
     // Ensure the token is available before making the request
-    if (SmartClinet.token.isEmpty) {
+    if (SmartClient.token.isEmpty) {
       print("No token found. Please log in.");
       throw Exception("No token found. Please log in.");
     }

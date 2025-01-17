@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/brand_bazar/model/screen_category_mode.dart';
 
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'screen_category_api.g.dart';
@@ -9,7 +9,7 @@ part 'screen_category_api.g.dart';
 @riverpod
 Future<List<CategoryModel>> getCategories(
     GetCategoriesRef ref, int parentId) async {
-  final SmartClinet client = SmartClinet(); // Your custom API client
+  final SmartClient client = SmartClient(); // Your custom API client
 
   try {
     // Make the API call

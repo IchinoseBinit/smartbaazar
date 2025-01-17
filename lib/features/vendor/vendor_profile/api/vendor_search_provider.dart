@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'vendor_search_provider.g.dart';
@@ -9,7 +9,7 @@ part 'vendor_search_provider.g.dart';
 @riverpod
 Future<List<GetOnlyData>> geDataBySearchvendor(
     GeDataBySearchvendorRef ref, String id) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.get,

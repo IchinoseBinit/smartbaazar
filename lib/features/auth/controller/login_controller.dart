@@ -9,7 +9,7 @@ import 'package:smartbazar/features/auth/model/login_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 
 
 
@@ -49,6 +49,7 @@ class LoginController extends StateNotifier<GenericState> {
     final sessionData = await _getSessionData();
     final accessToken = await _getAccessToken();
 
+
     state = LoadingState();
 
     if (sessionData == null || accessToken == null || accessToken.isEmpty) {
@@ -61,7 +62,9 @@ class LoginController extends StateNotifier<GenericState> {
       final userId = session['result']?['id']?.toString() ?? '';
       if (userId.isNotEmpty) {
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
-        SmartClinet.userId = userId;
+        SmartClient.userId = userId;
+    // TODO: SmartClient.token is not set here
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const AdSplashScreen()),
@@ -91,14 +94,14 @@ class LoginController extends StateNotifier<GenericState> {
 
   void _storeUserData(LoginData loginData) async {
     final prefs = await SharedPreferences.getInstance();
-    SmartClinet.userId = loginData.result.id.toString();
-    SmartClinet.userName = loginData.result.name;
-    SmartClinet.token = loginData.extra.authToken;
-    SmartClinet.refresh = loginData.extra.refreshToken;
+    SmartClient.userId = loginData.result.id.toString();
+    SmartClient.userName = loginData.result.name;
+    SmartClient.token = loginData.extra.authToken;
+    SmartClient.refresh = loginData.extra.refreshToken;
 
     await prefs.setString("session", json.encode(loginData.toJson()));
-    await prefs.setString("accessToken", SmartClinet.token);
-    await prefs.setString("refreshToken", SmartClinet.refresh);
+    await prefs.setString("accessToken", SmartClient.token);
+    await prefs.setString("refreshToken", SmartClient.refresh);
   }
 
   Future<String?> _getSessionData() async {
@@ -151,11 +154,11 @@ class LoginController extends StateNotifier<GenericState> {
 
   Future<void> _storeNewTokens(Map<String, dynamic> newTokens) async {
     final prefs = await SharedPreferences.getInstance();
-    SmartClinet.token = newTokens['authToken'];
-    SmartClinet.refresh = newTokens['refreshToken'];
+    SmartClient.token = newTokens['authToken'];
+    SmartClient.refresh = newTokens['refreshToken'];
 
-    await prefs.setString("accessToken", SmartClinet.token);
-    await prefs.setString("refreshToken", SmartClinet.refresh);
+    await prefs.setString("accessToken", SmartClient.token);
+    await prefs.setString("refreshToken", SmartClient.refresh);
   }
 }
 

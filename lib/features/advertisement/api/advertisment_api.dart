@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'advertisment_api.g.dart';
@@ -9,7 +9,7 @@ part 'advertisment_api.g.dart';
 @riverpod
 Future<AdvertisementResponse> getUsersAdvertisement(
     GetUsersAdvertisementRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

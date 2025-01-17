@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class LoginApi {
-  final SmartClinet _client = SmartClinet();
+  final SmartClient _client = SmartClient();
 
 Future<LoginData> login(String email, String password) async {
   final loginBody = {'login': email, 'password': password};
@@ -83,8 +83,8 @@ Future<LoginData> login(String email, String password) async {
   Future<void> _storeSessionDetails(LoginData user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("session", json.encode(user.toJson()));
-    await prefs.setString("accessToken", SmartClinet.token);
-    await prefs.setString("refreshToken", SmartClinet.refresh);
+    await prefs.setString("accessToken", SmartClient.token);
+    await prefs.setString("refreshToken", SmartClient.refresh);
   }
 
   // Handle error response (non-2xx HTTP status)

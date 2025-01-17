@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/search_product_details/model/search_details.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'search_detail_api.g.dart';
@@ -16,7 +16,7 @@ Future<SearchDetails> getSearchDetails(
 }) async {
   print("Query: $query, Order By: $orderby"); // More informative logging
 
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   // Return a default SearchDetails if the query is empty
   if (query.isEmpty) {

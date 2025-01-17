@@ -1,10 +1,10 @@
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/signup_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class SignUpAPi {
-  final SmartClinet _clinet = SmartClinet();
+  final SmartClient _clinet = SmartClient();
 
   Future<SignupModel> signUp({
     required String name,

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 // import 'package:http/http.dart' as http;
 
@@ -41,7 +41,7 @@ Future<bool> postCheckoutForm(
   String total,
   // List<String?> imagePath,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     FormData formData = FormData.fromMap({
