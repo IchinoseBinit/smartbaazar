@@ -12,7 +12,7 @@ Future<List<LoadingAd>> fetchAds(FetchAdsRef ref) async {
 
   try {
     final response = await client.request(
-      requestType: RequestType.getWithToken,
+      requestType: RequestType.get,
       url: ApiConstants.getAdsUrl,
     );
 

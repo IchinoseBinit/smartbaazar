@@ -15,6 +15,7 @@ class AllProductDetailWidget extends StatelessWidget {
   AllProductDetailWidget(
       {super.key,
       // this.membership_title,
+      this.posttype = '1',
       this.id,
       this.offer,
       this.title = "Trade",
@@ -33,6 +34,7 @@ class AllProductDetailWidget extends StatelessWidget {
       this.shortestDistance,
       this.membershipTitle,
       this.discountpercentage,
+      this.membershipid,
       this.avg_rating});
 
   String? title;
@@ -42,6 +44,7 @@ class AllProductDetailWidget extends StatelessWidget {
   String? views, comment, share;
   String? vendorname;
   int? discountpercentage;
+  String? membershipid;
 
   // String? membership_title;
   double? distance;
@@ -53,6 +56,7 @@ class AllProductDetailWidget extends StatelessWidget {
   double? avg_rating = 0;
   double? shortestDistance;
   int? id;
+  String? posttype;
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +75,40 @@ class AllProductDetailWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SvgPicture.asset(
-                    b2bIcon,
+                    posttype == '1'
+                        ? productsicon
+                        : posttype == '7'
+                            ? b2bIcon
+                            : posttype == '2'
+                                ? usedIcon
+                                : posttype == '3'
+                                    ? servicesIcon
+                                    : posttype == '4'
+                                        ? jobIcon
+                                        : posttype == '5'
+                                            ? eventIcon
+                                            : posttype == '8'
+                                                ? grocaryicon
+                                                : 'defaultIcon', // Provide a default icon path if no match is found
                     height: 10,
                     color: Colors.grey,
                   ),
                   Text(
-                    lefttile!,
+                    posttype == '1'
+                        ? 'Products'
+                        : posttype == '7'
+                            ? 'B2B'
+                            : posttype == '2'
+                                ? 'Used'
+                                : posttype == '3'
+                                    ? 'Services'
+                                    : posttype == '4'
+                                        ? 'Jobs'
+                                        : posttype == '5'
+                                            ? 'Events'
+                                            : posttype == '8'
+                                                ? 'Grocery'
+                                                : '', // Default to an empty string if no match
                     style: headerstyle.copyWith(
                         fontSize: 9.sp, color: Colors.grey),
                   ),
@@ -183,36 +215,34 @@ class AllProductDetailWidget extends StatelessWidget {
             ],
           ),
         ),
-
-Padding(
-  padding: EdgeInsets.symmetric(horizontal: 2.w),
-  child: Image.network(
-    productImage ?? '',
-    height: 100.h,
-    fit: BoxFit.fill,
-    alignment: Alignment.center,
-    loadingBuilder: (context, child, loadingProgress) {
-      if (loadingProgress == null) {
-        return child; // If the image has loaded, display it
-      }
-      return Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: Container(
-          height: 100.h,
-          color: Colors.white, // Placeholder for shimmer effect
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 2.w),
+          child: Image.network(
+            productImage ?? '',
+            height: 100.h,
+            fit: BoxFit.fill,
+            alignment: Alignment.center,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child; // If the image has loaded, display it
+              }
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  height: 100.h,
+                  color: Colors.white, // Placeholder for shimmer effect
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox(
+                height: 100.h,
+                child: const Icon(Icons.error),
+              ); // Show error icon if image fails to load
+            },
+          ),
         ),
-      );
-    },
-    errorBuilder: (context, error, stackTrace) {
-      return SizedBox(
-        height: 100.h,
-        child: const Icon(Icons.error),
-      ); // Show error icon if image fails to load
-    },
-  ),
-),
-
         SizedBox(
           height: 3.h,
         ),
@@ -320,6 +350,7 @@ Padding(
 
                   const Spacer(),
                   if (discounttedPrice != null &&
+                      discountpercentage != 0 &&
                       discounttedPrice != '0' &&
                       discounttedPrice!.isNotEmpty)
                     Text(
@@ -650,7 +681,15 @@ Padding(
                                   width: 2.w,
                                 ),
                                 Image.asset(
-                                  "assets/images/nepalFlag.png",
+                                  membershipid == "2"
+                                      ? spotlighticon
+                                      : membershipid == "1"
+                                          ? basicsellericon
+                                          : membershipid == "3"
+                                              ? domesticseller
+                                              : membershipid == "25"
+                                                  ? globalicon
+                                                  : basicsellericon, // Provide a default icon if no match
                                   height: 9.h,
                                 ),
                                 SizedBox(

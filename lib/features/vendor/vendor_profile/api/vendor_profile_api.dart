@@ -8,7 +8,7 @@ part 'vendor_profile_api.g.dart';
 
 @riverpod
 Future<VendorProfile> getVendorProfileData(
-  GetVendorProfileDataRef ref,
+   ref,
   String vendorName, {
   int postType = 1,
   String category = "brandnew",

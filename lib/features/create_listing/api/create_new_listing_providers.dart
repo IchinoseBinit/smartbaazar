@@ -9,7 +9,7 @@ part 'create_new_listing_providers.g.dart';
 
 @riverpod
 Future<String> createlisting(
-  CreatelistingRef? ref, {
+  ref, {
   List<List<dynamic>>? cf,
   List<String>? tags,
   required String category,
@@ -40,6 +40,8 @@ Future<String> createlisting(
   List<Map<String, String>>? pieces,
   double? lat,
   double? long,
+  int? hyperd,
+  int? seller,
 }) async {
   final SmartClinet client = SmartClinet();
 
@@ -69,7 +71,7 @@ Future<String> createlisting(
       'package_id': "1",
       'payment_method_id': "1",
       'trending': "1",
-      'stock': stock?? 0,
+      'stock': stock ?? 0,
       'address': address ?? "null",
       'length': length ?? "1",
       'width': width ?? "1",
@@ -78,8 +80,8 @@ Future<String> createlisting(
       'pickup': pickup,
       'longitude': long?.toString() ?? "75",
       'latitude': lat?.toString() ?? "85",
-      'hyper_del': "1",
-      'seller_del': "0",
+      'hyper_del': hyperd,
+      'seller_del': seller,
       'story_display_days': "1",
       'offers': offer ?? "Seasonal Offers",
       'youtube': youtube ?? "jbhjbh",

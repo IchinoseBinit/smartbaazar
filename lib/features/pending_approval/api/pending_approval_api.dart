@@ -8,7 +8,7 @@ part 'pending_approval_api.g.dart';
 
 @riverpod
 Future<PendingApprovalModel> getPendingApprovalResponse(
-    GetPendingApprovalResponseRef ref) async {
+     ref) async {
   final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(

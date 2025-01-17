@@ -75,6 +75,29 @@ final List<Map<String, dynamic>> items = [
 final bottomNavIndexProvider = StateProvider<int>((ref) => 0);
 
 const String baseAsset = "assets/icon";
+//icons-postype
+const String b2bicon = 'assets/icon/b2bIcon.svg';
+const String brandbajaricon = 'assets/icon/brandBazarIcon.svg';
+const String usedicon = 'assets/icon/usedIcon.svg';
+const String socioshipicon = 'assets/icon/openCartIcon.svg';
+const String servicesicon = 'assets/icon/box.svg';
+
+const String jobicon = 'assets/icon/vectors.svg';
+const String grocaryicon = 'assets/icon/groceryIcon.svg';
+const String productsicon = 'assets/icon/products.svg';
+
+const String eventicon = 'assets/icon/eventIcon.svg';
+const String basicsellericon = 'assets/icon/basic.png';
+const String domesticseller = 'assets/icon/domectic.png';
+
+
+
+//global spot and domestic 
+// const String domesticicon = 'assets/icon/domestic_brand.png';
+// const String globalicon = 'assets/icon/global_brand.png';
+// const String spotlighticon = 'assets/icon/spotlight_seller.png';
+
+
 const String drawerIcon = "$baseAsset/drawerIcon.svg";
 const String openCart = "$baseAsset/openCartIcon.svg";
 const String logoIcon = "$baseAsset/logo.svg";
@@ -84,12 +107,10 @@ const String servicesIcon = "$baseAsset/servicesIcon.svg";
 const String usedIcon = "$baseAsset/usedIcon.svg";
 const String groceryIcon = "$baseAsset/groceryIcon.svg";
 const String jobIcon = "$baseAsset/jobIcon.svg";
-   const String domesticicon = '$baseAsset/domestic_brand.png';
-  const String globalicon = '$baseAsset/global_brand.png';
-  const String spotlighticon = '$baseAsset/spotlight_seller.png';
-  const String vendorprofile = '$baseAsset/vendor.png';
-
-
+const String domesticicon = '$baseAsset/domestic_brand.png';
+const String globalicon = '$baseAsset/global_brand.png';
+const String spotlighticon = '$baseAsset/spotlight_seller.png';
+const String vendorprofile = '$baseAsset/vendor.png';
 
 const String eventIcon = "$baseAsset/eventIcon.svg";
 const String contactSellerIcon = "$baseAsset/contactSellerIcon.svg";
@@ -134,8 +155,4 @@ class ImageConstant {
   static String pageNotFound = '$basePath/pageNotFoundImage.png';
   static String facebookShareImage = '$basePath/facebookShare.png';
   static String subscribeImage = '$basePath/subscribe.png';
- 
-
 }
-
-

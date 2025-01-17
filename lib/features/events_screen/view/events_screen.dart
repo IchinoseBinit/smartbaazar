@@ -1626,32 +1626,37 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                       ),
                                                     );
                                                   },
-                                                  child: ProductDetailWidget(
-                                                    offer: prod.offers,
-                                                    avg_rating: prod.avg_rating
-                                                        ?.toDouble(),
-                                                    shortestDistance: prod
-                                                        .user.shortestDistance,
-                                                    comment: prod.commentcount
-                                                        .toString(),
-                                                    wow: prod.wow,
-                                                    issponsored:
-                                                        prod.user.sponsored,
-                                                    lefttile: "Socio-Shop",
-                                                    vendorname: prod.title,
-                                                    discounttedPrice:
-                                                        prod.discounted_price,
-                                                    Vimage: prod.user.photo,
-                                                    price: prod.price,
-                                                    title: prod.title,
-                                                    productImage: prod.image,
-                                                    similarproductCount:
-                                                        prod.similarProductCount,
-                                                    membershipColor:
-                                                        prod.user.membershipColor,
-                                                    membershipTitle:
-                                                        prod.user.membershipTitle,
-                                                  ),
+                                                  child:  ProductDetailWidget(
+                                                  
+                                                  id: int.tryParse(prod.id),
+                                                  posttype: prod.post_type_id,
+
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  tradeImage: 'assets/icon/b2bIcon.svg',
+                                                  didcountpercentage: prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  wow: prod.wow,
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  lefttile: "Events",
+                                                  vendorname: prod.user.name,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.title,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
+                                                ),
                                                 ),
                                               );
                                             }),

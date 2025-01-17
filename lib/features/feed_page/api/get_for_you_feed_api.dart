@@ -7,7 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'get_for_you_feed_api.g.dart';
 
 @riverpod
-Future<GetForYouFeedModel> getForYouFeedApi(GetForYouFeedApiRef ref) async {
+Future<GetForYouFeedModel> getForYouFeedApi( ref) async {
   final SmartClinet client = SmartClinet();
 
   try {

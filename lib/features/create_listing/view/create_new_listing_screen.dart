@@ -16,6 +16,7 @@ import 'package:smartbazar/features/create_listing/api/get_categories_provider.d
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
+import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/create_listing/view/SellerInformationWidget.dart';
 import 'package:smartbazar/features/create_listing/widget/category_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
@@ -54,6 +55,14 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     }
   }
 
+  final TextEditingController _pickupcontroller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  final List<Place>? _places = [];
+  final bool _isLoading = false;
+
+  bool _sellerDeliveryAvailable = false;
+  bool _upayaDelivery = false;
+  bool _hyperDeliveryAvailable = false;
   String? typeid;
   Category? selectedcategory;
   List<TypeList> typeListItems = [];
@@ -72,7 +81,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   Option? selectedProductTYpe;
   Option? fuelType;
-  Option? trasnmsissiontype;
+  // Option? trasnmsissiontype;
 
   int? warrentyselected;
   Option? selectedmodel;
@@ -153,6 +162,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   FieldsResponse? getcloth;
   Category? childcategory;
   FieldsResponse? getsize;
+  Option? selectedtrnsmission;
 
   @override
   void initState() {
@@ -237,33 +247,33 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   }
 
   // final _stringTagController = StringTagController();
-  void _handleCategorySelection(
-      Category? selectedCategory, String type, WidgetRef ref) {
-    // print("bibash ${selectedCategory?.id}");
-    if (selectedCategory != null) {
-      final categoryId = selectedCategory.id;
+  // void _handleCategorySelection(
+  //     Category? selectedCategory, String type, WidgetRef ref) {
+  //   // print("bibash ${selectedCategory?.id}");
+  //   if (selectedCategory != null) {
+  //     final categoryId = selectedCategory.id;
 
-      // Notify provider
-      ref.read(GetCategoryResponseProvider(categoryId));
+  //     // Notify provider
+  //     ref.read(GetCategoryResponseProvider(categoryId));
 
-      // Watch provider and fetch data
-      final getCategories = ref.watch(GetCategoryResponseProvider(categoryId));
-      ref.watch(GetCategoryResponseProvider(171)).whenData(
-        (value) {
-          grocerryresp = value;
-        },
-      );
-      final event = ref.watch(GetCategoryResponseProvider(217));
-      event.when(
-        data: (data) {},
-        error: (error, stackTrace) {},
-        loading: () => const CircularProgressIndicator(),
-      );
-      getCategories.whenData((value) {
-        response = value;
-      });
-    } else {}
-  }
+  //     // Watch provider and fetch data
+  //     final getCategories = ref.watch(GetCategoryResponseProvider(categoryId));
+  //     ref.watch(GetCategoryResponseProvider(171)).whenData(
+  //       (value) {
+  //         grocerryresp = value;
+  //       },
+  //     );
+  //     final event = ref.watch(GetCategoryResponseProvider(217));
+  //     event.when(
+  //       data: (data) {},
+  //       error: (error, stackTrace) {},
+  //       loading: () => const CircularProgressIndicator(),
+  //     );
+  //     getCategories.whenData((value) {
+  //       response = value;
+  //     });
+  //   } else {}
+  // }
 
   List<Category>? categoryListItems;
   Future<void> _fetchCategoryList(String typeId) async {
@@ -283,6 +293,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
     final getCategories =
         ref.watch(GetCategoryResponseProvider(categoryId ?? 1)); //car
+
     ref.watch(GetCategoryResponseProvider(73)).whenData(
       (value) {
         jobsresp = value;
@@ -324,7 +335,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     getCategories.whenData(
       (value) {
         getRoad = value; //car
-        // print('bibashl ${getRoad?.result['8']?.id}');
       },
     );
     selltofields.when(
@@ -1708,6 +1718,70 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
+                if (selectedcategory?.id == 1)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Transmission TYpe',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        if (getRoad?.result != null)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: getRoad!.result[8].options.map((option) {
+                              return Row(
+                                children: [
+                                  Radio<Option>(
+                                    value: option,
+                                    groupValue: selectedFurnished,
+                                    onChanged: (Option? newValue) {
+                                      setState(() {
+                                        selectedtrnsmission = newValue;
+                                        if (getRoad?.result[8].id != null) {
+                                          // Ensure the dynamic key is safe to access
+                                          cf?.add([
+                                            'cf.${furnitureresresp!.result[8].id}', // Create the key dynamically
+                                            selectedtrnsmission?.value,
+                                          ]);
+                                        }
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    option.value,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                      ],
+                    ),
+                  ),
 
                 if (selectedcategory?.id == 1 || selectedcategory?.id == 14)
                   CreateListingCardWidget(
@@ -3058,18 +3132,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       "Packaged Product Dimensions",
                       style: TextStyle(fontSize: 13),
                     ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: false,
-                          onChanged: (value) {},
-                        ),
-                        const Text(
-                          "Hyper Delivery",
-                          style: TextStyle(fontSize: 13),
-                        )
-                      ],
-                    )
                   ],
                 ),
                 // CreateListingCardWidget(
@@ -3189,78 +3251,169 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                // if (selectedcategory?.id == 1 || selectedcategory?.id == 9)
-                //   CreateListingCardWidget(
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Row(
-                //           children: [
-                //             Text(
-                //               'Product Type',
-                //               style: TextStyle(
-                //                   fontSize: 14.sp,
-                //                   fontWeight: FontWeight.w500,
-                //                   color: Colors.black),
-                //             ),
-                //             Text(
-                //               ' *',
-                //               style: TextStyle(
-                //                   color: const Color(0xffD33636),
-                //                   fontWeight: FontWeight.w500,
-                //                   fontSize: 14.sp),
-                //             ),
-                //           ],
-                //         ),
-                //         SizedBox(
-                //           height: 10.h,
-                //         ),
-                //         Column(
-                //           children: phoneresp!.result[0].options
-                //               .map<Widget>((option) {
-                //             return RadioListTile<Option>(
-                //               value: option,
-                //               groupValue: selecctedProductTYpe,
-                //               onChanged: (newValue) {
-                //                 setState(() {
-                //                   selecctedProductTYpe = newValue;
+                if (selectedcategory != null)
+                  CreateListingCardWidget(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Product Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Column(
+                          children:
+                              getRoad!.result[0].options.map<Widget>((option) {
+                            return RadioListTile<Option>(
+                              value: option,
+                              groupValue: selecctedProductTYpe,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selecctedProductTYpe = newValue;
 
-                //                   // Create dynamic cf key
-                //                   final cfKey = 'cf.${getRoad!.result[0].id}';
-                //                   final cfValue = [selecctedProductTYpe!.id];
+                                  // Create dynamic cf key
+                                  final cfKey = 'cf.${getRoad!.result[0].id}';
+                                  final cfValue = [selecctedProductTYpe!.id];
 
-                //                   // Check if cf already contains this key
-                //                   int index = cf?.indexWhere(
-                //                           (entry) => entry[0] == cfKey) ??
-                //                       -1;
+                                  // Check if cf already contains this key
+                                  int index = cf?.indexWhere(
+                                          (entry) => entry[0] == cfKey) ??
+                                      -1;
 
-                //                   if (index >= 0) {
-                //                     // Update existing entry
-                //                     cf?[index][1] = cfValue;
-                //                   } else {
-                //                     // Add a new entry
-                //                     cf?.add([cfKey, cfValue]);
-                //                   }
-                //                 });
+                                  if (index >= 0) {
+                                    // Update existing entry
+                                    cf?[index][1] = cfValue;
+                                  } else {
+                                    // Add a new entry
+                                    cf?.add([cfKey, cfValue]);
+                                  }
+                                });
 
-                //                 // Debug: Print the updated cf list
-                //                 print("Updated cf: $cf");
-                //               },
-                //               title: Text(
-                //                 option
-                //                     .value, // Display the label for each radio button
-                //                 style: TextStyle(
-                //                   fontSize: 14.sp,
-                //                   fontWeight: FontWeight.w500,
-                //                   color: Colors.black,
-                //                 ),
-                //               ),
-                //             );
-                //           }).toList(),
-                //         ),
-                //       ],
-                //     ),
-                // ),
+                                // Debug: Print the updated cf list
+                                print("Updated cf: $cf");
+                              },
+                              title: Text(
+                                option
+                                    .value, // Display the label for each radio button
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 2.w),
+                    const Text(
+                      "Seller Delivery Available",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    SizedBox(
+                      height: 5,
+                      child: Checkbox(
+                        value: _sellerDeliveryAvailable,
+                        onChanged: (value) {
+                          if (value == true) {
+                            setState(() {
+                              _sellerDeliveryAvailable = true;
+                              _upayaDelivery = false;
+                              _hyperDeliveryAvailable = false;
+                            });
+                          } else {
+                            setState(() {
+                              _sellerDeliveryAvailable = false;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30.w,
+                    ),
+                    const Text(
+                      "Upaya Delivery",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    SizedBox(
+                      height: 5,
+                      child: Checkbox(
+                        value: _upayaDelivery,
+                        onChanged: (value) {
+                          if (value == true) {
+                            setState(() {
+                              _upayaDelivery = true;
+                              _sellerDeliveryAvailable = false;
+                              _hyperDeliveryAvailable = false;
+                            });
+                          } else {
+                            setState(() {
+                              _upayaDelivery = false;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Hyper Delivery Available",
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    SizedBox(
+                      height: 5,
+                      child: Checkbox(
+                        value: _hyperDeliveryAvailable,
+                        onChanged: (value) {
+                          if (value == true) {
+                            setState(() {
+                              _hyperDeliveryAvailable = true;
+                              _sellerDeliveryAvailable = false;
+                              _upayaDelivery = false;
+                            });
+                          } else {
+                            setState(() {
+                              _hyperDeliveryAvailable = false;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
 
                 if (selectedcategory?.id == 171)
                   CreateListingCardWidget(
@@ -3335,6 +3488,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 // SizedBox(
                 //   height: 10.h,
                 // ),
+                SizedBox(
+                  height: 10.h,
+                ),
 
                 CreateListingCardWidget(
                     child: Row(
@@ -3666,7 +3822,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             color: Colors.black),
                                       ),
                                     ],
-                                  ), 
+                                  ),
                                 ],
                               ),
                               SizedBox(
@@ -4006,6 +4162,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 ),
 
                 SellerInformationWidget(
+                  hyper: _hyperDeliveryAvailable ? 1 : 0,
+                  sell: _sellerDeliveryAvailable ? 1 : 0,
+                  isHyper: _hyperDeliveryAvailable,
+                  isUpaye: _upayaDelivery,
                   pieces: rows,
                   stock: stockcontroller.text,
 
@@ -4013,7 +4173,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
                   cfvalue: cf,
                   address: addresscontroller.text,
-                  posttype: categoryId,
+                  posttype: int.tryParse(typeid!)!,
 
                   childid: childcategory?.id.toString(),
                   parentid: categoryId.toString(),
@@ -4021,7 +4181,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   mileage: milagecontroller.text,
                   tags: _tags,
                   trending: trending ? 1 : 0,
-                  transmission: trasnmsissiontype,
+                  transmission: selectedtrnsmission,
                   warrenty: selecetedWarrenty,
                   fuel: fuelType,
                   offer: selectedoffer,

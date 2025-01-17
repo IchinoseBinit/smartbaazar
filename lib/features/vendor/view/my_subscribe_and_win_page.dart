@@ -40,12 +40,6 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
           leadingWidth: 30.h,
           titleSpacing: 5,
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: SvgPicture.asset(drawerIcon),
-            onPressed: () {
-              _key.currentState!.openDrawer();
-            },
-          ),
           title: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -105,7 +99,6 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage> {
             ],
           ),
         ),
-        drawer: const CustomDrawer(),
         body: mySubscribeAndWinAsyncValue.when(
           data: (data) {
             return SingleChildScrollView(

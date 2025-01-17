@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:scratcher/widgets.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
@@ -34,6 +36,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_scree
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/model/my_subscribe_and_win_model.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
 
 void main() {
@@ -74,9 +77,10 @@ class _MyAppState extends State<MyApp> {
         // home: GrocarysScreen(),
         // home: JobssScreen(),
         // home: ServicesScreen(),
-        home:  SplashScreen()
+        // home:SplashScreen()
+         home: const SplashScreen()
       ),
     );
-  }
+  }//ex ra ref /larav
 }
 

@@ -1,25 +1,36 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:smartbazar/common/controller/generic_state.dart';
+import 'package:smartbazar/constant/color_constant.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 // import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
+import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
+import 'package:smartbazar/features/create_listing/api/get_location_provider.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
+import 'package:smartbazar/features/create_listing/model/places_model.dart';
+import 'package:smartbazar/features/create_listing/view/d.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
+import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-// ignore: must_be_immutable
-class SellerInformationWidget extends StatefulWidget {
+class SellerInformationWidget extends ConsumerStatefulWidget {
   SellerInformationWidget(
       {super.key,
       this.category,
@@ -56,8 +67,12 @@ class SellerInformationWidget extends StatefulWidget {
       this.stock,
       this.story,
       this.pieces,
-      required this.shippingList});
-
+      required this.shippingList,
+      this.isUpaye,
+      this.isHyper,
+      this.hyper,
+      this.sell
+      });
   String? type;
   String? category;
   String? title;
@@ -84,16 +99,21 @@ class SellerInformationWidget extends StatefulWidget {
   Option? warrenty;
   int? trending, story;
   String? address;
-
+  int? hyper, sell;
   TextEditingController? nameconroller;
   List<ShippingCitiesModel> shippingList;
+  bool? isUpaye;
+  bool? isHyper;
 
   @override
-  State<SellerInformationWidget> createState() =>
+  ConsumerState<SellerInformationWidget> createState() =>
       _SellerInformationWidgetState();
 }
 
-class _SellerInformationWidgetState extends State<SellerInformationWidget> {
+class _SellerInformationWidgetState
+    extends ConsumerState<SellerInformationWidget> {
+  bool _showSearchProductModels = false;
+
   TextEditingController? mapcontrolleer = TextEditingController();
   List<File?> selectedImages = [];
   bool isloading = false;
@@ -104,7 +124,13 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
     });
   }
 
-  String selectedpickup = ''; // Store the selected pickup location
+  Timer? _debouncer;
+
+  Place? selectedpickup;
+
+  final TextEditingController _pickupcontroller = TextEditingController();
+  // String selectedpickup = ''; // Store the selected pickup location
+  final dropDownKey = GlobalKey<DropdownSearchState>();
 
   int? _selectedpackage = 0;
 
@@ -115,8 +141,55 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
     return base64Encode(bytes);
   }
 
+  Timer? _debounce;
+  List<Place>? _places; // Replace with your actual type for _places.
+
+  void _onSearchChanged(String searchTerm) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      if (searchTerm.isNotEmpty) {
+        _getStreet(searchTerm);
+      }
+    });
+  }
+
+  Future<void> _getStreet(String name) async {
+    try {
+      final value = await getStreetAddress(name);
+      setState(() {
+        _places = value.places!;
+      });
+    } catch (e) {
+      // Handle errors if needed
+      print('Error fetching street data: $e');
+    }
+  }
+
+  void _onSearchFocusChanged(bool hasFocus) {
+    setState(() {
+      _showSearchProductModels = hasFocus;
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final SearchProductModels =
+    //     ref.watch(getStreetAddressProvider("sindhuli"));
+    // Future<void> _getstreet(String name) async {
+    //   getStreetAddress("sindhuli").then(
+    //     (value) {
+    //       _places = value.places!;
+    //     },
+    //   );
+    // }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -177,141 +250,206 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
             ),
           ],
         )),
-        CreateListingCardWidget(
-          child: Row(
+        SizedBox(
+          height: 200.h,
+          child: Stack(
             children: [
-              SizedBox(
-                width: 5.w,
+              Positioned(
+                  child: CreateListingCardWidget(
+                child: Row(
+                  children: [
+                    SizedBox(width: 5.w),
+                    Text(
+                      'Select Pickup',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(width: 5.w),
+                    Text(
+                      '*',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(width: 20.w),
+                    Expanded(
+                      child: TextField(
+                        controller: _pickupcontroller,
+                        onChanged: _onSearchChanged,
+                        decoration: InputDecoration.collapsed(
+                          hintText: selectedpickup?.place_id == null
+                              ? 'Select pickup'
+                              : selectedpickup?.place_id,
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: const Color(0xffADADAD),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+              Positioned(
+                top: 90.h,
+                child: CreateListingCardWidget(
+                    child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      'Phone Number',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      '*',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      width: 15.w,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: widget.phonecoontroller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: '98XXXXXX',
+                            hintStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                                color: const Color(0xffADADAD))),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 12.h),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffEDECEC),
+                          borderRadius: BorderRadius.circular(10.r)),
+                      child: Column(
+                        children: [
+                          CustomCheckbox(value: false, onChanged: (value) {}),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            'Hide',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff888888),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                )),
               ),
-              Text(
-                'select pickup',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                    color: Colors.black),
+              Positioned(
+                height: 100,
+                top: 60.h, // Adjust as per your layout
+                right: 0,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: _places == null || _places!.isEmpty
+                      ? 0
+                      : 1, // Fade in/out based on _places
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    height: _places == null || _places!.isEmpty
+                        ? 0
+                        : 100, // Smooth height transition
+                    width: 200.w,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(0, 4),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: _places == null || _places!.isEmpty
+                        ? Container()
+                        : ListView.separated(
+                            padding: const EdgeInsets.all(8.0),
+                            shrinkWrap: true,
+                            primary: false,
+                            itemCount: _places!.length,
+                            itemBuilder: (context, index) {
+                              final product = _places![index];
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _showSearchProductModels =
+                                        false; // Optional if used elsewhere
+                                    FocusScope.of(context)
+                                        .unfocus(); // Hide the keyboard
+                                    selectedpickup =
+                                        product; // Set the selected item
+                                    _places = []; // Clear the dropdown items
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.location_on,
+                                        color: Colors.redAccent,
+                                        size: 16,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          product.description ??
+                                              "Unknown Place",
+                                          softWrap: true,
+                                          style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) => const Divider(
+                              height: 8,
+                              color: Colors.grey,
+                            ),
+                          ),
+                  ),
+                ),
               ),
-              SizedBox(
-                width: 5.w,
-              ),
-              Text(
-                '*',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                    color: Colors.black),
-              ),
-              SizedBox(
-                width: 20.w,
-              ),
-              // Expanded(
-              //   child: GooglePlaceAutoCompleteTextField(
-              //     showError: false,
-              //     inputDecoration: const InputDecoration(
-              //       enabledBorder: InputBorder.none,
-              //       focusedBorder: InputBorder.none,
-              //     ),
-              //     boxDecoration: BoxDecoration(
-              //       borderRadius: BorderRadius.zero,
-              //       border: Border.all(style: BorderStyle.none),
-              //     ),
-              //     textEditingController: mapcontrolleer!,
-              //     countries: const ["np"],
-              //     isLatLngRequired: true,
-              //     debounceTime: 800,
-              //     itemClick: (Prediction prediction) async {
-              //       setState(() {
-              //         mapcontrolleer?.text = prediction.description ?? "";
-              //         selectedpickup = prediction.description ?? "";
-              //       });
-
-              //       // Fetch place details to get latitude and longitude
-              //       if (prediction.placeId != null) {
-              //         try {
-              //           var placeDetails =
-              //               await GooglePlaceApiHelper.getPlaceDetails(
-              //             prediction.placeId!,
-              //             'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
-              //           );
-              //           if (placeDetails != null) {
-              //             latitute =
-              //                 placeDetails['geometry']['location']['lat'];
-              //             long = placeDetails['geometry']['location']['lng'];
-
-              //             // Print the latitude and longitude
-              //           }
-              //         } catch (e) {
-              //           print('Error fetching place details: $e');
-              //         }
-              //       }
-              //     },
-              //     googleAPIKey: 'AIzaSyBB-iTRIHiOtWs_ynnL5FZvf4GJluKVqiI',
-              //   ),
-              // ),
             ],
           ),
         ),
 
-        CreateListingCardWidget(
-            child: Row(
-          children: [
-            SizedBox(
-              width: 5.w,
-            ),
-            Text(
-              'Phone Number',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            Text(
-              '*',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                  color: Colors.black),
-            ),
-            SizedBox(
-              width: 15.w,
-            ),
-            Expanded(
-              child: TextField(
-                controller: widget.phonecoontroller,
-                decoration: InputDecoration.collapsed(
-                    hintText: '98XXXXXX',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
-                        color: const Color(0xffADADAD))),
-              ),
-            ),
-            SizedBox(
-              width: 30.w,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                  color: const Color(0xffEDECEC),
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: Column(
-                children: [
-                  CustomCheckbox(value: false, onChanged: (value) {}),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    'Hide',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff888888),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        )),
         //   CreateListingCardWidget(
         //     child: Row(
         //   children: [
@@ -595,15 +733,14 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
               : GeneralEelevatedButton(
                   text: isloading ? 'Submitting...' : 'Submit',
                   onPresssed: () async {
-                    if (
-                      widget.category != null 
-                      //   widget.title != null &&
-                      //   widget.city != null &&
-                      //   widget.description != null &&
-                      //   widget.phonecoontroller?.text.isNotEmpty == true &&
-                      //   selectedpickup.isNotEmpty &&
-                      //   selectedImages.isNotEmpty &&
-                      //   widget.terms != null
+                    if (widget.category != null
+                        //   widget.title != null &&
+                        //   widget.city != null &&
+                        //   widget.description != null &&
+                        //   widget.phonecoontroller?.text.isNotEmpty == true &&
+                        //   selectedpickup.isNotEmpty &&
+                        //   selectedImages.isNotEmpty &&
+                        //   widget.terms != null
                         ) {
                       setState(() {
                         isloading = true; // Start loading
@@ -611,7 +748,6 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                       try {
                         // Call your API
                         String responseMessage = await createlisting(
-                          
                             package: _selectedpackage,
                             pieces: widget.pieces,
                             null, // ref
@@ -634,15 +770,16 @@ class _SellerInformationWidgetState extends State<SellerInformationWidget> {
                             email: widget.emailcontroller!.text.trim(),
                             phone: widget.phonecoontroller!.text.trim(),
                             username: widget.nameconroller!.text.trim(),
-                            pickup: selectedpickup.trim(),
+                            pickup: selectedpickup!.description!,
                             images: selectedImages,
                             accept: widget.terms?.trim() ?? '0',
-                            address: mapcontrolleer?.text.trim() ?? '',
+                            address: widget.address!,
+                            // mapcontrolleer?.text.trim() ?? '',
                             offer: widget.offer?.offers.trim(),
                             story: widget.story?.toString().trim(),
                             youtube: widget.youtube?.trim(),
-                            lat: latitute,
-                            long: long);
+                            lat: selectedpickup!.latitude,
+                            long: selectedpickup!.longitude);
 
                         // Stop loading and show dialog
                         setState(() {

@@ -698,6 +698,7 @@ mixin _$BrandNewModel {
   int? get discounted_price => throw _privateConstructorUsedError;
   double? get shortestDistance => throw _privateConstructorUsedError;
   int? get commentcount => throw _privateConstructorUsedError;
+  double? get discount_percentage => throw _privateConstructorUsedError;
   int? get avg_rating => throw _privateConstructorUsedError;
   UserDetailsModel? get userdetails => throw _privateConstructorUsedError;
 
@@ -737,6 +738,7 @@ abstract class $BrandNewModelCopyWith<$Res> {
       int? discounted_price,
       double? shortestDistance,
       int? commentcount,
+      double? discount_percentage,
       int? avg_rating,
       UserDetailsModel? userdetails});
 
@@ -777,6 +779,7 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
     Object? discounted_price = freezed,
     Object? shortestDistance = freezed,
     Object? commentcount = freezed,
+    Object? discount_percentage = freezed,
     Object? avg_rating = freezed,
     Object? userdetails = freezed,
   }) {
@@ -857,6 +860,10 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
           ? _value.commentcount
           : commentcount // ignore: cast_nullable_to_non_nullable
               as int?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as double?,
       avg_rating: freezed == avg_rating
           ? _value.avg_rating
           : avg_rating // ignore: cast_nullable_to_non_nullable
@@ -911,6 +918,7 @@ abstract class _$$BrandNewModelImplCopyWith<$Res>
       int? discounted_price,
       double? shortestDistance,
       int? commentcount,
+      double? discount_percentage,
       int? avg_rating,
       UserDetailsModel? userdetails});
 
@@ -950,6 +958,7 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
     Object? discounted_price = freezed,
     Object? shortestDistance = freezed,
     Object? commentcount = freezed,
+    Object? discount_percentage = freezed,
     Object? avg_rating = freezed,
     Object? userdetails = freezed,
   }) {
@@ -1030,6 +1039,10 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
           ? _value.commentcount
           : commentcount // ignore: cast_nullable_to_non_nullable
               as int?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as double?,
       avg_rating: freezed == avg_rating
           ? _value.avg_rating
           : avg_rating // ignore: cast_nullable_to_non_nullable
@@ -1065,6 +1078,7 @@ class _$BrandNewModelImpl implements _BrandNewModel {
       required this.discounted_price,
       required this.shortestDistance,
       required this.commentcount,
+      required this.discount_percentage,
       required this.avg_rating,
       required this.userdetails});
 
@@ -1110,13 +1124,15 @@ class _$BrandNewModelImpl implements _BrandNewModel {
   @override
   final int? commentcount;
   @override
+  final double? discount_percentage;
+  @override
   final int? avg_rating;
   @override
   final UserDetailsModel? userdetails;
 
   @override
   String toString() {
-    return 'BrandNewModel(id: $id, country_code: $country_code, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, story_display_days: $story_display_days, b2b_pricing: $b2b_pricing, image: $image, post_type: $post_type, username: $username, offers: $offers, price: $price, wow: $wow, city: $city, similarProductCount: $similarProductCount, discounted_price: $discounted_price, shortestDistance: $shortestDistance, commentcount: $commentcount, avg_rating: $avg_rating, userdetails: $userdetails)';
+    return 'BrandNewModel(id: $id, country_code: $country_code, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, story_display_days: $story_display_days, b2b_pricing: $b2b_pricing, image: $image, post_type: $post_type, username: $username, offers: $offers, price: $price, wow: $wow, city: $city, similarProductCount: $similarProductCount, discounted_price: $discounted_price, shortestDistance: $shortestDistance, commentcount: $commentcount, discount_percentage: $discount_percentage, avg_rating: $avg_rating, userdetails: $userdetails)';
   }
 
   @override
@@ -1154,6 +1170,8 @@ class _$BrandNewModelImpl implements _BrandNewModel {
                 other.shortestDistance == shortestDistance) &&
             (identical(other.commentcount, commentcount) ||
                 other.commentcount == commentcount) &&
+            (identical(other.discount_percentage, discount_percentage) ||
+                other.discount_percentage == discount_percentage) &&
             (identical(other.avg_rating, avg_rating) ||
                 other.avg_rating == avg_rating) &&
             (identical(other.userdetails, userdetails) ||
@@ -1183,6 +1201,7 @@ class _$BrandNewModelImpl implements _BrandNewModel {
         discounted_price,
         shortestDistance,
         commentcount,
+        discount_percentage,
         avg_rating,
         userdetails
       ]);
@@ -1224,6 +1243,7 @@ abstract class _BrandNewModel implements BrandNewModel {
       required final int? discounted_price,
       required final double? shortestDistance,
       required final int? commentcount,
+      required final double? discount_percentage,
       required final int? avg_rating,
       required final UserDetailsModel? userdetails}) = _$BrandNewModelImpl;
 
@@ -1268,6 +1288,8 @@ abstract class _BrandNewModel implements BrandNewModel {
   double? get shortestDistance;
   @override
   int? get commentcount;
+  @override
+  double? get discount_percentage;
   @override
   int? get avg_rating;
   @override

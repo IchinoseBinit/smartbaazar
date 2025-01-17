@@ -778,65 +778,87 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       ),
                     ),
                   ),
-                  asyncPostTypeContent.when(
-                    data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+                   asyncPostTypeContent.when(
+                      data: (feedStoryData) {
+                        final homeStory = feedStoryData.homeStory;
 
-                      if (homeStory != null &&
-                          homeStory is Map<String, dynamic> &&
-                          homeStory.containsKey('story')) {
-                        final story = homeStory['story'];
+                        if (homeStory != null &&
+                            homeStory is Map<String, dynamic> &&
+                            homeStory.containsKey('story')) {
+                          final story = homeStory['story'];
 
-                        if (story != null &&
-                            story is Map<String, dynamic> &&
-                            story.containsKey('posts')) {
-                          final posts = story['posts'];
+                          if (story != null &&
+                              story is Map<String, dynamic> &&
+                              story.containsKey('posts')) {
+                            final posts = story['posts'];
 
-                          if (posts != null && posts is List<dynamic>) {
-                            return SizedBox(
-                              height: 100.h,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: posts.length,
-                                itemBuilder: (context, index) {
-                                  final story = posts[index];
+                            if (posts != null && posts is List<dynamic>) {
+                              return SizedBox(
+                                height: 100.h,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    final story = posts[index];
 
-                                  if (story is Map<String, dynamic>) {
-                                    final storyObject =
-                                        Story(posts: [Post.fromJson(story)]);
+                                    if (story is Map<String, dynamic>) {
+                                      final storyObject =
+                                          Story(posts: [Post.fromJson(story)]);
 
-                                    return HomePageStoryContainer(
-                                      index: index,
-                                      vendorName: story['vendor_name'] ??
-                                          "Unknown Vendor",
-                                      vendorImage: story['vendor_image'] ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: story['story_count'] ?? 0,
-                                      showGift:
-                                          story['has_sponsored_gifts'] ?? false,
-                                      feedStoryContent: storyObject,
-                                      userId: story['vendor_id'],
-                                    );
-                                  } else {
-                                    return Container(); // Return an empty container if the post doesn't match the expected format
-                                  }
-                                },
-                              ),
-                            );
+                                      return HomePageStoryContainer(
+                                        index: index,
+                                        vendorName: story['vendor_name'] ??
+                                            "Unknown Vendor",
+                                        vendorImage: story['vendor_image'] ??
+                                            "https://example.com/default-image.png",
+                                        storyCount: story['story_count'] ?? 0,
+                                        showGift:
+                                            story['has_sponsored_gifts'] ??
+                                                false,
+                                        feedStoryContent: storyObject,
+                                        userId: story['vendor_id'],
+                                      );
+                                    } else {
+                                      return Container(); // Return an empty container if the post doesn't match the expected format
+                                    }
+                                  },
+                                ),
+                              );
+                            }
                           }
                         }
-                      }
 
-                      // If any of the above conditions fail, return a default widget
-                      return const SizedBox.shrink();
-                    },
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                  ),
+                        // If any of the above conditions fail, return a default widget
+                        return const Center(
+                          child: Text('No stories available. '),
+                        );
+                      },
+                      loading: () => SizedBox(
+                        height: 100.h,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5, // Number of shimmer placeholders
+                          itemBuilder: (context, index) => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      error: (error, stack) =>
+                          Center(child: Text('Error: $error')),
+                    ),
                   SizedBox(
                     height: 6.h,
                   ),
@@ -1760,34 +1782,35 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
-                                                    tradeImage: globalicon,
-                                                    didcountpercentage: prod
-                                                        .discount_percentage,
-                                                    offer: prod.offers,
-                                                    avg_rating: prod.avg_rating
-                                                        ?.toDouble(),
-                                                    shortestDistance: prod
-                                                        .user.shortestDistance,
-                                                    comment: prod.commentcount
-                                                        .toString(),
-                                                    wow: prod.wow,
-                                                    issponsored:
-                                                        prod.user.sponsored,
-                                                    lefttile: "Socio-Shop",
-                                                    vendorname: prod.title,
-                                                    discounttedPrice:
-                                                        prod.discounted_price,
-                                                    Vimage: prod.user.photo,
-                                                    price: prod.price,
-                                                    title: prod.title,
-                                                    productImage: prod.image,
-                                                    similarproductCount: prod
-                                                        .similarProductCount,
-                                                    membershipColor: prod
-                                                        .user.membershipColor,
-                                                    membershipTitle: prod
-                                                        .user.membershipTitle,
-                                                  ),
+                                                  id: int.tryParse(prod.id),
+                                                  posttype: prod.post_type_id,
+
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  tradeImage: 'assets/icon/b2bIcon.svg',
+                                                  didcountpercentage: prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  wow: prod.wow,
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  lefttile: "Socio",
+                                                  vendorname: prod.user.name,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.title,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
+                                                ),
                                                 ),
                                               );
                                             }),

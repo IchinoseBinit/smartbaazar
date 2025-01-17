@@ -7,7 +7,7 @@ part 'get_categories_provider.g.dart';
 
 @riverpod
 Future<FieldsResponse> getCategoryResponse(
-    GetCategoryResponseRef ref, int id) async {
+     ref, int id) async {
   final SmartClinet client = SmartClinet();
   try {
     final response = await client.request(

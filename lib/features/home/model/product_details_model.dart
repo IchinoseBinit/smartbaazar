@@ -56,7 +56,7 @@ class PostResult with _$PostResult {
     required String? postTypeId,
     required String? title,
     required String? description,
-    required List<String>? tags,
+    required List<String>? tags, // Should be List<String> if this is a list
     required String? price,
     String? discountedPrice,
     required String? trending,
@@ -110,33 +110,19 @@ class PostResult with _$PostResult {
     Ratings? ratings,
     usermodel? user,
     required UserDetailsProduct? user_details,
-    required List<Picture>? pictures,
-     PostType? postType,
+    required List<Picture>? pictures, // List of pictures (List<Picture>)
+    PostType? postType,
     required List<RatingComment> rating_comment,
-       @Default([]) List<LivePrize> live_prizes,
+    @Default([]) List<LivePrize> live_prizes,
     @Default([]) List<Shop>? deals,
     @Default([]) List<Shop>? shop,
-        @Default([]) List<FeedPost>? feed_post,
-
+    @Default([]) List<FeedPost>? feed_post,
   }) = _PostResult;
 
   factory PostResult.fromJson(Map<String, dynamic> json) =>
       _$PostResultFromJson(json);
 }
-@freezed
-// class FeedPost with _$FeedPost {
-//   const factory FeedPost({
-//     required String id,
-//     required String name,
-//     required String photo,
-//     required int subscribers,
-//     required String image,
-//     required String caption,
-//     required String createdAt, // or DateTime if you prefer
-//   }) = _FeedPost;
 
-//   factory FeedPost.fromJson(Map<String, dynamic> json) => _$FeedPostFromJson(json);
-// }
 @freezed
 class LivePrize with _$LivePrize {
   factory LivePrize({

@@ -68,7 +68,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
   int headerIndex = 0;
   int _currentIndex = 0;
   int? postypeid = 0;
-    Map<String, String>? dropdownValue = headeritems.firstWhere(
+  Map<String, String>? dropdownValue = headeritems.firstWhere(
     (item) => item['label'] == 'Services',
     orElse: () => headeritems.first, // Fallback to the first item if not found
   );
@@ -264,7 +264,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
     return Scaffold(
         extendBody: true,
-       bottomNavigationBar: CustomBottomNavigationBar(
+        bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: pselectedIndex, // Pass the current index
           onTabChanged: (index) {
             ref.read(bottomNavIndexProvider.notifier).state = index;
@@ -286,7 +286,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
@@ -317,7 +318,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 SizedBox(
+                  SizedBox(
                     // height: 300.h,
                     child: Stack(
                       children: [
@@ -470,7 +471,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim().isNotEmpty) {
+                                                  .trim()
+                                                  .isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -791,17 +793,17 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   asyncPostTypeContent.when(
                     data: (feedStoryData) {
                       final homeStory = feedStoryData.homeStory;
-            
+
                       if (homeStory != null &&
                           homeStory is Map<String, dynamic> &&
                           homeStory.containsKey('story')) {
                         final story = homeStory['story'];
-            
+
                         if (story != null &&
                             story is Map<String, dynamic> &&
                             story.containsKey('posts')) {
                           final posts = story['posts'];
-            
+
                           if (posts != null && posts is List<dynamic>) {
                             return SizedBox(
                               height: 100.h,
@@ -812,11 +814,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 itemCount: posts.length,
                                 itemBuilder: (context, index) {
                                   final story = posts[index];
-            
+
                                   if (story is Map<String, dynamic>) {
                                     final storyObject =
                                         Story(posts: [Post.fromJson(story)]);
-            
+
                                     return HomePageStoryContainer(
                                       index: index,
                                       vendorName: story['vendor_name'] ??
@@ -838,13 +840,35 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           }
                         }
                       }
-            
+
                       // If any of the above conditions fail, return a default widget
-                      return const SizedBox.shrink();
+                      return const Center(
+                        child: Text('No stories available. '),
+                      );
                     },
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    error: (error, stack) => Center(child: Text('Error: $error')),
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
                   ),
                   SizedBox(
                     height: 6.h,
@@ -857,6 +881,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           Positioned(
                             child: Column(
                               children: [
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                                 SizedBox(
                                   height: 130.h,
                                   width: double.infinity,
@@ -900,7 +927,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               ],
                             ),
                           ),
-            
+
                           // Dots Indicator
                           Positioned(
                             left: MediaQuery.of(context).size.width / 2 -
@@ -912,8 +939,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 int index = data.sliders!.indexOf(banner);
                                 return AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 5.0),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 5.0),
                                   height: 9.0,
                                   width: _currentIndex == index
                                       ? 12.0
@@ -938,11 +965,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return const CircularProgressIndicator();
                     },
                   ),
-            
+
                   SizedBox(
                     height: 10.h,
                   ),
-            
+
                   category.when(
                     data: (data) {
                       return Padding(
@@ -991,7 +1018,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         ),
                                       ),
                                     ),
-            
+
                                     // Other Services List
                                     ListView(
                                       physics: const BouncingScrollPhysics(),
@@ -1005,16 +1032,19 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                               showMenu(
                                                 context: context,
                                                 position:
-                                                    const RelativeRect.fromLTRB(0,
-                                                        0, 0, 0), // Base position
+                                                    const RelativeRect.fromLTRB(
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0), // Base position
                                                 items: [
                                                   PopupMenuItem(
                                                     value: 1,
                                                     child: ListTile(
                                                       title: const Text(
                                                           "View Story"),
-                                                      leading:
-                                                          const Icon(Icons.book),
+                                                      leading: const Icon(
+                                                          Icons.book),
                                                       onTap: () {
                                                         // Implement onTap logic
                                                       },
@@ -1037,8 +1067,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                               );
                                             },
                                             child: PopupMenuButton<int>(
-                                              offset: const Offset(
-                                                  0, 60), // Position for the menu
+                                              offset: const Offset(0,
+                                                  60), // Position for the menu
                                               itemBuilder: (context) => [
                                                 const PopupMenuItem(
                                                   value: 1,
@@ -1081,13 +1111,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                             e.name ?? 'No Name',
                                                             style:
                                                                 const TextStyle(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 13,
                                                             ),
-                                                            textAlign:
-                                                                TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                           ),
                                                         )
                                                       ],
@@ -1113,7 +1145,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     },
                     loading: () => const CircularProgressIndicator(),
                   ),
-            
+
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
@@ -1136,14 +1168,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       ],
                     ),
                   ),
-            
+
                   // Expanded(
-            
+
                   // child: product_item_wid(),),
                   SizedBox(
                     height: 5.h,
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return SizedBox(
@@ -1158,13 +1190,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                             child: Wrap(
                               spacing: 0.w, // Horizontal spacing between items
                               runSpacing: 0.h, // Vertical spacing between rows
-                              children:
-                                  List.generate(data.hotProducts.length, (index) {
+                              children: List.generate(data.hotProducts.length,
+                                  (index) {
                                 VProduct hot = data.hotProducts[index];
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 2.w),
                                   child: InkWell(
                                     onTap: () {
+                                      // print("binod ${hot.id}");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -1176,8 +1210,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                       );
                                     },
                                     child: ProductDetailWidget(
+                                      posttype: hot.post_type_id,
+                                      id: int.tryParse(hot.id),
+                                      membershipid: hot.user.membership_id,
                                       avg_rating: hot.avg_rating?.toDouble(),
-                                      didcountpercentage: hot.discount_percentage,
+                                      didcountpercentage:
+                                          hot.discount_percentage,
                                       offer: hot.offers,
                                       wow: hot.wow,
                                       comment: hot.commentcount.toString(),
@@ -1225,14 +1263,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       ),
                     ),
                   ),
-            
+
                   // Expanded(
-            
+
                   // child: product_item_wid(),),
                   SizedBox(
                     height: 5.h,
                   ),
-            
+
                   // SizedBox(
                   //      height: 359.h,
                   //     width: double.infinity,
@@ -1247,7 +1285,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   //       },
                   //     ),
                   //   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return data.cat.isNotEmpty
@@ -1303,11 +1341,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 child: ProductDetailWidget(
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
-                                                  comment:
-                                                      pro.commentcount.toString(),
+                                                  comment: pro.commentcount
+                                                      .toString(),
                                                   discounttedPrice:
                                                       pro.discounted_price,
-                                                  issponsored: pro.user.sponsored,
+                                                  issponsored:
+                                                      pro.user.sponsored,
                                                   lefttile: "Services",
                                                   Vimage: pro.user.photo,
                                                   price: pro.price,
@@ -1338,12 +1377,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     },
                   ),
                   // Expanded(
-            
+
                   // child: product_item_wid(),),
                   SizedBox(
                     height: 5.h,
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return data.cat.isNotEmpty
@@ -1399,11 +1438,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 child: ProductDetailWidget(
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
-                                                  comment:
-                                                      pro.commentcount.toString(),
+                                                  comment: pro.commentcount
+                                                      .toString(),
                                                   discounttedPrice:
                                                       pro.discounted_price,
-                                                  issponsored: pro.user.sponsored,
+                                                  issponsored:
+                                                      pro.user.sponsored,
                                                   lefttile: "Services",
                                                   Vimage: pro.user.photo,
                                                   price: pro.price,
@@ -1433,7 +1473,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return const Center(child: CircularProgressIndicator());
                     },
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return data.cat.isNotEmpty
@@ -1486,11 +1526,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 child: ProductDetailWidget(
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
-                                                  comment:
-                                                      pro.commentcount.toString(),
+                                                  comment: pro.commentcount
+                                                      .toString(),
                                                   discounttedPrice:
                                                       pro.discounted_price,
-                                                  issponsored: pro.user.sponsored,
+                                                  issponsored:
+                                                      pro.user.sponsored,
                                                   lefttile: "Services",
                                                   Vimage: pro.user.photo,
                                                   price: pro.price,
@@ -1520,7 +1561,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return const Center(child: CircularProgressIndicator());
                     },
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return data.cat.isNotEmpty
@@ -1573,11 +1614,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 child: ProductDetailWidget(
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
-                                                  comment:
-                                                      pro.commentcount.toString(),
+                                                  comment: pro.commentcount
+                                                      .toString(),
                                                   discounttedPrice:
                                                       pro.discounted_price,
-                                                  issponsored: pro.user.sponsored,
+                                                  issponsored:
+                                                      pro.user.sponsored,
                                                   lefttile: "Services",
                                                   Vimage: pro.user.photo,
                                                   price: pro.price,
@@ -1627,7 +1669,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   asyncbajarValue.when(
                     data: (data) {
                       double dynamicHeight;
-            
+
                       if (dynamictabController.index == 0) {
                         dynamicHeight =
                             data.insidearr.isEmpty || data.insidearr[0].isEmpty
@@ -1686,10 +1728,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             runSpacing: 15
                                                 .h, // Vertical spacing between rows
                                             children: List.generate(
-                                                data.brandbazar_global?.length ??
+                                                data.brandbazar_global
+                                                        ?.length ??
                                                     0, (index) {
-                                              VProduct prod =
-                                                  data.brandbazar_global![index];
+                                              VProduct prod = data
+                                                  .brandbazar_global![index];
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
@@ -1706,30 +1749,36 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    id: int.tryParse(prod.id),
+                                                    posttype: prod.post_type_id,
+                                                    membershipid:
+                                                        prod.user.membership_id,
                                                     offer: prod.offers,
+                                                    tradeImage:
+                                                        'assets/icon/b2bIcon.svg',
+                                                    didcountpercentage: prod
+                                                        .discount_percentage,
                                                     avg_rating: prod.avg_rating
                                                         ?.toDouble(),
-                                                    shortestDistance: prod
-                                                        .user.shortestDistance,
+                                                    wow: prod.wow,
                                                     comment: prod.commentcount
                                                         .toString(),
-                                                    wow: prod.wow,
-                                                    issponsored:
-                                                        prod.user.sponsored,
-                                                    lefttile: "Socio-Shop",
-                                                    vendorname: prod.title,
+                                                    lefttile: "Socio",
+                                                    vendorname: prod.user.name,
                                                     discounttedPrice:
                                                         prod.discounted_price,
-                                                    Vimage: prod.user.photo,
+                                                    Vimage: prod.title,
+                                                    issponsored:
+                                                        prod.user.sponsored,
                                                     price: prod.price,
                                                     title: prod.title,
                                                     productImage: prod.image,
-                                                    similarproductCount:
-                                                        prod.similarProductCount,
-                                                    membershipColor:
-                                                        prod.user.membershipColor,
-                                                    membershipTitle:
-                                                        prod.user.membershipTitle,
+                                                    similarproductCount: prod
+                                                        .similarProductCount,
+                                                    membershipColor: prod
+                                                        .user.membershipColor,
+                                                    membershipTitle: prod
+                                                        .user.membershipTitle,
                                                   ),
                                                 ),
                                               );
@@ -1822,12 +1871,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     price: prod.price,
                                                     title: prod.title,
                                                     productImage: prod.image,
-                                                    similarproductCount:
-                                                        prod.similarProductCount,
-                                                    membershipColor:
-                                                        prod.user.membershipColor,
-                                                    membershipTitle:
-                                                        prod.user.membershipTitle,
+                                                    similarproductCount: prod
+                                                        .similarProductCount,
+                                                    membershipColor: prod
+                                                        .user.membershipColor,
+                                                    membershipTitle: prod
+                                                        .user.membershipTitle,
                                                   ),
                                                 ),
                                               );
@@ -1913,12 +1962,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     price: prod.price,
                                                     title: prod.title,
                                                     productImage: prod.image,
-                                                    similarproductCount:
-                                                        prod.similarProductCount,
-                                                    membershipColor:
-                                                        prod.user.membershipColor,
-                                                    membershipTitle:
-                                                        prod.user.membershipTitle,
+                                                    similarproductCount: prod
+                                                        .similarProductCount,
+                                                    membershipColor: prod
+                                                        .user.membershipColor,
+                                                    membershipTitle: prod
+                                                        .user.membershipTitle,
                                                   ),
                                                 ),
                                               );
@@ -1939,7 +1988,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return const CircularProgressIndicator();
                     },
                   ),
-            
+
                   Center(
                     child: Column(
                       children: [
@@ -1978,7 +2027,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           itemCount: data.buynow!.length,
                           itemBuilder: (context, index) {
                             Buynowmodel resp = data.buynow![index];
-            
+
                             return buyorwin_widget(
                                 wow: resp.wow ?? '0',
                                 gift_qty: resp.gift_qty!,
@@ -1999,7 +2048,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return const Center(child: CircularProgressIndicator());
                     },
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return SizedBox(
@@ -2043,7 +2092,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                         // Map category labels to their respective product lists
                         List<String> categories =
                             services.map((e) => e['label'] as String).toList();
-            
+
                         return Column(
                           children: [
                             // Category Selector Row
@@ -2083,10 +2132,10 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 },
                               ),
                             ),
-            
+
                             // Spacer
                             SizedBox(height: 5.h),
-            
+
                             // Display Products for the selected category
                             asyncbajarValue.when(
                               data: (data) {
@@ -2099,21 +2148,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   data.clearance_sale, // Corresponds to USED
                                   data.Launch_festival_offer, // Corresponds to USED
                                 ];
-            
+
                                 // Ensure the index is valid
                                 if (selectedIndex < 0 ||
                                     selectedIndex >= productsList.length) {
                                   selectedIndex =
                                       0; // Default to the first category if index is out of bounds
                                 }
-            
+
                                 List<VProduct> products =
                                     productsList[selectedIndex];
-            
+
                                 // Calculate height dynamically
                                 double calculatedHeight =
                                     products.isNotEmpty ? 359.h : 100.h;
-            
+
                                 return AnimatedContainer(
                                   alignment: Alignment.topLeft,
                                   duration: const Duration(milliseconds: 300),
@@ -2137,7 +2186,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                             children: List.generate(
                                                 products.length, (index) {
                                               VProduct prod = products[index];
-            
+
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
@@ -2156,8 +2205,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   child: ProductDetailWidget(
                                                     avg_rating: prod.avg_rating
                                                         ?.toDouble(),
-                                                    didcountpercentage:
-                                                        prod.discount_percentage,
+                                                    didcountpercentage: prod
+                                                        .discount_percentage,
                                                     offer: prod.offers,
                                                     comment: prod.commentcount
                                                         .toString(),
@@ -2172,12 +2221,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     price: prod.price,
                                                     title: prod.title,
                                                     productImage: prod.image,
-                                                    similarproductCount:
-                                                        prod.similarProductCount,
-                                                    membershipColor:
-                                                        prod.user.membershipColor,
-                                                    membershipTitle:
-                                                        prod.user.membershipTitle,
+                                                    similarproductCount: prod
+                                                        .similarProductCount,
+                                                    membershipColor: prod
+                                                        .user.membershipColor,
+                                                    membershipTitle: prod
+                                                        .user.membershipTitle,
                                                   ),
                                                 ),
                                               );
@@ -2198,7 +2247,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       },
                     ),
                   ),
-            
+
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: Row(
@@ -2214,7 +2263,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       ],
                     ),
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return SingleChildScrollView(
@@ -2247,21 +2296,24 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                    shortestDistance: res.user.shortestDistance,
-                                    avg_rating: res.avg_rating?.toDouble(),
-                                    discountpercentage: res.discount_percentage,
+                                    id: int.tryParse(res.id),
+                                    membershipid: res.user.membership_id,
                                     offer: res.offers,
+                                    posttype: res.post_type_id,
+                                    discountpercentage: res.discount_percentage,
+                                    avg_rating: res.avg_rating?.toDouble(),
                                     wow: res.wow,
                                     comment: res.commentcount.toString(),
                                     issponsored: res.user.sponsored,
                                     discounttedPrice: res.discounted_price,
-                                    lefttile: "Services",
+                                    lefttile: "Service",
                                     productImage: res.image,
                                     Vimage: res.user.photo,
                                     vendorname: res.user.name,
                                     title: res.title,
                                     price: res.price,
-                                    similarproductCount: res.similarProductCount,
+                                    similarproductCount:
+                                        res.similarProductCount,
                                     membershipColor: res.user.membershipColor,
                                     membershipTitle: res.user.membershipTitle,
                                   ),
@@ -2271,7 +2323,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           }),
                         ),
                       );
-            
+
                       // SizedBox(
                       //    height: 340.h,
                       //   width: double.infinity,
@@ -2288,7 +2340,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       //         // productImage: data.allProducts[index].image,
                       //         Vimage:
                       //             data.allProducts[index].user.photo,
-            
+
                       //         vendorname:
                       //             data.allProducts[index].user.name,
                       //         title: data.allProducts[index].title,
@@ -2308,7 +2360,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                   SizedBox(
                     height: 40.h,
                   ),
-            
+
                   // Container(
                   //   margin: const EdgeInsets.only(top: 2),
                   //   height: 40.h,

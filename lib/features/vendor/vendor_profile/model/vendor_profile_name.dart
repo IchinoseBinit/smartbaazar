@@ -53,6 +53,7 @@ class BrandNewModel with _$BrandNewModel {
     required int? discounted_price,
     required double? shortestDistance,
     required int? commentcount,
+    required double? discount_percentage,
     required int? avg_rating,
     required UserDetailsModel? userdetails,
   }) = _BrandNewModel;

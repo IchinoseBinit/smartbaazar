@@ -99,6 +99,7 @@ _$BrandNewModelImpl _$$BrandNewModelImplFromJson(Map<String, dynamic> json) =>
       discounted_price: (json['discounted_price'] as num?)?.toInt(),
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
       commentcount: (json['commentcount'] as num?)?.toInt(),
+      discount_percentage: (json['discount_percentage'] as num?)?.toDouble(),
       avg_rating: (json['avg_rating'] as num?)?.toInt(),
       userdetails: json['userdetails'] == null
           ? null
@@ -127,6 +128,7 @@ Map<String, dynamic> _$$BrandNewModelImplToJson(_$BrandNewModelImpl instance) =>
       'discounted_price': instance.discounted_price,
       'shortestDistance': instance.shortestDistance,
       'commentcount': instance.commentcount,
+      'discount_percentage': instance.discount_percentage,
       'avg_rating': instance.avg_rating,
       'userdetails': instance.userdetails,
     };

@@ -13,6 +13,7 @@ class SponsoredProduct {
   final String price;
   double? shortestDistance;
   final String? image;
+  final String? post_type_id;
   String? wow;
   final int? commentcount;
   final int? similarProductCount;
@@ -21,9 +22,12 @@ class SponsoredProduct {
   final int? avg_rating;
   final String? discounted_price;
   final int? discount_percentage;
+  // final String? membership_id;
 
   SponsoredProduct({
     this.wow,
+    // required this.membership_id,
+    required this.post_type_id,
     required this.shortestDistance,
     required this.discounted_price,
     required this.id,
@@ -42,6 +46,8 @@ class SponsoredProduct {
   factory SponsoredProduct.fromJson(Map<String, dynamic> json) {
     print("lama ${json['wow']}");
     return SponsoredProduct(
+      // membership_id: json['membership_id'],
+      post_type_id: json['post_type_id'],
       discount_percentage: json['discount_percentage'],
       wow: json['wow'] ?? '0',
       shortestDistance: json['shortestDistance'] ?? 0.0,

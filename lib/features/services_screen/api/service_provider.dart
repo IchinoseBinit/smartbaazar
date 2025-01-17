@@ -581,27 +581,29 @@ class VProduct {
   final String offers;
   final int? avg_rating;
   final int? discount_percentage;
+  final String? post_type_id;
 
-  VProduct({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.user,
-    required this.image,
-    required this.price,
-    required this.wow,
-    required this.stock,
-    required this.commentcount,
-    required this.offers,
-    required this.similarProductCount,
-    required this.discounted_price,
-    required this.avg_rating,
-    this.discount_percentage,
-  });
+  VProduct(
+      {required this.id,
+      required this.title,
+      required this.description,
+      required this.user,
+      required this.image,
+      required this.price,
+      required this.wow,
+      required this.stock,
+      required this.commentcount,
+      required this.offers,
+      required this.similarProductCount,
+      required this.discounted_price,
+      required this.avg_rating,
+      this.discount_percentage,
+      required this.post_type_id});
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
-      discount_percentage: json['discount_percentage'],
+        post_type_id: json['post_type_id'],
+        discount_percentage: json['discount_percentage'],
         offers: json["offers"] ?? '',
         discounted_price: json['discounted_price'] ?? '',
         commentcount: json['commentcount'] ?? 0,
@@ -624,12 +626,14 @@ class VendorUser {
   final String photo;
   final bool hasSponsoredGifts;
   final bool sponsored;
+  final String? membership_id;
   final String membershipStatus;
   final String? membershipColor; // Renamed to match proper camel case
   final String? membershipTitle;
   final double? shortestDistance; // Assuming it holds numeric data
 
   VendorUser({
+    required this.membership_id,
     required this.id,
     required this.name,
     required this.photo,
@@ -643,6 +647,7 @@ class VendorUser {
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
+      membership_id: json['membership_id'],
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',

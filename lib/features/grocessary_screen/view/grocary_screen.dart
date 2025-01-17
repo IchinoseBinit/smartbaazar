@@ -1595,11 +1595,21 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                                   productId:
                                                                       prod.id)));
                                                 },
-                                                child: ProductDetailWidget(
+                                                child:  ProductDetailWidget(
+                                                  
+                                                  id: int.tryParse(prod.id),
+                                                  posttype: prod.post_type_id,
+
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  tradeImage: 'assets/icon/b2bIcon.svg',
+                                                  didcountpercentage: prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
                                                   wow: prod.wow,
                                                   comment: prod.commentcount
                                                       .toString(),
-                                                  lefttile: "B2B",
+                                                  lefttile: "Grocary",
                                                   vendorname: prod.user.name,
                                                   discounttedPrice:
                                                       prod.discounted_price,
@@ -2132,20 +2142,25 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                    avg_rating: res.avg_rating?.toDouble(),
-                                    discountpercentage: res.discount_percentage,
+                                    id: int.tryParse(res.id),
+                                    membershipid: res.user.membership_id,
                                     offer: res.offers,
+                                    posttype: res.post_type_id,
+                                    
+                                    discountpercentage: res.discount_percentage,
+                                    avg_rating: res.avg_rating?.toDouble(),
                                     wow: res.wow,
                                     comment: res.commentcount.toString(),
                                     issponsored: res.user.sponsored,
                                     discounttedPrice: res.discounted_price,
-                                    lefttile: "geocary",
+                                    lefttile: "Grocary",
                                     productImage: res.image,
                                     Vimage: res.user.photo,
                                     vendorname: res.user.name,
                                     title: res.title,
                                     price: res.price,
-                                    similarproductCount: res.similarProductCount,
+                                    similarproductCount:
+                                        res.similarProductCount,
                                     membershipColor: res.user.membershipColor,
                                     membershipTitle: res.user.membershipTitle,
                                   ),

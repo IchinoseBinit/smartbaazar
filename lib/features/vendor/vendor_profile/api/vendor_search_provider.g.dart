@@ -7,7 +7,7 @@ part of 'vendor_search_provider.dart';
 // **************************************************************************
 
 String _$geDataBySearchvendorHash() =>
-    r'566890aa82542043579bcb731bd85b089be76dff';
+    r'e48ef12799004cef23eec8f747b2bf110f449ddb';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -126,7 +126,7 @@ class Buynowmodel {
   final String? worth;
   final String name;
   final String? gift_qty;
-   String? wow;
+  String? wow;
 
   final int? winners;
 
@@ -141,7 +141,7 @@ class Buynowmodel {
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
-         wow: json['wow']?.toString() ?? '0', // Safely handle null values
+      wow: json['wow']?.toString() ?? '0', // Safely handle null values
       gift_qty: json['gift_qty'] as String,
       worth: json['worth'] as String,
       image: json['image'] as String,
@@ -332,6 +332,7 @@ class GlobalModel {
   final String price;
   final String imageUrl;
   final String discont;
+  final String post_type_id;
   final List<UserDetailsModel> user;
   final String contactName;
   final String wow;
@@ -360,6 +361,7 @@ class GlobalModel {
       required this.contactName,
       required this.similarproductCount,
       required this.shortestDistance,
+      required this.post_type_id,
       required this.avg_rating,
       this.discount_percentage,
       required this.discont,
@@ -368,6 +370,7 @@ class GlobalModel {
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
     return GlobalModel(
+      post_type_id: json['post_type_id'],
       posttypename: json['posttypename'],
       discount_percentage: json['discount_percentage'],
       offers: json['offers'] ?? '',

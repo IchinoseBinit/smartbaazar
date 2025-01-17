@@ -1592,11 +1592,21 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                                   productId:
                                                                       prod.id)));
                                                 },
-                                                child: ProductDetailWidget(
+                                                child:  ProductDetailWidget(
+                                                  
+                                                  id: int.tryParse(prod.id),
+                                                  posttype: prod.post_type_id,
+
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  tradeImage: 'assets/icon/b2bIcon.svg',
+                                                  didcountpercentage: prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
                                                   wow: prod.wow,
                                                   comment: prod.commentcount
                                                       .toString(),
-                                                  lefttile: "B2b",
+                                                  lefttile: "Jobs",
                                                   vendorname: prod.user.name,
                                                   discounttedPrice:
                                                       prod.discounted_price,

@@ -162,8 +162,10 @@ class VendorUser {
   final String? nearestBranch;
   final bool? sponsored;
   final String? membershipTitle;
+  final String? membership_id;
 
   VendorUser({
+    required this.membership_id,
     required this.id,
     required this.name,
     required this.photo,
@@ -176,6 +178,7 @@ class VendorUser {
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
+      membership_id: json['membership_id'],
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',

@@ -12,29 +12,32 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_scree
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class ProductDetailWidget extends StatelessWidget {
-  ProductDetailWidget(
-      {super.key,
-      // this.membership_title,
-      this.id,
-      this.offer = '',
-      this.title = "Trade",
-      this.discounttedPrice = '0',
-      this.comment = '0',
-      this.price = '1',
-      this.vendorname = 'John',
-      this.distance = 2,
-      this.Vimage = '',
-      this.productImage = '',
-      this.lefttile = 'TradeHub',
-      this.similarproductCount,
-      this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
-      this.membershipTitle,
-      this.didcountpercentage,
-      this.avg_rating = 1,
-      this.tradeImage});
+  ProductDetailWidget({
+    super.key,
+    // this.membership_title,
+    this.id,
+    this.offer = '',
+    this.title = "Trade",
+    this.discounttedPrice = '0',
+    this.comment = '0',
+    this.price = '1',
+    this.vendorname = 'John',
+    this.distance = 2,
+    this.Vimage = '',
+    this.productImage = '',
+    this.lefttile = 'TradeHub',
+    this.similarproductCount,
+    this.membershipColor,
+    this.wow,
+    this.issponsored = false,
+    this.shortestDistance,
+    this.membershipTitle,
+    this.didcountpercentage,
+    this.avg_rating = 1,
+    this.tradeImage,
+    this.posttype = '1',
+    this.membershipid='1'
+  });
 
   String? title;
   String? price;
@@ -43,6 +46,7 @@ class ProductDetailWidget extends StatelessWidget {
   String? views, comment, share;
   String? vendorname;
   int? didcountpercentage;
+  String? posttype;
 
   // String? membership_title;
   double? distance;
@@ -55,6 +59,7 @@ class ProductDetailWidget extends StatelessWidget {
   double? shortestDistance;
   int? id;
   String? tradeImage;
+  String? membershipid;
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +94,25 @@ class ProductDetailWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      tradeImage == null
-                          ? SvgPicture.asset(
-                              b2bIcon,
-                              height: 10,
-                              color: Colors.grey,
-                            )
-                          : Image.asset(
-                              height: 10,
-                              tradeImage!,
-                              color: Colors.grey,
-                            ),
+                      SvgPicture.asset(
+                        posttype == '1'
+                            ? productsicon
+                            : posttype == '7'
+                                ? b2bIcon
+                                : posttype == '2'
+                                    ? usedIcon
+                                    : posttype == '3'
+                                        ? servicesIcon
+                                        : posttype == '4'
+                                            ? jobIcon
+                                            : posttype == '5'
+                                                ? eventIcon
+                                                : posttype == '8'
+                                                    ? grocaryicon
+                                                    : productsicon, // Provide a default icon path if no match is found
+                        height: 10,
+                        color: Colors.grey,
+                      ),
                       Text(
                         lefttile ?? 'Trade-Hub',
                         style: headerstyle.copyWith(
@@ -679,10 +692,18 @@ class ProductDetailWidget extends StatelessWidget {
                                         SizedBox(
                                           width: 3.5.w,
                                         ),
-                                        Image.asset(
-                                          "assets/images/nepalFlag.png",
-                                          height: 9.h,
-                                        ),
+                                            Image.asset(
+                                  membershipid == "2"
+                                      ? spotlighticon
+                                      : membershipid == "1"
+                                          ? basicsellericon
+                                          : membershipid == "3"
+                                              ? domesticseller
+                                              : membershipid == "25"
+                                                  ? globalicon
+                                                  : basicsellericon, // Provide a default icon if no match
+                                  height: 9.h,
+                                ),
                                         SizedBox(
                                           width: 1.w,
                                         ),

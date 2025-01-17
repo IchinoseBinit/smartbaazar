@@ -23,6 +23,7 @@ class VProduct {
   final int? commentCount;
   final String? wow;
   final int? discount_percentage;
+  final String? post_type_id;
 
   VProduct({
     required this.id,
@@ -39,10 +40,12 @@ class VProduct {
     required this.offers,
     required this.userDetail,
     this.discount_percentage,
+    required this.post_type_id,
   });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
     return VProduct(
+      post_type_id: json['post_type_id'],
       discount_percentage: json['discount_percentage'],
       wow: json['wow'],
       discountedPrice: json['discounted_price'],

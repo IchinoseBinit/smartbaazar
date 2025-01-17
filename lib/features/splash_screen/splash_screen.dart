@@ -17,22 +17,23 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     super.initState();
     // Start the timer to continue the session after 3 seconds
-  Future.delayed(
-  const Duration(seconds: 3),
-  () async {
-    try {
-      final loginProvider = ref.read(loginController.notifier);
-      await loginProvider.continueSession(context);
-    } catch (e) {
-      // Fallback: Navigate to LoginScreen if any error occurs
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
-    }
-  },
-);
-
+    Future.delayed(
+      const Duration(seconds: 3),
+      () async {
+        try {
+          final loginProvider = ref.read(loginController.notifier);
+          await loginProvider.continueSession(context).catchError((e) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ));
+          });
+        } catch (e) {
+          print('Error continuing session: $e');
+        }
+      },
+    );
   }
 
   @override
@@ -89,7 +90,8 @@ class SplashContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('An error occurred!', style: TextStyle(color: Colors.white)),
+        const Text('An error occurred!',
+            style: TextStyle(color: Colors.white)),
         TextButton(
           onPressed: () {
             ref.refresh(getSplashApiProvider);

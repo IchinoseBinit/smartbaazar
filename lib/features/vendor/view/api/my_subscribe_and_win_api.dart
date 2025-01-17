@@ -7,7 +7,7 @@ part 'my_subscribe_and_win_api.g.dart';
 
 @riverpod
 Future<MySubscribeAndWinModel> getMySubscribeAndWinResponse(
-    GetMySubscribeAndWinResponseRef ref) async {
+     ref) async {
   final SmartClinet client = SmartClinet();
 
   try {

@@ -3,7 +3,7 @@ import 'package:smartbazar/network_service/smart-clinet.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class ApiService {
-  Future<void> addToCart(String myid) async {
+  Future<String> addToCart(String myid) async {
     try {
       final SmartClinet client = SmartClinet();
 
@@ -23,11 +23,13 @@ class ApiService {
         final result = response.data['data'];
         final message = result['message'];
         print('Cart Update Message: $message'); // Handle success
+        return message;
       } else {
         print('Failed to add to cart: ${response.statusMessage}');
       }
     } catch (e) {
       print('Error occurred while adding to cart: $e');
     }
+    return 'retry';
   }
 }

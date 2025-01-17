@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,12 +21,9 @@ class SmartClinet {
 
   late Dio _client;
   final timeOutDuration = const Duration(seconds: kDebugMode ? 30 : 60);
-  bool _isRefreshingToken = false; // Flag to avoid multiple refresh attempts
 
   SmartClinet._internal() {
     _client = Dio();
-    _loadToken(); // Load the token at initialization
-
     if (kDebugMode) {
       _client.interceptors.add(
         LogInterceptor(
@@ -40,46 +38,35 @@ class SmartClinet {
     _client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options, handler) {
-          // Ensure the token is correctly set in headers
-          if (SmartClinet.token.isNotEmpty) {
-            print('Sending request with token: ${SmartClinet.token}');
-            options.headers['Authorization'] = 'Bearer ${SmartClinet.token}';
-          } else {
-            print('No token found!');
-          }
+          print('Adding token to request: Bearer $token'); // Debugging token
+          options.headers['Authorization'] = 'Bearer $token';
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          if (error.response != null && error.response!.statusCode! == 400) {
-            if (error.response?.data['success'] == false) {
-              print('Token expired, attempting refresh');
-              // Avoid multiple refresh token requests by using the flag
-              if (!_isRefreshingToken) {
-                _isRefreshingToken = true;
-                final refreshed = await _refreshToken();
-                _isRefreshingToken = false;
-                if (refreshed) {
-                  final response = await _retry(error.requestOptions);
-                  return handler.resolve(response);
-                }
+          if (error.response != null && error.response!.statusCode! >= 400) {
+            print("Error: Status Code >= 400, trying to refresh token...");
+            final success = await _refreshToken();
+            if (success) {
+              RequestOptions requestOptions = error.requestOptions;
+              requestOptions.headers['Authorization'] = 'Bearer $token';
+              try {
+                final response = await _retry(requestOptions);
+                return handler.resolve(response);
+              } on DioException catch (retryError) {
+                return handler.next(retryError);
               }
             }
+            return handler.next(error);
           }
           return handler.next(error);
+        },
+        onResponse: (options, handler) {
+          return handler.next(options);
         },
       ),
     );
   }
 
-  // Load token from SharedPreferences
-  Future<void> _loadToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    SmartClinet.token = prefs.getString('accessToken') ?? '';
-    SmartClinet.refresh = prefs.getString('refreshToken') ?? '';
-    print("Token loaded: ${SmartClinet.token}");
-  }
-
-  // Token Refresh Logic
   Future<bool> _refreshToken() async {
     try {
       final container = ProviderContainer(); // Create a Riverpod container
@@ -93,7 +80,8 @@ class SmartClinet {
       await prefs.setString('accessToken', refreshTokenResponse.authToken);
       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-      print("Token refreshed successfully: ${SmartClinet.token}");
+      print(
+          "Token refreshed successfully: ${SmartClinet.token}"); // Debugging token refresh
       return true;
     } catch (e) {
       print("Error refreshing token using API: $e");
@@ -101,22 +89,22 @@ class SmartClinet {
     }
   }
 
-  // Retry request after token refresh
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     var options = Options(
       method: requestOptions.method,
       headers: {
         ...requestOptions.headers,
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $token', // Ensure the new token is used
       },
     );
-    return _client.request<dynamic>(requestOptions.path,
-        data: requestOptions.data,
-        queryParameters: requestOptions.queryParameters,
-        options: options);
+    return _client.request<dynamic>(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
   }
 
-  // Main request method handling various HTTP methods
   Future<Response> request({
     required RequestType requestType,
     required String url,
@@ -124,99 +112,136 @@ class SmartClinet {
     dynamic queryParameters,
     dynamic headers,
   }) async {
-    // Ensure the token is available before making the request
-    if (SmartClinet.token.isEmpty) {
-      print("No token found. Please log in.");
-      throw Exception("No token found. Please log in.");
-    }
+    try {
+      Map<String, String> defaultHeaders = {
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+        'Connection': 'Keep-Alive',
+        'X-AppApiToken': 'Yala@Techies_Nepal',
+      };
 
-    Map<String, String> defaultHeaders = {
-      'Content-Type': 'application/json',
-      'accept': '*/*',
-      'Connection': 'Keep-Alive',
-      'X-AppApiToken': 'Yala@Techies_Nepal',
-    };
+      Map<String, String> mergedHeaders =
+          _mergeHeaders(defaultHeaders, headers);
 
-    Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);
-    print('Merged Headers before request: $mergedHeaders');
+      print(
+          'Merged Headers before request: $mergedHeaders'); // Debugging merged headers
 
-    switch (requestType) {
-      case RequestType.get:
-        return await _client
-            .get(
-              url,
-              options: Options(headers: mergedHeaders),
-              queryParameters: queryParameters,
-            )
-            .timeout(timeOutDuration);
+      switch (requestType) {
+        case RequestType.get:
+          return await _client
+              .get(
+                url,
+                options: Options(headers: mergedHeaders),
+                queryParameters: queryParameters,
+              )
+              .timeout(timeOutDuration);
 
-      case RequestType.getWithToken:
-        print('Sending GET request with token to URL: $url');
-        return await _client
-            .get(
-              url,
-              options: Options(headers: mergedHeaders),
-              queryParameters: queryParameters,
-            )
-            .timeout(timeOutDuration);
+        case RequestType.getWithToken:
+          print('Sending GET request with token to URL: $url');
+          return await _client
+              .get(
+                url,
+                options: Options(headers: mergedHeaders),
+                queryParameters: queryParameters,
+              )
+              .timeout(timeOutDuration);
 
-      case RequestType.post:
-        return await _client
-            .post(
-              url.trim(),
-              queryParameters: queryParameters,
-              data: jsonEncode(parameter),
-              options: Options(headers: mergedHeaders),
-            )
-            .timeout(timeOutDuration);
+        case RequestType.post:
+          return await _client
+              .post(
+                url.trim(),
+                queryParameters: queryParameters,
+                data: jsonEncode(parameter),
+                options: Options(headers: mergedHeaders),
+              )
+              .timeout(timeOutDuration);
+        case RequestType.postWithTokenFormData:
+          return await _client
+              .post(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
+        case RequestType.postWithToken:
+          return await _client
+              .post(
+                url,
+                data: jsonEncode(parameter),
+                options: Options(headers: mergedHeaders),
+              )
+              .timeout(timeOutDuration);
 
-      case RequestType.postWithToken:
-        return await _client
-            .post(
-              url,
-              data: jsonEncode(parameter),
-              options: Options(headers: mergedHeaders),
-            )
-            .timeout(timeOutDuration);
+        case RequestType.deleteWithToken:
+          return await _client
+              .delete(
+                url,
+                options: Options(headers: mergedHeaders),
+                data: parameter,
+              )
+              .timeout(timeOutDuration);
 
-      case RequestType.deleteWithToken:
-        return await _client
-            .delete(
-              url,
-              options: Options(headers: mergedHeaders),
-              data: parameter,
-            )
-            .timeout(timeOutDuration);
+        case RequestType.putWithToken:
+          return await _client
+              .put(
+                url,
+                options: Options(headers: mergedHeaders),
+                data: parameter,
+              )
+              .timeout(timeOutDuration);
+        case RequestType.putWithTokenFormData:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
+        case RequestType.putWithTokenEncoded:
+          return await _client
+              .put(
+                url,
+                data: parameter,
+                options: Options(
+                  headers: {
+                    ...mergedHeaders,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  },
+                ),
+              )
+              .timeout(timeOutDuration);
 
-      case RequestType.putWithToken:
-        return await _client
-            .put(
-              url,
-              options: Options(headers: mergedHeaders),
-              data: parameter,
-            )
-            .timeout(timeOutDuration);
-
-      case RequestType.putWithTokenEncoded:
-        return await _client
-            .put(
-              url,
-              data: parameter,
-              options: Options(
-                headers: {
-                  ...mergedHeaders,
-                  "Content-Type": "application/x-www-form-urlencoded"
-                },
-              ),
-            )
-            .timeout(timeOutDuration);
-
-      default:
-        throw Exception("Unsupported request type");
+        default:
+          throw Exception("Unsupported request type");
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response != null) {
+          print('API Error: ${e.response?.statusCode}');
+          print('Error Response: ${e.response?.data}');
+          final errorMessage = e.response?.data['message'] ?? 'Unknown error';
+          throw Exception(' $errorMessage');
+        } else {
+          print('Dio Error without response: ${e.error}');
+          throw Exception('Unexpected error: ${e.error}');
+        }
+      } else {
+        print('Unexpected error: $e');
+        throw Exception("Unexpected error: $e");
+      }
     }
   }
 
-  // Merge custom headers with default headers
   Map<String, String> _mergeHeaders(
       Map<String, String> defaultHeaders, dynamic additionalHeaders) {
     if (additionalHeaders != null) {

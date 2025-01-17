@@ -17,6 +17,7 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
@@ -137,17 +138,90 @@ class ProductDetailScreen extends ConsumerWidget {
                     width: 10.w,
                   ),
                   InkWell(
-                    onTap: () {
-                      // print("biabsh ");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OrderDetailsScreen(
-                            selectedProductIds: [],
-                            selectedVendorIds: [],
-                          ),
-                        ),
+                    onTap: () async {
+                      ApiService().addToCart(productId).then(
+                        (value) {
+                          return showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 14.w, vertical: 12.h),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Sucessful!',
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xff362677)),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Text(
+                                      'Product added to the cart sucessfully!',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const AddToCartScreen()));
+                                      },
+                                      child: Text(
+                                        'View Cart',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Container(
+                                      height: 40.h,
+                                      width: 40.w,
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xff362677),
+                                          shape: BoxShape.circle),
+                                      child: const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 24,
+                                        weight: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       );
+
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>
+                      //   ),
+                      // );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
@@ -793,7 +867,10 @@ class ProductDetailScreen extends ConsumerWidget {
                                   ),
                                   InkWell(
                                     onTap: () async {
-                                      ref.watch(postreviewProvider(int.tryParse(productId)!,_reviewcontroller.text,'2'));
+                                      ref.watch(postreviewProvider(
+                                          int.tryParse(productId)!,
+                                          _reviewcontroller.text,
+                                          '2'));
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(

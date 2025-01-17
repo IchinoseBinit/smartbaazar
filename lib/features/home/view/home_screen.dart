@@ -238,7 +238,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-        final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
@@ -285,7 +285,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
     return Scaffold(
         extendBody: true,
-         bottomNavigationBar: CustomBottomNavigationBar(
+        bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: pselectedIndex, // Pass the current index
           onTabChanged: (index) {
             ref.read(bottomNavIndexProvider.notifier).state = index;
@@ -307,7 +307,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
@@ -486,7 +487,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             InkWell(
                                               onTap: () {
                                                 if (_searchController.text
-                                                        .trim().isNotEmpty) {
+                                                    .trim()
+                                                    .isNotEmpty) {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -830,18 +832,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                         if (homeStory != null &&
                             homeStory is Map<String, dynamic> &&
-                            homeStory.isEmpty &&
                             homeStory.containsKey('story')) {
                           final story = homeStory['story'];
 
                           if (story != null &&
                               story is Map<String, dynamic> &&
                               story.containsKey('posts')) {
-                            var posts = story['posts'];
+                            final posts = story['posts'];
 
                             if (posts != null && posts is List<dynamic>) {
-                              posts = (posts).where((e) => e != null).toList();
-                              // if (posts.isNotEmpty)
                               return SizedBox(
                                 height: 100.h,
                                 child: ListView.builder(
@@ -851,6 +850,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemCount: posts.length,
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
+
                                     if (story is Map<String, dynamic>) {
                                       final storyObject =
                                           Story(posts: [Post.fromJson(story)]);
@@ -879,7 +879,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         }
 
                         // If any of the above conditions fail, return a default widget
-                        return const SizedBox.shrink();
+                        return const Center(
+                          child: Text('No stories available. '),
+                        );
                       },
                       loading: () => SizedBox(
                         height: 100.h,
@@ -1153,7 +1155,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-                                                      
+                                                      membershipid: prod
+                                                          .userdetails
+                                                          ?.membership_id,
+                                                      tradeImage:
+                                                          'assets/icon/loading.svg',
                                                       didcountpercentage: prod
                                                           .discount_percentage,
                                                       distance:
@@ -1279,13 +1285,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                             if (dynamictabController.index == 0) {
                               dynamicHeight =
-                                  data.insidearr[0].isEmpty ? 200.h : 430.h;
+                                  data.insidearr[0].isEmpty ? 150.h : 430.h;
                             } else if (dynamictabController.index == 1) {
                               // Ensure data.doma[0] is valid and has length
                               dynamicHeight = (data.doma.isNotEmpty &&
                                       data.doma[0].isNotEmpty)
                                   ? 430.h
-                                  : 200.h;
+                                  : 150.h;
                             } else if (dynamictabController.index == 2)
                               dynamicHeight = (data.spotlight.isNotEmpty &&
                                       data.spot[0].isNotEmpty)
@@ -1323,7 +1329,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           ],
                                         ),
                                         SizedBox(
-                                          height: 25.h,
+                                          height: 5.h,
                                         ),
                                         data.insidearr[0].isEmpty
                                             ? Padding(
@@ -1366,10 +1372,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           },
                                                           child:
                                                               ProductDetailWidget(
+                                                            membershipid: prod
+                                                                .user
+                                                                .first
+                                                                .membership_id,
+                                                            posttype: prod
+                                                                .post_type_id,
                                                             lefttile: prod
                                                                 .posttypename,
-                                                            tradeImage:
-                                                                globalicon,
                                                             didcountpercentage:
                                                                 prod.discount_percentage,
                                                             shortestDistance: prod
@@ -1441,78 +1451,92 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         SizedBox(
                                           height: 25.h,
                                         ),
-                                        if (data.domestic.isNotEmpty)
-                                          SizedBox(
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis
-                                                  .horizontal, // Horizontal scrolling
-                                              child: Wrap(
-                                                spacing: 3
-                                                    .w, // Horizontal space between items
-                                                runSpacing: 0
-                                                    .h, // Vertical space between rows
-                                                children: List.generate(
-                                                    data.doma[0].length,
-                                                    (index) {
-                                                  GlobalModel prod =
-                                                      data.doma[0][index];
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ProductDetailScreen(
-                                                                  productId:
-                                                                      prod.id),
+                                        data.doma.isEmpty ||
+                                                data.doma[0].isEmpty
+                                            ? Center(child: nolistingfound())
+                                            : SizedBox(
+                                                child: SingleChildScrollView(
+                                                  scrollDirection: Axis
+                                                      .horizontal, // Horizontal scrolling
+                                                  child: Wrap(
+                                                    spacing: 3
+                                                        .w, // Horizontal space between items
+                                                    runSpacing: 0
+                                                        .h, // Vertical space between rows
+                                                    children: List.generate(
+                                                        data.doma[0].length,
+                                                        (index) {
+                                                      GlobalModel prod =
+                                                          data.doma[0][index];
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetailScreen(
+                                                                      productId:
+                                                                          prod.id),
+                                                            ),
+                                                          );
+                                                        },
+                                                        child:
+                                                            ProductDetailWidget(
+                                                          membershipid: prod
+                                                              .user
+                                                              .first
+                                                              .membership_id,
+                                                          posttype:
+                                                              prod.posttypename,
+                                                          lefttile:
+                                                              prod.posttypename,
+                                                          tradeImage:
+                                                              domesticicon,
+                                                          didcountpercentage: prod
+                                                              .discount_percentage,
+                                                          Vimage: prod
+                                                              .user.first.photo,
+                                                          shortestDistance: prod
+                                                              .shortestDistance,
+                                                          distance: prod
+                                                              .shortestDistance,
+                                                          avg_rating:
+                                                              prod.avg_rating,
+                                                          offer: prod.offers,
+                                                          id: int.tryParse(prod
+                                                              .user
+                                                              .first
+                                                              .user_id),
+                                                          comment:
+                                                              prod.commentnum,
+                                                          wow: prod.wow,
+                                                          issponsored: prod
+                                                              .user[0]
+                                                              .sponsored!,
+                                                          vendorname:
+                                                              prod.contactName,
+                                                          discounttedPrice:
+                                                              prod.discont,
+                                                          price: prod.price,
+                                                          title: prod.title,
+                                                          productImage:
+                                                              prod.imageUrl,
+                                                          similarproductCount: prod
+                                                              .similarproductCount,
+                                                          membershipColor: prod
+                                                              .user
+                                                              .first
+                                                              .membership_color,
+                                                          membershipTitle: prod
+                                                              .user
+                                                              .first
+                                                              .membership_title,
                                                         ),
                                                       );
-                                                    },
-                                                    child: ProductDetailWidget(
-                                                      lefttile:
-                                                          prod.posttypename,
-                                                      tradeImage: domesticicon,
-                                                      didcountpercentage: prod
-                                                          .discount_percentage,
-                                                      Vimage:
-                                                          prod.user.first.photo,
-                                                      shortestDistance:
-                                                          prod.shortestDistance,
-                                                      distance:
-                                                          prod.shortestDistance,
-                                                      avg_rating:
-                                                          prod.avg_rating,
-                                                      offer: prod.offers,
-                                                      id: int.tryParse(prod
-                                                          .user.first.user_id),
-                                                      comment: prod.commentnum,
-                                                      wow: prod.wow,
-                                                      issponsored: prod
-                                                          .user[0].sponsored!,
-                                                      vendorname:
-                                                          prod.contactName,
-                                                      discounttedPrice:
-                                                          prod.discont,
-                                                      price: prod.price,
-                                                      title: prod.title,
-                                                      productImage:
-                                                          prod.imageUrl,
-                                                      similarproductCount: prod
-                                                          .similarproductCount,
-                                                      membershipColor: prod
-                                                          .user
-                                                          .first
-                                                          .membership_color,
-                                                      membershipTitle: prod
-                                                          .user
-                                                          .first
-                                                          .membership_title,
-                                                    ),
-                                                  );
-                                                }),
-                                              ),
-                                            ),
-                                          ),
+                                                    }),
+                                                  ),
+                                                ),
+                                              )
                                       ],
                                     ),
                                     //third tab
@@ -1567,6 +1591,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    membershipid: prod.user
+                                                        .first.membership_id,
+                                                    posttype: prod.posttypename,
                                                     didcountpercentage: prod
                                                         .discount_percentage,
                                                     lefttile: prod.posttypename,
@@ -1680,6 +1707,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         Center(
                           child: Column(
                             children: [
+                              SizedBox(
+                                height: 10.h,
+                              ),
                               Text(
                                 "BuyOrWin",
                                 textAlign: TextAlign.center,
@@ -1827,6 +1857,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               );
                                             },
                                             child: ProductDetailWidget(
+                                              membershipid: prefs
+                                                  .userdetails?.membership_id,
+                                              posttype: prefs.post_type_id,
                                               didcountpercentage: prefs
                                                   .discount_percentage
                                                   ?.toInt(),
@@ -1902,28 +1935,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             ],
                           ),
                         ),
-
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                            bottom: 10.h,
-                            left: 10.w,
-                            right: 10.w,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "All Products",
-                                textAlign: TextAlign.left,
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    color: ColorConstant.blackColor),
-                              ),
-                              // SizedBox(height: 5.h,)
-                            ],
-                          ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "   All Products",
+                              textAlign: TextAlign.left,
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                  color: ColorConstant.blackColor),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
                         ),
 
                         // SizedBox(
@@ -1975,6 +2003,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
+                                            membershipid:
+                                                res.userDetail.membership_id,
+                                            posttype: res.post_type_id,
                                             discountpercentage:
                                                 res.discount_percentage,
                                             id: int.tryParse(

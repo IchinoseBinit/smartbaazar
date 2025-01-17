@@ -665,7 +665,8 @@ mixin _$PostResult {
   String? get postTypeId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  List<String>? get tags => throw _privateConstructorUsedError;
+  List<String>? get tags =>
+      throw _privateConstructorUsedError; // Should be List<String> if this is a list
   String? get price => throw _privateConstructorUsedError;
   String? get discountedPrice => throw _privateConstructorUsedError;
   String? get trending => throw _privateConstructorUsedError;
@@ -719,7 +720,8 @@ mixin _$PostResult {
   Ratings? get ratings => throw _privateConstructorUsedError;
   usermodel? get user => throw _privateConstructorUsedError;
   UserDetailsProduct? get user_details => throw _privateConstructorUsedError;
-  List<Picture>? get pictures => throw _privateConstructorUsedError;
+  List<Picture>? get pictures =>
+      throw _privateConstructorUsedError; // List of pictures (List<Picture>)
   PostType? get postType => throw _privateConstructorUsedError;
   List<RatingComment> get rating_comment => throw _privateConstructorUsedError;
   List<LivePrize> get live_prizes => throw _privateConstructorUsedError;
@@ -1807,6 +1809,7 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
+// Should be List<String> if this is a list
   @override
   final String? price;
   @override
@@ -1923,6 +1926,7 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
+// List of pictures (List<Picture>)
   @override
   final PostType? postType;
   final List<RatingComment> _rating_comment;
@@ -2270,7 +2274,7 @@ abstract class _PostResult implements PostResult {
   @override
   String? get description;
   @override
-  List<String>? get tags;
+  List<String>? get tags; // Should be List<String> if this is a list
   @override
   String? get price;
   @override
@@ -2378,7 +2382,7 @@ abstract class _PostResult implements PostResult {
   @override
   UserDetailsProduct? get user_details;
   @override
-  List<Picture>? get pictures;
+  List<Picture>? get pictures; // List of pictures (List<Picture>)
   @override
   PostType? get postType;
   @override
