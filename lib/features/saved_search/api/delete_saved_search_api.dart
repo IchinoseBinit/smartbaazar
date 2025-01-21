@@ -1,14 +1,14 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part'delete_saved_search_api.g.dart';
+part 'delete_saved_search_api.g.dart';
 
 @riverpod
 Future<void> deleteSavedSearch(
     DeleteSavedSearchRef ref, String productItemId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
@@ -25,4 +25,3 @@ Future<void> deleteSavedSearch(
     throw Exception('Error deleting Saved search: $e');
   }
 }
-

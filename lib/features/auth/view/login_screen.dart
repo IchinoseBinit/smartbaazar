@@ -49,7 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (state is LoadedState) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const BottomNavigationScreen()),
+          MaterialPageRoute(builder: (_) =>  const BottomNavigationScreen()),
         );
         showCustomToast(state.response.toString());
       } else if (state is ErrorState) {

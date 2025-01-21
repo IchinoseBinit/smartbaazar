@@ -7,7 +7,7 @@ part of 'brand_bazar_api.dart';
 // **************************************************************************
 
 String _$getBrandBazaarResponseHash() =>
-    r'56ac15788b157dcef3c9d7267e918bed10c0450e';
+    r'b51a268719a3efa81086d2152f7910f7a9fd238c';
 
 /// See also [getBrandBazaarResponse].
 @ProviderFor(getBrandBazaarResponse)
@@ -22,7 +22,9 @@ final getBrandBazaarResponseProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetBrandBazaarResponseRef
     = AutoDisposeFutureProviderRef<BrandBazarModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

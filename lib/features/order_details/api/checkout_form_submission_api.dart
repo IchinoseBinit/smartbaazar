@@ -1,9 +1,8 @@
-
 import 'package:dio/dio.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 // import 'package:http/http.dart' as http;
 
@@ -42,14 +41,16 @@ Future<bool> postCheckoutForm(
   String total,
   // List<String?> imagePath,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     FormData formData = FormData.fromMap({
       'name': userName,
+      // 'address': address,
       'address': address,
       'email': email,
-      'pay_method': payMethod,
+      'pay_method': "cod",
+      // 'pay_method': payMethod,
       'delivery': delivery,
       'delivery_type': deliveryType,
       'city': city,
@@ -61,9 +62,8 @@ Future<bool> postCheckoutForm(
       'qty[]': qty,
       'price[]': price,
       'total': total,
-      'del_cost': 100
+      'del_cost': "100"
     });
-
 
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
@@ -71,7 +71,8 @@ Future<bool> postCheckoutForm(
       parameter: formData,
     );
 
-if (response.statusCode == 200 && response.data['msg'] != null) {      print('Order placed successfully!');
+    if (response.statusCode == 200 && response.data['msg'] != null) {
+      print('Order placed successfully!');
       return true;
     } else {
       print('Error: ${response.data}');
@@ -79,6 +80,6 @@ if (response.statusCode == 200 && response.data['msg'] != null) {      print('Or
     }
   } catch (e) {
     print('Error on placing Order: $e');
-    return false; 
+    return false;
   }
 }

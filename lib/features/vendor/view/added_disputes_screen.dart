@@ -10,8 +10,6 @@ import 'package:smartbazar/features/create_listing/widget/create_listing_card_wi
 import 'package:smartbazar/features/my_order/view/dropdown_menu_item.dart';
 import 'package:smartbazar/features/vendor/view/api/add_dispute_api.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
-import 'package:smartbazar/features/vendor/view/model/dispute_model.dart';
-import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AddNewDisputes extends ConsumerStatefulWidget {

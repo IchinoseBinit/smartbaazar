@@ -29,8 +29,12 @@ mixin _$StreetAddressModel {
   @JsonKey(name: "longitude")
   double get longitude => throw _privateConstructorUsedError;
 
+  /// Serializes this StreetAddressModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StreetAddressModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StreetAddressModelCopyWith<StreetAddressModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -58,6 +62,8 @@ class _$StreetAddressModelCopyWithImpl<$Res, $Val extends StreetAddressModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of StreetAddressModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -110,6 +116,8 @@ class __$$StreetAddressModelImplCopyWithImpl<$Res>
       $Res Function(_$StreetAddressModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StreetAddressModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -183,12 +191,14 @@ class _$StreetAddressModelImpl implements _StreetAddressModel {
                 other.longitude == longitude));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, description, placeId, latitude, longitude);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StreetAddressModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StreetAddressModelImplCopyWith<_$StreetAddressModelImpl> get copyWith =>
@@ -226,8 +236,11 @@ abstract class _StreetAddressModel implements StreetAddressModel {
   @override
   @JsonKey(name: "longitude")
   double get longitude;
+
+  /// Create a copy of StreetAddressModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StreetAddressModelImplCopyWith<_$StreetAddressModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

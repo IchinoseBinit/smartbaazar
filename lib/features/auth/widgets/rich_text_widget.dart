@@ -21,7 +21,8 @@ class RichTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
+    return const SizedBox.shrink();
+    RichText(
       text: TextSpan(
           text: title,
           style: titleStyle ??

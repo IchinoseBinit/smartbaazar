@@ -1,15 +1,16 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/message/model/message_thread_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'message_thread_api.g.dart';
 
 // Assuming getMessageThread has a Family
 @riverpod
-Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref, {required String? filter}) async {
-  final SmartClinet client = SmartClinet();
+Future<MessageThreadModel> getMessageThread(GetMessageThreadRef ref,
+    {required String? filter}) async {
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

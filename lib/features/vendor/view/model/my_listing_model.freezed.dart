@@ -22,8 +22,12 @@ MyListingModel _$MyListingModelFromJson(Map<String, dynamic> json) {
 mixin _$MyListingModel {
   Products? get products => throw _privateConstructorUsedError;
 
+  /// Serializes this MyListingModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MyListingModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MyListingModelCopyWith<MyListingModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$MyListingModelCopyWithImpl<$Res, $Val extends MyListingModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MyListingModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -62,6 +68,8 @@ class _$MyListingModelCopyWithImpl<$Res, $Val extends MyListingModel>
     ) as $Val);
   }
 
+  /// Create a copy of MyListingModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProductsCopyWith<$Res>? get products {
@@ -97,6 +105,8 @@ class __$$MyListingModelImplCopyWithImpl<$Res>
       _$MyListingModelImpl _value, $Res Function(_$MyListingModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MyListingModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -136,11 +146,13 @@ class _$MyListingModelImpl implements _MyListingModel {
                 other.products == products));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, products);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MyListingModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MyListingModelImplCopyWith<_$MyListingModelImpl> get copyWith =>
@@ -164,8 +176,11 @@ abstract class _MyListingModel implements MyListingModel {
 
   @override
   Products? get products;
+
+  /// Create a copy of MyListingModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MyListingModelImplCopyWith<_$MyListingModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -176,30 +191,14 @@ Products _$ProductsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Products {
-  @JsonKey(name: 'current_page')
-  int? get currentPage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'data')
-  List<ProductData>? get data => throw _privateConstructorUsedError;
-  @JsonKey(name: 'first_page_url')
-  String? get firstPageUrl => throw _privateConstructorUsedError;
-  int? get from => throw _privateConstructorUsedError;
-  @JsonKey(name: 'last_page')
-  int? get lastPage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'last_page_url')
-  String? get lastPageUrl => throw _privateConstructorUsedError;
-  List<Link>? get links => throw _privateConstructorUsedError;
-  @JsonKey(name: 'next_page_url')
-  String? get nextPageUrl => throw _privateConstructorUsedError;
-  String? get path => throw _privateConstructorUsedError;
-  @JsonKey(name: 'per_page')
-  int? get perPage => throw _privateConstructorUsedError;
-  @JsonKey(name: 'prev_page_url')
-  String? get prevPageUrl => throw _privateConstructorUsedError;
-  int? get to => throw _privateConstructorUsedError;
-  int? get total => throw _privateConstructorUsedError;
+  List<Product>? get data => throw _privateConstructorUsedError;
 
+  /// Serializes this Products to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductsCopyWith<Products> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -209,20 +208,7 @@ abstract class $ProductsCopyWith<$Res> {
   factory $ProductsCopyWith(Products value, $Res Function(Products) then) =
       _$ProductsCopyWithImpl<$Res, Products>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'current_page') int? currentPage,
-      @JsonKey(name: 'data') List<ProductData>? data,
-      @JsonKey(name: 'first_page_url') String? firstPageUrl,
-      int? from,
-      @JsonKey(name: 'last_page') int? lastPage,
-      @JsonKey(name: 'last_page_url') String? lastPageUrl,
-      List<Link>? links,
-      @JsonKey(name: 'next_page_url') String? nextPageUrl,
-      String? path,
-      @JsonKey(name: 'per_page') int? perPage,
-      @JsonKey(name: 'prev_page_url') String? prevPageUrl,
-      int? to,
-      int? total});
+  $Res call({List<Product>? data});
 }
 
 /// @nodoc
@@ -235,76 +221,18 @@ class _$ProductsCopyWithImpl<$Res, $Val extends Products>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = freezed,
     Object? data = freezed,
-    Object? firstPageUrl = freezed,
-    Object? from = freezed,
-    Object? lastPage = freezed,
-    Object? lastPageUrl = freezed,
-    Object? links = freezed,
-    Object? nextPageUrl = freezed,
-    Object? path = freezed,
-    Object? perPage = freezed,
-    Object? prevPageUrl = freezed,
-    Object? to = freezed,
-    Object? total = freezed,
   }) {
     return _then(_value.copyWith(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<ProductData>?,
-      firstPageUrl: freezed == firstPageUrl
-          ? _value.firstPageUrl
-          : firstPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      from: freezed == from
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPage: freezed == lastPage
-          ? _value.lastPage
-          : lastPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPageUrl: freezed == lastPageUrl
-          ? _value.lastPageUrl
-          : lastPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      links: freezed == links
-          ? _value.links
-          : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>?,
-      nextPageUrl: freezed == nextPageUrl
-          ? _value.nextPageUrl
-          : nextPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      path: freezed == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String?,
-      perPage: freezed == perPage
-          ? _value.perPage
-          : perPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      prevPageUrl: freezed == prevPageUrl
-          ? _value.prevPageUrl
-          : prevPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      to: freezed == to
-          ? _value.to
-          : to // ignore: cast_nullable_to_non_nullable
-              as int?,
-      total: freezed == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as List<Product>?,
     ) as $Val);
   }
 }
@@ -317,20 +245,7 @@ abstract class _$$ProductsImplCopyWith<$Res>
       __$$ProductsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'current_page') int? currentPage,
-      @JsonKey(name: 'data') List<ProductData>? data,
-      @JsonKey(name: 'first_page_url') String? firstPageUrl,
-      int? from,
-      @JsonKey(name: 'last_page') int? lastPage,
-      @JsonKey(name: 'last_page_url') String? lastPageUrl,
-      List<Link>? links,
-      @JsonKey(name: 'next_page_url') String? nextPageUrl,
-      String? path,
-      @JsonKey(name: 'per_page') int? perPage,
-      @JsonKey(name: 'prev_page_url') String? prevPageUrl,
-      int? to,
-      int? total});
+  $Res call({List<Product>? data});
 }
 
 /// @nodoc
@@ -341,76 +256,18 @@ class __$$ProductsImplCopyWithImpl<$Res>
       _$ProductsImpl _value, $Res Function(_$ProductsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = freezed,
     Object? data = freezed,
-    Object? firstPageUrl = freezed,
-    Object? from = freezed,
-    Object? lastPage = freezed,
-    Object? lastPageUrl = freezed,
-    Object? links = freezed,
-    Object? nextPageUrl = freezed,
-    Object? path = freezed,
-    Object? perPage = freezed,
-    Object? prevPageUrl = freezed,
-    Object? to = freezed,
-    Object? total = freezed,
   }) {
     return _then(_$ProductsImpl(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
       data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<ProductData>?,
-      firstPageUrl: freezed == firstPageUrl
-          ? _value.firstPageUrl
-          : firstPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      from: freezed == from
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPage: freezed == lastPage
-          ? _value.lastPage
-          : lastPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPageUrl: freezed == lastPageUrl
-          ? _value.lastPageUrl
-          : lastPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      links: freezed == links
-          ? _value._links
-          : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>?,
-      nextPageUrl: freezed == nextPageUrl
-          ? _value.nextPageUrl
-          : nextPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      path: freezed == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String?,
-      perPage: freezed == perPage
-          ? _value.perPage
-          : perPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      prevPageUrl: freezed == prevPageUrl
-          ? _value.prevPageUrl
-          : prevPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      to: freezed == to
-          ? _value.to
-          : to // ignore: cast_nullable_to_non_nullable
-              as int?,
-      total: freezed == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as List<Product>?,
     ));
   }
 }
@@ -418,33 +275,14 @@ class __$$ProductsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ProductsImpl implements _Products {
-  const _$ProductsImpl(
-      {@JsonKey(name: 'current_page') this.currentPage,
-      @JsonKey(name: 'data') final List<ProductData>? data,
-      @JsonKey(name: 'first_page_url') this.firstPageUrl,
-      this.from,
-      @JsonKey(name: 'last_page') this.lastPage,
-      @JsonKey(name: 'last_page_url') this.lastPageUrl,
-      final List<Link>? links,
-      @JsonKey(name: 'next_page_url') this.nextPageUrl,
-      this.path,
-      @JsonKey(name: 'per_page') this.perPage,
-      @JsonKey(name: 'prev_page_url') this.prevPageUrl,
-      this.to,
-      this.total})
-      : _data = data,
-        _links = links;
+  const _$ProductsImpl({required final List<Product>? data}) : _data = data;
 
   factory _$ProductsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductsImplFromJson(json);
 
+  final List<Product>? _data;
   @override
-  @JsonKey(name: 'current_page')
-  final int? currentPage;
-  final List<ProductData>? _data;
-  @override
-  @JsonKey(name: 'data')
-  List<ProductData>? get data {
+  List<Product>? get data {
     final value = _data;
     if (value == null) return null;
     if (_data is EqualUnmodifiableListView) return _data;
@@ -453,45 +291,8 @@ class _$ProductsImpl implements _Products {
   }
 
   @override
-  @JsonKey(name: 'first_page_url')
-  final String? firstPageUrl;
-  @override
-  final int? from;
-  @override
-  @JsonKey(name: 'last_page')
-  final int? lastPage;
-  @override
-  @JsonKey(name: 'last_page_url')
-  final String? lastPageUrl;
-  final List<Link>? _links;
-  @override
-  List<Link>? get links {
-    final value = _links;
-    if (value == null) return null;
-    if (_links is EqualUnmodifiableListView) return _links;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  @JsonKey(name: 'next_page_url')
-  final String? nextPageUrl;
-  @override
-  final String? path;
-  @override
-  @JsonKey(name: 'per_page')
-  final int? perPage;
-  @override
-  @JsonKey(name: 'prev_page_url')
-  final String? prevPageUrl;
-  @override
-  final int? to;
-  @override
-  final int? total;
-
-  @override
   String toString() {
-    return 'Products(currentPage: $currentPage, data: $data, firstPageUrl: $firstPageUrl, from: $from, lastPage: $lastPage, lastPageUrl: $lastPageUrl, links: $links, nextPageUrl: $nextPageUrl, path: $path, perPage: $perPage, prevPageUrl: $prevPageUrl, to: $to, total: $total)';
+    return 'Products(data: $data)';
   }
 
   @override
@@ -499,46 +300,17 @@ class _$ProductsImpl implements _Products {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProductsImpl &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            const DeepCollectionEquality().equals(other._data, _data) &&
-            (identical(other.firstPageUrl, firstPageUrl) ||
-                other.firstPageUrl == firstPageUrl) &&
-            (identical(other.from, from) || other.from == from) &&
-            (identical(other.lastPage, lastPage) ||
-                other.lastPage == lastPage) &&
-            (identical(other.lastPageUrl, lastPageUrl) ||
-                other.lastPageUrl == lastPageUrl) &&
-            const DeepCollectionEquality().equals(other._links, _links) &&
-            (identical(other.nextPageUrl, nextPageUrl) ||
-                other.nextPageUrl == nextPageUrl) &&
-            (identical(other.path, path) || other.path == path) &&
-            (identical(other.perPage, perPage) || other.perPage == perPage) &&
-            (identical(other.prevPageUrl, prevPageUrl) ||
-                other.prevPageUrl == prevPageUrl) &&
-            (identical(other.to, to) || other.to == to) &&
-            (identical(other.total, total) || other.total == total));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      currentPage,
-      const DeepCollectionEquality().hash(_data),
-      firstPageUrl,
-      from,
-      lastPage,
-      lastPageUrl,
-      const DeepCollectionEquality().hash(_links),
-      nextPageUrl,
-      path,
-      perPage,
-      prevPageUrl,
-      to,
-      total);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductsImplCopyWith<_$ProductsImpl> get copyWith =>
@@ -553,96 +325,47 @@ class _$ProductsImpl implements _Products {
 }
 
 abstract class _Products implements Products {
-  const factory _Products(
-      {@JsonKey(name: 'current_page') final int? currentPage,
-      @JsonKey(name: 'data') final List<ProductData>? data,
-      @JsonKey(name: 'first_page_url') final String? firstPageUrl,
-      final int? from,
-      @JsonKey(name: 'last_page') final int? lastPage,
-      @JsonKey(name: 'last_page_url') final String? lastPageUrl,
-      final List<Link>? links,
-      @JsonKey(name: 'next_page_url') final String? nextPageUrl,
-      final String? path,
-      @JsonKey(name: 'per_page') final int? perPage,
-      @JsonKey(name: 'prev_page_url') final String? prevPageUrl,
-      final int? to,
-      final int? total}) = _$ProductsImpl;
+  const factory _Products({required final List<Product>? data}) =
+      _$ProductsImpl;
 
   factory _Products.fromJson(Map<String, dynamic> json) =
       _$ProductsImpl.fromJson;
 
   @override
-  @JsonKey(name: 'current_page')
-  int? get currentPage;
+  List<Product>? get data;
+
+  /// Create a copy of Products
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(name: 'data')
-  List<ProductData>? get data;
-  @override
-  @JsonKey(name: 'first_page_url')
-  String? get firstPageUrl;
-  @override
-  int? get from;
-  @override
-  @JsonKey(name: 'last_page')
-  int? get lastPage;
-  @override
-  @JsonKey(name: 'last_page_url')
-  String? get lastPageUrl;
-  @override
-  List<Link>? get links;
-  @override
-  @JsonKey(name: 'next_page_url')
-  String? get nextPageUrl;
-  @override
-  String? get path;
-  @override
-  @JsonKey(name: 'per_page')
-  int? get perPage;
-  @override
-  @JsonKey(name: 'prev_page_url')
-  String? get prevPageUrl;
-  @override
-  int? get to;
-  @override
-  int? get total;
-  @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductsImplCopyWith<_$ProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-ProductData _$ProductDataFromJson(Map<String, dynamic> json) {
-  return _ProductData.fromJson(json);
+Product _$ProductFromJson(Map<String, dynamic> json) {
+  return _Product.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ProductData {
+mixin _$Product {
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'country_code')
   String? get countryCode => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'category_id')
   String? get categoryId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'post_type_id')
   String? get postTypeId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get tags => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
   String? get negotiable => throw _privateConstructorUsedError;
-  @JsonKey(name: 'contact_name')
   String? get contactName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_hidden')
   String? get phoneHidden => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
-  @JsonKey(name: 'city_id')
   String? get cityId => throw _privateConstructorUsedError;
   String? get lon => throw _privateConstructorUsedError;
   String? get lat => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ip_addr')
   String? get ipAddr => throw _privateConstructorUsedError;
   String? get length => throw _privateConstructorUsedError;
   String? get width => throw _privateConstructorUsedError;
@@ -651,98 +374,79 @@ mixin _$ProductData {
   String? get pickup => throw _privateConstructorUsedError;
   String? get longitude => throw _privateConstructorUsedError;
   String? get latitude => throw _privateConstructorUsedError;
-  @JsonKey(name: 'hyper_del')
   String? get hyperDel => throw _privateConstructorUsedError;
-  @JsonKey(name: 'seller_del')
   String? get sellerDel => throw _privateConstructorUsedError;
   String? get visits => throw _privateConstructorUsedError;
-  @JsonKey(name: 'email_token')
   String? get emailToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_token')
   String? get phoneToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'tmp_token')
   String? get tmpToken => throw _privateConstructorUsedError;
-  @JsonKey(name: 'verified_email')
   String? get verifiedEmail => throw _privateConstructorUsedError;
-  @JsonKey(name: 'verified_phone')
   String? get verifiedPhone => throw _privateConstructorUsedError;
-  @JsonKey(name: 'accept_terms')
   String? get acceptTerms => throw _privateConstructorUsedError;
-  @JsonKey(name: 'accept_marketing_offers')
   String? get acceptMarketingOffers => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_permanent')
   String? get isPermanent => throw _privateConstructorUsedError;
   String? get reviewed => throw _privateConstructorUsedError;
   String? get featured => throw _privateConstructorUsedError;
   String? get archived => throw _privateConstructorUsedError;
-  @JsonKey(name: 'archived_at')
   String? get archivedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'archived_manually')
   String? get archivedManually => throw _privateConstructorUsedError;
-  @JsonKey(name: 'deletion_mail_sent_at')
   String? get deletionMailSentAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'fb_profile')
   String? get fbProfile => throw _privateConstructorUsedError;
   String? get partner => throw _privateConstructorUsedError;
-  @JsonKey(name: 'discounted_price')
   String? get discountedPrice => throw _privateConstructorUsedError;
   String? get trending => throw _privateConstructorUsedError;
   String? get stock => throw _privateConstructorUsedError;
-  @JsonKey(name: 'min_order')
   String? get minOrder => throw _privateConstructorUsedError;
-  @JsonKey(name: 'samp_price')
   String? get sampPrice => throw _privateConstructorUsedError;
-  @JsonKey(name: 'text_one')
   String? get textOne => throw _privateConstructorUsedError;
-  @JsonKey(name: 'text_two')
   String? get textTwo => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ava_to')
   String? get avaTo => throw _privateConstructorUsedError;
   String? get branded => throw _privateConstructorUsedError;
-  @JsonKey(name: 'deleted_at')
+  String? get wow => throw _privateConstructorUsedError;
+  String? get offers => throw _privateConstructorUsedError;
+  String? get storyDisplayDays => throw _privateConstructorUsedError;
+  String? get barcode => throw _privateConstructorUsedError;
+  String? get b2bPricing => throw _privateConstructorUsedError;
   String? get deletedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
-  @JsonKey(name: 'avg_rating')
   int? get avgRating => throw _privateConstructorUsedError;
-  @JsonKey(name: 'savedByLoggedUser')
-  List<dynamic>? get savedByLoggedUser => throw _privateConstructorUsedError;
 
+  /// Serializes this Product to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ProductDataCopyWith<ProductData> get copyWith =>
-      throw _privateConstructorUsedError;
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProductDataCopyWith<$Res> {
-  factory $ProductDataCopyWith(
-          ProductData value, $Res Function(ProductData) then) =
-      _$ProductDataCopyWithImpl<$Res, ProductData>;
+abstract class $ProductCopyWith<$Res> {
+  factory $ProductCopyWith(Product value, $Res Function(Product) then) =
+      _$ProductCopyWithImpl<$Res, Product>;
   @useResult
   $Res call(
       {String? id,
-      @JsonKey(name: 'country_code') String? countryCode,
-      @JsonKey(name: 'user_id') String? userId,
-      @JsonKey(name: 'category_id') String? categoryId,
-      @JsonKey(name: 'post_type_id') String? postTypeId,
+      String? countryCode,
+      String? userId,
+      String? categoryId,
+      String? postTypeId,
       String? title,
       String? description,
       String? tags,
       String? price,
       String? negotiable,
-      @JsonKey(name: 'contact_name') String? contactName,
+      String? contactName,
       String? email,
       String? phone,
-      @JsonKey(name: 'phone_hidden') String? phoneHidden,
+      String? phoneHidden,
       String? address,
-      @JsonKey(name: 'city_id') String? cityId,
+      String? cityId,
       String? lon,
       String? lat,
-      @JsonKey(name: 'ip_addr') String? ipAddr,
+      String? ipAddr,
       String? length,
       String? width,
       String? weight,
@@ -750,52 +454,58 @@ abstract class $ProductDataCopyWith<$Res> {
       String? pickup,
       String? longitude,
       String? latitude,
-      @JsonKey(name: 'hyper_del') String? hyperDel,
-      @JsonKey(name: 'seller_del') String? sellerDel,
+      String? hyperDel,
+      String? sellerDel,
       String? visits,
-      @JsonKey(name: 'email_token') String? emailToken,
-      @JsonKey(name: 'phone_token') String? phoneToken,
-      @JsonKey(name: 'tmp_token') String? tmpToken,
-      @JsonKey(name: 'verified_email') String? verifiedEmail,
-      @JsonKey(name: 'verified_phone') String? verifiedPhone,
-      @JsonKey(name: 'accept_terms') String? acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') String? isPermanent,
+      String? emailToken,
+      String? phoneToken,
+      String? tmpToken,
+      String? verifiedEmail,
+      String? verifiedPhone,
+      String? acceptTerms,
+      String? acceptMarketingOffers,
+      String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
-      @JsonKey(name: 'archived_at') String? archivedAt,
-      @JsonKey(name: 'archived_manually') String? archivedManually,
-      @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
-      @JsonKey(name: 'fb_profile') String? fbProfile,
+      String? archivedAt,
+      String? archivedManually,
+      String? deletionMailSentAt,
+      String? fbProfile,
       String? partner,
-      @JsonKey(name: 'discounted_price') String? discountedPrice,
+      String? discountedPrice,
       String? trending,
       String? stock,
-      @JsonKey(name: 'min_order') String? minOrder,
-      @JsonKey(name: 'samp_price') String? sampPrice,
-      @JsonKey(name: 'text_one') String? textOne,
-      @JsonKey(name: 'text_two') String? textTwo,
-      @JsonKey(name: 'ava_to') String? avaTo,
+      String? minOrder,
+      String? sampPrice,
+      String? textOne,
+      String? textTwo,
+      String? avaTo,
       String? branded,
-      @JsonKey(name: 'deleted_at') String? deletedAt,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'updated_at') String? updatedAt,
+      String? wow,
+      String? offers,
+      String? storyDisplayDays,
+      String? barcode,
+      String? b2bPricing,
+      String? deletedAt,
+      String? createdAt,
+      String? updatedAt,
       String? image,
-      @JsonKey(name: 'avg_rating') int? avgRating,
-      @JsonKey(name: 'savedByLoggedUser') List<dynamic>? savedByLoggedUser});
+      int? avgRating});
 }
 
 /// @nodoc
-class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
-    implements $ProductDataCopyWith<$Res> {
-  _$ProductDataCopyWithImpl(this._value, this._then);
+class _$ProductCopyWithImpl<$Res, $Val extends Product>
+    implements $ProductCopyWith<$Res> {
+  _$ProductCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -853,12 +563,16 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
     Object? textTwo = freezed,
     Object? avaTo = freezed,
     Object? branded = freezed,
+    Object? wow = freezed,
+    Object? offers = freezed,
+    Object? storyDisplayDays = freezed,
+    Object? barcode = freezed,
+    Object? b2bPricing = freezed,
     Object? deletedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? image = freezed,
     Object? avgRating = freezed,
-    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -1077,6 +791,26 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
           ? _value.branded
           : branded // ignore: cast_nullable_to_non_nullable
               as String?,
+      wow: freezed == wow
+          ? _value.wow
+          : wow // ignore: cast_nullable_to_non_nullable
+              as String?,
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storyDisplayDays: freezed == storyDisplayDays
+          ? _value.storyDisplayDays
+          : storyDisplayDays // ignore: cast_nullable_to_non_nullable
+              as String?,
+      barcode: freezed == barcode
+          ? _value.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      b2bPricing: freezed == b2bPricing
+          ? _value.b2bPricing
+          : b2bPricing // ignore: cast_nullable_to_non_nullable
+              as String?,
       deletedAt: freezed == deletedAt
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
@@ -1097,42 +831,37 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
           ? _value.avgRating
           : avgRating // ignore: cast_nullable_to_non_nullable
               as int?,
-      savedByLoggedUser: freezed == savedByLoggedUser
-          ? _value.savedByLoggedUser
-          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$ProductDataImplCopyWith<$Res>
-    implements $ProductDataCopyWith<$Res> {
-  factory _$$ProductDataImplCopyWith(
-          _$ProductDataImpl value, $Res Function(_$ProductDataImpl) then) =
-      __$$ProductDataImplCopyWithImpl<$Res>;
+abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
+  factory _$$ProductImplCopyWith(
+          _$ProductImpl value, $Res Function(_$ProductImpl) then) =
+      __$$ProductImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String? id,
-      @JsonKey(name: 'country_code') String? countryCode,
-      @JsonKey(name: 'user_id') String? userId,
-      @JsonKey(name: 'category_id') String? categoryId,
-      @JsonKey(name: 'post_type_id') String? postTypeId,
+      String? countryCode,
+      String? userId,
+      String? categoryId,
+      String? postTypeId,
       String? title,
       String? description,
       String? tags,
       String? price,
       String? negotiable,
-      @JsonKey(name: 'contact_name') String? contactName,
+      String? contactName,
       String? email,
       String? phone,
-      @JsonKey(name: 'phone_hidden') String? phoneHidden,
+      String? phoneHidden,
       String? address,
-      @JsonKey(name: 'city_id') String? cityId,
+      String? cityId,
       String? lon,
       String? lat,
-      @JsonKey(name: 'ip_addr') String? ipAddr,
+      String? ipAddr,
       String? length,
       String? width,
       String? weight,
@@ -1140,50 +869,56 @@ abstract class _$$ProductDataImplCopyWith<$Res>
       String? pickup,
       String? longitude,
       String? latitude,
-      @JsonKey(name: 'hyper_del') String? hyperDel,
-      @JsonKey(name: 'seller_del') String? sellerDel,
+      String? hyperDel,
+      String? sellerDel,
       String? visits,
-      @JsonKey(name: 'email_token') String? emailToken,
-      @JsonKey(name: 'phone_token') String? phoneToken,
-      @JsonKey(name: 'tmp_token') String? tmpToken,
-      @JsonKey(name: 'verified_email') String? verifiedEmail,
-      @JsonKey(name: 'verified_phone') String? verifiedPhone,
-      @JsonKey(name: 'accept_terms') String? acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') String? isPermanent,
+      String? emailToken,
+      String? phoneToken,
+      String? tmpToken,
+      String? verifiedEmail,
+      String? verifiedPhone,
+      String? acceptTerms,
+      String? acceptMarketingOffers,
+      String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
-      @JsonKey(name: 'archived_at') String? archivedAt,
-      @JsonKey(name: 'archived_manually') String? archivedManually,
-      @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
-      @JsonKey(name: 'fb_profile') String? fbProfile,
+      String? archivedAt,
+      String? archivedManually,
+      String? deletionMailSentAt,
+      String? fbProfile,
       String? partner,
-      @JsonKey(name: 'discounted_price') String? discountedPrice,
+      String? discountedPrice,
       String? trending,
       String? stock,
-      @JsonKey(name: 'min_order') String? minOrder,
-      @JsonKey(name: 'samp_price') String? sampPrice,
-      @JsonKey(name: 'text_one') String? textOne,
-      @JsonKey(name: 'text_two') String? textTwo,
-      @JsonKey(name: 'ava_to') String? avaTo,
+      String? minOrder,
+      String? sampPrice,
+      String? textOne,
+      String? textTwo,
+      String? avaTo,
       String? branded,
-      @JsonKey(name: 'deleted_at') String? deletedAt,
-      @JsonKey(name: 'created_at') String? createdAt,
-      @JsonKey(name: 'updated_at') String? updatedAt,
+      String? wow,
+      String? offers,
+      String? storyDisplayDays,
+      String? barcode,
+      String? b2bPricing,
+      String? deletedAt,
+      String? createdAt,
+      String? updatedAt,
       String? image,
-      @JsonKey(name: 'avg_rating') int? avgRating,
-      @JsonKey(name: 'savedByLoggedUser') List<dynamic>? savedByLoggedUser});
+      int? avgRating});
 }
 
 /// @nodoc
-class __$$ProductDataImplCopyWithImpl<$Res>
-    extends _$ProductDataCopyWithImpl<$Res, _$ProductDataImpl>
-    implements _$$ProductDataImplCopyWith<$Res> {
-  __$$ProductDataImplCopyWithImpl(
-      _$ProductDataImpl _value, $Res Function(_$ProductDataImpl) _then)
+class __$$ProductImplCopyWithImpl<$Res>
+    extends _$ProductCopyWithImpl<$Res, _$ProductImpl>
+    implements _$$ProductImplCopyWith<$Res> {
+  __$$ProductImplCopyWithImpl(
+      _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1241,14 +976,18 @@ class __$$ProductDataImplCopyWithImpl<$Res>
     Object? textTwo = freezed,
     Object? avaTo = freezed,
     Object? branded = freezed,
+    Object? wow = freezed,
+    Object? offers = freezed,
+    Object? storyDisplayDays = freezed,
+    Object? barcode = freezed,
+    Object? b2bPricing = freezed,
     Object? deletedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? image = freezed,
     Object? avgRating = freezed,
-    Object? savedByLoggedUser = freezed,
   }) {
-    return _then(_$ProductDataImpl(
+    return _then(_$ProductImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1465,6 +1204,26 @@ class __$$ProductDataImplCopyWithImpl<$Res>
           ? _value.branded
           : branded // ignore: cast_nullable_to_non_nullable
               as String?,
+      wow: freezed == wow
+          ? _value.wow
+          : wow // ignore: cast_nullable_to_non_nullable
+              as String?,
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storyDisplayDays: freezed == storyDisplayDays
+          ? _value.storyDisplayDays
+          : storyDisplayDays // ignore: cast_nullable_to_non_nullable
+              as String?,
+      barcode: freezed == barcode
+          ? _value.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      b2bPricing: freezed == b2bPricing
+          ? _value.b2bPricing
+          : b2bPricing // ignore: cast_nullable_to_non_nullable
+              as String?,
       deletedAt: freezed == deletedAt
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
@@ -1485,97 +1244,91 @@ class __$$ProductDataImplCopyWithImpl<$Res>
           ? _value.avgRating
           : avgRating // ignore: cast_nullable_to_non_nullable
               as int?,
-      savedByLoggedUser: freezed == savedByLoggedUser
-          ? _value._savedByLoggedUser
-          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ProductDataImpl implements _ProductData {
-  const _$ProductDataImpl(
-      {this.id,
-      @JsonKey(name: 'country_code') this.countryCode,
-      @JsonKey(name: 'user_id') this.userId,
-      @JsonKey(name: 'category_id') this.categoryId,
-      @JsonKey(name: 'post_type_id') this.postTypeId,
-      this.title,
-      this.description,
-      this.tags,
-      this.price,
-      this.negotiable,
-      @JsonKey(name: 'contact_name') this.contactName,
-      this.email,
-      this.phone,
-      @JsonKey(name: 'phone_hidden') this.phoneHidden,
-      this.address,
-      @JsonKey(name: 'city_id') this.cityId,
-      this.lon,
-      this.lat,
-      @JsonKey(name: 'ip_addr') this.ipAddr,
-      this.length,
-      this.width,
-      this.weight,
-      this.height,
-      this.pickup,
-      this.longitude,
-      this.latitude,
-      @JsonKey(name: 'hyper_del') this.hyperDel,
-      @JsonKey(name: 'seller_del') this.sellerDel,
-      this.visits,
-      @JsonKey(name: 'email_token') this.emailToken,
-      @JsonKey(name: 'phone_token') this.phoneToken,
-      @JsonKey(name: 'tmp_token') this.tmpToken,
-      @JsonKey(name: 'verified_email') this.verifiedEmail,
-      @JsonKey(name: 'verified_phone') this.verifiedPhone,
-      @JsonKey(name: 'accept_terms') this.acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers') this.acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') this.isPermanent,
-      this.reviewed,
-      this.featured,
-      this.archived,
-      @JsonKey(name: 'archived_at') this.archivedAt,
-      @JsonKey(name: 'archived_manually') this.archivedManually,
-      @JsonKey(name: 'deletion_mail_sent_at') this.deletionMailSentAt,
-      @JsonKey(name: 'fb_profile') this.fbProfile,
-      this.partner,
-      @JsonKey(name: 'discounted_price') this.discountedPrice,
-      this.trending,
-      this.stock,
-      @JsonKey(name: 'min_order') this.minOrder,
-      @JsonKey(name: 'samp_price') this.sampPrice,
-      @JsonKey(name: 'text_one') this.textOne,
-      @JsonKey(name: 'text_two') this.textTwo,
-      @JsonKey(name: 'ava_to') this.avaTo,
-      this.branded,
-      @JsonKey(name: 'deleted_at') this.deletedAt,
-      @JsonKey(name: 'created_at') this.createdAt,
-      @JsonKey(name: 'updated_at') this.updatedAt,
-      this.image,
-      @JsonKey(name: 'avg_rating') this.avgRating,
-      @JsonKey(name: 'savedByLoggedUser')
-      final List<dynamic>? savedByLoggedUser})
-      : _savedByLoggedUser = savedByLoggedUser;
+class _$ProductImpl implements _Product {
+  const _$ProductImpl(
+      {required this.id,
+      required this.countryCode,
+      required this.userId,
+      required this.categoryId,
+      required this.postTypeId,
+      required this.title,
+      required this.description,
+      required this.tags,
+      required this.price,
+      required this.negotiable,
+      required this.contactName,
+      required this.email,
+      required this.phone,
+      required this.phoneHidden,
+      required this.address,
+      required this.cityId,
+      required this.lon,
+      required this.lat,
+      required this.ipAddr,
+      required this.length,
+      required this.width,
+      required this.weight,
+      required this.height,
+      required this.pickup,
+      required this.longitude,
+      required this.latitude,
+      required this.hyperDel,
+      required this.sellerDel,
+      required this.visits,
+      required this.emailToken,
+      required this.phoneToken,
+      required this.tmpToken,
+      required this.verifiedEmail,
+      required this.verifiedPhone,
+      required this.acceptTerms,
+      required this.acceptMarketingOffers,
+      required this.isPermanent,
+      required this.reviewed,
+      required this.featured,
+      required this.archived,
+      required this.archivedAt,
+      required this.archivedManually,
+      required this.deletionMailSentAt,
+      required this.fbProfile,
+      required this.partner,
+      required this.discountedPrice,
+      required this.trending,
+      required this.stock,
+      required this.minOrder,
+      required this.sampPrice,
+      required this.textOne,
+      required this.textTwo,
+      required this.avaTo,
+      required this.branded,
+      required this.wow,
+      required this.offers,
+      required this.storyDisplayDays,
+      required this.barcode,
+      required this.b2bPricing,
+      required this.deletedAt,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.image,
+      required this.avgRating});
 
-  factory _$ProductDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProductDataImplFromJson(json);
+  factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProductImplFromJson(json);
 
   @override
   final String? id;
   @override
-  @JsonKey(name: 'country_code')
   final String? countryCode;
   @override
-  @JsonKey(name: 'user_id')
   final String? userId;
   @override
-  @JsonKey(name: 'category_id')
   final String? categoryId;
   @override
-  @JsonKey(name: 'post_type_id')
   final String? postTypeId;
   @override
   final String? title;
@@ -1588,26 +1341,22 @@ class _$ProductDataImpl implements _ProductData {
   @override
   final String? negotiable;
   @override
-  @JsonKey(name: 'contact_name')
   final String? contactName;
   @override
   final String? email;
   @override
   final String? phone;
   @override
-  @JsonKey(name: 'phone_hidden')
   final String? phoneHidden;
   @override
   final String? address;
   @override
-  @JsonKey(name: 'city_id')
   final String? cityId;
   @override
   final String? lon;
   @override
   final String? lat;
   @override
-  @JsonKey(name: 'ip_addr')
   final String? ipAddr;
   @override
   final String? length;
@@ -1624,36 +1373,26 @@ class _$ProductDataImpl implements _ProductData {
   @override
   final String? latitude;
   @override
-  @JsonKey(name: 'hyper_del')
   final String? hyperDel;
   @override
-  @JsonKey(name: 'seller_del')
   final String? sellerDel;
   @override
   final String? visits;
   @override
-  @JsonKey(name: 'email_token')
   final String? emailToken;
   @override
-  @JsonKey(name: 'phone_token')
   final String? phoneToken;
   @override
-  @JsonKey(name: 'tmp_token')
   final String? tmpToken;
   @override
-  @JsonKey(name: 'verified_email')
   final String? verifiedEmail;
   @override
-  @JsonKey(name: 'verified_phone')
   final String? verifiedPhone;
   @override
-  @JsonKey(name: 'accept_terms')
   final String? acceptTerms;
   @override
-  @JsonKey(name: 'accept_marketing_offers')
   final String? acceptMarketingOffers;
   @override
-  @JsonKey(name: 'is_permanent')
   final String? isPermanent;
   @override
   final String? reviewed;
@@ -1662,79 +1401,64 @@ class _$ProductDataImpl implements _ProductData {
   @override
   final String? archived;
   @override
-  @JsonKey(name: 'archived_at')
   final String? archivedAt;
   @override
-  @JsonKey(name: 'archived_manually')
   final String? archivedManually;
   @override
-  @JsonKey(name: 'deletion_mail_sent_at')
   final String? deletionMailSentAt;
   @override
-  @JsonKey(name: 'fb_profile')
   final String? fbProfile;
   @override
   final String? partner;
   @override
-  @JsonKey(name: 'discounted_price')
   final String? discountedPrice;
   @override
   final String? trending;
   @override
   final String? stock;
   @override
-  @JsonKey(name: 'min_order')
   final String? minOrder;
   @override
-  @JsonKey(name: 'samp_price')
   final String? sampPrice;
   @override
-  @JsonKey(name: 'text_one')
   final String? textOne;
   @override
-  @JsonKey(name: 'text_two')
   final String? textTwo;
   @override
-  @JsonKey(name: 'ava_to')
   final String? avaTo;
   @override
   final String? branded;
   @override
-  @JsonKey(name: 'deleted_at')
+  final String? wow;
+  @override
+  final String? offers;
+  @override
+  final String? storyDisplayDays;
+  @override
+  final String? barcode;
+  @override
+  final String? b2bPricing;
+  @override
   final String? deletedAt;
   @override
-  @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
-  @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @override
   final String? image;
   @override
-  @JsonKey(name: 'avg_rating')
   final int? avgRating;
-  final List<dynamic>? _savedByLoggedUser;
-  @override
-  @JsonKey(name: 'savedByLoggedUser')
-  List<dynamic>? get savedByLoggedUser {
-    final value = _savedByLoggedUser;
-    if (value == null) return null;
-    if (_savedByLoggedUser is EqualUnmodifiableListView)
-      return _savedByLoggedUser;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
 
   @override
   String toString() {
-    return 'ProductData(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lon: $lon, lat: $lat, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, visits: $visits, emailToken: $emailToken, phoneToken: $phoneToken, tmpToken: $tmpToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, archivedManually: $archivedManually, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, branded: $branded, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, image: $image, avgRating: $avgRating, savedByLoggedUser: $savedByLoggedUser)';
+    return 'Product(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lon: $lon, lat: $lat, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, visits: $visits, emailToken: $emailToken, phoneToken: $phoneToken, tmpToken: $tmpToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, archivedManually: $archivedManually, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, branded: $branded, wow: $wow, offers: $offers, storyDisplayDays: $storyDisplayDays, barcode: $barcode, b2bPricing: $b2bPricing, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, image: $image, avgRating: $avgRating)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProductDataImpl &&
+            other is _$ProductImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.countryCode, countryCode) ||
                 other.countryCode == countryCode) &&
@@ -1819,6 +1543,13 @@ class _$ProductDataImpl implements _ProductData {
             (identical(other.textTwo, textTwo) || other.textTwo == textTwo) &&
             (identical(other.avaTo, avaTo) || other.avaTo == avaTo) &&
             (identical(other.branded, branded) || other.branded == branded) &&
+            (identical(other.wow, wow) || other.wow == wow) &&
+            (identical(other.offers, offers) || other.offers == offers) &&
+            (identical(other.storyDisplayDays, storyDisplayDays) ||
+                other.storyDisplayDays == storyDisplayDays) &&
+            (identical(other.barcode, barcode) || other.barcode == barcode) &&
+            (identical(other.b2bPricing, b2bPricing) ||
+                other.b2bPricing == b2bPricing) &&
             (identical(other.deletedAt, deletedAt) ||
                 other.deletedAt == deletedAt) &&
             (identical(other.createdAt, createdAt) ||
@@ -1827,12 +1558,10 @@ class _$ProductDataImpl implements _ProductData {
                 other.updatedAt == updatedAt) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.avgRating, avgRating) ||
-                other.avgRating == avgRating) &&
-            const DeepCollectionEquality()
-                .equals(other._savedByLoggedUser, _savedByLoggedUser));
+                other.avgRating == avgRating));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1890,109 +1619,112 @@ class _$ProductDataImpl implements _ProductData {
         textTwo,
         avaTo,
         branded,
+        wow,
+        offers,
+        storyDisplayDays,
+        barcode,
+        b2bPricing,
         deletedAt,
         createdAt,
         updatedAt,
         image,
-        avgRating,
-        const DeepCollectionEquality().hash(_savedByLoggedUser)
+        avgRating
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ProductDataImplCopyWith<_$ProductDataImpl> get copyWith =>
-      __$$ProductDataImplCopyWithImpl<_$ProductDataImpl>(this, _$identity);
+  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
+      __$$ProductImplCopyWithImpl<_$ProductImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ProductDataImplToJson(
+    return _$$ProductImplToJson(
       this,
     );
   }
 }
 
-abstract class _ProductData implements ProductData {
-  const factory _ProductData(
-      {final String? id,
-      @JsonKey(name: 'country_code') final String? countryCode,
-      @JsonKey(name: 'user_id') final String? userId,
-      @JsonKey(name: 'category_id') final String? categoryId,
-      @JsonKey(name: 'post_type_id') final String? postTypeId,
-      final String? title,
-      final String? description,
-      final String? tags,
-      final String? price,
-      final String? negotiable,
-      @JsonKey(name: 'contact_name') final String? contactName,
-      final String? email,
-      final String? phone,
-      @JsonKey(name: 'phone_hidden') final String? phoneHidden,
-      final String? address,
-      @JsonKey(name: 'city_id') final String? cityId,
-      final String? lon,
-      final String? lat,
-      @JsonKey(name: 'ip_addr') final String? ipAddr,
-      final String? length,
-      final String? width,
-      final String? weight,
-      final String? height,
-      final String? pickup,
-      final String? longitude,
-      final String? latitude,
-      @JsonKey(name: 'hyper_del') final String? hyperDel,
-      @JsonKey(name: 'seller_del') final String? sellerDel,
-      final String? visits,
-      @JsonKey(name: 'email_token') final String? emailToken,
-      @JsonKey(name: 'phone_token') final String? phoneToken,
-      @JsonKey(name: 'tmp_token') final String? tmpToken,
-      @JsonKey(name: 'verified_email') final String? verifiedEmail,
-      @JsonKey(name: 'verified_phone') final String? verifiedPhone,
-      @JsonKey(name: 'accept_terms') final String? acceptTerms,
-      @JsonKey(name: 'accept_marketing_offers')
-      final String? acceptMarketingOffers,
-      @JsonKey(name: 'is_permanent') final String? isPermanent,
-      final String? reviewed,
-      final String? featured,
-      final String? archived,
-      @JsonKey(name: 'archived_at') final String? archivedAt,
-      @JsonKey(name: 'archived_manually') final String? archivedManually,
-      @JsonKey(name: 'deletion_mail_sent_at') final String? deletionMailSentAt,
-      @JsonKey(name: 'fb_profile') final String? fbProfile,
-      final String? partner,
-      @JsonKey(name: 'discounted_price') final String? discountedPrice,
-      final String? trending,
-      final String? stock,
-      @JsonKey(name: 'min_order') final String? minOrder,
-      @JsonKey(name: 'samp_price') final String? sampPrice,
-      @JsonKey(name: 'text_one') final String? textOne,
-      @JsonKey(name: 'text_two') final String? textTwo,
-      @JsonKey(name: 'ava_to') final String? avaTo,
-      final String? branded,
-      @JsonKey(name: 'deleted_at') final String? deletedAt,
-      @JsonKey(name: 'created_at') final String? createdAt,
-      @JsonKey(name: 'updated_at') final String? updatedAt,
-      final String? image,
-      @JsonKey(name: 'avg_rating') final int? avgRating,
-      @JsonKey(name: 'savedByLoggedUser')
-      final List<dynamic>? savedByLoggedUser}) = _$ProductDataImpl;
+abstract class _Product implements Product {
+  const factory _Product(
+      {required final String? id,
+      required final String? countryCode,
+      required final String? userId,
+      required final String? categoryId,
+      required final String? postTypeId,
+      required final String? title,
+      required final String? description,
+      required final String? tags,
+      required final String? price,
+      required final String? negotiable,
+      required final String? contactName,
+      required final String? email,
+      required final String? phone,
+      required final String? phoneHidden,
+      required final String? address,
+      required final String? cityId,
+      required final String? lon,
+      required final String? lat,
+      required final String? ipAddr,
+      required final String? length,
+      required final String? width,
+      required final String? weight,
+      required final String? height,
+      required final String? pickup,
+      required final String? longitude,
+      required final String? latitude,
+      required final String? hyperDel,
+      required final String? sellerDel,
+      required final String? visits,
+      required final String? emailToken,
+      required final String? phoneToken,
+      required final String? tmpToken,
+      required final String? verifiedEmail,
+      required final String? verifiedPhone,
+      required final String? acceptTerms,
+      required final String? acceptMarketingOffers,
+      required final String? isPermanent,
+      required final String? reviewed,
+      required final String? featured,
+      required final String? archived,
+      required final String? archivedAt,
+      required final String? archivedManually,
+      required final String? deletionMailSentAt,
+      required final String? fbProfile,
+      required final String? partner,
+      required final String? discountedPrice,
+      required final String? trending,
+      required final String? stock,
+      required final String? minOrder,
+      required final String? sampPrice,
+      required final String? textOne,
+      required final String? textTwo,
+      required final String? avaTo,
+      required final String? branded,
+      required final String? wow,
+      required final String? offers,
+      required final String? storyDisplayDays,
+      required final String? barcode,
+      required final String? b2bPricing,
+      required final String? deletedAt,
+      required final String? createdAt,
+      required final String? updatedAt,
+      required final String? image,
+      required final int? avgRating}) = _$ProductImpl;
 
-  factory _ProductData.fromJson(Map<String, dynamic> json) =
-      _$ProductDataImpl.fromJson;
+  factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
   @override
   String? get id;
   @override
-  @JsonKey(name: 'country_code')
   String? get countryCode;
   @override
-  @JsonKey(name: 'user_id')
   String? get userId;
   @override
-  @JsonKey(name: 'category_id')
   String? get categoryId;
   @override
-  @JsonKey(name: 'post_type_id')
   String? get postTypeId;
   @override
   String? get title;
@@ -2005,26 +1737,22 @@ abstract class _ProductData implements ProductData {
   @override
   String? get negotiable;
   @override
-  @JsonKey(name: 'contact_name')
   String? get contactName;
   @override
   String? get email;
   @override
   String? get phone;
   @override
-  @JsonKey(name: 'phone_hidden')
   String? get phoneHidden;
   @override
   String? get address;
   @override
-  @JsonKey(name: 'city_id')
   String? get cityId;
   @override
   String? get lon;
   @override
   String? get lat;
   @override
-  @JsonKey(name: 'ip_addr')
   String? get ipAddr;
   @override
   String? get length;
@@ -2041,36 +1769,26 @@ abstract class _ProductData implements ProductData {
   @override
   String? get latitude;
   @override
-  @JsonKey(name: 'hyper_del')
   String? get hyperDel;
   @override
-  @JsonKey(name: 'seller_del')
   String? get sellerDel;
   @override
   String? get visits;
   @override
-  @JsonKey(name: 'email_token')
   String? get emailToken;
   @override
-  @JsonKey(name: 'phone_token')
   String? get phoneToken;
   @override
-  @JsonKey(name: 'tmp_token')
   String? get tmpToken;
   @override
-  @JsonKey(name: 'verified_email')
   String? get verifiedEmail;
   @override
-  @JsonKey(name: 'verified_phone')
   String? get verifiedPhone;
   @override
-  @JsonKey(name: 'accept_terms')
   String? get acceptTerms;
   @override
-  @JsonKey(name: 'accept_marketing_offers')
   String? get acceptMarketingOffers;
   @override
-  @JsonKey(name: 'is_permanent')
   String? get isPermanent;
   @override
   String? get reviewed;
@@ -2079,228 +1797,58 @@ abstract class _ProductData implements ProductData {
   @override
   String? get archived;
   @override
-  @JsonKey(name: 'archived_at')
   String? get archivedAt;
   @override
-  @JsonKey(name: 'archived_manually')
   String? get archivedManually;
   @override
-  @JsonKey(name: 'deletion_mail_sent_at')
   String? get deletionMailSentAt;
   @override
-  @JsonKey(name: 'fb_profile')
   String? get fbProfile;
   @override
   String? get partner;
   @override
-  @JsonKey(name: 'discounted_price')
   String? get discountedPrice;
   @override
   String? get trending;
   @override
   String? get stock;
   @override
-  @JsonKey(name: 'min_order')
   String? get minOrder;
   @override
-  @JsonKey(name: 'samp_price')
   String? get sampPrice;
   @override
-  @JsonKey(name: 'text_one')
   String? get textOne;
   @override
-  @JsonKey(name: 'text_two')
   String? get textTwo;
   @override
-  @JsonKey(name: 'ava_to')
   String? get avaTo;
   @override
   String? get branded;
   @override
-  @JsonKey(name: 'deleted_at')
+  String? get wow;
+  @override
+  String? get offers;
+  @override
+  String? get storyDisplayDays;
+  @override
+  String? get barcode;
+  @override
+  String? get b2bPricing;
+  @override
   String? get deletedAt;
   @override
-  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
-  @JsonKey(name: 'updated_at')
   String? get updatedAt;
   @override
   String? get image;
   @override
-  @JsonKey(name: 'avg_rating')
   int? get avgRating;
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(name: 'savedByLoggedUser')
-  List<dynamic>? get savedByLoggedUser;
-  @override
-  @JsonKey(ignore: true)
-  _$$ProductDataImplCopyWith<_$ProductDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Link _$LinkFromJson(Map<String, dynamic> json) {
-  return _Link.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Link {
-  String? get url => throw _privateConstructorUsedError;
-  String? get label => throw _privateConstructorUsedError;
-  bool? get active => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $LinkCopyWith<Link> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LinkCopyWith<$Res> {
-  factory $LinkCopyWith(Link value, $Res Function(Link) then) =
-      _$LinkCopyWithImpl<$Res, Link>;
-  @useResult
-  $Res call({String? url, String? label, bool? active});
-}
-
-/// @nodoc
-class _$LinkCopyWithImpl<$Res, $Val extends Link>
-    implements $LinkCopyWith<$Res> {
-  _$LinkCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? url = freezed,
-    Object? label = freezed,
-    Object? active = freezed,
-  }) {
-    return _then(_value.copyWith(
-      url: freezed == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String?,
-      label: freezed == label
-          ? _value.label
-          : label // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$LinkImplCopyWith<$Res> implements $LinkCopyWith<$Res> {
-  factory _$$LinkImplCopyWith(
-          _$LinkImpl value, $Res Function(_$LinkImpl) then) =
-      __$$LinkImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String? url, String? label, bool? active});
-}
-
-/// @nodoc
-class __$$LinkImplCopyWithImpl<$Res>
-    extends _$LinkCopyWithImpl<$Res, _$LinkImpl>
-    implements _$$LinkImplCopyWith<$Res> {
-  __$$LinkImplCopyWithImpl(_$LinkImpl _value, $Res Function(_$LinkImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? url = freezed,
-    Object? label = freezed,
-    Object? active = freezed,
-  }) {
-    return _then(_$LinkImpl(
-      url: freezed == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String?,
-      label: freezed == label
-          ? _value.label
-          : label // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$LinkImpl implements _Link {
-  const _$LinkImpl({this.url, this.label, this.active});
-
-  factory _$LinkImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LinkImplFromJson(json);
-
-  @override
-  final String? url;
-  @override
-  final String? label;
-  @override
-  final bool? active;
-
-  @override
-  String toString() {
-    return 'Link(url: $url, label: $label, active: $active)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LinkImpl &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.label, label) || other.label == label) &&
-            (identical(other.active, active) || other.active == active));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, url, label, active);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
-      __$$LinkImplCopyWithImpl<_$LinkImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LinkImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Link implements Link {
-  const factory _Link(
-      {final String? url,
-      final String? label,
-      final bool? active}) = _$LinkImpl;
-
-  factory _Link.fromJson(Map<String, dynamic> json) = _$LinkImpl.fromJson;
-
-  @override
-  String? get url;
-  @override
-  String? get label;
-  @override
-  bool? get active;
-  @override
-  @JsonKey(ignore: true)
-  _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

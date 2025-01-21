@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -132,32 +132,37 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
                       ),
                       DownloadFileSampleWidget(
                         onclicked: () async {
-                          const String fileUrl = 'https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv';
+                          const String fileUrl =
+                              'https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv';
 
-        try {
-          // Get the application directory to save the file
-          var dir = await getApplicationDocumentsDirectory();
-          String savePath = '${dir.path}/Smartbazaaruser.csv';
+                          try {
+                            // Get the application directory to save the file
+                            var dir = await getApplicationDocumentsDirectory();
+                            String savePath = '${dir.path}/Smartbazaaruser.csv';
 
-          // Dio instance to handle file download
-          Dio dio = Dio();
+                            // Dio instance to handle file download
+                            Dio dio = Dio();
 
-          // Start downloading the file
-          await dio.download(fileUrl, savePath);
-          print('File downloaded to $savePath');
+                            // Start downloading the file
+                            await dio.download(fileUrl, savePath);
+                            print('File downloaded to $savePath');
 
-          // Optional: Show a success message or do something after download
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('File downloaded successfully!')),
-          );
-        } catch (e) {
-          print("Error downloading file: ${e.toString()}");
+                            // Optional: Show a success message or do something after download
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('File downloaded successfully!')),
+                            );
+                          } catch (e) {
+                            print("Error downloading file: ${e.toString()}");
 
-          // Optional: Show an error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error downloading file: ${e.toString()}')),
-          );
-        }
+                            // Optional: Show an error message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Error downloading file: ${e.toString()}')),
+                            );
+                          }
                         },
                         text: 'Donwload Sample',
                       ),
@@ -245,12 +250,14 @@ class DownloadFileSampleWidget extends StatelessWidget {
 class ChooseFile extends StatefulWidget {
   final Function(File?) onFileSelected;
   final Color? textColor;
+  bool? showbtn;
 
-  const ChooseFile({
-    Key? key,
-    required this.onFileSelected,
-    this.textColor,
-  }) : super(key: key);
+   ChooseFile(
+      {Key? key,
+      required this.onFileSelected,
+      this.textColor,
+      this.showbtn = true})
+      : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -267,17 +274,17 @@ class _ChooseFileState extends State<ChooseFile> {
   }
 
   Future<void> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['csv'],
-    );
+    // final result = await FilePicker.platform.pickFiles(
+    //   type: FileType.custom,
+    //   allowedExtensions: ['csv'],
+    // );
 
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        _selectedFile = File(result.files.single.path!);
-        widget.onFileSelected(_selectedFile);
-      });
-    }
+    // if (result != null && result.files.isNotEmpty) {
+    //   setState(() {
+    //     _selectedFile = File(result.files.single.path!);
+    //     widget.onFileSelected(_selectedFile);
+    //   });
+    // }
   }
 
   Future<void> uploadFile() async {
@@ -307,7 +314,7 @@ class _ChooseFileState extends State<ChooseFile> {
               padding: const EdgeInsets.only(top: 6, left: 12, bottom: 7),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: const Color(0xffEDECEC),
+                color: const Color(0xFFEDECEC),
               ),
               child: Row(
                 children: [
@@ -360,7 +367,7 @@ class _ChooseFileState extends State<ChooseFile> {
               )
             : Container(),
         const SizedBox(height: 10),
-        GeneralTextButton(
+         widget.showbtn!? GeneralTextButton(
             onPressed: uploadFile,
             marginH: 0,
             height: 28.h,
@@ -368,7 +375,8 @@ class _ChooseFileState extends State<ChooseFile> {
             isSmallText: true,
             fgColor: Colors.white,
             bgColor: const Color(0xff362677),
-            title: 'Add'),
+            title: 'Add'):
+            const SizedBox(),
       ],
     );
   }

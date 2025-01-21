@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/message/model/reply_message_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'reply_message_model_api.g.dart';
@@ -13,7 +13,7 @@ part 'reply_message_model_api.g.dart';
 @riverpod
 Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
     String threadId, String? body, File? imageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   // Prepare the form data
   // FormData formData = FormData();

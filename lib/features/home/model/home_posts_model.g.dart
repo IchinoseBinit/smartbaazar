@@ -8,44 +8,44 @@ part of 'home_posts_model.dart';
 
 _$HomePostsImpl _$$HomePostsImplFromJson(Map<String, dynamic> json) =>
     _$HomePostsImpl(
-      advertisements: (json['advertisements'] as List<dynamic>)
-          .map((e) => HomeAdvertisement.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      sponsored_post: (json['sponsored_post'] as List<dynamic>)
+      sponsored_posts: (json['sponsored_posts'] as List<dynamic>)
           .map((e) => Product.fromJson(e as Map<String, dynamic>))
           .toList(),
       trending: (json['trending'] as List<dynamic>)
           .map((e) => Product.fromJson(e as Map<String, dynamic>))
           .toList(),
-      hot_products: (json['hot_products'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      new_products: (json['new_products'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      jobs: (json['jobs'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      events: (json['events'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      b2b_products: (json['b2b_products'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      all_products: (json['all_products'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
+      sliders: (json['sliders'] as List<dynamic>)
+          .map((e) => SliderModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$$HomePostsImplToJson(_$HomePostsImpl instance) =>
     <String, dynamic>{
-      'advertisements': instance.advertisements,
-      'sponsored_post': instance.sponsored_post,
+      'sponsored_posts': instance.sponsored_posts,
       'trending': instance.trending,
-      'hot_products': instance.hot_products,
-      'new_products': instance.new_products,
-      'jobs': instance.jobs,
-      'events': instance.events,
-      'b2b_products': instance.b2b_products,
-      'all_products': instance.all_products,
+      'sliders': instance.sliders,
+    };
+
+_$SliderModelImpl _$$SliderModelImplFromJson(Map<String, dynamic> json) =>
+    _$SliderModelImpl(
+      id: json['id'] as String,
+      image: json['image'] as String,
+      description: json['description'] as String,
+      link: json['link'] as String,
+      page: json['page'] as String,
+      status: json['status'] as String,
+      createdAt: json['created_at'] as String,
+      updatedAt: json['updated_at'] as String?,
+    );
+
+Map<String, dynamic> _$$SliderModelImplToJson(_$SliderModelImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'image': instance.image,
+      'description': instance.description,
+      'link': instance.link,
+      'page': instance.page,
+      'status': instance.status,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };

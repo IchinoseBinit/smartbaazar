@@ -56,3 +56,26 @@ class CityList with _$CityList {
 
   factory CityList.fromJson(Map<String, dynamic> json) => _$CityListFromJson(json);
 }
+
+@freezed
+class OffersResponse with _$OffersResponse {
+  const factory OffersResponse({
+    required List<Offer> data,
+    required String msg,
+  }) = _OffersResponse;
+
+  factory OffersResponse.fromJson(Map<String, dynamic> json) =>
+      _$OffersResponseFromJson(json);
+}
+
+@freezed
+class Offer with _$Offer {
+  const factory Offer({
+    required String id,
+    required String offers,
+    @JsonKey(name: 'created_at') required String createdAt,
+    @JsonKey(name: 'updated_at') required String updatedAt,
+  }) = _Offer;
+
+  factory Offer.fromJson(Map<String, dynamic> json) => _$OfferFromJson(json);
+}

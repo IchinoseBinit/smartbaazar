@@ -7,7 +7,7 @@ part of 'vendor_profile_api.dart';
 // **************************************************************************
 
 String _$getVendorProfileDataHash() =>
-    r'd3e6421e3885c74bfbd721c907f074459928e820';
+    r'5c77e0d204d84918bb371f0a75e7689e3d12b036';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,7 +35,7 @@ class _SystemHash {
 const getVendorProfileDataProvider = GetVendorProfileDataFamily();
 
 /// See also [getVendorProfileData].
-class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
+class GetVendorProfileDataFamily extends Family<AsyncValue<VendorProfile>> {
   /// See also [getVendorProfileData].
   const GetVendorProfileDataFamily();
 
@@ -80,7 +80,7 @@ class GetVendorProfileDataFamily extends Family<AsyncValue<VendorData>> {
 
 /// See also [getVendorProfileData].
 class GetVendorProfileDataProvider
-    extends AutoDisposeFutureProvider<VendorData> {
+    extends AutoDisposeFutureProvider<VendorProfile> {
   /// See also [getVendorProfileData].
   GetVendorProfileDataProvider(
     String vendorName, {
@@ -125,7 +125,7 @@ class GetVendorProfileDataProvider
 
   @override
   Override overrideWith(
-    FutureOr<VendorData> Function(GetVendorProfileDataRef provider) create,
+    FutureOr<VendorProfile> Function(GetVendorProfileDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -144,7 +144,7 @@ class GetVendorProfileDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<VendorData> createElement() {
+  AutoDisposeFutureProviderElement<VendorProfile> createElement() {
     return _GetVendorProfileDataProviderElement(this);
   }
 
@@ -167,7 +167,9 @@ class GetVendorProfileDataProvider
   }
 }
 
-mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorData> {
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorProfile> {
   /// The parameter `vendorName` of this provider.
   String get vendorName;
 
@@ -179,7 +181,7 @@ mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorData> {
 }
 
 class _GetVendorProfileDataProviderElement
-    extends AutoDisposeFutureProviderElement<VendorData>
+    extends AutoDisposeFutureProviderElement<VendorProfile>
     with GetVendorProfileDataRef {
   _GetVendorProfileDataProviderElement(super.provider);
 
@@ -191,4 +193,4 @@ class _GetVendorProfileDataProviderElement
   String get category => (origin as GetVendorProfileDataProvider).category;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

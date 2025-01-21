@@ -9,90 +9,81 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AdSplashScreen extends ConsumerStatefulWidget {
   const AdSplashScreen({super.key});
-
   @override
   ConsumerState<AdSplashScreen> createState() => _AdSplashScreenState();
 }
 
 class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
-  int _countDown = 5;
-  Timer? timer;
+  int _countDown = 6;
+  Timer? _timer;
 
-  @override
-  void initState() {
-    super.initState();
-    startCountdown();
+  void _startCountdown() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_countDown > 0) {
+        if (mounted) setState(() => _countDown--); // Ensure widget is mounted before calling setState
+      } else {
+        timer.cancel();
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) =>  const BottomNavigationScreen()),
+          );
+        }
+      }
+    });
   }
 
-  void startCountdown() {
-    timer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        setState(() {
-          if (_countDown > 0) {
-            _countDown--;
-          } else {
-            timer.cancel();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BottomNavigationScreen(),
-              ),
-            );
-          }
-        });
-      },
-    );
+  void _startDotsAnimation() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+   
+    });
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    _timer?.cancel(); // Cancel timer in dispose to avoid leaks
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
+    if (_timer == null) _startDotsAnimation();
 
     return GenericSafeArea(
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
-            SizedBox(height: 40.h),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(),
-                  Text(
-                    "Ad ends\n in $_countDown s",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Color.fromARGB(255, 27, 41, 52),
-                    ),
-                  ),
-                ],
+            Center(
+              child: adsList.isLoading
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
+                      ],
+                    )
+                  : adsList.value?.isNotEmpty == true
+                      ? CachedNetworkImage(
+                          imageUrl: adsList.value!.first.image!,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
+                          errorWidget: (context, url, error) => const Text("Error loading ad"),
+                          imageBuilder: (context, imageProvider) {
+                            _startCountdown();
+                            return Image(image: imageProvider, fit: BoxFit.cover);
+                          },
+                        )
+                      : const Text("No ads available"),
+            ),
+            Positioned(
+              top: 50.h,
+              right: 16.w,
+              child: Text(
+                _countDown > 0 ? "Ad ends\n in $_countDown s" : "Redirecting...",
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color.fromARGB(255, 27, 41, 52)),
               ),
             ),
-            adsList.isLoading
-                ? const CircularProgressIndicator()
-                : adsList.value != null && adsList.value!.isNotEmpty
-                    ? Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      width: double.infinity,
-                      height: 550.h,
-                      child: CachedNetworkImage(
-                        errorListener: (value) => const Text("Loading......"),
-                        
-                      imageUrl:  adsList.value!.first.image!,
-                      fit: BoxFit.cover,
-                      ),
-
-                    )
-                    : const Text('No ads available'),
           ],
         ),
       ),

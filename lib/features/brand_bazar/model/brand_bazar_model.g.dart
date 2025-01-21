@@ -9,7 +9,9 @@ part of 'brand_bazar_model.dart';
 _$BrandBazarModelImpl _$$BrandBazarModelImplFromJson(
         Map<String, dynamic> json) =>
     _$BrandBazarModelImpl(
-      data: Data.fromJson(json['data'] as Map<String, dynamic>),
+      data: json['data'] == null
+          ? null
+          : Data.fromJson(json['data'] as Map<String, dynamic>),
       msg: json['msg'] as String,
     );
 
@@ -21,32 +23,40 @@ Map<String, dynamic> _$$BrandBazarModelImplToJson(
     };
 
 _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
-      newProducts: json['new_products'] as List<dynamic>?,
-      services: json['services'] as List<dynamic>?,
-      jobs: json['jobs'] as List<dynamic>?,
-      events: json['events'] as List<dynamic>?,
-      grocery: json['grocery'] as List<dynamic>?,
-      advertisements: (json['advertisements'] as List<dynamic>?)
-          ?.map((e) => Advertisement.fromJson(e as Map<String, dynamic>))
+      new_products: (json['new_products'] as List<dynamic>)
+          .map((e) => BrandNewModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      trandBanners: (json['trand_banners'] as List<dynamic>?)
-          ?.map((e) => TrendBanner.fromJson(e as Map<String, dynamic>))
+      advertisements: (json['advertisements'] as List<dynamic>)
+          .map((e) => Advertisement.fromJson(e as Map<String, dynamic>))
           .toList(),
-      brandbazarLogos: (json['brandbazarLogos'] as List<dynamic>?)
-          ?.map((e) => BrandbazarLogo.fromJson(e as Map<String, dynamic>))
+      trand_banners: (json['trand_banners'] as List<dynamic>)
+          .map((e) => TrandBanner.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      brandbazarLogos: (json['brandbazarLogos'] as List<dynamic>)
+          .map((e) => BrandbazarLogo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
     <String, dynamic>{
-      'new_products': instance.newProducts,
-      'services': instance.services,
-      'jobs': instance.jobs,
-      'events': instance.events,
-      'grocery': instance.grocery,
+      'new_products': instance.new_products,
       'advertisements': instance.advertisements,
-      'trand_banners': instance.trandBanners,
+      'trand_banners': instance.trand_banners,
       'brandbazarLogos': instance.brandbazarLogos,
+    };
+
+_$TrandBannerImpl _$$TrandBannerImplFromJson(Map<String, dynamic> json) =>
+    _$TrandBannerImpl(
+      id: json['id'] as String,
+      image: json['image'] as String,
+      bazar: json['bazar'] as String,
+    );
+
+Map<String, dynamic> _$$TrandBannerImplToJson(_$TrandBannerImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'image': instance.image,
+      'bazar': instance.bazar,
     };
 
 _$AdvertisementImpl _$$AdvertisementImplFromJson(Map<String, dynamic> json) =>

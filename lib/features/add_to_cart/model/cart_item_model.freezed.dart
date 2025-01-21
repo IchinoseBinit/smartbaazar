@@ -27,13 +27,19 @@ mixin _$CartItem {
       throw _privateConstructorUsedError; //  required String? vendorId,
   @JsonKey(name: 'post_id')
   String? get postId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_type_id')
+  String? get postTypeId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get qty => throw _privateConstructorUsedError;
   String get price => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
 
+  /// Serializes this CartItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CartItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +53,7 @@ abstract class $CartItemCopyWith<$Res> {
       {String id,
       @JsonKey(name: 'vendor_id') String? vendorId,
       @JsonKey(name: 'post_id') String? postId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String name,
       String qty,
       String price,
@@ -63,12 +70,15 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CartItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? vendorId = freezed,
     Object? postId = freezed,
+    Object? postTypeId = freezed,
     Object? name = null,
     Object? qty = null,
     Object? price = null,
@@ -86,6 +96,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
       postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postTypeId: freezed == postTypeId
+          ? _value.postTypeId
+          : postTypeId // ignore: cast_nullable_to_non_nullable
               as String?,
       name: null == name
           ? _value.name
@@ -119,6 +133,7 @@ abstract class _$$CartItemImplCopyWith<$Res>
       {String id,
       @JsonKey(name: 'vendor_id') String? vendorId,
       @JsonKey(name: 'post_id') String? postId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String name,
       String qty,
       String price,
@@ -133,12 +148,15 @@ class __$$CartItemImplCopyWithImpl<$Res>
       _$CartItemImpl _value, $Res Function(_$CartItemImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CartItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? vendorId = freezed,
     Object? postId = freezed,
+    Object? postTypeId = freezed,
     Object? name = null,
     Object? qty = null,
     Object? price = null,
@@ -156,6 +174,10 @@ class __$$CartItemImplCopyWithImpl<$Res>
       postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postTypeId: freezed == postTypeId
+          ? _value.postTypeId
+          : postTypeId // ignore: cast_nullable_to_non_nullable
               as String?,
       name: null == name
           ? _value.name
@@ -184,6 +206,7 @@ class _$CartItemImpl implements _CartItem {
       {required this.id,
       @JsonKey(name: 'vendor_id') this.vendorId,
       @JsonKey(name: 'post_id') this.postId,
+      @JsonKey(name: 'post_type_id') this.postTypeId,
       required this.name,
       required this.qty,
       required this.price,
@@ -203,6 +226,9 @@ class _$CartItemImpl implements _CartItem {
   @JsonKey(name: 'post_id')
   final String? postId;
   @override
+  @JsonKey(name: 'post_type_id')
+  final String? postTypeId;
+  @override
   final String name;
   @override
   final String qty;
@@ -213,7 +239,7 @@ class _$CartItemImpl implements _CartItem {
 
   @override
   String toString() {
-    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image)';
+    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image)';
   }
 
   @override
@@ -225,18 +251,22 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.vendorId, vendorId) ||
                 other.vendorId == vendorId) &&
             (identical(other.postId, postId) || other.postId == postId) &&
+            (identical(other.postTypeId, postTypeId) ||
+                other.postTypeId == postTypeId) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.qty, qty) || other.qty == qty) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, vendorId, postId, name, qty, price, image);
+  int get hashCode => Object.hash(
+      runtimeType, id, vendorId, postId, postTypeId, name, qty, price, image);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CartItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
@@ -255,6 +285,7 @@ abstract class _CartItem implements CartItem {
       {required final String id,
       @JsonKey(name: 'vendor_id') final String? vendorId,
       @JsonKey(name: 'post_id') final String? postId,
+      @JsonKey(name: 'post_type_id') final String? postTypeId,
       required final String name,
       required final String qty,
       required final String price,
@@ -264,13 +295,16 @@ abstract class _CartItem implements CartItem {
       _$CartItemImpl.fromJson;
 
   @override
-  String get id;
-  @override // required String userId,
+  String get id; // required String userId,
+  @override
   @JsonKey(name: 'vendor_id')
-  String? get vendorId;
-  @override //  required String? vendorId,
+  String? get vendorId; //  required String? vendorId,
+  @override
   @JsonKey(name: 'post_id')
   String? get postId;
+  @override
+  @JsonKey(name: 'post_type_id')
+  String? get postTypeId;
   @override
   String get name;
   @override
@@ -279,8 +313,11 @@ abstract class _CartItem implements CartItem {
   String get price;
   @override
   String get image;
+
+  /// Create a copy of CartItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -295,8 +332,12 @@ mixin _$Vendor {
   String get name => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
 
+  /// Serializes this Vendor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Vendor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorCopyWith<Vendor> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -318,6 +359,8 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Vendor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -360,6 +403,8 @@ class __$$VendorImplCopyWithImpl<$Res>
       _$VendorImpl _value, $Res Function(_$VendorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Vendor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -415,11 +460,13 @@ class _$VendorImpl implements _Vendor {
                 other.username == username));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, username);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Vendor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
@@ -447,8 +494,11 @@ abstract class _Vendor implements Vendor {
   String get name;
   @override
   String? get username;
+
+  /// Create a copy of Vendor
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

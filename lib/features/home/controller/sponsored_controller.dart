@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/home/api/sponsored_api.dart';
 import 'package:smartbazar/features/home/model/sponsored_model.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 
 final authRepositoryProvider = Provider<SponsoredApi>((ref) {
   return SponsoredApi();

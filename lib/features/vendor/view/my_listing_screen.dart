@@ -86,7 +86,7 @@ class MyListingScreen extends ConsumerWidget {
 }
 
 class MyListinDetails extends ConsumerWidget {
-  final ProductData product;
+  final Product product;
 
   const MyListinDetails({super.key, required this.product});
 
@@ -123,9 +123,10 @@ class MyListinDetails extends ConsumerWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
+                  // print("niko ${product.id}");
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const UpdateListing()),
+                    MaterialPageRoute(builder: (_) =>  UpdateListing(prod: product)),
                   );
                 },
                 child: const Icon(

@@ -20,19 +20,17 @@ HomePosts _$HomePostsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$HomePosts {
-  List<HomeAdvertisement> get advertisements =>
-      throw _privateConstructorUsedError;
-  List<Product> get sponsored_post => throw _privateConstructorUsedError;
+// required List<HomeAdvertisement> advertisements,
+  List<Product> get sponsored_posts => throw _privateConstructorUsedError;
   List<Product> get trending => throw _privateConstructorUsedError;
-  List<Product> get hot_products => throw _privateConstructorUsedError;
-  List<Product> get new_products => throw _privateConstructorUsedError;
-  List<Product> get jobs => throw _privateConstructorUsedError;
-  List<Product> get events => throw _privateConstructorUsedError;
-  List<Product> get b2b_products => throw _privateConstructorUsedError;
-  List<Product> get all_products => throw _privateConstructorUsedError;
+  List<SliderModel> get sliders => throw _privateConstructorUsedError;
 
+  /// Serializes this HomePosts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $HomePostsCopyWith<HomePosts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -43,15 +41,9 @@ abstract class $HomePostsCopyWith<$Res> {
       _$HomePostsCopyWithImpl<$Res, HomePosts>;
   @useResult
   $Res call(
-      {List<HomeAdvertisement> advertisements,
-      List<Product> sponsored_post,
+      {List<Product> sponsored_posts,
       List<Product> trending,
-      List<Product> hot_products,
-      List<Product> new_products,
-      List<Product> jobs,
-      List<Product> events,
-      List<Product> b2b_products,
-      List<Product> all_products});
+      List<SliderModel> sliders});
 }
 
 /// @nodoc
@@ -64,56 +56,28 @@ class _$HomePostsCopyWithImpl<$Res, $Val extends HomePosts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? advertisements = null,
-    Object? sponsored_post = null,
+    Object? sponsored_posts = null,
     Object? trending = null,
-    Object? hot_products = null,
-    Object? new_products = null,
-    Object? jobs = null,
-    Object? events = null,
-    Object? b2b_products = null,
-    Object? all_products = null,
+    Object? sliders = null,
   }) {
     return _then(_value.copyWith(
-      advertisements: null == advertisements
-          ? _value.advertisements
-          : advertisements // ignore: cast_nullable_to_non_nullable
-              as List<HomeAdvertisement>,
-      sponsored_post: null == sponsored_post
-          ? _value.sponsored_post
-          : sponsored_post // ignore: cast_nullable_to_non_nullable
+      sponsored_posts: null == sponsored_posts
+          ? _value.sponsored_posts
+          : sponsored_posts // ignore: cast_nullable_to_non_nullable
               as List<Product>,
       trending: null == trending
           ? _value.trending
           : trending // ignore: cast_nullable_to_non_nullable
               as List<Product>,
-      hot_products: null == hot_products
-          ? _value.hot_products
-          : hot_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      new_products: null == new_products
-          ? _value.new_products
-          : new_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      jobs: null == jobs
-          ? _value.jobs
-          : jobs // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      events: null == events
-          ? _value.events
-          : events // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      b2b_products: null == b2b_products
-          ? _value.b2b_products
-          : b2b_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      all_products: null == all_products
-          ? _value.all_products
-          : all_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
+      sliders: null == sliders
+          ? _value.sliders
+          : sliders // ignore: cast_nullable_to_non_nullable
+              as List<SliderModel>,
     ) as $Val);
   }
 }
@@ -127,15 +91,9 @@ abstract class _$$HomePostsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<HomeAdvertisement> advertisements,
-      List<Product> sponsored_post,
+      {List<Product> sponsored_posts,
       List<Product> trending,
-      List<Product> hot_products,
-      List<Product> new_products,
-      List<Product> jobs,
-      List<Product> events,
-      List<Product> b2b_products,
-      List<Product> all_products});
+      List<SliderModel> sliders});
 }
 
 /// @nodoc
@@ -146,56 +104,28 @@ class __$$HomePostsImplCopyWithImpl<$Res>
       _$HomePostsImpl _value, $Res Function(_$HomePostsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? advertisements = null,
-    Object? sponsored_post = null,
+    Object? sponsored_posts = null,
     Object? trending = null,
-    Object? hot_products = null,
-    Object? new_products = null,
-    Object? jobs = null,
-    Object? events = null,
-    Object? b2b_products = null,
-    Object? all_products = null,
+    Object? sliders = null,
   }) {
     return _then(_$HomePostsImpl(
-      advertisements: null == advertisements
-          ? _value._advertisements
-          : advertisements // ignore: cast_nullable_to_non_nullable
-              as List<HomeAdvertisement>,
-      sponsored_post: null == sponsored_post
-          ? _value._sponsored_post
-          : sponsored_post // ignore: cast_nullable_to_non_nullable
+      sponsored_posts: null == sponsored_posts
+          ? _value._sponsored_posts
+          : sponsored_posts // ignore: cast_nullable_to_non_nullable
               as List<Product>,
       trending: null == trending
           ? _value._trending
           : trending // ignore: cast_nullable_to_non_nullable
               as List<Product>,
-      hot_products: null == hot_products
-          ? _value._hot_products
-          : hot_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      new_products: null == new_products
-          ? _value._new_products
-          : new_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      jobs: null == jobs
-          ? _value._jobs
-          : jobs // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      events: null == events
-          ? _value._events
-          : events // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      b2b_products: null == b2b_products
-          ? _value._b2b_products
-          : b2b_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
-      all_products: null == all_products
-          ? _value._all_products
-          : all_products // ignore: cast_nullable_to_non_nullable
-              as List<Product>,
+      sliders: null == sliders
+          ? _value._sliders
+          : sliders // ignore: cast_nullable_to_non_nullable
+              as List<SliderModel>,
     ));
   }
 }
@@ -204,42 +134,24 @@ class __$$HomePostsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HomePostsImpl implements _HomePosts {
   _$HomePostsImpl(
-      {required final List<HomeAdvertisement> advertisements,
-      required final List<Product> sponsored_post,
+      {required final List<Product> sponsored_posts,
       required final List<Product> trending,
-      required final List<Product> hot_products,
-      required final List<Product> new_products,
-      required final List<Product> jobs,
-      required final List<Product> events,
-      required final List<Product> b2b_products,
-      required final List<Product> all_products})
-      : _advertisements = advertisements,
-        _sponsored_post = sponsored_post,
+      required final List<SliderModel> sliders})
+      : _sponsored_posts = sponsored_posts,
         _trending = trending,
-        _hot_products = hot_products,
-        _new_products = new_products,
-        _jobs = jobs,
-        _events = events,
-        _b2b_products = b2b_products,
-        _all_products = all_products;
+        _sliders = sliders;
 
   factory _$HomePostsImpl.fromJson(Map<String, dynamic> json) =>
       _$$HomePostsImplFromJson(json);
 
-  final List<HomeAdvertisement> _advertisements;
+// required List<HomeAdvertisement> advertisements,
+  final List<Product> _sponsored_posts;
+// required List<HomeAdvertisement> advertisements,
   @override
-  List<HomeAdvertisement> get advertisements {
-    if (_advertisements is EqualUnmodifiableListView) return _advertisements;
+  List<Product> get sponsored_posts {
+    if (_sponsored_posts is EqualUnmodifiableListView) return _sponsored_posts;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_advertisements);
-  }
-
-  final List<Product> _sponsored_post;
-  @override
-  List<Product> get sponsored_post {
-    if (_sponsored_post is EqualUnmodifiableListView) return _sponsored_post;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_sponsored_post);
+    return EqualUnmodifiableListView(_sponsored_posts);
   }
 
   final List<Product> _trending;
@@ -250,57 +162,17 @@ class _$HomePostsImpl implements _HomePosts {
     return EqualUnmodifiableListView(_trending);
   }
 
-  final List<Product> _hot_products;
+  final List<SliderModel> _sliders;
   @override
-  List<Product> get hot_products {
-    if (_hot_products is EqualUnmodifiableListView) return _hot_products;
+  List<SliderModel> get sliders {
+    if (_sliders is EqualUnmodifiableListView) return _sliders;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_hot_products);
-  }
-
-  final List<Product> _new_products;
-  @override
-  List<Product> get new_products {
-    if (_new_products is EqualUnmodifiableListView) return _new_products;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_new_products);
-  }
-
-  final List<Product> _jobs;
-  @override
-  List<Product> get jobs {
-    if (_jobs is EqualUnmodifiableListView) return _jobs;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_jobs);
-  }
-
-  final List<Product> _events;
-  @override
-  List<Product> get events {
-    if (_events is EqualUnmodifiableListView) return _events;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_events);
-  }
-
-  final List<Product> _b2b_products;
-  @override
-  List<Product> get b2b_products {
-    if (_b2b_products is EqualUnmodifiableListView) return _b2b_products;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_b2b_products);
-  }
-
-  final List<Product> _all_products;
-  @override
-  List<Product> get all_products {
-    if (_all_products is EqualUnmodifiableListView) return _all_products;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_all_products);
+    return EqualUnmodifiableListView(_sliders);
   }
 
   @override
   String toString() {
-    return 'HomePosts(advertisements: $advertisements, sponsored_post: $sponsored_post, trending: $trending, hot_products: $hot_products, new_products: $new_products, jobs: $jobs, events: $events, b2b_products: $b2b_products, all_products: $all_products)';
+    return 'HomePosts(sponsored_posts: $sponsored_posts, trending: $trending, sliders: $sliders)';
   }
 
   @override
@@ -309,37 +181,22 @@ class _$HomePostsImpl implements _HomePosts {
         (other.runtimeType == runtimeType &&
             other is _$HomePostsImpl &&
             const DeepCollectionEquality()
-                .equals(other._advertisements, _advertisements) &&
-            const DeepCollectionEquality()
-                .equals(other._sponsored_post, _sponsored_post) &&
+                .equals(other._sponsored_posts, _sponsored_posts) &&
             const DeepCollectionEquality().equals(other._trending, _trending) &&
-            const DeepCollectionEquality()
-                .equals(other._hot_products, _hot_products) &&
-            const DeepCollectionEquality()
-                .equals(other._new_products, _new_products) &&
-            const DeepCollectionEquality().equals(other._jobs, _jobs) &&
-            const DeepCollectionEquality().equals(other._events, _events) &&
-            const DeepCollectionEquality()
-                .equals(other._b2b_products, _b2b_products) &&
-            const DeepCollectionEquality()
-                .equals(other._all_products, _all_products));
+            const DeepCollectionEquality().equals(other._sliders, _sliders));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_advertisements),
-      const DeepCollectionEquality().hash(_sponsored_post),
+      const DeepCollectionEquality().hash(_sponsored_posts),
       const DeepCollectionEquality().hash(_trending),
-      const DeepCollectionEquality().hash(_hot_products),
-      const DeepCollectionEquality().hash(_new_products),
-      const DeepCollectionEquality().hash(_jobs),
-      const DeepCollectionEquality().hash(_events),
-      const DeepCollectionEquality().hash(_b2b_products),
-      const DeepCollectionEquality().hash(_all_products));
+      const DeepCollectionEquality().hash(_sliders));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HomePostsImplCopyWith<_$HomePostsImpl> get copyWith =>
@@ -355,39 +212,329 @@ class _$HomePostsImpl implements _HomePosts {
 
 abstract class _HomePosts implements HomePosts {
   factory _HomePosts(
-      {required final List<HomeAdvertisement> advertisements,
-      required final List<Product> sponsored_post,
+      {required final List<Product> sponsored_posts,
       required final List<Product> trending,
-      required final List<Product> hot_products,
-      required final List<Product> new_products,
-      required final List<Product> jobs,
-      required final List<Product> events,
-      required final List<Product> b2b_products,
-      required final List<Product> all_products}) = _$HomePostsImpl;
+      required final List<SliderModel> sliders}) = _$HomePostsImpl;
 
   factory _HomePosts.fromJson(Map<String, dynamic> json) =
       _$HomePostsImpl.fromJson;
 
+// required List<HomeAdvertisement> advertisements,
   @override
-  List<HomeAdvertisement> get advertisements;
-  @override
-  List<Product> get sponsored_post;
+  List<Product> get sponsored_posts;
   @override
   List<Product> get trending;
   @override
-  List<Product> get hot_products;
+  List<SliderModel> get sliders;
+
+  /// Create a copy of HomePosts
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  List<Product> get new_products;
-  @override
-  List<Product> get jobs;
-  @override
-  List<Product> get events;
-  @override
-  List<Product> get b2b_products;
-  @override
-  List<Product> get all_products;
-  @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HomePostsImplCopyWith<_$HomePostsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SliderModel _$SliderModelFromJson(Map<String, dynamic> json) {
+  return _SliderModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SliderModel {
+  String get id => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get link => throw _privateConstructorUsedError;
+  String get page => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  String get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  String? get updatedAt => throw _privateConstructorUsedError;
+
+  /// Serializes this SliderModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of SliderModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SliderModelCopyWith<SliderModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SliderModelCopyWith<$Res> {
+  factory $SliderModelCopyWith(
+          SliderModel value, $Res Function(SliderModel) then) =
+      _$SliderModelCopyWithImpl<$Res, SliderModel>;
+  @useResult
+  $Res call(
+      {String id,
+      String image,
+      String description,
+      String link,
+      String page,
+      String status,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt});
+}
+
+/// @nodoc
+class _$SliderModelCopyWithImpl<$Res, $Val extends SliderModel>
+    implements $SliderModelCopyWith<$Res> {
+  _$SliderModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SliderModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? image = null,
+    Object? description = null,
+    Object? link = null,
+    Object? page = null,
+    Object? status = null,
+    Object? createdAt = null,
+    Object? updatedAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as String,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SliderModelImplCopyWith<$Res>
+    implements $SliderModelCopyWith<$Res> {
+  factory _$$SliderModelImplCopyWith(
+          _$SliderModelImpl value, $Res Function(_$SliderModelImpl) then) =
+      __$$SliderModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String image,
+      String description,
+      String link,
+      String page,
+      String status,
+      @JsonKey(name: 'created_at') String createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt});
+}
+
+/// @nodoc
+class __$$SliderModelImplCopyWithImpl<$Res>
+    extends _$SliderModelCopyWithImpl<$Res, _$SliderModelImpl>
+    implements _$$SliderModelImplCopyWith<$Res> {
+  __$$SliderModelImplCopyWithImpl(
+      _$SliderModelImpl _value, $Res Function(_$SliderModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SliderModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? image = null,
+    Object? description = null,
+    Object? link = null,
+    Object? page = null,
+    Object? status = null,
+    Object? createdAt = null,
+    Object? updatedAt = freezed,
+  }) {
+    return _then(_$SliderModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as String,
+      page: null == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SliderModelImpl implements _SliderModel {
+  const _$SliderModelImpl(
+      {required this.id,
+      required this.image,
+      required this.description,
+      required this.link,
+      required this.page,
+      required this.status,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') this.updatedAt});
+
+  factory _$SliderModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SliderModelImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String image;
+  @override
+  final String description;
+  @override
+  final String link;
+  @override
+  final String page;
+  @override
+  final String status;
+  @override
+  @JsonKey(name: 'created_at')
+  final String createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  final String? updatedAt;
+
+  @override
+  String toString() {
+    return 'SliderModel(id: $id, image: $image, description: $description, link: $link, page: $page, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SliderModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.link, link) || other.link == link) &&
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, image, description, link,
+      page, status, createdAt, updatedAt);
+
+  /// Create a copy of SliderModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SliderModelImplCopyWith<_$SliderModelImpl> get copyWith =>
+      __$$SliderModelImplCopyWithImpl<_$SliderModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SliderModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SliderModel implements SliderModel {
+  const factory _SliderModel(
+          {required final String id,
+          required final String image,
+          required final String description,
+          required final String link,
+          required final String page,
+          required final String status,
+          @JsonKey(name: 'created_at') required final String createdAt,
+          @JsonKey(name: 'updated_at') final String? updatedAt}) =
+      _$SliderModelImpl;
+
+  factory _SliderModel.fromJson(Map<String, dynamic> json) =
+      _$SliderModelImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get image;
+  @override
+  String get description;
+  @override
+  String get link;
+  @override
+  String get page;
+  @override
+  String get status;
+  @override
+  @JsonKey(name: 'created_at')
+  String get createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  String? get updatedAt;
+
+  /// Create a copy of SliderModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SliderModelImplCopyWith<_$SliderModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
