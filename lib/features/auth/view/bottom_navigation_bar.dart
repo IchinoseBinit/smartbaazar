@@ -57,6 +57,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Icon paths
+    final iconPaths = [
+      'assets/icon/home.png',
+      'assets/icon/news.png',
+      'assets/icon/message.png',
+      'assets/icon/wifi.png',
+    ];
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 70.w, vertical: 8.h),
       child: Card(
@@ -69,12 +77,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(4, (index) {
               final isSelected = index == selectedIndex;
-              final iconPaths = [
-                'assets/icon/home.png',
-                'assets/icon/news.png',
-                'assets/icon/message.png',
-                'assets/icon/wifi.png',
-              ];
               return GestureDetector(
                 onTap: () => onTabChanged(index), // Trigger the callback
                 child: Container(

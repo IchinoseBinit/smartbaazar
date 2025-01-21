@@ -238,7 +238,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-        final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
@@ -285,7 +285,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
     return Scaffold(
         extendBody: true,
-         bottomNavigationBar: CustomBottomNavigationBar(
+        bottomNavigationBar: CustomBottomNavigationBar(
           selectedIndex: pselectedIndex, // Pass the current index
           onTabChanged: (index) {
             ref.read(bottomNavIndexProvider.notifier).state = index;
@@ -307,7 +307,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               case 2:
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const MessageViewScreen()),
                 );
                 break;
               case 3:
@@ -486,7 +487,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             InkWell(
                                               onTap: () {
                                                 if (_searchController.text
-                                                        .trim().isNotEmpty) {
+                                                    .trim()
+                                                    .isNotEmpty) {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -1153,7 +1155,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       );
                                                     },
                                                     child: ProductDetailWidget(
-                                                      
                                                       didcountpercentage: prod
                                                           .discount_percentage,
                                                       distance:
