@@ -6,7 +6,7 @@ part of 'feed_gift_card_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getFeedGiftCardHash() => r'016cd2da39caa5ac8890419c93068b64e3fbe6ec';
+String _$getFeedGiftCardHash() => r'f8b7fc4b3e4cbda9a9a10cc0b54087292de31d17';
 
 /// Copied from Dart SDK
 class _SystemHash {

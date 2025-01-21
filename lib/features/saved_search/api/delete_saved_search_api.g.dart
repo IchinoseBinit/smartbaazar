@@ -6,7 +6,7 @@ part of 'delete_saved_search_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deleteSavedSearchHash() => r'c26062dfcc7aa62b63a2aa9072fbf939fb0e8196';
+String _$deleteSavedSearchHash() => r'de0e47b365d5aed06052fec0a4ec7b0d04352ab7';
 
 /// Copied from Dart SDK
 class _SystemHash {

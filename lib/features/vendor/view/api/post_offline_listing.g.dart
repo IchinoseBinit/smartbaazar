@@ -7,7 +7,7 @@ part of 'post_offline_listing.dart';
 // **************************************************************************
 
 String _$addToOfflineListingHash() =>
-    r'7e768fa0c0f3205dfd6476767fa71b2c986ab3b4';
+    r'61d917cd86443ea316164a52f8d34109dcb7aa03';
 
 /// Copied from Dart SDK
 class _SystemHash {

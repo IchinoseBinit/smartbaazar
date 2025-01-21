@@ -6,7 +6,7 @@ part of 'delete_listing_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deleteListingHash() => r'e00727ceba77ed7a7e8f26efca25460131f15892';
+String _$deleteListingHash() => r'b3b110cda764029808626f9a7710d9706bb29e99';
 
 /// Copied from Dart SDK
 class _SystemHash {

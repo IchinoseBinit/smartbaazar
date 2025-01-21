@@ -7,7 +7,7 @@ part of 'checkout_details_api.dart';
 // **************************************************************************
 
 String _$postSelectedItemOfCartHash() =>
-    r'fc175c9ea74b8b3b7613ef12156409444823c1da';
+    r'159c31e04078cf76d375fd409c3dc838c59c7078';
 
 /// Copied from Dart SDK
 class _SystemHash {

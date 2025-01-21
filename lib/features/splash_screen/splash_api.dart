@@ -7,7 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'splash_api.g.dart';
 
 @riverpod
-Future<SplashModel> getSplashApi() async {
+Future<SplashModel> getSplashApi(GetSplashApiRef ref) async {
   final SmartClient client = SmartClient();
   try {
     final response = await client.request(

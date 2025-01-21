@@ -6,7 +6,7 @@ part of 'faq_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getFAQHash() => r'1971000b9249fdd42d349e414c5e7fce5ea2efdd';
+String _$getFAQHash() => r'a1b02af6fa3410c64b34ee107b4d730b9a6c06fe';
 
 /// See also [getFAQ].
 @ProviderFor(getFAQ)

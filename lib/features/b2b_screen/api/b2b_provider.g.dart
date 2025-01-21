@@ -6,7 +6,7 @@ part of 'b2b_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getB2bResponseHash() => r'21d1c99bcf0851940e841a534824382e6478ee8d';
+String _$getB2bResponseHash() => r'5140acc3a749713818f165423ff7723d3572d4a9';
 
 /// See also [getB2bResponse].
 @ProviderFor(getB2bResponse)

@@ -6,7 +6,7 @@ part of 'sponsored_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchSponsoredHash() => r'a4edd21287825f712811728a300b636119105f59';
+String _$fetchSponsoredHash() => r'0a732cc50b1aa888f670c7e7fb7f8a4b6c023939';
 
 /// See also [fetchSponsored].
 @ProviderFor(fetchSponsored)

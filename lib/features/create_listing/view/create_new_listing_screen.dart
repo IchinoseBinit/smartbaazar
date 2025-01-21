@@ -1361,20 +1361,18 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (pickedDate != null) {
-                                setState(() {
-                                  selectedStartDate =
-                                      pickedDate; // Save the selected date
-                                });
-                                if (jobsresp?.result[4].id != null) {
-                                  // Ensure the dynamic key is safe to access
-                                  cf?.add([
-                                    'cf.${jobsresp!.result[4].id}', // Create the key dynamically
-                                    selectedStartDate,
-                                  ]);
-                                }
+                              setState(() {
+                                selectedStartDate =
+                                    pickedDate; // Save the selected date
+                              });
+                              if (jobsresp?.result[4].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${jobsresp!.result[4].id}', // Create the key dynamically
+                                  selectedStartDate,
+                                ]);
                               }
-                            },
+                                                        },
                             child: Text(
                               selectedStartDate != null
                                   ? '${selectedStartDate!.toLocal()}'.split(
@@ -1431,20 +1429,18 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (pickedDate != null) {
-                                setState(() {
-                                  selectmanufacturingdate =
-                                      pickedDate; // Save the selected date
-                                });
-                                if (grocerryresp?.result[0].id != null) {
-                                  // Ensure the dynamic key is safe to access
-                                  cf?.add([
-                                    'cf.${grocerryresp!.result[0].id}', // Create the key dynamically
-                                    selectmanufacturingdate,
-                                  ]);
-                                }
+                              setState(() {
+                                selectmanufacturingdate =
+                                    pickedDate; // Save the selected date
+                              });
+                              if (grocerryresp?.result[0].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${grocerryresp!.result[0].id}', // Create the key dynamically
+                                  selectmanufacturingdate,
+                                ]);
                               }
-                            },
+                                                        },
                             child: Text(
                               selectedStartDate != null
                                   ? '${selectedStartDate!.toLocal()}'.split(
@@ -1501,20 +1497,18 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (pickedDate != null) {
-                                setState(() {
-                                  grocceryexpiraydate =
-                                      pickedDate; // Save the selected date
-                                });
-                                if (grocerryresp?.result[6].id != null) {
-                                  // Ensure the dynamic key is safe to access
-                                  cf?.add([
-                                    'cf.${grocerryresp!.result[6].id}', // Create the key dynamically
-                                    whatsintheboxcontroller.text,
-                                  ]);
-                                }
+                              setState(() {
+                                grocceryexpiraydate =
+                                    pickedDate; // Save the selected date
+                              });
+                              if (grocerryresp?.result[6].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${grocerryresp!.result[6].id}', // Create the key dynamically
+                                  whatsintheboxcontroller.text,
+                                ]);
                               }
-                            },
+                                                        },
                             child: Text(
                               selectedStartDate != null
                                   ? '${selectedStartDate!.toLocal()}'.split(
@@ -1572,21 +1566,19 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (pickedDate != null) {
-                                setState(() {
-                                  deadlineDate =
-                                      pickedDate; // Save the selected date
+                              setState(() {
+                                deadlineDate =
+                                    pickedDate; // Save the selected date
 
-                                  if (jobsresp?.result[1].id != null) {
-                                    // Ensure the dynamic key is safe to access
-                                    cf?.add([
-                                      'cf.${jobsresp!.result[1].id}', // Create the key dynamically
-                                      deadlineDate
-                                    ]);
-                                  }
-                                });
-                              }
-                            },
+                                if (jobsresp?.result[1].id != null) {
+                                  // Ensure the dynamic key is safe to access
+                                  cf?.add([
+                                    'cf.${jobsresp!.result[1].id}', // Create the key dynamically
+                                    deadlineDate
+                                  ]);
+                                }
+                              });
+                                                        },
                             child: Text(
                               deadlineDate != null
                                   ? '${deadlineDate!.toLocal()}'.split(
@@ -1961,19 +1953,17 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 fieldHintText: 'Year',
                               );
 
-                              if (selectedDate != null) {
-                                // Assign selected year to the controller
-                                yearofregistrationcontroller.text =
-                                    selectedDate.year.toString();
-                                if (getRoad?.result[11].id != null) {
-                                  // Ensure the dynamic key is safe to access
-                                  cf?.add([
-                                    'cf.${getRoad!.result[11].id}', // Create the key dynamically
-                                    yearofregistrationcontroller.text,
-                                  ]);
-                                }
+                              // Assign selected year to the controller
+                              yearofregistrationcontroller.text =
+                                  selectedDate!.year.toString();
+                              if (getRoad?.result[11].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${getRoad!.result[11].id}', // Create the key dynamically
+                                  yearofregistrationcontroller.text,
+                                ]);
                               }
-                            },
+                                                        },
                             child: AbsorbPointer(
                               child: TextField(
                                 controller: yearofregistrationcontroller,

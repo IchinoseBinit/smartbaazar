@@ -63,6 +63,8 @@ class LoginController extends StateNotifier<GenericState> {
       if (userId.isNotEmpty) {
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
         SmartClient.userId = userId;
+        SmartClient.refresh=session['extra']['refresh'];
+        SmartClient.token  =session['extra']['authToken'];
     // TODO: SmartClient.token is not set here
 
         Navigator.pushReplacement(

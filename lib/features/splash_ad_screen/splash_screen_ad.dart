@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -24,10 +25,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
       } else {
         timer.cancel();
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) =>  const BottomNavigationScreen()),
-          );
+          context.go('/home'); // Navigate to the home screen after splash
         }
       }
     });

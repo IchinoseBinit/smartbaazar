@@ -7,7 +7,7 @@ part of 'verify_vendor_account_api.dart';
 // **************************************************************************
 
 String _$verifyVendorAccountHash() =>
-    r'37994079048b1f185c68b0fa52d98b4a167079f1';
+    r'aaf827f6fdbb8a9fbc5ee4755f1896c1868fcc35';
 
 /// Copied from Dart SDK
 class _SystemHash {

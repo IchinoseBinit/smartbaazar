@@ -6,7 +6,7 @@ part of 'contact_us_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postContactUsHash() => r'4804902920387c3cc1168e0bbfc5d6127f313af7';
+String _$postContactUsHash() => r'17fbd72ba939eb3855bfb620d9dcd13fea09bb7b';
 
 /// Copied from Dart SDK
 class _SystemHash {

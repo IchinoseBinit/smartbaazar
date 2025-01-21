@@ -6,7 +6,7 @@ part of 'favourite_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getFavouriteListHash() => r'379c4bb1c2c6ca00d4411d2f5ff8c010c3f36680';
+String _$getFavouriteListHash() => r'047f28fd5c32f6feb6a612bce9cd254d577bf8c4';
 
 /// See also [getFavouriteList].
 @ProviderFor(getFavouriteList)
@@ -26,7 +26,7 @@ final getFavouriteListProvider =
 typedef GetFavouriteListRef
     = AutoDisposeFutureProviderRef<FavouriteProductList>;
 String _$deleteFavouriteProductHash() =>
-    r'2b321828e45e6cf91d13a1236a236a9172019c81';
+    r'48a51df1e7d278f558e9a1e8c56e7f14726eefa4';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -6,7 +6,7 @@ part of 'privacy_policy_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPrivacyPolicyHash() => r'9cae77af13cea47615b62ba0765367f0915415a2';
+String _$getPrivacyPolicyHash() => r'3b567ce95de086931970daf1485445534bb3745a';
 
 /// See also [getPrivacyPolicy].
 @ProviderFor(getPrivacyPolicy)

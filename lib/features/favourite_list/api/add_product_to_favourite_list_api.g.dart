@@ -6,7 +6,7 @@ part of 'add_product_to_favourite_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$addToFavoritesHash() => r'809ab3e31ca034cf0e05c833b7dc1443dd418363';
+String _$addToFavoritesHash() => r'245fd840db01e9901e6589661b1e434acd346692';
 
 /// Copied from Dart SDK
 class _SystemHash {

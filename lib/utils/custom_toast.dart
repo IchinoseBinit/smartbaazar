@@ -6,11 +6,14 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/main.dart';
 
 FToast fToast = FToast();
+  // static ProviderContainer globalRef = ProviderContainer();
 
 void showCustomToast(
   String text, {
+    
   bool unFocusKeyboard = true,
 }) async {
+  
   final context = MyApp.navKey.currentState!.context;
 
   await _waitTillKeyboardDisappear(context);

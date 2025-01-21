@@ -6,7 +6,7 @@ part of 'change_password_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordHash() => r'167a3d0ce6ab4cedaf2d3109009887c8444ce6c9';
+String _$changePasswordHash() => r'6f0abc50d8772d450b851b79555889c9ff3c12dc';
 
 /// Copied from Dart SDK
 class _SystemHash {

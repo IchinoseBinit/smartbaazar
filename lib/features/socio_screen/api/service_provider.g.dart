@@ -6,7 +6,7 @@ part of 'service_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSocioDataHash() => r'515dfac87272194d61b9a51d160883bf8c9299e4';
+String _$getSocioDataHash() => r'fe1e54ab5e493bc849de6938a58bf90f39fde04b';
 
 /// See also [getSocioData].
 @ProviderFor(getSocioData)

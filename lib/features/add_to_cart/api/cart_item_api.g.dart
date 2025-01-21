@@ -6,7 +6,7 @@ part of 'cart_item_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getCartItemHash() => r'87f4ecd2df287eb340a46e1f299c0ede2a212422';
+String _$getCartItemHash() => r'e97d7d3d289b92f8c80982d0b817193baca4cfe5';
 
 /// See also [getCartItem].
 @ProviderFor(getCartItem)
@@ -24,7 +24,7 @@ final getCartItemProvider =
 // ignore: unused_element
 typedef GetCartItemRef
     = AutoDisposeFutureProviderRef<Map<String, List<Object>>>;
-String _$deleteCartItemHash() => r'd98f9b5daa07b43f0c7159cfb716161b9f70a404';
+String _$deleteCartItemHash() => r'6e984e9f8ae802346207c03c6586d77eb2dcba5a';
 
 /// Copied from Dart SDK
 class _SystemHash {

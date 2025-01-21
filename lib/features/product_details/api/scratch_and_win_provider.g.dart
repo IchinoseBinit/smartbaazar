@@ -7,7 +7,7 @@ part of 'scratch_and_win_provider.dart';
 // **************************************************************************
 
 String _$getScratchAndWinResponseHash() =>
-    r'a2286f0d59217a829d2cef24d5c87a9b413552dc';
+    r'59eca271acf774636a13f4a45e9b720162ec93bf';
 
 /// See also [getScratchAndWinResponse].
 @ProviderFor(getScratchAndWinResponse)

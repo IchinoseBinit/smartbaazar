@@ -7,7 +7,7 @@ part of 'products_feed_dropdown_api.dart';
 // **************************************************************************
 
 String _$getProductsFeedDropdownHash() =>
-    r'a278862c924d46cf093727ea3ab9a84b3bfd7b14';
+    r'2b3be190913f7ce9de5822281935f53e09725a39';
 
 /// See also [getProductsFeedDropdown].
 @ProviderFor(getProductsFeedDropdown)

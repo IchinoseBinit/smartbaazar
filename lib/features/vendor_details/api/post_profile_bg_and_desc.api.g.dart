@@ -7,7 +7,7 @@ part of 'post_profile_bg_and_desc.api.dart';
 // **************************************************************************
 
 String _$postProfileBGAndDescHash() =>
-    r'f27ccf1952a918e81c8a06316847ce96f59e5a9e';
+    r'401a4ad54983aa3ac27b758634c0c3c0b3c19303';
 
 /// Copied from Dart SDK
 class _SystemHash {

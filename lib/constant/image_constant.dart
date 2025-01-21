@@ -9,6 +9,7 @@ import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 final List<Map<String, dynamic>> services = [
   {'label': 'Low Price Guarantee', 'id': 1},
@@ -139,3 +140,44 @@ class ImageConstant {
 }
 
 
+// // RouteGenerator class
+// class RouteGenerator {
+//   static Route<dynamic> generateRoute(RouteSettings settings) {
+//     final args = settings.arguments;
+
+//     switch (settings.name) {
+//       case '/brandbazr':
+//         return MaterialPageRoute(builder: (context) => BrandBazarScreen());
+//       case '/tradehub':
+//         return MaterialPageRoute(builder: (context) => B2bScreen());
+//       case '/used':
+//         return MaterialPageRoute(builder: (context) => UsedScreen());
+//       case '/socio':
+//         return MaterialPageRoute(builder: (context) => SocioShopScreen());
+//       case '/service':
+//         return MaterialPageRoute(builder: (context) => ServicesScreen());
+//       case '/jobs':
+//         return MaterialPageRoute(builder: (context) => JobssScreen());
+//       case '/grocery':
+//         return MaterialPageRoute(builder: (context) => GrocarysScreen());
+//       case '/vendorprofile':
+//         if (args is Map<String, dynamic>) {
+//           final int vid = args['id'];
+//           final String vendorName = args['vname'];
+//           return MaterialPageRoute(
+//             builder: (context) => VendorHomeScreen(vid: vid, vendorName: vendorName),
+//           );
+//         }
+//         return _errorRoute(); // If arguments are not correct
+//       default:
+//         return MaterialPageRoute(builder: (context) => HomeScreen()); // Default route
+//     }
+//   }
+
+//   static Route<dynamic> _errorRoute() {
+//     return MaterialPageRoute(builder: (context) => Scaffold(
+//       appBar: AppBar(title: Text("Error")),
+//       body: Center(child: Text("Page not found")),
+//     ));
+//   }
+// }

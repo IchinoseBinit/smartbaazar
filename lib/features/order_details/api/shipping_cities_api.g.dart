@@ -6,7 +6,7 @@ part of 'shipping_cities_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getShippingCitiesHash() => r'8d39ab2a2b8685230825000ae57bfd13257879d0';
+String _$getShippingCitiesHash() => r'a386a07cfc6306784f91267e1864d97d8ca29fdb';
 
 /// See also [getShippingCities].
 @ProviderFor(getShippingCities)

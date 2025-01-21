@@ -6,7 +6,7 @@ part of 'add_dispute_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postDisputeHash() => r'def4f0dd967e01654f06c25f581fe7ea787313bb';
+String _$postDisputeHash() => r'f75d0c6db3c77bc2623f41ec1192c54484e544a7';
 
 /// Copied from Dart SDK
 class _SystemHash {

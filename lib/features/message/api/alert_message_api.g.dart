@@ -6,7 +6,7 @@ part of 'alert_message_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getAlertMessageHash() => r'3298a77bfee2ac16b1e75520e4d02d8530451dbe';
+String _$getAlertMessageHash() => r'beae4d965113d7aae14836e999d0f3c9f6f1df9a';
 
 /// See also [getAlertMessage].
 @ProviderFor(getAlertMessage)

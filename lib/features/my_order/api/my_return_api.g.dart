@@ -6,7 +6,7 @@ part of 'my_return_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getMyReturnsHash() => r'616509de391b77ee642abd5e8d58561f7652aa76';
+String _$getMyReturnsHash() => r'5993d2bec2e2b0e800951a77fa35d50f78e537e0';
 
 /// See also [getMyReturns].
 @ProviderFor(getMyReturns)

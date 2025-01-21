@@ -6,7 +6,7 @@ part of 'report_complain_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$reportComplainHash() => r'cca776459e6cbee791014a4f94653df9d1c31380';
+String _$reportComplainHash() => r'9038d8208d087ecff24430f8d310c8e91a44f2bb';
 
 /// Copied from Dart SDK
 class _SystemHash {

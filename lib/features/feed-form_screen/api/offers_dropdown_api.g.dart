@@ -7,7 +7,7 @@ part of 'offers_dropdown_api.dart';
 // **************************************************************************
 
 String _$getOffersModelDropdownHash() =>
-    r'16154006e186904b890c83fe1669c1acb51d2bcc';
+    r'7f0a1e68a172eeb958fa8cc89d5380679431d586';
 
 /// See also [getOffersModelDropdown].
 @ProviderFor(getOffersModelDropdown)

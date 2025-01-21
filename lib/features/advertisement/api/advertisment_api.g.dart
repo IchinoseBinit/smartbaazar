@@ -7,7 +7,7 @@ part of 'advertisment_api.dart';
 // **************************************************************************
 
 String _$getUsersAdvertisementHash() =>
-    r'06e539c7f3ce61a079671633200da939bf6772c1';
+    r'4e0183dc76b0303bb3647c979db9045041f28bde';
 
 /// See also [getUsersAdvertisement].
 @ProviderFor(getUsersAdvertisement)
