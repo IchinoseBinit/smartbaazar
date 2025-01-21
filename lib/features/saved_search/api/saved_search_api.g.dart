@@ -6,7 +6,7 @@ part of 'saved_search_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSavedSearchesHash() => r'519e0ac6222b5ef8f6ec86090b60ee91ffe332d6';
+String _$getSavedSearchesHash() => r'eb09fb3302784822338ae394a06255cfbfacd5dc';
 
 /// See also [getSavedSearches].
 @ProviderFor(getSavedSearches)

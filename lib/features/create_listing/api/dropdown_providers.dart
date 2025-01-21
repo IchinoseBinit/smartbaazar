@@ -19,20 +19,20 @@ Future<List<TypeList>> typeListProvider(TypeListProviderRef ref) async {
 
 // Provider for fetching category list
 @riverpod
-Future<List<Category>> categoryListProvider(CategoryListProviderRef ref,
+Future<List<MyCategory>> categoryListProvider(CategoryListProviderRef ref,
     {String? parentId}) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchCategoryList(parentId: parentId);
 }
 
 @riverpod
-Future<List<Category>> subCategoryListProvider(
+Future<List<MyCategory>> subCategoryListProvider(
     SubCategoryListProviderRef ref, int parentId) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchSubCategoryList(parentId);
 }
 
-Future<List<Category>> getsubCategoryListProvder1(
+Future<List<MyCategory>> getsubCategoryListProvder1(
     SubCategoryListProviderRef ref, int parentId) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchSubCategoryList(parentId);

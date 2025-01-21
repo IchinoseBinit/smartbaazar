@@ -6,14 +6,16 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -140,7 +142,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       ),
     },
   ];
-  
+
   final List<Map<String, dynamic>> sellerCenterListing = [
     {
       "icon": Icons.mail,
@@ -212,7 +214,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen":  const BottomNavigationScreen(),
+      "screen": const HomeScreen(),
     },
     {
       "icon": Icons.feed,
@@ -246,11 +248,45 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    
     return GenericSafeArea(
       child: Scaffold(
-        
         extendBody: true,
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: 0, // Pass the current index
+          onTabChanged: (index) {
+            // ref.read(bottomNavIndexProvider.notifier).state = index;
+
+            // Add navigation logic here
+            switch (index) {
+              case 0:
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+                break;
+              case 1:
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FeedScreen()),
+                );
+                break;
+              case 2:
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MessageViewScreen()),
+                );
+                break;
+              case 3:
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const VendorProfileScreen()),
+                );
+                break;
+            }
+          },
+        ),
         backgroundColor: const Color(0xffF6F1F1),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -327,7 +363,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                   profileData: profileList,
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 15.h),
+                  margin: EdgeInsets.only(top: 18.h),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       border: Border.all(
@@ -344,7 +380,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 15.w, vertical: 4.h),
+                            horizontal: 10.w, vertical: 4.h),
                         child: BuyerCenterWidget(
                           buyerData: buyerListing,
                         ),
@@ -371,7 +407,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                         color: Color(0xffADADAD),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: BuyerCenterWidget(
                           buyerData: sellerCenterListing,
                         ),

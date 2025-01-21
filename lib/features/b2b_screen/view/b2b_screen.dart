@@ -15,6 +15,7 @@ import 'package:smartbazar/features/b2b_screen/api/b2b_provider.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -81,7 +82,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': const HomeScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -760,87 +761,86 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       ),
                     ),
                   ),
-                    asyncPostTypeContent.when(
-                      data: (feedStoryData) {
-                        final homeStory = feedStoryData.homeStory;
+                  asyncPostTypeContent.when(
+                    data: (feedStoryData) {
+                      final homeStory = feedStoryData.homeStory;
 
-                        if (homeStory != null &&
-                            homeStory is Map<String, dynamic> &&
-                            homeStory.containsKey('story')) {
-                          final story = homeStory['story'];
+                      if (homeStory != null &&
+                          homeStory is Map<String, dynamic> &&
+                          homeStory.containsKey('story')) {
+                        final story = homeStory['story'];
 
-                          if (story != null &&
-                              story is Map<String, dynamic> &&
-                              story.containsKey('posts')) {
-                            final posts = story['posts'];
+                        if (story != null &&
+                            story is Map<String, dynamic> &&
+                            story.containsKey('posts')) {
+                          final posts = story['posts'];
 
-                            if (posts != null && posts is List<dynamic>) {
-                              return SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
+                          if (posts != null && posts is List<dynamic>) {
+                            return SizedBox(
+                              height: 100.h,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: posts.length,
+                                itemBuilder: (context, index) {
+                                  final story = posts[index];
 
-                                    if (story is Map<String, dynamic>) {
-                                      final storyObject =
-                                          Story(posts: [Post.fromJson(story)]);
+                                  if (story is Map<String, dynamic>) {
+                                    final storyObject =
+                                        Story(posts: [Post.fromJson(story)]);
 
-                                      return HomePageStoryContainer(
-                                        index: index,
-                                        vendorName: story['vendor_name'] ??
-                                            "Unknown Vendor",
-                                        vendorImage: story['vendor_image'] ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story['story_count'] ?? 0,
-                                        showGift:
-                                            story['has_sponsored_gifts'] ??
-                                                false,
-                                        feedStoryContent: storyObject,
-                                        userId: story['vendor_id'],
-                                      );
-                                    } else {
-                                      return Container(); // Return an empty container if the post doesn't match the expected format
-                                    }
-                                  },
-                                ),
-                              );
-                            }
+                                    return HomePageStoryContainer(
+                                      index: index,
+                                      vendorName: story['vendor_name'] ??
+                                          "Unknown Vendor",
+                                      vendorImage: story['vendor_image'] ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story['story_count'] ?? 0,
+                                      showGift:
+                                          story['has_sponsored_gifts'] ?? false,
+                                      feedStoryContent: storyObject,
+                                      userId: story['vendor_id'],
+                                    );
+                                  } else {
+                                    return Container(); // Return an empty container if the post doesn't match the expected format
+                                  }
+                                },
+                              ),
+                            );
                           }
                         }
+                      }
 
-                        // If any of the above conditions fail, return a default widget
-                        return const Center(
-                          child: Text('No stories available. '),
-                        );
-                      },
-                      loading: () => SizedBox(
-                        height: 100.h,
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5, // Number of shimmer placeholders
-                          itemBuilder: (context, index) => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                      // If any of the above conditions fail, return a default widget
+                      return const Center(
+                        child: Text('No stories available. '),
+                      );
+                    },
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
                       ),
-                      error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
                     ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
 
                   SizedBox(
                     height: 10.h,
@@ -1333,12 +1333,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             );
                                           },
                                           child: ProductDetailWidget(
+                                            shortestDistance: pro.user.shortestDistance,
                                             posttype: pro.post_type_id,
-
-                                            membershipid: pro.user.membership_id,
+                                            membershipid:
+                                                pro.user.membership_id,
                                             id: int.tryParse(pro.id),
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating:pro.avg_rating?.toDouble(),
+                                            didcountpercentage:
+                                                pro.discount_percentage,
+                                            avg_rating:
+                                                pro.avg_rating?.toDouble(),
                                             offer: pro.discounted_price,
                                             wow: pro.wow,
                                             comment:
@@ -1463,13 +1466,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             );
                                           },
                                           child: ProductDetailWidget(
+                                            shortestDistance: pro.user.shortestDistance,
                                             id: int.tryParse(pro.id),
-                                            membershipid: pro.user.membership_id,
+                                            membershipid:
+                                                pro.user.membership_id,
                                             offer: pro.offers,
                                             posttype: pro.post_type_id,
-
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating: pro.avg_rating?.toDouble(),
+                                            didcountpercentage:
+                                                pro.discount_percentage,
+                                            avg_rating:
+                                                pro.avg_rating?.toDouble(),
                                             wow: pro.wow,
                                             comment:
                                                 pro.commentcount.toString(),
@@ -1585,12 +1591,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 ));
                                           },
                                           child: ProductDetailWidget(
-                                            membershipid: pro.user.membership_id,
+                                            shortestDistance: pro.user.shortestDistance,
+                                            membershipid:
+                                                pro.user.membership_id,
                                             offer: pro.offers,
                                             posttype: pro.post_type_id,
                                             id: int.tryParse(pro.id),
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating: pro.avg_rating?.toDouble(),
+                                            didcountpercentage:
+                                                pro.discount_percentage,
+                                            avg_rating:
+                                                pro.avg_rating?.toDouble(),
                                             wow: pro.wow,
                                             comment:
                                                 pro.commentcount.toString(),
@@ -1667,13 +1677,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 ));
                                           },
                                           child: ProductDetailWidget(
+                                            shortestDistance: pro.user.shortestDistance,
                                             offer: pro.offers,
                                             posttype: pro.post_type_id,
-
-                                            membershipid: pro.user.membership_id,
+                                            membershipid:
+                                                pro.user.membership_id,
                                             id: int.tryParse(pro.id),
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating: pro.avg_rating?.toDouble(),
+                                            didcountpercentage:
+                                                pro.discount_percentage,
+                                            avg_rating:
+                                                pro.avg_rating?.toDouble(),
                                             wow: pro.wow,
                                             comment:
                                                 pro.commentcount.toString(),
@@ -1802,16 +1815,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                                     prod.id),
                                                       ));
                                                 },
-                                                child:  ProductDetailWidget(
+                                                child: ProductDetailWidget(
+                                                
+                                                  shortestDistance: prod.user.shortestDistance,
 
-                                                  
                                                   id: int.tryParse(prod.id),
                                                   posttype: prod.post_type_id,
-
-                                                  membershipid: prod.user.membership_id,
+                                                  membershipid:
+                                                      prod.user.membership_id,
                                                   offer: prod.offers,
-                                                  tradeImage: 'assets/icon/b2bIcon.svg',
-                                                  didcountpercentage: prod.discount_percentage,
+                                                  tradeImage:
+                                                      'assets/icon/b2bIcon.svg',
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   wow: prod.wow,
@@ -1889,13 +1905,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  shortestDistance: prod.user.shortestDistance,
                                                   id: int.tryParse(prod.id),
-
                                                   posttype: prod.post_type_id,
                                                   offer: prod.offers,
-                                                  membershipid: prod.user.membership_id,
-                                                  didcountpercentage: prod.discount_percentage,
-                                                  avg_rating: prod.avg_rating?.toDouble(),
+                                                  membershipid:
+                                                      prod.user.membership_id,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
                                                   comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,
@@ -1966,13 +1985,16 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   );
                                                 },
                                                 child: ProductDetailWidget(
+                                                  shortestDistance: prod.user.shortestDistance,
                                                   offer: prod.offers,
                                                   posttype: prod.post_type_id,
-
-                                                  membershipid: prod.user.membership_id,
+                                                  membershipid:
+                                                      prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod.discount_percentage,
-                                                  avg_rating: prod.avg_rating?.toDouble(),
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
                                                   comment: prod.commentcount
                                                       .toString(),
                                                   wow: prod.wow,
@@ -2248,11 +2270,13 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                         ));
                                                   },
                                                   child: ProductDetailWidget(
-                                                    id: int.tryParse(prod.id),
-                                                    membershipid: prod.user.membership_id,
-                                                    posttype: prod.post_type_id,
 
-                                                    didcountpercentage: prod.discount_percentage,
+                                                    id: int.tryParse(prod.id),
+                                                    membershipid:
+                                                        prod.user.membership_id,
+                                                    posttype: prod.post_type_id,
+                                                    didcountpercentage: prod
+                                                        .discount_percentage,
                                                     offer: prod.offers,
                                                     shortestDistance: prod
                                                         .user.shortestDistance,
@@ -2379,11 +2403,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
+                                    shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,
                                     posttype: res.post_type_id,
-                                    
                                     discountpercentage: res.discount_percentage,
                                     avg_rating: res.avg_rating?.toDouble(),
                                     wow: res.wow,

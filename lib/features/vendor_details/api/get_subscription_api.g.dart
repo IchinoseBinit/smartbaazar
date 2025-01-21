@@ -6,7 +6,7 @@ part of 'get_subscription_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSubscriptionHash() => r'6a1240abc398d75a269900cb1bd34fe5e56f2c2d';
+String _$getSubscriptionHash() => r'4780ac93546aae46c7a3ad82cc37d9699b70e9db';
 
 /// See also [getSubscription].
 @ProviderFor(getSubscription)

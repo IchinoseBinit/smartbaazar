@@ -160,12 +160,12 @@ abstract class _TypeList implements TypeList {
       throw _privateConstructorUsedError;
 }
 
-Category _$CategoryFromJson(Map<String, dynamic> json) {
-  return _Category.fromJson(json);
+MyCategory _$MyCategoryFromJson(Map<String, dynamic> json) {
+  return _MyCategory.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Category {
+mixin _$MyCategory {
   int get id => throw _privateConstructorUsedError;
   String? get parentId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -174,20 +174,21 @@ mixin _$Category {
   String? get iconClass => throw _privateConstructorUsedError;
   String get picture => throw _privateConstructorUsedError;
 
-  /// Serializes this Category to a JSON map.
+  /// Serializes this MyCategory to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Category
+  /// Create a copy of MyCategory
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CategoryCopyWith<Category> get copyWith =>
+  $MyCategoryCopyWith<MyCategory> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CategoryCopyWith<$Res> {
-  factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
-      _$CategoryCopyWithImpl<$Res, Category>;
+abstract class $MyCategoryCopyWith<$Res> {
+  factory $MyCategoryCopyWith(
+          MyCategory value, $Res Function(MyCategory) then) =
+      _$MyCategoryCopyWithImpl<$Res, MyCategory>;
   @useResult
   $Res call(
       {int id,
@@ -200,16 +201,16 @@ abstract class $CategoryCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CategoryCopyWithImpl<$Res, $Val extends Category>
-    implements $CategoryCopyWith<$Res> {
-  _$CategoryCopyWithImpl(this._value, this._then);
+class _$MyCategoryCopyWithImpl<$Res, $Val extends MyCategory>
+    implements $MyCategoryCopyWith<$Res> {
+  _$MyCategoryCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Category
+  /// Create a copy of MyCategory
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -256,11 +257,11 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
 }
 
 /// @nodoc
-abstract class _$$CategoryImplCopyWith<$Res>
-    implements $CategoryCopyWith<$Res> {
-  factory _$$CategoryImplCopyWith(
-          _$CategoryImpl value, $Res Function(_$CategoryImpl) then) =
-      __$$CategoryImplCopyWithImpl<$Res>;
+abstract class _$$MyCategoryImplCopyWith<$Res>
+    implements $MyCategoryCopyWith<$Res> {
+  factory _$$MyCategoryImplCopyWith(
+          _$MyCategoryImpl value, $Res Function(_$MyCategoryImpl) then) =
+      __$$MyCategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -274,14 +275,14 @@ abstract class _$$CategoryImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CategoryImplCopyWithImpl<$Res>
-    extends _$CategoryCopyWithImpl<$Res, _$CategoryImpl>
-    implements _$$CategoryImplCopyWith<$Res> {
-  __$$CategoryImplCopyWithImpl(
-      _$CategoryImpl _value, $Res Function(_$CategoryImpl) _then)
+class __$$MyCategoryImplCopyWithImpl<$Res>
+    extends _$MyCategoryCopyWithImpl<$Res, _$MyCategoryImpl>
+    implements _$$MyCategoryImplCopyWith<$Res> {
+  __$$MyCategoryImplCopyWithImpl(
+      _$MyCategoryImpl _value, $Res Function(_$MyCategoryImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Category
+  /// Create a copy of MyCategory
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -294,7 +295,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
     Object? iconClass = freezed,
     Object? picture = null,
   }) {
-    return _then(_$CategoryImpl(
+    return _then(_$MyCategoryImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -329,8 +330,8 @@ class __$$CategoryImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CategoryImpl implements _Category {
-  const _$CategoryImpl(
+class _$MyCategoryImpl implements _MyCategory {
+  const _$MyCategoryImpl(
       {required this.id,
       this.parentId,
       required this.name,
@@ -339,8 +340,8 @@ class _$CategoryImpl implements _Category {
       this.iconClass,
       required this.picture});
 
-  factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CategoryImplFromJson(json);
+  factory _$MyCategoryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MyCategoryImplFromJson(json);
 
   @override
   final int id;
@@ -359,14 +360,14 @@ class _$CategoryImpl implements _Category {
 
   @override
   String toString() {
-    return 'Category(id: $id, parentId: $parentId, name: $name, slug: $slug, description: $description, iconClass: $iconClass, picture: $picture)';
+    return 'MyCategory(id: $id, parentId: $parentId, name: $name, slug: $slug, description: $description, iconClass: $iconClass, picture: $picture)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CategoryImpl &&
+            other is _$MyCategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.parentId, parentId) ||
                 other.parentId == parentId) &&
@@ -384,34 +385,34 @@ class _$CategoryImpl implements _Category {
   int get hashCode => Object.hash(
       runtimeType, id, parentId, name, slug, description, iconClass, picture);
 
-  /// Create a copy of Category
+  /// Create a copy of MyCategory
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
-      __$$CategoryImplCopyWithImpl<_$CategoryImpl>(this, _$identity);
+  _$$MyCategoryImplCopyWith<_$MyCategoryImpl> get copyWith =>
+      __$$MyCategoryImplCopyWithImpl<_$MyCategoryImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CategoryImplToJson(
+    return _$$MyCategoryImplToJson(
       this,
     );
   }
 }
 
-abstract class _Category implements Category {
-  const factory _Category(
+abstract class _MyCategory implements MyCategory {
+  const factory _MyCategory(
       {required final int id,
       final String? parentId,
       required final String name,
       required final String slug,
       final String? description,
       final String? iconClass,
-      required final String picture}) = _$CategoryImpl;
+      required final String picture}) = _$MyCategoryImpl;
 
-  factory _Category.fromJson(Map<String, dynamic> json) =
-      _$CategoryImpl.fromJson;
+  factory _MyCategory.fromJson(Map<String, dynamic> json) =
+      _$MyCategoryImpl.fromJson;
 
   @override
   int get id;
@@ -428,11 +429,11 @@ abstract class _Category implements Category {
   @override
   String get picture;
 
-  /// Create a copy of Category
+  /// Create a copy of MyCategory
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
+  _$$MyCategoryImplCopyWith<_$MyCategoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

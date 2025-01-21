@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
@@ -95,7 +96,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': const HomeScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -1246,7 +1247,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     );
                                   },
                                   child: ProductDetailWidget(
-
                                     posttype: hot.post_type_id,
                                     id: int.tryParse(hot.id),
                                     membershipid: hot.user.membership_id,
@@ -1368,6 +1368,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+
+                                                  shortestDistance: pro.user.shortestDistance,
                                                   offer: pro.offers,
                                                   posttype: pro.post_type_id,
 
@@ -1462,6 +1464,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 ));
                                           },
                                           child: ProductDetailWidget(
+
+                                            shortestDistance: pro.user.shortestDistance,
                                             id: int.tryParse(pro.id),
                                             membershipid: pro.user.membership_id,
                                             offer: pro.offers,
@@ -1545,6 +1549,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 ));
                                           },
                                           child: ProductDetailWidget(
+
+                                            shortestDistance: pro.user.shortestDistance,
                                             offer: pro.offers,
                                             posttype: pro.post_type_id,
 
@@ -1628,6 +1634,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 ));
                                           },
                                           child: ProductDetailWidget(
+
+                                            shortestDistance: pro.user.shortestDistance,
                                             offer: pro.offers,
                                             posttype: pro.post_type_id,
 
@@ -1766,6 +1774,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+
+                                                  shortestDistance: prod.user.shortestDistance,
                                                   
                                                   id: int.tryParse(prod.id),
                                                   posttype: prod.post_type_id,
@@ -1859,6 +1869,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 },
                                                 child: ProductDetailWidget(
 
+                                                  avg_rating: prod.avg_rating?.toDouble(),
+                                                  didcountpercentage: prod.discount_percentage,
+                                                  id: int.tryParse(prod.id),
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  posttype: prod.post_type_id,
+                                                  shortestDistance: prod.user.shortestDistance,
+
                                                   wow: prod.wow,
                                                   comment: prod.commentcount
                                                       .toString(),
@@ -1930,6 +1948,15 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+
+                                                  avg_rating: prod.avg_rating?.toDouble(),
+                                                  didcountpercentage: prod.avg_rating,
+                                                  id: int.tryParse(prod.id),
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  posttype: prod.post_type_id,
+                                                  shortestDistance: prod.user.shortestDistance,
+
                                                   wow: prod.wow,
                                                   comment: prod.commentcount
                                                       .toString(),
@@ -2168,15 +2195,21 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
-                                                  avg_rating: prod.avg_rating
-                                                      ?.toDouble(),
+                                                  avg_rating: prod.avg_rating?.toDouble(),
+                                                  didcountpercentage: prod.avg_rating,
+                                                  id: int.tryParse(prod.id),
+                                                  membershipid: prod.user.membership_id,
+                                                  offer: prod.offers,
+                                                  posttype: prod.post_type_id,
+                                                  shortestDistance: prod.user.shortestDistance,
+
+                                                  wow: prod.wow,
                                                   comment: prod.commentcount
                                                       .toString(),
-                                                  wow: prod.wow,
-                                                  lefttile: "Used",
-                                                  vendorname: prod.user.name,
                                                   issponsored:
                                                       prod.user.sponsored,
+                                                  lefttile: "Used",
+                                                  vendorname: prod.title,
                                                   discounttedPrice:
                                                       prod.discounted_price,
                                                   Vimage: prod.user.photo,
@@ -2281,6 +2314,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
+                                    
+                                    shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,

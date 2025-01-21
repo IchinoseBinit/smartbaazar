@@ -2,14 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'cart_item_api.g.dart';
 
 @riverpod
 Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
@@ -48,7 +48,7 @@ Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
 
 class CartItemApi {
   static Future<Response> incrementQuantity(String itemId) async {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
 
     final response = await client.request(
         requestType: RequestType.postWithToken,
@@ -59,7 +59,7 @@ class CartItemApi {
   }
 
   static Future<Response> decrementQuantity(String itemId) async {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
     FormData formData = FormData.fromMap({
       'id': itemId,
     });
@@ -75,7 +75,7 @@ class CartItemApi {
 
 @riverpod
 Future<void> deleteCartItem(DeleteCartItemRef ref, String cartItemId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   FormData formData = FormData.fromMap({
     'id': cartItemId,
   });

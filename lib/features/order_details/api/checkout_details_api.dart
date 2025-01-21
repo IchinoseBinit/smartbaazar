@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/order_details/model/checkout_details_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'checkout_details_api.g.dart';
@@ -13,7 +13,7 @@ Future<CheckoutDetailsModel> postSelectedItemOfCart(
   List<String?> vendorId,
   List<String> selectedProduct,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     FormData formData = FormData.fromMap({
       'vendor_id': vendorId,

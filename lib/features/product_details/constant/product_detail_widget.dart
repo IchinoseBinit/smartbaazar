@@ -4,40 +4,41 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 
 class ProductDetailWidget extends StatelessWidget {
-  ProductDetailWidget({
-    super.key,
-    // this.membership_title,
-    this.id,
-    this.offer = '',
-    this.title = "Trade",
-    this.discounttedPrice = '0',
-    this.comment = '0',
-    this.price = '1',
-    this.vendorname = 'John',
-    this.distance = 2,
-    this.Vimage = '',
-    this.productImage = '',
-    this.lefttile = 'TradeHub',
-    this.similarproductCount,
-    this.membershipColor,
-    this.wow,
-    this.issponsored = false,
-    this.shortestDistance,
-    this.membershipTitle,
-    this.didcountpercentage,
-    this.avg_rating = 1,
-    this.tradeImage,
-    this.posttype = '1',
-    this.membershipid='1'
-  });
+  ProductDetailWidget(
+      {super.key,
+      // this.membership_title,
+      this.id,
+      this.offer = '',
+      this.title = "Trade",
+      this.discounttedPrice = '0',
+      this.comment = '0',
+      this.price = '1',
+      this.vendorname = 'John',
+      this.distance = 2,
+      this.Vimage = '',
+      this.productImage = '',
+      this.lefttile = 'TradeHub',
+      this.similarproductCount,
+      this.membershipColor,
+      this.wow,
+      this.issponsored = false,
+      this.shortestDistance,
+      this.membershipTitle,
+      this.didcountpercentage,
+      this.avg_rating = 1,
+      this.tradeImage,
+      this.posttype = '1',
+      this.membershipid = '1'});
 
   String? title;
   String? price;
@@ -60,10 +61,19 @@ class ProductDetailWidget extends StatelessWidget {
   int? id;
   String? tradeImage;
   String? membershipid;
+  String? userId;
+
+  Future<void> getdetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId');
+    // print("zonet ${userId}");
+  }
 
   @override
   Widget build(BuildContext context) {
     // String showRs = "Rs";
+    getdetails();
+
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
     String showRs = discounttedPrice == '0' ? '' : '';
@@ -121,6 +131,7 @@ class ProductDetailWidget extends StatelessWidget {
                     ],
                   ),
                   PopupMenuButton(
+                    menuPadding: EdgeInsets.only(left: 10.w),
                     onSelected: (value) {},
 
                     padding: EdgeInsets.symmetric(horizontal: 5.h),
@@ -131,7 +142,8 @@ class ProductDetailWidget extends StatelessWidget {
                         const BoxConstraints.expand(width: 150, height: 150),
                     // menuPadding: const EdgeInsets.only(left: 10),
                     iconColor: const Color(0xffB6B4B4),
-                    color: const Color(0xff766c7a).withOpacity(0.9),
+
+                    color: Colors.grey,
                     itemBuilder: (context) {
                       return [
                         PopupMenuItem(
@@ -149,6 +161,24 @@ class ProductDetailWidget extends StatelessWidget {
                               ),
                             )),
                         PopupMenuItem(
+                            onTap: () {
+                              addToFavorites(null, userId!, id.toString()).then(
+                                (value) {
+                                  final snackBar = SnackBar(
+                                    content: Text(value),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                },
+                              ).catchError((error) {
+                                final errorSnackBar = SnackBar(
+                                  content: Text(
+                                      'Failed to add to favorites: $error'),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(errorSnackBar);
+                              });
+                            },
                             height: 30,
                             padding: const EdgeInsets.only(left: 5),
                             child: Text(
@@ -179,37 +209,38 @@ class ProductDetailWidget extends StatelessWidget {
                               ),
                             )),
                         PopupMenuItem(
-                            height: 30,
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(
-                              "Get Seller Directives",
-                              style: headerstyle.copyWith(
-                                fontFamily: GoogleFonts.quicksand().fontFamily,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 8,
-                              ),
-                            )),
+                          height: 30,
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Text(
+                            "Get Seller Directives",
+                            style: headerstyle.copyWith(
+                              fontFamily: GoogleFonts.quicksand().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                            ),
+                          ),
+                        ),
                         PopupMenuItem(
-                            height: 30,
-                            padding: const EdgeInsets.only(left: 5),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ReportComplainScreen(
-                                            productId: "167",
-                                            productName: "techstore"),
-                                  ));
-                            },
-                            child: Text(
-                              "Report",
-                              style: headerstyle.copyWith(
-                                fontFamily: GoogleFonts.quicksand().fontFamily,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 8,
-                              ),
-                            )),
+                          height: 30,
+                          padding: const EdgeInsets.only(left: 5),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReportComplainScreen(
+                                      productId: userId!,
+                                      productName: vendorname!),
+                                ));
+                          },
+                          child: Text(
+                            "Report",
+                            style: headerstyle.copyWith(
+                              fontFamily: GoogleFonts.quicksand().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                            ),
+                          ),
+                        ),
                       ];
                     },
                     child: const Icon(
@@ -523,7 +554,7 @@ class ProductDetailWidget extends StatelessWidget {
               ),
             ),
             Column(
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   padding:
@@ -570,129 +601,56 @@ class ProductDetailWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VendorHomeScreen(
-                                vendorName: vendorname!, vid: id!)));
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    // height: 50.h,
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(vertical: 10.9.h),
-                    decoration: BoxDecoration(
-                      color: membershipColor != null
-                          ? Color(int.parse(
-                              membershipColor!.replaceFirst('#', '0xFF')))
-                          : const Color(0xff3D215F), // Default color
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(13),
-                        bottomRight: Radius.circular(13),
-                      ),
+              ],
+            ),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.symmetric(vertical: 10.9.h),
+              decoration: BoxDecoration(
+                color: membershipColor != null
+                    ? Color(
+                        int.parse(
+                          membershipColor!.replaceFirst('#', '0xFF'),
+                        ),
+                      )
+                    : const Color(0xff3D215F), // Default color
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(13),
+                  bottomRight: Radius.circular(13),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 13.w, right: 3.w),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(Vimage!),
+                      radius: 19.sp,
                     ),
-                    // ),
+                  ),
+                  Expanded(
+                    // To allow spacing between elements
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: 13.w,
-                        ),
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(Vimage!),
-                          radius: 19.sp,
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
+                        // Vendor Name
+                        Column(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Text(
+                              vendorname != null && vendorname!.length > 19
+                                  ? '${vendorname!.substring(0, 14)}...'
+                                  : vendorname ?? '',
+                              style: headerstyle.copyWith(
+                                fontFamily: GoogleFonts.quicksand().fontFamily,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Row(
                               children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 3.5.w,
-                                    ),
-                                    // Text(
-                                    //   vendorname != null &&
-                                    //       vendorname!.length > 25
-                                    //       ? '${vendorname!.substring(0, 12)}...'
-                                    //       : vendorname ?? '',
-                                    //   style: headerstyle.copyWith(
-                                    //     // fontSize: (vendorname != null && vendorname!.length > 10) ? 8.sp : 11.5.sp,
-                                    //     fontSize: (vendorname != null && vendorname!.length > 10)
-                                    //         ? 8.sp
-                                    //         : (vendorname != null && vendorname!.length > 12)
-                                    //         ? 7.5.sp
-                                    //         : 11.5.sp, // Default font size
-                                    //     fontWeight: FontWeight.w700,
-                                    //   ),
-                                    //   overflow: TextOverflow.ellipsis,
-                                    //   maxLines: 1,
-                                    // ),
-
-                                    Text(
-                                      vendorname != null &&
-                                              vendorname!.length > 19
-                                          ? '${vendorname!.substring(0, 14)}...'
-                                          : vendorname ?? '',
-                                      style: headerstyle.copyWith(
-                                        fontFamily:
-                                            GoogleFonts.quicksand().fontFamily,
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 4.w,
-                                    ),
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                      size: 12,
-                                    ),
-                                    SizedBox(
-                                      width: 52.w,
-                                    ),
-                                    if (shortestDistance != null &&
-                                        shortestDistance != 0.0)
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
-                                            size: 12,
-                                          ),
-                                          Text(
-                                            "${shortestDistance ?? 2.0} km",
-                                            style: headerstyle.copyWith(
-                                              fontFamily:
-                                                  GoogleFonts.quicksand()
-                                                      .fontFamily,
-                                              fontSize: 9.sp,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
-                                Row(
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.spaceBetween,
-                                  // crossAxisAlignment: CrossAxisAlignment.s,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 3.5.w,
-                                        ),
-                                            Image.asset(
+                                Image.asset(
                                   membershipid == "2"
                                       ? spotlighticon
                                       : membershipid == "1"
@@ -704,59 +662,79 @@ class ProductDetailWidget extends StatelessWidget {
                                                   : basicsellericon, // Provide a default icon if no match
                                   height: 9.h,
                                 ),
-                                        SizedBox(
-                                          width: 1.w,
-                                        ),
-                                        SizedBox(
-                                          child: Text(
-                                            membershipTitle ?? "Domestic Brand",
-                                            style: headerstyle.copyWith(
-                                              fontSize: 10.sp,
-                                              fontFamily:
-                                                  GoogleFonts.quicksand()
-                                                      .fontFamily,
+                                Text(
+                                  membershipTitle ?? "Domestic Brand",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 10.sp,
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
 
-                                              // Adjust font size based on length
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            // overflow: TextOverflow.ellipsis,
-                                            // Apply ellipsis for overflow
-                                            // maxLines:
-                                            //     1, // Restrict to a single line
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 65.w,
-                                    ),
-
-                                    if (issponsored)
-                                      Row(
-                                        children: [
-                                          Image.asset("assets/images/mike.png"),
-                                          Text(
-                                            "SPONSORED",
-                                            style: headerstyle.copyWith(
-                                                fontSize: 10.sp,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ],
-                                      )
-
-                                    // : const SizedBox(),
-                                  ],
+                                    // Adjust font size based on length
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  // overflow: TextOverflow.ellipsis,
+                                  // Apply ellipsis for overflow
+                                  // maxLines:
+                                  //     1, // Restrict to a single line
                                 ),
                               ],
                             ),
                           ],
                         ),
+
+                        // Shortest Distance
+                        Padding(
+                          padding: EdgeInsets.only(right: 10.w),
+                          child: Column(
+                            children: [
+                              shortestDistance != null &&
+                                      shortestDistance != 0.0
+                                  ? Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on,
+                                          color: Colors.white,
+                                          size: 12,
+                                        ),
+                                        SizedBox(
+                                            width: 2
+                                                .w), // Space between icon and text
+                                        Text(
+                                          "${double.parse(shortestDistance.toString()).toStringAsFixed(2)} km",
+                                          style: headerstyle.copyWith(
+                                            fontFamily: GoogleFonts.quicksand()
+                                                .fontFamily,
+                                            fontSize: 9.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
+                              issponsored
+                                  ? Row(
+                                      children: [
+                                        Image.asset("assets/images/mike.png"),
+                                        Text(
+                                          "SPONSORED",
+                                          style: headerstyle.copyWith(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(
+                                      height: 5.h,
+                                    )
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
           ],
         ),
       ),

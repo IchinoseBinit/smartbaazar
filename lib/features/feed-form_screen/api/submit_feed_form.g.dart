@@ -6,7 +6,7 @@ part of 'submit_feed_form.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postFeedFormHash() => r'154882e0e9291fb5dfebe2d8c040528bd256585e';
+String _$postFeedFormHash() => r'ad37eee440d8def64251d1aace694999217b1600';
 
 /// Copied from Dart SDK
 class _SystemHash {

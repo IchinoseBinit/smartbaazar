@@ -10,7 +10,7 @@
 // Future<PostModel> productDetails(ProductDetailsRef ref, String id) async {
 //   // final client = Dio();
 // //
-//   final SmartClinet client = SmartClinet();
+//   final SmartClient   client = SmartClient  ();
 //   try {
 //     final response = await client.request(
 //       requestType: RequestType.getWithToken,
@@ -20,7 +20,7 @@
 //     print(
 //         "bibashk ${PostModel.fromJson(response.data).result!
 //         .ratings!
-        
+
 //         }");
 //     return PostModel.fromJson(response.data);
 //   } catch (e) {

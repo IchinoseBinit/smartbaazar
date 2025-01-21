@@ -7,6 +7,7 @@ import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/order_details/api/checkout_details_api.dart';
 import 'package:smartbazar/features/order_details/api/checkout_form_submission_api.dart';
 import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
@@ -524,7 +525,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (_) =>  const BottomNavigationScreen()),
+                            builder: (_) =>  const HomeScreen()),
                         (route) => false, // Remove all previous routes
                       );
                     },

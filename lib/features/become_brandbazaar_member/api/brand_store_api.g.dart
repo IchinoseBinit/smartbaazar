@@ -6,7 +6,7 @@ part of 'brand_store_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postBrandMemberHash() => r'323c40e4c60e5632a4c04eaad1b6395bd6b0d3bf';
+String _$postBrandMemberHash() => r'd665405d48c16538aafa8b90722e1ec5ee9b67df';
 
 /// Copied from Dart SDK
 class _SystemHash {

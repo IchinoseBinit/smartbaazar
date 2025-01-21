@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/scan_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -34,6 +37,7 @@ import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -42,6 +46,7 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 
 import '../../../general_widget/story_search_bar.dart';
 import '../../events_screen/view/events_screen.dart';
@@ -80,6 +85,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Map<String, String>? dropdownValue;
   int? postypeid = 0;
 
+  Future<void> shared() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+  }
+
   final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/openCartIcon.svg',
@@ -89,7 +98,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': const HomeScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -130,6 +139,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   void initState() {
+    shared();
     super.initState();
     dynamictabController = TabController(length: 3, vsync: this);
     // fetchStoryHome().then(
@@ -238,6 +248,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final areaa = ref.watch(getScratchAndWinResponseProvider);
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     List<String> categories =
@@ -789,7 +800,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         ],
                       ),
                     ),
-
                     GestureDetector(
                       onVerticalDragUpdate: _onDragUpdate,
                       onVerticalDragStart: _onDragStart,
@@ -1091,6 +1101,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       itemBuilder: (context, index) {
                                         bool isSelected =
                                             index == selectedIndexx;
+
                                         return GestureDetector(
                                           onTap: () {
                                             setState(() {
@@ -1142,6 +1153,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     products.length, (index) {
                                                   CategoryProduct prod =
                                                       products[index];
+
                                                   return InkWell(
                                                     onTap: () {
                                                       Navigator.push(
@@ -1168,10 +1180,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               .userdetails
                                                               ?.sponsored ??
                                                           false,
-                                                      shortestDistance:
-                                                          double.tryParse(
-                                                              prod.nearestBranch ??
-                                                                  '0'),
+                                                      shortestDistance: prod
+                                                          .userdetails
+                                                          ?.shortestDistance
+                                                          ?.roundToDouble(),
                                                       wow: prod.wow,
                                                       comment: prod.commentCount
                                                           .toString(),
@@ -1385,6 +1397,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             shortestDistance: prod
                                                                 .shortestDistance,
                                                             distance: prod
+                                                                .user[0]
                                                                 .shortestDistance,
                                                             avg_rating:
                                                                 prod.avg_rating,
@@ -1497,6 +1510,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           Vimage: prod
                                                               .user.first.photo,
                                                           shortestDistance: prod
+                                                              .user[0]
                                                               .shortestDistance,
                                                           distance: prod
                                                               .shortestDistance,
@@ -1591,6 +1605,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    shortestDistance: prod
+                                                        .user[0]
+                                                        .shortestDistance,
                                                     membershipid: prod.user
                                                         .first.membership_id,
                                                     posttype: prod.posttypename,
@@ -1600,8 +1617,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     tradeImage: spotlighticon,
                                                     Vimage:
                                                         prod.user.first.photo,
-                                                    shortestDistance:
-                                                        prod.shortestDistance,
                                                     distance:
                                                         prod.shortestDistance,
                                                     avg_rating: prod.avg_rating,
@@ -1864,8 +1879,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   .discount_percentage
                                                   ?.toInt(),
                                               shortestDistance: prefs
-                                                  .userdetails
-                                                  ?.shortestDistance,
+                                                  .userdetails?.shortestDistance
+                                                  ?.roundToDouble(),
                                               issponsored:
                                                   prefs.userdetails!.sponsored!,
                                               wow: prefs.wow,
@@ -1973,6 +1988,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   data.allProducts.length,
                                   (index) {
                                     VProduct res = data.allProducts[index];
+                                    print(
+                                        "lauka ${res.userDetail.shortestDistance}");
+
                                     return InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -2010,8 +2028,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 res.discount_percentage,
                                             id: int.tryParse(
                                                 res.userDetail.user_id!),
-                                            shortestDistance:
-                                                res.user.shortestDistance,
+                                            shortestDistance: res
+                                                .userDetail.shortestDistance
+                                                ?.roundToDouble(),
                                             issponsored:
                                                 res.userDetail.sponsored ??
                                                     false,
@@ -2148,7 +2167,9 @@ class valuenotifilersidebutton extends StatelessWidget {
                             height: 6.h,
                           ),
                           IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                const ScanScreen();
+                              },
                               icon: Column(
                                 children: [
                                   Image.asset(

@@ -6,7 +6,7 @@ part of 'offline_listing_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getOfflineListingHash() => r'e8dc2a2123ef0d474a4a6b2c44b4f837fa24dab8';
+String _$getOfflineListingHash() => r'ba2b6f7cdeaacbd5404f48fb71fb21ff5bc94706';
 
 /// See also [getOfflineListing].
 @ProviderFor(getOfflineListing)

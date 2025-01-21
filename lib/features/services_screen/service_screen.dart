@@ -15,6 +15,7 @@ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -85,7 +86,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': const HomeScreen()
     },
     {
       'icon': 'assets/icon/box.svg',
@@ -1210,7 +1211,10 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                       );
                                     },
                                     child: ProductDetailWidget(
+
+                                      shortestDistance: hot.user.shortestDistance,
                                       posttype: hot.post_type_id,
+
                                       id: int.tryParse(hot.id),
                                       membershipid: hot.user.membership_id,
                                       avg_rating: hot.avg_rating?.toDouble(),
@@ -1339,6 +1343,14 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  
+                                                  membershipid: pro.user.membership_id,
+                                                  posttype: pro.post_type_id,
+                                                  shortestDistance: pro.user.shortestDistance,
+
+                                                  id: int.tryParse(pro.id),
+                                                  didcountpercentage: pro.discount_percentage,
+                                                  avg_rating: pro.avg_rating?.toDouble(),
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
                                                   comment: pro.commentcount
@@ -1436,6 +1448,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  avg_rating: pro.avg_rating?.toDouble(),
+                                                  membershipid: pro.user.membership_id,
+                                                  posttype: pro.post_type_id,
+                                                  shortestDistance: pro.user.shortestDistance,
+
+                                                  didcountpercentage: pro.discount_percentage,
+                                                  id: int.tryParse(pro.id),
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
                                                   comment: pro.commentcount
@@ -1524,6 +1543,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  posttype: pro.post_type_id,
+                                                  shortestDistance: pro.user.shortestDistance,
+
+                                                  membershipid: pro.user.membership_id,
+                                                  id: int.tryParse(pro.id),
+                                                  didcountpercentage: pro.discount_percentage,
+                                                  avg_rating: pro.avg_rating?.toDouble(),
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
                                                   comment: pro.commentcount
@@ -1612,6 +1638,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                       ));
                                                 },
                                                 child: ProductDetailWidget(
+                                                  posttype: pro.post_type_id,
+                                                  shortestDistance: pro.user.shortestDistance,
+
+                                                  membershipid: pro.user.membership_id,
+                                                  id: int.tryParse(pro.id),
+                                                  didcountpercentage: pro.discount_percentage,
+                                                  avg_rating: pro.avg_rating?.toDouble(),
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
                                                   comment: pro.commentcount
@@ -1749,6 +1782,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+
+                                                    shortestDistance: prod.user.shortestDistance,
                                                     id: int.tryParse(prod.id),
                                                     posttype: prod.post_type_id,
                                                     membershipid:
@@ -1853,6 +1888,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    posttype: prod.post_type_id,
+
+                                                    membershipid: prod.user.membership_id,
+                                                    id: int.tryParse(prod.id),
+                                                    didcountpercentage: prod.discount_percentage,
                                                     avg_rating: prod.avg_rating
                                                         ?.toDouble(),
                                                     shortestDistance: prod
@@ -1944,6 +1984,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    posttype: prod.post_type_id,
+                                                    membershipid: prod.user.membership_id,
+
+                                                    id: int.tryParse(prod.id),
+                                                    didcountpercentage: prod.discount_percentage,
                                                     offer: prod.offers,
                                                     shortestDistance: prod
                                                         .user.shortestDistance,
@@ -2203,6 +2248,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    posttype: prod.post_type_id,
+                                                    shortestDistance: prod.user.shortestDistance,
+
+                                                    membershipid: prod.user.membership_id,
+                                                    id: int.tryParse(prod.id),
                                                     avg_rating: prod.avg_rating
                                                         ?.toDouble(),
                                                     didcountpercentage: prod
@@ -2296,6 +2346,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
+                                    shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,

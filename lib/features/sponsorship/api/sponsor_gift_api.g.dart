@@ -7,7 +7,7 @@ part of 'sponsor_gift_api.dart';
 // **************************************************************************
 
 String _$getSponsorGiftModelResponseHash() =>
-    r'5ce461619f080f1ae721524bb2e627df035317b3';
+    r'3d4247dd5c8de1751862e6c536bb9cf63557df40';
 
 /// See also [getSponsorGiftModelResponse].
 @ProviderFor(getSponsorGiftModelResponse)

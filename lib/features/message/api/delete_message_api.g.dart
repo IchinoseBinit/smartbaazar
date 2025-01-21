@@ -6,7 +6,7 @@ part of 'delete_message_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deleteMessageHash() => r'6b8854403a7c4ee1782695f6e2267514604bcb96';
+String _$deleteMessageHash() => r'9e07f95119041cf0d039c162098d07f3254ac72e';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/vendor_details/model/update_user_detail_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'update_user_details_api.g.dart';
@@ -25,7 +25,7 @@ Future<UpdateUserDetail> updateUserDetails(
 
   // String dob,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     Map<String, dynamic> formData = {
@@ -92,7 +92,7 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
 
   // String dob,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     Map<String, dynamic> formData = {

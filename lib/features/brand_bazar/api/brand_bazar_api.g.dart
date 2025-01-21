@@ -7,7 +7,7 @@ part of 'brand_bazar_api.dart';
 // **************************************************************************
 
 String _$getBrandBazaarResponseHash() =>
-    r'b51a268719a3efa81086d2152f7910f7a9fd238c';
+    r'77d92ea0ccb093f4634c0f563aeafa420dd6e50d';
 
 /// See also [getBrandBazaarResponse].
 @ProviderFor(getBrandBazaarResponse)

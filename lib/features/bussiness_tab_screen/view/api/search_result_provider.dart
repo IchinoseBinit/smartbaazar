@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/model/business_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 import 'package:dio/dio.dart'; // For better error handling with Dio
 
@@ -11,7 +11,7 @@ Future<BusinessResponse> getSearchResponse(
   GetSearchResponseRef ref,
   String query,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.postWithToken,
@@ -36,7 +36,3 @@ Future<BusinessResponse> getSearchResponse(
     throw Exception('Failed to fetch PostTypeFetch: $e');
   }
 }
-
-
-
-

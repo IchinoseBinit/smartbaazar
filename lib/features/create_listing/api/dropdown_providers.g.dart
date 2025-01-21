@@ -44,7 +44,7 @@ final typeListProviderProvider =
 // ignore: unused_element
 typedef TypeListProviderRef = AutoDisposeFutureProviderRef<List<TypeList>>;
 String _$categoryListProviderHash() =>
-    r'929b6a077cf47dc019746b4a35de178d95f69083';
+    r'5b06c89fbba9c00294c0fa6ca76f2a7728a837e1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,7 +72,7 @@ class _SystemHash {
 const categoryListProviderProvider = CategoryListProviderFamily();
 
 /// See also [categoryListProvider].
-class CategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
+class CategoryListProviderFamily extends Family<AsyncValue<List<MyCategory>>> {
   /// See also [categoryListProvider].
   const CategoryListProviderFamily();
 
@@ -111,7 +111,7 @@ class CategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
 
 /// See also [categoryListProvider].
 class CategoryListProviderProvider
-    extends AutoDisposeFutureProvider<List<Category>> {
+    extends AutoDisposeFutureProvider<List<MyCategory>> {
   /// See also [categoryListProvider].
   CategoryListProviderProvider({
     String? parentId,
@@ -146,7 +146,8 @@ class CategoryListProviderProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<Category>> Function(CategoryListProviderRef provider) create,
+    FutureOr<List<MyCategory>> Function(CategoryListProviderRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -163,7 +164,7 @@ class CategoryListProviderProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Category>> createElement() {
+  AutoDisposeFutureProviderElement<List<MyCategory>> createElement() {
     return _CategoryListProviderProviderElement(this);
   }
 
@@ -183,13 +184,14 @@ class CategoryListProviderProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CategoryListProviderRef on AutoDisposeFutureProviderRef<List<Category>> {
+mixin CategoryListProviderRef
+    on AutoDisposeFutureProviderRef<List<MyCategory>> {
   /// The parameter `parentId` of this provider.
   String? get parentId;
 }
 
 class _CategoryListProviderProviderElement
-    extends AutoDisposeFutureProviderElement<List<Category>>
+    extends AutoDisposeFutureProviderElement<List<MyCategory>>
     with CategoryListProviderRef {
   _CategoryListProviderProviderElement(super.provider);
 
@@ -198,14 +200,15 @@ class _CategoryListProviderProviderElement
 }
 
 String _$subCategoryListProviderHash() =>
-    r'fd2645cf4d5d01ac52c440d754c996671d60cdd5';
+    r'9c4e5ed52e0ca11fbb6ed69df3649975ff62f104';
 
 /// See also [subCategoryListProvider].
 @ProviderFor(subCategoryListProvider)
 const subCategoryListProviderProvider = SubCategoryListProviderFamily();
 
 /// See also [subCategoryListProvider].
-class SubCategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
+class SubCategoryListProviderFamily
+    extends Family<AsyncValue<List<MyCategory>>> {
   /// See also [subCategoryListProvider].
   const SubCategoryListProviderFamily();
 
@@ -244,7 +247,7 @@ class SubCategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
 
 /// See also [subCategoryListProvider].
 class SubCategoryListProviderProvider
-    extends AutoDisposeFutureProvider<List<Category>> {
+    extends AutoDisposeFutureProvider<List<MyCategory>> {
   /// See also [subCategoryListProvider].
   SubCategoryListProviderProvider(
     int parentId,
@@ -279,7 +282,7 @@ class SubCategoryListProviderProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<Category>> Function(SubCategoryListProviderRef provider)
+    FutureOr<List<MyCategory>> Function(SubCategoryListProviderRef provider)
         create,
   ) {
     return ProviderOverride(
@@ -297,7 +300,7 @@ class SubCategoryListProviderProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Category>> createElement() {
+  AutoDisposeFutureProviderElement<List<MyCategory>> createElement() {
     return _SubCategoryListProviderProviderElement(this);
   }
 
@@ -319,13 +322,13 @@ class SubCategoryListProviderProvider
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin SubCategoryListProviderRef
-    on AutoDisposeFutureProviderRef<List<Category>> {
+    on AutoDisposeFutureProviderRef<List<MyCategory>> {
   /// The parameter `parentId` of this provider.
   int get parentId;
 }
 
 class _SubCategoryListProviderProviderElement
-    extends AutoDisposeFutureProviderElement<List<Category>>
+    extends AutoDisposeFutureProviderElement<List<MyCategory>>
     with SubCategoryListProviderRef {
   _SubCategoryListProviderProviderElement(super.provider);
 

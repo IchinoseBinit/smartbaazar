@@ -6,7 +6,7 @@ part of 'last_message_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getLastMessageHash() => r'e7005985f698ba85864b5099461025db1a44d2d1';
+String _$getLastMessageHash() => r'af478fcee2a29aa973a14497f1970c777f087db3';
 
 /// Copied from Dart SDK
 class _SystemHash {

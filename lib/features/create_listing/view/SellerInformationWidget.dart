@@ -4,31 +4,24 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 // import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
-import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
 import 'package:smartbazar/features/create_listing/api/get_location_provider.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
-import 'package:smartbazar/features/create_listing/view/d.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class SellerInformationWidget extends ConsumerStatefulWidget {
   SellerInformationWidget(
@@ -130,7 +123,7 @@ class _SellerInformationWidgetState
 
   final TextEditingController _pickupcontroller = TextEditingController();
   // String selectedpickup = ''; // Store the selected pickup location
-  final dropDownKey = GlobalKey<DropdownSearchState>();
+  // final dropDownKey = GlobalKey<DropdownSearchState>();
 
   int? _selectedpackage = 0;
 
@@ -156,7 +149,7 @@ class _SellerInformationWidgetState
 
   Future<void> _getStreet(String name) async {
     try {
-      final value = await getStreetAddress(name);
+      final value = await getpickaddress(name);
       setState(() {
         _places = value.places!;
       });
@@ -282,9 +275,7 @@ class _SellerInformationWidgetState
                         controller: _pickupcontroller,
                         onChanged: _onSearchChanged,
                         decoration: InputDecoration.collapsed(
-                          hintText: selectedpickup?.place_id == null
-                              ? 'Select pickup'
-                              : selectedpickup?.place_id,
+                          hintText: selectedpickup?.place_id ?? 'Select pickup',
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14.sp,
@@ -415,7 +406,7 @@ class _SellerInformationWidgetState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.location_on,
                                         color: Colors.redAccent,
                                         size: 16,
@@ -733,14 +724,12 @@ class _SellerInformationWidgetState
               : GeneralEelevatedButton(
                   text: isloading ? 'Submitting...' : 'Submit',
                   onPresssed: () async {
-                    if (widget.category != null
-                        //   widget.title != null &&
-                        //   widget.city != null &&
-                        //   widget.description != null &&
-                        //   widget.phonecoontroller?.text.isNotEmpty == true &&
-                        //   selectedpickup.isNotEmpty &&
-                        //   selectedImages.isNotEmpty &&
-                        //   widget.terms != null
+                    if (widget.category != null &&
+                          widget.title != null &&
+                          widget.city != null &&
+                          widget.description != null &&
+                          widget.phonecoontroller?.text.isNotEmpty == true &&
+                          widget.terms != null
                         ) {
                       setState(() {
                         isloading = true; // Start loading

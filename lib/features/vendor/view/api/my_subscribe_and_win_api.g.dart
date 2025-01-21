@@ -7,7 +7,7 @@ part of 'my_subscribe_and_win_api.dart';
 // **************************************************************************
 
 String _$getMySubscribeAndWinResponseHash() =>
-    r'1fcdf54515102f0cd9ad10b8969a8876648d0b6e';
+    r'7fd48aebfdf0c5094f57f7a6ea10df2878b0cdc8';
 
 /// See also [getMySubscribeAndWinResponse].
 @ProviderFor(getMySubscribeAndWinResponse)

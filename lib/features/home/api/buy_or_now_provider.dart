@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'buy_or_now_provider.g.dart';
@@ -223,7 +223,7 @@ class Home1GlobalModel {
 // Riverpod Provider
 @riverpod
 Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

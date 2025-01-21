@@ -6,7 +6,7 @@ part of 'ad_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAdsHash() => r'7f67db0664b8a9e964e100119a00e04f02613581';
+String _$fetchAdsHash() => r'2a135c0bda1333a784d289d0f345516ca608b315';
 
 /// See also [fetchAds].
 @ProviderFor(fetchAds)

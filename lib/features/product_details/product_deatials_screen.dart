@@ -1414,48 +1414,48 @@ class TabBarItems extends StatelessWidget {
   }
 }
 
-class ScratchWinContainer extends StatelessWidget {
-  ScratchWinContainer({
-    super.key,
-    required this.ontap,
-  });
-  Function()? ontap;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: ontap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 9),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
-          child: Row(
-            children: [
-              Image.asset(
-                ImageConstant.scartchWinImage,
-              ),
-              // Expanded(
-              //   child: RichTextWidget(
-              //       title: "Visit our virtual store ",
-              //       // titleStyle: TextStyle(
-              //       //     fontSize: 10.sp,
-              //       //     fontWeight: FontWeight.w700),
-              //       subtitle: "Subscribe us to win FREE prizes & get our deals",
-              //       subtitleStyle: TextStyle(
-              //           fontSize: 12.sp,
-              //           color: Colors.black,
-              //           fontWeight: FontWeight.w400),
-              //       onPressed: () {}),
-              // )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class ScratchWinContainer extends StatelessWidget {
+//   ScratchWinContainer({
+//     super.key,
+//     required this.ontap,
+//   });
+//   Function()? ontap;
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       onTap: ontap,
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 9),
+//         child: Container(
+//           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
+//           decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(8.r),
+//               border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
+//           child: Row(
+//             children: [
+//               Image.asset(
+//                 ImageConstant.scartchWinImage,
+//               ),
+//               // Expanded(
+//               //   child: RichTextWidget(
+//               //       title: "Visit our virtual store ",
+//               //       // titleStyle: TextStyle(
+//               //       //     fontSize: 10.sp,
+//               //       //     fontWeight: FontWeight.w700),
+//               //       subtitle: "Subscribe us to win FREE prizes & get our deals",
+//               //       subtitleStyle: TextStyle(
+//               //           fontSize: 12.sp,
+//               //           color: Colors.black,
+//               //           fontWeight: FontWeight.w400),
+//               //       onPressed: () {}),
+//               // )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class ProductAdditionalDetialsWidget extends StatelessWidget {
   final String inbox;

@@ -72,7 +72,7 @@ final List<Map<String, dynamic>> items = [
     'screen': const EventsScreen()
   },
 ];
-final bottomNavIndexProvider = StateProvider<int>((ref) => 0);
+final bottomNavIndexProvider = StateProvider<int>((ref) => 1);
 
 const String baseAsset = "assets/icon";
 //icons-postype

@@ -624,7 +624,7 @@ class AllProductDetailWidget extends StatelessWidget {
                         ),
                         Column(
                           mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
@@ -637,7 +637,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                       ? '${vendorname!.substring(0, 12)}...'
                                       : vendorname ?? '',
                                   style: headerstyle.copyWith(
-                                    fontSize: 12.sp,
+                                    fontSize: 10.5.sp,
                                     // Adjust font size based on length
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -650,7 +650,10 @@ class AllProductDetailWidget extends StatelessWidget {
                                 const Icon(
                                   Icons.logout,
                                   color: Colors.white,
-                                  size: 12,
+                                  size: 11,
+                                ),
+                                SizedBox(
+                                  width: 20.w,
                                 ),
                                 if (shortestDistance != null &&
                                     shortestDistance != 0.0)
@@ -659,12 +662,12 @@ class AllProductDetailWidget extends StatelessWidget {
                                       const Icon(
                                         Icons.location_on,
                                         color: Colors.white,
-                                        size: 12,
+                                        size: 10,
                                       ),
                                       Text(
                                         "${shortestDistance ?? 2.0} km",
                                         style: headerstyle.copyWith(
-                                          fontSize: 8.sp,
+                                          fontSize: 5.sp,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),

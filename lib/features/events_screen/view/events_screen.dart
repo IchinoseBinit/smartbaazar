@@ -14,6 +14,7 @@ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/events_screen/api/event_provider.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -1160,6 +1161,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                       productId: hot.id)));
                                     },
                                     child: ProductDetailWidget(
+
+                                      posttype: hot.post_type_id,
+                                      shortestDistance: hot.user.shortestDistance,
+                                      
+                                      membershipid: hot.user.membership_id,
+                                      id: int.tryParse(hot.id),
                                       avg_rating: hot.avg_rating?.toDouble(),
                                       didcountpercentage: hot.discount_percentage,
                                       offer: hot.offers,
@@ -1168,7 +1175,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       comment: hot.commentcount.toString(),
                                       discounttedPrice: hot.discounted_price,
                                       issponsored: hot.user.sponsored,
-                                      lefttile: "B2b-Shop",
+                                      lefttile: "Events",
                                       productImage: hot.image,
                                       Vimage: hot.user.photo,
                                       price: hot.price,
@@ -1257,6 +1264,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                                       pro.id)));
                                                 },
                                                 child: ProductDetailWidget(
+
+                                                  posttype: pro.post_type_id,
+                                                  shortestDistance: pro.user.shortestDistance,
+
+                                                  membershipid: pro.user.membership_id,
+                                                  id: int.tryParse(pro.id),
+                                                  didcountpercentage: pro.discount_percentage,
+                                                  avg_rating: pro.avg_rating?.toDouble(),
                                                   offer: pro.discounted_price,
                                                   wow: pro.wow,
                                                   comment:
@@ -1264,7 +1279,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                   discounttedPrice:
                                                       pro.discounted_price,
                                                   issponsored: pro.user.sponsored,
-                                                  lefttile: "B2b-Shop",
+                                                  lefttile: "Events",
                                                   Vimage: pro.user.photo,
                                                   price: pro.price,
                                                   title: pro.title,
@@ -1343,13 +1358,21 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                             productId: pro.id)));
                                           },
                                           child: ProductDetailWidget(
+                                            
+                                            posttype: pro.post_type_id,
+                                            shortestDistance: pro.user.shortestDistance,
+
+                                            membershipid: pro.user.membership_id,
+                                            id: int.tryParse(pro.id),
+                                            didcountpercentage: pro.discount_percentage,
+                                            avg_rating: pro.avg_rating?.toDouble(),
                                             offer: pro.discounted_price,
                                             wow: pro.wow,
                                             comment: pro.commentcount.toString(),
                                             discounttedPrice:
                                                 pro.discounted_price,
                                             issponsored: pro.user.sponsored,
-                                            lefttile: "B2b-Shop",
+                                            lefttile: "Events",
                                             Vimage: pro.user.photo,
                                             price: pro.price,
                                             title: pro.title,
@@ -1418,13 +1441,21 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                             productId: pro.id)));
                                           },
                                           child: ProductDetailWidget(
+
+                                             shortestDistance: pro.user.shortestDistance,
+                                            posttype: pro.post_type_id,
+                                            membershipid: pro.user.membership_id,
+                                            id: int.tryParse(pro.id),
+                                            didcountpercentage: pro.discount_percentage,
+                                            avg_rating: pro.avg_rating?.toDouble(),
+
                                             offer: pro.discounted_price,
                                             wow: pro.wow,
                                             comment: pro.commentcount.toString(),
                                             discounttedPrice:
                                                 pro.discounted_price,
                                             issponsored: pro.user.sponsored,
-                                            lefttile: "B2b-Shop",
+                                            lefttile: "Events",
                                             Vimage: pro.user.photo,
                                             price: pro.price,
                                             title: pro.title,
@@ -1493,13 +1524,20 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                             productId: pro.id)));
                                           },
                                           child: ProductDetailWidget(
+                                            posttype: pro.post_type_id,
+                                            shortestDistance: pro.user.shortestDistance,
+
+                                            membershipid: pro.user.membership_id,
+                                            id: int.tryParse(pro.id),
+                                            didcountpercentage: pro.discount_percentage,
+                                            avg_rating: pro.avg_rating?.toDouble(),
                                             offer: pro.discounted_price,
                                             wow: pro.wow,
                                             comment: pro.commentcount.toString(),
                                             discounttedPrice:
                                                 pro.discounted_price,
                                             issponsored: pro.user.sponsored,
-                                            lefttile: "B2b-Shop",
+                                            lefttile: "Events",
                                             Vimage: pro.user.photo,
                                             price: pro.price,
                                             title: pro.title,
@@ -1627,6 +1665,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     );
                                                   },
                                                   child:  ProductDetailWidget(
+                                                    shortestDistance: prod.user.shortestDistance,
                                                   
                                                   id: int.tryParse(prod.id),
                                                   posttype: prod.post_type_id,
@@ -1720,6 +1759,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    posttype: prod.post_type_id,
+
+                                                    membershipid: prod.user.membership_id,
+                                                    id: int.tryParse(prod.id),
+                                                    didcountpercentage: prod.discount_percentage,
                                                     avg_rating: prod.avg_rating
                                                         ?.toDouble(),
                                                     shortestDistance: prod
@@ -1730,7 +1774,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     wow: prod.wow,
                                                     issponsored:
                                                         prod.user.sponsored,
-                                                    lefttile: "Socio-Shop",
+                                                    lefttile: "Events",
                                                     vendorname: prod.title,
                                                     discounttedPrice:
                                                         prod.discounted_price,
@@ -1806,6 +1850,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    posttype: prod.post_type_id,
+
+                                                    membershipid: prod.user.membership_id,
+                                                    id: int.tryParse(prod.id),
+                                                    didcountpercentage: prod.discount_percentage,
                                                     offer: prod.offers,
                                                     shortestDistance: prod
                                                         .user.shortestDistance,
@@ -1816,7 +1865,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     wow: prod.wow,
                                                     issponsored:
                                                         prod.user.sponsored,
-                                                    lefttile: "Socio-Shop",
+                                                    lefttile: "Events",
                                                     vendorname: prod.title,
                                                     discounttedPrice:
                                                         prod.discounted_price,
@@ -2094,10 +2143,20 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     ));
                                               }, // Handle onTap if needed
                                               child: ProductDetailWidget(
+                                                membershipid: prod.user.membership_id,
+                                                offer: prod
+                                                .offers,
+                                                posttype: prod
+                                                .post_type_id,
+                                                shortestDistance: prod.user.shortestDistance,
+
+                                                id: int.tryParse(prod.id),
+                                                didcountpercentage: prod.discount_percentage,
+                                                avg_rating: prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment:
                                                     prod.commentcount.toString(),
-                                                lefttile: "B2b",
+                                                lefttile: "Events",
                                                 vendorname: prod.user.name,
                                                 discounttedPrice:
                                                     prod.discounted_price,
@@ -2179,6 +2238,14 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   child: Padding(
                                     padding: EdgeInsets.only(bottom: 5.h),
                                     child: ProductDetailWidget(
+
+                                       shortestDistance: data.product[index].user.shortestDistance,
+                                      posttype: data.product[index].post_type_id,
+                                      offer: data.product[index].offers,
+                                      membershipid: data.product[index].user.membership_id,
+                                      id: int.tryParse(data.product[index].id),
+                                      didcountpercentage: data.product[index].discount_percentage,
+                                      avg_rating: data.product[index].avg_rating?.toDouble(),
                                       wow: data.product[index].wow,
                                       comment: data.product[index].commentcount
                                           .toString(),
@@ -2186,7 +2253,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           data.product[index].user.sponsored,
                                       discounttedPrice:
                                           data.product[index].discounted_price,
-                                      lefttile: "B2b-Shop",
+                                      lefttile: "Events",
                                       productImage: data.product[index].image,
                                       Vimage: data.product[index].user.photo,
                                       vendorname: data.product[index].user.name,

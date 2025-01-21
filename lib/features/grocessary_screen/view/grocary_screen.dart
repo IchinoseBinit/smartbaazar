@@ -14,6 +14,7 @@ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -1176,6 +1177,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       );
                                     },
                                     child: ProductDetailWidget(
+                                      membershipid: hot.user.membership_id,
+                                      posttype: hot.post_type_id,
+                                      shortestDistance: hot.user.shortestDistance,
+
+                                      id: int.tryParse(hot.id),
                                       offer: hot.offers,
                                       didcountpercentage: hot.discount_percentage,
                                       avg_rating: hot.avg_rating?.toDouble(),
@@ -1183,7 +1189,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       comment: hot.commentcount.toString(),
                                       discounttedPrice: hot.discounted_price,
                                       issponsored: hot.user.sponsored,
-                                      lefttile: "Socio",
+                                      lefttile: "Grocary",
                                       productImage: hot.image,
                                       Vimage: hot.user.photo,
                                       price: hot.price,
@@ -1596,6 +1602,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                                       prod.id)));
                                                 },
                                                 child:  ProductDetailWidget(
+
+                                                  shortestDistance: prod.user.shortestDistance,
                                                   
                                                   id: int.tryParse(prod.id),
                                                   posttype: prod.post_type_id,
@@ -1678,10 +1686,19 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                                       prod.id)));
                                                 },
                                                 child: ProductDetailWidget(
+
+                                                  offer: prod.offers,
+                                                  posttype: prod.post_type_id,
+                                                  shortestDistance: prod.user.shortestDistance,
+
+                                                  membershipid: prod.user.membership_id,
+                                                  id: int.tryParse(prod.id),
+                                                  didcountpercentage: prod.discount_percentage,
+                                                  avg_rating: prod.avg_rating?.toDouble(),
                                                   wow: prod.wow,
                                                   comment: prod.commentcount
                                                       .toString(),
-                                                  lefttile: "B2B",
+                                                  lefttile: "Grocary",
                                                   vendorname: prod.user.name,
                                                   discounttedPrice:
                                                       prod.discounted_price,
@@ -1758,7 +1775,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                         wow: prod.wow,
                                                         comment: prod.commentcount
                                                             .toString(),
-                                                        lefttile: "B2B",
+                                                        lefttile: "Grocary",
                                                         vendorname:
                                                             prod.user.name,
                                                         discounttedPrice:
@@ -2053,13 +2070,20 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     );
                                                   },
                                                   child: ProductDetailWidget(
+                                                    posttype: prod.post_type_id,
+                                                    shortestDistance: prod.user.shortestDistance,
+                                                    membershipid: prod.user.membership_id,
+                                                    id: int.tryParse(prod.id),
+                                                    didcountpercentage: prod.discount_percentage,
+                                                    avg_rating: prod.avg_rating?.toDouble(),
+
                                                     offer: prod.offers,
                                                     comment: prod.commentcount
                                                         .toString(),
                                                     wow: prod.wow,
                                                     issponsored:
                                                         prod.user.sponsored,
-                                                    lefttile: "Socio-Shop",
+                                                    lefttile: "Grocary",
                                                     vendorname: prod.title,
                                                     discounttedPrice:
                                                         prod.discounted_price,
@@ -2142,6 +2166,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
+                                    
+                                    shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,

@@ -1,44 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartbazar/features/auth/controller/login_controller.dart';
+import 'package:dio/dio.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/features/splash_screen/splash_api.dart';
-import 'package:smartbazar/features/splash_screen/splash_model.dart';
 
-class SplashScreen extends ConsumerStatefulWidget {
+// SplashModel Class
+class SplashModel {
+  final String logo;
+
+  SplashModel({required this.logo});
+
+  factory SplashModel.fromJson(Map<String, dynamic> json) {
+    return SplashModel(logo: json['logo'] ?? '');
+  }
+}
+
+// API Call Function
+Future<SplashModel> fetchSplashData() async {
+  final Dio dio = Dio();
+
+  try {
+    final response = await dio.get(
+      'https://smartbazaar.jianjun-rnd.com.np/api/app_logo_loader',
+      options: Options(
+        headers: {'X-AppApiToken': 'Yala@Techies_Nepal'},
+      ),
+    );
+
+    if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+      return SplashModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load splash data');
+    }
+  } catch (e) {
+    throw Exception('Error fetching splash data: $e');
+  }
+}
+
+// Splash Screen
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  ConsumerState<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> {
+  late Future<SplashModel> splashData;
+
   @override
   void initState() {
     super.initState();
-    // Start the timer to continue the session after 3 seconds
-    Future.delayed(
-      const Duration(seconds: 3),
-      () async {
-        try {
-          final loginProvider = ref.read(loginController.notifier);
-          await loginProvider.continueSession(context).catchError((e) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ));
-          });
-        } catch (e) {
-          print('Error continuing session: $e');
-        }
-      },
+
+    // Fetch splash data
+    splashData = fetchSplashData();
+  }
+
+  void navigateToNextScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final splashApiResponse = ref.watch(getSplashApiProvider);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -50,30 +74,30 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ),
           ),
           child: Center(
-            child: SplashContent(
-              splashApiResponse: splashApiResponse,
-              ref: ref,
+            child: FutureBuilder<SplashModel>(
+              future: splashData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(color: Colors.white);
+                } else if (snapshot.hasError) {
+                  return _buildError(context);
+                } else if (snapshot.hasData) {
+                  // Display image and navigate after a delay
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Future.delayed(const Duration(seconds: 3), () {
+                      navigateToNextScreen();
+                    });
+                  });
+                  return _buildImage(snapshot.data!);
+                } else {
+                  return const Text('No data available',
+                      style: TextStyle(color: Colors.white));
+                }
+              },
             ),
           ),
         ),
       ),
-    );
-  }
-}
-
-class SplashContent extends StatelessWidget {
-  final AsyncValue<SplashModel> splashApiResponse;
-  final WidgetRef ref;
-
-  const SplashContent(
-      {super.key, required this.splashApiResponse, required this.ref});
-
-  @override
-  Widget build(BuildContext context) {
-    return splashApiResponse.when(
-      data: (splashModel) => _buildImage(splashModel),
-      loading: () => const CircularProgressIndicator(color: Colors.white),
-      error: (error, stack) => _buildError(context),
     );
   }
 
@@ -90,11 +114,12 @@ class SplashContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('An error occurred!',
-            style: TextStyle(color: Colors.white)),
+        const Text('An error occurred!', style: TextStyle(color: Colors.white)),
         TextButton(
           onPressed: () {
-            ref.refresh(getSplashApiProvider);
+            setState(() {
+              splashData = fetchSplashData(); // Retry fetching splash data
+            });
           },
           child: const Text('Retry', style: TextStyle(color: Colors.blue)),
         ),

@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'product_details_provider.g.dart';
@@ -11,7 +11,7 @@ Future<PostModel> productDetails(ref, String id) async {
   // final client = Dio();
 //
 
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

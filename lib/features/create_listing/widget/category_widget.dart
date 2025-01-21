@@ -6,10 +6,10 @@ import 'package:smartbazar/features/create_listing/model/dropdown_value_model.da
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 
 class CategoryField extends StatefulWidget {
-  final Function(Category?, String?) onCategorySelected;
-  final Function(Category?) onSubCategorySelected;
-  final Function(Category?)? onSubCategorySelected1;
-  final Function(Category?)? onSubCategorySelected2;
+  final Function(MyCategory?, String?) onCategorySelected;
+  final Function(MyCategory?) onSubCategorySelected;
+  final Function(MyCategory?)? onSubCategorySelected1;
+  final Function(MyCategory?)? onSubCategorySelected2;
 
   const CategoryField({
     Key? key,
@@ -25,16 +25,16 @@ class CategoryField extends StatefulWidget {
 
 class _CategoryFieldState extends State<CategoryField> {
   List<TypeList> typeListItems = [];
-  List<Category> categoryListItems = [];
-  List<Category> subCategoryListItems = [];
-  List<Category> subCategoryListItems1 = [];
-  List<Category> subCategoryListItems2 = [];
+  List<MyCategory> categoryListItems = [];
+  List<MyCategory> subCategoryListItems = [];
+  List<MyCategory> subCategoryListItems1 = [];
+  List<MyCategory> subCategoryListItems2 = [];
 
   TypeList? selectedType;
-  Category? selectedCategory;
-  Category? selectedSubCategory;
-  Category? selectedSubCategory1;
-  Category? selectedSubCategory2;
+  MyCategory? selectedCategory;
+  MyCategory? selectedSubCategory;
+  MyCategory? selectedSubCategory1;
+  MyCategory? selectedSubCategory2;
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _CategoryFieldState extends State<CategoryField> {
     }
   }
 
-  Future<void> _fetchSubCategoryList(Category category, int level) async {
+  Future<void> _fetchSubCategoryList(MyCategory category, int level) async {
     try {
       NewListingRepository repository = NewListingRepository();
       final subCategories = await repository.fetchSubCategoryList(category.id);
@@ -160,8 +160,8 @@ class _CategoryFieldState extends State<CategoryField> {
           getItemLabel: (TypeList item) => item.typeName,
         ),
         if (categoryListItems.isNotEmpty)
-          _buildDropdown<Category>(
-            label: 'Category',
+          _buildDropdown<MyCategory>(
+            label: 'MyCategory',
             items: categoryListItems,
             selectedValue: selectedCategory,
             onChanged: (newValue) {
@@ -173,10 +173,10 @@ class _CategoryFieldState extends State<CategoryField> {
                 _fetchSubCategoryList(newValue, 1);
               }
             },
-            getItemLabel: (Category item) => item.name,
+            getItemLabel: (MyCategory item) => item.name,
           ),
         if (subCategoryListItems.isNotEmpty)
-          _buildDropdown<Category>(
+          _buildDropdown<MyCategory>(
             label: 'Subcategory',
             items: subCategoryListItems,
             selectedValue: selectedSubCategory,
@@ -189,10 +189,10 @@ class _CategoryFieldState extends State<CategoryField> {
                 _fetchSubCategoryList(newValue, 2);
               }
             },
-            getItemLabel: (Category item) => item.name,
+            getItemLabel: (MyCategory item) => item.name,
           ),
         if (subCategoryListItems1.isNotEmpty)
-          _buildDropdown<Category>(
+          _buildDropdown<MyCategory>(
             label: 'Sub-subcategory 1',
             items: subCategoryListItems1,
             selectedValue: selectedSubCategory1,
@@ -205,10 +205,10 @@ class _CategoryFieldState extends State<CategoryField> {
                 _fetchSubCategoryList(newValue, 3);
               }
             },
-            getItemLabel: (Category item) => item.name,
+            getItemLabel: (MyCategory item) => item.name,
           ),
         if (subCategoryListItems2.isNotEmpty)
-          _buildDropdown<Category>(
+          _buildDropdown<MyCategory>(
             label: 'Sub-subcategory 2',
             items: subCategoryListItems2,
             selectedValue: selectedSubCategory2,
@@ -218,7 +218,7 @@ class _CategoryFieldState extends State<CategoryField> {
                 widget.onSubCategorySelected2?.call(newValue);
               });
             },
-            getItemLabel: (Category item) => item.name,
+            getItemLabel: (MyCategory item) => item.name,
           ),
       ],
     );

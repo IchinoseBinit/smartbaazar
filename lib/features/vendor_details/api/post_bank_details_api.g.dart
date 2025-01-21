@@ -7,7 +7,7 @@ part of 'post_bank_details_api.dart';
 // **************************************************************************
 
 String _$postUserBankDetailsHash() =>
-    r'8df84b7701e8768e96b71d9efa422b9500c2dbc5';
+    r'022e3956e67d8f678833ef253bd99927e2291f44';
 
 /// Copied from Dart SDK
 class _SystemHash {

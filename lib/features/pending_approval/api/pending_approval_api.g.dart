@@ -7,7 +7,7 @@ part of 'pending_approval_api.dart';
 // **************************************************************************
 
 String _$getPendingApprovalResponseHash() =>
-    r'40514ad1f8a45943930e40db4dd6ff6d8ab6f05b';
+    r'9e7e362a880d4caf3288f5b1feb90abf114c1e18';
 
 /// See also [getPendingApprovalResponse].
 @ProviderFor(getPendingApprovalResponse)

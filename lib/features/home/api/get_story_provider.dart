@@ -9,7 +9,7 @@
 
 // @riverpod
 // Future<FeedStoryResponse> fetchStoryHome(FetchStoryHomeRef ref) async {
-//   final SmartClinet client = SmartClinet();
+//   final SmartClient   client = SmartClient  ();
 
 //   try {
 //     final response = await client.request(

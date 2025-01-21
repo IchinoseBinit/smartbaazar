@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'make_a_review_provider.g.dart';
@@ -13,7 +13,7 @@ Future<String> postreview(
   String? rating,
 ) async {
   try {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
 
     // Ensure the rating is properly handled
     // final Map<String, dynamic> queryParameters = {
@@ -23,7 +23,7 @@ Future<String> postreview(
     // if (rating != null) {
     //   queryParameters['rating'] = rating;
     // }
-    print("kala ${SmartClinet.token}");
+    print("kala ${SmartClient.token}");
     // Make the request with the payload
     final response = await client.request(
         requestType: RequestType.postWithTokenFormData,

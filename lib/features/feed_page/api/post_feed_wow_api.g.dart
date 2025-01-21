@@ -6,7 +6,7 @@ part of 'post_feed_wow_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postFeedWowHash() => r'dbe87f59bbc9252a2ffcfc3e92163c8796a8fbf8';
+String _$postFeedWowHash() => r'a30a9be0a244a984891bd2c7cc9bb238634b742e';
 
 /// Copied from Dart SDK
 class _SystemHash {

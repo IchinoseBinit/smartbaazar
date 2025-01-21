@@ -6,7 +6,7 @@ part of 'create_new_listing_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createlistingHash() => r'66fdfa0384f0371454ca8c4025de8329296f44d4';
+String _$createlistingHash() => r'229018dde055ecf5fb62c24716e26e370f55370b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -70,6 +70,8 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
     List<Map<String, String>>? pieces,
     double? lat,
     double? long,
+    int? hyperd,
+    int? seller,
   }) {
     return CreatelistingProvider(
       cf: cf,
@@ -102,6 +104,8 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
       pieces: pieces,
       lat: lat,
       long: long,
+      hyperd: hyperd,
+      seller: seller,
     );
   }
 
@@ -140,6 +144,8 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
       pieces: provider.pieces,
       lat: provider.lat,
       long: provider.long,
+      hyperd: provider.hyperd,
+      seller: provider.seller,
     );
   }
 
@@ -192,6 +198,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     List<Map<String, String>>? pieces,
     double? lat,
     double? long,
+    int? hyperd,
+    int? seller,
   }) : this._internal(
           (ref) => createlisting(
             ref as CreatelistingRef,
@@ -225,6 +233,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
             pieces: pieces,
             lat: lat,
             long: long,
+            hyperd: hyperd,
+            seller: seller,
           ),
           from: createlistingProvider,
           name: r'createlistingProvider',
@@ -265,6 +275,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
           pieces: pieces,
           lat: lat,
           long: long,
+          hyperd: hyperd,
+          seller: seller,
         );
 
   CreatelistingProvider._internal(
@@ -304,6 +316,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     required this.pieces,
     required this.lat,
     required this.long,
+    required this.hyperd,
+    required this.seller,
   }) : super.internal();
 
   final List<List<dynamic>>? cf;
@@ -336,6 +350,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
   final List<Map<String, String>>? pieces;
   final double? lat;
   final double? long;
+  final int? hyperd;
+  final int? seller;
 
   @override
   Override overrideWith(
@@ -380,6 +396,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         pieces: pieces,
         lat: lat,
         long: long,
+        hyperd: hyperd,
+        seller: seller,
       ),
     );
   }
@@ -421,7 +439,9 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         other.package == package &&
         other.pieces == pieces &&
         other.lat == lat &&
-        other.long == long;
+        other.long == long &&
+        other.hyperd == hyperd &&
+        other.seller == seller;
   }
 
   @override
@@ -457,6 +477,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     hash = _SystemHash.combine(hash, pieces.hashCode);
     hash = _SystemHash.combine(hash, lat.hashCode);
     hash = _SystemHash.combine(hash, long.hashCode);
+    hash = _SystemHash.combine(hash, hyperd.hashCode);
+    hash = _SystemHash.combine(hash, seller.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -554,6 +576,12 @@ mixin CreatelistingRef on AutoDisposeFutureProviderRef<String> {
 
   /// The parameter `long` of this provider.
   double? get long;
+
+  /// The parameter `hyperd` of this provider.
+  int? get hyperd;
+
+  /// The parameter `seller` of this provider.
+  int? get seller;
 }
 
 class _CreatelistingProviderElement
@@ -621,6 +649,10 @@ class _CreatelistingProviderElement
   double? get lat => (origin as CreatelistingProvider).lat;
   @override
   double? get long => (origin as CreatelistingProvider).long;
+  @override
+  int? get hyperd => (origin as CreatelistingProvider).hyperd;
+  @override
+  int? get seller => (origin as CreatelistingProvider).seller;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

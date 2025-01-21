@@ -1,11 +1,11 @@
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class ApiService {
   Future<String> addToCart(String myid) async {
     try {
-      final SmartClinet client = SmartClinet();
+      final SmartClient client = SmartClient();
 
       // Prepare the request payload with the user ID
       final payload = {

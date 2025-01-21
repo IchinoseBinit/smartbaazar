@@ -6,10 +6,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/api/get_feed_of_following_api.dart';
 import 'package:smartbazar/features/feed_page/api/get_following_story_api.dart';
@@ -22,7 +24,9 @@ import 'package:smartbazar/features/feed_page/widget/promo_card.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
@@ -62,7 +66,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const BottomNavigationScreen()
+      'screen': const FeedScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -189,10 +193,51 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
+
     return DefaultTabController(
+      initialIndex: 1,
       length: 2, // Two tabs: "Following" and "For You"
       child: GenericSafeArea(
         child: Scaffold(
+          bottomNavigationBar: CustomBottomNavigationBar(
+            selectedIndex: pselectedIndex, // Pass the current index
+            onTabChanged: (index) {
+              ref.read(bottomNavIndexProvider.notifier).state = index;
+
+              // Add navigation logic here
+              switch (index) {
+                case 0:
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
+                  break;
+                case 1:
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FeedScreen()),
+                  );
+                  break;
+                case 2:
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MessageViewScreen()),
+                  );
+                  break;
+                case 3:
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VendorProfileScreen()),
+                  );
+                  break;
+              }
+            },
+          ),
           extendBody: true,
           backgroundColor: Colors.transparent,
           key: _key,
@@ -203,9 +248,458 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverToBoxAdapter(
+                  child: SizedBox(
+                    // height: 300.h,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          child: Container(
+                            // height: 170,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(50),
+                                  bottomRight: Radius.circular(50)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF392574),
+                                    Color(0xFF681b4e),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const VendorProfileScreen(),
+                                              ));
+                                        },
+                                        child: Image.asset(
+                                            'assets/images/group.png')),
+                                    SizedBox(
+                                      height: 40,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 45.h,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.w),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF46236a),
+                                              border: Border.all(
+                                                  color: Colors.white),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(19.r),
+                                                bottomLeft:
+                                                    Radius.circular(19.r),
+                                              ),
+                                            ),
+                                            child: DropdownButton<
+                                                Map<String, String>>(
+                                              value: dropdownValue ??
+                                                  headeritems[postypeid!],
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  dropdownValue = newValue;
+                                                });
+                                              },
+                                              items: headeritems.map((item) {
+                                                return DropdownMenuItem(
+                                                  value: item,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        item['icon']!,
+                                                        height: 10.h,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(width: 8.w),
+                                                      Text(
+                                                        item['label']!,
+                                                        style: TextStyle(
+                                                            fontSize: 10.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              dropdownColor:
+                                                  const Color(0xff665B6B)
+                                                      .withOpacity(0.5),
+                                              underline: const SizedBox(),
+                                              icon: const SizedBox(),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 180.w,
+                                            height: 45.h,
+                                            padding: const EdgeInsets.all(5),
+                                            decoration: const BoxDecoration(
+                                                color: Colors.white),
+                                            child: TextField(
+                                              controller: _searchController,
+                                              onTap: () {
+                                                _onSearchFocusChanged(
+                                                    _searchController
+                                                        .text.isNotEmpty);
+                                              },
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                prefixIcon: const Icon(
+                                                  Icons.search,
+                                                  size: 25,
+                                                  color: Color(0xffD9D9D9),
+                                                ),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      width: 0.2,
+                                                      color: Colors.white),
+                                                ),
+                                                hintText: "Search Everything",
+                                                hintStyle: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(
+                                                        0xffD9D9D9)),
+                                                isCollapsed: true,
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 5.h,
+                                                        horizontal: 10.w),
+                                                disabledBorder:
+                                                    InputBorder.none,
+                                                isDense: true,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              if (_searchController.text
+                                                  .trim()
+                                                  .isNotEmpty) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BusinessTabScreen(
+                                                        query: _searchController
+                                                            .text,
+                                                      ),
+                                                    ));
+                                              }
+                                            },
+                                            child: Container(
+                                              height: 45.h,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20.w,
+                                                  vertical: 5.h),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.white),
+                                                color: Colors.transparent,
+                                                borderRadius: BorderRadius.only(
+                                                  topRight:
+                                                      Radius.circular(19.r),
+                                                  bottomRight:
+                                                      Radius.circular(19.r),
+                                                ),
+                                              ),
+                                              child: Icon(
+                                                Icons.search,
+                                                color: Colors.white,
+                                                size: 20.sp,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(4, (index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedIndex = index;
+                                        });
+                                        _pageController.animateToPage(
+                                          index,
+                                          duration:
+                                              const Duration(milliseconds: 50),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 5.h,
+                                        width: 5.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: selectedIndex == index
+                                              ? Colors.amber
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+
+                                SizedBox(
+                                  height: 80.h,
+                                  child: PageView.builder(
+                                    itemCount: _items.length,
+                                    padEnds: false,
+                                    controller: _pageController,
+                                    onPageChanged: (value) {
+                                      setState(() {
+                                        selectedIndex =
+                                            value; // Update selectedIndex based on page change
+                                      });
+                                    },
+                                    itemBuilder: (context, index) {
+                                      Map<String, dynamic> data = _items[index];
+
+                                      // Highlight only when index == 4
+                                      bool isActive = index == 1;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                        child: AnimatedContainer(
+                                          padding: EdgeInsets.zero,
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          alignment: Alignment.center,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        data['screen']),
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if (data['icon']
+                                                    .toString()
+                                                    .endsWith('.svg'))
+                                                  SvgPicture.asset(
+                                                    data['icon'],
+                                                    alignment: Alignment.center,
+                                                    fit: BoxFit.contain,
+                                                    theme: const SvgTheme(
+                                                        currentColor:
+                                                            Color(0xffdd9d9d9)),
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                else
+                                                  Image.asset(
+                                                    data['icon'],
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  data['label'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: const Divider(
+                                    thickness: 0.4,
+                                    height: 1,
+                                    color: ColorConstant.grayColor,
+                                  ),
+                                ),
+                                if (_isSectionsVisible)
+                                  Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const BrandBazarScreen(),
+                                                ));
+                                          },
+                                          child: const Text(
+                                            "Brandbazaar",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const MySubscribeAndWinPage(),
+                                                ));
+                                          },
+                                          child: const Text(
+                                            "BuyOrWin",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                //   ],
+                                // ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (_showSearchProductModels)
+                          Positioned(
+                            top: 80.h, // Position just below the search bar
+                            left: 10,
+                            right: 10,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5.w),
+                              color: Colors.white,
+                              child: SearchProductModels.when(
+                                data: (results) {
+                                  if (results.isEmpty) {
+                                    return const SizedBox(
+                                      child: Text('No result found'),
+                                    ); // No results
+                                  }
+                                  return ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: results.length,
+                                    itemBuilder: (context, index) {
+                                      final product = results[index];
+                                      return ListTile(
+                                        dense: true,
+                                        title: Text(
+                                          softWrap: true,
+                                          product.title,
+                                          style: headerstyle.copyWith(
+                                              color: ColorConstant.blackColor,
+                                              fontSize: 10),
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BusinessTabScreen(
+                                                query: _searchController.text,
+                                              ),
+                                            ),
+                                          );
+                                          setState(() {
+                                            _showSearchProductModels = false;
+                                            FocusScope.of(context).unfocus();
+                                          });
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        const Divider(),
+                                  );
+                                },
+                                loading: () {
+                                  return const SizedBox();
+                                },
+                                error: (error, stack) {
+                                  return Center(child: Text(error.toString()));
+                                },
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      topContainer(),
+                      // topContainer(),
                       expandedContainer(),
                       const TabBar(
                         indicatorColor: Color(0xFF392574),

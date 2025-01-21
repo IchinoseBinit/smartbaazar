@@ -6,7 +6,7 @@ part of 'checkout_form_submission_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCheckoutFormHash() => r'adf51fe66d469b84b038ab03a9d041603e5a1eda';
+String _$postCheckoutFormHash() => r'bb9fa453fadf4a5bfe688622e1c6c3afb8bc0970';
 
 /// Copied from Dart SDK
 class _SystemHash {

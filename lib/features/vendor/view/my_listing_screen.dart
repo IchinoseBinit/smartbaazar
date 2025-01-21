@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/update_listing/view/update_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/my_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/post_offline_listing.dart';
-import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,6 +66,7 @@ class MyListingScreen extends ConsumerWidget {
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             itemBuilder: (context, int index) {
                               final product = products[index];
+                              print("lakau ${product.postTypeId}");
                               return MyListinDetails(product: product);
                             },
                             separatorBuilder: (context, index) =>
@@ -86,7 +87,7 @@ class MyListingScreen extends ConsumerWidget {
 }
 
 class MyListinDetails extends ConsumerWidget {
-  final Product product;
+  final MyListingProduct product;
 
   const MyListinDetails({super.key, required this.product});
 
@@ -123,7 +124,7 @@ class MyListinDetails extends ConsumerWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  // print("niko ${product.id}");
+                  // print("niko ${product.postTypeId}");
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) =>  UpdateListing(prod: product)),

@@ -7,15 +7,15 @@
 // import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
 // import 'package:smartbazar/utils/request_type.dart';
 
-// class SmartClinet {
+// class SmartClient   {
 //   static String token = '';
 //   static String refresh = '';
 //   static String userId = '';
 //   static String userName = '';
 //   static String userEmail = '';
-//   static final SmartClinet _instance = SmartClinet._internal();
+//   static final SmartClient   _instance = SmartClient  ._internal();
 
-//   factory SmartClinet() {
+//   factory SmartClient  () {
 //     return _instance;
 //   }
 
@@ -43,7 +43,7 @@
 //   late Dio _client;
 //   final timeOutDuration = const Duration(seconds: kDebugMode ? 30 : 60);
 
-//   SmartClinet._internal() {
+//   SmartClient  ._internal() {
 //     _client = Dio();
 //     if (kDebugMode) {
 //       _client.interceptors.add(
@@ -59,19 +59,19 @@
 //     _client.interceptors.add(
 //       InterceptorsWrapper(
 //         onRequest: (RequestOptions options, handler) {
-//           if (SmartClinet.token.isNotEmpty) {
-//             options.headers['Authorization'] = 'Bearer ${SmartClinet.token}';
+//           if (SmartClient  .token.isNotEmpty) {
+//             options.headers['Authorization'] = 'Bearer ${SmartClient  .token}';
 //           }
 //           return handler.next(options);
 //         },
 //         onError: (DioException error, handler) async {
 //           if (error.response != null && error.response!.statusCode == 401) {
-//             if (SmartClinet.token.isEmpty || _isTokenExpired(SmartClinet.token)) {
+//             if (SmartClient  .token.isEmpty || _isTokenExpired(SmartClient  .token)) {
 //               final success = await _refreshToken();
 //               if (success) {
 //                 final RequestOptions requestOptions = error.requestOptions;
 //                 requestOptions.headers['Authorization'] =
-//                     'Bearer ${SmartClinet.token}';
+//                     'Bearer ${SmartClient  .token}';
 //                 try {
 //                   final response = await _retry(requestOptions);
 //                   return handler.resolve(response);
@@ -96,14 +96,14 @@
 //       final refreshTokenResponse =
 //           await container.read(getRefreshTokenProvider.future);
 
-//       SmartClinet.token = refreshTokenResponse.authToken;
-//       SmartClinet.refresh = refreshTokenResponse.refreshToken;
+//       SmartClient  .token = refreshTokenResponse.authToken;
+//       SmartClient  .refresh = refreshTokenResponse.refreshToken;
 
 //       final prefs = await SharedPreferences.getInstance();
 //       await prefs.setString('accessToken', refreshTokenResponse.authToken);
 //       await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
 
-//       print("Token refreshed successfully: ${SmartClinet.token}");
+//       print("Token refreshed successfully: ${SmartClient  .token}");
 //       return true;
 //     } catch (e) {
 //       print("Error refreshing token using API: $e");

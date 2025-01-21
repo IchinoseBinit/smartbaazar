@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 import 'package:dio/dio.dart'; // For better error handling with Dio
 
@@ -9,7 +9,7 @@ part 'product_api_repository.g.dart';
 
 @riverpod
 Future<B2bModel> getprodwuctResposne(GetprodwuctResposneRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

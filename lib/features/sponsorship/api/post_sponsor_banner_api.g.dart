@@ -6,7 +6,7 @@ part of 'post_sponsor_banner_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postSponsorBannerHash() => r'b042b05e81a80394b544dbdda57b60ebf2ee8f2e';
+String _$postSponsorBannerHash() => r'94b3ee9a11bbfe1333598ce228a6c1f4823e0009';
 
 /// Copied from Dart SDK
 class _SystemHash {

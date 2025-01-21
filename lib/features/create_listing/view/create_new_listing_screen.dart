@@ -16,7 +16,6 @@ import 'package:smartbazar/features/create_listing/api/get_categories_provider.d
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
-import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/create_listing/view/SellerInformationWidget.dart';
 import 'package:smartbazar/features/create_listing/widget/category_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
@@ -56,18 +55,18 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   }
 
   final TextEditingController _pickupcontroller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  final List<Place>? _places = [];
-  final bool _isLoading = false;
+  // final FocusNode _focusNode = FocusNode();
+  // final List<Place> _places = [];
+  // final bool _isLoading = false;
 
   bool _sellerDeliveryAvailable = false;
   bool _upayaDelivery = false;
   bool _hyperDeliveryAvailable = false;
   String? typeid;
-  Category? selectedcategory;
+  MyCategory? selectedcategory;
   List<TypeList> typeListItems = [];
-  List<Category> subcategoryList = [];
-  Category? subcatagory;
+  List<MyCategory> subcategoryList = [];
+  MyCategory? subcatagory;
   CityList? selectedCity;
   Option? selectedElecModel;
   List<Option>? selectedColors;
@@ -160,12 +159,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   FieldsResponse? getRoad;
   FieldsResponse? getcloth;
-  Category? childcategory;
+  MyCategory? childcategory;
   FieldsResponse? getsize;
   Option? selectedtrnsmission;
 
   @override
   void initState() {
+    typeid = '1';
     getSellerData();
     checkuserverified().then(
       (value) {
@@ -248,7 +248,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   // final _stringTagController = StringTagController();
   // void _handleCategorySelection(
-  //     Category? selectedCategory, String type, WidgetRef ref) {
+  //     MyCategory? selectedCategory, String type, WidgetRef ref) {
   //   // print("bibash ${selectedCategory?.id}");
   //   if (selectedCategory != null) {
   //     final categoryId = selectedCategory.id;
@@ -275,7 +275,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   //   } else {}
   // }
 
-  List<Category>? categoryListItems;
+  List<MyCategory>? categoryListItems;
   Future<void> _fetchCategoryList(String typeId) async {
     try {
       NewListingRepository repository = NewListingRepository();
@@ -487,10 +487,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
                       // Print the selected category ID and typeId for debugging
                       print(
-                          "Selected Category: ${category.name}, Category ID: ${category.id}, Type ID: $typeid");
+                          "Selected MyCategory: ${category.name}, MyCategory ID: ${category.id}, Type ID: $typeid");
                     }
                   },
-                  onSubCategorySelected: (Category? subCategory) {
+                  onSubCategorySelected: (MyCategory? subCategory) {
                     // Update categoryId based on subcategory selection
                     setState(() {
                       categoryId = subCategory?.id;
@@ -500,7 +500,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     print(
                         "Selected Subcategory: ${subCategory?.name}, Subcategory ID: ${subCategory?.id}");
                   },
-                  onSubCategorySelected1: (Category? sub1) {
+                  onSubCategorySelected1: (MyCategory? sub1) {
                     // Update categoryId for subcategory 1
                     setState(() {
                       categoryId = sub1?.id;
@@ -510,7 +510,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     print(
                         "Selected Sub-subcategory 1: ${sub1?.name}, Sub-subcategory 1 ID: ${sub1?.id}");
                   },
-                  onSubCategorySelected2: (Category? sub2) {
+                  onSubCategorySelected2: (MyCategory? sub2) {
                     // Update categoryId for subcategory 2
                     setState(() {
                       categoryId = sub2?.id;
@@ -3125,10 +3125,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   height: 5.h,
                 ),
 
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       "Packaged Product Dimensions",
                       style: TextStyle(fontSize: 13),
                     ),

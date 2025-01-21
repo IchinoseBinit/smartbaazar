@@ -7,7 +7,7 @@ part of 'message_is_important_api.dart';
 // **************************************************************************
 
 String _$markMessageIsImportantHash() =>
-    r'a84b24e2675a1217f9ef92a1d9e4473e38c3a5d2';
+    r'62c98af9d6dc6ac218af9f66ed1324a6c9e2b565';
 
 /// Copied from Dart SDK
 class _SystemHash {

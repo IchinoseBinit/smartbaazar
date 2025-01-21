@@ -3,14 +3,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/refresh_token_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'refresh_token_api.g.dart';
 
 @riverpod
 Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final prefs = await SharedPreferences.getInstance();
     final refreshToken = prefs.getString('refreshToken');
@@ -27,9 +27,9 @@ Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
     if (response.statusCode! >= 200 && response.statusCode! < 300) {
       final tokenData = RefreshTokenResponse.fromJson(response.data);
 
-      // Update tokens in SmartClinet and SharedPreferences
-      SmartClinet.token = tokenData.authToken;
-      SmartClinet.refresh = tokenData.refreshToken;
+      // Update tokens in SmartClient and SharedPreferences
+      SmartClient.token = tokenData.authToken;
+      SmartClient.refresh = tokenData.refreshToken;
 
       await prefs.setString('accessToken', tokenData.authToken);
       await prefs.setString('refreshToken', tokenData.refreshToken);

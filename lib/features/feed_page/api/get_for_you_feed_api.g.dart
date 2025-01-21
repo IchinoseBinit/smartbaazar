@@ -6,7 +6,7 @@ part of 'get_for_you_feed_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getForYouFeedApiHash() => r'1825eeae020161da09df384e4d886f2248d037a3';
+String _$getForYouFeedApiHash() => r'f22aa3e5425ed22016dabd14a7d93d5604868732';
 
 /// See also [getForYouFeedApi].
 @ProviderFor(getForYouFeedApi)

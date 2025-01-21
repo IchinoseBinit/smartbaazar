@@ -7,7 +7,7 @@ part of 'grocery_provider.dart';
 // **************************************************************************
 
 String _$getGrocertResponseHash() =>
-    r'bec08a61ff3cbd77a6333fd1eb0e31562d3ccbcf';
+    r'a358c77d08ae99084b93f371524013209fe82e23';
 
 /// See also [getGrocertResponse].
 @ProviderFor(getGrocertResponse)

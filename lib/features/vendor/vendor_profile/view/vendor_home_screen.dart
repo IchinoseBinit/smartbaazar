@@ -14,6 +14,7 @@ import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_search_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -276,12 +277,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                               bottomLeft: Radius.circular(20.r),
                                             ),
                                           ),
-                                          child: CircleAvatar(
-                                            maxRadius: 15,
-                                            backgroundImage: NetworkImage(
-                                              data.vendor_card!.photo!,
-                                            ),
-                                          ),
+                                          child: data.vendor_card != null
+                                              ? const SizedBox()
+                                              : CircleAvatar(
+                                                  maxRadius: 15,
+                                                  backgroundImage: NetworkImage(
+                                                    data.vendor_card!.photo!,
+                                                  ),
+                                                ),
                                         ),
                                         Container(
                                           width: 200.w,
@@ -2117,13 +2120,15 @@ class BigContainer extends StatelessWidget {
             SizedBox(height: 40.h),
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => ScratchWinContainer(
-                //         ontap: () {},
-                //       ),
-                //     ));
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const Dialog(
+                        backgroundColor: Colors.transparent,
+                        insetPadding: EdgeInsets.all(10),
+                        child: ScratchCard());
+                  },
+                );
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 4.h, bottom: 5.h),

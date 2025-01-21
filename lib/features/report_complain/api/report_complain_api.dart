@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/report_complain/model/report_complain_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'report_complain_api.g.dart';
@@ -9,7 +9,7 @@ part 'report_complain_api.g.dart';
 @riverpod
 Future<bool> reportComplain(
     ReportComplainRef ref, ReportComplainModel report, String productId) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(

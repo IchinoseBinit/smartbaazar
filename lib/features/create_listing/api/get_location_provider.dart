@@ -1,9 +1,9 @@
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-Future<PlacesResponse> getStreetAddress(String cityname) async {
-  final SmartClinet client = SmartClinet();
+Future<PlacesResponse> getpickaddress(String cityname) async {
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
@@ -18,7 +18,8 @@ Future<PlacesResponse> getStreetAddress(String cityname) async {
       final jsonResponse = response.data as Map<String, dynamic>;
       return PlacesResponse.fromJson(jsonResponse);
     } else {
-      throw Exception('Failed to load location data. Status code: ${response.statusCode}');
+      throw Exception(
+          'Failed to load location data. Status code: ${response.statusCode}');
     }
   } catch (error) {
     // Log the error and rethrow for further handling

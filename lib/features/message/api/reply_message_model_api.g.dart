@@ -6,7 +6,7 @@ part of 'reply_message_model_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendReplyMessageHash() => r'3223e1103a3536566eb330d66008795d9d23df73';
+String _$sendReplyMessageHash() => r'0642c6c84546b35cdbe8805fd1c095fd65e74bf4';
 
 /// Copied from Dart SDK
 class _SystemHash {

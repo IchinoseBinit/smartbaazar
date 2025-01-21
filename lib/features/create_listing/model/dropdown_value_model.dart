@@ -22,8 +22,8 @@ class TypeList with _$TypeList {
 }
 
 @freezed
-class Category with _$Category {
-  const factory Category({
+class MyCategory with _$MyCategory {
+  const factory MyCategory({
     required int id,
     String? parentId,
     required String name,
@@ -31,10 +31,11 @@ class Category with _$Category {
     String? description,
     String? iconClass,
     required String picture,
-  }) = _Category;
+  }) = _MyCategory;
 
-  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
+  factory MyCategory.fromJson(Map<String, dynamic> json) => _$MyCategoryFromJson(json);
 }
+
 
 @freezed
 class ProductType with _$ProductType {

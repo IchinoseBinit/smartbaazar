@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'submit_feed_form.g.dart';
@@ -16,7 +16,7 @@ Future<bool> postFeedForm(
     String offers,
     List<String> products,
     File imageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     FormData formData = FormData.fromMap({
       'image': await MultipartFile.fromFile(imageFile.path,
