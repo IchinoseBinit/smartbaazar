@@ -12,7 +12,8 @@ class SmartClient {
   static String userId = '';
   static String userName = '';
   static String userEmail = '';
-  static String laravelsession='';
+  static String laravelsession = '';
+  static String phone = '';
   static final SmartClient _instance = SmartClient._internal();
 
   factory SmartClient() {
@@ -139,7 +140,7 @@ class SmartClient {
       'accept': '*/*',
       'Connection': 'Keep-Alive',
       'X-AppApiToken': 'Yala@Techies_Nepal',
-      'Cookie':'laravel_session=${SmartClient.laravelsession}',
+      'Cookie': 'laravel_session=${SmartClient.laravelsession}',
     };
 
     Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);

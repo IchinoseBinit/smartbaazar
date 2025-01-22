@@ -302,6 +302,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) {
         phoneresp = value;
+        print("lauka ${phoneresp?.result[4]}");
       },
     ); //phone
     // ref.watch(GetCategoryResponseProvider(56)).whenData(
@@ -313,6 +314,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
       (value) {
         laptoprep = value;
+        // print('maula ${laptoprep}');
       },
     ); //car
     final furniture = ref.watch(GetCategoryResponseProvider(30)).whenData(
@@ -1031,96 +1033,94 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   ),
 
                 // if (selectedcategory?.id != 30 && selectedcategory?.id != 1)
-                //   if (phoneresp != null)
-                //     CreateListingCardWidget(
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.start,
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Text(
-                //                 'Return Policy',
-                //                 style: TextStyle(
-                //                     fontSize: 14.sp,
-                //                     fontWeight: FontWeight.w600,
-                //                     color: Colors.black),
-                //               ),
-                //             ],
-                //           ),
-                //           Expanded(
-                //             child: Column(
-                //               mainAxisAlignment: MainAxisAlignment.start,
-                //               crossAxisAlignment: CrossAxisAlignment.center,
-                //               children: [
-                //                 // First Checkbox option
-                //                 Row(
-                //                   children: [
-                //                     Checkbox(
-                //                       value: _isselected ==
-                //                           true, // The first checkbox is selected if _isselected is true
-                //                       onChanged: (value) {
-                //                         setState(() {
-                //                           _isselected =
-                //                               true; // Set _isselected to true when the first checkbox is selected
-                //                         });
-                //                         cf?.add([
-                //                           'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
-                //                           phoneresp!.result['8']!.options[0].id,
-                //                         ]);
-                //                       },
-                //                     ),
-                //                     Flexible(
-                //                       child: Text(
-                //                         phoneresp!
-                //                             .result['8']!.options[0].value,
-                //                         style: TextStyle(
-                //                           fontSize: 14.sp,
-                //                           fontWeight: FontWeight.w600,
-                //                           color: Colors.black,
-                //                         ),
-                //                       ),
-                //                     )
-                //                   ],
-                //                 ),
-                //                 // Second Checkbox option
-                //                 Row(
-                //                   children: [
-                //                     Checkbox(
-                //                       value: _isselected ==
-                //                           false, // The second checkbox is selected if _isselected is false
-                //                       onChanged: (value) {
-                //                         setState(() {
-                //                           _isselected =
-                //                               false; // Set _isselected to false when the second checkbox is selected
-                //                         });
-                //                         cf?.add([
-                //                           'cf.${getRoad!.result['8']?.id}', // Create the key dynamically
-                //                           phoneresp!.result['8']!.options[1].id,
-                //                         ]);
-                //                       },
-                //                     ),
-                //                     Flexible(
-                //                       child: Text(
-                //                         phoneresp!
-                //                             .result['8']!.options[1].value,
-                //                         style: TextStyle(
-                //                           fontSize: 14.sp,
-                //                           fontWeight: FontWeight.w600,
-                //                           color: Colors.black,
-                //                         ),
-                //                       ),
-                //                     )
-                //                   ],
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
+                if (phoneresp != null)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Return Policy',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // First Checkbox option
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: _isselected ==
+                                        true, // The first checkbox is selected if _isselected is true
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isselected =
+                                            true; // Set _isselected to true when the first checkbox is selected
+                                      });
+                                      cf?.add([
+                                        'cf.${getRoad!.result[4].id}', // Create the key dynamically
+                                        phoneresp!.result[4].options[0].id,
+                                      ]);
+                                    },
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      phoneresp!.result[4].options[0].value,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              // Second Checkbox option
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: _isselected ==
+                                        false, // The second checkbox is selected if _isselected is false
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isselected =
+                                            false; // Set _isselected to false when the second checkbox is selected
+                                      });
+                                      cf?.add([
+                                        'cf.${getRoad!.result[4].id}', // Create the key dynamically
+                                        phoneresp!.result[4].options[1].id,
+                                      ]);
+                                    },
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      phoneresp!.result[4].options[1].value,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
                 if (getRoad?.result != null)
                   if (selectedcategory?.id == 1)
@@ -1752,16 +1752,19 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               return Row(
                                 children: [
                                   Radio<Option>(
-                                    value: option,
-                                    groupValue: selectedFurnished,
+                                    value:
+                                        option, // Ensure this matches the type of selectedtrnsmission
+                                    groupValue:
+                                        selectedtrnsmission, // This should reflect the current selected value
                                     onChanged: (Option? newValue) {
                                       setState(() {
-                                        selectedtrnsmission = newValue;
+                                        selectedtrnsmission =
+                                            newValue; // Update the state variable
                                         if (getRoad?.result[8].id != null) {
                                           // Ensure the dynamic key is safe to access
                                           cf?.add([
-                                            'cf.${furnitureresresp!.result[8].id}', // Create the key dynamically
-                                            selectedtrnsmission?.value,
+                                            'cf.${getRoad!.result[8].id}', // Create the key dynamically
+                                            selectedtrnsmission?.id,
                                           ]);
                                         }
                                       });
@@ -2254,59 +2257,59 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id == 1)
-                  CreateListingCardWidget(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        if (getRoad != null)
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Warranty',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black),
-                              ),
-                              Text(
-                                ' *',
-                                style: TextStyle(
-                                    color: const Color(0xffD33636),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14.sp),
-                              )
-                            ],
-                          ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        if (getRoad != null)
-                          Expanded(
-                            // Wrap the dropdown in Expanded to constrain its width
-                            child: CustomDropdownButton<Option>(
-                              items: getRoad!.result[11].options ?? [],
-                              dropdownValue: selecetedWarrenty,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selecetedWarrenty = newValue;
-
-                                  // Initialize cf if null and add the new entry
-
-                                  cf?.add([
-                                    'cf.${getRoad!.result[11].id}', // Create the key dynamically
-                                    selecetedWarrenty
-                                        ?.id // Get the selected warranty ID
-                                  ]);
-                                });
-                              },
-                              getItemLabel: (Option item) => item.value,
+                // if (selectedcategory?.id == 1)
+                CreateListingCardWidget(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      if (getRoad != null)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Warranty',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
                             ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      if (getRoad != null)
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: getRoad!.result[6].options ?? [],
+                            dropdownValue: selecetedWarrenty,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selecetedWarrenty = newValue;
+
+                                // Initialize cf if null and add the new entry
+
+                                cf?.add([
+                                  'cf.${getRoad!.result[6].id}', // Create the key dynamically
+                                  selecetedWarrenty
+                                      ?.id // Get the selected warranty ID
+                                ]);
+                              });
+                            },
+                            getItemLabel: (Option item) => item.value,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
+                ),
                 if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                     child: Row(
@@ -3251,32 +3254,33 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (selectedcategory != null)
-                  CreateListingCardWidget(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Product Type',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
+
+                CreateListingCardWidget(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Product Type',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      if (getRoad != null)
                         Column(
                           children:
                               getRoad!.result[0].options.map<Widget>((option) {
@@ -3320,9 +3324,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             );
                           }).toList(),
                         ),
-                      ],
-                    ),
+                    ],
                   ),
+                ),
                 SizedBox(
                   height: 10.h,
                 ),

@@ -66,7 +66,8 @@ class LoginController extends StateNotifier<GenericState> {
         SmartClient.refresh = session['extra']['refreshToken'];
         SmartClient.token = session['extra']['refreshToken'];
         SmartClient.userEmail = session['result']['email'];
-        
+        SmartClient.userName = session['result']['username'];
+        SmartClient.phone = session['result']['phone'];
 
         // SmartClinet.
         // TODO: SmartClient.token is not set here
@@ -111,6 +112,9 @@ class LoginController extends StateNotifier<GenericState> {
     await prefs.setString("session", json.encode(loginData.toJson()));
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
+    await prefs.setString('name', SmartClient.userName);
+    await prefs.setString('email', SmartClient.userEmail);
+        await prefs.setString("phone", SmartClient.phone);
   }
 
   Future<String?> _getSessionData() async {

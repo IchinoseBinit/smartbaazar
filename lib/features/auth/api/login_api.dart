@@ -98,6 +98,8 @@ class LoginApi {
     await prefs.setString("session", json.encode(user.toJson()));
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
+        await prefs.setString("phone", SmartClient.phone);
+
   }
 
   // Handle error response (non-2xx HTTP status)

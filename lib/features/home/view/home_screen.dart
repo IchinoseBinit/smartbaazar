@@ -1988,8 +1988,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   data.allProducts.length,
                                   (index) {
                                     VProduct res = data.allProducts[index];
-                                    print(
-                                        "lauka ${res.userDetail.shortestDistance}");
+                                    // print(
+                                    //     "lauka ${res.userDetail.shortestDistance}");
 
                                     return InkWell(
                                       onTap: () {
