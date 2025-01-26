@@ -6,7 +6,7 @@ part of 'used_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getUsedResponseHash() => r'ef3c1cf110066ee4ab3315e680e30bec06cc3632';
+String _$getUsedResponseHash() => r'0b4829ffa055a633983e36687423a8b50aece778';
 
 /// See also [getUsedResponse].
 @ProviderFor(getUsedResponse)

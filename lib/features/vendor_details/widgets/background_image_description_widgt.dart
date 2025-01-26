@@ -3,7 +3,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/vendor_details/api/post_profile_bg_and_desc.api.dart';
 
@@ -20,6 +22,8 @@ class BackgroundImageDescriptionWidget extends ConsumerStatefulWidget {
 class _BackgroundImageDescriptionWidgetState
     extends ConsumerState<BackgroundImageDescriptionWidget> {
   final ImagePicker _picker = ImagePicker();
+  String? username;
+
   File? _selectedBackgroundImage;
   File? _selectedProfileImage;
   final TextEditingController _descriptionController = TextEditingController();
@@ -38,6 +42,12 @@ class _BackgroundImageDescriptionWidgetState
     }
   }
 
+  Future<void> getuser() async {
+    SharedPreferences prfs = await SharedPreferences.getInstance();
+    username = prfs.getString("name");
+    print("ramu ${username}");
+  }
+
   Future<void> _submit() async {
     setState(() {
       _isLoading = true;
@@ -45,9 +55,9 @@ class _BackgroundImageDescriptionWidgetState
 
     // Call the API using Riverpod
     final success = await ref.read(postProfileBGAndDescProvider(
-            _selectedBackgroundImage, // Background image
-          _descriptionController.text, // Description
-          _selectedProfileImage, // Profile image)
+      _selectedBackgroundImage, // Background image
+      _descriptionController.text, // Description
+      _selectedProfileImage, // Profile image)
     ).future);
 
     setState(() {
@@ -71,6 +81,7 @@ class _BackgroundImageDescriptionWidgetState
 
   @override
   Widget build(BuildContext context) {
+    getuser();
     return Column(
       children: [
         Container(
@@ -127,10 +138,13 @@ class _BackgroundImageDescriptionWidgetState
                           height: 95.h,
                           decoration: const BoxDecoration(
                             color: Color(0xffD9D9D9),
-                            
                           ),
                           child: _selectedProfileImage != null
-                          ? Image.file(_selectedProfileImage! ,fit: BoxFit.cover,): const Center(child: Text('Choose File')),
+                              ? Image.file(
+                                  _selectedProfileImage!,
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(child: Text('Choose File')),
                         ),
                       )),
                 ),
@@ -178,7 +192,7 @@ class _BackgroundImageDescriptionWidgetState
                   onTap: () => pickImage(isBackground: true),
                   child: _selectedBackgroundImage != null
                       ? Image.file(
-                           _selectedBackgroundImage!,
+                          _selectedBackgroundImage!,
                           width: 320.w,
                           height: 94.h,
                           fit: BoxFit.cover,

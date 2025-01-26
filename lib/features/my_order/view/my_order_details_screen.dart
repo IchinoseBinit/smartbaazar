@@ -64,7 +64,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       const Spacer(),
                       InkWell(
                         onTap: () => Navigator.pop(context),
-                        child: Text('Go back',
+                        child: Text('Go backz',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,

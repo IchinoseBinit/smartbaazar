@@ -156,6 +156,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   FieldsResponse? furnitureresresp;
   FieldsResponse? laptoprep;
   FieldsResponse? clothresp;
+  FieldsResponse? getcar;
 
   FieldsResponse? getRoad;
   FieldsResponse? getcloth;
@@ -291,8 +292,12 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   @override
   Widget build(BuildContext context) {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
-    final getCategories =
-        ref.watch(GetCategoryResponseProvider(categoryId ?? 1)); //car
+    final getCategories = ref.watch(GetCategoryResponseProvider(1)).whenData(
+      (value) {
+        // print("kala ${value}");
+        getcar = value; //car
+      },
+    ); //car
 
     ref.watch(GetCategoryResponseProvider(73)).whenData(
       (value) {
@@ -323,8 +328,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       },
     ); //car
     final road = ref.watch(GetCategoryResponseProvider(37)).whenData(
-      (value) {
-        getRoad = getRoad;
+      (value) async {
+        getRoad = value;
       },
     ); //car
     final clothfirst = ref.watch(GetCategoryResponseProvider(54)).whenData(
@@ -334,11 +339,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     );
     final selltofields = ref.watch(GetCategoryResponseProvider(217));
 
-    getCategories.whenData(
-      (value) {
-        getRoad = value; //car
-      },
-    );
     selltofields.when(
       data: (data) {},
       error: (error, stackTrace) => null,
@@ -1158,7 +1158,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                       : selectedFeatures!.first.value,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items: getRoad!.result[10].options.map((color) {
+                                items: getcar!.result[10].options.map((color) {
                                   return DropdownMenuItem<Option>(
                                     value: color,
                                     child: Row(
@@ -1181,7 +1181,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                   }
 
                                                   final cfKey =
-                                                      'cf.${getRoad!.result[10].id}';
+                                                      'cf.${getcar!.result[10].id}';
                                                   final cfValue = selectedFeatures!
                                                       .map((feature) =>
                                                           feature.id)
@@ -1225,6 +1225,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   height: 5.h,
                 ),
                 if (selectedcategory?.id == 1 ||
+                    selectedcategory?.id == 30 ||
                     selectedcategory?.id == 9 ||
                     selectedcategory?.id == 14 ||
                     selectedcategory?.id == 54)
@@ -1254,7 +1255,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        if (getRoad?.result != null)
+                        if (getcar?.result != null)
                           Expanded(
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<Option>(
@@ -1266,8 +1267,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                       : selectedColors!.first.value,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                items:
-                                    phoneresp!.result[5].options.map((color) {
+                                items: getcar!.result[3].options.map((color) {
                                   return DropdownMenuItem<Option>(
                                     value: color,
                                     child: Row(
@@ -1289,7 +1289,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                                   }
 
                                                   final cfKey =
-                                                      'cf.${getRoad!.result[5].id}';
+                                                      'cf.${getcar!.result[3].id}';
                                                   final cfValue = selectedColors!
                                                       .map((feature) =>
                                                           feature.id)
@@ -1745,10 +1745,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        if (getRoad?.result != null)
+                        if (getcar?.result != null)
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: getRoad!.result[8].options.map((option) {
+                            children: getcar!.result[8].options.map((option) {
                               return Row(
                                 children: [
                                   Radio<Option>(
@@ -1760,10 +1760,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                       setState(() {
                                         selectedtrnsmission =
                                             newValue; // Update the state variable
-                                        if (getRoad?.result[8].id != null) {
+                                        if (getcar?.result[8].id != null) {
                                           // Ensure the dynamic key is safe to access
                                           cf?.add([
-                                            'cf.${getRoad!.result[8].id}', // Create the key dynamically
+                                            'cf.${getcar!.result[8].id}', // Create the key dynamically
                                             selectedtrnsmission?.id,
                                           ]);
                                         }
@@ -2231,11 +2231,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        if (getRoad?.result != null)
+                        if (getcar?.result != null)
                           Expanded(
                             // Wrap the dropdown in Expanded to constrain its width
                             child: CustomDropdownButton<Option>(
-                                items: getRoad!.result[7].options,
+                                items: getcar!.result[7].options,
                                 dropdownValue: fuelType,
                                 onChanged: (newValue) {
                                   setState(() {
@@ -2243,10 +2243,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   });
 
                                   (value) {
-                                    if (getRoad?.result[7].id != null) {
+                                    if (getcar?.result[7].id != null) {
                                       // Ensure the dynamic key is safe to access
                                       cf?.add([
-                                        'cf.${getRoad!.result[7].id}', // Create the key dynamically
+                                        'cf.${getcar!.result[7].id}', // Create the key dynamically
                                         value,
                                       ]);
                                     }
@@ -2285,11 +2285,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      if (getRoad != null)
+                      if (getcar != null)
                         Expanded(
                           // Wrap the dropdown in Expanded to constrain its width
                           child: CustomDropdownButton<Option>(
-                            items: getRoad!.result[6].options ?? [],
+                            items: getcar!.result[4].options ?? [],
                             dropdownValue: selecetedWarrenty,
                             onChanged: (newValue) {
                               setState(() {
@@ -2298,7 +2298,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 // Initialize cf if null and add the new entry
 
                                 cf?.add([
-                                  'cf.${getRoad!.result[6].id}', // Create the key dynamically
+                                  'cf.${getcar!.result[4].id}', // Create the key dynamically
                                   selecetedWarrenty
                                       ?.id // Get the selected warranty ID
                                 ]);
@@ -3280,10 +3280,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      if (getRoad != null)
+                      if (getcar != null)
                         Column(
-                          children:
-                              getRoad!.result[0].options.map<Widget>((option) {
+                          children: getcar!.result
+                              .where((element) => element.id == 57)
+                              .expand((element) => element
+                                  .options) // Flatten the list of options
+                              .map<Widget>((option) {
                             return RadioListTile<Option>(
                               value: option,
                               groupValue: selecctedProductTYpe,
@@ -3292,7 +3295,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   selecctedProductTYpe = newValue;
 
                                   // Create dynamic cf key
-                                  final cfKey = 'cf.${getRoad!.result[0].id}';
+                                  final cfKey = 'cf.${getcar!.result.first.id}';
                                   final cfValue = [selecctedProductTYpe!.id];
 
                                   // Check if cf already contains this key

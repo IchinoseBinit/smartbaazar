@@ -15,18 +15,10 @@ Future<String> postreview(
   try {
     final SmartClient client = SmartClient();
 
-    // Ensure the rating is properly handled
-    // final Map<String, dynamic> queryParameters = {
-    //   'comment': comment,
-    //   'rating': 2
-    // };
-    // if (rating != null) {
-    //   queryParameters['rating'] = rating;
-    // }
     print("kala ${SmartClient.token}");
     // Make the request with the payload
     final response = await client.request(
-        requestType: RequestType.postWithTokenFormData,
+        requestType: RequestType.postWithToken,
         url: '${ApiConstants.postreview}/$id',
         queryParameters: {'comment': comment, 'rating': 2},
         parameter: {'comment': comment, 'rating': 2});

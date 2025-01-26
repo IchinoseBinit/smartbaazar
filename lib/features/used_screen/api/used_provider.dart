@@ -8,7 +8,7 @@ import 'package:dio/dio.dart'; // For better error handling with Dio
 part 'used_provider.g.dart';
 
 @riverpod
-Future<PostTypeFetch> getUsedResponse(GetUsedResponseRef ref) async {
+Future<PostTypeFetch> getUsedResponse(ref) async {
   final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
@@ -18,8 +18,7 @@ Future<PostTypeFetch> getUsedResponse(GetUsedResponseRef ref) async {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-      print(
-          "babu ${PostTypeFetch.fromJson(jsonResponse).hotProducts.first.image}");
+
       return PostTypeFetch.fromJson(jsonResponse);
     } else {
       throw Exception(

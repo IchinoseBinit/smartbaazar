@@ -7,7 +7,7 @@ part 'product_details_model.g.dart';
 @freezed
 class PostModel with _$PostModel {
   const factory PostModel({
-    required bool success,
+    required bool? success,
     required String? message,
     required PostResult? result,
     required ExtraModel? extra,
@@ -43,9 +43,6 @@ class PostPagination with _$PostPagination {
       _$PostPaginationFromJson(json);
 }
 
-
-
-
 @freezed
 class PostResult with _$PostResult {
   const factory PostResult({
@@ -56,7 +53,7 @@ class PostResult with _$PostResult {
     required String? postTypeId,
     required String? title,
     required String? description,
-    required List<String>? tags, // Should be List<String> if this is a list
+    required List<String>? tags,
     required String? price,
     String? discountedPrice,
     required String? trending,
@@ -110,8 +107,9 @@ class PostResult with _$PostResult {
     Ratings? ratings,
     usermodel? user,
     required UserDetailsProduct? user_details,
-    required List<Picture>? pictures, // List of pictures (List<Picture>)
+    required List<Picture>? pictures,
     PostType? postType,
+    City? city,
     required List<RatingComment> rating_comment,
     @Default([]) List<LivePrize> live_prizes,
     @Default([]) List<Shop>? deals,
@@ -123,19 +121,40 @@ class PostResult with _$PostResult {
       _$PostResultFromJson(json);
 }
 
+
+
+@freezed
+class City with _$City {
+  const factory City({
+    required int id,
+    @JsonKey(name: 'country_code') required String countryCode,
+    required String name,
+    required String latitude,
+    required String longitude,
+    // @JsonKey(name: 'subadmin1_code') required String subadmin1Code,
+    // @JsonKey(name: 'subadmin2_code') required String subadmin2Code,
+    required String population,
+    @JsonKey(name: 'time_zone') required String timeZone,
+    required String active,
+  }) = _City;
+
+  factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);
+}
+
 @freezed
 class LivePrize with _$LivePrize {
   factory LivePrize({
-     String? id,
+    String? id,
     required String name,
-     String? photo,
+    String? photo,
     required int? subscribers,
-     String? image,
-     String? gift_qty,
-     String? total_worth,
+    String? image,
+    String? gift_qty,
+    String? total_worth,
   }) = _LivePrize;
 
-  factory LivePrize.fromJson(Map<String, dynamic> json) => _$LivePrizeFromJson(json);
+  factory LivePrize.fromJson(Map<String, dynamic> json) =>
+      _$LivePrizeFromJson(json);
 }
 
 @freezed
@@ -227,7 +246,6 @@ class VendorUserDetail with _$VendorUserDetail {
       _$VendorUserDetailFromJson(json);
 }
 
-
 @freezed
 class RatingCounts with _$RatingCounts {
   const factory RatingCounts({
@@ -241,6 +259,7 @@ class RatingCounts with _$RatingCounts {
   factory RatingCounts.fromJson(Map<String, dynamic> json) =>
       _$RatingCountsFromJson(json);
 }
+
 @freezed
 class usermodel with _$usermodel {
   const factory usermodel({
@@ -275,6 +294,22 @@ class UserDetailsProduct with _$UserDetailsProduct {
 }
 
 @freezed
+class MembershipPlan with _$MembershipPlan {
+  const factory MembershipPlan({
+    required String? id,
+    required String? title,
+    required String? color,
+    // Uncomment if needed later:
+    // required String? mimeType,
+    // required String? position,
+    // required String? active,
+  }) = _MembershipPlan;
+
+  factory MembershipPlan.fromJson(Map<String, dynamic> json) =>
+      _$MembershipPlanFromJson(json);
+}
+
+@freezed
 class Picture with _$Picture {
   const factory Picture({
     required int? id,
@@ -303,7 +338,7 @@ class ExtraModel with _$ExtraModel {
 @freezed
 class Fields with _$Fields {
   const factory Fields({
-    // Map<String, dynamic>? headers,
+    Map<String, dynamic>? headers,
     Original? original,
   }) = _Fields;
 
@@ -315,7 +350,7 @@ class Original with _$Original {
   const factory Original({
     // required bool success,
     String? message,
-    FieldDetails? result,
+    List<FieldDetails>? result,
   }) = _Original;
 
   factory Original.fromJson(Map<String, dynamic> json) =>
@@ -325,19 +360,62 @@ class Original with _$Original {
 @freezed
 class FieldDetails with _$FieldDetails {
   const factory FieldDetails({
-    @JsonKey(name: '4') AvailableColor? field4,
-    @JsonKey(name: '5') AvailableColor? field5,
-    @JsonKey(name: '6') AvailableColor? field6,
-    @JsonKey(name: '10') AvailableColor? field10,
-    @JsonKey(name: '11') AvailableColor? field11,
-    @JsonKey(name: '12') AvailableColor? field12,
-    @JsonKey(name: '13') AvailableColor? field13,
-    @JsonKey(name: '14') AvailableColor? field14,
-    @JsonKey(name: '15') AvailableColor? field15,
+    int? id,
+    @JsonKey(name: 'belongs_to') String? belongsTo,
+    String? name,
+    String? type,
+    int? max,
+    @JsonKey(name: 'default_value')
+    @DefaultValueConverter() 
+    dynamic defaultValue, // Can be String or JSON
+    String? required,
+    @JsonKey(name: 'use_as_filter') String? useAsFilter,
+    String? help,
+    String? active,
+    List<FieldOption>? options,
   }) = _FieldDetails;
 
   factory FieldDetails.fromJson(Map<String, dynamic> json) =>
       _$FieldDetailsFromJson(json);
+}
+
+class DefaultValueConverter implements JsonConverter<dynamic, dynamic> {
+  const DefaultValueConverter();
+
+  @override
+  dynamic fromJson(dynamic json) {
+    if (json is String) {
+      return json; // It's a string
+    } else if (json is Map<String, dynamic>) {
+      return json; // It's a JSON object
+    }
+    return null; // Handle invalid types
+  }
+
+  @override
+  dynamic toJson(dynamic object) {
+    if (object is String) {
+      return object; // Serialize as string
+    } else if (object is Map<String, dynamic>) {
+      return object; // Serialize as JSON
+    }
+    return null; // Handle invalid types
+  }
+}
+
+
+@freezed
+class FieldOption with _$FieldOption {
+  const factory FieldOption({
+    int? id,
+    @JsonKey(name: 'field_id') String? fieldId,
+    String? value,
+    @JsonKey(name: 'parent_id') String? parentId,
+ 
+  }) = _FieldOption;
+
+  factory FieldOption.fromJson(Map<String, dynamic> json) =>
+      _$FieldOptionFromJson(json);
 }
 
 @freezed
@@ -356,11 +434,8 @@ class AvailableColor with _$AvailableColor {
   const factory AvailableColor({
     required String name,
     required String type,
-    // required String? default_value,
-    // int? max,
-    // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-    // required String active,
-     List<Option>? options,
+
+    List<Option>? options,
   }) = _AvailableColor;
 
   factory AvailableColor.fromJson(Map<String, dynamic> json) =>
@@ -386,8 +461,7 @@ class Option with _$Option {
     @JsonKey(name: 'field_id') required String? fieldId,
     required String? value,
     // @JsonKey(name: 'parent_id') required String? parentId,
-    required String? lft,
-    required String? rgt,
+
     required String? depth,
   }) = _Option;
 

@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/main.dart';
 
 class AdSplashScreen extends ConsumerStatefulWidget {
   const AdSplashScreen({super.key});
@@ -26,7 +29,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) =>  const HomeScreen()),
+            MaterialPageRoute(builder: (_) =>   MainScreen()),
           );
         }
       }

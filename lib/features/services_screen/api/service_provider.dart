@@ -631,6 +631,8 @@ class VendorUser {
   final String? membershipColor; // Renamed to match proper camel case
   final String? membershipTitle;
   final double? shortestDistance; // Assuming it holds numeric data
+  final String? latitude;
+  final String? longitude;
 
   VendorUser({
     required this.membership_id,
@@ -643,10 +645,14 @@ class VendorUser {
     required this.shortestDistance,
     required this.membershipColor,
     required this.membershipTitle,
+    required this.latitude,
+    required this.longitude
   });
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
+      latitude: json['latitude'],
+      longitude: json['longitude'],
       membership_id: json['membership_id'],
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',

@@ -71,6 +71,8 @@ class UserDetailsModel with _$UserDetailsModel {
     String? membership_id,
     String? membership_title,
     String? membership_color,
+    String? longitude,
+    String? latitude,
     
     String? photo,
     required String name,

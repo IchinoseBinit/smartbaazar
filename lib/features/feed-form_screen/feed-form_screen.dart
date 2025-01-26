@@ -224,7 +224,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color(0xFFEDECEC).withOpacity(0.3),
+                                  fillColor:
+                                      const Color(0xFFEDECEC).withOpacity(0.3),
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Color(0xFFD9D9D9)))),
@@ -247,7 +248,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               maxLines: 5,
                               decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: const Color(0xFFEDECEC).withOpacity(0.3),
+                                  fillColor:
+                                      const Color(0xFFEDECEC).withOpacity(0.3),
                                   enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Color(0xFFD9D9D9)))),
@@ -272,7 +274,6 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               elevation: 3,
                               child: Container(
                                 padding: EdgeInsets.zero,
-                                width: 190.w,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.grey.shade50,
@@ -357,22 +358,36 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                   Icons.arrow_drop_down),
                                               isExpanded: true,
                                               underline: const SizedBox(),
-                                              hint: const Text(
-                                                "Select Product",
-                                                style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 108, 93, 93),
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
+                                              hint: products.length == 0
+                                                  ? Text(
+                                                      "No Products",
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 108, 93, 93),
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "Select Product",
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 108, 93, 93),
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
                                               value: selectedValues[index],
                                               items: products.map((product) {
                                                 print(
                                                     'Number of products: ${products.length}');
 
                                                 return DropdownMenuItem<String>(
-                                                  value: product.id,
+                                                  value: products.length == 0
+                                                      ? 'No items availble'
+                                                      : product.id,
                                                   child: Container(
                                                     height: 60,
                                                     color: Colors.grey.shade50,

@@ -8,24 +8,22 @@ import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
-final currentScreenProvider = StateProvider<NavigationState>((ref) => NavigationState.splash);
+// Global state provider for managing the current selected index of the bottom nav bar
+final currentScreenProvider = StateProvider<int>((ref) => 1);
 
-enum NavigationState {
-  splash,
-  main,
-}
-
+// List of screens for navigation
 final List<Widget> _screens = [
   const HomeScreen(),
   const FeedScreen(),
   const MessageViewScreen(),
-  const VendorProfileScreen(),
+  const MySubscribeAndWinPage(),
 ];
 
 class MainScreen extends ConsumerWidget {
   MainScreen({super.key});
-  
+
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
@@ -35,15 +33,16 @@ class MainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentScreen = ref.watch(currentScreenProvider);  // Watch currentScreenProvider
+    // Watch the current selected index
+    final selectedIndex = ref.watch(currentScreenProvider);
 
-    if (currentScreen == NavigationState.splash) {
-      return const SplashScreen(); // Show splash screen while it's in splash state
-    }
+    // Decide whether to show the bottom navigation bar
+    bool showBottomNavBar = selectedIndex < _screens.length;
 
     return Scaffold(
+      extendBody: true,
       body: IndexedStack(
-        index: ref.watch(currentScreenProvider).index,  // Use currentScreen state for IndexedStack
+        index: selectedIndex,
         children: List.generate(
           _screens.length,
           (index) => Navigator(
@@ -54,22 +53,32 @@ class MainScreen extends ConsumerWidget {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: ref.watch(currentScreenProvider).index, // Update selected index based on provider
-        onTabChanged: (index) {
-          // Update state when tab changes to reflect the proper screen
-          ref.read(currentScreenProvider.notifier).state = NavigationState.main;
-        },
-      ),
+      bottomNavigationBar: showBottomNavBar
+          ? Customernavbar(
+              selectedIndex: selectedIndex,
+              onTabChanged: (index) {
+                print('ramk ${index}');
+                if (index == selectedIndex) {
+                  // Reset the navigation stack of the current tab if tapped again
+                  _navigatorKeys[index]
+                      .currentState
+                      ?.popUntil((route) => route.isFirst);
+                } else {
+                  // Update the selected tab index
+                  ref.read(currentScreenProvider.notifier).state = index;
+                }
+              },
+            )
+          : null,
     );
   }
 }
 
-class CustomBottomNavigationBar extends StatelessWidget {
+class Customernavbar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
 
-  const CustomBottomNavigationBar({
+  const Customernavbar({
     required this.selectedIndex,
     required this.onTabChanged,
     super.key,
@@ -96,7 +105,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 'assets/icon/wifi.png',
               ];
               return GestureDetector(
-                onTap: () => onTabChanged(index), // Trigger the callback
+                onTap: () {
+                  print("raju ${index}");
+                  onTabChanged(index);
+                }, // Trigger the callback
                 child: Container(
                   height: 40.h,
                   decoration: BoxDecoration(
@@ -105,7 +117,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
                         : const Color(0xfff5f2f6),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected ? const Color(0xff362677) : Colors.black,
+                      color:
+                          isSelected ? const Color(0xff362677) : Colors.black,
                     ),
                   ),
                   padding: const EdgeInsets.all(10),

@@ -18,7 +18,7 @@ import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -260,41 +260,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
     return Scaffold(
         extendBody: true,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: pselectedIndex, // Pass the current index
-          onTabChanged: (index) {
-            ref.read(bottomNavIndexProvider.notifier).state = index;
-
-            // Add navigation logic here
-            switch (index) {
-              case 0:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-                break;
-              case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FeedScreen()),
-                );
-                break;
-              case 2:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
-                );
-                break;
-              case 3:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VendorProfileScreen()),
-                );
-                break;
-            }
-          },
-        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -466,7 +431,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim().isNotEmpty) {
+                                                  .trim()
+                                                  .isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -723,7 +689,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                         dense: true,
                                         title: Text(
                                           softWrap: true,
-                                          product.title,
+                                          product.name,
                                           style: headerstyle.copyWith(
                                               color: ColorConstant.blackColor,
                                               fontSize: 10),
@@ -784,22 +750,24 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       ),
                     ),
                   ),
-                   asyncPostTypeContent.when(
-                      data: (feedStoryData) {
-                        final homeStory = feedStoryData.homeStory;
+                  asyncPostTypeContent.when(
+                    data: (feedStoryData) {
+                      final homeStory = feedStoryData.homeStory;
 
-                        if (homeStory != null &&
-                            homeStory is Map<String, dynamic> &&
-                            homeStory.containsKey('story')) {
-                          final story = homeStory['story'];
+                      if (homeStory != null &&
+                          homeStory is Map<String, dynamic> &&
+                          homeStory.containsKey('story')) {
+                        final story = homeStory['story'];
 
-                          if (story != null &&
-                              story is Map<String, dynamic> &&
-                              story.containsKey('posts')) {
-                            final posts = story['posts'];
+                        if (story != null &&
+                            story is Map<String, dynamic> &&
+                            story.containsKey('posts')) {
+                          final posts = story['posts'];
 
-                            if (posts != null && posts is List<dynamic>) {
-                              return SizedBox(
+                          if (posts != null && posts is List<dynamic>) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 5.h),
+                              child: SizedBox(
                                 height: 100.h,
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
@@ -831,40 +799,41 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     }
                                   },
                                 ),
-                              );
-                            }
+                              ),
+                            );
                           }
                         }
+                      }
 
-                        // If any of the above conditions fail, return a default widget
-                        return const Center(
-                          child: Text('No stories available. '),
-                        );
-                      },
-                      loading: () => SizedBox(
-                        height: 100.h,
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5, // Number of shimmer placeholders
-                          itemBuilder: (context, index) => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                      // If any of the above conditions fail, return a default widget
+                      return const Center(
+                        child: Text('No stories available. '),
+                      );
+                    },
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
                       ),
-                      error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
                     ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
                   SizedBox(
                     height: 6.h,
                   ),
@@ -1171,49 +1140,38 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                 return Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 5.w),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetailScreen(
-                                            productId: hot.id,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: ProductDetailWidget(
-
-
-
-                                      id: int.tryParse(hot.id),
-                                      posttype: hot.post_type_id,
-                                      membershipid: hot.userdetails?.membership_id,
-                                      didcountpercentage: hot.discount_percentage?.toInt(),
-                                      offer: hot.offers,
-                                      shortestDistance: hot.shortestDistance,
-                                      // didcountpercentage: ,
-                                      avg_rating: hot.avg_rating?.toDouble(),
-                                      wow: hot.wow,
-                                      comment: hot.commentcount.toString(),
-                                      discounttedPrice:
-                                          hot.discounted_price.toString(),
-                                      issponsored:
-                                          hot.userdetails?.sponsored ?? false,
-                                      lefttile: "BrandBajar",
-                                      productImage: hot.image,
-                                      Vimage: hot.userdetails?.photo,
-                                      price: hot.price,
-                                      title: hot.title,
-                                      vendorname: hot.username,
-                                      similarproductCount:
-                                          hot.similarProductCount,
-                                      membershipColor:
-                                          hot.userdetails?.membership_color,
-                                      membershipTitle:
-                                          hot.userdetails?.membership_title,
-                                    ),
+                                  child: ProductDetailWidget(
+                                    lat: hot.userdetails?.latitude,
+                                    long: hot.userdetails?.longitude,
+                                    productid: hot.id,
+                                    id: int.tryParse(hot.id),
+                                    posttype: hot.post_type_id,
+                                    membershipid:
+                                        hot.userdetails?.membership_id,
+                                    didcountpercentage:
+                                        hot.discount_percentage?.toInt(),
+                                    offer: hot.offers,
+                                    shortestDistance: hot.shortestDistance,
+                                    // didcountpercentage: ,
+                                    avg_rating: hot.avg_rating?.toDouble(),
+                                    wow: hot.wow,
+                                    comment: hot.commentcount.toString(),
+                                    discounttedPrice:
+                                        hot.discounted_price.toString(),
+                                    issponsored:
+                                        hot.userdetails?.sponsored ?? false,
+                                    lefttile: "BrandBajar",
+                                    productImage: hot.image,
+                                    Vimage: hot.userdetails?.photo,
+                                    price: hot.price,
+                                    title: hot.title,
+                                    vendorname: hot.username,
+                                    similarproductCount:
+                                        hot.similarProductCount,
+                                    membershipColor:
+                                        hot.userdetails?.membership_color,
+                                    membershipTitle:
+                                        hot.userdetails?.membership_title,
                                   ),
                                 );
                               }),

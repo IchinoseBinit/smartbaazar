@@ -9,6 +9,7 @@ class PeopleReviewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("pinky ${rate.first.name}");
     return SizedBox(
       height: 150.h,
       width: double.infinity,
@@ -35,9 +36,10 @@ class PeopleReviewsWidget extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(8.0),
                         child: CircleAvatar(
+                          backgroundImage: NetworkImage(value.photo),
                           radius: 20,
                           backgroundColor: Colors.grey,
                         ),
@@ -71,7 +73,17 @@ class PeopleReviewsWidget extends StatelessWidget {
                   SizedBox(
                     height: 5.h,
                   ),
-                  const Text("I really like the fit and\n the comfort ")
+                  Flexible(
+                    child: Text(
+                      value.comment, // Truncate text after 20 characters
+
+                      style: TextStyle(fontSize: 12.sp, color: Colors.black),
+                      maxLines: null, // Allow text to wrap to multiple lines
+                      overflow: TextOverflow
+                          .ellipsis, // Show "..." if the text overflows
+                      softWrap: true, // Allow text to wrap to next line
+                    ),
+                  )
                 ],
               ),
             ),

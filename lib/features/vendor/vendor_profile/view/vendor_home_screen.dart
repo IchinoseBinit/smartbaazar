@@ -210,6 +210,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
     return GenericSafeArea(
       child: Scaffold(
+        key: _key,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: ColorConstant.whiteColor,
         body: vendorProfileModelDataAsyncValue.when(
           data: (data) {
             if (myselectedindex == 0) alldata = data.brandnew;
@@ -277,7 +280,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                               bottomLeft: Radius.circular(20.r),
                                             ),
                                           ),
-                                          child: data.vendor_card != null
+                                          child: data.vendor_card == null
                                               ? const SizedBox()
                                               : CircleAvatar(
                                                   maxRadius: 15,
@@ -395,7 +398,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         dense: true,
                                         title: Text(
                                           softWrap: true,
-                                          product.title,
+                                          product.name,
                                           style: headerstyle.copyWith(
                                               color: ColorConstant.blackColor,
                                               fontSize: 10),
@@ -708,62 +711,61 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                               alldata?.length ?? 0, (index) {
                                             BrandNewModel prod =
                                                 alldata![index];
-                                            return GestureDetector(
-                                              onTap: () {
-                                                // Add onTap functionality if needed
-                                              },
-                                              child: ProductDetailWidget(
-                                                posttype: prod.post_type,
-                                                id: int.tryParse(prod.id),
-                                                membershipid: prod
-                                                    .userdetails?.membership_id,
-                                                didcountpercentage: prod
-                                                    .discount_percentage
-                                                    ?.toInt(),
-                                                lefttile: "TradeHub",
-                                                vendorname:
-                                                    prod.userdetails?.name ??
-                                                        "",
-                                                Vimage:
-                                                    prod.userdetails?.photo ??
-                                                        "",
-                                                avg_rating: prod.avg_rating
-                                                        ?.toDouble() ??
-                                                    0,
-                                                comment: prod.commentcount
-                                                        ?.toString() ??
-                                                    "0",
-                                                discounttedPrice: prod
-                                                        .discounted_price
-                                                        ?.toString() ??
-                                                    "0",
-                                                distance: double.tryParse(prod
-                                                        .shortestDistance
-                                                        ?.toString() ??
-                                                    "0"),
-                                                issponsored: prod.userdetails
-                                                        ?.sponsored ??
-                                                    false,
-                                                membershipColor: prod
-                                                        .userdetails
-                                                        ?.membership_color ??
-                                                    "",
-                                                membershipTitle: prod
-                                                        .userdetails
-                                                        ?.membership_title ??
-                                                    "",
-                                                offer: prod.wow ?? "",
-                                                price: prod.price ?? "",
-                                                productImage: prod.image,
-                                                shortestDistance:
-                                                    prod.shortestDistance ??
-                                                        0.0,
-                                                similarproductCount:
-                                                    prod.similarProductCount ??
-                                                        0,
-                                                title: prod.title ?? "",
-                                                wow: prod.wow ?? "",
-                                              ),
+                                            return ProductDetailWidget(
+                                              
+                                                                                                lat: prod.userdetails?.latitude,
+                                                long: prod.userdetails?.longitude,
+                                                productid: prod.id,
+                                              posttype: prod.post_type,
+                                              id: int.tryParse(prod.id),
+                                              membershipid: prod
+                                                  .userdetails?.membership_id,
+                                              didcountpercentage: prod
+                                                  .discount_percentage
+                                                  ?.toInt(),
+                                              lefttile: "TradeHub",
+                                              vendorname:
+                                                  prod.userdetails?.name ??
+                                                      "",
+                                              Vimage:
+                                                  prod.userdetails?.photo ??
+                                                      "",
+                                              avg_rating: prod.avg_rating
+                                                      ?.toDouble() ??
+                                                  0,
+                                              comment: prod.commentcount
+                                                      ?.toString() ??
+                                                  "0",
+                                              discounttedPrice: prod
+                                                      .discounted_price
+                                                      ?.toString() ??
+                                                  "0",
+                                              distance: double.tryParse(prod
+                                                      .shortestDistance
+                                                      ?.toString() ??
+                                                  "0"),
+                                              issponsored: prod.userdetails
+                                                      ?.sponsored ??
+                                                  false,
+                                              membershipColor: prod
+                                                      .userdetails
+                                                      ?.membership_color ??
+                                                  "",
+                                              membershipTitle: prod
+                                                      .userdetails
+                                                      ?.membership_title ??
+                                                  "",
+                                              offer: prod.wow ?? "",
+                                              price: prod.price ?? "",
+                                              productImage: prod.image,
+                                              shortestDistance:
+                                                  prod.shortestDistance ??
+                                                      0.0,
+                                              similarproductCount:
+                                                  prod.similarProductCount ??
+                                                      0,
+                                              title: prod.title ?? "",
+                                              wow: prod.wow ?? "",
                                             );
                                           }),
                                         ),
@@ -792,11 +794,12 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                            "Opening hours:\n${(jsonDecode(data.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12.sp)),
+                                        if (data.vendor_about != null)
+                                          Text(
+                                              "Opening hours:\n${(jsonDecode(data.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 12.sp)),
                                         SizedBox(height: 10.h),
                                         Row(
                                           children: [
@@ -1016,21 +1019,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           dashColor: Color(0xffD9D9D9),
                           dashLength: 7),
                       SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "All Products",
-                            textAlign: TextAlign.left,
-                            style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                                color: ColorConstant.blackColor),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                        ],
+                      Text(
+                        "All Products",
+                        textAlign: TextAlign.left,
+                        style: headerstyle.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                            color: ColorConstant.blackColor),
                       ),
                       data.all_products == null
                           ? nolistingfound() // Show this widget when products are null
@@ -1079,12 +1074,17 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                             borderRadius:
                                                 BorderRadius.circular(15.0),
                                           ),
+
                                           child: AllProductDetailWidget(
+
+                                              lat: res.userdetails?.latitude,
+                                            long: res.userdetails?.longitude,
+                                            productid: res.id,
                                             posttype: res.post_type_id,
                                             membershipid:
                                                 res.userdetails?.membership_id,
                                             id: int.tryParse(res.id),
-                                            discountpercentage: res
+                                            didcountpercentage: res
                                                 .discount_percentage
                                                 ?.toInt(),
                                             productImage: res.image,

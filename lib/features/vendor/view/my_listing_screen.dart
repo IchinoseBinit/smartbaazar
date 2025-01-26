@@ -20,7 +20,7 @@ class MyListingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final listingResponse = ref.watch(getMyListingResponseProvider);
 
-    return GenericSafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
@@ -125,10 +125,17 @@ class MyListinDetails extends ConsumerWidget {
               InkWell(
                 onTap: () {
                   // print("niko ${product.postTypeId}");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) =>  UpdateListing(prod: product)),
-                  );
+                  Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(
+                          builder: (context) => UpdateListing(
+                                prod: product,
+                              )));
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (_) => UpdateListing(prod: product)),
+                  // );
                 },
                 child: const Icon(
                   Icons.edit,

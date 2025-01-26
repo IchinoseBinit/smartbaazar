@@ -30,90 +30,92 @@ class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUserName(); // Load user name from SharedPreferences
+    getuser(); // Load user name from SharedPreferences
   }
 
-  Future<void> _loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      vendorName = prefs.getString('userName');
-    });
-  }
+
+ Future<void> getuser() async {
+  SharedPreferences prfs = await SharedPreferences.getInstance();
+  setState(() {
+    vendorName = prfs.getString("name");
+  });
+  print("ramu $vendorName");
+}
+
 
   @override
   Widget build(BuildContext context) {
-    return GenericSafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
+    return Scaffold(
+      extendBody: true,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(width: 1, color: Colors.black)),
+                    child: Image.asset(ImageConstant.personImage),
+                  ),
+                  SizedBox(
+                    width: 15.w,
+                  ),
+                  Text(
+                    '$vendorName',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xff000000),
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const AddToCartScreen()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(9),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(width: 1, color: Colors.black)),
-                      child: Image.asset(ImageConstant.personImage),
-                    ),
-                    SizedBox(
-                      width: 15.w,
-                    ),
-                    Text(
-                      '$vendorName',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xff000000),
+                          border: Border.all(width: 2, color: Colors.black)),
+                      child: SvgPicture.asset(
+                        openCart,
+                        colorFilter: const ColorFilter.mode(
+                            Color(0xff362677), BlendMode.srcIn),
                       ),
                     ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const AddToCartScreen()));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(width: 2, color: Colors.black)),
-                        child: SvgPicture.asset(
-                          openCart,
-                          colorFilter: const ColorFilter.mode(
-                              Color(0xff362677), BlendMode.srcIn),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                // const PhotoAvatarContainerWidget(),
-                // SizedBox(
-                //   height: 16.h,
-                // ),
-                const BackgroundImageDescriptionWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const BuyerAccountDetailsWidget(),
-                // SizedBox(
-                //   height: 16.h,
-                // ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              // const PhotoAvatarContainerWidget(),
+              // SizedBox(
+              //   height: 16.h,
+              // ),
+              const BackgroundImageDescriptionWidget(),
+              SizedBox(
+                height: 16.h,
+              ),
+              const BuyerAccountDetailsWidget(),
+              // SizedBox(
+              //   height: 16.h,
+              // ),
 
-                // const VerifyAccountWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const ChangePasswordWidget(),
-              ],
-            ),
+              // const VerifyAccountWidget(),
+              SizedBox(
+                height: 16.h,
+              ),
+              const ChangePasswordWidget(),
+            ],
           ),
         ),
       ),

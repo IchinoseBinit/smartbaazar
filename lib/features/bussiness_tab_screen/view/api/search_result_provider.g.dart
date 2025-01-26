@@ -6,7 +6,7 @@ part of 'search_result_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchResponseHash() => r'927e23e6d3e81648d7fda8e300212e3c9ddcf837';
+String _$getSearchResponseHash() => r'1103442ac8d848ddd3d4f1d9c3cb70cee3fe0d66';
 
 /// Copied from Dart SDK
 class _SystemHash {

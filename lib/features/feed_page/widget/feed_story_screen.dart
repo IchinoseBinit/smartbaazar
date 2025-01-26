@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -32,6 +34,16 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   late List<List<String?>> vendorStories;
   late PageController _pageController;
   late AnimationController _animationController;
+  late List<String?> description;
+  late List<String?> title;
+  late List<String?> price;
+  late List<String?>? discountprice;
+  late List<String>? wowcount;
+  late List<int>? commentcount;
+
+  late List<int>? avgratingcount;
+
+  late List<double>? discountpercentagelist;
 
   final duration = const Duration(seconds: 4);
   bool _isPaused = false;
@@ -53,6 +65,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   }
 
   bool _initialized = false;
+  bool _showdialog = false;
 
   @override
   void didChangeDependencies() {
@@ -72,6 +85,47 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     vendorStories = groupedStories.entries.map((entry) {
       return entry.value.map((post) => post.image!).toList();
     }).toList();
+    price = groupedStories.entries
+        .map(
+          (e) => e.value.first.price,
+        )
+        .toList();
+    discountprice = groupedStories.entries
+        .map(
+          (e) => e.value.first.discountedPrice,
+        )
+        .toList();
+    discountpercentagelist = groupedStories.entries
+        .map(
+          (e) => e.value.first.discountPercentage ?? 0,
+        )
+        .toList();
+    wowcount = groupedStories.entries
+        .map(
+          (e) => e.value.first.wow ?? '0',
+        )
+        .toList();
+
+    description = groupedStories.entries
+        .map(
+          (e) => e.value.first.description,
+        )
+        .toList();
+    title = groupedStories.entries
+        .map(
+          (e) => e.value.first.title,
+        )
+        .toList();
+    commentcount = groupedStories.entries
+        .map(
+          (e) => e.value.first.commentCount!,
+        )
+        .toList();
+    avgratingcount = groupedStories.entries
+        .map(
+          (e) => e.value.first.averageRating!,
+        )
+        .toList();
 
     _currentVendorIndex = widget.selectedVendorIndex;
     _currentStoryIndex = 0;
@@ -154,6 +208,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
 
   void _moveToNextVendor() {
     setState(() {
+      if (_showdialog) _showdialog = !_showdialog;
       if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
         _currentStoryIndex++;
       } else if (_currentVendorIndex < vendorStories.length - 1) {
@@ -243,6 +298,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("biabsh ${price}");
     return GenericSafeArea(
       child: Scaffold(
         extendBody: true,
@@ -363,6 +419,8 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                         child: AnimatedBuilder(
                           animation: _animationController,
                           builder: (context, child) {
+                            // print("bibash ${vendorStories}");
+
                             double progressValue = 0.0;
                             // Fully progress bars for completed stories
                             if (index < _currentStoryIndex) {
@@ -431,7 +489,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       ),
                     ),
                     Text(
-                      "345",
+                      wowcount?[_currentStoryIndex] ?? '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 30.h),
@@ -443,7 +501,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       ),
                     ),
                     Text(
-                      "10.4k",
+                      commentcount?[_currentStoryIndex].toString() ?? '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
@@ -453,7 +511,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           color: Colors.grey),
                     ),
                     Text(
-                      "1.4k",
+                      avgratingcount?[_currentStoryIndex].toString() ?? '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
@@ -472,7 +530,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       child: Image.asset("assets/images/share_icon.png",
                           color: Colors.grey),
                     ),
-                    SizedBox(height: 110.h),
+                    SizedBox(height: 40.h),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
@@ -485,13 +543,22 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           child: Row(
                             children: [
                               SizedBox(width: 10.w),
-                              const Icon(Icons.error),
+                              InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _showdialog = !_showdialog;
+                                    });
+                                  },
+                                  child: const Icon(Icons.error)),
                               SizedBox(width: 10.w),
-                              Transform.rotate(
-                                angle: 5.6,
-                                child: Icon(
-                                  Icons.send,
-                                  size: 18.sp,
+                              InkWell(
+                                onTap: () {},
+                                child: Transform.rotate(
+                                  angle: 5.6,
+                                  child: Icon(
+                                    Icons.send,
+                                    size: 18.sp,
+                                  ),
                                 ),
                               ),
                             ],
@@ -502,6 +569,91 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                   ],
                 ),
               ),
+              if (_showdialog)
+                Positioned(
+                    right: 30,
+                    bottom: 120,
+                    child: AnimatedContainer(
+                      duration: Duration(seconds: 2),
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 2,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 10.h),
+                          width: 300.w,
+                          height: 110.h,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        title[_currentStoryIndex]!.length > 15
+                                            ? '${title[_currentStoryIndex]!.substring(0, 15)}...'
+                                            : title[_currentStoryIndex]!,
+                                        style: headerstyle.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                            color: Colors.black),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      const Icon(Icons.arrow_outward)
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              Text(
+                                (description[_currentStoryIndex] ?? '  ')
+                                    .replaceAll(RegExp(r'<[^>]*>'), ''),
+                                style: headerstyle.copyWith(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Row(
+                                children: [
+                                  Text(price[_currentStoryIndex].toString(),
+                                      style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          color: Colors.black)),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Text(
+                                      discountprice?[_currentStoryIndex] ?? '0',
+                                      style: headerstyle.copyWith(
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11,
+                                          color: Colors.black))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
               Positioned(
                   bottom: 10,
                   child: Container(
@@ -510,7 +662,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       children: [
                         Container(
                           width: MediaQuery.sizeOf(context).width * 0.8,
-                          height: 75.h,
+                          height: 89.h,
                           color: Colors.black.withOpacity(0.3),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -526,7 +678,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                                       days: 3,
                                       hours: 12,
                                       minutes: 12,
-                                      seconds: 12)),
+                                      seconds: 5)), //change this
                                 ),
                               ],
                             ),
@@ -534,7 +686,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                         ),
                         Container(
                           width: MediaQuery.sizeOf(context).width * 0.2,
-                          height: 75.h,
+                          height: 88.h,
                           color: Colors.orange,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),

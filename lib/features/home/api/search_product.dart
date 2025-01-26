@@ -7,7 +7,7 @@ import 'package:smartbazar/features/home/model/search_product_model.dart';
 part 'search_product.g.dart';
 
 @riverpod
-Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
+Future<List<SearchProductModel>> search( ref, String query) async {
   if (query.isEmpty) return [];
 
   final client = Dio(

@@ -6,8 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/login_api.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
+import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
@@ -38,7 +39,7 @@ class LoginController extends StateNotifier<GenericState> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const FeedScreen()),
+        MaterialPageRoute(builder: (_) => MainScreen()),
       );
     } catch (e) {
       print("Login error: $e");
@@ -63,13 +64,14 @@ class LoginController extends StateNotifier<GenericState> {
       if (userId.isNotEmpty) {
         state = LoadedState<LoginData>(response: LoginData.fromJson(session));
         SmartClient.userId = userId;
-        SmartClient.refresh = session['extra']['refreshToken'];
-        SmartClient.token = session['extra']['refreshToken'];
-        SmartClient.userEmail = session['result']['email'];
-        SmartClient.userName = session['result']['username'];
         SmartClient.phone = session['result']['phone'];
-
-        // SmartClinet.
+        SmartClient.refresh = session['extra']['refreshToken'];
+        SmartClient.token = session['extra']['authToken'];
+        SmartClient.userEmail = session['result']['email'];
+        SmartClient.userName = session['result']['name'];
+        
+        
+       
         // TODO: SmartClient.token is not set here
 
         Navigator.pushReplacement(
@@ -112,9 +114,11 @@ class LoginController extends StateNotifier<GenericState> {
     await prefs.setString("session", json.encode(loginData.toJson()));
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
-    await prefs.setString('name', SmartClient.userName);
-    await prefs.setString('email', SmartClient.userEmail);
-        await prefs.setString("phone", SmartClient.phone);
+     await prefs.setString("name", SmartClient.userName);
+      await prefs.setString("email", SmartClient.userEmail);
+       await prefs.setString("phone", SmartClient.phone);
+        await prefs.setString("laravel", SmartClient.laravelsession);
+
   }
 
   Future<String?> _getSessionData() async {
@@ -173,5 +177,10 @@ class LoginController extends StateNotifier<GenericState> {
 
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
+     await prefs.setString("name", SmartClient.userName);
+      await prefs.setString("email", SmartClient.userEmail);
+       await prefs.setString("phone", SmartClient.phone);
+              await prefs.setString("laravel", SmartClient.laravelsession);
+
   }
 }

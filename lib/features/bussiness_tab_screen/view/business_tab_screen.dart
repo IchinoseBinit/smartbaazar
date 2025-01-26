@@ -293,7 +293,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         InkWell(
                                           onTap: () {
                                             if (_searchController.text
-                                                    .trim().isNotEmpty) {
+                                                .trim()
+                                                .isNotEmpty) {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -545,7 +546,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       dense: true,
                                       title: Text(
                                         softWrap: true,
-                                        product.title,
+                                        product.name,
                                         style: headerstyle.copyWith(
                                             color: ColorConstant.blackColor,
                                             fontSize: 10),
@@ -815,7 +816,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       MediaQuery.of(context).size.height / 2,
                                   child: TabBarView(children: [
                                     data.brandNew!.isEmpty
-                                        ? nolistingfound()
+                                        ? Padding(
+                                            padding: EdgeInsets.only(top: 15.h),
+                                            child: Center(
+                                              child: nolistingfound(),
+                                            ),
+                                          )
                                         : Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 2),
@@ -877,6 +883,21 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                               ),
                                                               child:
                                                                   AllProductDetailWidget(
+                                                                      productid: res.id,
+
+                                                                      lat: res.user[0].latitude,
+                                            long: res.user[0].longitude,
+                                                                    
+                                                                id: int
+                                                                    .tryParse(
+                                                                        res.id),
+                                                                membershipid: res
+                                                                    .user[0]
+                                                                    .membership_id,
+                                                                posttype: res
+                                                                    .post_type_id,
+                                                                didcountpercentage:
+                                                                    res.discount_percentage,
                                                                 avg_rating: res
                                                                     .avg_rating,
                                                                 comment: res
@@ -928,7 +949,6 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       child: Column(
                                         children: data.business!.map(
                                           (e) {
-                                            print("king ${e.logo}");
                                             return BigContainer(
                                               memebertitle: e.membershipTitle!,
                                               lat: double.tryParse(
@@ -959,7 +979,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                       ),
                                     ),
                                     data.used!.isEmpty
-                                        ? nolistingfound()
+                                        ? Padding(
+                                            padding: EdgeInsets.only(top: 15.h),
+                                            child: Center(
+                                              child: nolistingfound(),
+                                            ),
+                                          )
                                         : Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 2),
@@ -1020,6 +1045,19 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                               ),
                                                               child:
                                                                   AllProductDetailWidget(
+
+                                                                      lat: res.user[0].latitude,
+                                            long: res.user[0].longitude,
+  productid: res.id,                                                                posttype: res
+                                                                    .posttypename,
+                                                                membershipid: res
+                                                                    .user[0]
+                                                                    .membership_id,
+                                                                id: int
+                                                                    .tryParse(
+                                                                        res.id),
+                                                                didcountpercentage:
+                                                                    res.discount_percentage,
                                                                 avg_rating: res
                                                                     .avg_rating,
                                                                 comment: res
@@ -1067,7 +1105,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             ),
                                           ),
                                     data.services!.isEmpty
-                                        ? Center(child: nolistingfound())
+                                        ? Padding(
+                                            padding: EdgeInsets.only(top: 15.h),
+                                            child: Center(
+                                              child: nolistingfound(),
+                                            ),
+                                          )
                                         : SingleChildScrollView(
                                             scrollDirection: Axis
                                                 .vertical, // Scroll vertically if needed
@@ -1127,6 +1170,20 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                             ),
                                                             child:
                                                                 AllProductDetailWidget(
+                                                                    productid: res.id,
+                                                                  
+                                                                    lat: res.user[0].latitude,
+                                            long: res.user[9].longitude,
+                                                              didcountpercentage:
+                                                                  res.discount_percentage,
+                                                              membershipid: res
+                                                                  .user[0]
+                                                                  .membership_id,
+                                                              shortestDistance: res
+                                                                  .user[0]
+                                                                  .shortestDistance,
+                                                              posttype: res
+                                                                  .post_type_id,
                                                               avg_rating: res
                                                                   .avg_rating,
                                                               comment: res

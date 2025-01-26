@@ -64,8 +64,7 @@ class SellerInformationWidget extends ConsumerStatefulWidget {
       this.isUpaye,
       this.isHyper,
       this.hyper,
-      this.sell
-      });
+      this.sell});
   String? type;
   String? category;
   String? title;
@@ -725,12 +724,11 @@ class _SellerInformationWidgetState
                   text: isloading ? 'Submitting...' : 'Submit',
                   onPresssed: () async {
                     if (widget.category != null &&
-                          widget.title != null &&
-                          widget.city != null &&
-                          widget.description != null &&
-                          widget.phonecoontroller?.text.isNotEmpty == true &&
-                          widget.terms != null
-                        ) {
+                        widget.title != null &&
+                        widget.city != null &&
+                        widget.description != null &&
+                        widget.phonecoontroller?.text.isNotEmpty == true &&
+                        widget.terms != null) {
                       setState(() {
                         isloading = true; // Start loading
                       });
@@ -846,11 +844,10 @@ class _SellerInformationWidgetState
 }
 
 class SelectPhotFromFilesContainer extends StatefulWidget {
-  const SelectPhotFromFilesContainer({
-    super.key,
-    required this.onImagesSelected,
-  });
+  SelectPhotFromFilesContainer(
+      {super.key, required this.onImagesSelected, this.updateimage});
   final Function(List<File?>) onImagesSelected;
+  List<File?>? updateimage;
 
   @override
   State<SelectPhotFromFilesContainer> createState() =>
@@ -864,6 +861,7 @@ class _SelectPhotFromFilesContainerState
 
   void selectImages() async {
     if (images.length < 6) {
+      
       List<File?> selectedImages =
           await _imagePickerService.pickMultipleImages(context);
       if (selectedImages.isNotEmpty) {
@@ -879,6 +877,15 @@ class _SelectPhotFromFilesContainerState
         content: 'You can upload up to 6 photos only.',
       );
     }
+  }
+
+  @override
+  void initState() {
+    print("upaa ${widget.updateimage}");
+    // TODO: implement initState
+    super.initState();
+    if (widget.updateimage != null && widget.updateimage!.isEmpty)
+      images.addAll(widget.updateimage ?? []);
   }
 
   @override

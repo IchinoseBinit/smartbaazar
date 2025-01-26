@@ -30,6 +30,7 @@ Future<RefreshTokenResponse> getRefreshToken(GetRefreshTokenRef ref) async {
       // Update tokens in SmartClient and SharedPreferences
       SmartClient.token = tokenData.authToken;
       SmartClient.refresh = tokenData.refreshToken;
+      
 
       await prefs.setString('accessToken', tokenData.authToken);
       await prefs.setString('refreshToken', tokenData.refreshToken);

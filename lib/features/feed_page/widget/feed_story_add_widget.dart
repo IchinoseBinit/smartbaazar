@@ -73,6 +73,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
     print(widget.showGift);
     return GestureDetector(
       onTap: () {
+        // print("raju ${widget.feedStoryContent}");
         Navigator.push(
           context,
           MaterialPageRoute(

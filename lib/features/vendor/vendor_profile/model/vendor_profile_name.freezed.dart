@@ -1315,6 +1315,8 @@ mixin _$UserDetailsModel {
   String? get membership_id => throw _privateConstructorUsedError;
   String? get membership_title => throw _privateConstructorUsedError;
   String? get membership_color => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int? get storyCount => throw _privateConstructorUsedError;
@@ -1346,6 +1348,8 @@ abstract class $UserDetailsModelCopyWith<$Res> {
       String? membership_id,
       String? membership_title,
       String? membership_color,
+      String? longitude,
+      String? latitude,
       String? photo,
       String name,
       int? storyCount,
@@ -1375,6 +1379,8 @@ class _$UserDetailsModelCopyWithImpl<$Res, $Val extends UserDetailsModel>
     Object? membership_id = freezed,
     Object? membership_title = freezed,
     Object? membership_color = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
     Object? photo = freezed,
     Object? name = null,
     Object? storyCount = freezed,
@@ -1406,6 +1412,14 @@ class _$UserDetailsModelCopyWithImpl<$Res, $Val extends UserDetailsModel>
       membership_color: freezed == membership_color
           ? _value.membership_color
           : membership_color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -1450,6 +1464,8 @@ abstract class _$$UserDetailsModelImplCopyWith<$Res>
       String? membership_id,
       String? membership_title,
       String? membership_color,
+      String? longitude,
+      String? latitude,
       String? photo,
       String name,
       int? storyCount,
@@ -1477,6 +1493,8 @@ class __$$UserDetailsModelImplCopyWithImpl<$Res>
     Object? membership_id = freezed,
     Object? membership_title = freezed,
     Object? membership_color = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
     Object? photo = freezed,
     Object? name = null,
     Object? storyCount = freezed,
@@ -1508,6 +1526,14 @@ class __$$UserDetailsModelImplCopyWithImpl<$Res>
       membership_color: freezed == membership_color
           ? _value.membership_color
           : membership_color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -1547,6 +1573,8 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
       this.membership_id,
       this.membership_title,
       this.membership_color,
+      this.longitude,
+      this.latitude,
       this.photo,
       required this.name,
       this.storyCount,
@@ -1570,6 +1598,10 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
   @override
   final String? membership_color;
   @override
+  final String? longitude;
+  @override
+  final String? latitude;
+  @override
   final String? photo;
   @override
   final String name;
@@ -1585,7 +1617,7 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
 
   @override
   String toString() {
-    return 'UserDetailsModel(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance)';
+    return 'UserDetailsModel(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, longitude: $longitude, latitude: $latitude, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance)';
   }
 
   @override
@@ -1604,6 +1636,10 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
                 other.membership_title == membership_title) &&
             (identical(other.membership_color, membership_color) ||
                 other.membership_color == membership_color) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.storyCount, storyCount) ||
@@ -1626,6 +1662,8 @@ class _$UserDetailsModelImpl implements _UserDetailsModel {
       membership_id,
       membership_title,
       membership_color,
+      longitude,
+      latitude,
       photo,
       name,
       storyCount,
@@ -1658,6 +1696,8 @@ abstract class _UserDetailsModel implements UserDetailsModel {
       final String? membership_id,
       final String? membership_title,
       final String? membership_color,
+      final String? longitude,
+      final String? latitude,
       final String? photo,
       required final String name,
       final int? storyCount,
@@ -1680,6 +1720,10 @@ abstract class _UserDetailsModel implements UserDetailsModel {
   String? get membership_title;
   @override
   String? get membership_color;
+  @override
+  String? get longitude;
+  @override
+  String? get latitude;
   @override
   String? get photo;
   @override

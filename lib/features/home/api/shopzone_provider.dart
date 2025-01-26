@@ -100,6 +100,7 @@ class CategoryProduct {
   final String description;
   final VendorUser? userdetails;
   final String image;
+  final String? post_type_id;
   final String? discountedPrice;
   final int? similarProductCount;
   final String? offers;
@@ -125,10 +126,13 @@ class CategoryProduct {
       this.avgRating,
       this.shortestDistance,
       this.nearestBranch,
-      this.discount_percentage});
+      this.discount_percentage,
+      this.post_type_id
+      });
 
   factory CategoryProduct.fromJson(Map<String, dynamic> json) {
     return CategoryProduct(
+      post_type_id: json['post_type_id'],
       discount_percentage: json['discount_percentage'],
       id: json['id'] ?? '',
       price: json['price'] ?? '0.0',
@@ -163,21 +167,26 @@ class VendorUser {
   final bool? sponsored;
   final String? membershipTitle;
   final String? membership_id;
+  final String? longitude;
+  final String? latitude;
 
-  VendorUser({
-    required this.membership_id,
-    required this.id,
-    required this.name,
-    required this.photo,
-    this.memberColor,
-    this.shortestDistance,
-    this.nearestBranch,
-    this.sponsored,
-    this.membershipTitle,
-  });
+  VendorUser(
+      {required this.membership_id,
+      required this.id,
+      required this.name,
+      required this.photo,
+      this.memberColor,
+      this.shortestDistance,
+      this.nearestBranch,
+      this.sponsored,
+      this.membershipTitle,
+      this.latitude,
+      this.longitude});
 
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
+      longitude: json['longitude'],
+      latitude: json['latitude'],
       membership_id: json['membership_id'],
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',

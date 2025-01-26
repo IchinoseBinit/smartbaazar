@@ -1,4 +1,3 @@
-
 // import 'package:flutter/material.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,7 +52,7 @@
 //               child: SizedBox(
 //                 height: 30.h,
 //                 child: Text(
-//                   product.title,
+//                   product.name,
 //                   maxLines: 2,
 //                   overflow: TextOverflow.ellipsis,
 //                   style: TextStyle(

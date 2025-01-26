@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -14,7 +15,7 @@ import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/scan_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -136,9 +137,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       'screen': const EventsScreen()
     },
   ];
+  Future<void> getto() async {
+    SharedPreferences sgf = await SharedPreferences.getInstance();
+    print("palla ${sgf.getString('laravel')}");
+  }
 
   @override
   void initState() {
+    print('binod ${SmartClient.laravelsession}');
+    getto();
     shared();
     super.initState();
     dynamictabController = TabController(length: 3, vsync: this);
@@ -248,8 +255,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final areaa = ref.watch(getScratchAndWinResponseProvider);
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    // final areaa = ref.watch(getScratchAndWinResponseProvider);
+    // final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
@@ -295,43 +302,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
 
     return Scaffold(
-        extendBody: true,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: pselectedIndex, // Pass the current index
-          onTabChanged: (index) {
-            ref.read(bottomNavIndexProvider.notifier).state = index;
-
-            // Add navigation logic here
-            switch (index) {
-              case 0:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-                break;
-              case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FeedScreen()),
-                );
-                break;
-              case 2:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const MessageViewScreen()),
-                );
-                break;
-              case 3:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VendorProfileScreen()),
-                );
-                break;
-            }
-          },
-        ),
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.whiteColor,
@@ -404,6 +374,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               ),
                                               child: DropdownButton<
                                                   Map<String, String>>(
+                                                alignment: Alignment.center,
                                                 value: dropdownValue ??
                                                     headeritems[postypeid!],
                                                 onChanged: (newValue) {
@@ -413,6 +384,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 },
                                                 items: headeritems.map((item) {
                                                   return DropdownMenuItem(
+                                                    alignment: Alignment.center,
                                                     value: item,
                                                     child: Column(
                                                       mainAxisAlignment:
@@ -761,7 +733,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           dense: true,
                                           title: Text(
                                             softWrap: true,
-                                            product.title,
+                                            product.name,
                                             style: headerstyle.copyWith(
                                                 color: ColorConstant.blackColor,
                                                 fontSize: 10),
@@ -1154,70 +1126,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   CategoryProduct prod =
                                                       products[index];
 
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ProductDetailScreen(
-                                                            productId: prod.id,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: ProductDetailWidget(
-                                                      membershipid: prod
-                                                          .userdetails
-                                                          ?.membership_id,
-                                                      tradeImage:
-                                                          'assets/icon/loading.svg',
-                                                      didcountpercentage: prod
-                                                          .discount_percentage,
-                                                      distance:
-                                                          prod.shortestDistance,
-                                                      issponsored: prod
-                                                              .userdetails
-                                                              ?.sponsored ??
-                                                          false,
-                                                      shortestDistance: prod
-                                                          .userdetails
-                                                          ?.shortestDistance
-                                                          ?.roundToDouble(),
-                                                      wow: prod.wow,
-                                                      comment: prod.commentCount
-                                                          .toString(),
-                                                      avg_rating: prod.avgRating
-                                                          ?.toDouble(),
-                                                      offer: prod.offers,
-                                                      id: int.tryParse(prod
-                                                              .userdetails
-                                                              ?.id ??
-                                                          '0'),
-                                                      lefttile: categories[
-                                                          selectedIndexx],
-                                                      vendorname: prod
-                                                              .userdetails
-                                                              ?.name ??
-                                                          '',
-                                                      discounttedPrice:
-                                                          prod.discountedPrice,
-                                                      Vimage: prod
-                                                          .userdetails?.photo,
-                                                      price: prod.price,
-                                                      title: prod.title,
-                                                      productImage: prod.image,
-                                                      membershipColor: prod
-                                                              .userdetails
-                                                              ?.memberColor ??
-                                                          '',
-                                                      similarproductCount: prod
-                                                          .similarProductCount,
-                                                      membershipTitle: prod
-                                                              .userdetails
-                                                              ?.membershipTitle ??
-                                                          '',
-                                                    ),
+                                                  return ProductDetailWidget(
+                                                    lat: prod.userdetails
+                                                            ?.latitude ??
+                                                        '0.0',
+                                                    long: prod.userdetails
+                                                            ?.longitude ??
+                                                        '0.0',
+                                                    posttype: prod.post_type_id,
+                                                    productid: prod.id,
+                                                    membershipid: prod
+                                                        .userdetails
+                                                        ?.membership_id,
+                                                    tradeImage:
+                                                        'assets/icon/loading.svg',
+                                                    didcountpercentage: prod
+                                                        .discount_percentage,
+                                                    distance:
+                                                        prod.shortestDistance,
+                                                    issponsored: prod
+                                                            .userdetails
+                                                            ?.sponsored ??
+                                                        false,
+                                                    shortestDistance: prod
+                                                        .userdetails
+                                                        ?.shortestDistance
+                                                        ?.roundToDouble(),
+                                                    wow: prod.wow,
+                                                    comment: prod.commentCount
+                                                        .toString(),
+                                                    avg_rating: prod.avgRating
+                                                        ?.toDouble(),
+                                                    offer: prod.offers,
+                                                    id: int.tryParse(
+                                                        prod.userdetails?.id ??
+                                                            '0'),
+                                                    lefttile: categories[
+                                                        selectedIndexx],
+                                                    vendorname: prod.userdetails
+                                                            ?.name ??
+                                                        '',
+                                                    discounttedPrice:
+                                                        prod.discountedPrice,
+                                                    Vimage:
+                                                        prod.userdetails?.photo,
+                                                    price: prod.price,
+                                                    title: prod.title,
+                                                    productImage: prod.image,
+                                                    membershipColor: prod
+                                                            .userdetails
+                                                            ?.memberColor ??
+                                                        '',
+                                                    similarproductCount: prod
+                                                        .similarProductCount,
+                                                    membershipTitle: prod
+                                                            .userdetails
+                                                            ?.membershipTitle ??
+                                                        '',
                                                   );
                                                 }),
                                               ),
@@ -1346,7 +1311,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         data.insidearr[0].isEmpty
                                             ? Padding(
                                                 padding:
-                                                    EdgeInsets.only(top: 28.h),
+                                                    EdgeInsets.only(top: 20.h),
                                                 child: Center(
                                                     child: nolistingfound()),
                                               )
@@ -1370,68 +1335,62 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             .symmetric(
                                                                 horizontal:
                                                                     5.w),
-                                                        child: InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ProductDetailScreen(
-                                                                        productId:
-                                                                            prod.id),
-                                                              ),
-                                                            );
-                                                          },
-                                                          child:
-                                                              ProductDetailWidget(
-                                                            membershipid: prod
-                                                                .user
-                                                                .first
-                                                                .membership_id,
-                                                            posttype: prod
-                                                                .post_type_id,
-                                                            lefttile: prod
-                                                                .posttypename,
-                                                            didcountpercentage:
-                                                                prod.discount_percentage,
-                                                            shortestDistance: prod
-                                                                .shortestDistance,
-                                                            distance: prod
-                                                                .user[0]
-                                                                .shortestDistance,
-                                                            avg_rating:
-                                                                prod.avg_rating,
-                                                            offer: prod.offers,
-                                                            id: int.tryParse(
-                                                                prod.user.first
-                                                                    .user_id),
-                                                            comment:
-                                                                prod.commentnum,
-                                                            wow: prod.wow,
-                                                            issponsored: prod
-                                                                .user[0]
-                                                                .sponsored!,
-                                                            vendorname: prod
-                                                                .contactName,
-                                                            discounttedPrice:
-                                                                prod.discont,
-                                                            Vimage: prod.user
-                                                                .first.photo,
-                                                            price: prod.price,
-                                                            title: prod.title,
-                                                            productImage:
-                                                                prod.imageUrl,
-                                                            similarproductCount:
-                                                                prod.similarproductCount,
-                                                            membershipColor: prod
-                                                                .user
-                                                                .first
-                                                                .membership_color,
-                                                            membershipTitle: prod
-                                                                .user
-                                                                .first
-                                                                .membership_title,
-                                                          ),
+                                                        child:
+                                                            ProductDetailWidget(
+                                                          lat: prod.user[0]
+                                                                  .latitude ??
+                                                              '0.0',
+                                                          long: prod.user[0]
+                                                                  .longitude ??
+                                                              '0.0',
+                                                          productid: prod.id,
+                                                          membershipid: prod
+                                                              .user
+                                                              .first
+                                                              .membership_id,
+                                                          posttype:
+                                                              prod.post_type_id,
+                                                          lefttile:
+                                                              prod.posttypename,
+                                                          didcountpercentage: prod
+                                                              .discount_percentage,
+                                                          shortestDistance: prod
+                                                              .shortestDistance,
+                                                          distance: prod.user[0]
+                                                              .shortestDistance,
+                                                          avg_rating:
+                                                              prod.avg_rating,
+                                                          offer: prod.offers,
+                                                          id: int.tryParse(prod
+                                                              .user
+                                                              .first
+                                                              .user_id),
+                                                          comment:
+                                                              prod.commentnum,
+                                                          wow: prod.wow,
+                                                          issponsored: prod
+                                                              .user[0]
+                                                              .sponsored!,
+                                                          vendorname:
+                                                              prod.contactName,
+                                                          discounttedPrice:
+                                                              prod.discont,
+                                                          Vimage: prod
+                                                              .user.first.photo,
+                                                          price: prod.price,
+                                                          title: prod.title,
+                                                          productImage:
+                                                              prod.imageUrl,
+                                                          similarproductCount: prod
+                                                              .similarproductCount,
+                                                          membershipColor: prod
+                                                              .user
+                                                              .first
+                                                              .membership_color,
+                                                          membershipTitle: prod
+                                                              .user
+                                                              .first
+                                                              .membership_title,
                                                         ),
                                                       );
                                                     }),
@@ -1481,71 +1440,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         (index) {
                                                       GlobalModel prod =
                                                           data.doma[0][index];
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductDetailScreen(
-                                                                      productId:
-                                                                          prod.id),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child:
-                                                            ProductDetailWidget(
-                                                          membershipid: prod
-                                                              .user
-                                                              .first
-                                                              .membership_id,
-                                                          posttype:
-                                                              prod.posttypename,
-                                                          lefttile:
-                                                              prod.posttypename,
-                                                          tradeImage:
-                                                              domesticicon,
-                                                          didcountpercentage: prod
-                                                              .discount_percentage,
-                                                          Vimage: prod
-                                                              .user.first.photo,
-                                                          shortestDistance: prod
-                                                              .user[0]
-                                                              .shortestDistance,
-                                                          distance: prod
-                                                              .shortestDistance,
-                                                          avg_rating:
-                                                              prod.avg_rating,
-                                                          offer: prod.offers,
-                                                          id: int.tryParse(prod
-                                                              .user
-                                                              .first
-                                                              .user_id),
-                                                          comment:
-                                                              prod.commentnum,
-                                                          wow: prod.wow,
-                                                          issponsored: prod
-                                                              .user[0]
-                                                              .sponsored!,
-                                                          vendorname:
-                                                              prod.contactName,
-                                                          discounttedPrice:
-                                                              prod.discont,
-                                                          price: prod.price,
-                                                          title: prod.title,
-                                                          productImage:
-                                                              prod.imageUrl,
-                                                          similarproductCount: prod
-                                                              .similarproductCount,
-                                                          membershipColor: prod
-                                                              .user
-                                                              .first
-                                                              .membership_color,
-                                                          membershipTitle: prod
-                                                              .user
-                                                              .first
-                                                              .membership_title,
-                                                        ),
+                                                      return ProductDetailWidget(
+                                                        lat: prod.user[0]
+                                                                .latitude ??
+                                                            '0.0',
+                                                        long: prod.user[0]
+                                                                .longitude ??
+                                                            '0.0',
+                                                        productid: prod.id,
+                                                        membershipid: prod
+                                                            .user
+                                                            .first
+                                                            .membership_id,
+                                                        posttype:
+                                                            prod.posttypename,
+                                                        lefttile:
+                                                            prod.posttypename,
+                                                        tradeImage:
+                                                            domesticicon,
+                                                        didcountpercentage: prod
+                                                            .discount_percentage,
+                                                        Vimage: prod
+                                                            .user.first.photo,
+                                                        shortestDistance: prod
+                                                            .user[0]
+                                                            .shortestDistance,
+                                                        distance: prod
+                                                            .shortestDistance,
+                                                        avg_rating:
+                                                            prod.avg_rating,
+                                                        offer: prod.offers,
+                                                        id: int.tryParse(prod
+                                                            .user
+                                                            .first
+                                                            .user_id),
+                                                        comment:
+                                                            prod.commentnum,
+                                                        wow: prod.wow,
+                                                        issponsored: prod
+                                                            .user[0].sponsored!,
+                                                        vendorname:
+                                                            prod.contactName,
+                                                        discounttedPrice:
+                                                            prod.discont,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.imageUrl,
+                                                        similarproductCount: prod
+                                                            .similarproductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .first
+                                                            .membership_color,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .first
+                                                            .membership_title,
                                                       );
                                                     }),
                                                   ),
@@ -1592,55 +1543,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     data.spot[0][index];
                                                 print(
                                                     'laka ${prod.discount_percentage} and ${prod.title}');
-                                                return InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    prod.id),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: ProductDetailWidget(
-                                                    shortestDistance: prod
-                                                        .user[0]
-                                                        .shortestDistance,
-                                                    membershipid: prod.user
-                                                        .first.membership_id,
-                                                    posttype: prod.posttypename,
-                                                    didcountpercentage: prod
-                                                        .discount_percentage,
-                                                    lefttile: prod.posttypename,
-                                                    tradeImage: spotlighticon,
-                                                    Vimage:
-                                                        prod.user.first.photo,
-                                                    distance:
-                                                        prod.shortestDistance,
-                                                    avg_rating: prod.avg_rating,
-                                                    offer: prod.offers,
-                                                    id: int.tryParse(prod
-                                                        .user.first.user_id),
-                                                    comment: prod.commentnum,
-                                                    wow: prod.wow,
-                                                    issponsored:
-                                                        prod.user[0].sponsored!,
-                                                    vendorname:
-                                                        prod.contactName,
-                                                    discounttedPrice:
-                                                        prod.discont,
-                                                    price: prod.price,
-                                                    title: prod.title,
-                                                    productImage: prod.imageUrl,
-                                                    similarproductCount: prod
-                                                        .similarproductCount,
-                                                    membershipColor: prod.user
-                                                        .first.membership_color,
-                                                    membershipTitle: prod.user
-                                                        .first.membership_title,
-                                                  ),
+                                                return ProductDetailWidget(
+                                                  lat: prod.user[0].latitude ??
+                                                      '0.0',
+                                                  long:
+                                                      prod.user[0].longitude ??
+                                                          '0.0',
+                                                  productid: prod.id,
+                                                  shortestDistance: prod
+                                                      .user[0].shortestDistance,
+                                                  membershipid: prod
+                                                      .user.first.membership_id,
+                                                  posttype: prod.posttypename,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
+                                                  lefttile: prod.posttypename,
+                                                  tradeImage: spotlighticon,
+                                                  Vimage: prod.user.first.photo,
+                                                  distance:
+                                                      prod.shortestDistance,
+                                                  avg_rating: prod.avg_rating,
+                                                  offer: prod.offers,
+                                                  id: int.tryParse(
+                                                      prod.user.first.user_id),
+                                                  comment: prod.commentnum,
+                                                  wow: prod.wow,
+                                                  issponsored:
+                                                      prod.user[0].sponsored!,
+                                                  vendorname: prod.contactName,
+                                                  discounttedPrice:
+                                                      prod.discont,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.imageUrl,
+                                                  similarproductCount:
+                                                      prod.similarproductCount,
+                                                  membershipColor: prod.user
+                                                      .first.membership_color,
+                                                  membershipTitle: prod.user
+                                                      .first.membership_title,
                                                 );
                                               }),
                                             ),
@@ -1859,55 +1800,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         children:
                                             List.generate(data.length, (index) {
                                           SponsoredProduct prefs = data[index];
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetailScreen(
-                                                    productId: prefs.id,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: ProductDetailWidget(
-                                              membershipid: prefs
-                                                  .userdetails?.membership_id,
-                                              posttype: prefs.post_type_id,
-                                              didcountpercentage: prefs
-                                                  .discount_percentage
-                                                  ?.toInt(),
-                                              shortestDistance: prefs
-                                                  .userdetails?.shortestDistance
-                                                  ?.roundToDouble(),
-                                              issponsored:
-                                                  prefs.userdetails!.sponsored!,
-                                              wow: prefs.wow,
-                                              distance: prefs.shortestDistance,
-                                              comment:
-                                                  prefs.commentcount.toString(),
-                                              avg_rating:
-                                                  prefs.avg_rating?.toDouble(),
-                                              discounttedPrice:
-                                                  prefs.discounted_price,
-                                              offer: prefs.offers,
-                                              id: int.tryParse(prefs.id),
-                                              price: prefs.price,
-                                              productImage: prefs.image,
-                                              title: prefs.title,
-                                              vendorname:
-                                                  prefs.userdetails!.name,
-                                              Vimage: prefs.userdetails!.photo,
-                                              similarproductCount:
-                                                  prefs.similarProductCount,
-                                              membershipColor: prefs
-                                                  .userdetails!
-                                                  .membership_color,
-                                              membershipTitle: prefs
-                                                  .userdetails!
-                                                  .membership_title,
-                                            ),
+                                          return ProductDetailWidget(
+                                            lat: prefs.userdetails?.latitude ??
+                                                '0.0',
+                                            long:
+                                                prefs.userdetails?.longitude ??
+                                                    '0.0',
+                                            productid: prefs.id,
+                                            membershipid: prefs
+                                                .userdetails?.membership_id,
+                                            posttype: prefs.post_type_id,
+                                            didcountpercentage: prefs
+                                                .discount_percentage
+                                                ?.toInt(),
+                                            shortestDistance: prefs
+                                                .userdetails?.shortestDistance
+                                                ?.roundToDouble(),
+                                            issponsored:
+                                                prefs.userdetails!.sponsored!,
+                                            wow: prefs.wow,
+                                            distance: prefs.shortestDistance,
+                                            comment:
+                                                prefs.commentcount.toString(),
+                                            avg_rating:
+                                                prefs.avg_rating?.toDouble(),
+                                            discounttedPrice:
+                                                prefs.discounted_price,
+                                            offer: prefs.offers,
+                                            id: int.tryParse(prefs.id),
+                                            price: prefs.price,
+                                            productImage: prefs.image,
+                                            title: prefs.title,
+                                            vendorname: prefs.userdetails!.name,
+                                            Vimage: prefs.userdetails!.photo,
+                                            similarproductCount:
+                                                prefs.similarProductCount,
+                                            membershipColor: prefs
+                                                .userdetails!.membership_color,
+                                            membershipTitle: prefs
+                                                .userdetails!.membership_title,
                                           );
                                         }),
                                       ),
@@ -2021,10 +1952,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
+                                              productid: res.id,
+
+                                            lat: res.user.latitude,
+                                            long: res.user.longitude,
+                                            
+
                                             membershipid:
                                                 res.userDetail.membership_id,
                                             posttype: res.post_type_id,
-                                            discountpercentage:
+                                            didcountpercentage:
                                                 res.discount_percentage,
                                             id: int.tryParse(
                                                 res.userDetail.user_id!),
@@ -2213,12 +2150,10 @@ class valuenotifilersidebutton extends StatelessWidget {
                               )),
                           IconButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
+                                Navigator.of(context, rootNavigator: true).push(
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CreateNewListinScreen(),
-                                    ));
+                                        builder: (context) =>
+                                            new CreateNewListinScreen()));
                               },
                               icon: Column(
                                 children: [

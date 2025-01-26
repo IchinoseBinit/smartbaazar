@@ -17,7 +17,6 @@ import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
-import 'package:smartbazar/features/product_details/api/add_to_cart_provider.dart';
 import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
@@ -138,90 +137,17 @@ class ProductDetailScreen extends ConsumerWidget {
                     width: 10.w,
                   ),
                   InkWell(
-                    onTap: () async {
-                      ApiService().addToCart(productId).then(
-                        (value) {
-                          return showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              backgroundColor: Colors.white,
-                              title: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 14.w, vertical: 12.h),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Sucessful!',
-                                      style: TextStyle(
-                                          fontSize: 24.sp,
-                                          fontWeight: FontWeight.w700,
-                                          color: const Color(0xff362677)),
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Text(
-                                      'Product added to the cart sucessfully!',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const AddToCartScreen()));
-                                      },
-                                      child: Text(
-                                        'View Cart',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline,
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Container(
-                                      height: 40.h,
-                                      width: 40.w,
-                                      decoration: const BoxDecoration(
-                                          color: Color(0xff362677),
-                                          shape: BoxShape.circle),
-                                      child: const Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: 24,
-                                        weight: 50,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                    onTap: () {
+                      // print("biabsh ");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderDetailsScreen(
+                            selectedProductIds: [],
+                            selectedVendorIds: [],
+                          ),
+                        ),
                       );
-
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //   ),
-                      // );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
@@ -692,38 +618,26 @@ class ProductDetailScreen extends ConsumerWidget {
                                   color: Colors.black),
                             ),
                           ),
-                          const AdditonalDetailsWidget(
-                            desp: "Ugreen USB\n Bluetooth 5.3\n Adopter for PC",
-                            title: "What in the Box?",
+                          Column(
+                            children: data.extra?.fields?.original?.result
+                                    ?.map(
+                                      (e) => e == null
+                                          ? SizedBox() // Handle null entries gracefully
+                                          : AdditionalDetailsWidget(
+                                              defaultValue: e.defaultValue,
+                                              options: e.options?.length == 0
+                                                  ? []
+                                                  : e.options,
+                                              title: e.name ??
+                                                  'Unknown Title', // Fallback for null name
+                                              desp: e.defaultValue ??
+                                                  'No default value', // Fallback for null default value
+                                            ),
+                                    )
+                                    .toList() ??
+                                [], // Handle null result gracefully
                           ),
-                          if (data.extra != null)
-                            AdditonalDetailsWidget(
-                              desp: data.extra!.fields!.original!.result!
-                                  .field4!.name,
-                              title: data.extra!.fields!.original!.result!
-                                  .field4!.name,
-                            ),
-                          if (data.result != null)
-                            AdditonalDetailsWidget(
-                              desp: data.result!.postType!.name,
-                              title: "Product type",
-                            ),
-                          const AdditonalDetailsWidget(
-                            desp: "Other",
-                            title: "Electric Brand",
-                          ),
-                          const AdditonalDetailsWidget(
-                            desp: "5.3 BR+EDR,BLE",
-                            title: "Model",
-                          ),
-                          const AdditonalDetailsWidget(
-                            desp: "No Warranty",
-                            title: "Warranty",
-                          ),
-                          const AdditonalDetailsWidget(
-                            desp: "",
-                            title: "Availabel Colors:\n Black",
-                          ),
+
                           SizedBox(
                             height: 5.w,
                           ),
@@ -742,6 +656,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                   color: Colors.black),
                             ),
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -770,6 +685,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                 Column(
                                   children: [
                                     StarWidget(
+                                      indexs: 5,
                                       staryouwant: 5,
 
                                       star: data
@@ -781,6 +697,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                           .result!.ratings!.ratingCounts.five!,
                                     ),
                                     StarWidget(
+                                        indexs: 4,
                                         staryouwant: 4,
                                         star: data.result!.ratings!.ratingCounts
                                             .four!, // Only 1 star highlighted
@@ -790,6 +707,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                         numStar: data.result!.ratings!
                                             .ratingCounts.four!),
                                     StarWidget(
+                                        indexs: 3,
                                         staryouwant: 3,
                                         star: data.result!.ratings!.ratingCounts
                                             .three!, // Only 1 star highlighted
@@ -799,6 +717,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                         numStar: data.result!.ratings!
                                             .ratingCounts.three!),
                                     StarWidget(
+                                        indexs: 2,
                                         staryouwant: 2,
                                         star: data.result!.ratings!.ratingCounts
                                             .two!, // Only 1 star highlighted
@@ -808,6 +727,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                         numStar: data.result!.ratings!
                                             .ratingCounts.two!),
                                     StarWidget(
+                                        indexs: 1,
                                         staryouwant: 1,
                                         star: data.result!.ratings!.ratingCounts
                                             .one!, // Only 1 star highlighted
@@ -857,6 +777,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                     controller: _reviewcontroller,
                                     maxLines: 5,
                                     decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.black)),
                                         enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.black)),
@@ -867,10 +790,21 @@ class ProductDetailScreen extends ConsumerWidget {
                                   ),
                                   InkWell(
                                     onTap: () async {
-                                      ref.watch(postreviewProvider(
-                                          int.tryParse(productId)!,
-                                          _reviewcontroller.text,
-                                          '2'));
+                                      ref
+                                          .watch(
+                                        postreviewProvider(
+                                            int.tryParse(productId)!,
+                                            _reviewcontroller.text,
+                                            '2'),
+                                      )
+                                          .whenData(
+                                        (value) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content:
+                                                      Text("Refiew added ")));
+                                        },
+                                      );
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -1414,204 +1348,204 @@ class TabBarItems extends StatelessWidget {
   }
 }
 
-// class ScratchWinContainer extends StatelessWidget {
-//   ScratchWinContainer({
-//     super.key,
-//     required this.ontap,
-//   });
-//   Function()? ontap;
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: ontap,
-//       child: Padding(
-//         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 9),
-//         child: Container(
-//           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
-//           decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(8.r),
-//               border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
-//           child: Row(
-//             children: [
-//               Image.asset(
-//                 ImageConstant.scartchWinImage,
-//               ),
-//               // Expanded(
-//               //   child: RichTextWidget(
-//               //       title: "Visit our virtual store ",
-//               //       // titleStyle: TextStyle(
-//               //       //     fontSize: 10.sp,
-//               //       //     fontWeight: FontWeight.w700),
-//               //       subtitle: "Subscribe us to win FREE prizes & get our deals",
-//               //       subtitleStyle: TextStyle(
-//               //           fontSize: 12.sp,
-//               //           color: Colors.black,
-//               //           fontWeight: FontWeight.w400),
-//               //       onPressed: () {}),
-//               // )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-class ProductAdditionalDetialsWidget extends StatelessWidget {
-  final String inbox;
-  final String brandname;
-
-  const ProductAdditionalDetialsWidget(
-      {Key? key, required this.inbox, required this.brandname})
-      : super(key: key);
+class ScratchWinContainer extends StatelessWidget {
+  ScratchWinContainer({
+    super.key,
+    required this.ontap,
+  });
+  Function()? ontap;
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> items = [
-      {'title': "What's in the box?", 'description': inbox ?? 'N/A'},
-      {'title': "Brand", 'description': brandname ?? 'N/A'},
-      {'title': "Model", 'description': brandname ?? 'N/A'},
-    ];
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Column(
-        children: [
-          Row(
+    return InkWell(
+      onTap: ontap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 9),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(width: 1.w, color: const Color(0xffF5BF05))),
+          child: Row(
             children: [
-              SvgPicture.asset(
-                drawerIcon,
-                colorFilter:
-                    const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              Image.asset(
+                ImageConstant.scartchWinImage,
               ),
-              SizedBox(
-                width: 5.w,
-              ),
-              Text(
-                'Additional Details',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
-              )
+              // Expanded(
+              //   child: RichTextWidget(
+              //       title: "Visit our virtual store ",
+              //       // titleStyle: TextStyle(
+              //       //     fontSize: 10.sp,
+              //       //     fontWeight: FontWeight.w700),
+              //       subtitle: "Subscribe us to win FREE prizes & get our deals",
+              //       subtitleStyle: TextStyle(
+              //           fontSize: 12.sp,
+              //           color: Colors.black,
+              //           fontWeight: FontWeight.w400),
+              //       onPressed: () {}),
+              // )
             ],
           ),
-          SizedBox(
-            height: 12.h,
-          ),
-          GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
-              childAspectRatio: 2.4,
-            ),
-            itemCount: items.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                child: Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffEDECEC),
-                      borderRadius: BorderRadius.circular(8.r)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          maxLines: 1,
-                          items[index]['title'],
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(
-                              0xff000000,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Text(
-                        items[index]['description'],
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(
-                            0xff000000,
-                          ),
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ProductAvilableColorsWidget extends StatelessWidget {
-  List<ColorOption> color;
-  ProductAvilableColorsWidget({
-    super.key,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 9.h),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.r),
-            color: const Color(0xffEDECEC)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Available Colours',
-              style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xff000000)),
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: color.length > 5 ? 3 : color.length,
-              itemBuilder: (context, index) {
-                final data = color[index];
-                return Row(
-                  children: [
-                    const Icon(
-                      Icons.check,
-                      size: 25,
-                      color: Color(0xff000000),
-                    ),
-                    SizedBox(width: 2.w),
-                    Text(data.value ?? '',
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff000000)))
-                  ],
-                );
-              },
-            )
-          ],
         ),
       ),
     );
   }
 }
+
+// class ProductAdditionalDetialsWidget extends StatelessWidget {
+//   final String inbox;
+//   final String brandname;
+
+//   const ProductAdditionalDetialsWidget(
+//       {Key? key, required this.inbox, required this.brandname})
+//       : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     final List<Map<String, dynamic>> items = [
+//       {'title': "What's in the box?", 'description': inbox ?? 'N/A'},
+//       {'title': "Brand", 'description': brandname ?? 'N/A'},
+//       {'title': "Model", 'description': brandname ?? 'N/A'},
+//     ];
+//     return Padding(
+//       padding: const EdgeInsets.all(5.0),
+//       child: Column(
+//         children: [
+//           Row(
+//             children: [
+//               SvgPicture.asset(
+//                 drawerIcon,
+//                 colorFilter:
+//                     const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+//               ),
+//               SizedBox(
+//                 width: 5.w,
+//               ),
+//               Text(
+//                 'Additional Details',
+//                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
+//               )
+//             ],
+//           ),
+//           SizedBox(
+//             height: 12.h,
+//           ),
+//           GridView.builder(
+//             shrinkWrap: true,
+//             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//               crossAxisCount: 2,
+//               mainAxisSpacing: 10.0,
+//               crossAxisSpacing: 10.0,
+//               childAspectRatio: 2.4,
+//             ),
+//             itemCount: items.length,
+//             itemBuilder: (BuildContext context, int index) {
+//               return Padding(
+//                 padding: EdgeInsets.only(left: 5.w, right: 5.w),
+//                 child: Container(
+//                   padding:
+//                       EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+//                   decoration: BoxDecoration(
+//                       color: const Color(0xffEDECEC),
+//                       borderRadius: BorderRadius.circular(8.r)),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Expanded(
+//                         child: Text(
+//                           maxLines: 1,
+//                           items[index]['title'],
+//                           style: TextStyle(
+//                             fontSize: 12.sp,
+//                             fontWeight: FontWeight.w600,
+//                             color: const Color(
+//                               0xff000000,
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         height: 8.h,
+//                       ),
+//                       Text(
+//                         items[index]['description'],
+//                         style: TextStyle(
+//                           fontSize: 10.sp,
+//                           fontWeight: FontWeight.w400,
+//                           color: const Color(
+//                             0xff000000,
+//                           ),
+//                         ),
+//                         maxLines: 2,
+//                         overflow: TextOverflow.ellipsis,
+//                       )
+//                     ],
+//                   ),
+//                 ),
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class ProductAvilableColorsWidget extends StatelessWidget {
+//   List<ColorOption> color;
+//   ProductAvilableColorsWidget({
+//     super.key,
+//     required this.color,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(5.0),
+//       child: Container(
+//         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 9.h),
+//         decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(8.r),
+//             color: const Color(0xffEDECEC)),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               'Available Colours',
+//               style: TextStyle(
+//                   fontSize: 12.sp,
+//                   fontWeight: FontWeight.w600,
+//                   color: const Color(0xff000000)),
+//             ),
+//             SizedBox(
+//               height: 5.h,
+//             ),
+//             ListView.builder(
+//               shrinkWrap: true,
+//               itemCount: color.length > 5 ? 3 : color.length,
+//               itemBuilder: (context, index) {
+//                 final data = color[index];
+//                 return Row(
+//                   children: [
+//                     const Icon(
+//                       Icons.check,
+//                       size: 25,
+//                       color: Color(0xff000000),
+//                     ),
+//                     SizedBox(width: 2.w),
+//                     Text(data.value ?? '',
+//                         style: TextStyle(
+//                             fontSize: 14.sp,
+//                             fontWeight: FontWeight.w400,
+//                             color: const Color(0xff000000)))
+//                   ],
+//                 );
+//               },
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class ProductTagListWidget extends StatelessWidget {
   final List<String> tags;

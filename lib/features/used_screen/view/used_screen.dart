@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
@@ -234,7 +234,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
   @override
   Widget build(BuildContext context) {
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    // final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
@@ -258,41 +258,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
     return Scaffold(
         extendBody: true,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: pselectedIndex, // Pass the current index
-          onTabChanged: (index) {
-            ref.read(bottomNavIndexProvider.notifier).state = index;
-
-            // Add navigation logic here
-            switch (index) {
-              case 0:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-                break;
-              case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FeedScreen()),
-                );
-                break;
-              case 2:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
-                );
-                break;
-              case 3:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VendorProfileScreen()),
-                );
-                break;
-            }
-          },
-        ),
         key: _key,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
@@ -465,7 +430,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim().isNotEmpty) {
+                                                  .trim()
+                                                  .isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -722,7 +688,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         dense: true,
                                         title: Text(
                                           softWrap: true,
-                                          product.title,
+                                          product.name,
                                           style: headerstyle.copyWith(
                                               color: ColorConstant.blackColor,
                                               fontSize: 10),
@@ -833,87 +799,86 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                   //   error: (error, stackTrace) => Text(error.toString()),
                   //   loading: () => const CircularProgressIndicator(),
                   // ),
-                    asyncPostTypeContent.when(
-                      data: (feedStoryData) {
-                        final homeStory = feedStoryData.homeStory;
+                  asyncPostTypeContent.when(
+                    data: (feedStoryData) {
+                      final homeStory = feedStoryData.homeStory;
 
-                        if (homeStory != null &&
-                            homeStory is Map<String, dynamic> &&
-                            homeStory.containsKey('story')) {
-                          final story = homeStory['story'];
+                      if (homeStory != null &&
+                          homeStory is Map<String, dynamic> &&
+                          homeStory.containsKey('story')) {
+                        final story = homeStory['story'];
 
-                          if (story != null &&
-                              story is Map<String, dynamic> &&
-                              story.containsKey('posts')) {
-                            final posts = story['posts'];
+                        if (story != null &&
+                            story is Map<String, dynamic> &&
+                            story.containsKey('posts')) {
+                          final posts = story['posts'];
 
-                            if (posts != null && posts is List<dynamic>) {
-                              return SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
+                          if (posts != null && posts is List<dynamic>) {
+                            return SizedBox(
+                              height: 100.h,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: posts.length,
+                                itemBuilder: (context, index) {
+                                  final story = posts[index];
 
-                                    if (story is Map<String, dynamic>) {
-                                      final storyObject =
-                                          Story(posts: [Post.fromJson(story)]);
+                                  if (story is Map<String, dynamic>) {
+                                    final storyObject =
+                                        Story(posts: [Post.fromJson(story)]);
 
-                                      return HomePageStoryContainer(
-                                        index: index,
-                                        vendorName: story['vendor_name'] ??
-                                            "Unknown Vendor",
-                                        vendorImage: story['vendor_image'] ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story['story_count'] ?? 0,
-                                        showGift:
-                                            story['has_sponsored_gifts'] ??
-                                                false,
-                                        feedStoryContent: storyObject,
-                                        userId: story['vendor_id'],
-                                      );
-                                    } else {
-                                      return Container(); // Return an empty container if the post doesn't match the expected format
-                                    }
-                                  },
-                                ),
-                              );
-                            }
+                                    return HomePageStoryContainer(
+                                      index: index,
+                                      vendorName: story['vendor_name'] ??
+                                          "Unknown Vendor",
+                                      vendorImage: story['vendor_image'] ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story['story_count'] ?? 0,
+                                      showGift:
+                                          story['has_sponsored_gifts'] ?? false,
+                                      feedStoryContent: storyObject,
+                                      userId: story['vendor_id'],
+                                    );
+                                  } else {
+                                    return Container(); // Return an empty container if the post doesn't match the expected format
+                                  }
+                                },
+                              ),
+                            );
                           }
                         }
+                      }
 
-                        // If any of the above conditions fail, return a default widget
-                        return const Center(
-                          child: Text('No stories available. '),
-                        );
-                      },
-                      loading: () => SizedBox(
-                        height: 100.h,
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5, // Number of shimmer placeholders
-                          itemBuilder: (context, index) => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                      // If any of the above conditions fail, return a default widget
+                      return const Center(
+                        child: Text('No stories available. '),
+                      );
+                    },
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
                       ),
-                      error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
                     ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
 
                   SizedBox(
                     height: 15.h,
@@ -1234,41 +1199,32 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               children: List.generate(data.hotProducts.length,
                                   (index) {
                                 VProduct hot = data.hotProducts[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailScreen(
-                                          productId: hot.id,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: ProductDetailWidget(
-                                    posttype: hot.post_type_id,
-                                    id: int.tryParse(hot.id),
-                                    membershipid: hot.user.membership_id,
-                                    didcountpercentage: hot.discount_percentage,
-                                    offer: hot.offers,
-                                    shortestDistance: hot.user.shortestDistance,
-                                    avg_rating: hot.avg_rating?.toDouble(),
-                                    wow: hot.wow,
-                                    comment: hot.commentcount.toString(),
-                                    discounttedPrice: hot.discounted_price,
-                                    issponsored: hot.user.sponsored,
-                                    lefttile: "used",
-                                    productImage: hot.image,
-                                    Vimage: hot.user.photo,
-                                    price: hot.price,
-                                    title: hot.title,
-                                    vendorname: hot.user.name,
-                                    similarproductCount:
-                                        hot.similarProductCount,
-                                    membershipColor: hot.user.membershipColor,
-                                    membershipTitle: hot.user.membershipTitle,
-                                  ),
+                                return ProductDetailWidget(
+                                  lat: hot.user.latitude,
+                                  long: hot.user.longitude,
+                                    productid: hot.id,
+                                  tradeImage: usedIcon,
+                                  posttype: hot.post_type_id,
+                                  id: int.tryParse(hot.id),
+                                  membershipid: hot.user.membership_id,
+                                  didcountpercentage: hot.discount_percentage,
+                                  offer: hot.offers,
+                                  shortestDistance: hot.user.shortestDistance,
+                                  avg_rating: hot.avg_rating?.toDouble(),
+                                  wow: hot.wow,
+                                  comment: hot.commentcount.toString(),
+                                  discounttedPrice: hot.discounted_price,
+                                  issponsored: hot.user.sponsored,
+                                  lefttile: "used",
+                                  productImage: hot.image,
+                                  Vimage: hot.user.photo,
+                                  price: hot.price,
+                                  title: hot.title,
+                                  vendorname: hot.user.name,
+                                  similarproductCount:
+                                      hot.similarProductCount,
+                                  membershipColor: hot.user.membershipColor,
+                                  membershipTitle: hot.user.membershipTitle,
                                 );
                               }),
                             ),
@@ -1356,47 +1312,40 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             itemBuilder: (context, index) {
                                               VProduct pro =
                                                   data.insidearr[0][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    pro.id),
-                                                      ));
-                                                },
-                                                child: ProductDetailWidget(
-
-                                                  shortestDistance: pro.user.shortestDistance,
-                                                  offer: pro.offers,
-                                                  posttype: pro.post_type_id,
-
-                                                  membershipid: pro.user.membership_id,
-                                                  id: int.tryParse(pro.id),
-                                                  didcountpercentage: pro.discount_percentage,
-                                                  avg_rating: pro.avg_rating?.toDouble(),
-                                                  comment: pro.commentcount
-                                                      .toString(),
-                                                  wow: pro.wow,
-                                                  discounttedPrice:
-                                                      pro.discounted_price,
-                                                  issponsored:
-                                                      pro.user.sponsored,
-                                                  lefttile: "Used",
-                                                  Vimage: pro.user.photo,
-                                                  price: pro.price,
-                                                  title: pro.title,
-                                                  vendorname: pro.user.name,
-                                                  productImage: pro.image,
-                                                  similarproductCount:
-                                                      pro.similarProductCount,
-                                                  membershipColor:
-                                                      pro.user.membershipColor,
-                                                  membershipTitle:
-                                                      pro.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                      lat: pro.user.latitude,
+                                      long: pro.user.longitude,
+                                                  productid: pro.id,
+                                                shortestDistance:
+                                                    pro.user.shortestDistance,
+                                                offer: pro.offers,
+                                                posttype: pro.post_type_id,
+                                                membershipid:
+                                                    pro.user.membership_id,
+                                                id: int.tryParse(pro.id),
+                                                didcountpercentage:
+                                                    pro.discount_percentage,
+                                                avg_rating: pro.avg_rating
+                                                    ?.toDouble(),
+                                                comment: pro.commentcount
+                                                    .toString(),
+                                                wow: pro.wow,
+                                                discounttedPrice:
+                                                    pro.discounted_price,
+                                                issponsored:
+                                                    pro.user.sponsored,
+                                                lefttile: "Used",
+                                                Vimage: pro.user.photo,
+                                                price: pro.price,
+                                                title: pro.title,
+                                                vendorname: pro.user.name,
+                                                productImage: pro.image,
+                                                similarproductCount:
+                                                    pro.similarProductCount,
+                                                membershipColor:
+                                                    pro.user.membershipColor,
+                                                membershipTitle:
+                                                    pro.user.membershipTitle,
                                               );
                                             },
                                           ),
@@ -1453,45 +1402,39 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[1][index];
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetailScreen(
-                                                          productId: pro.id),
-                                                ));
-                                          },
-                                          child: ProductDetailWidget(
-
-                                            shortestDistance: pro.user.shortestDistance,
-                                            id: int.tryParse(pro.id),
-                                            membershipid: pro.user.membership_id,
-                                            offer: pro.offers,
-                                            posttype: pro.post_type_id,
-
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating: pro.avg_rating?.toDouble(),
-                                            wow: pro.wow,
-                                            comment:
-                                                pro.commentcount.toString(),
-                                            issponsored: pro.user.sponsored,
-                                            discounttedPrice:
-                                                pro.discounted_price,
-                                            lefttile: "Used",
-                                            Vimage: pro.user.photo,
-                                            price: pro.price,
-                                            title: pro.title,
-                                            vendorname: pro.user.name,
-                                            productImage: pro.image,
-                                            similarproductCount:
-                                                pro.similarProductCount,
-                                            membershipColor:
-                                                pro.user.membershipColor,
-                                            membershipTitle:
-                                                pro.user.membershipTitle,
-                                          ),
+                                        return ProductDetailWidget(
+                                                                                lat: pro.user.latitude,
+                                      long: pro.user.longitude,
+                                            productid: pro.id,
+                                          shortestDistance:
+                                              pro.user.shortestDistance,
+                                          id: int.tryParse(pro.id),
+                                          membershipid:
+                                              pro.user.membership_id,
+                                          offer: pro.offers,
+                                          posttype: pro.post_type_id,
+                                          didcountpercentage:
+                                              pro.discount_percentage,
+                                          avg_rating:
+                                              pro.avg_rating?.toDouble(),
+                                          wow: pro.wow,
+                                          comment:
+                                              pro.commentcount.toString(),
+                                          issponsored: pro.user.sponsored,
+                                          discounttedPrice:
+                                              pro.discounted_price,
+                                          lefttile: "Used",
+                                          Vimage: pro.user.photo,
+                                          price: pro.price,
+                                          title: pro.title,
+                                          vendorname: pro.user.name,
+                                          productImage: pro.image,
+                                          similarproductCount:
+                                              pro.similarProductCount,
+                                          membershipColor:
+                                              pro.user.membershipColor,
+                                          membershipTitle:
+                                              pro.user.membershipTitle,
                                         );
                                       },
                                     ),
@@ -1538,45 +1481,39 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[2][index];
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetailScreen(
-                                                          productId: pro.id),
-                                                ));
-                                          },
-                                          child: ProductDetailWidget(
-
-                                            shortestDistance: pro.user.shortestDistance,
-                                            offer: pro.offers,
-                                            posttype: pro.post_type_id,
-
-                                            membershipid: pro.user.membership_id,
-                                            id: int.tryParse(pro.id),
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating: pro.avg_rating?.toDouble(),
-                                            comment:
-                                                pro.commentcount.toString(),
-                                            wow: pro.wow,
-                                            discounttedPrice:
-                                                pro.discounted_price,
-                                            issponsored: pro.user.sponsored,
-                                            lefttile: "Used",
-                                            Vimage: pro.user.photo,
-                                            price: pro.price,
-                                            title: pro.title,
-                                            vendorname: pro.user.name,
-                                            productImage: pro.image,
-                                            similarproductCount:
-                                                pro.similarProductCount,
-                                            membershipColor:
-                                                pro.user.membershipColor,
-                                            membershipTitle:
-                                                pro.user.membershipTitle,
-                                          ),
+                                        return ProductDetailWidget(
+                                                                                lat: pro.user.latitude,
+                                      long: pro.user.longitude,
+                                            productid: pro.id,
+                                          shortestDistance:
+                                              pro.user.shortestDistance,
+                                          offer: pro.offers,
+                                          posttype: pro.post_type_id,
+                                          membershipid:
+                                              pro.user.membership_id,
+                                          id: int.tryParse(pro.id),
+                                          didcountpercentage:
+                                              pro.discount_percentage,
+                                          avg_rating:
+                                              pro.avg_rating?.toDouble(),
+                                          comment:
+                                              pro.commentcount.toString(),
+                                          wow: pro.wow,
+                                          discounttedPrice:
+                                              pro.discounted_price,
+                                          issponsored: pro.user.sponsored,
+                                          lefttile: "Used",
+                                          Vimage: pro.user.photo,
+                                          price: pro.price,
+                                          title: pro.title,
+                                          vendorname: pro.user.name,
+                                          productImage: pro.image,
+                                          similarproductCount:
+                                              pro.similarProductCount,
+                                          membershipColor:
+                                              pro.user.membershipColor,
+                                          membershipTitle:
+                                              pro.user.membershipTitle,
                                         );
                                       },
                                     ),
@@ -1623,45 +1560,39 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[4][index];
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetailScreen(
-                                                          productId: pro.id),
-                                                ));
-                                          },
-                                          child: ProductDetailWidget(
-
-                                            shortestDistance: pro.user.shortestDistance,
-                                            offer: pro.offers,
-                                            posttype: pro.post_type_id,
-
-                                            membershipid: pro.user.membership_id,
-                                            id: int.tryParse(pro.id),
-                                            didcountpercentage: pro.discount_percentage,
-                                            avg_rating: pro.avg_rating?.toDouble(),
-                                            wow: pro.wow,
-                                            comment:
-                                                pro.commentcount.toString(),
-                                            discounttedPrice:
-                                                pro.discounted_price,
-                                            issponsored: pro.user.sponsored,
-                                            lefttile: "Used",
-                                            Vimage: pro.user.photo,
-                                            price: pro.price,
-                                            title: pro.title,
-                                            vendorname: pro.user.name,
-                                            productImage: pro.image,
-                                            similarproductCount:
-                                                pro.similarProductCount,
-                                            membershipColor:
-                                                pro.user.membershipColor,
-                                            membershipTitle:
-                                                pro.user.membershipTitle,
-                                          ),
+                                        return ProductDetailWidget(
+                                                                                lat: pro.user.latitude,
+                                      long: pro.user.longitude,
+                                          productid: pro.id,
+                                          shortestDistance:
+                                              pro.user.shortestDistance,
+                                          offer: pro.offers,
+                                          posttype: pro.post_type_id,
+                                          membershipid:
+                                              pro.user.membership_id,
+                                          id: int.tryParse(pro.id),
+                                          didcountpercentage:
+                                              pro.discount_percentage,
+                                          avg_rating:
+                                              pro.avg_rating?.toDouble(),
+                                          wow: pro.wow,
+                                          comment:
+                                              pro.commentcount.toString(),
+                                          discounttedPrice:
+                                              pro.discounted_price,
+                                          issponsored: pro.user.sponsored,
+                                          lefttile: "Used",
+                                          Vimage: pro.user.photo,
+                                          price: pro.price,
+                                          title: pro.title,
+                                          vendorname: pro.user.name,
+                                          productImage: pro.image,
+                                          similarproductCount:
+                                              pro.similarProductCount,
+                                          membershipColor:
+                                              pro.user.membershipColor,
+                                          membershipTitle:
+                                              pro.user.membershipTitle,
                                         );
                                       },
                                     ),
@@ -1762,56 +1693,48 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             itemBuilder: (context, index) {
                                               VProduct prod =
                                                   data.insidearr[0][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    prod.id),
-                                                      ));
-                                                },
-                                                child: ProductDetailWidget(
-
-                                                  shortestDistance: prod.user.shortestDistance,
-                                                  
-                                                  id: int.tryParse(prod.id),
-                                                  posttype: prod.post_type_id,
-
-                                                  membershipid: prod.user.membership_id,
-                                                  offer: prod.offers,
-                                                  tradeImage: 'assets/icon/b2bIcon.svg',
-                                                  didcountpercentage: prod.discount_percentage,
-                                                  avg_rating: prod.avg_rating
-                                                      ?.toDouble(),
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  lefttile: "Used",
-                                                  vendorname: prod.user.name,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.title,
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                                  lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                  productid: prod.id,
+                                                shortestDistance: prod
+                                                    .user.shortestDistance,
+                                                id: int.tryParse(prod.id),
+                                                posttype: prod.post_type_id,
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                offer: prod.offers,
+                                                tradeImage:
+                                                    'assets/icon/b2bIcon.svg',
+                                                didcountpercentage:
+                                                    prod.discount_percentage,
+                                                avg_rating: prod.avg_rating
+                                                    ?.toDouble(),
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                lefttile: "Used",
+                                                vendorname: prod.user.name,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.title,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
                                               );
                                             },
                                           ),
                                         )
                                       : Padding(
-                                          padding: EdgeInsets.only(top: 10.h),
+                                          padding: EdgeInsets.only(top: 15.h),
                                           child: Center(
                                             child: nolistingfound(),
                                           ),
@@ -1836,7 +1759,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                   data.insidearr.isEmpty
                                       ? Padding(
-                                          padding: EdgeInsets.only(top: 10.h),
+                                          padding: EdgeInsets.only(top: 15.h),
                                           child: Center(
                                             child: nolistingfound(),
                                           ),
@@ -1856,47 +1779,40 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod =
                                                   data.insidearr[1][index];
 
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    prod.id),
-                                                      ));
-                                                },
-                                                child: ProductDetailWidget(
-
-                                                  avg_rating: prod.avg_rating?.toDouble(),
-                                                  didcountpercentage: prod.discount_percentage,
-                                                  id: int.tryParse(prod.id),
-                                                  membershipid: prod.user.membership_id,
-                                                  offer: prod.offers,
-                                                  posttype: prod.post_type_id,
-                                                  shortestDistance: prod.user.shortestDistance,
-
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  lefttile: "Used",
-                                                  vendorname: prod.title,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.user.photo,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                                  lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                  productid: prod.id,
+                                                avg_rating: prod.avg_rating
+                                                    ?.toDouble(),
+                                                didcountpercentage:
+                                                    prod.discount_percentage,
+                                                id: int.tryParse(prod.id),
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                offer: prod.offers,
+                                                posttype: prod.post_type_id,
+                                                shortestDistance: prod
+                                                    .user.shortestDistance,
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "Used",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
                                               );
                                             },
                                           ),
@@ -1921,7 +1837,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                   data.insidearr.isEmpty
                                       ? Padding(
-                                          padding: EdgeInsets.only(top: 5.h),
+                                          padding: EdgeInsets.only(top: 15.h),
                                           child: Center(
                                             child: nolistingfound(),
                                           ),
@@ -1936,47 +1852,40 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             itemBuilder: (context, index) {
                                               VProduct prod =
                                                   data.insidearr[2][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    prod.id),
-                                                      ));
-                                                },
-                                                child: ProductDetailWidget(
-
-                                                  avg_rating: prod.avg_rating?.toDouble(),
-                                                  didcountpercentage: prod.avg_rating,
-                                                  id: int.tryParse(prod.id),
-                                                  membershipid: prod.user.membership_id,
-                                                  offer: prod.offers,
-                                                  posttype: prod.post_type_id,
-                                                  shortestDistance: prod.user.shortestDistance,
-
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  lefttile: "Used",
-                                                  vendorname: prod.title,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.user.photo,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                                  lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                  productid: prod.id,
+                                                avg_rating: prod.avg_rating
+                                                    ?.toDouble(),
+                                                didcountpercentage:
+                                                    prod.avg_rating,
+                                                id: int.tryParse(prod.id),
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                offer: prod.offers,
+                                                posttype: prod.post_type_id,
+                                                shortestDistance: prod
+                                                    .user.shortestDistance,
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "Used",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
                                               );
                                             },
                                           ),
@@ -2183,46 +2092,40 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             itemBuilder: (context, index) {
                                               VProduct prod = products[index];
 
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                                productId:
-                                                                    prod.id),
-                                                      ));
-                                                },
-                                                child: ProductDetailWidget(
-                                                  avg_rating: prod.avg_rating?.toDouble(),
-                                                  didcountpercentage: prod.avg_rating,
-                                                  id: int.tryParse(prod.id),
-                                                  membershipid: prod.user.membership_id,
-                                                  offer: prod.offers,
-                                                  posttype: prod.post_type_id,
-                                                  shortestDistance: prod.user.shortestDistance,
-
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  lefttile: "Used",
-                                                  vendorname: prod.title,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.user.photo,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                                  lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                  productid: prod.id,
+                                                avg_rating: prod.avg_rating
+                                                    ?.toDouble(),
+                                                didcountpercentage:
+                                                    prod.avg_rating,
+                                                id: int.tryParse(prod.id),
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                offer: prod.offers,
+                                                posttype: prod.post_type_id,
+                                                shortestDistance: prod
+                                                    .user.shortestDistance,
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                lefttile: "Used",
+                                                vendorname: prod.title,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.user.photo,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
                                               );
                                             },
                                           );
@@ -2314,14 +2217,15 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                    
+                                      lat: res.user.latitude,
+                                            long: res.user.longitude,
+                                            productid: res.id!,
                                     shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,
                                     posttype: res.post_type_id,
-                                    
-                                    discountpercentage: res.discount_percentage,
+                                    didcountpercentage: res.discount_percentage,
                                     avg_rating: res.avg_rating?.toDouble(),
                                     wow: res.wow,
                                     comment: res.commentcount.toString(),

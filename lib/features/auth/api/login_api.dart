@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,21 +20,29 @@ class LoginApi {
         parameter: loginBody,
       );
 
-      debugPrint("Login response: ${response.data}");
-      final cookies = response.headers['set-cookie'];
-      final laravelSessionCookie = cookies?.firstWhere(
-        (cookie) => cookie.startsWith('laravel_session='),
-        orElse: () => 'laravel_session not found',
-      );
-      final sessionValue = laravelSessionCookie!
-          .split(';') // Split by semicolon to isolate the cookie parameters
-          .first // Take the first segment
-          .split('=') // Split by '=' to isolate the value
-          .last; // Take the value part
-      SmartClient.laravelsession = sessionValue;
-      SharedPreferences stf = await SharedPreferences.getInstance();
+      // Extract session cookie
+      String? _getSessionCookie(List<String>? cookies) {
+        if (cookies == null) return null;
+        return cookies
+            .firstWhere(
+              (cookie) => cookie.startsWith('laravel_session='),
+              orElse: () => '',
+            )
+            ?.split(';')
+            .first
+            .split('=')
+            .last;
+      }
 
-      stf.setString('laravel', sessionValue);
+      final sessionCookie = _getSessionCookie(response.headers['set-cookie']);
+      print("papaz ${sessionCookie}");
+      SmartClient.laravelsession = sessionCookie!;
+
+      // Save session cookie
+      SharedPreferences sfr = await SharedPreferences.getInstance();
+      await sfr.setString('laravel', sessionCookie);
+
+      debugPrint("Login response: ${response.data}");
 
       // Check if response is successful
       if (_isSuccessfulResponse(response)) {
@@ -98,8 +105,9 @@ class LoginApi {
     await prefs.setString("session", json.encode(user.toJson()));
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
-        await prefs.setString("phone", SmartClient.phone);
-
+    await prefs.setString("name", SmartClient.userName);
+    await prefs.setString("email", SmartClient.userEmail);
+    await prefs.setString("phone", SmartClient.phone);
   }
 
   // Handle error response (non-2xx HTTP status)

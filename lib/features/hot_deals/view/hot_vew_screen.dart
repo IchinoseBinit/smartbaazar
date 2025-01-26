@@ -131,548 +131,483 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
     return Scaffold(
         extendBody: true,
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 70.w, vertical: 10.h),
-          child: Card(
-            elevation: 5,
-            shape: const StadiumBorder(),
-            color: const Color(0xfff5f2f6),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: BottomNavigationBar(
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                type: BottomNavigationBarType.fixed,
-                selectedItemColor: const Color(0xff362677),
-                selectedIconTheme:
-                    const IconThemeData(color: Color(0xff362677)),
-                selectedLabelStyle: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xff36383C),
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xff36383C),
-                ),
-                backgroundColor: const Color(0xfff5f2f6),
-                currentIndex: _selectedTab,
-                onTap: _changeTab,
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: const EdgeInsets.only(top: 2),
-                      height: 40.h,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Image.asset('assets/icon/home.png'),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: const EdgeInsets.only(top: 2),
-                      height: 40.h,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Image.asset('assets/icon/news.png'),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: const EdgeInsets.only(top: 2),
-                      height: 40.h,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Image.asset('assets/icon/message.png'),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    label: '',
-                    icon: Container(
-                      margin: const EdgeInsets.only(top: 2),
-                      height: 40.h,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Image.asset('assets/icon/wifi.png'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Column(
-              children: [
-                Container(
-                  // height: 170,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(50),
-                        bottomRight: Radius.circular(50)),
-                    gradient: LinearGradient(colors: [
-                      Color(0xFF392574),
-                      Color(0xFF681b4e),
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InkWell(
-                              onTap: () {
+          child: Column(
+            children: [
+              Container(
+                // height: 170,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50)),
+                  gradient: LinearGradient(colors: [
+                    Color(0xFF392574),
+                    Color(0xFF681b4e),
+                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const VendorProfileScreen(),
+                                  ));
+                            },
+                            child: Image.asset('assets/images/group.png')),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        SizedBox(
+                            height: 50,
+                            child: NewSearchWidget(
+                              onSearchFocusChanged: _onSearchFocusChanged,
+                              searchController: _searchController,
+                              ontapped: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const VendorProfileScreen(),
+                                      builder: (context) => BusinessTabScreen(
+                                        query: _searchController.text,
+                                      ),
                                     ));
                               },
-                              child: Image.asset('assets/images/group.png')),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          SizedBox(
-                              height: 50,
-                              child: NewSearchWidget(
-                                onSearchFocusChanged: _onSearchFocusChanged,
-                                searchController: _searchController,
-                                ontapped: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => BusinessTabScreen(
-                                          query: _searchController.text,
-                                        ),
-                                      ));
+                              onchnage: (p0) {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           const BusinessTabScreen(),
+                                //     ));
+                              },
+                            )),
+                      ],
+                    ),
+                    if (_showSearchProductModels)
+                      Positioned(
+                        top: 0.h, // Position just below the search bar
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: SearchProductModels.when(data: (results) {
+                            if (results.isEmpty) {
+                              return const SizedBox(
+                                child: Text('No result found'),
+                              ); // No results
+                            }
+                            return Card(
+                              elevation: 8,
+                              child: ListView.separated(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount: results.length,
+                                itemBuilder: (context, index) {
+                                  final product = results[index];
+                                  return ListTile(
+                                    title: Text(product.name),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BusinessTabScreen(
+                                              query: _searchController.text,
+                                            ),
+                                          ));
+
+                                      setState(() {
+                                        _showSearchProductModels = false;
+
+                                        FocusScope.of(context).unfocus();
+                                      });
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         ProductDetailsScreen(
+                                      //       productId: product.id,
+                                      //     ),
+                                      //   ),
+                                      // );
+                                    },
+                                  );
                                 },
-                                onchnage: (p0) {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           const BusinessTabScreen(),
-                                  //     ));
-                                },
-                              )),
-                        ],
-                      ),
-                      if (_showSearchProductModels)
-                        Positioned(
-                          top: 0.h, // Position just below the search bar
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            color: Colors.white,
-                            child: SearchProductModels.when(data: (results) {
-                              if (results.isEmpty) {
-                                return const SizedBox(
-                                  child: Text('No result found'),
-                                ); // No results
-                              }
-                              return Card(
-                                elevation: 8,
-                                child: ListView.separated(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    final product = results[index];
-                                    return ListTile(
-                                      title: Text(product.title),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BusinessTabScreen(
-                                                query: _searchController.text,
-                                              ),
-                                            ));
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
+                              ),
+                            );
+                          }, loading: () {
+                            return null;
 
-                                        setState(() {
-                                          _showSearchProductModels = false;
+                            // return SizedBox(
+                            //     width: 10.w,
+                            //     height: 10.h,
+                            //     child: CircularProgressIndicator());
+                          }, error: (error, stack) {
+                            return null;
 
-                                          FocusScope.of(context).unfocus();
-                                        });
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) =>
-                                        //         ProductDetailsScreen(
-                                        //       productId: product.id,
-                                        //     ),
-                                        //   ),
-                                        // );
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const Divider(),
-                                ),
-                              );
-                            }, loading: () {
-                              return null;
-
-                              // return SizedBox(
-                              //     width: 10.w,
-                              //     height: 10.h,
-                              //     child: CircularProgressIndicator());
-                            }, error: (error, stack) {
-                              return null;
-
-                              // return SizedBox(
-                              //     width: 10.w,
-                              //     height: 10.h,
-                              //     child: CircularProgressIndicator());
-                            }),
-                          ),
+                            // return SizedBox(
+                            //     width: 10.w,
+                            //     height: 10.h,
+                            //     child: CircularProgressIndicator());
+                          }),
                         ),
-                      SizedBox(
-                        height: 10.h,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(items.length, (index) {
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(items.length, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = index;
+                            });
+                            _pageController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 50),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: Container(
+                            height: 5.h,
+                            width: 5.w,
+                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                            decoration: BoxDecoration(
+                              color: selectedIndex == index
+                                  ? Colors.amber
+                                  : Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    SizedBox(
+                      height: 80.h,
+                      child: PageView.builder(
+                        itemCount: items.length,
+                        padEnds: false,
+                        controller: _pageController,
+                        //  // onPageChanged: _onPageChanged,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic> data = items[index];
+
+                          // Highlight only when index == 4
+                          bool isActive = index == 1;
                           return GestureDetector(
                             onTap: () {
                               setState(() {
                                 selectedIndex = index;
                               });
                               _pageController.animateToPage(
-                                index,
-                                duration: const Duration(milliseconds: 50),
+                                2,
+                                duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                               );
                             },
-                            child: Container(
-                              height: 5.h,
-                              width: 5.w,
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              decoration: BoxDecoration(
-                                color: selectedIndex == index
-                                    ? Colors.amber
-                                    : Colors.grey,
-                                shape: BoxShape.circle,
+                            child: AnimatedContainer(
+                              padding: EdgeInsets.zero,
+                              duration: const Duration(milliseconds: 300),
+                              alignment: Alignment.center,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => data['screen']),
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (data['icon']
+                                        .toString()
+                                        .endsWith('.svg'))
+                                      SvgPicture.asset(
+                                        data['icon'],
+                                        alignment: Alignment.center,
+                                        fit: BoxFit.contain,
+                                        theme: const SvgTheme(
+                                            currentColor: Color(0xffdd9d9d9)),
+                                        color: isActive
+                                            ? Colors.amber
+                                            : const Color(0xffD9D9D9)
+                                                .withOpacity(0.5),
+                                        width: 20,
+                                        height: 20,
+                                      )
+                                    else
+                                      Image.asset(
+                                        data['icon'],
+                                        color: isActive
+                                            ? Colors.amber
+                                            : const Color(0xffD9D9D9)
+                                                .withOpacity(0.5),
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      data['label'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: isActive
+                                            ? Colors.amber
+                                            : const Color(0xffD9D9D9)
+                                                .withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
-                        }),
-                      ),
-                      SizedBox(
-                        height: 80.h,
-                        child: PageView.builder(
-                          itemCount: items.length,
-                          padEnds: false,
-                          controller: _pageController,
-                          //  // onPageChanged: _onPageChanged,
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = items[index];
-
-                            // Highlight only when index == 4
-                            bool isActive = index == 1;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                                _pageController.animateToPage(
-                                  2,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              },
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 300),
-                                alignment: Alignment.center,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => data['screen']),
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      if (data['icon']
-                                          .toString()
-                                          .endsWith('.svg'))
-                                        SvgPicture.asset(
-                                          data['icon'],
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.contain,
-                                          theme: const SvgTheme(
-                                              currentColor: Color(0xffdd9d9d9)),
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        )
-                                      else
-                                        Image.asset(
-                                          data['icon'],
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        data['label'],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: isActive
-                                              ? Colors.amber
-                                              : const Color(0xffD9D9D9)
-                                                  .withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const Divider(
-                        height: 0.1,
-                        color: ColorConstant.grayColor,
-                      ),
-                      if (_isSectionsVisible)
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BrandBazarScreen(),
-                                      ));
-                                },
-                                child: const Text(
-                                  "Brandbazaar",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFFD9D9D9),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MySubscribeAndWinPage(),
-                                      ));
-                                },
-                                child: const Text(
-                                  "BuyOrWin",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFFD9D9D9),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      //   ],
-                      // ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onVerticalDragUpdate: _onDragUpdate,
-                  onVerticalDragStart: _onDragStart,
-                  onTap: () {
-                    setState(() {
-                      _isSectionsVisible = !_isSectionsVisible;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Center(
-                      child: Container(
-                        alignment: AlignmentDirectional.centerStart,
-                        margin: EdgeInsets.only(top: 5.h),
-                        height: 7.h,
-                        width: 60.w,
-                        decoration: BoxDecoration(
-                            color: const Color(0xFF681b4e),
-                            borderRadius: BorderRadius.circular(5)),
+                        },
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 4.h,
-                ),
-                Column(
-                  children: [
-                    Image.asset('assets/images/banner.png'),
-                    SizedBox(
-                      height: 10.h,
+                    const Divider(
+                      height: 0.1,
+                      color: ColorConstant.grayColor,
                     ),
-                    const hot_deals_container(),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+                    if (_isSectionsVisible)
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            widget.header == 'hotdeals'
-                                ? Text(
-                                    'HOT DEALS',
-                                    style: headerstyle.copyWith(
-                                        fontStyle:
-                                            GoogleFonts.quicksand().fontStyle,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 15,
-                                        color: Colors.black),
-                                  )
-                                : Text(
-                                    'Sponsored DEALS',
-                                    style: headerstyle.copyWith(
-                                        fontStyle:
-                                            GoogleFonts.quicksand().fontStyle,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 15,
-                                        color: Colors.black),
-                                  ),
-                            SizedBox(
-                              width: 10.w,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BrandBazarScreen(),
+                                    ));
+                              },
+                              child: const Text(
+                                "Brandbazaar",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFFD9D9D9),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
-                            Image.asset(
-                              'assets/images/flameIcon.png',
-                              width: 16.w,
-                              height: 17.h,
-                            )
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MySubscribeAndWinPage(),
+                                    ));
+                              },
+                              child: const Text(
+                                "BuyOrWin",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFFD9D9D9),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        Text(
-                          "view all",
-                          style: headerstyle.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: ColorConstant.blackColor),
-                        )
-                      ],
-                    ),
-                    getHotData.when(
-                      data: (data) {
-                        print('gogo ${data.first.id}');
-                        return GridView.builder(
-                                physics:
-                                    const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                                shrinkWrap: true, // Adjust to fit content
-                                padding: EdgeInsets.zero,
-                                itemCount: data.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 340.9,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 0.2,
-                                  mainAxisSpacing: 0.2,
-                                  childAspectRatio: 0.9,
-                                ),
-
-                                itemBuilder: (context, index) {
-                                  GlobalModel res = data[index];
-
-                                  return Padding(
-                                      padding: EdgeInsets.only(bottom: 5.h),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductDetailScreen(
-                                                        productId: res.id),
-                                              ));
-                                        },
-                                        child: AllProductDetailWidget(
-                                          
-
-                                          shortestDistance: data
-                                              [index].shortestDistance,
-                                              
-                                              
-                                          issponsored: data[index].user[0].sponsored!,
-                                          distance: data[index].user[0].shortestDistance,
-                                          wow: data[index].wow,
-                                          discounttedPrice: data[index].discont,
-                                          comment: data[index].commentnum,
-                                          avg_rating: data[index].avg_rating,
-                                          offer: data[index].offers,
-                                          productImage:
-                                              data[index].imageUrl,
-                                          Vimage: data[index].user[0].photo,
-                                          vendorname: data[index].user[0].name,
-                                          title: data[index].title,
-                                          price: data[index].price,
-                                          similarproductCount:data[index].similarproductCount,
-                                          membershipColor: data[index].user[0].membership_color,
-                                          membershipTitle: data[index].user[0].membership_title
-                                        ),
-                                      ));
-                                },
-                              );
-                      },
-                      error: (error, stackTrace) {
-                        return const Text("data");
-                      },
-                      loading: () => const CircularProgressIndicator(),
-                    ),
+                      ),
+                    //   ],
+                    // ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              GestureDetector(
+                onVerticalDragUpdate: _onDragUpdate,
+                onVerticalDragStart: _onDragStart,
+                onTap: () {
+                  setState(() {
+                    _isSectionsVisible = !_isSectionsVisible;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Center(
+                    child: Container(
+                      alignment: AlignmentDirectional.centerStart,
+                      margin: EdgeInsets.only(top: 5.h),
+                      height: 7.h,
+                      width: 60.w,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFF681b4e),
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Column(
+                children: [
+                  Image.asset('assets/images/banner.png'),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  const hot_deals_container(),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          widget.header == 'hotdeals'
+                              ? Text(
+                                  'HOT DEALS',
+                                  style: headerstyle.copyWith(
+                                      fontStyle:
+                                          GoogleFonts.quicksand().fontStyle,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                      color: Colors.black),
+                                )
+                              : Text(
+                                  'Sponsored DEALS',
+                                  style: headerstyle.copyWith(
+                                      fontStyle:
+                                          GoogleFonts.quicksand().fontStyle,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15,
+                                      color: Colors.black),
+                                ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Image.asset(
+                            'assets/images/flameIcon.png',
+                            width: 16.w,
+                            height: 17.h,
+                          )
+                        ],
+                      ),
+                      SizedBox()
+                      // Text(
+                      //   "view all",
+                      //   style: headerstyle.copyWith(
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: ColorConstant.blackColor),
+                      // )
+                    ],
+                  ),
+                  getHotData.when(
+                    data: (data) {
+                      print('gogo ${data.first.id}');
+                      return SingleChildScrollView(
+                        padding: EdgeInsets.zero,
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection:
+                            Axis.vertical, // Scroll vertically if needed
+                        child: Wrap(
+                          spacing: 0.w, // Horizontal space between items
+                          runSpacing: 10.h, // Vertical space between rows
+                          children: List.generate(
+                            data.length,
+                            (index) {
+                              GlobalModel res = data[index];
+                              // print(
+                              //     "lauka ${res.userDetail.shortestDistance}");
+
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailScreen(
+                                        productId: res.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: SizedBox(
+                                  width: (MediaQuery.of(context).size.width -
+                                          10.w) /
+                                      2, // Dynamically adjust to fit two items per row
+                                  child: Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    shadowColor: const Color(0xff3D215F)
+                                        .withOpacity(0.5),
+                                    elevation: 9,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: AllProductDetailWidget(
+                                      
+                                        productid: res.id,
+                                      lat: res.user[0].latitude,
+                                      long: res.user[0].longitude,
+                                      membershipid: res.user[0].membership_id,
+                                      posttype: res.post_type_id,
+                                      didcountpercentage:
+                                          res.discount_percentage,
+                                      id: int.tryParse(res.user[0].user_id),
+                                      shortestDistance:
+                                          res.user[0].shortestDistance,
+                                      issponsored:
+                                          res.user[0].sponsored ?? false,
+                                      distance: res.user[0].shortestDistance,
+                                      wow: res.wow.toString(),
+                                      discounttedPrice: res.discont,
+                                      comment: res.commentnum.toString(),
+                                      avg_rating:
+                                          res.avg_rating?.toDouble() ?? 0.0,
+                                      offer: res.offers,
+                                      productImage: res.imageUrl,
+                                      Vimage: res.user[0].photo,
+                                      vendorname: res.user[0].name,
+                                      title: res.title,
+                                      price: res.price,
+                                      similarproductCount:
+                                          res.similarproductCount,
+                                      membershipColor:
+                                          res.user[0].membership_color,
+                                      membershipTitle:
+                                          res.user[0].membership_title,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                    error: (error, stackTrace) {
+                      return const Text("data");
+                    },
+                    loading: () => const CircularProgressIndicator(),
+                  ),
+                ],
+              ),
+            ],
           ),
         ));
   }

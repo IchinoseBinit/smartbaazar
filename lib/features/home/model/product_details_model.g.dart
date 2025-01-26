@@ -8,7 +8,7 @@ part of 'product_details_model.dart';
 
 _$PostModelImpl _$$PostModelImplFromJson(Map<String, dynamic> json) =>
     _$PostModelImpl(
-      success: json['success'] as bool,
+      success: json['success'] as bool?,
       message: json['message'] as String?,
       result: json['result'] == null
           ? null
@@ -136,6 +136,9 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       postType: json['postType'] == null
           ? null
           : PostType.fromJson(json['postType'] as Map<String, dynamic>),
+      city: json['city'] == null
+          ? null
+          : City.fromJson(json['city'] as Map<String, dynamic>),
       rating_comment: (json['rating_comment'] as List<dynamic>)
           .map((e) => RatingComment.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -222,11 +225,35 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'user_details': instance.user_details,
       'pictures': instance.pictures,
       'postType': instance.postType,
+      'city': instance.city,
       'rating_comment': instance.rating_comment,
       'live_prizes': instance.live_prizes,
       'deals': instance.deals,
       'shop': instance.shop,
       'feed_post': instance.feed_post,
+    };
+
+_$CityImpl _$$CityImplFromJson(Map<String, dynamic> json) => _$CityImpl(
+      id: (json['id'] as num).toInt(),
+      countryCode: json['country_code'] as String,
+      name: json['name'] as String,
+      latitude: json['latitude'] as String,
+      longitude: json['longitude'] as String,
+      population: json['population'] as String,
+      timeZone: json['time_zone'] as String,
+      active: json['active'] as String,
+    );
+
+Map<String, dynamic> _$$CityImplToJson(_$CityImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'country_code': instance.countryCode,
+      'name': instance.name,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'population': instance.population,
+      'time_zone': instance.timeZone,
+      'active': instance.active,
     };
 
 _$LivePrizeImpl _$$LivePrizeImplFromJson(Map<String, dynamic> json) =>
@@ -439,6 +466,21 @@ Map<String, dynamic> _$$UserDetailsProductImplToJson(
       'distance': instance.distance,
     };
 
+_$MembershipPlanImpl _$$MembershipPlanImplFromJson(Map<String, dynamic> json) =>
+    _$MembershipPlanImpl(
+      id: json['id'] as String?,
+      title: json['title'] as String?,
+      color: json['color'] as String?,
+    );
+
+Map<String, dynamic> _$$MembershipPlanImplToJson(
+        _$MembershipPlanImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'color': instance.color,
+    };
+
 _$PictureImpl _$$PictureImplFromJson(Map<String, dynamic> json) =>
     _$PictureImpl(
       id: (json['id'] as num?)?.toInt(),
@@ -468,6 +510,7 @@ Map<String, dynamic> _$$ExtraModelImplToJson(_$ExtraModelImpl instance) =>
     };
 
 _$FieldsImpl _$$FieldsImplFromJson(Map<String, dynamic> json) => _$FieldsImpl(
+      headers: json['headers'] as Map<String, dynamic>?,
       original: json['original'] == null
           ? null
           : Original.fromJson(json['original'] as Map<String, dynamic>),
@@ -475,15 +518,16 @@ _$FieldsImpl _$$FieldsImplFromJson(Map<String, dynamic> json) => _$FieldsImpl(
 
 Map<String, dynamic> _$$FieldsImplToJson(_$FieldsImpl instance) =>
     <String, dynamic>{
+      'headers': instance.headers,
       'original': instance.original,
     };
 
 _$OriginalImpl _$$OriginalImplFromJson(Map<String, dynamic> json) =>
     _$OriginalImpl(
       message: json['message'] as String?,
-      result: json['result'] == null
-          ? null
-          : FieldDetails.fromJson(json['result'] as Map<String, dynamic>),
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => FieldDetails.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$OriginalImplToJson(_$OriginalImpl instance) =>
@@ -494,46 +538,52 @@ Map<String, dynamic> _$$OriginalImplToJson(_$OriginalImpl instance) =>
 
 _$FieldDetailsImpl _$$FieldDetailsImplFromJson(Map<String, dynamic> json) =>
     _$FieldDetailsImpl(
-      field4: json['4'] == null
-          ? null
-          : AvailableColor.fromJson(json['4'] as Map<String, dynamic>),
-      field5: json['5'] == null
-          ? null
-          : AvailableColor.fromJson(json['5'] as Map<String, dynamic>),
-      field6: json['6'] == null
-          ? null
-          : AvailableColor.fromJson(json['6'] as Map<String, dynamic>),
-      field10: json['10'] == null
-          ? null
-          : AvailableColor.fromJson(json['10'] as Map<String, dynamic>),
-      field11: json['11'] == null
-          ? null
-          : AvailableColor.fromJson(json['11'] as Map<String, dynamic>),
-      field12: json['12'] == null
-          ? null
-          : AvailableColor.fromJson(json['12'] as Map<String, dynamic>),
-      field13: json['13'] == null
-          ? null
-          : AvailableColor.fromJson(json['13'] as Map<String, dynamic>),
-      field14: json['14'] == null
-          ? null
-          : AvailableColor.fromJson(json['14'] as Map<String, dynamic>),
-      field15: json['15'] == null
-          ? null
-          : AvailableColor.fromJson(json['15'] as Map<String, dynamic>),
+      id: (json['id'] as num?)?.toInt(),
+      belongsTo: json['belongs_to'] as String?,
+      name: json['name'] as String?,
+      type: json['type'] as String?,
+      max: (json['max'] as num?)?.toInt(),
+      defaultValue:
+          const DefaultValueConverter().fromJson(json['default_value']),
+      required: json['required'] as String?,
+      useAsFilter: json['use_as_filter'] as String?,
+      help: json['help'] as String?,
+      active: json['active'] as String?,
+      options: (json['options'] as List<dynamic>?)
+          ?.map((e) => FieldOption.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$FieldDetailsImplToJson(_$FieldDetailsImpl instance) =>
     <String, dynamic>{
-      '4': instance.field4,
-      '5': instance.field5,
-      '6': instance.field6,
-      '10': instance.field10,
-      '11': instance.field11,
-      '12': instance.field12,
-      '13': instance.field13,
-      '14': instance.field14,
-      '15': instance.field15,
+      'id': instance.id,
+      'belongs_to': instance.belongsTo,
+      'name': instance.name,
+      'type': instance.type,
+      'max': instance.max,
+      'default_value':
+          const DefaultValueConverter().toJson(instance.defaultValue),
+      'required': instance.required,
+      'use_as_filter': instance.useAsFilter,
+      'help': instance.help,
+      'active': instance.active,
+      'options': instance.options,
+    };
+
+_$FieldOptionImpl _$$FieldOptionImplFromJson(Map<String, dynamic> json) =>
+    _$FieldOptionImpl(
+      id: (json['id'] as num?)?.toInt(),
+      fieldId: json['field_id'] as String?,
+      value: json['value'] as String?,
+      parentId: json['parent_id'] as String?,
+    );
+
+Map<String, dynamic> _$$FieldOptionImplToJson(_$FieldOptionImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'field_id': instance.fieldId,
+      'value': instance.value,
+      'parent_id': instance.parentId,
     };
 
 _$ColorOptionImpl _$$ColorOptionImplFromJson(Map<String, dynamic> json) =>
@@ -584,8 +634,6 @@ Map<String, dynamic> _$$SimilarItemsImplToJson(_$SimilarItemsImpl instance) =>
 _$OptionImpl _$$OptionImplFromJson(Map<String, dynamic> json) => _$OptionImpl(
       fieldId: json['field_id'] as String?,
       value: json['value'] as String?,
-      lft: json['lft'] as String?,
-      rgt: json['rgt'] as String?,
       depth: json['depth'] as String?,
     );
 
@@ -593,7 +641,5 @@ Map<String, dynamic> _$$OptionImplToJson(_$OptionImpl instance) =>
     <String, dynamic>{
       'field_id': instance.fieldId,
       'value': instance.value,
-      'lft': instance.lft,
-      'rgt': instance.rgt,
       'depth': instance.depth,
     };

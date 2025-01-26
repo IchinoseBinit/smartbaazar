@@ -17,60 +17,60 @@ class MySubscriptionScreen extends ConsumerWidget {
     // Fetch the subscription data
     final subscriptionAsyncValue = ref.watch(getSubscriptionProvider);
 
-    return GenericSafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 30.h,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(heartIcon),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'My Subscriptions',
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      // backgroundColor: ColorConstant.whiteColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 30.h,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: Row(
+                children: [
+                  SvgPicture.asset(heartIcon),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'My Subscriptions',
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Text(
+                      'Go back',
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
-                          color: Colors.black),
+                          color: const Color(0xff888888)),
                     ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Text(
-                        'Go back',
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff888888)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
-              // Subscription Data UI
-              subscriptionAsyncValue.when(
-                data: (subscriptionData) =>
-                    _buildSubscriptionList(subscriptionData, context),
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stackTrace) => Center(
-                  child: Text(
-                    'Error: $error',
-                    style: const TextStyle(color: Colors.red),
                   ),
+                ],
+              ),
+            ),
+            Divider(
+              thickness: 2.w,
+              color: const Color(0xffD9D9D9),
+            ),
+            // Subscription Data UI
+            subscriptionAsyncValue.when(
+              data: (subscriptionData) =>
+                  _buildSubscriptionList(subscriptionData, context),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) => Center(
+                child: Text(
+                  'Error: $error',
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -105,15 +105,12 @@ class MySubscriptionScreen extends ConsumerWidget {
                       fgColor: Colors.white,
                       title: 'Profile',
                       onPressed: () {
-                      
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => VendorHomeScreen(
                                   vendorName: subscription.vendor!.username!,
-                                  vid: int.tryParse(subscription.vendor!.id)!
-                                  
-                                  ),
+                                  vid: int.tryParse(subscription.vendor!.id)!),
                             ));
                         // Handle profile button tap
                       },

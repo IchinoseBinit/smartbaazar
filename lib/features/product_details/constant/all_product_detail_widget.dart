@@ -4,38 +4,47 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AllProductDetailWidget extends StatelessWidget {
-  AllProductDetailWidget(
-      {super.key,
-      // this.membership_title,
-      this.posttype = '1',
-      this.id,
-      this.offer,
-      this.title = "Trade",
-      this.discounttedPrice,
-      this.comment = '0',
-      this.price = '1',
-      this.vendorname = 'John',
-      this.distance = 2,
-      this.Vimage = '',
-      this.productImage,
-      this.lefttile = 'TradeHub',
-      this.similarproductCount,
-      this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
-      this.membershipTitle,
-      this.discountpercentage,
-      this.membershipid,
-      this.avg_rating});
+  AllProductDetailWidget({
+    super.key,
+    // this.membership_title,
+    this.id,
+    this.offer = '',
+    this.title = "Trade",
+    this.discounttedPrice = '0',
+    this.comment = '0',
+    this.price = '1',
+    this.vendorname = 'John',
+    this.distance = 2,
+    this.Vimage = '',
+    this.productImage = '',
+    this.lefttile = 'TradeHub',
+    this.similarproductCount,
+    this.membershipColor,
+    this.wow,
+    this.issponsored = false,
+    this.shortestDistance,
+    this.membershipTitle,
+    this.didcountpercentage,
+    this.avg_rating = 1,
+    this.tradeImage,
+    this.posttype = '1',
+    this.membershipid = '1',
+    required this.productid,
+    required this.lat,
+    required this.long,
+  });
 
   String? title;
   String? price;
@@ -43,8 +52,9 @@ class AllProductDetailWidget extends StatelessWidget {
   int? similarproductCount;
   String? views, comment, share;
   String? vendorname;
-  int? discountpercentage;
-  String? membershipid;
+  int? didcountpercentage;
+  String? posttype;
+  String productid;
 
   // String? membership_title;
   double? distance;
@@ -53,13 +63,22 @@ class AllProductDetailWidget extends StatelessWidget {
   String? membershipTitle;
   bool issponsored;
   String? offer, wow;
-  double? avg_rating = 0;
+  double? avg_rating;
   double? shortestDistance;
   int? id;
-  String? posttype;
+  String? tradeImage;
+  String? membershipid;
+  String? userId;
+  String? lat, long;
+  Future<void> getdetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId');
+    // print("zonet ${userId}");
+  }
 
   @override
   Widget build(BuildContext context) {
+    getdetails();
     String showRs = "Rs";
     showRs = discounttedPrice == '0' ? '' : '';
 
@@ -115,6 +134,7 @@ class AllProductDetailWidget extends StatelessWidget {
                 ],
               ),
               PopupMenuButton(
+                menuPadding: EdgeInsets.only(left: 10.w),
                 onSelected: (value) {},
 
                 padding: EdgeInsets.symmetric(horizontal: 5.h),
@@ -125,7 +145,8 @@ class AllProductDetailWidget extends StatelessWidget {
                     const BoxConstraints.expand(width: 150, height: 150),
                 // menuPadding: const EdgeInsets.only(left: 10),
                 iconColor: const Color(0xffB6B4B4),
-                color: const Color(0xff766c7a).withOpacity(0.9),
+
+                color: Colors.grey,
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
@@ -143,6 +164,24 @@ class AllProductDetailWidget extends StatelessWidget {
                           ),
                         )),
                     PopupMenuItem(
+                        onTap: () {
+                          addToFavorites(null, userId!, productid).then(
+                            (value) {
+                              final snackBar = SnackBar(
+                                content: Text(value),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            },
+                          ).catchError((error) {
+                            final errorSnackBar = SnackBar(
+                              content:
+                                  Text('Failed to add to favorites: $error'),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(errorSnackBar);
+                          });
+                        },
                         height: 30,
                         padding: const EdgeInsets.only(left: 5),
                         child: Text(
@@ -160,8 +199,10 @@ class AllProductDetailWidget extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const VendorProfileScreen(),
+                                builder: (context) => VendorHomeScreen(
+                                  vendorName: vendorname!,
+                                  vid: id!,
+                                ),
                               ));
                         },
                         child: Text(
@@ -173,37 +214,42 @@ class AllProductDetailWidget extends StatelessWidget {
                           ),
                         )),
                     PopupMenuItem(
-                        height: 30,
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text(
-                          "Get Seller Directives",
-                          style: headerstyle.copyWith(
-                            fontFamily: GoogleFonts.quicksand().fontFamily,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 8,
-                          ),
-                        )),
+                      onTap: () {
+                        launch(
+                            'https://www.google.com/maps?q=${double.tryParse(lat ?? '0')},${double.tryParse(long ?? '0')}');
+                      },
+                      height: 30,
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Get Seller Directives",
+                        style: headerstyle.copyWith(
+                          fontFamily: GoogleFonts.quicksand().fontFamily,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 8,
+                        ),
+                      ),
+                    ),
                     PopupMenuItem(
-                        height: 30,
-                        padding: const EdgeInsets.only(left: 5),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const ReportComplainScreen(
-                                        productId: "167",
-                                        productName: "techstore"),
-                              ));
-                        },
-                        child: Text(
-                          "Report",
-                          style: headerstyle.copyWith(
-                            fontFamily: GoogleFonts.quicksand().fontFamily,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 8,
-                          ),
-                        )),
+                      height: 30,
+                      padding: const EdgeInsets.only(left: 5),
+                      onTap: () {
+                        // print('value ${userId}');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReportComplainScreen(
+                                  productId: userId!, productName: vendorname!),
+                            ));
+                      },
+                      child: Text(
+                        "Report",
+                        style: headerstyle.copyWith(
+                          fontFamily: GoogleFonts.quicksand().fontFamily,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 8,
+                        ),
+                      ),
+                    ),
                   ];
                 },
                 child: const Icon(
@@ -215,32 +261,41 @@ class AllProductDetailWidget extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.w),
-          child: Image.network(
-            productImage ?? '',
-            height: 100.h,
-            fit: BoxFit.fill,
-            alignment: Alignment.center,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                return child; // If the image has loaded, display it
-              }
-              return Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
+        InkWell(
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                builder: (context) => ProductDetailScreen(
+                      productId: productid,
+                    )));
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.w),
+            child: Image.network(
+              productImage ?? '',
+              height: 100.h,
+              width: 150.w,
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.center,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child; // If the image has loaded, display it
+                }
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: 100.h,
+                    color: Colors.white, // Placeholder for shimmer effect
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return SizedBox(
                   height: 100.h,
-                  color: Colors.white, // Placeholder for shimmer effect
-                ),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return SizedBox(
-                height: 100.h,
-                child: const Icon(Icons.error),
-              ); // Show error icon if image fails to load
-            },
+                  child: const Icon(Icons.error),
+                ); // Show error icon if image fails to load
+              },
+            ),
           ),
         ),
         SizedBox(
@@ -350,7 +405,7 @@ class AllProductDetailWidget extends StatelessWidget {
 
                   const Spacer(),
                   if (discounttedPrice != null &&
-                      discountpercentage != 0 &&
+                      didcountpercentage != 0 &&
                       discounttedPrice != '0' &&
                       discounttedPrice!.isNotEmpty)
                     Text(
@@ -446,7 +501,7 @@ class AllProductDetailWidget extends StatelessWidget {
               discounttedPrice?.length == 0 ||
                       discounttedPrice == null ||
                       discounttedPrice == '0' ||
-                      discountpercentage == null
+                      didcountpercentage == null
                   ? const SizedBox()
                   : Row(
                       children: [
@@ -457,7 +512,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           color: const Color(0xff901B41),
                         ),
                         Text(
-                          "$discountpercentage%",
+                          "$didcountpercentage%",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff901B41),
@@ -588,162 +643,184 @@ class AllProductDetailWidget extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          VendorHomeScreen(vendorName: vendorname!, vid: id!),
-                    ));
-              },
-              child: Container(
-                margin: EdgeInsets.zero,
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  color: membershipColor != null && membershipColor != ''
-                      ? Color(
-                          int.parse(
-                            membershipColor!.replaceFirst('#', '0xFF'),
-                          ),
-                        )
-                      : const Color(0xff3D215F), // Default color
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(13),
-                    bottomRight: Radius.circular(13),
-                  ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(Vimage!),
-                          radius: 15.sp,
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 3.w,
-                                ),
-                                Text(
-                                  vendorname != null && vendorname!.length > 15
-                                      ? '${vendorname!.substring(0, 12)}...'
-                                      : vendorname ?? '',
-                                  style: headerstyle.copyWith(
-                                    fontSize: 10.5.sp,
-                                    // Adjust font size based on length
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                const Icon(
-                                  Icons.logout,
-                                  color: Colors.white,
-                                  size: 11,
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                if (shortestDistance != null &&
-                                    shortestDistance != 0.0)
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.location_on,
-                                        color: Colors.white,
-                                        size: 10,
-                                      ),
-                                      Text(
-                                        "${shortestDistance ?? 2.0} km",
-                                        style: headerstyle.copyWith(
-                                          fontSize: 5.sp,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                              ],
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            VendorHomeScreen(vendorName: vendorname!, vid: id!),
+                      ));
+                },
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.symmetric(vertical: 10.9.h),
+                  decoration: BoxDecoration(
+                    color: membershipColor != null
+                        ? Color(
+                            int.parse(
+                              membershipColor!.replaceFirst('#', '0xFF'),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                          )
+                        : const Color(0xff3D215F), // Default color
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(13),
+                      bottomRight: Radius.circular(13),
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(Vimage!),
+                        radius: 15.sp,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Expanded(
+                        // To allow spacing between elements
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Vendor Name
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: 2.w,
-                                ),
-                                Image.asset(
-                                  membershipid == "2"
-                                      ? spotlighticon
-                                      : membershipid == "1"
-                                          ? basicsellericon
-                                          : membershipid == "3"
-                                              ? domesticseller
-                                              : membershipid == "25"
-                                                  ? globalicon
-                                                  : basicsellericon, // Provide a default icon if no match
-                                  height: 9.h,
-                                ),
-                                SizedBox(
-                                  width: 1.w,
-                                ),
-                                SizedBox(
-                                  width: 65.w,
-                                  child: Text(
-                                    membershipTitle ?? "Domestic Brand",
-                                    style: headerstyle.copyWith(
-                                      fontSize: 8.sp,
-                                      // Adjust font size based on length
-                                      fontWeight: FontWeight.w700,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      vendorname != null &&
+                                              vendorname!.length > 10
+                                          ? '${vendorname!.substring(0, 10)}...'
+                                          : vendorname ?? '',
+                                      style: headerstyle.copyWith(
+                                        fontFamily:
+                                            GoogleFonts.quicksand().fontFamily,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                    // overflow: TextOverflow.ellipsis,
-                                    // Apply ellipsis for overflow
-                                    // maxLines: 1, // Restrict to a single line
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
+                                    SizedBox(
+                                      width: 3.w,
+                                    ),
+                                    const Icon(
+                                      Icons.logout,
+                                      color: Colors.white,
+                                      size: 11,
+                                    ),
+                                  ],
                                 ),
                                 Row(
                                   children: [
-                                    issponsored
-                                        ? Row(
-                                            children: [
-                                              Image.asset(
-                                                  "assets/images/mike.png"),
-                                              Text(
-                                                "SPONSORED",
-                                                style: headerstyle.copyWith(
-                                                    fontSize: 9.sp,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                            ],
-                                          )
-                                        : const SizedBox(),
+                                    Image.asset(
+                                      membershipid == "2"
+                                          ? spotlighticon
+                                          : membershipid == "1"
+                                              ? basicsellericon
+                                              : membershipid == "3"
+                                                  ? domesticseller
+                                                  : membershipid == "25"
+                                                      ? globalicon
+                                                      : basicsellericon, // Provide a default icon if no match
+                                      height: 9.h,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      membershipTitle ?? "Domestic Brand",
+                                      style: headerstyle.copyWith(
+                                        fontSize: 10.sp,
+                                        fontFamily:
+                                            GoogleFonts.quicksand().fontFamily,
+
+                                        // Adjust font size based on length
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      // overflow: TextOverflow.ellipsis,
+                                      // Apply ellipsis for overflow
+                                      // maxLines:
+                                      //     1, // Restrict to a single line
+                                    ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
+
+                            // Shortest Distance
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.w),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 3.h,
+                                  ),
+                                  shortestDistance != null &&
+                                          shortestDistance != 0.0
+                                      ? Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            SizedBox(
+                                                width: 2
+                                                    .w), // Space between icon and text
+                                            Text(
+                                              "${double.parse(shortestDistance.toString()).toStringAsFixed(2)} km",
+                                              style: headerstyle.copyWith(
+                                                fontFamily:
+                                                    GoogleFonts.quicksand()
+                                                        .fontFamily,
+                                                fontSize: 9.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : SizedBox(
+                                          height: 15.h,
+                                        ),
+                                  issponsored
+                                      ? Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 2.h,
+                                            ),
+                                            Image.asset(
+                                                "assets/images/mike.png"),
+                                            Text(
+                                              "SPONSORED",
+                                              style: headerstyle.copyWith(
+                                                  fontSize: 6.sp,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        )
+                                      : SizedBox(
+                                          height: 5.h,
+                                        ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
+                      ),
+                    ],
+                  ),
+                ))
           ],
         ),
       ],

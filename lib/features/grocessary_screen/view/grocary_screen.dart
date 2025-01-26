@@ -14,7 +14,7 @@ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -251,43 +251,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     return Scaffold(
-
-  extendBody: true,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: pselectedIndex, // Pass the current index
-          onTabChanged: (index) {
-            ref.read(bottomNavIndexProvider.notifier).state = index;
-
-            // Add navigation logic here
-            switch (index) {
-              case 0:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-                break;
-              case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FeedScreen()),
-                );
-                break;
-              case 2:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MessageViewScreen()),
-                );
-                break;
-              case 3:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VendorProfileScreen()),
-                );
-                break;
-            }
-          },
-        ),
+        extendBody: true,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -302,6 +266,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
         body: Stack(children: [
           Positioned.fill(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -458,7 +423,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                           InkWell(
                                             onTap: () {
                                               if (_searchController.text
-                                                      .trim().isNotEmpty) {
+                                                  .trim()
+                                                  .isNotEmpty) {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -715,7 +681,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                         dense: true,
                                         title: Text(
                                           softWrap: true,
-                                          product.title,
+                                          product.name,
                                           style: headerstyle.copyWith(
                                               color: ColorConstant.blackColor,
                                               fontSize: 10),
@@ -787,21 +753,21 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   //         borderRadius: BorderRadius.circular(5)),
                   //   ),
                   // ),
-            
+
                   asyncPostTypeContent.when(
                     data: (feedStoryData) {
                       final homeStory = feedStoryData.homeStory;
-            
+
                       if (homeStory != null &&
                           homeStory is Map<String, dynamic> &&
                           homeStory.containsKey('story')) {
                         final story = homeStory['story'];
-            
+
                         if (story != null &&
                             story is Map<String, dynamic> &&
                             story.containsKey('posts')) {
                           final posts = story['posts'];
-            
+
                           if (posts != null && posts is List<dynamic>) {
                             return SizedBox(
                               height: 100.h,
@@ -812,11 +778,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 itemCount: posts.length,
                                 itemBuilder: (context, index) {
                                   final story = posts[index];
-            
+
                                   if (story is Map<String, dynamic>) {
                                     final storyObject =
                                         Story(posts: [Post.fromJson(story)]);
-            
+
                                     return HomePageStoryContainer(
                                       index: index,
                                       vendorName: story['vendor_name'] ??
@@ -838,15 +804,16 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           }
                         }
                       }
-            
+
                       // If any of the above conditions fail, return a default widget
                       return const SizedBox.shrink();
                     },
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
-                    error: (error, stack) => Center(child: Text('Error: $error')),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       if (data.sliders?.length != 0) {
@@ -875,8 +842,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             width: double.infinity,
                                             fit: BoxFit.fill,
                                             imageUrl: banner.image!,
-                                            errorWidget: (context, url, error) =>
-                                                const Icon(Icons.error),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
                                           ),
                                         );
                                       }).toList(),
@@ -899,7 +867,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 ],
                               ),
                             ),
-            
+
                             // Dots Indicator
                             Positioned(
                               left: MediaQuery.of(context).size.width / 2 -
@@ -990,7 +958,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                         ),
                                       ),
                                     ),
-            
+
                                     // Other Services List
                                     ListView(
                                       physics: const BouncingScrollPhysics(),
@@ -1004,16 +972,19 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               showMenu(
                                                 context: context,
                                                 position:
-                                                    const RelativeRect.fromLTRB(0,
-                                                        0, 0, 0), // Base position
+                                                    const RelativeRect.fromLTRB(
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0), // Base position
                                                 items: [
                                                   PopupMenuItem(
                                                     value: 1,
                                                     child: ListTile(
                                                       title: const Text(
                                                           "View Story"),
-                                                      leading:
-                                                          const Icon(Icons.book),
+                                                      leading: const Icon(
+                                                          Icons.book),
                                                       onTap: () {
                                                         // Implement onTap logic
                                                       },
@@ -1036,8 +1007,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               );
                                             },
                                             child: PopupMenuButton<int>(
-                                              offset: const Offset(
-                                                  0, 60), // Position for the menu
+                                              offset: const Offset(0,
+                                                  60), // Position for the menu
                                               itemBuilder: (context) => [
                                                 const PopupMenuItem(
                                                   value: 1,
@@ -1080,13 +1051,15 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                             e.name ?? 'No Name',
                                                             style:
                                                                 const TextStyle(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 13,
                                                             ),
-                                                            textAlign:
-                                                                TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                           ),
                                                         )
                                                       ],
@@ -1137,14 +1110,14 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       ],
                     ),
                   ),
-            
+
                   // Expanded(
-            
+
                   // child: product_item_wid(),),
                   SizedBox(
                     height: 5.h,
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return SizedBox(
@@ -1159,47 +1132,40 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                             child: Wrap(
                               spacing: 0.w, // Horizontal spacing between items
                               runSpacing: 0.h, // Vertical spacing between rows
-                              children:
-                                  List.generate(data.hotProducts.length, (index) {
+                              children: List.generate(data.hotProducts.length,
+                                  (index) {
                                 VProduct hot = data.hotProducts[index];
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetailScreen(
-                                            productId: hot.id,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: ProductDetailWidget(
-                                      membershipid: hot.user.membership_id,
-                                      posttype: hot.post_type_id,
-                                      shortestDistance: hot.user.shortestDistance,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 2.w),
+                                  child: ProductDetailWidget(
+                                  lat: hot.user.latitude,
+                                  long: hot.user.longitude,
 
-                                      id: int.tryParse(hot.id),
-                                      offer: hot.offers,
-                                      didcountpercentage: hot.discount_percentage,
-                                      avg_rating: hot.avg_rating?.toDouble(),
-                                      wow: hot.wow,
-                                      comment: hot.commentcount.toString(),
-                                      discounttedPrice: hot.discounted_price,
-                                      issponsored: hot.user.sponsored,
-                                      lefttile: "Grocary",
-                                      productImage: hot.image,
-                                      Vimage: hot.user.photo,
-                                      price: hot.price,
-                                      title: hot.title,
-                                      vendorname: hot.user.name,
-                                      similarproductCount:
-                                          hot.similarProductCount,
-                                      membershipColor: hot.user.membershipColor,
-                                      membershipTitle: hot.user.membershipTitle,
-                                    ),
+                                    productid: hot.id,
+                                    membershipid: hot.user.membership_id,
+                                    posttype: hot.post_type_id,
+                                    shortestDistance:
+                                        hot.user.shortestDistance,
+                                    id: int.tryParse(hot.id),
+                                    offer: hot.offers,
+                                    didcountpercentage:
+                                        hot.discount_percentage,
+                                    avg_rating: hot.avg_rating?.toDouble(),
+                                    wow: hot.wow,
+                                    comment: hot.commentcount.toString(),
+                                    discounttedPrice: hot.discounted_price,
+                                    issponsored: hot.user.sponsored,
+                                    lefttile: "Grocary",
+                                    productImage: hot.image,
+                                    Vimage: hot.user.photo,
+                                    price: hot.price,
+                                    title: hot.title,
+                                    vendorname: hot.user.name,
+                                    similarproductCount:
+                                        hot.similarProductCount,
+                                    membershipColor: hot.user.membershipColor,
+                                    membershipTitle: hot.user.membershipTitle,
                                   ),
                                 );
                               }),
@@ -1231,14 +1197,14 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       ),
                     ),
                   ),
-            
+
                   // Expanded(
-            
+
                   // child: product_item_wid(),),
                   SizedBox(
                     height: 5.h,
                   ),
-            
+
                   // // SizedBox(
                   // //     height: 360.h,
                   // //     width: double.infinity,
@@ -1302,14 +1268,14 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   // //     return CircularProgressIndicator();
                   // //   },
                   // // ),
-            
+
                   // // Expanded(
-            
+
                   // // child: product_item_wid(),),
                   // SizedBox(
                   //   height: 5.h,
                   // ),
-            
+
                   // // asyncbajarValue.when(
                   // //   data: (data) {
                   // //     return Padding(
@@ -1359,7 +1325,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   // //     return CircularProgressIndicator();
                   // //   },
                   // // ),
-            
+
                   // asyncbajarValue.when(
                   //   data: (data) {
                   //     return Padding(
@@ -1527,7 +1493,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   asyncbajarValue.when(
                     data: (data) {
                       double dynamicHeight;
-            
+
                       if (dynamictabController.index == 0) {
                         dynamicHeight =
                             data.insidearr.isEmpty || data.insidearr[0].isEmpty
@@ -1577,7 +1543,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       ? Center(
                                           child: Padding(
                                             padding: EdgeInsets.only(
-                                                top: 10.0.h), // Add padding here
+                                                top:
+                                                    15.0.h), // Add padding here
                                             child: nolistingfound(),
                                           ),
                                         )
@@ -1591,49 +1558,42 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             itemBuilder: (context, index) {
                                               VProduct prod =
                                                   data.insidearr[1][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ProductDetailScreen(
-                                                                  productId:
-                                                                      prod.id)));
-                                                },
-                                                child:  ProductDetailWidget(
-
-                                                  shortestDistance: prod.user.shortestDistance,
-                                                  
-                                                  id: int.tryParse(prod.id),
-                                                  posttype: prod.post_type_id,
-
-                                                  membershipid: prod.user.membership_id,
-                                                  offer: prod.offers,
-                                                  tradeImage: 'assets/icon/b2bIcon.svg',
-                                                  didcountpercentage: prod.discount_percentage,
-                                                  avg_rating: prod.avg_rating
-                                                      ?.toDouble(),
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  lefttile: "Grocary",
-                                                  vendorname: prod.user.name,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.title,
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                                  lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                productid: prod.id,
+                                                shortestDistance: prod
+                                                    .user.shortestDistance,
+                                                id: int.tryParse(prod.id),
+                                                posttype: prod.post_type_id,
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                offer: prod.offers,
+                                                tradeImage:
+                                                    'assets/icon/b2bIcon.svg',
+                                                didcountpercentage:
+                                                    prod.discount_percentage,
+                                                avg_rating: prod.avg_rating
+                                                    ?.toDouble(),
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                lefttile: "Grocary",
+                                                vendorname: prod.user.name,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.title,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
                                               );
                                             },
                                           ),
@@ -1661,7 +1621,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       ? Center(
                                           child: Padding(
                                             padding: EdgeInsets.only(
-                                                top: 10.0.h), // Add padding here
+                                                top:
+                                                    15.0.h), // Add padding here
                                             child: nolistingfound(),
                                           ),
                                         )
@@ -1675,46 +1636,40 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             itemBuilder: (context, index) {
                                               VProduct prod =
                                                   data.insidearr[1][index];
-                                              return InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ProductDetailScreen(
-                                                                  productId:
-                                                                      prod.id)));
-                                                },
-                                                child: ProductDetailWidget(
-
-                                                  offer: prod.offers,
-                                                  posttype: prod.post_type_id,
-                                                  shortestDistance: prod.user.shortestDistance,
-
-                                                  membershipid: prod.user.membership_id,
-                                                  id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod.discount_percentage,
-                                                  avg_rating: prod.avg_rating?.toDouble(),
-                                                  wow: prod.wow,
-                                                  comment: prod.commentcount
-                                                      .toString(),
-                                                  lefttile: "Grocary",
-                                                  vendorname: prod.user.name,
-                                                  discounttedPrice:
-                                                      prod.discounted_price,
-                                                  Vimage: prod.title,
-                                                  issponsored:
-                                                      prod.user.sponsored,
-                                                  price: prod.price,
-                                                  title: prod.title,
-                                                  productImage: prod.image,
-                                                  similarproductCount:
-                                                      prod.similarProductCount,
-                                                  membershipColor:
-                                                      prod.user.membershipColor,
-                                                  membershipTitle:
-                                                      prod.user.membershipTitle,
-                                                ),
+                                              return ProductDetailWidget(
+                                                                                                  lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                productid: prod.id,
+                                                offer: prod.offers,
+                                                posttype: prod.post_type_id,
+                                                shortestDistance: prod
+                                                    .user.shortestDistance,
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                id: int.tryParse(prod.id),
+                                                didcountpercentage:
+                                                    prod.discount_percentage,
+                                                avg_rating: prod.avg_rating
+                                                    ?.toDouble(),
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                lefttile: "Grocary",
+                                                vendorname: prod.user.name,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.title,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
                                               );
                                             },
                                           ),
@@ -1742,14 +1697,21 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       ? Center(
                                           child: Padding(
                                             padding: EdgeInsets.only(
-                                                top: 10.0.h), // Add padding here
+                                                top:
+                                                    10.0.h), // Add padding here
                                             child: nolistingfound(),
                                           ),
                                         )
                                       : SizedBox(
                                           height: 340.h,
                                           child: data.insidearr.first.isEmpty
-                                              ? nolistingfound()
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 15.h),
+                                                  child: Center(
+                                                    child: nolistingfound(),
+                                                  ),
+                                                )
                                               : ListView.builder(
                                                   clipBehavior: Clip.antiAlias,
                                                   padding:
@@ -1758,42 +1720,39 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                       Axis.horizontal,
                                                   itemCount:
                                                       data.insidearr[2].length,
-                                                  itemBuilder: (context, index) {
-                                                    VProduct prod =
-                                                        data.insidearr[2][index];
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ProductDetailScreen(
-                                                                        productId:
-                                                                            prod.id)));
-                                                      },
-                                                      child: ProductDetailWidget(
-                                                        wow: prod.wow,
-                                                        comment: prod.commentcount
-                                                            .toString(),
-                                                        lefttile: "Grocary",
-                                                        vendorname:
-                                                            prod.user.name,
-                                                        discounttedPrice:
-                                                            prod.discounted_price,
-                                                        Vimage: prod.title,
-                                                        issponsored:
-                                                            prod.user.sponsored,
-                                                        price: prod.price,
-                                                        title: prod.title,
-                                                        productImage: prod.image,
-                                                        similarproductCount: prod
-                                                            .similarProductCount,
-                                                        membershipColor: prod
-                                                            .user.membershipColor,
-                                                        membershipTitle: prod
-                                                            .user.membershipTitle,
-                                                      ),
-                                                    );
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    VProduct prod = data
+                                                        .insidearr[2][index];
+                                                    return ProductDetailWidget(
+                                                                                                        lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                      productid: prod.id,
+                                                                                                            wow: prod.wow,
+                                                                                                            comment: prod
+                                                      .commentcount
+                                                      .toString(),
+                                                                                                            lefttile: "Grocary",
+                                                                                                            vendorname:
+                                                      prod.user.name,
+                                                                                                            discounttedPrice: prod
+                                                      .discounted_price,
+                                                                                                            Vimage: prod.title,
+                                                                                                            issponsored:
+                                                      prod.user.sponsored,
+                                                                                                            price: prod.price,
+                                                                                                            title: prod.title,
+                                                                                                            productImage:
+                                                      prod.image,
+                                                                                                            similarproductCount: prod
+                                                      .similarProductCount,
+                                                                                                            membershipColor: prod
+                                                      .user
+                                                      .membershipColor,
+                                                                                                            membershipTitle: prod
+                                                      .user
+                                                      .membershipTitle,
+                                                                                                          );
                                                   },
                                                 ),
                                         )
@@ -1807,11 +1766,11 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     error: (error, stackTrace) => Text(error.toString()),
                     loading: () => const CircularProgressIndicator(),
                   ),
-            
+
                   SizedBox(
                     height: 5.h,
                   ),
-            
+
                   // asyncbajarValue.when(
                   //   data: (data) {
                   //     return SizedBox(
@@ -1851,7 +1810,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   //     return const CircularProgressIndicator();
                   //   },
                   // ),
-            
+
                   Center(
                     child: Column(
                       children: [
@@ -1890,7 +1849,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           itemCount: data.buynow!.length,
                           itemBuilder: (context, index) {
                             Buynowmodel resp = data.buynow![index];
-            
+
                             return buyorwin_widget(
                                 wow: resp.wow ?? '0',
                                 gift_qty: resp.gift_qty!,
@@ -1947,7 +1906,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
                   ),
-            
+
                   SizedBox(
                     height: 10.h,
                   ),
@@ -1959,7 +1918,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         // Map category labels to their respective product lists
                         List<String> categories =
                             services.map((e) => e['label'] as String).toList();
-            
+
                         return Column(
                           children: [
                             // Category Selector Row
@@ -1999,10 +1958,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                 },
                               ),
                             ),
-            
+
                             // Spacer
                             SizedBox(height: 5.h),
-            
+
                             // Display Products for the selected category
                             asyncbajarValue.when(
                               data: (data) {
@@ -2015,21 +1974,21 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   data.clearance_sale, // Corresponds to USED
                                   data.Launch_festival_offer, // Corresponds to USED
                                 ];
-            
+
                                 // Ensure the index is valid
                                 if (selectedIndex < 0 ||
                                     selectedIndex >= productsList.length) {
                                   selectedIndex =
                                       0; // Default to the first category if index is out of bounds
                                 }
-            
+
                                 List<VProduct> products =
                                     productsList[selectedIndex];
-            
+
                                 // Calculate height dynamically
                                 double calculatedHeight =
-                                    products.isNotEmpty ? 359.h : 100.h;
-            
+                                    products.isNotEmpty ? 359.h : 50.h;
+
                                 return AnimatedContainer(
                                   alignment: Alignment.topLeft,
                                   duration: const Duration(milliseconds: 300),
@@ -2053,51 +2012,44 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             children: List.generate(
                                                 products.length, (index) {
                                               VProduct prod = products[index];
-            
+
                                               return Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProductDetailScreen(
-                                                          productId: prod.id,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: ProductDetailWidget(
-                                                    posttype: prod.post_type_id,
-                                                    shortestDistance: prod.user.shortestDistance,
-                                                    membershipid: prod.user.membership_id,
-                                                    id: int.tryParse(prod.id),
-                                                    didcountpercentage: prod.discount_percentage,
-                                                    avg_rating: prod.avg_rating?.toDouble(),
-
-                                                    offer: prod.offers,
-                                                    comment: prod.commentcount
-                                                        .toString(),
-                                                    wow: prod.wow,
-                                                    issponsored:
-                                                        prod.user.sponsored,
-                                                    lefttile: "Grocary",
-                                                    vendorname: prod.title,
-                                                    discounttedPrice:
-                                                        prod.discounted_price,
-                                                    Vimage: prod.user.photo,
-                                                    price: prod.price,
-                                                    title: prod.title,
-                                                    productImage: prod.image,
-                                                    similarproductCount:
-                                                        prod.similarProductCount,
-                                                    membershipColor:
-                                                        prod.user.membershipColor,
-                                                    membershipTitle:
-                                                        prod.user.membershipTitle,
-                                                  ),
+                                                child: ProductDetailWidget(
+                                                                                                    lat: prod.user.latitude,
+                                                  long: prod.user.longitude,
+                                                    productid: prod.id,
+                                                  posttype: prod.post_type_id,
+                                                  shortestDistance: prod
+                                                      .user.shortestDistance,
+                                                  membershipid:
+                                                      prod.user.membership_id,
+                                                  id: int.tryParse(prod.id),
+                                                  didcountpercentage: prod
+                                                      .discount_percentage,
+                                                  avg_rating: prod.avg_rating
+                                                      ?.toDouble(),
+                                                  offer: prod.offers,
+                                                  comment: prod.commentcount
+                                                      .toString(),
+                                                  wow: prod.wow,
+                                                  issponsored:
+                                                      prod.user.sponsored,
+                                                  lefttile: "Grocary",
+                                                  vendorname: prod.title,
+                                                  discounttedPrice:
+                                                      prod.discounted_price,
+                                                  Vimage: prod.user.photo,
+                                                  price: prod.price,
+                                                  title: prod.title,
+                                                  productImage: prod.image,
+                                                  similarproductCount: prod
+                                                      .similarProductCount,
+                                                  membershipColor: prod
+                                                      .user.membershipColor,
+                                                  membershipTitle: prod
+                                                      .user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -2117,7 +2069,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       },
                     ),
                   ),
-            
+
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
@@ -2133,7 +2085,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       ],
                     ),
                   ),
-            
+
                   asyncbajarValue.when(
                     data: (data) {
                       return SingleChildScrollView(
@@ -2166,14 +2118,15 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                    
+                                      productid: res.id,
+                                      lat: res.user.latitude,
+                                            long: res.user.longitude,
                                     shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,
                                     posttype: res.post_type_id,
-                                    
-                                    discountpercentage: res.discount_percentage,
+                                    didcountpercentage: res.discount_percentage,
                                     avg_rating: res.avg_rating?.toDouble(),
                                     wow: res.wow,
                                     comment: res.commentcount.toString(),
@@ -2196,7 +2149,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           }),
                         ),
                       );
-            
+
                       // SizedBox(
                       //    height: 340.h,
                       //   width: double.infinity,
@@ -2213,7 +2166,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       //         // productImage: data.allProducts[index].image,
                       //         Vimage:
                       //             data.allProducts[index].user.photo,
-            
+
                       //         vendorname:
                       //             data.allProducts[index].user.name,
                       //         title: data.allProducts[index].title,
@@ -2230,7 +2183,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       return const CircularProgressIndicator();
                     },
                   ),
-            
+
                   // Container(
                   //   margin: const EdgeInsets.only(top: 2),
                   //   height: 40.h,
@@ -2242,7 +2195,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   //   child: Image.asset('assets/icon/home.png'),
                   // ),
                   SizedBox(
-                    height: 10.h,
+                    height: 30.h,
                   ),
                 ],
               ),

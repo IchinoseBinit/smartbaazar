@@ -8,7 +8,7 @@ import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/bar.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
@@ -58,8 +58,9 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
 
   Future<void> _loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // print("kela ${prefs.getString('name')}");
     setState(() {
-      vendorName = prefs.getString('userName');
+      vendorName = prefs.getString('name');
     });
   }
 
@@ -248,209 +249,171 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return GenericSafeArea(
-      child: Scaffold(
-        extendBody: true,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: 0, // Pass the current index
-          onTabChanged: (index) {
-            // ref.read(bottomNavIndexProvider.notifier).state = index;
-
-            // Add navigation logic here
-            switch (index) {
-              case 0:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-                break;
-              case 1:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FeedScreen()),
-                );
-                break;
-              case 2:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const MessageViewScreen()),
-                );
-                break;
-              case 3:
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VendorProfileScreen()),
-                );
-                break;
-            }
-          },
-        ),
+    return Scaffold(
+      extendBody: true,
+      backgroundColor: const Color(0xffF6F1F1),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xffF6F1F1),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xffF6F1F1),
-          toolbarHeight: 85.h,
-          leadingWidth: 30.h,
-          title: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (_) => const VendroDetailsScreen()));
-                },
-                child: Container(
-                  height: 40.h,
-                  width: 40.h,
-                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffF5BF05),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 1.w,
-                      )),
-                  child: Image.asset(
-                    ImageConstant.personImage,
+        toolbarHeight: 85.h,
+        leadingWidth: 30.h,
+        title: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            GestureDetector(
+              onTap: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => const VendroDetailsScreen()));
+              },
+              child: Container(
+                height: 40.h,
+                width: 40.h,
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                decoration: BoxDecoration(
+                    color: const Color(0xffF5BF05),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      width: 1.w,
+                    )),
+                child: Image.asset(
+                  ImageConstant.personImage,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10.h,
+            ),
+            Text(
+              '$vendorName',
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black),
+            ),
+            const Spacer(),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AddToCartScreen(),
                   ),
+                );
+              },
+              child: Container(
+                height: 32.h,
+                width: 32.h,
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 1.w, color: Colors.black)),
+                child: SvgPicture.asset(openCart),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.w,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              VendorProfileGridWidget(
+                profileData: profileList,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 18.h),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border:
+                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Buyer Center'),
+                    ),
+                    const Divider(
+                      color: Color(0xffADADAD),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                      child: BuyerCenterWidget(
+                        buyerData: buyerListing,
+                      ),
+                    )
+                  ],
                 ),
               ),
               SizedBox(
-                width: 10.h,
+                height: 20.h,
               ),
-              Text(
-                '$vendorName',
-                style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const AddToCartScreen(),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border:
+                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Seller Center'),
                     ),
-                  );
-                },
-                child: Container(
-                  height: 32.h,
-                  width: 32.h,
-                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 1.w, color: Colors.black)),
-                  child: SvgPicture.asset(openCart),
+                    const Divider(
+                      color: Color(0xffADADAD),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: BuyerCenterWidget(
+                        buyerData: sellerCenterListing,
+                      ),
+                    )
+                  ],
                 ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border:
+                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('My Account'),
+                    ),
+                    const Divider(
+                      color: Color(0xffADADAD),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: MyAccountWidget(
+                        accountData: accointProfileList,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              const VendorProfileExtraLinkWidget(),
+              SizedBox(
+                height: 240.h,
               ),
             ],
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.w,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                VendorProfileGridWidget(
-                  profileData: profileList,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 18.h),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xffADADAD))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Buyer Center'),
-                      ),
-                      const Divider(
-                        color: Color(0xffADADAD),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 4.h),
-                        child: BuyerCenterWidget(
-                          buyerData: buyerListing,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xffADADAD))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Seller Center'),
-                      ),
-                      const Divider(
-                        color: Color(0xffADADAD),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: BuyerCenterWidget(
-                          buyerData: sellerCenterListing,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xffADADAD))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('My Account'),
-                      ),
-                      const Divider(
-                        color: Color(0xffADADAD),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: MyAccountWidget(
-                          accountData: accointProfileList,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                const VendorProfileExtraLinkWidget(),
-                SizedBox(
-                  height: 240.h,
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -682,6 +645,7 @@ class BuyerCenterWidget extends StatelessWidget {
               15, // Fit 4 items in a row
           child: GestureDetector(
             onTap: () {
+              
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => buyerData[index]['screen'] as Widget,
@@ -733,10 +697,8 @@ class MyAccountWidget extends StatelessWidget {
     if (title == 'Log Out') {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.clear();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
+   Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => new LoginScreen()));
+
     } else if (title == 'Messenger') {
       Navigator.push(
         context,
