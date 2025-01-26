@@ -659,32 +659,47 @@ PostResult _$PostResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PostResult {
   int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'country_code')
   String? get countryCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'category_id')
   String? get categoryId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_type_id')
   String? get postTypeId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   List<String>? get tags => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'discounted_price')
   String? get discountedPrice => throw _privateConstructorUsedError;
   String? get trending => throw _privateConstructorUsedError;
   String? get stock => throw _privateConstructorUsedError;
-  String get user_photo_url => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_photo_url')
+  String get userPhotoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'min_order')
   String? get minOrder => throw _privateConstructorUsedError;
+  @JsonKey(name: 'samp_price')
   String? get sampPrice => throw _privateConstructorUsedError;
+  @JsonKey(name: 'text_one')
   String? get textOne => throw _privateConstructorUsedError;
+  @JsonKey(name: 'text_two')
   String? get textTwo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ava_to')
   String? get avaTo => throw _privateConstructorUsedError;
   String? get negotiable => throw _privateConstructorUsedError;
+  @JsonKey(name: 'contact_name')
   String? get contactName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
+  @JsonKey(name: 'phone_hidden')
   String? get phoneHidden => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
+  @JsonKey(name: 'city_id')
   String? get cityId => throw _privateConstructorUsedError;
   String? get lat => throw _privateConstructorUsedError;
   String? get lon => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ip_addr')
   String? get ipAddr => throw _privateConstructorUsedError;
   String? get length => throw _privateConstructorUsedError;
   String? get width => throw _privateConstructorUsedError;
@@ -693,40 +708,53 @@ mixin _$PostResult {
   String? get pickup => throw _privateConstructorUsedError;
   String? get longitude => throw _privateConstructorUsedError;
   String? get latitude => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hyper_del')
   String? get hyperDel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'seller_del')
   String? get sellerDel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'accept_terms')
   String? get acceptTerms => throw _privateConstructorUsedError;
+  @JsonKey(name: 'accept_marketing_offers')
   String? get acceptMarketingOffers => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_permanent')
   String? get isPermanent => throw _privateConstructorUsedError;
   String? get reviewed => throw _privateConstructorUsedError;
   String? get featured => throw _privateConstructorUsedError;
   String? get archived => throw _privateConstructorUsedError;
+  @JsonKey(name: 'archived_at')
   String? get archivedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deletion_mail_sent_at')
   String? get deletionMailSentAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fb_profile')
   String? get fbProfile => throw _privateConstructorUsedError;
   String? get partner => throw _privateConstructorUsedError;
+  @JsonKey(name: 'b2b_pricing')
   String? get b2bPricing => throw _privateConstructorUsedError;
-  String? get offer => throw _privateConstructorUsedError;
+  String? get offers => throw _privateConstructorUsedError;
   String? get wow => throw _privateConstructorUsedError;
   String? get sku => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
   String? get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at_formatted')
   String? get createdAtFormatted => throw _privateConstructorUsedError;
-  String? get userPhotoUrl => throw _privateConstructorUsedError;
   int? get commentCount => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   Ratings? get ratings => throw _privateConstructorUsedError;
   usermodel? get user => throw _privateConstructorUsedError;
-  UserDetailsProduct? get user_details => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_details')
+  UserDetailsProduct? get userDetails => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
-  List<RatingComment> get rating_comment => throw _privateConstructorUsedError;
-  List<LivePrize> get live_prizes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rating_comment')
+  List<RatingComment> get ratingComment => throw _privateConstructorUsedError;
+  List<LivePrize> get livePrizes => throw _privateConstructorUsedError;
   List<Shop>? get deals => throw _privateConstructorUsedError;
   List<Shop>? get shop => throw _privateConstructorUsedError;
-  List<FeedPost>? get feed_post => throw _privateConstructorUsedError;
+  List<FeedPost>? get feedPost => throw _privateConstructorUsedError;
 
   /// Serializes this PostResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -746,33 +774,33 @@ abstract class $PostResultCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String? countryCode,
-      String? userId,
-      String? categoryId,
-      String? postTypeId,
+      @JsonKey(name: 'country_code') String? countryCode,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'category_id') String? categoryId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String? title,
       String? description,
       List<String>? tags,
       String? price,
-      String? discountedPrice,
+      @JsonKey(name: 'discounted_price') String? discountedPrice,
       String? trending,
       String? stock,
-      String user_photo_url,
-      String? minOrder,
-      String? sampPrice,
-      String? textOne,
-      String? textTwo,
-      String? avaTo,
+      @JsonKey(name: 'user_photo_url') String userPhotoUrl,
+      @JsonKey(name: 'min_order') String? minOrder,
+      @JsonKey(name: 'samp_price') String? sampPrice,
+      @JsonKey(name: 'text_one') String? textOne,
+      @JsonKey(name: 'text_two') String? textTwo,
+      @JsonKey(name: 'ava_to') String? avaTo,
       String? negotiable,
-      String? contactName,
+      @JsonKey(name: 'contact_name') String? contactName,
       String? email,
       String? phone,
-      String? phoneHidden,
+      @JsonKey(name: 'phone_hidden') String? phoneHidden,
       String? address,
-      String? cityId,
+      @JsonKey(name: 'city_id') String? cityId,
       String? lat,
       String? lon,
-      String? ipAddr,
+      @JsonKey(name: 'ip_addr') String? ipAddr,
       String? length,
       String? width,
       String? weight,
@@ -780,45 +808,44 @@ abstract class $PostResultCopyWith<$Res> {
       String? pickup,
       String? longitude,
       String? latitude,
-      String? hyperDel,
-      String? sellerDel,
-      String? acceptTerms,
-      String? acceptMarketingOffers,
-      String? isPermanent,
+      @JsonKey(name: 'hyper_del') String? hyperDel,
+      @JsonKey(name: 'seller_del') String? sellerDel,
+      @JsonKey(name: 'accept_terms') String? acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
+      @JsonKey(name: 'is_permanent') String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
-      String? archivedAt,
-      String? deletionMailSentAt,
-      String? fbProfile,
+      @JsonKey(name: 'archived_at') String? archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') String? fbProfile,
       String? partner,
-      String? b2bPricing,
-      String? offer,
+      @JsonKey(name: 'b2b_pricing') String? b2bPricing,
+      String? offers,
       String? wow,
       String? sku,
-      String? createdAt,
-      String? updatedAt,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
       String? slug,
-      String? createdAtFormatted,
-      String? userPhotoUrl,
+      @JsonKey(name: 'created_at_formatted') String? createdAtFormatted,
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
       usermodel? user,
-      UserDetailsProduct? user_details,
+      @JsonKey(name: 'user_details') UserDetailsProduct? userDetails,
       List<Picture>? pictures,
       PostType? postType,
       City? city,
-      List<RatingComment> rating_comment,
-      List<LivePrize> live_prizes,
+      @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
+      List<LivePrize> livePrizes,
       List<Shop>? deals,
       List<Shop>? shop,
-      List<FeedPost>? feed_post});
+      List<FeedPost>? feedPost});
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
   $usermodelCopyWith<$Res>? get user;
-  $UserDetailsProductCopyWith<$Res>? get user_details;
+  $UserDetailsProductCopyWith<$Res>? get userDetails;
   $PostTypeCopyWith<$Res>? get postType;
   $CityCopyWith<$Res>? get city;
 }
@@ -850,7 +877,7 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? discountedPrice = freezed,
     Object? trending = freezed,
     Object? stock = freezed,
-    Object? user_photo_url = null,
+    Object? userPhotoUrl = null,
     Object? minOrder = freezed,
     Object? sampPrice = freezed,
     Object? textOne = freezed,
@@ -886,27 +913,26 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? fbProfile = freezed,
     Object? partner = freezed,
     Object? b2bPricing = freezed,
-    Object? offer = freezed,
+    Object? offers = freezed,
     Object? wow = freezed,
     Object? sku = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? slug = freezed,
     Object? createdAtFormatted = freezed,
-    Object? userPhotoUrl = freezed,
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
     Object? user = freezed,
-    Object? user_details = freezed,
+    Object? userDetails = freezed,
     Object? pictures = freezed,
     Object? postType = freezed,
     Object? city = freezed,
-    Object? rating_comment = null,
-    Object? live_prizes = null,
+    Object? ratingComment = null,
+    Object? livePrizes = null,
     Object? deals = freezed,
     Object? shop = freezed,
-    Object? feed_post = freezed,
+    Object? feedPost = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -957,9 +983,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.stock
           : stock // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_photo_url: null == user_photo_url
-          ? _value.user_photo_url
-          : user_photo_url // ignore: cast_nullable_to_non_nullable
+      userPhotoUrl: null == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
               as String,
       minOrder: freezed == minOrder
           ? _value.minOrder
@@ -1101,9 +1127,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.b2bPricing
           : b2bPricing // ignore: cast_nullable_to_non_nullable
               as String?,
-      offer: freezed == offer
-          ? _value.offer
-          : offer // ignore: cast_nullable_to_non_nullable
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
               as String?,
       wow: freezed == wow
           ? _value.wow
@@ -1129,10 +1155,6 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.createdAtFormatted
           : createdAtFormatted // ignore: cast_nullable_to_non_nullable
               as String?,
-      userPhotoUrl: freezed == userPhotoUrl
-          ? _value.userPhotoUrl
-          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
@@ -1149,9 +1171,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as usermodel?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
+      userDetails: freezed == userDetails
+          ? _value.userDetails
+          : userDetails // ignore: cast_nullable_to_non_nullable
               as UserDetailsProduct?,
       pictures: freezed == pictures
           ? _value.pictures
@@ -1165,13 +1187,13 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
-      rating_comment: null == rating_comment
-          ? _value.rating_comment
-          : rating_comment // ignore: cast_nullable_to_non_nullable
+      ratingComment: null == ratingComment
+          ? _value.ratingComment
+          : ratingComment // ignore: cast_nullable_to_non_nullable
               as List<RatingComment>,
-      live_prizes: null == live_prizes
-          ? _value.live_prizes
-          : live_prizes // ignore: cast_nullable_to_non_nullable
+      livePrizes: null == livePrizes
+          ? _value.livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
               as List<LivePrize>,
       deals: freezed == deals
           ? _value.deals
@@ -1181,9 +1203,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.shop
           : shop // ignore: cast_nullable_to_non_nullable
               as List<Shop>?,
-      feed_post: freezed == feed_post
-          ? _value.feed_post
-          : feed_post // ignore: cast_nullable_to_non_nullable
+      feedPost: freezed == feedPost
+          ? _value.feedPost
+          : feedPost // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
     ) as $Val);
   }
@@ -1234,13 +1256,13 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserDetailsProductCopyWith<$Res>? get user_details {
-    if (_value.user_details == null) {
+  $UserDetailsProductCopyWith<$Res>? get userDetails {
+    if (_value.userDetails == null) {
       return null;
     }
 
-    return $UserDetailsProductCopyWith<$Res>(_value.user_details!, (value) {
-      return _then(_value.copyWith(user_details: value) as $Val);
+    return $UserDetailsProductCopyWith<$Res>(_value.userDetails!, (value) {
+      return _then(_value.copyWith(userDetails: value) as $Val);
     });
   }
 
@@ -1283,33 +1305,33 @@ abstract class _$$PostResultImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
-      String? countryCode,
-      String? userId,
-      String? categoryId,
-      String? postTypeId,
+      @JsonKey(name: 'country_code') String? countryCode,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'category_id') String? categoryId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String? title,
       String? description,
       List<String>? tags,
       String? price,
-      String? discountedPrice,
+      @JsonKey(name: 'discounted_price') String? discountedPrice,
       String? trending,
       String? stock,
-      String user_photo_url,
-      String? minOrder,
-      String? sampPrice,
-      String? textOne,
-      String? textTwo,
-      String? avaTo,
+      @JsonKey(name: 'user_photo_url') String userPhotoUrl,
+      @JsonKey(name: 'min_order') String? minOrder,
+      @JsonKey(name: 'samp_price') String? sampPrice,
+      @JsonKey(name: 'text_one') String? textOne,
+      @JsonKey(name: 'text_two') String? textTwo,
+      @JsonKey(name: 'ava_to') String? avaTo,
       String? negotiable,
-      String? contactName,
+      @JsonKey(name: 'contact_name') String? contactName,
       String? email,
       String? phone,
-      String? phoneHidden,
+      @JsonKey(name: 'phone_hidden') String? phoneHidden,
       String? address,
-      String? cityId,
+      @JsonKey(name: 'city_id') String? cityId,
       String? lat,
       String? lon,
-      String? ipAddr,
+      @JsonKey(name: 'ip_addr') String? ipAddr,
       String? length,
       String? width,
       String? weight,
@@ -1317,40 +1339,39 @@ abstract class _$$PostResultImplCopyWith<$Res>
       String? pickup,
       String? longitude,
       String? latitude,
-      String? hyperDel,
-      String? sellerDel,
-      String? acceptTerms,
-      String? acceptMarketingOffers,
-      String? isPermanent,
+      @JsonKey(name: 'hyper_del') String? hyperDel,
+      @JsonKey(name: 'seller_del') String? sellerDel,
+      @JsonKey(name: 'accept_terms') String? acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
+      @JsonKey(name: 'is_permanent') String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
-      String? archivedAt,
-      String? deletionMailSentAt,
-      String? fbProfile,
+      @JsonKey(name: 'archived_at') String? archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') String? fbProfile,
       String? partner,
-      String? b2bPricing,
-      String? offer,
+      @JsonKey(name: 'b2b_pricing') String? b2bPricing,
+      String? offers,
       String? wow,
       String? sku,
-      String? createdAt,
-      String? updatedAt,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
       String? slug,
-      String? createdAtFormatted,
-      String? userPhotoUrl,
+      @JsonKey(name: 'created_at_formatted') String? createdAtFormatted,
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
       usermodel? user,
-      UserDetailsProduct? user_details,
+      @JsonKey(name: 'user_details') UserDetailsProduct? userDetails,
       List<Picture>? pictures,
       PostType? postType,
       City? city,
-      List<RatingComment> rating_comment,
-      List<LivePrize> live_prizes,
+      @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
+      List<LivePrize> livePrizes,
       List<Shop>? deals,
       List<Shop>? shop,
-      List<FeedPost>? feed_post});
+      List<FeedPost>? feedPost});
 
   @override
   $ExtraModelCopyWith<$Res>? get extra;
@@ -1359,7 +1380,7 @@ abstract class _$$PostResultImplCopyWith<$Res>
   @override
   $usermodelCopyWith<$Res>? get user;
   @override
-  $UserDetailsProductCopyWith<$Res>? get user_details;
+  $UserDetailsProductCopyWith<$Res>? get userDetails;
   @override
   $PostTypeCopyWith<$Res>? get postType;
   @override
@@ -1391,7 +1412,7 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? discountedPrice = freezed,
     Object? trending = freezed,
     Object? stock = freezed,
-    Object? user_photo_url = null,
+    Object? userPhotoUrl = null,
     Object? minOrder = freezed,
     Object? sampPrice = freezed,
     Object? textOne = freezed,
@@ -1427,27 +1448,26 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? fbProfile = freezed,
     Object? partner = freezed,
     Object? b2bPricing = freezed,
-    Object? offer = freezed,
+    Object? offers = freezed,
     Object? wow = freezed,
     Object? sku = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? slug = freezed,
     Object? createdAtFormatted = freezed,
-    Object? userPhotoUrl = freezed,
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
     Object? user = freezed,
-    Object? user_details = freezed,
+    Object? userDetails = freezed,
     Object? pictures = freezed,
     Object? postType = freezed,
     Object? city = freezed,
-    Object? rating_comment = null,
-    Object? live_prizes = null,
+    Object? ratingComment = null,
+    Object? livePrizes = null,
     Object? deals = freezed,
     Object? shop = freezed,
-    Object? feed_post = freezed,
+    Object? feedPost = freezed,
   }) {
     return _then(_$PostResultImpl(
       id: freezed == id
@@ -1498,9 +1518,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.stock
           : stock // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_photo_url: null == user_photo_url
-          ? _value.user_photo_url
-          : user_photo_url // ignore: cast_nullable_to_non_nullable
+      userPhotoUrl: null == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
               as String,
       minOrder: freezed == minOrder
           ? _value.minOrder
@@ -1642,9 +1662,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.b2bPricing
           : b2bPricing // ignore: cast_nullable_to_non_nullable
               as String?,
-      offer: freezed == offer
-          ? _value.offer
-          : offer // ignore: cast_nullable_to_non_nullable
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
               as String?,
       wow: freezed == wow
           ? _value.wow
@@ -1670,10 +1690,6 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.createdAtFormatted
           : createdAtFormatted // ignore: cast_nullable_to_non_nullable
               as String?,
-      userPhotoUrl: freezed == userPhotoUrl
-          ? _value.userPhotoUrl
-          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
@@ -1690,9 +1706,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as usermodel?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
+      userDetails: freezed == userDetails
+          ? _value.userDetails
+          : userDetails // ignore: cast_nullable_to_non_nullable
               as UserDetailsProduct?,
       pictures: freezed == pictures
           ? _value._pictures
@@ -1706,13 +1722,13 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
-      rating_comment: null == rating_comment
-          ? _value._rating_comment
-          : rating_comment // ignore: cast_nullable_to_non_nullable
+      ratingComment: null == ratingComment
+          ? _value._ratingComment
+          : ratingComment // ignore: cast_nullable_to_non_nullable
               as List<RatingComment>,
-      live_prizes: null == live_prizes
-          ? _value._live_prizes
-          : live_prizes // ignore: cast_nullable_to_non_nullable
+      livePrizes: null == livePrizes
+          ? _value._livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
               as List<LivePrize>,
       deals: freezed == deals
           ? _value._deals
@@ -1722,9 +1738,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value._shop
           : shop // ignore: cast_nullable_to_non_nullable
               as List<Shop>?,
-      feed_post: freezed == feed_post
-          ? _value._feed_post
-          : feed_post // ignore: cast_nullable_to_non_nullable
+      feedPost: freezed == feedPost
+          ? _value._feedPost
+          : feedPost // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
     ));
   }
@@ -1735,33 +1751,33 @@ class __$$PostResultImplCopyWithImpl<$Res>
 class _$PostResultImpl implements _PostResult {
   const _$PostResultImpl(
       {required this.id,
-      required this.countryCode,
-      required this.userId,
-      required this.categoryId,
-      required this.postTypeId,
+      @JsonKey(name: 'country_code') required this.countryCode,
+      @JsonKey(name: 'user_id') required this.userId,
+      @JsonKey(name: 'category_id') required this.categoryId,
+      @JsonKey(name: 'post_type_id') required this.postTypeId,
       required this.title,
       required this.description,
       required final List<String>? tags,
       required this.price,
-      this.discountedPrice,
+      @JsonKey(name: 'discounted_price') this.discountedPrice,
       required this.trending,
       required this.stock,
-      required this.user_photo_url,
-      this.minOrder,
-      this.sampPrice,
-      this.textOne,
-      this.textTwo,
-      this.avaTo,
+      @JsonKey(name: 'user_photo_url') required this.userPhotoUrl,
+      @JsonKey(name: 'min_order') this.minOrder,
+      @JsonKey(name: 'samp_price') this.sampPrice,
+      @JsonKey(name: 'text_one') this.textOne,
+      @JsonKey(name: 'text_two') this.textTwo,
+      @JsonKey(name: 'ava_to') this.avaTo,
       this.negotiable,
-      required this.contactName,
+      @JsonKey(name: 'contact_name') required this.contactName,
       required this.email,
       required this.phone,
-      this.phoneHidden,
+      @JsonKey(name: 'phone_hidden') this.phoneHidden,
       this.address,
-      required this.cityId,
+      @JsonKey(name: 'city_id') required this.cityId,
       required this.lat,
       required this.lon,
-      required this.ipAddr,
+      @JsonKey(name: 'ip_addr') required this.ipAddr,
       required this.length,
       required this.width,
       required this.weight,
@@ -1769,47 +1785,48 @@ class _$PostResultImpl implements _PostResult {
       required this.pickup,
       required this.longitude,
       required this.latitude,
-      required this.hyperDel,
-      this.sellerDel,
-      required this.acceptTerms,
+      @JsonKey(name: 'hyper_del') required this.hyperDel,
+      @JsonKey(name: 'seller_del') this.sellerDel,
+      @JsonKey(name: 'accept_terms') required this.acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers')
       required this.acceptMarketingOffers,
-      required this.isPermanent,
+      @JsonKey(name: 'is_permanent') required this.isPermanent,
       required this.reviewed,
       required this.featured,
       required this.archived,
-      required this.archivedAt,
-      this.deletionMailSentAt,
-      this.fbProfile,
+      @JsonKey(name: 'archived_at') required this.archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') this.deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') this.fbProfile,
       this.partner,
-      this.b2bPricing,
-      this.offer,
+      @JsonKey(name: 'b2b_pricing') this.b2bPricing,
+      this.offers,
       this.wow,
       this.sku,
-      required this.createdAt,
-      required this.updatedAt,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt,
       required this.slug,
-      required this.createdAtFormatted,
-      required this.userPhotoUrl,
+      @JsonKey(name: 'created_at_formatted') required this.createdAtFormatted,
       required this.commentCount,
       required this.extra,
       this.ratings,
       this.user,
-      required this.user_details,
+      @JsonKey(name: 'user_details') required this.userDetails,
       required final List<Picture>? pictures,
       this.postType,
       this.city,
-      required final List<RatingComment> rating_comment,
-      final List<LivePrize> live_prizes = const [],
+      @JsonKey(name: 'rating_comment')
+      required final List<RatingComment> ratingComment,
+      final List<LivePrize> livePrizes = const [],
       final List<Shop>? deals = const [],
       final List<Shop>? shop = const [],
-      final List<FeedPost>? feed_post = const []})
+      final List<FeedPost>? feedPost = const []})
       : _tags = tags,
         _pictures = pictures,
-        _rating_comment = rating_comment,
-        _live_prizes = live_prizes,
+        _ratingComment = ratingComment,
+        _livePrizes = livePrizes,
         _deals = deals,
         _shop = shop,
-        _feed_post = feed_post;
+        _feedPost = feedPost;
 
   factory _$PostResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostResultImplFromJson(json);
@@ -1817,12 +1834,16 @@ class _$PostResultImpl implements _PostResult {
   @override
   final int? id;
   @override
+  @JsonKey(name: 'country_code')
   final String? countryCode;
   @override
+  @JsonKey(name: 'user_id')
   final String? userId;
   @override
+  @JsonKey(name: 'category_id')
   final String? categoryId;
   @override
+  @JsonKey(name: 'post_type_id')
   final String? postTypeId;
   @override
   final String? title;
@@ -1841,42 +1862,53 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? price;
   @override
+  @JsonKey(name: 'discounted_price')
   final String? discountedPrice;
   @override
   final String? trending;
   @override
   final String? stock;
   @override
-  final String user_photo_url;
+  @JsonKey(name: 'user_photo_url')
+  final String userPhotoUrl;
   @override
+  @JsonKey(name: 'min_order')
   final String? minOrder;
   @override
+  @JsonKey(name: 'samp_price')
   final String? sampPrice;
   @override
+  @JsonKey(name: 'text_one')
   final String? textOne;
   @override
+  @JsonKey(name: 'text_two')
   final String? textTwo;
   @override
+  @JsonKey(name: 'ava_to')
   final String? avaTo;
   @override
   final String? negotiable;
   @override
+  @JsonKey(name: 'contact_name')
   final String? contactName;
   @override
   final String? email;
   @override
   final String? phone;
   @override
+  @JsonKey(name: 'phone_hidden')
   final String? phoneHidden;
   @override
   final String? address;
   @override
+  @JsonKey(name: 'city_id')
   final String? cityId;
   @override
   final String? lat;
   @override
   final String? lon;
   @override
+  @JsonKey(name: 'ip_addr')
   final String? ipAddr;
   @override
   final String? length;
@@ -1893,14 +1925,19 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? latitude;
   @override
+  @JsonKey(name: 'hyper_del')
   final String? hyperDel;
   @override
+  @JsonKey(name: 'seller_del')
   final String? sellerDel;
   @override
+  @JsonKey(name: 'accept_terms')
   final String? acceptTerms;
   @override
+  @JsonKey(name: 'accept_marketing_offers')
   final String? acceptMarketingOffers;
   @override
+  @JsonKey(name: 'is_permanent')
   final String? isPermanent;
   @override
   final String? reviewed;
@@ -1909,31 +1946,36 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? archived;
   @override
+  @JsonKey(name: 'archived_at')
   final String? archivedAt;
   @override
+  @JsonKey(name: 'deletion_mail_sent_at')
   final String? deletionMailSentAt;
   @override
+  @JsonKey(name: 'fb_profile')
   final String? fbProfile;
   @override
   final String? partner;
   @override
+  @JsonKey(name: 'b2b_pricing')
   final String? b2bPricing;
   @override
-  final String? offer;
+  final String? offers;
   @override
   final String? wow;
   @override
   final String? sku;
   @override
+  @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @override
   final String? slug;
   @override
+  @JsonKey(name: 'created_at_formatted')
   final String? createdAtFormatted;
-  @override
-  final String? userPhotoUrl;
   @override
   final int? commentCount;
   @override
@@ -1943,7 +1985,8 @@ class _$PostResultImpl implements _PostResult {
   @override
   final usermodel? user;
   @override
-  final UserDetailsProduct? user_details;
+  @JsonKey(name: 'user_details')
+  final UserDetailsProduct? userDetails;
   final List<Picture>? _pictures;
   @override
   List<Picture>? get pictures {
@@ -1958,21 +2001,22 @@ class _$PostResultImpl implements _PostResult {
   final PostType? postType;
   @override
   final City? city;
-  final List<RatingComment> _rating_comment;
+  final List<RatingComment> _ratingComment;
   @override
-  List<RatingComment> get rating_comment {
-    if (_rating_comment is EqualUnmodifiableListView) return _rating_comment;
+  @JsonKey(name: 'rating_comment')
+  List<RatingComment> get ratingComment {
+    if (_ratingComment is EqualUnmodifiableListView) return _ratingComment;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_rating_comment);
+    return EqualUnmodifiableListView(_ratingComment);
   }
 
-  final List<LivePrize> _live_prizes;
+  final List<LivePrize> _livePrizes;
   @override
   @JsonKey()
-  List<LivePrize> get live_prizes {
-    if (_live_prizes is EqualUnmodifiableListView) return _live_prizes;
+  List<LivePrize> get livePrizes {
+    if (_livePrizes is EqualUnmodifiableListView) return _livePrizes;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_live_prizes);
+    return EqualUnmodifiableListView(_livePrizes);
   }
 
   final List<Shop>? _deals;
@@ -1997,20 +2041,20 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<FeedPost>? _feed_post;
+  final List<FeedPost>? _feedPost;
   @override
   @JsonKey()
-  List<FeedPost>? get feed_post {
-    final value = _feed_post;
+  List<FeedPost>? get feedPost {
+    final value = _feedPost;
     if (value == null) return null;
-    if (_feed_post is EqualUnmodifiableListView) return _feed_post;
+    if (_feedPost is EqualUnmodifiableListView) return _feedPost;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, user_photo_url: $user_photo_url, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offer: $offer, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, userPhotoUrl: $userPhotoUrl, commentCount: $commentCount, extra: $extra, ratings: $ratings, user: $user, user_details: $user_details, pictures: $pictures, postType: $postType, city: $city, rating_comment: $rating_comment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, user: $user, userDetails: $userDetails, pictures: $pictures, postType: $postType, city: $city, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
   }
 
   @override
@@ -2036,8 +2080,8 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.trending, trending) ||
                 other.trending == trending) &&
             (identical(other.stock, stock) || other.stock == stock) &&
-            (identical(other.user_photo_url, user_photo_url) ||
-                other.user_photo_url == user_photo_url) &&
+            (identical(other.userPhotoUrl, userPhotoUrl) ||
+                other.userPhotoUrl == userPhotoUrl) &&
             (identical(other.minOrder, minOrder) ||
                 other.minOrder == minOrder) &&
             (identical(other.sampPrice, sampPrice) ||
@@ -2092,7 +2136,7 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.partner, partner) || other.partner == partner) &&
             (identical(other.b2bPricing, b2bPricing) ||
                 other.b2bPricing == b2bPricing) &&
-            (identical(other.offer, offer) || other.offer == offer) &&
+            (identical(other.offers, offers) || other.offers == offers) &&
             (identical(other.wow, wow) || other.wow == wow) &&
             (identical(other.sku, sku) || other.sku == sku) &&
             (identical(other.createdAt, createdAt) ||
@@ -2102,27 +2146,24 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.slug, slug) || other.slug == slug) &&
             (identical(other.createdAtFormatted, createdAtFormatted) ||
                 other.createdAtFormatted == createdAtFormatted) &&
-            (identical(other.userPhotoUrl, userPhotoUrl) ||
-                other.userPhotoUrl == userPhotoUrl) &&
             (identical(other.commentCount, commentCount) ||
                 other.commentCount == commentCount) &&
             (identical(other.extra, extra) || other.extra == extra) &&
             (identical(other.ratings, ratings) || other.ratings == ratings) &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.user_details, user_details) ||
-                other.user_details == user_details) &&
+            (identical(other.userDetails, userDetails) ||
+                other.userDetails == userDetails) &&
             const DeepCollectionEquality().equals(other._pictures, _pictures) &&
             (identical(other.postType, postType) ||
                 other.postType == postType) &&
             (identical(other.city, city) || other.city == city) &&
             const DeepCollectionEquality()
-                .equals(other._rating_comment, _rating_comment) &&
+                .equals(other._ratingComment, _ratingComment) &&
             const DeepCollectionEquality()
-                .equals(other._live_prizes, _live_prizes) &&
+                .equals(other._livePrizes, _livePrizes) &&
             const DeepCollectionEquality().equals(other._deals, _deals) &&
             const DeepCollectionEquality().equals(other._shop, _shop) &&
-            const DeepCollectionEquality()
-                .equals(other._feed_post, _feed_post));
+            const DeepCollectionEquality().equals(other._feedPost, _feedPost));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2141,7 +2182,7 @@ class _$PostResultImpl implements _PostResult {
         discountedPrice,
         trending,
         stock,
-        user_photo_url,
+        userPhotoUrl,
         minOrder,
         sampPrice,
         textOne,
@@ -2177,27 +2218,26 @@ class _$PostResultImpl implements _PostResult {
         fbProfile,
         partner,
         b2bPricing,
-        offer,
+        offers,
         wow,
         sku,
         createdAt,
         updatedAt,
         slug,
         createdAtFormatted,
-        userPhotoUrl,
         commentCount,
         extra,
         ratings,
         user,
-        user_details,
+        userDetails,
         const DeepCollectionEquality().hash(_pictures),
         postType,
         city,
-        const DeepCollectionEquality().hash(_rating_comment),
-        const DeepCollectionEquality().hash(_live_prizes),
+        const DeepCollectionEquality().hash(_ratingComment),
+        const DeepCollectionEquality().hash(_livePrizes),
         const DeepCollectionEquality().hash(_deals),
         const DeepCollectionEquality().hash(_shop),
-        const DeepCollectionEquality().hash(_feed_post)
+        const DeepCollectionEquality().hash(_feedPost)
       ]);
 
   /// Create a copy of PostResult
@@ -2219,33 +2259,33 @@ class _$PostResultImpl implements _PostResult {
 abstract class _PostResult implements PostResult {
   const factory _PostResult(
       {required final int? id,
-      required final String? countryCode,
-      required final String? userId,
-      required final String? categoryId,
-      required final String? postTypeId,
+      @JsonKey(name: 'country_code') required final String? countryCode,
+      @JsonKey(name: 'user_id') required final String? userId,
+      @JsonKey(name: 'category_id') required final String? categoryId,
+      @JsonKey(name: 'post_type_id') required final String? postTypeId,
       required final String? title,
       required final String? description,
       required final List<String>? tags,
       required final String? price,
-      final String? discountedPrice,
+      @JsonKey(name: 'discounted_price') final String? discountedPrice,
       required final String? trending,
       required final String? stock,
-      required final String user_photo_url,
-      final String? minOrder,
-      final String? sampPrice,
-      final String? textOne,
-      final String? textTwo,
-      final String? avaTo,
+      @JsonKey(name: 'user_photo_url') required final String userPhotoUrl,
+      @JsonKey(name: 'min_order') final String? minOrder,
+      @JsonKey(name: 'samp_price') final String? sampPrice,
+      @JsonKey(name: 'text_one') final String? textOne,
+      @JsonKey(name: 'text_two') final String? textTwo,
+      @JsonKey(name: 'ava_to') final String? avaTo,
       final String? negotiable,
-      required final String? contactName,
+      @JsonKey(name: 'contact_name') required final String? contactName,
       required final String? email,
       required final String? phone,
-      final String? phoneHidden,
+      @JsonKey(name: 'phone_hidden') final String? phoneHidden,
       final String? address,
-      required final String? cityId,
+      @JsonKey(name: 'city_id') required final String? cityId,
       required final String? lat,
       required final String? lon,
-      required final String? ipAddr,
+      @JsonKey(name: 'ip_addr') required final String? ipAddr,
       required final String? length,
       required final String? width,
       required final String? weight,
@@ -2253,40 +2293,43 @@ abstract class _PostResult implements PostResult {
       required final String? pickup,
       required final String? longitude,
       required final String? latitude,
-      required final String? hyperDel,
-      final String? sellerDel,
-      required final String? acceptTerms,
+      @JsonKey(name: 'hyper_del') required final String? hyperDel,
+      @JsonKey(name: 'seller_del') final String? sellerDel,
+      @JsonKey(name: 'accept_terms') required final String? acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers')
       required final String? acceptMarketingOffers,
-      required final String? isPermanent,
+      @JsonKey(name: 'is_permanent') required final String? isPermanent,
       required final String? reviewed,
       required final String? featured,
       required final String? archived,
-      required final String? archivedAt,
-      final String? deletionMailSentAt,
-      final String? fbProfile,
+      @JsonKey(name: 'archived_at') required final String? archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') final String? deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') final String? fbProfile,
       final String? partner,
-      final String? b2bPricing,
-      final String? offer,
+      @JsonKey(name: 'b2b_pricing') final String? b2bPricing,
+      final String? offers,
       final String? wow,
       final String? sku,
-      required final String? createdAt,
-      required final String? updatedAt,
+      @JsonKey(name: 'created_at') required final String? createdAt,
+      @JsonKey(name: 'updated_at') required final String? updatedAt,
       required final String? slug,
+      @JsonKey(name: 'created_at_formatted')
       required final String? createdAtFormatted,
-      required final String? userPhotoUrl,
       required final int? commentCount,
       required final ExtraModel? extra,
       final Ratings? ratings,
       final usermodel? user,
-      required final UserDetailsProduct? user_details,
+      @JsonKey(name: 'user_details')
+      required final UserDetailsProduct? userDetails,
       required final List<Picture>? pictures,
       final PostType? postType,
       final City? city,
-      required final List<RatingComment> rating_comment,
-      final List<LivePrize> live_prizes,
+      @JsonKey(name: 'rating_comment')
+      required final List<RatingComment> ratingComment,
+      final List<LivePrize> livePrizes,
       final List<Shop>? deals,
       final List<Shop>? shop,
-      final List<FeedPost>? feed_post}) = _$PostResultImpl;
+      final List<FeedPost>? feedPost}) = _$PostResultImpl;
 
   factory _PostResult.fromJson(Map<String, dynamic> json) =
       _$PostResultImpl.fromJson;
@@ -2294,12 +2337,16 @@ abstract class _PostResult implements PostResult {
   @override
   int? get id;
   @override
+  @JsonKey(name: 'country_code')
   String? get countryCode;
   @override
+  @JsonKey(name: 'user_id')
   String? get userId;
   @override
+  @JsonKey(name: 'category_id')
   String? get categoryId;
   @override
+  @JsonKey(name: 'post_type_id')
   String? get postTypeId;
   @override
   String? get title;
@@ -2310,42 +2357,53 @@ abstract class _PostResult implements PostResult {
   @override
   String? get price;
   @override
+  @JsonKey(name: 'discounted_price')
   String? get discountedPrice;
   @override
   String? get trending;
   @override
   String? get stock;
   @override
-  String get user_photo_url;
+  @JsonKey(name: 'user_photo_url')
+  String get userPhotoUrl;
   @override
+  @JsonKey(name: 'min_order')
   String? get minOrder;
   @override
+  @JsonKey(name: 'samp_price')
   String? get sampPrice;
   @override
+  @JsonKey(name: 'text_one')
   String? get textOne;
   @override
+  @JsonKey(name: 'text_two')
   String? get textTwo;
   @override
+  @JsonKey(name: 'ava_to')
   String? get avaTo;
   @override
   String? get negotiable;
   @override
+  @JsonKey(name: 'contact_name')
   String? get contactName;
   @override
   String? get email;
   @override
   String? get phone;
   @override
+  @JsonKey(name: 'phone_hidden')
   String? get phoneHidden;
   @override
   String? get address;
   @override
+  @JsonKey(name: 'city_id')
   String? get cityId;
   @override
   String? get lat;
   @override
   String? get lon;
   @override
+  @JsonKey(name: 'ip_addr')
   String? get ipAddr;
   @override
   String? get length;
@@ -2362,14 +2420,19 @@ abstract class _PostResult implements PostResult {
   @override
   String? get latitude;
   @override
+  @JsonKey(name: 'hyper_del')
   String? get hyperDel;
   @override
+  @JsonKey(name: 'seller_del')
   String? get sellerDel;
   @override
+  @JsonKey(name: 'accept_terms')
   String? get acceptTerms;
   @override
+  @JsonKey(name: 'accept_marketing_offers')
   String? get acceptMarketingOffers;
   @override
+  @JsonKey(name: 'is_permanent')
   String? get isPermanent;
   @override
   String? get reviewed;
@@ -2378,31 +2441,36 @@ abstract class _PostResult implements PostResult {
   @override
   String? get archived;
   @override
+  @JsonKey(name: 'archived_at')
   String? get archivedAt;
   @override
+  @JsonKey(name: 'deletion_mail_sent_at')
   String? get deletionMailSentAt;
   @override
+  @JsonKey(name: 'fb_profile')
   String? get fbProfile;
   @override
   String? get partner;
   @override
+  @JsonKey(name: 'b2b_pricing')
   String? get b2bPricing;
   @override
-  String? get offer;
+  String? get offers;
   @override
   String? get wow;
   @override
   String? get sku;
   @override
+  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   String? get updatedAt;
   @override
   String? get slug;
   @override
+  @JsonKey(name: 'created_at_formatted')
   String? get createdAtFormatted;
-  @override
-  String? get userPhotoUrl;
   @override
   int? get commentCount;
   @override
@@ -2412,7 +2480,8 @@ abstract class _PostResult implements PostResult {
   @override
   usermodel? get user;
   @override
-  UserDetailsProduct? get user_details;
+  @JsonKey(name: 'user_details')
+  UserDetailsProduct? get userDetails;
   @override
   List<Picture>? get pictures;
   @override
@@ -2420,15 +2489,16 @@ abstract class _PostResult implements PostResult {
   @override
   City? get city;
   @override
-  List<RatingComment> get rating_comment;
+  @JsonKey(name: 'rating_comment')
+  List<RatingComment> get ratingComment;
   @override
-  List<LivePrize> get live_prizes;
+  List<LivePrize> get livePrizes;
   @override
   List<Shop>? get deals;
   @override
   List<Shop>? get shop;
   @override
-  List<FeedPost>? get feed_post;
+  List<FeedPost>? get feedPost;
 
   /// Create a copy of PostResult
   /// with the given fields replaced by the non-null parameter values.

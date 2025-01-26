@@ -45,7 +45,7 @@ class _BackgroundImageDescriptionWidgetState
   Future<void> getuser() async {
     SharedPreferences prfs = await SharedPreferences.getInstance();
     username = prfs.getString("name");
-    print("ramu ${username}");
+    print("ramu $username");
   }
 
   Future<void> _submit() async {

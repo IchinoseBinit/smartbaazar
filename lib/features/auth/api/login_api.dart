@@ -21,21 +21,21 @@ class LoginApi {
       );
 
       // Extract session cookie
-      String? _getSessionCookie(List<String>? cookies) {
+      String? getSessionCookie(List<String>? cookies) {
         if (cookies == null) return null;
         return cookies
             .firstWhere(
               (cookie) => cookie.startsWith('laravel_session='),
               orElse: () => '',
             )
-            ?.split(';')
+            .split(';')
             .first
             .split('=')
             .last;
       }
 
-      final sessionCookie = _getSessionCookie(response.headers['set-cookie']);
-      print("papaz ${sessionCookie}");
+      final sessionCookie = getSessionCookie(response.headers['set-cookie']);
+      print("papaz $sessionCookie");
       SmartClient.laravelsession = sessionCookie!;
 
       // Save session cookie

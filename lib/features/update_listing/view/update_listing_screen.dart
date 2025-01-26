@@ -242,10 +242,10 @@ class _UpdateListingState extends State<UpdateListing> {
       OffersResponse fetchedTypes = await repository.fetchOffers();
 
       // Check if the fetched data is not null
-      for (var e in fetchedTypes.data!) {
+      for (var e in fetchedTypes.data) {
         // Normalize both strings by trimming, lowering case, and handling extra spaces
         String offer =
-            e.offers?.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ') ??
+            e.offers.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ') ??
                 '';
         String widgetOffer = widget.prod?.offers
                 ?.toLowerCase()

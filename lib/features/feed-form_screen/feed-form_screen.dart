@@ -358,8 +358,8 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                   Icons.arrow_drop_down),
                                               isExpanded: true,
                                               underline: const SizedBox(),
-                                              hint: products.length == 0
-                                                  ? Text(
+                                              hint: products.isEmpty
+                                                  ? const Text(
                                                       "No Products",
                                                       style: TextStyle(
                                                         color: Color.fromARGB(
@@ -369,7 +369,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                             FontWeight.w500,
                                                       ),
                                                     )
-                                                  : Text(
+                                                  : const Text(
                                                       "Select Product",
                                                       style: TextStyle(
                                                         color: Color.fromARGB(
@@ -385,7 +385,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                     'Number of products: ${products.length}');
 
                                                 return DropdownMenuItem<String>(
-                                                  value: products.length == 0
+                                                  value: products.isEmpty
                                                       ? 'No items availble'
                                                       : product.id,
                                                   child: Container(

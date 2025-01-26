@@ -266,7 +266,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
         body: Stack(children: [
           Positioned.fill(
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

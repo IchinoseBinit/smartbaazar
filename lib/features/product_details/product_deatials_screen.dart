@@ -88,7 +88,9 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
+          print("binod ${data.result!.user!.id}");
           return Scaffold(
+            extendBody: true,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
 
@@ -117,7 +119,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             null, // Set to null since CachedNetworkImage handles the image
                         child: ClipOval(
                           child: CachedNetworkImage(
-                            imageUrl: data.result!.user_photo_url,
+                            imageUrl: data.result!.userPhotoUrl,
                             placeholder: (context, url) => SizedBox(
                                 height: 30.h,
                                 width: 50.w,
@@ -299,45 +301,44 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-
                       if (data.result != null)
                         HeaderBannerWidget(
                             id: data.result!.user!.id,
                             vname: data.result!.user!.name,
-                            img: data.result!.user_photo_url,
-                            title: data.result!.feed_post!.isEmpty
+                            img: data.result!.userPhotoUrl,
+                            title: data.result!.feedPost!.isEmpty
                                 ? "Trade-hub"
-                                : data.result!.feed_post!.first.name!),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     SizedBox(),
-                      //     favouriteListAsyncValue.when(
-                      //         loading: () => const CircularProgressIndicator(),
-                      //         error: (error, stackTrace) =>
-                      //             const CircularProgressIndicator(),
-                      //         data: (favouritelist) {
-                      //           final isFavorite = favouritelist
-                      //               .data!.savedProducts!.data
-                      //               ?.any((item) => item.id == productId);
-                      //           return Container(
-                      //               padding: EdgeInsets.all(12.h),
-                      //               decoration: BoxDecoration(
-                      //                   shape: BoxShape.circle,
-                      //                   color: isFavorite!
-                      //                       ? Colors.yellow
-                      //                       : const Color(0xffFFFFFF)),
-                      //               child: SvgPicture.asset(invoiceIcon));
-                      //         }),
-                      //   ],
-                      // ),
-                      // SizedBox(
-                      //   height: 5.h,
-                      // ),
+                                : data.result!.feedPost!.first.name!),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(),
+                          // favouriteListAsyncValue.when(
+                          //     loading: () => const CircularProgressIndicator(),
+                          //     error: (error, stackTrace) =>
+                          //         const CircularProgressIndicator(),
+                          //     data: (favouritelist) {
+                          //       final isFavorite = favouritelist
+                          //           .data!.savedProducts!.data
+                          //           ?.any((item) => item.id == productId);
+                          //       return Container(
+                          //           padding: EdgeInsets.all(12.h),
+                          //           decoration: BoxDecoration(
+                          //               shape: BoxShape.circle,
+                          //               color: isFavorite!
+                          //                   ? Colors.yellow
+                          //                   : const Color(0xffFFFFFF)),
+                          //           child: SvgPicture.asset(invoiceIcon));
+                          //     }),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
                       data.result?.pictures == null
                           ? const SizedBox()
                           : CarsoselWidget(
-                              VImage: data.result!.user_photo_url,
+                              VImage: data.result!.userPhotoUrl,
                               avg_rating: data.result!.ratings!.averageRating
                                   .toString(),
                               comment: data.result!.commentCount.toString(),
@@ -387,14 +388,61 @@ class ProductDetailScreen extends ConsumerWidget {
                                   child: Column(
                                     children: [
                                       SvgPicture.asset(
-                                          "assets/icon/openCartIcon.svg"),
+                                        data.result?.postTypeId == '1'
+                                            ? productsicon
+                                            : data.result?.postTypeId == '7'
+                                                ? b2bIcon
+                                                : data.result?.postTypeId == '2'
+                                                    ? usedIcon
+                                                    : data.result?.postTypeId ==
+                                                            '3'
+                                                        ? servicesIcon
+                                                        : data.result
+                                                                    ?.postTypeId ==
+                                                                '4'
+                                                            ? jobIcon
+                                                            : data.result
+                                                                        ?.postTypeId ==
+                                                                    '5'
+                                                                ? eventIcon
+                                                                : data.result
+                                                                            ?.postTypeId ==
+                                                                        '8'
+                                                                    ? grocaryicon
+                                                                    : productsicon, // Provide a default icon path if no match is found
+                                        height: 17,
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(
+                                        height: 3.h,
+                                      ),
                                       Text(
-                                        "TradeHub",
+                                        data.result?.postTypeId == '1'
+                                            ? 'Products'
+                                            : data.result?.postTypeId == '7'
+                                                ? 'B2B'
+                                                : data.result?.postTypeId == '2'
+                                                    ? 'Used'
+                                                    : data.result?.postTypeId ==
+                                                            '3'
+                                                        ? 'Services'
+                                                        : data.result
+                                                                    ?.postTypeId ==
+                                                                '4'
+                                                            ? 'Jobs'
+                                                            : data.result
+                                                                        ?.postTypeId ==
+                                                                    '5'
+                                                                ? 'Events'
+                                                                : data.result
+                                                                            ?.postTypeId ==
+                                                                        '8'
+                                                                    ? 'Grocery'
+                                                                    : '', // Default to an empty string if no match
                                         style: headerstyle.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10,
-                                            color: ColorConstant.blackColor),
-                                      )
+                                            fontSize: 9.sp,
+                                            color: Colors.black),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -455,12 +503,11 @@ class ProductDetailScreen extends ConsumerWidget {
                           SizedBox(
                             height: 20.h,
                           ),
-                          // LocationWidget(
-                          //   latititute:
-                          //       double.tryParse(data.result!.latitude!)!,
-                          //   longitute:
-                          //       double.tryParse(data.result!.longitude!)!,
-                          // ),
+                          LocationWidget(
+                            latitude: double.tryParse(data.result!.latitude!)!,
+                            longitude:
+                                double.tryParse(data.result!.longitude!)!,
+                          ),
                           SizedBox(
                             height: 20.h,
                           ),
@@ -622,7 +669,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             children: data.extra?.fields?.original?.result
                                     ?.map(
                                       (e) => e == null
-                                          ? SizedBox() // Handle null entries gracefully
+                                          ? const SizedBox() // Handle null entries gracefully
                                           : AdditionalDetailsWidget(
                                               defaultValue: e.defaultValue,
                                               options: e.options?.length == 0
@@ -740,11 +787,11 @@ class ProductDetailScreen extends ConsumerWidget {
                                 )
                             ],
                           ),
-                          data.result?.rating_comment == null ||
-                                  data.result!.rating_comment.isEmpty
+                          data.result?.ratingComment == null ||
+                                  data.result!.ratingComment.isEmpty
                               ? const SizedBox()
                               : PeopleReviewsWidget(
-                                  rate: data.result!.rating_comment),
+                                  rate: data.result!.ratingComment),
 
                           SizedBox(
                             height: 10.h,
@@ -800,7 +847,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                           .whenData(
                                         (value) {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
+                                              .showSnackBar(const SnackBar(
                                                   content:
                                                       Text("Refiew added ")));
                                         },
@@ -925,11 +972,11 @@ class ProductDetailScreen extends ConsumerWidget {
                                           ).toList())
                                         : selectedIndex == 3
                                             ? SwapablePostCard(
-                                                post: data.result!.feed_post!)
+                                                post: data.result!.feedPost!)
                                             : selectedIndex == 4
                                                 ? LiveSwapble(
-                                                    post: data
-                                                        .result!.live_prizes)
+                                                    post:
+                                                        data.result!.livePrizes)
                                                 : const SizedBox(), // Fallback for other index values
                               ),
                             ),
@@ -938,21 +985,20 @@ class ProductDetailScreen extends ConsumerWidget {
                             height: 10.h,
                           ),
                           Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w, vertical: 5.h),
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                Colors.white,
-                                Color(0xFFf3f3f3)
-                              ])),
-                              child: Text(
-                                "For you",
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17,
-                                    color: Colors.black87),
-                              )),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 5.h),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
+                            child: Text(
+                              "For you",
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                  color: Colors.black87),
+                            ),
+                          ),
                           // data.widgetSimilarPosts?.posts.data.length==0
 
                           //     ? Center(child: nolistingfound())

@@ -298,7 +298,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("biabsh ${price}");
+    print("biabsh $price");
     return GenericSafeArea(
       child: Scaffold(
         extendBody: true,
@@ -574,7 +574,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                     right: 30,
                     bottom: 120,
                     child: AnimatedContainer(
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                       child: Card(
                         clipBehavior: Clip.antiAlias,
                         elevation: 2,

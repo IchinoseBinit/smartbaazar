@@ -31,7 +31,7 @@ class StarWidget extends StatelessWidget {
             (index) => Icon(
               Icons.star,
               // Highlight the last N stars based on `staryouwant`
-              color: (index < (indexs ?? 0)) ? Color(0xffFFA500) : Colors.grey,
+              color: (index < (indexs ?? 0)) ? const Color(0xffFFA500) : Colors.grey,
               size: 20.w, // Adjust the size of the stars if needed
             ),
           ),

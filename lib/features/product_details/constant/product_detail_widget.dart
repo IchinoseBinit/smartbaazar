@@ -772,7 +772,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         ),
                                       ],
                                     )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               if (issponsored)
                                 Padding(
                                   padding: EdgeInsets.only(

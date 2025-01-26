@@ -1127,6 +1127,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       products[index];
 
                                                   return ProductDetailWidget(
+                                                    
                                                     lat: prod.userdetails
                                                             ?.latitude ??
                                                         '0.0',
@@ -2153,7 +2154,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                 Navigator.of(context, rootNavigator: true).push(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            new CreateNewListinScreen()));
+                                            const CreateNewListinScreen()));
                               },
                               icon: Column(
                                 children: [

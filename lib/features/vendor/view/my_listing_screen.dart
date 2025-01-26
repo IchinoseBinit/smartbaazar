@@ -8,7 +8,6 @@ import 'package:smartbazar/features/update_listing/view/update_listing_screen.da
 import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/my_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/post_offline_listing.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';

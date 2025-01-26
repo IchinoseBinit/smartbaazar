@@ -15,7 +15,6 @@ import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
 import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/background_image_description_widgt.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class BuyerDetailsScreen extends ConsumerStatefulWidget {
   const BuyerDetailsScreen({super.key});

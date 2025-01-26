@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'search_result_provider.dart';
+part of 'vendor_product_search_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchResponseHash() => r'78f2a21d2c356258c069352af08fd326776e09f6';
+String _$searchvendorproductHash() =>
+    r'49dd538018b0c0973a0900a329240c120bd017a1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,29 +30,33 @@ class _SystemHash {
   }
 }
 
-/// See also [getSearchResponse].
-@ProviderFor(getSearchResponse)
-const getSearchResponseProvider = GetSearchResponseFamily();
+/// See also [searchvendorproduct].
+@ProviderFor(searchvendorproduct)
+const searchvendorproductProvider = SearchvendorproductFamily();
 
-/// See also [getSearchResponse].
-class GetSearchResponseFamily extends Family<AsyncValue<BusinessResponse>> {
-  /// See also [getSearchResponse].
-  const GetSearchResponseFamily();
+/// See also [searchvendorproduct].
+class SearchvendorproductFamily
+    extends Family<AsyncValue<List<VendorProductSearchResponse>>> {
+  /// See also [searchvendorproduct].
+  const SearchvendorproductFamily();
 
-  /// See also [getSearchResponse].
-  GetSearchResponseProvider call(
+  /// See also [searchvendorproduct].
+  SearchvendorproductProvider call(
+    String id,
     String query,
   ) {
-    return GetSearchResponseProvider(
+    return SearchvendorproductProvider(
+      id,
       query,
     );
   }
 
   @override
-  GetSearchResponseProvider getProviderOverride(
-    covariant GetSearchResponseProvider provider,
+  SearchvendorproductProvider getProviderOverride(
+    covariant SearchvendorproductProvider provider,
   ) {
     return call(
+      provider.id,
       provider.query,
     );
   }
@@ -68,75 +73,87 @@ class GetSearchResponseFamily extends Family<AsyncValue<BusinessResponse>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getSearchResponseProvider';
+  String? get name => r'searchvendorproductProvider';
 }
 
-/// See also [getSearchResponse].
-class GetSearchResponseProvider
-    extends AutoDisposeFutureProvider<BusinessResponse> {
-  /// See also [getSearchResponse].
-  GetSearchResponseProvider(
+/// See also [searchvendorproduct].
+class SearchvendorproductProvider
+    extends AutoDisposeFutureProvider<List<VendorProductSearchResponse>> {
+  /// See also [searchvendorproduct].
+  SearchvendorproductProvider(
+    String id,
     String query,
   ) : this._internal(
-          (ref) => getSearchResponse(
-            ref as GetSearchResponseRef,
+          (ref) => searchvendorproduct(
+            ref as SearchvendorproductRef,
+            id,
             query,
           ),
-          from: getSearchResponseProvider,
-          name: r'getSearchResponseProvider',
+          from: searchvendorproductProvider,
+          name: r'searchvendorproductProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getSearchResponseHash,
-          dependencies: GetSearchResponseFamily._dependencies,
+                  : _$searchvendorproductHash,
+          dependencies: SearchvendorproductFamily._dependencies,
           allTransitiveDependencies:
-              GetSearchResponseFamily._allTransitiveDependencies,
+              SearchvendorproductFamily._allTransitiveDependencies,
+          id: id,
           query: query,
         );
 
-  GetSearchResponseProvider._internal(
+  SearchvendorproductProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.id,
     required this.query,
   }) : super.internal();
 
+  final String id;
   final String query;
 
   @override
   Override overrideWith(
-    FutureOr<BusinessResponse> Function(GetSearchResponseRef provider) create,
+    FutureOr<List<VendorProductSearchResponse>> Function(
+            SearchvendorproductRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetSearchResponseProvider._internal(
-        (ref) => create(ref as GetSearchResponseRef),
+      override: SearchvendorproductProvider._internal(
+        (ref) => create(ref as SearchvendorproductRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        id: id,
         query: query,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<BusinessResponse> createElement() {
-    return _GetSearchResponseProviderElement(this);
+  AutoDisposeFutureProviderElement<List<VendorProductSearchResponse>>
+      createElement() {
+    return _SearchvendorproductProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetSearchResponseProvider && other.query == query;
+    return other is SearchvendorproductProvider &&
+        other.id == id &&
+        other.query == query;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
 
     return _SystemHash.finish(hash);
@@ -145,18 +162,24 @@ class GetSearchResponseProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetSearchResponseRef on AutoDisposeFutureProviderRef<BusinessResponse> {
+mixin SearchvendorproductRef
+    on AutoDisposeFutureProviderRef<List<VendorProductSearchResponse>> {
+  /// The parameter `id` of this provider.
+  String get id;
+
   /// The parameter `query` of this provider.
   String get query;
 }
 
-class _GetSearchResponseProviderElement
-    extends AutoDisposeFutureProviderElement<BusinessResponse>
-    with GetSearchResponseRef {
-  _GetSearchResponseProviderElement(super.provider);
+class _SearchvendorproductProviderElement
+    extends AutoDisposeFutureProviderElement<List<VendorProductSearchResponse>>
+    with SearchvendorproductRef {
+  _SearchvendorproductProviderElement(super.provider);
 
   @override
-  String get query => (origin as GetSearchResponseProvider).query;
+  String get id => (origin as SearchvendorproductProvider).id;
+  @override
+  String get query => (origin as SearchvendorproductProvider).query;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

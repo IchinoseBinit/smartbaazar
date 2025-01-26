@@ -2227,7 +2227,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   child: AllProductDetailWidget(
                                       lat: res.user.latitude,
                                             long: res.user.longitude,
-                                            productid: res.id!,
+                                            productid: res.id,
                                             
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,

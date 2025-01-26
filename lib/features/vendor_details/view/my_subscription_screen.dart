@@ -6,7 +6,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor_details/api/get_subscription_api.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
 
 class MySubscriptionScreen extends ConsumerWidget {

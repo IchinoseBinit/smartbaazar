@@ -697,7 +697,7 @@ class MyAccountWidget extends StatelessWidget {
     if (title == 'Log Out') {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.clear();
-   Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => new LoginScreen()));
+   Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
 
     } else if (title == 'Messenger') {
       Navigator.push(

@@ -25,8 +25,9 @@ class SmartClient {
 
   Future<void> getlaravel() async {
     SharedPreferences stf = await SharedPreferences.getInstance();
-    if(SmartClient.laravelsession.length==0)
+    if(SmartClient.laravelsession.isEmpty) {
       SmartClient.laravelsession= stf.getString('laravel') ?? '';
+    }
   }
 
   SmartClient._internal() {

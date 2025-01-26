@@ -12,6 +12,9 @@ Future<List<SearchProductModel>> search( ref, String query) async {
 
   final client = Dio(
     BaseOptions(
+      sendTimeout: Duration(seconds: 30),
+      receiveTimeout:Duration(seconds: 30) ,
+       connectTimeout: Duration(seconds: 30), // 60 seconds
       followRedirects: false, // Disable automatic redirection
       validateStatus: (status) =>
           status != null && status >= 200 && status < 400,

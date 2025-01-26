@@ -884,8 +884,9 @@ class _SelectPhotFromFilesContainerState
     print("upaa ${widget.updateimage}");
     // TODO: implement initState
     super.initState();
-    if (widget.updateimage != null && widget.updateimage!.isEmpty)
+    if (widget.updateimage != null && widget.updateimage!.isEmpty) {
       images.addAll(widget.updateimage ?? []);
+    }
   }
 
   @override

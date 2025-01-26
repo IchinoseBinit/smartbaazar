@@ -7,7 +7,6 @@ import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class MessageViewScreen extends ConsumerWidget {
   const MessageViewScreen({super.key});

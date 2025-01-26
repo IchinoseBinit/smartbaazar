@@ -28,7 +28,7 @@ Future<BusinessResponse> getSearchResponse(
       throw Exception(
           'Failed to load PostTypeFetch. Status code: ${response.statusCode}');
     }
-  } on DioError catch (dioError) {
+  } on DioException catch (dioError) {
     // Enhanced error handling with Dio
     print('DioError: ${dioError.message}');
     print('Response data: ${dioError.response?.data}');

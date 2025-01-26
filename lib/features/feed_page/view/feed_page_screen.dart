@@ -1397,7 +1397,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stack) => Center(child: Text('Error: $error')),
           ),
-          SizedBox.shrink()
+          const SizedBox.shrink()
         ],
       ),
     );

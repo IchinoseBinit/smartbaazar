@@ -10,10 +10,8 @@ import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:smartbazar/main.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {

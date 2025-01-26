@@ -57,7 +57,7 @@ class MainScreen extends ConsumerWidget {
           ? Customernavbar(
               selectedIndex: selectedIndex,
               onTabChanged: (index) {
-                print('ramk ${index}');
+                print('ramk $index');
                 if (index == selectedIndex) {
                   // Reset the navigation stack of the current tab if tapped again
                   _navigatorKeys[index]
@@ -106,7 +106,7 @@ class Customernavbar extends StatelessWidget {
               ];
               return GestureDetector(
                 onTap: () {
-                  print("raju ${index}");
+                  print("raju $index");
                   onTabChanged(index);
                 }, // Trigger the callback
                 child: Container(

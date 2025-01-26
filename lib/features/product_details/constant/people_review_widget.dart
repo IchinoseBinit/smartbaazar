@@ -37,7 +37,7 @@ class PeopleReviewsWidget extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(value.photo),
                           radius: 20,

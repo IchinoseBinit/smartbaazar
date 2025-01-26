@@ -1,5 +1,3 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/features/create_listing/model/fields_model.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 

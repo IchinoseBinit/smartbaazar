@@ -2244,7 +2244,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     
                                       lat: res.user.latitude,
                                             long: res.user.longitude,
-                                            productid: res.id!,
+                                            productid: res.id,
                                     shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,

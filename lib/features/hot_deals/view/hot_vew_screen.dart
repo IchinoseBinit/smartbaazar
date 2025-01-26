@@ -506,7 +506,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                           )
                         ],
                       ),
-                      SizedBox()
+                      const SizedBox()
                       // Text(
                       //   "view all",
                       //   style: headerstyle.copyWith(

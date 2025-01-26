@@ -44,7 +44,7 @@ class AdditionalDetailsWidget extends StatelessWidget {
         // Find the option that matches the parsed default value
         final matchingOption = options!.firstWhere(
           (option) => option.id == parsedDefaultValue,
-          orElse: () => FieldOption(value: null),
+          orElse: () => const FieldOption(value: null),
         );
         return matchingOption.value ?? "No details available";
       } else if (desp is String) {
