@@ -42,6 +42,7 @@ import 'package:smartbazar/features/product_details/api/scratch_and_win_provider
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
@@ -257,6 +258,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     // final areaa = ref.watch(getScratchAndWinResponseProvider);
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
+  
 
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
@@ -1127,7 +1129,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       products[index];
 
                                                   return ProductDetailWidget(
-                                                    
                                                     lat: prod.userdetails
                                                             ?.latitude ??
                                                         '0.0',
@@ -1953,12 +1954,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
-                                              productid: res.id,
-
+                                            productid: res.id,
                                             lat: res.user.latitude,
                                             long: res.user.longitude,
-                                            
-
                                             membershipid:
                                                 res.userDetail.membership_id,
                                             posttype: res.post_type_id,

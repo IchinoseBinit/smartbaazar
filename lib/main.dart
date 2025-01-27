@@ -4,37 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
-import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
-import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
-import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/home/api/get_story_provider.dart';
-import 'package:smartbazar/features/home/view/fake.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
-import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/message/view/chat_screen.dart';
-import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
-import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
-import 'package:smartbazar/features/pending_approval/pending_approval.dart';
-import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
-import 'package:smartbazar/features/used_screen/view/used_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/model/my_subscribe_and_win_model.dart';
-import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 
 void main() {
   const FlutterErrorDetails(exception: PrintHandler);
@@ -71,3 +41,30 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+// class hohoh extends StatelessWidget {
+ 
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Comment Bottom Sheet')),
+//       body: Center(
+//         child: GestureDetector(
+//           onTap: () => _showCommentBottomSheet(context),
+//           child: Row(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Icon(Icons.chat_bubble_outline, color: Colors.blue, size: 24),
+//               SizedBox(width: 8),
+//               Text(
+//                 'Add Comment',
+//                 style: TextStyle(color: Colors.blue, fontSize: 16),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

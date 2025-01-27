@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -291,6 +290,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
 
   @override
   void dispose() {
+    
     _pageController.dispose();
     _animationController.dispose();
     super.dispose();

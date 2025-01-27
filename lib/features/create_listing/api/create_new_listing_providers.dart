@@ -42,6 +42,7 @@ Future<String> createlisting(
   double? long,
   int? hyperd,
   int? seller,
+  int? trending, 
 }) async {
   final SmartClient client = SmartClient();
 
@@ -65,6 +66,7 @@ Future<String> createlisting(
       'negotiable': "0",
       'phone_hidden': "1",
       'captcha': "embed",
+      'trending':trending,
       'ip_addr': "127.0.0.1",
       'accept_marketing_offers': "1",
       'is_permanent': "0",

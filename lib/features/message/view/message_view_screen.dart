@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
@@ -104,8 +105,21 @@ class MessageViewScreen extends ConsumerWidget {
                                               'No messages yet',
                                         );
                                       },
-                                      loading: () => const Center(
-                                          child: CircularProgressIndicator()),
+                                      loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                                       error: (error, stack) =>
                                           Text('Error: $error'),
                                     );
@@ -117,7 +131,21 @@ class MessageViewScreen extends ConsumerWidget {
                             );
                           },
                           loading: () =>
-                              const Center(child: CircularProgressIndicator()),
+                             Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                           error: (error, stack) =>
                               Center(child: Text('Error: $error')),
                         );
@@ -241,7 +269,21 @@ class MessageViewScreen extends ConsumerWidget {
                             );
                           },
                           loading: () =>
-                              const Center(child: CircularProgressIndicator()),
+                              Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                           error: (error, stack) =>
                               Center(child: Text('Error: $error')),
                         );

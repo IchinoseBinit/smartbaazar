@@ -21,7 +21,7 @@ VendorProductSearchResponse _$VendorProductSearchResponseFromJson(
 
 /// @nodoc
 mixin _$VendorProductSearchResponse {
-  VendorPost? get vendorPost => throw _privateConstructorUsedError;
+  Vdata? get data => throw _privateConstructorUsedError;
 
   /// Serializes this VendorProductSearchResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,9 +41,9 @@ abstract class $VendorProductSearchResponseCopyWith<$Res> {
       _$VendorProductSearchResponseCopyWithImpl<$Res,
           VendorProductSearchResponse>;
   @useResult
-  $Res call({VendorPost? vendorPost});
+  $Res call({Vdata? data});
 
-  $VendorPostCopyWith<$Res>? get vendorPost;
+  $VdataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -62,13 +62,13 @@ class _$VendorProductSearchResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? vendorPost = freezed,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
-      vendorPost: freezed == vendorPost
-          ? _value.vendorPost
-          : vendorPost // ignore: cast_nullable_to_non_nullable
-              as VendorPost?,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Vdata?,
     ) as $Val);
   }
 
@@ -76,13 +76,13 @@ class _$VendorProductSearchResponseCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $VendorPostCopyWith<$Res>? get vendorPost {
-    if (_value.vendorPost == null) {
+  $VdataCopyWith<$Res>? get data {
+    if (_value.data == null) {
       return null;
     }
 
-    return $VendorPostCopyWith<$Res>(_value.vendorPost!, (value) {
-      return _then(_value.copyWith(vendorPost: value) as $Val);
+    return $VdataCopyWith<$Res>(_value.data!, (value) {
+      return _then(_value.copyWith(data: value) as $Val);
     });
   }
 }
@@ -96,10 +96,10 @@ abstract class _$$VendorProductSearchResponseImplCopyWith<$Res>
       __$$VendorProductSearchResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({VendorPost? vendorPost});
+  $Res call({Vdata? data});
 
   @override
-  $VendorPostCopyWith<$Res>? get vendorPost;
+  $VdataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -117,13 +117,13 @@ class __$$VendorProductSearchResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? vendorPost = freezed,
+    Object? data = freezed,
   }) {
     return _then(_$VendorProductSearchResponseImpl(
-      vendorPost: freezed == vendorPost
-          ? _value.vendorPost
-          : vendorPost // ignore: cast_nullable_to_non_nullable
-              as VendorPost?,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Vdata?,
     ));
   }
 }
@@ -132,18 +132,18 @@ class __$$VendorProductSearchResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorProductSearchResponseImpl
     implements _VendorProductSearchResponse {
-  _$VendorProductSearchResponseImpl({this.vendorPost});
+  _$VendorProductSearchResponseImpl({required this.data});
 
   factory _$VendorProductSearchResponseImpl.fromJson(
           Map<String, dynamic> json) =>
       _$$VendorProductSearchResponseImplFromJson(json);
 
   @override
-  final VendorPost? vendorPost;
+  final Vdata? data;
 
   @override
   String toString() {
-    return 'VendorProductSearchResponse(vendorPost: $vendorPost)';
+    return 'VendorProductSearchResponse(data: $data)';
   }
 
   @override
@@ -151,13 +151,12 @@ class _$VendorProductSearchResponseImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VendorProductSearchResponseImpl &&
-            (identical(other.vendorPost, vendorPost) ||
-                other.vendorPost == vendorPost));
+            (identical(other.data, data) || other.data == data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, vendorPost);
+  int get hashCode => Object.hash(runtimeType, data);
 
   /// Create a copy of VendorProductSearchResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -178,14 +177,14 @@ class _$VendorProductSearchResponseImpl
 
 abstract class _VendorProductSearchResponse
     implements VendorProductSearchResponse {
-  factory _VendorProductSearchResponse({final VendorPost? vendorPost}) =
+  factory _VendorProductSearchResponse({required final Vdata? data}) =
       _$VendorProductSearchResponseImpl;
 
   factory _VendorProductSearchResponse.fromJson(Map<String, dynamic> json) =
       _$VendorProductSearchResponseImpl.fromJson;
 
   @override
-  VendorPost? get vendorPost;
+  Vdata? get data;
 
   /// Create a copy of VendorProductSearchResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -195,144 +194,301 @@ abstract class _VendorProductSearchResponse
       get copyWith => throw _privateConstructorUsedError;
 }
 
-VendorPost _$VendorPostFromJson(Map<String, dynamic> json) {
-  return _VendorPost.fromJson(json);
+Vdata _$VdataFromJson(Map<String, dynamic> json) {
+  return _Vdata.fromJson(json);
 }
 
 /// @nodoc
-mixin _$VendorPost {
-  @JsonKey(name: 'current_page')
-  int? get currentPage => throw _privateConstructorUsedError;
-  List<PostResult>? get data => throw _privateConstructorUsedError;
+mixin _$Vdata {
+  VPosts? get Posts => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorPost to a JSON map.
+  /// Serializes this Vdata to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of VendorPost
+  /// Create a copy of Vdata
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $VendorPostCopyWith<VendorPost> get copyWith =>
-      throw _privateConstructorUsedError;
+  $VdataCopyWith<Vdata> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $VendorPostCopyWith<$Res> {
-  factory $VendorPostCopyWith(
-          VendorPost value, $Res Function(VendorPost) then) =
-      _$VendorPostCopyWithImpl<$Res, VendorPost>;
+abstract class $VdataCopyWith<$Res> {
+  factory $VdataCopyWith(Vdata value, $Res Function(Vdata) then) =
+      _$VdataCopyWithImpl<$Res, Vdata>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'current_page') int? currentPage,
-      List<PostResult>? data});
+  $Res call({VPosts? Posts});
+
+  $VPostsCopyWith<$Res>? get Posts;
 }
 
 /// @nodoc
-class _$VendorPostCopyWithImpl<$Res, $Val extends VendorPost>
-    implements $VendorPostCopyWith<$Res> {
-  _$VendorPostCopyWithImpl(this._value, this._then);
+class _$VdataCopyWithImpl<$Res, $Val extends Vdata>
+    implements $VdataCopyWith<$Res> {
+  _$VdataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorPost
+  /// Create a copy of Vdata
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = freezed,
-    Object? data = freezed,
+    Object? Posts = freezed,
   }) {
     return _then(_value.copyWith(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<PostResult>?,
+      Posts: freezed == Posts
+          ? _value.Posts
+          : Posts // ignore: cast_nullable_to_non_nullable
+              as VPosts?,
     ) as $Val);
+  }
+
+  /// Create a copy of Vdata
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $VPostsCopyWith<$Res>? get Posts {
+    if (_value.Posts == null) {
+      return null;
+    }
+
+    return $VPostsCopyWith<$Res>(_value.Posts!, (value) {
+      return _then(_value.copyWith(Posts: value) as $Val);
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$VendorPostImplCopyWith<$Res>
-    implements $VendorPostCopyWith<$Res> {
-  factory _$$VendorPostImplCopyWith(
-          _$VendorPostImpl value, $Res Function(_$VendorPostImpl) then) =
-      __$$VendorPostImplCopyWithImpl<$Res>;
+abstract class _$$VdataImplCopyWith<$Res> implements $VdataCopyWith<$Res> {
+  factory _$$VdataImplCopyWith(
+          _$VdataImpl value, $Res Function(_$VdataImpl) then) =
+      __$$VdataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'current_page') int? currentPage,
-      List<PostResult>? data});
+  $Res call({VPosts? Posts});
+
+  @override
+  $VPostsCopyWith<$Res>? get Posts;
 }
 
 /// @nodoc
-class __$$VendorPostImplCopyWithImpl<$Res>
-    extends _$VendorPostCopyWithImpl<$Res, _$VendorPostImpl>
-    implements _$$VendorPostImplCopyWith<$Res> {
-  __$$VendorPostImplCopyWithImpl(
-      _$VendorPostImpl _value, $Res Function(_$VendorPostImpl) _then)
+class __$$VdataImplCopyWithImpl<$Res>
+    extends _$VdataCopyWithImpl<$Res, _$VdataImpl>
+    implements _$$VdataImplCopyWith<$Res> {
+  __$$VdataImplCopyWithImpl(
+      _$VdataImpl _value, $Res Function(_$VdataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorPost
+  /// Create a copy of Vdata
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentPage = freezed,
-    Object? data = freezed,
+    Object? Posts = freezed,
   }) {
-    return _then(_$VendorPostImpl(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<PostResult>?,
+    return _then(_$VdataImpl(
+      Posts: freezed == Posts
+          ? _value.Posts
+          : Posts // ignore: cast_nullable_to_non_nullable
+              as VPosts?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$VendorPostImpl implements _VendorPost {
-  _$VendorPostImpl(
-      {@JsonKey(name: 'current_page') this.currentPage,
-      final List<PostResult>? data})
-      : _data = data;
+class _$VdataImpl implements _Vdata {
+  const _$VdataImpl({required this.Posts});
 
-  factory _$VendorPostImpl.fromJson(Map<String, dynamic> json) =>
-      _$$VendorPostImplFromJson(json);
+  factory _$VdataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VdataImplFromJson(json);
 
   @override
-  @JsonKey(name: 'current_page')
-  final int? currentPage;
-  final List<PostResult>? _data;
-  @override
-  List<PostResult>? get data {
-    final value = _data;
-    if (value == null) return null;
-    if (_data is EqualUnmodifiableListView) return _data;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  final VPosts? Posts;
 
   @override
   String toString() {
-    return 'VendorPost(currentPage: $currentPage, data: $data)';
+    return 'Vdata(Posts: $Posts)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$VendorPostImpl &&
+            other is _$VdataImpl &&
+            (identical(other.Posts, Posts) || other.Posts == Posts));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, Posts);
+
+  /// Create a copy of Vdata
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VdataImplCopyWith<_$VdataImpl> get copyWith =>
+      __$$VdataImplCopyWithImpl<_$VdataImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VdataImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Vdata implements Vdata {
+  const factory _Vdata({required final VPosts? Posts}) = _$VdataImpl;
+
+  factory _Vdata.fromJson(Map<String, dynamic> json) = _$VdataImpl.fromJson;
+
+  @override
+  VPosts? get Posts;
+
+  /// Create a copy of Vdata
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$VdataImplCopyWith<_$VdataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+VPosts _$VPostsFromJson(Map<String, dynamic> json) {
+  return _VPosts.fromJson(json);
+}
+
+/// @nodoc
+mixin _$VPosts {
+  @JsonKey(name: 'current_page')
+  int get currentPage => throw _privateConstructorUsedError;
+  List<PostResult> get data => throw _privateConstructorUsedError;
+
+  /// Serializes this VPosts to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of VPosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $VPostsCopyWith<VPosts> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VPostsCopyWith<$Res> {
+  factory $VPostsCopyWith(VPosts value, $Res Function(VPosts) then) =
+      _$VPostsCopyWithImpl<$Res, VPosts>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'current_page') int currentPage, List<PostResult> data});
+}
+
+/// @nodoc
+class _$VPostsCopyWithImpl<$Res, $Val extends VPosts>
+    implements $VPostsCopyWith<$Res> {
+  _$VPostsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of VPosts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? currentPage = null,
+    Object? data = null,
+  }) {
+    return _then(_value.copyWith(
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<PostResult>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$VPostsImplCopyWith<$Res> implements $VPostsCopyWith<$Res> {
+  factory _$$VPostsImplCopyWith(
+          _$VPostsImpl value, $Res Function(_$VPostsImpl) then) =
+      __$$VPostsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'current_page') int currentPage, List<PostResult> data});
+}
+
+/// @nodoc
+class __$$VPostsImplCopyWithImpl<$Res>
+    extends _$VPostsCopyWithImpl<$Res, _$VPostsImpl>
+    implements _$$VPostsImplCopyWith<$Res> {
+  __$$VPostsImplCopyWithImpl(
+      _$VPostsImpl _value, $Res Function(_$VPostsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of VPosts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? currentPage = null,
+    Object? data = null,
+  }) {
+    return _then(_$VPostsImpl(
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      data: null == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<PostResult>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$VPostsImpl implements _VPosts {
+  const _$VPostsImpl(
+      {@JsonKey(name: 'current_page') required this.currentPage,
+      required final List<PostResult> data})
+      : _data = data;
+
+  factory _$VPostsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VPostsImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'current_page')
+  final int currentPage;
+  final List<PostResult> _data;
+  @override
+  List<PostResult> get data {
+    if (_data is EqualUnmodifiableListView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_data);
+  }
+
+  @override
+  String toString() {
+    return 'VPosts(currentPage: $currentPage, data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VPostsImpl &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
             const DeepCollectionEquality().equals(other._data, _data));
@@ -343,40 +499,39 @@ class _$VendorPostImpl implements _VendorPost {
   int get hashCode => Object.hash(
       runtimeType, currentPage, const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of VendorPost
+  /// Create a copy of VPosts
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$VendorPostImplCopyWith<_$VendorPostImpl> get copyWith =>
-      __$$VendorPostImplCopyWithImpl<_$VendorPostImpl>(this, _$identity);
+  _$$VPostsImplCopyWith<_$VPostsImpl> get copyWith =>
+      __$$VPostsImplCopyWithImpl<_$VPostsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$VendorPostImplToJson(
+    return _$$VPostsImplToJson(
       this,
     );
   }
 }
 
-abstract class _VendorPost implements VendorPost {
-  factory _VendorPost(
-      {@JsonKey(name: 'current_page') final int? currentPage,
-      final List<PostResult>? data}) = _$VendorPostImpl;
+abstract class _VPosts implements VPosts {
+  const factory _VPosts(
+      {@JsonKey(name: 'current_page') required final int currentPage,
+      required final List<PostResult> data}) = _$VPostsImpl;
 
-  factory _VendorPost.fromJson(Map<String, dynamic> json) =
-      _$VendorPostImpl.fromJson;
+  factory _VPosts.fromJson(Map<String, dynamic> json) = _$VPostsImpl.fromJson;
 
   @override
   @JsonKey(name: 'current_page')
-  int? get currentPage;
+  int get currentPage;
   @override
-  List<PostResult>? get data;
+  List<PostResult> get data;
 
-  /// Create a copy of VendorPost
+  /// Create a copy of VPosts
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$VendorPostImplCopyWith<_$VendorPostImpl> get copyWith =>
+  _$$VPostsImplCopyWith<_$VPostsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

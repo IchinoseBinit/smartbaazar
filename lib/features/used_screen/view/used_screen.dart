@@ -714,9 +714,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         const Divider(),
                                   );
                                 },
-                                loading: () {
-                                  return const SizedBox();
-                                },
+                                loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -968,9 +978,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("Try again: $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -1149,7 +1169,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -1359,9 +1391,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   // Expanded(
 
@@ -1447,9 +1489,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
 
                   asyncbajarValue.when(
@@ -1526,9 +1578,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
 
                   asyncbajarValue.when(
@@ -1605,9 +1667,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   SizedBox(
                     height: 5.h,
@@ -1900,9 +1972,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading:() => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
 
                   Center(
@@ -1960,9 +2042,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading:() => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
 
                   asyncbajarValue.when(
@@ -1995,7 +2087,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -2154,7 +2258,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   error: (error, stackTrace) =>
                                       Text("Error: $error"),
                                   loading: () =>
-                                      const CircularProgressIndicator(),
+                                       Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                                 ),
                               ],
                             );
@@ -2165,9 +2281,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("$error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w, bottom: 8.h),

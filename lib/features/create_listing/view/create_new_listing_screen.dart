@@ -24,6 +24,7 @@ import 'package:smartbazar/features/order_details/model/shipping_cities_model.da
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 
 class CreateNewListinScreen extends ConsumerStatefulWidget {
   const CreateNewListinScreen({super.key});
@@ -73,6 +74,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   List<Option>? selectedFeatures;
 
   DateTime? selectedStartDate;
+  DateTime? enddate;
+
   DateTime? selectmanufacturingdate;
   DateTime? grocceryexpiraydate;
 
@@ -159,6 +162,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   FieldsResponse? getcar;
 
   FieldsResponse? getRoad;
+  TextEditingController? eventaddress;
+  FieldsResponse? eventresp;
+
   FieldsResponse? getcloth;
   MyCategory? childcategory;
   FieldsResponse? getsize;
@@ -182,9 +188,12 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   void getSellerData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // namecontroller.text = prefs.getString("name")!;
+    // emailcontroller.text = prefs.getString("email")!;
+    // phonecontroller.text = prefs.getString("phone")!;
     namecontroller.text = prefs.getString("name")!;
-    emailcontroller.text = prefs.getString("email")!;
-    phonecontroller.text = prefs.getString("phone")!;
+    emailcontroller.text = SmartClient.userEmail;
+    phonecontroller.text = SmartClient.phone;
   }
 
   Future<void> _fetchcities() async {
@@ -292,21 +301,26 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   @override
   Widget build(BuildContext context) {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
+    ref.watch(GetCategoryResponseProvider(122)).whenData(
+      (value) async {
+        eventresp = await value;
+      },
+    );
     final getCategories = ref.watch(GetCategoryResponseProvider(1)).whenData(
-      (value) {
+      (value) async {
         // print("kala ${value}");
-        getcar = value; //car
+        getcar = await value; //car
       },
     ); //car
 
     ref.watch(GetCategoryResponseProvider(73)).whenData(
-      (value) {
-        jobsresp = value;
+      (value) async {
+        jobsresp = await value;
       },
     );
     ref.watch(GetCategoryResponseProvider(9)).whenData(
-      (value) {
-        phoneresp = value;
+      (value) async {
+        phoneresp = await value;
         print("lauka ${phoneresp?.result[4]}");
       },
     ); //phone
@@ -317,24 +331,24 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     // );
 
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
-      (value) {
-        laptoprep = value;
+      (value) async {
+        laptoprep = await value;
         // print('maula ${laptoprep}');
       },
     ); //car
     final furniture = ref.watch(GetCategoryResponseProvider(30)).whenData(
-      (value) {
-        furnitureresresp = value;
+      (value) async {
+        furnitureresresp = await value;
       },
     ); //car
     final road = ref.watch(GetCategoryResponseProvider(37)).whenData(
       (value) async {
-        getRoad = value;
+        getRoad = await value;
       },
     ); //car
     final clothfirst = ref.watch(GetCategoryResponseProvider(54)).whenData(
-      (value) {
-        getcloth = value;
+      (value) async {
+        getcloth = await value;
       },
     );
     final selltofields = ref.watch(GetCategoryResponseProvider(217));
@@ -346,8 +360,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     );
 
     citySuggestionsAsync.when(
-      data: (data) {
-        shippingcities = data;
+      data: (data) async {
+        shippingcities = await data;
       },
       error: (error, stackTrace) {},
       loading: () {},
@@ -550,7 +564,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           )
                         ],
                       ),
-                      const Spacer(),
                       Expanded(
                         child: TextField(
                           controller: titlecontroller,
@@ -588,19 +601,18 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             )
                           ],
                         ),
-                        const Spacer(),
                         Expanded(
                           child: TextField(
                             onSubmitted: (value) {
-                              if (getRoad?.result[2].id != null) {
+                              if (eventresp?.result[2].id != null) {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
-                                  'cf.${getRoad!.result[2].id}', // Create the key dynamically
+                                  'cf.${eventresp!.result[2].id}', // Create the key dynamically
                                   whatsintheboxcontroller.text,
                                 ]);
                               }
                             },
-                            controller: addresscontroller,
+                            controller: eventaddress,
                             decoration: InputDecoration.collapsed(
                                 hintText: 'Enter address',
                                 hintStyle: TextStyle(
@@ -612,7 +624,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (typeid == '122')
+                if (typeid == '122' || typeid == '5')
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -1033,7 +1045,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   ),
 
                 // if (selectedcategory?.id != 30 && selectedcategory?.id != 1)
-                if (phoneresp != null)
+                // ignore: unrelated_type_equality_checks
+                if (phoneresp != null && typeid != '5')
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -1069,7 +1082,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             true; // Set _isselected to true when the first checkbox is selected
                                       });
                                       cf?.add([
-                                        'cf.${getRoad!.result[4].id}', // Create the key dynamically
+                                        'cf.${phoneresp!.result[4].id}', // Create the key dynamically
                                         phoneresp!.result[4].options[0].id,
                                       ]);
                                     },
@@ -1105,7 +1118,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                   ),
                                   Flexible(
                                     child: Text(
-                                      phoneresp!.result[4].options[1].value,
+                                      phoneresp?.result[4].options[1].value ??
+                                          'loading',
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w600,
@@ -1332,8 +1346,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
                 if (selectedcategory?.id == 73 ||
-                    selectedcategory?.id ==
-                        122) // Conditionally show the calendar
+                    selectedcategory?.id == 122 ||
+                    typeid == '5') // Conditionally show the calendar
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1365,23 +1379,35 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
+                              DateTime? startdate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
-                              if (pickedDate != null) {
+                              if (startdate != null) {
                                 setState(() {
                                   selectedStartDate =
-                                      pickedDate; // Save the selected date
+                                      startdate; // Save the selected date
                                 });
+
                                 if (jobsresp?.result[4].id != null) {
-                                  // Ensure the dynamic key is safe to access
-                                  cf?.add([
-                                    'cf.${jobsresp!.result[4].id}', // Create the key dynamically
-                                    selectedStartDate,
-                                  ]);
+                                  // Assuming you want to update a specific index in cf based on the id
+                                  int index = jobsresp!.result[4]
+                                      .id; // Ensure this gives a valid index
+                                  if (index >= 0 && index < cf!.length) {
+                                    // Replace the inner list at the index with the new date
+                                    cf![index] = [
+                                      'cf.${jobsresp!.result[4].id}', // Create the key dynamically
+                                      selectedStartDate, // New date
+                                    ];
+                                  } else {
+                                    // If the index is not valid, you can add a new entry to the list
+                                    cf!.add([
+                                      'cf.${jobsresp!.result[4].id}',
+                                      selectedStartDate,
+                                    ]);
+                                  }
                                 }
                               }
                             },
@@ -1402,6 +1428,89 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
+                if (selectedcategory?.id == 73 ||
+                    selectedcategory?.id == 122 ||
+                    typeid == '5') // Conditionally show the calendar
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'End date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              DateTime? enddaate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (enddaate != null) {
+                                setState(() {
+                                  enddate = enddaate; // Save the selected date
+                                });
+
+                                if (eventresp?.result[1].id != null) {
+                                  // Assuming you want to update a specific index in cf based on the id
+                                  int index = eventresp!.result[1]
+                                      .id; // Ensure this gives a valid index
+                                  if (index >= 0 && index < cf!.length) {
+                                    // Replace the inner list at the index with the new date
+                                    cf![index] = [
+                                      'cf.${eventresp!.result[1].id}', // Create the key dynamically
+                                      enddate, // New date
+                                    ];
+                                  } else {
+                                    // If the index is not valid, you can add a new entry to the list
+                                    cf!.add([
+                                      'cf.${eventresp!.result[1].id}',
+                                      enddate,
+                                    ]);
+                                  }
+                                }
+                              }
+                            },
+                            child: Text(
+                              enddate != null
+                                  ? '${enddate!.toLocal()}'.split(
+                                      ' ')[0] // Display the selected date
+                                  : 'Select date',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: selectedStartDate != null
+                                    ? Colors.black
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 if (selectedcategory?.id ==
                     171) // Conditionally show the calendar
                   CreateListingCardWidget(
@@ -1946,7 +2055,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           )
                         ],
                       ),
-                      const Spacer(),
+                   
                       Expanded(
                         child: TextField(
                           controller: addresscontroller,
@@ -1961,43 +2070,43 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ],
                   ),
                 ),
-
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Available stock',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: stockcontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Enter stock',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
+                if (typeid != '5')
+                  CreateListingCardWidget(
+                      child: Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Available stock',
+                            style: TextStyle(
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            ' *',
+                            style: TextStyle(
+                                color: const Color(0xffD33636),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.sp),
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                )),
+                      const Spacer(),
+                      Expanded(
+                        child: TextField(
+                          controller: stockcontroller,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter stock',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ),
+                    ],
+                  )),
 
                 SizedBox(
                   height: 10.h,
@@ -2257,59 +2366,59 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                // if (selectedcategory?.id == 1)
-                CreateListingCardWidget(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      if (getRoad != null)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Warranty',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
-                            Text(
-                              ' *',
-                              style: TextStyle(
-                                  color: const Color(0xffD33636),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.sp),
-                            )
-                          ],
-                        ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      if (getcar != null)
-                        Expanded(
-                          // Wrap the dropdown in Expanded to constrain its width
-                          child: CustomDropdownButton<Option>(
-                            items: getcar!.result[4].options ?? [],
-                            dropdownValue: selecetedWarrenty,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selecetedWarrenty = newValue;
-
-                                // Initialize cf if null and add the new entry
-
-                                cf?.add([
-                                  'cf.${getcar!.result[4].id}', // Create the key dynamically
-                                  selecetedWarrenty
-                                      ?.id // Get the selected warranty ID
-                                ]);
-                              });
-                            },
-                            getItemLabel: (Option item) => item.value,
+                if (typeid != '5')
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        if (getRoad != null)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Warranty',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                ' *',
+                                style: TextStyle(
+                                    color: const Color(0xffD33636),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp),
+                              )
+                            ],
                           ),
+                        SizedBox(
+                          width: 10.w,
                         ),
-                    ],
+                        if (getcar != null)
+                          Expanded(
+                            // Wrap the dropdown in Expanded to constrain its width
+                            child: CustomDropdownButton<Option>(
+                              items: getcar!.result[4].options ?? [],
+                              dropdownValue: selecetedWarrenty,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selecetedWarrenty = newValue;
+
+                                  // Initialize cf if null and add the new entry
+
+                                  cf?.add([
+                                    'cf.${getcar!.result[4].id}', // Create the key dynamically
+                                    selecetedWarrenty
+                                        ?.id // Get the selected warranty ID
+                                  ]);
+                                });
+                              },
+                              getItemLabel: (Option item) => item.value,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
                 if (selectedcategory?.id == 37)
                   CreateListingCardWidget(
                     child: Row(
@@ -3254,173 +3363,179 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
+                if (typeid != '5')
+                  CreateListingCardWidget(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Product Type',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        if (getcar != null)
+                          Column(
+                            children: getcar!.result
+                                .where((element) => element.id == 57)
+                                .expand((element) => element
+                                    .options) // Flatten the list of options
+                                .map<Widget>((option) {
+                              return RadioListTile<Option>(
+                                value: option,
+                                groupValue: selecctedProductTYpe,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selecctedProductTYpe = newValue;
 
-                CreateListingCardWidget(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    // Create dynamic cf key
+                                    final cfKey =
+                                        'cf.${getcar!.result.first.id}';
+                                    final cfValue = [selecctedProductTYpe!.id];
+
+                                    // Check if cf already contains this key
+                                    int index = cf?.indexWhere(
+                                            (entry) => entry[0] == cfKey) ??
+                                        -1;
+
+                                    if (index >= 0) {
+                                      // Update existing entry
+                                      cf?[index][1] = cfValue;
+                                    } else {
+                                      // Add a new entry
+                                      cf?.add([cfKey, cfValue]);
+                                    }
+                                  });
+
+                                  // Debug: Print the updated cf list
+                                  print("Updated cf: $cf");
+                                },
+                                title: Text(
+                                  option
+                                      .value, // Display the label for each radio button
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                      ],
+                    ),
+                  ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                if (typeid != '5')
+                  Column(
                     children: [
                       Row(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Product Type',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
+                          SizedBox(width: 2.w),
+                          const Text(
+                            "Seller Delivery Available",
+                            style: TextStyle(fontSize: 13),
                           ),
-                          Text(
-                            ' *',
-                            style: TextStyle(
-                                color: const Color(0xffD33636),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp),
+                          SizedBox(
+                            height: 5,
+                            child: Checkbox(
+                              value: _sellerDeliveryAvailable,
+                              onChanged: (value) {
+                                if (value == true) {
+                                  setState(() {
+                                    _sellerDeliveryAvailable = true;
+                                    _upayaDelivery = false;
+                                    _hyperDeliveryAvailable = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _sellerDeliveryAvailable = false;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 30.w,
+                          ),
+                          const Text(
+                            "Upaya Delivery",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          SizedBox(
+                            height: 5,
+                            child: Checkbox(
+                              value: _upayaDelivery,
+                              onChanged: (value) {
+                                if (value == true) {
+                                  setState(() {
+                                    _upayaDelivery = true;
+                                    _sellerDeliveryAvailable = false;
+                                    _hyperDeliveryAvailable = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _upayaDelivery = false;
+                                  });
+                                }
+                              },
+                            ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 25.h,
                       ),
-                      if (getcar != null)
-                        Column(
-                          children: getcar!.result
-                              .where((element) => element.id == 57)
-                              .expand((element) => element
-                                  .options) // Flatten the list of options
-                              .map<Widget>((option) {
-                            return RadioListTile<Option>(
-                              value: option,
-                              groupValue: selecctedProductTYpe,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selecctedProductTYpe = newValue;
-
-                                  // Create dynamic cf key
-                                  final cfKey = 'cf.${getcar!.result.first.id}';
-                                  final cfValue = [selecctedProductTYpe!.id];
-
-                                  // Check if cf already contains this key
-                                  int index = cf?.indexWhere(
-                                          (entry) => entry[0] == cfKey) ??
-                                      -1;
-
-                                  if (index >= 0) {
-                                    // Update existing entry
-                                    cf?[index][1] = cfValue;
-                                  } else {
-                                    // Add a new entry
-                                    cf?.add([cfKey, cfValue]);
-                                  }
-                                });
-
-                                // Debug: Print the updated cf list
-                                print("Updated cf: $cf");
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Hyper Delivery Available",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          SizedBox(
+                            height: 5,
+                            child: Checkbox(
+                              value: _hyperDeliveryAvailable,
+                              onChanged: (value) {
+                                if (value == true) {
+                                  setState(() {
+                                    _hyperDeliveryAvailable = true;
+                                    _sellerDeliveryAvailable = false;
+                                    _upayaDelivery = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _hyperDeliveryAvailable = false;
+                                  });
+                                }
                               },
-                              title: Text(
-                                option
-                                    .value, // Display the label for each radio button
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 2.w),
-                    const Text(
-                      "Seller Delivery Available",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    SizedBox(
-                      height: 5,
-                      child: Checkbox(
-                        value: _sellerDeliveryAvailable,
-                        onChanged: (value) {
-                          if (value == true) {
-                            setState(() {
-                              _sellerDeliveryAvailable = true;
-                              _upayaDelivery = false;
-                              _hyperDeliveryAvailable = false;
-                            });
-                          } else {
-                            setState(() {
-                              _sellerDeliveryAvailable = false;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30.w,
-                    ),
-                    const Text(
-                      "Upaya Delivery",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    SizedBox(
-                      height: 5,
-                      child: Checkbox(
-                        value: _upayaDelivery,
-                        onChanged: (value) {
-                          if (value == true) {
-                            setState(() {
-                              _upayaDelivery = true;
-                              _sellerDeliveryAvailable = false;
-                              _hyperDeliveryAvailable = false;
-                            });
-                          } else {
-                            setState(() {
-                              _upayaDelivery = false;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 25.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Hyper Delivery Available",
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    SizedBox(
-                      height: 5,
-                      child: Checkbox(
-                        value: _hyperDeliveryAvailable,
-                        onChanged: (value) {
-                          if (value == true) {
-                            setState(() {
-                              _hyperDeliveryAvailable = true;
-                              _sellerDeliveryAvailable = false;
-                              _upayaDelivery = false;
-                            });
-                          } else {
-                            setState(() {
-                              _hyperDeliveryAvailable = false;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
 
                 if (selectedcategory?.id == 171)
                   CreateListingCardWidget(
@@ -3498,145 +3613,140 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Length(cm)',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: lengthcontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Lenght in cm',
-                            hintStyle: TextStyle(
+                if (typeid != '5')
+                  Column(
+                    children: [
+                      CreateListingCardWidget(
+                          child: Row(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Length(cm)',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                ' *',
+                                style: TextStyle(
+                                    color: const Color(0xffD33636),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp),
+                              )
+                            ],
+                          ),
+                          const Spacer(),
+                          Expanded(
+                            child: TextField(
+                              controller: lengthcontroller,
+                              decoration: InputDecoration.collapsed(
+                                  hintText: 'Lenght in cm',
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: const Color(0xffADADAD))),
+                            ),
+                          ),
+                        ],
+                      )),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      CreateListingCardWidget(
+                          child: Row(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Width (cm)',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                ' *',
+                                style: TextStyle(
+                                    color: const Color(0xffD33636),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp),
+                              )
+                            ],
+                          ),
+                          const Spacer(),
+                          Expanded(
+                            child: TextField(
+                              controller: widthcontroller,
+                              decoration: InputDecoration.collapsed(
+                                  hintText: 'Width in cm',
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: const Color(0xffADADAD))),
+                            ),
+                          ),
+                        ],
+                      )),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      CreateListingCardWidget(
+                          child: Row(
+                        children: [
+                          Text(
+                            'Height (cm)',
+                            style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
+                                color: Colors.black),
+                          ),
+                          const Spacer(),
+                          Expanded(
+                            child: TextField(
+                              controller: heightcontroller,
+                              decoration: InputDecoration.collapsed(
+                                  hintText: 'Height in cm',
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: const Color(0xffADADAD))),
+                            ),
+                          ),
+                        ],
+                      )),
+                      SizedBox(
+                        height: 10.h,
                       ),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    // Text(
-                    //   'Width (cm)',
-                    //   style: TextStyle(
-                    //       fontWeight: FontWeight.w500,
-                    //       fontSize: 14.sp,
-                    //       color: Colors.black),
-                    // ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Width (cm)',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          ' *',
-                          style: TextStyle(
-                              color: const Color(0xffD33636),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        )
-                      ],
-                    ),
-
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: widthcontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Width in cm',
-                            hintStyle: TextStyle(
+                      CreateListingCardWidget(
+                          child: Row(
+                        children: [
+                          Text(
+                            'Weight (Kg)',
+                            style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Text(
-                      'Height (cm)',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: heightcontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Height in cm',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
-
-                SizedBox(
-                  height: 10.h,
-                ),
-                CreateListingCardWidget(
-                    child: Row(
-                  children: [
-                    Text(
-                      'Weight (Kg)',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: TextField(
-                        controller: weightcontroller,
-                        decoration: InputDecoration.collapsed(
-                            hintText: 'Weight in KG',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.sp,
-                                color: const Color(0xffADADAD))),
-                      ),
-                    ),
-                  ],
-                )),
+                                color: Colors.black),
+                          ),
+                          const Spacer(),
+                          Expanded(
+                            child: TextField(
+                              controller: weightcontroller,
+                              decoration: InputDecoration.collapsed(
+                                  hintText: 'Weight in KG',
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: const Color(0xffADADAD))),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ],
+                  ),
 
                 // const CityField(),
                 SizedBox(
@@ -4194,27 +4304,20 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   offer: selectedoffer,
                   producttype: selectedProductTYpe,
                   shippingList: shippingcities,
-                  category: selectedcategory?.id.toString() ?? '',
-                  type: selectedType?.typeId.toString() ??
-                      '', // Provide a default value or handle null safely
+                  category: selectedcategory?.id.toString(),
+                  type: selectedType?.typeId
+                      .toString(), // Provide a default value or handle null safely
                   description: descriptionController.text,
-                  height: heightcontroller.text.isNotEmpty
-                      ? heightcontroller.text
-                      : '0', // Fallback to '0' if empty
-                  length: lengthcontroller.text.isNotEmpty
-                      ? lengthcontroller.text
-                      : '0', // Fallback to '0' if empty
+                  height: heightcontroller.text,
+                  // Fallback to '0' if empty
+                  length: lengthcontroller.text, // Fallback to '0' if empty
                   phonecoontroller: phonecontroller,
                   price: pricecontroller.text,
                   title: titlecontroller.text,
-                  city: selectedCity?.id.toString() ??
-                      '', // Provide a default value or handle null safely
-                  weight: weightcontroller.text.isNotEmpty
-                      ? weightcontroller.text
-                      : '0', // Fallback to '0' if empty
-                  width: widthcontroller.text.isNotEmpty
-                      ? widthcontroller.text
-                      : '0', // Fallback to '0' if empty
+                  city: selectedCity?.id
+                      .toString(), // Provide a default value or handle null safely
+                  weight: weightcontroller.text, // Fallback to '0' if empty
+                  width: widthcontroller.text, // Fallback to '0' if empty
                   terms: accept,
                   discount: discountcontroller.text,
                   emailcontroller: emailcontroller,

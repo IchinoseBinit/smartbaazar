@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends ConsumerStatefulWidget {
   final String photo, image, subscribers, caption, name;
-  bool? isLive;
-  PostCard({
+  final bool? isLive;
+  final String? id;
+
+  const PostCard({
     super.key,
     required this.image,
     required this.photo,
@@ -13,7 +17,15 @@ class PostCard extends StatelessWidget {
     required this.name,
     this.isLive = false,
     required this.subscribers,
+     required  this.id
   });
+
+  @override
+  ConsumerState<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends ConsumerState<PostCard> {
+  bool liked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +34,9 @@ class PostCard extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width * 0.65,
       decoration: BoxDecoration(
         border: Border.all(
-            width: 1,
-            color: Colors.grey.shade400), // Updated border color and width
+          width: 1,
+          color: Colors.grey.shade400,
+        ), // Updated border color and width
         color: ColorConstant.whiteColor,
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
@@ -46,7 +59,7 @@ class PostCard extends StatelessWidget {
                 padding: const EdgeInsets.all(1),
                 margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(photo)),
+                  image: DecorationImage(image: NetworkImage(widget.photo)),
                   border: Border.all(color: const Color(0xffBDB6B6)),
                   borderRadius: BorderRadius.circular(3),
                   color: Colors.grey.shade300,
@@ -57,7 +70,7 @@ class PostCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name,
+                    widget.name,
                     style: headerstyle.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
@@ -67,7 +80,7 @@ class PostCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "$subscribers subscribers",
+                        "${widget.subscribers} subscribers",
                         style: headerstyle.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 10,
@@ -81,7 +94,7 @@ class PostCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        "${subscribers}h",
+                        "${widget.subscribers}h",
                         style:
                             const TextStyle(fontSize: 10, color: Colors.grey),
                       ),
@@ -93,7 +106,7 @@ class PostCard extends StatelessWidget {
           ),
           SizedBox(height: 5.h),
           Image.network(
-            image,
+            widget.image,
             height: 150,
             width: double.infinity,
             fit: BoxFit.cover,
@@ -102,7 +115,7 @@ class PostCard extends StatelessWidget {
           Text.rich(
             textDirection: TextDirection.ltr,
             TextSpan(
-              text: caption,
+              text: widget.caption,
               style: const TextStyle(fontSize: 12),
             ),
             maxLines: 2,
@@ -121,14 +134,30 @@ class PostCard extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(width: 9.w),
-                Icon(Icons.favorite_border,
-                    color: ColorConstant.blackColor.withOpacity(0.7)),
+                IconButton(
+                  onPressed: () {
+                    ref.watch(postFeedWowProvider('1'));
+                    setState(() {
+                      liked = !liked;
+                    });
+                  },
+                  icon: Icon(
+                    liked ? Icons.favorite : Icons.favorite_border,
+                    color: liked
+                        ? Colors.red
+                        : ColorConstant.blackColor.withOpacity(0.7),
+                  ),
+                ),
                 SizedBox(width: 9.w),
-                Icon(Icons.comment_outlined,
-                    color: ColorConstant.blackColor.withOpacity(0.7)),
+                Icon(
+                  Icons.comment_outlined,
+                  color: ColorConstant.blackColor.withOpacity(0.7),
+                ),
                 SizedBox(width: 9.w),
-                Icon(Icons.share_outlined,
-                    color: ColorConstant.blackColor.withOpacity(0.7)),
+                Icon(
+                  Icons.share_outlined,
+                  color: ColorConstant.blackColor.withOpacity(0.7),
+                ),
               ],
             ),
           ),

@@ -24,10 +24,13 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
       } else {
         timer.cancel();
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) =>   MainScreen()),
-          );
+         Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => MainScreen(),
+  ),
+);
+
         }
       }
     });

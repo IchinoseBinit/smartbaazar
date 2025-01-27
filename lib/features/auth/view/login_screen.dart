@@ -43,16 +43,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final loginProvider = ref.watch(loginController.notifier);
 
     ref.listen<GenericState>(loginController, (previous, state) {
       if (state is LoadedState) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) =>  MainScreen()),
+          MaterialPageRoute(builder: (_) => MainScreen()),
         );
-        showCustomToast(context,state.response.toString());
+        showCustomToast(context, state.response.toString());
       } else if (state is ErrorState) {
         setState(() {
           errorMessage = state.errorMessage;
@@ -68,7 +67,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return GenericSafeArea(
       child: Scaffold(
-        
         resizeToAvoidBottomInset: false,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
@@ -153,7 +151,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             });
                             try {
                               await loginProvider.login(
-                               context,
+                                context,
                                 ref: ref,
                                 email: emailController.text,
                                 password: passwordController.text,
@@ -205,7 +203,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
       child: Text(
-        message,
+        "Email or password not correct",
         style: TextStyle(
           color: Colors.red.shade900,
         ),

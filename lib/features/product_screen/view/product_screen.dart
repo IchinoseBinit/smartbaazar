@@ -49,6 +49,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
 
   @override
   void dispose() {
+    
     _debouncer.close();
     _searchController.dispose();
     super.dispose();

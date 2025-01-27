@@ -105,6 +105,7 @@ class SellerInformationWidget extends ConsumerStatefulWidget {
 class _SellerInformationWidgetState
     extends ConsumerState<SellerInformationWidget> {
   bool _showSearchProductModels = false;
+  bool _hide = false;
 
   TextEditingController? mapcontrolleer = TextEditingController();
   List<File?> selectedImages = [];
@@ -172,6 +173,7 @@ class _SellerInformationWidgetState
 
   @override
   Widget build(BuildContext context) {
+    print("kala ${widget.phonecoontroller!.text}");
     // final SearchProductModels =
     //     ref.watch(getStreetAddressProvider("sindhuli"));
     // Future<void> _getstreet(String name) async {
@@ -315,7 +317,8 @@ class _SellerInformationWidgetState
                       child: TextField(
                         controller: widget.phonecoontroller,
                         decoration: InputDecoration.collapsed(
-                            hintText: '98XXXXXX',
+                            hintText:
+                                widget.phonecoontroller?.text ?? '98XXXXXX',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
@@ -330,7 +333,13 @@ class _SellerInformationWidgetState
                           borderRadius: BorderRadius.circular(10.r)),
                       child: Column(
                         children: [
-                          CustomCheckbox(value: false, onChanged: (value) {}),
+                          CustomCheckbox(
+                              value: _hide,
+                              onChanged: (value) {
+                                setState(() {
+                                  _hide = value;
+                                });
+                              }),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -356,12 +365,12 @@ class _SellerInformationWidgetState
                   duration: const Duration(milliseconds: 300),
                   opacity: _places == null || _places!.isEmpty
                       ? 0
-                      : 1, // Fade in/out based on _places
+                      : 1, // Fade in/out
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     height: _places == null || _places!.isEmpty
                         ? 0
-                        : 100, // Smooth height transition
+                        : 100, // Smooth transition
                     width: 200.w,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -386,13 +395,14 @@ class _SellerInformationWidgetState
                               return InkWell(
                                 onTap: () {
                                   setState(() {
-                                    _showSearchProductModels =
-                                        false; // Optional if used elsewhere
-                                    FocusScope.of(context)
-                                        .unfocus(); // Hide the keyboard
-                                    selectedpickup =
-                                        product; // Set the selected item
-                                    _places = []; // Clear the dropdown items
+                                    // Set selected place
+                                    selectedpickup = product;
+
+                                    // Clear dropdown items to hide the dropdown
+                                    _places = [];
+
+                                    // Optional: Hide keyboard if dropdown triggered by typing
+                                    FocusScope.of(context).unfocus();
                                   });
                                 },
                                 child: Container(
@@ -440,57 +450,30 @@ class _SellerInformationWidgetState
           ),
         ),
 
-        //   CreateListingCardWidget(
-        //     child: Row(
-        //   children: [
-        //     Text(
-        //       'Enter tag',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 14.sp,
-        //           color: Colors.black),
-        //     ),
-        //     const Spacer(),
-        //     Expanded(
-        //       child: TextField(
-        //         controller: widget.nameconroller,
-        //         decoration: InputDecoration.collapsed(
-        //             hintText: widget.nameconroller?.text ?? 'name',
-        //             hintStyle: TextStyle(
-        //                 fontWeight: FontWeight.w500,
-        //                 fontSize: 14.sp,
-        //                 color: const Color(0xffADADAD))),
-        //       ),
-        //     ),
-        //   ],
-        // )),
-        // SizedBox(
-        //   height: 10.h,
-        // ),
-        // CreateListingCardWidget(
-        //     child: Row(
-        //   children: [
-        //     Text(
-        //       'Enter name',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w500,
-        //           fontSize: 14.sp,
-        //           color: Colors.black),
-        //     ),
-        //     const Spacer(),
-        //     Expanded(
-        //       child: TextField(
-        //         controller: widget.nameconroller,
-        //         decoration: InputDecoration.collapsed(
-        //             hintText: widget.nameconroller?.text ?? 'name',
-        //             hintStyle: TextStyle(
-        //                 fontWeight: FontWeight.w500,
-        //                 fontSize: 14.sp,
-        //                 color: const Color(0xffADADAD))),
-        //       ),
-        //     ),
-        //   ],
-        // )),
+        CreateListingCardWidget(
+            child: Row(
+          children: [
+            Text(
+              'Enter name',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: Colors.black),
+            ),
+            const Spacer(),
+            Expanded(
+              child: TextField(
+                controller: widget.nameconroller,
+                decoration: InputDecoration.collapsed(
+                    hintText: widget.nameconroller?.text ?? 'name',
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp,
+                        color: const Color(0xffADADAD))),
+              ),
+            ),
+          ],
+        )),
 
         SizedBox(
           height: 15.h,
@@ -735,6 +718,7 @@ class _SellerInformationWidgetState
                       try {
                         // Call your API
                         String responseMessage = await createlisting(
+                            trending: widget.trending,
                             package: _selectedpackage,
                             pieces: widget.pieces,
                             null, // ref
@@ -861,7 +845,6 @@ class _SelectPhotFromFilesContainerState
 
   void selectImages() async {
     if (images.length < 6) {
-      
       List<File?> selectedImages =
           await _imagePickerService.pickMultipleImages(context);
       if (selectedImages.isNotEmpty) {

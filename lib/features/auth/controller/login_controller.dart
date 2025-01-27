@@ -36,10 +36,13 @@ class LoginController extends StateNotifier<GenericState> {
       state = LoadedState<LoginData>(response: loginData);
       _storeUserData(loginData);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => MainScreen()),
-      );
+     Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => MainScreen(),
+  ),
+);
+
     } catch (e) {
       print("Login error: $e");
       _handleError(context, e);
@@ -68,9 +71,7 @@ class LoginController extends StateNotifier<GenericState> {
         SmartClient.token = session['extra']['authToken'];
         SmartClient.userEmail = session['result']['email'];
         SmartClient.userName = session['result']['name'];
-        
-        
-       
+
         // TODO: SmartClient.token is not set here
 
         Navigator.pushReplacement(
@@ -108,16 +109,16 @@ class LoginController extends StateNotifier<GenericState> {
     SmartClient.userId = loginData.result.id.toString();
     SmartClient.userName = loginData.result.name;
     SmartClient.token = loginData.extra.authToken;
+    
     SmartClient.refresh = loginData.extra.refreshToken;
 
     await prefs.setString("session", json.encode(loginData.toJson()));
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
-     await prefs.setString("name", SmartClient.userName);
-      await prefs.setString("email", SmartClient.userEmail);
-       await prefs.setString("phone", SmartClient.phone);
-        await prefs.setString("laravel", SmartClient.laravelsession);
-
+    await prefs.setString("name", SmartClient.userName);
+    await prefs.setString("email", SmartClient.userEmail);
+    await prefs.setString("phone", SmartClient.phone);
+    await prefs.setString("laravel", SmartClient.laravelsession);
   }
 
   Future<String?> _getSessionData() async {
@@ -142,8 +143,9 @@ class LoginController extends StateNotifier<GenericState> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Error"),
-        content: Text(message),
+        title: const Text("Message"),
+        content:
+            const Text("Plesae check your email and password and try again later"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -176,10 +178,9 @@ class LoginController extends StateNotifier<GenericState> {
 
     await prefs.setString("accessToken", SmartClient.token);
     await prefs.setString("refreshToken", SmartClient.refresh);
-     await prefs.setString("name", SmartClient.userName);
-      await prefs.setString("email", SmartClient.userEmail);
-       await prefs.setString("phone", SmartClient.phone);
-              await prefs.setString("laravel", SmartClient.laravelsession);
-
+    await prefs.setString("name", SmartClient.userName);
+    await prefs.setString("email", SmartClient.userEmail);
+    await prefs.setString("phone", SmartClient.phone);
+    await prefs.setString("laravel", SmartClient.laravelsession);
   }
 }

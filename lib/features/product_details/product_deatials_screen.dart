@@ -88,7 +88,7 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          print("binod ${data.result!.user!.id}");
+          // print("binod ${data.result!.user!.id}");
           return Scaffold(
             extendBody: true,
             floatingActionButtonLocation:
@@ -309,7 +309,7 @@ class ProductDetailScreen extends ConsumerWidget {
                             title: data.result!.feedPost!.isEmpty
                                 ? "Trade-hub"
                                 : data.result!.feedPost!.first.name!),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(),
@@ -1133,6 +1133,7 @@ class SwapablePostCard extends StatelessWidget {
             child: Row(
               children: post.map((data) {
                 return PostCard(
+                  id: data.id,
                   // subscribers: data.subscribers.toString(),
                   isLive: show,
                   image: data.image!,
@@ -1167,6 +1168,7 @@ class LiveSwapble extends StatelessWidget {
             child: Row(
               children: post.map((data) {
                 return PostCard(
+                  id: data.id,
                   isLive: show,
                   image: data.image!,
                   name: data.name,

@@ -715,9 +715,19 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                         const Divider(),
                                   );
                                 },
-                                loading: () {
-                                  return const SizedBox();
-                                },
+                                loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -924,9 +934,19 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     error: (error, stackTrace) {
                       return Text("Try again: $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   SizedBox(
                     height: 5.h,
@@ -1090,7 +1110,19 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () =>Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, top: 15),
@@ -1295,7 +1327,19 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           error: (error, stackTrace) {
                             return Text(error.toString());
                           },
-                          loading: () => const CircularProgressIndicator(),
+                          loading: () =>Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                         ),
                         asyncbajarValue.when(
                           data: (data) {
@@ -1455,9 +1499,19 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           error: (error, stackTrace) {
                             return Text("$error");
                           },
-                          loading: () {
-                            return const CircularProgressIndicator();
-                          },
+                          loading: () => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 70.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

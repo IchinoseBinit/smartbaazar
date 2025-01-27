@@ -721,9 +721,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                         const Divider(),
                                   );
                                 },
-                                loading: () {
-                                  return const SizedBox();
-                                },
+                                loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -927,9 +939,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("Try again: $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading:() => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
 
                   SizedBox(
@@ -1109,7 +1133,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
 
                   Padding(
@@ -1331,9 +1369,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
                   // Expanded(
 
@@ -1430,9 +1480,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
+                    loading:() => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
 
                   asyncbajarValue.when(
@@ -1520,9 +1582,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
+                    loading:() => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
 
                   asyncbajarValue.when(
@@ -1610,9 +1684,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
                   SizedBox(
                     height: 50,
@@ -1933,9 +2019,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
 
                   Center(
@@ -1993,9 +2091,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
 
                   asyncbajarValue.when(
@@ -2028,7 +2138,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -2183,9 +2307,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               error: (error, stackTrace) => const Center(
                                 child: Text("Error loading data"),
                               ),
-                              loading: () => const Center(
-                                child: CircularProgressIndicator(),
+                              loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
                               ),
+                            ),
+                          ),
+                                      ),
                             ),
                           ],
                         );
@@ -2303,9 +2439,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text('error is $error');
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => Center(
+                                        child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              width: 40.w,
+                              height: 100.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                                      ),
                   ),
                   SizedBox(
                     height: 40.h,

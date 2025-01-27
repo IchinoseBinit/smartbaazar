@@ -8,13 +8,11 @@ import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
@@ -35,7 +33,7 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 class VendorProfileScreen extends StatefulWidget {
   // final String vendorName;
@@ -645,7 +643,6 @@ class BuyerCenterWidget extends StatelessWidget {
               15, // Fit 4 items in a row
           child: GestureDetector(
             onTap: () {
-              
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => buyerData[index]['screen'] as Widget,
@@ -696,9 +693,10 @@ class MyAccountWidget extends StatelessWidget {
   Future<void> _handleAction(BuildContext context, String title) async {
     if (title == 'Log Out') {
       SharedPreferences preferences = await SharedPreferences.getInstance();
+      showCustomToast(context, "logged out successfully");
       await preferences.clear();
-   Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
-
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
     } else if (title == 'Messenger') {
       Navigator.push(
         context,

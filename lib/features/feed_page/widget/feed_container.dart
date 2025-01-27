@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
 import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
+import 'package:smartbazar/features/feed_page/view/add_comment_provider.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 
 class FeedContainer extends ConsumerStatefulWidget {
@@ -52,6 +54,69 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
   bool _isLoading = false;
   bool _isLiked = false;
   int _likeCount = 0;
+  final TextEditingController _commentcontroller = TextEditingController();
+
+  void _showCommentBottomSheet(BuildContext context, String id) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Ensures it adjusts for the keyboard
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Minimized to fit content
+            children: [
+              const Text(
+                'Add a Comment',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _commentcontroller,
+                decoration: InputDecoration(
+                  hintText: 'Write your comment here...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                maxLines: 3,
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  if (_commentcontroller.text.isNotEmpty) {
+                    ref
+                        .watch(postcommentProvider(id, _commentcontroller.text))
+                        .whenData(
+                      (value) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(value)));
+                      },
+                    );
+                  }
+
+                  Navigator.pop(context); // Close the bottom sheet
+                  // Handle the comment submission logic here
+                },
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +200,23 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                   },
                                   error: (error, stackTrace) =>
                                       Text("error $error"),
-                                  loading: () => const Center(
-                                      child: CircularProgressIndicator()),
+                                  loading: () => showDialog(
+                                    context: context,
+                                    builder: (context) => Center(
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 50.r,
+                                          height: 50.r,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 );
                               },
                               child: Container(
@@ -306,8 +386,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
           child: Stack(
             children: [
               // Image Section
+
               ClipRRect(
-                //  borderRadius: BorderRadius.circular(15.0),
                 child: Image.network(
                   widget.feedDetailImage ?? '',
                   width: double.infinity,
@@ -317,34 +397,48 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     if (loadingProgress == null) {
                       return child; // If no loading, show the image
                     } else {
-                      return const Center(
-                          child:
-                              CircularProgressIndicator()); // Show loading indicator
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: Colors.white, // Placeholder color for shimmer
+                        ),
+                      ); // Show shimmer while loading
                     }
                   },
                   errorBuilder: (context, error, stackTrace) {
                     return SizedBox(
-                      width: 130.w,
-                      height: 70.h,
+                      width: 130,
+                      height: 70,
                       child: const Icon(Icons.error),
                     ); // Show error icon if image fails to load
                   },
                 ),
               ),
+
               Positioned(
                 top: 10.0,
                 right: 5.0,
                 // left: 10,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FullscreenImageView(
-                          imagePath: widget.feedDetailImage ?? '',
-                        ),
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                      builder: (context) => FullscreenImageView(
+                        imagePath: widget.feedDetailImage ?? '',
                       ),
-                    );
+                    ));
+
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => FullscreenImageView(
+                    //       imagePath: widget.feedDetailImage ?? '',
+                    //     ),
+                    //   ),
+                    // );
                   },
                   child: Container(
                     color: Colors.black54,
@@ -411,9 +505,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     SizedBox(width: 15.w),
                     // Comment Icon
                     GestureDetector(
-                      onTap: () {
-                        print("Commented!");
-                      },
+                      onTap: () =>
+                          _showCommentBottomSheet(context, widget.feedId),
                       child: Row(
                         children: [
                           Icon(Icons.chat_bubble_outline,
@@ -567,6 +660,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
   }
 }
 
+// import 'package:flutter/material.dart';
+
 class FullscreenImageView extends StatelessWidget {
   final String imagePath;
 
@@ -576,35 +671,27 @@ class FullscreenImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      backgroundColor: Colors.transparent,
-      body: GestureDetector(
-        onVerticalDragEnd: (details) {
-          // Check if the drag was downward
-          if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
-            Navigator.pop(context);
-          }
-        },
-        child: Stack(
-          children: [
-            Center(
-              child: Image.network(
-                imagePath,
-                fit: BoxFit.contain,
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child: Image.network(
+              imagePath,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 16,
+            right: 16,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.close, color: Colors.black),
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).padding.top,
-              left: 0,
-              child: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

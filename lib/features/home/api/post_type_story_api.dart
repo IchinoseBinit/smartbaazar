@@ -8,7 +8,7 @@ part 'post_type_story_api.g.dart';
 
 @riverpod
 Future<HomeStoryModel> getPostTypeStoryApi(
-    GetPostTypeStoryApiRef ref, String postTypeId) async {
+     ref, String postTypeId) async {
   final SmartClient client = SmartClient();
 
   try {

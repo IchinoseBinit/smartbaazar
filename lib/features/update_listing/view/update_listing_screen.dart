@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:collection/collection.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,19 +14,15 @@ import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/create_listing/api/get_categories_provider.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/api/get_location_provider.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/create_listing/view/SellerInformationWidget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
-import 'package:smartbazar/features/order_details/api/street_address_api.dart';
-import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
 import 'package:smartbazar/features/update_listing/api/fetch_category_by_id_provider.dart';
 import 'package:smartbazar/features/update_listing/api/update_listing_provider.dart';
 import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class UpdateListing extends StatefulWidget {
   final MyListingProduct? prod;
@@ -123,6 +119,7 @@ class _UpdateListingState extends State<UpdateListing> {
         .split(',') // Split the string by commas
         .map((path) => File(path.trim())) // Trim whitespace and convert to File
         .toList();
+
     getcategorybyid(widget.prod!.postTypeId!).then(
       (value) {
         parentid = value.id.toString();
@@ -245,8 +242,7 @@ class _UpdateListingState extends State<UpdateListing> {
       for (var e in fetchedTypes.data) {
         // Normalize both strings by trimming, lowering case, and handling extra spaces
         String offer =
-            e.offers.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ') ??
-                '';
+            e.offers.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ') ?? '';
         String widgetOffer = widget.prod?.offers
                 ?.toLowerCase()
                 .trim()
@@ -1815,7 +1811,7 @@ class _UpdateListingState extends State<UpdateListing> {
                   SizedBox(
                     height: 15.h,
                   ),
-                  // SelectPhotFromFilesContainer(
+                  // updatephotoescontainer(
                   //   onImagesSelected: (image) {
                   //     setState(() {
                   //       // selectedImages = image;
@@ -1837,7 +1833,7 @@ class _UpdateListingState extends State<UpdateListing> {
                   SizedBox(
                     height: 15.h,
                   ),
-                  SelectPhotFromFilesContainer(
+                  updatephotoescontainer(
                     updateimage: selectedImages,
                     onImagesSelected: (image) {
                       setState(() {
@@ -2135,6 +2131,173 @@ class _UpdateListingState extends State<UpdateListing> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class updatephotoescontainer extends StatefulWidget {
+  updatephotoescontainer(
+      {super.key, required this.onImagesSelected, this.updateimage});
+  final Function(List<File?>) onImagesSelected;
+  final List<File?>? updateimage;
+
+  @override
+  State<updatephotoescontainer> createState() =>
+      _updatephotoescontainerState();
+}
+
+class _updatephotoescontainerState
+    extends State<updatephotoescontainer> {
+  List<File?> images = [];
+
+  void selectImages() async {
+    if (images.length < 6) {
+      // Dummy method for selecting images. Replace this with your image picker logic.
+      List<File?> selectedImages = []; // Add your picked images here
+      if (selectedImages.isNotEmpty) {
+        setState(() {
+          images.addAll(selectedImages);
+        });
+        widget.onImagesSelected(images);
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You can upload up to 6 photos only.'),
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.updateimage != null && widget.updateimage!.isNotEmpty) {
+      setState(() {
+        images.addAll(widget.updateimage!);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1, color: const Color(0xffADADAD)),
+      ),
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: const Radius.circular(10),
+        dashPattern: const [2, 3],
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          child: GestureDetector(
+            onTap: selectImages,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: images.isNotEmpty
+                  ? LayoutBuilder(
+                      builder: (context, constraints) {
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 1,
+                          ),
+                          itemCount: images.length,
+                          itemBuilder: (context, index) {
+                            return Stack(
+                              children: [
+                                images[index]!.path.startsWith('http')
+                                    ? Image.network(
+                                        images[index]!.path,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      )
+                                    : Image.file(
+                                        images[index]!,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      ),
+                                Positioned(
+                                  top: 5,
+                                  right: 5,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        images.removeAt(index);
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                      size: 24,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Click to select files',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xffADADAD),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Container(
+                            width: 120,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 13, vertical: 9),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                width: 1,
+                                color: const Color(0xffADADAD),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.open_in_browser_outlined),
+                                SizedBox(width: 2),
+                                Text(
+                                  'Browse..',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
+          ),
         ),
       ),
     );

@@ -12,7 +12,6 @@ import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailWidget extends StatelessWidget {

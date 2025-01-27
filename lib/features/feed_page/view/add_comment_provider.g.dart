@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vendor_product_search_api.dart';
+part of 'add_comment_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchVendorProductHash() =>
-    r'1fd07c1a8ccb882bddbd8fad6b2175e3e1855403';
+String _$postcommentHash() => r'f1b3643fb49e5d0b76b0a5df8268715716e09143';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,34 +29,33 @@ class _SystemHash {
   }
 }
 
-/// See also [searchVendorProduct].
-@ProviderFor(searchVendorProduct)
-const searchVendorProductProvider = SearchVendorProductFamily();
+/// See also [postcomment].
+@ProviderFor(postcomment)
+const postcommentProvider = PostcommentFamily();
 
-/// See also [searchVendorProduct].
-class SearchVendorProductFamily
-    extends Family<AsyncValue<VendorProductSearchResponse>> {
-  /// See also [searchVendorProduct].
-  const SearchVendorProductFamily();
+/// See also [postcomment].
+class PostcommentFamily extends Family<AsyncValue<String>> {
+  /// See also [postcomment].
+  const PostcommentFamily();
 
-  /// See also [searchVendorProduct].
-  SearchVendorProductProvider call(
+  /// See also [postcomment].
+  PostcommentProvider call(
     String id,
-    String query,
+    String reply,
   ) {
-    return SearchVendorProductProvider(
+    return PostcommentProvider(
       id,
-      query,
+      reply,
     );
   }
 
   @override
-  SearchVendorProductProvider getProviderOverride(
-    covariant SearchVendorProductProvider provider,
+  PostcommentProvider getProviderOverride(
+    covariant PostcommentProvider provider,
   ) {
     return call(
       provider.id,
-      provider.query,
+      provider.reply,
     );
   }
 
@@ -73,36 +71,35 @@ class SearchVendorProductFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchVendorProductProvider';
+  String? get name => r'postcommentProvider';
 }
 
-/// See also [searchVendorProduct].
-class SearchVendorProductProvider
-    extends AutoDisposeFutureProvider<VendorProductSearchResponse> {
-  /// See also [searchVendorProduct].
-  SearchVendorProductProvider(
+/// See also [postcomment].
+class PostcommentProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [postcomment].
+  PostcommentProvider(
     String id,
-    String query,
+    String reply,
   ) : this._internal(
-          (ref) => searchVendorProduct(
-            ref as SearchVendorProductRef,
+          (ref) => postcomment(
+            ref as PostcommentRef,
             id,
-            query,
+            reply,
           ),
-          from: searchVendorProductProvider,
-          name: r'searchVendorProductProvider',
+          from: postcommentProvider,
+          name: r'postcommentProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchVendorProductHash,
-          dependencies: SearchVendorProductFamily._dependencies,
+                  : _$postcommentHash,
+          dependencies: PostcommentFamily._dependencies,
           allTransitiveDependencies:
-              SearchVendorProductFamily._allTransitiveDependencies,
+              PostcommentFamily._allTransitiveDependencies,
           id: id,
-          query: query,
+          reply: reply,
         );
 
-  SearchVendorProductProvider._internal(
+  PostcommentProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -110,51 +107,48 @@ class SearchVendorProductProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.id,
-    required this.query,
+    required this.reply,
   }) : super.internal();
 
   final String id;
-  final String query;
+  final String reply;
 
   @override
   Override overrideWith(
-    FutureOr<VendorProductSearchResponse> Function(
-            SearchVendorProductRef provider)
-        create,
+    FutureOr<String> Function(PostcommentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SearchVendorProductProvider._internal(
-        (ref) => create(ref as SearchVendorProductRef),
+      override: PostcommentProvider._internal(
+        (ref) => create(ref as PostcommentRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         id: id,
-        query: query,
+        reply: reply,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<VendorProductSearchResponse>
-      createElement() {
-    return _SearchVendorProductProviderElement(this);
+  AutoDisposeFutureProviderElement<String> createElement() {
+    return _PostcommentProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchVendorProductProvider &&
+    return other is PostcommentProvider &&
         other.id == id &&
-        other.query == query;
+        other.reply == reply;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, id.hashCode);
-    hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, reply.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -162,24 +156,22 @@ class SearchVendorProductProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SearchVendorProductRef
-    on AutoDisposeFutureProviderRef<VendorProductSearchResponse> {
+mixin PostcommentRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `id` of this provider.
   String get id;
 
-  /// The parameter `query` of this provider.
-  String get query;
+  /// The parameter `reply` of this provider.
+  String get reply;
 }
 
-class _SearchVendorProductProviderElement
-    extends AutoDisposeFutureProviderElement<VendorProductSearchResponse>
-    with SearchVendorProductRef {
-  _SearchVendorProductProviderElement(super.provider);
+class _PostcommentProviderElement
+    extends AutoDisposeFutureProviderElement<String> with PostcommentRef {
+  _PostcommentProviderElement(super.provider);
 
   @override
-  String get id => (origin as SearchVendorProductProvider).id;
+  String get id => (origin as PostcommentProvider).id;
   @override
-  String get query => (origin as SearchVendorProductProvider).query;
+  String get reply => (origin as PostcommentProvider).reply;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

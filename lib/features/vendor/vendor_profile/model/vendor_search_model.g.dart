@@ -9,26 +9,36 @@ part of 'vendor_search_model.dart';
 _$VendorProductSearchResponseImpl _$$VendorProductSearchResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$VendorProductSearchResponseImpl(
-      vendorPost: json['vendorPost'] == null
+      data: json['data'] == null
           ? null
-          : VendorPost.fromJson(json['vendorPost'] as Map<String, dynamic>),
+          : Vdata.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$VendorProductSearchResponseImplToJson(
         _$VendorProductSearchResponseImpl instance) =>
     <String, dynamic>{
-      'vendorPost': instance.vendorPost,
+      'data': instance.data,
     };
 
-_$VendorPostImpl _$$VendorPostImplFromJson(Map<String, dynamic> json) =>
-    _$VendorPostImpl(
-      currentPage: (json['current_page'] as num?)?.toInt(),
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => PostResult.fromJson(e as Map<String, dynamic>))
+_$VdataImpl _$$VdataImplFromJson(Map<String, dynamic> json) => _$VdataImpl(
+      Posts: json['Posts'] == null
+          ? null
+          : VPosts.fromJson(json['Posts'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$VdataImplToJson(_$VdataImpl instance) =>
+    <String, dynamic>{
+      'Posts': instance.Posts,
+    };
+
+_$VPostsImpl _$$VPostsImplFromJson(Map<String, dynamic> json) => _$VPostsImpl(
+      currentPage: (json['current_page'] as num).toInt(),
+      data: (json['data'] as List<dynamic>)
+          .map((e) => PostResult.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$VendorPostImplToJson(_$VendorPostImpl instance) =>
+Map<String, dynamic> _$$VPostsImplToJson(_$VPostsImpl instance) =>
     <String, dynamic>{
       'current_page': instance.currentPage,
       'data': instance.data,

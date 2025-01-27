@@ -60,6 +60,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   void dispose() {
+    
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();

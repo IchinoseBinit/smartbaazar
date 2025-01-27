@@ -358,36 +358,22 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                   Icons.arrow_drop_down),
                                               isExpanded: true,
                                               underline: const SizedBox(),
-                                              hint: products.isEmpty
-                                                  ? const Text(
-                                                      "No Products",
-                                                      style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 108, 93, 93),
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    )
-                                                  : const Text(
-                                                      "Select Product",
-                                                      style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 108, 93, 93),
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
+                                              hint:     Text( products?.length==0? "No Product":
+                                                "Select Product",
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 108, 93, 93),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
                                               value: selectedValues[index],
                                               items: products.map((product) {
-                                                print(
-                                                    'Number of products: ${products.length}');
+                                                // print(
+                                                //     'Number of products: ${products.length}');
 
                                                 return DropdownMenuItem<String>(
-                                                  value: products.isEmpty
-                                                      ? 'No items availble'
-                                                      : product.id,
+                                                  value: product.id,
                                                   child: Container(
                                                     height: 60,
                                                     color: Colors.grey.shade50,
